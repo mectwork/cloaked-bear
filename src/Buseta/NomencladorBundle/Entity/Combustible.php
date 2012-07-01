@@ -21,7 +21,7 @@ class Combustible extends BaseNomenclador
      */
     protected $id;
 
-    /**
+        /**
      * Get id.
      *
      * @return integer
@@ -30,4 +30,5 @@ class Combustible extends BaseNomenclador
     {
         return $this->id;
     }
+
 }
