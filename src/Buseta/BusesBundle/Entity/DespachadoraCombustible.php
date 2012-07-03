@@ -46,6 +46,55 @@ class DespachadoraCombustible
     private $autobus;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime", nullable=true)
+     */
+    private $created;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     */
+    private $createdby;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     */
+    private $updatedby;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="deleted", type="datetime", nullable=true)
+     */
+    private $deleted;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     */
+    private $deletedby;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+        $this->deleted = false;
+    }
+
+
+    /**
      * Get id
      *
      * @return integer 
@@ -53,6 +102,144 @@ class DespachadoraCombustible
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set createdby
+     *
+     * @param \Buseta\SecurityBundle\Entity\User $createdby
+     * @return Chofer
+     */
+    public function setCreatedby(\Buseta\SecurityBundle\Entity\User $createdby = null)
+    {
+        $this->createdby = $createdby;
+
+        return $this;
+    }
+
+    /**
+     * Get createdby
+     *
+     * @return \Buseta\SecurityBundle\Entity\User
+     */
+    public function getCreatedby()
+    {
+        return $this->createdby;
+    }
+
+    /**
+     * Set updatedby
+     *
+     * @param \Buseta\SecurityBundle\Entity\User $updatedby
+     * @return Chofer
+     */
+    public function setUpdatedby(\Buseta\SecurityBundle\Entity\User $updatedby = null)
+    {
+        $this->updatedby = $updatedby;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedby
+     *
+     * @return \Buseta\SecurityBundle\Entity\User
+     */
+    public function getUpdatedby()
+    {
+        return $this->updatedby;
+    }
+
+    /**
+     * Set deletedby
+     *
+     * @param \Buseta\SecurityBundle\Entity\User $deletedby
+     * @return Chofer
+     */
+    public function setDeletedby(\Buseta\SecurityBundle\Entity\User $deletedby = null)
+    {
+        $this->deletedby = $deletedby;
+
+        return $this;
+    }
+
+    /**
+     * Get deletedby
+     *
+     * @return \Buseta\SecurityBundle\Entity\User
+     */
+    public function getDeletedby()
+    {
+        return $this->deletedby;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Chofer
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     * @return Chofer
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param \DateTime $deleted
+     * @return Chofer
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return \DateTime
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 
     /**

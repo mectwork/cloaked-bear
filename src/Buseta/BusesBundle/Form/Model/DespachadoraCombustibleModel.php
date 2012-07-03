@@ -45,12 +45,54 @@ class DespachadoraCombustibleModel
     private $autobus;
 
     /**
+     * @var \DateTime
+     *
+     */
+    private $created;
+
+    /**
+     * @var \Buseta\SecurityBundle\Entity\User
+     *
+     */
+    private $createdby;
+
+    /**
+     * @var \DateTime
+     *
+     */
+    private $updated;
+
+    /**
+     * @var \Buseta\SecurityBundle\Entity\User
+     *
+     */
+    private $updatedby;
+
+    /**
+     * @var boolean
+     *
+     */
+    private $deleted;
+
+    /**
+     * @var \Buseta\SecurityBundle\Entity\User
+     *
+     */
+    private $deletedby;
+
+    /**
      * @return DespachadoraCombustible
      */
     public function getEntityData()
     {
         $despachadoraCombustible = new DespachadoraCombustible();
         $despachadoraCombustible->setCantidadLibros($this->getCantidadLibros());
+        $despachadoraCombustible->setCreated($this->getCreated());
+        $despachadoraCombustible->setCreatedby($this->getCreatedby());
+        $despachadoraCombustible->setDeleted($this->getDeleted());
+        $despachadoraCombustible->setDeletedby($this->getDeletedby());
+        $despachadoraCombustible->setUpdated($this->getUpdated());
+        $despachadoraCombustible->setUpdatedby($this->getUpdatedby());
 
         if ($this->getCombustible() !== null) {
             $despachadoraCombustible->setCombustible($this->getCombustible());
@@ -71,6 +113,102 @@ class DespachadoraCombustibleModel
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param \DateTime $created
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * @return \Buseta\SecurityBundle\Entity\User
+     */
+    public function getCreatedby()
+    {
+        return $this->createdby;
+    }
+
+    /**
+     * @param \Buseta\SecurityBundle\Entity\User $createdby
+     */
+    public function setCreatedby($createdby)
+    {
+        $this->createdby = $createdby;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * @param \DateTime $updated
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+    }
+
+    /**
+     * @return \Buseta\SecurityBundle\Entity\User
+     */
+    public function getUpdatedby()
+    {
+        return $this->updatedby;
+    }
+
+    /**
+     * @param \Buseta\SecurityBundle\Entity\User $updatedby
+     */
+    public function setUpdatedby($updatedby)
+    {
+        $this->updatedby = $updatedby;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param boolean $deleted
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    }
+
+    /**
+     * @return \Buseta\SecurityBundle\Entity\User
+     */
+    public function getDeletedby()
+    {
+        return $this->deletedby;
+    }
+
+    /**
+     * @param \Buseta\SecurityBundle\Entity\User $deletedby
+     */
+    public function setDeletedby($deletedby)
+    {
+        $this->deletedby = $deletedby;
     }
 
     /**

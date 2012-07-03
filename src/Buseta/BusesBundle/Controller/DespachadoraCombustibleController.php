@@ -131,7 +131,7 @@ class DespachadoraCombustibleController extends Controller
                     'form'   => $form->createView(),
                 ));
             }
-            
+
             //Si sí existe la cantidad del producto en la bodega seleccionada
             else {
 
