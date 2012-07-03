@@ -15,9 +15,9 @@ chofer:
 despachadoraCombustible:
   valor: Valor
   btn:
-    adicionar: Adicionar Despachadora de Combustible
+    adicionar: Adicionar Servicio de Combustible
   modal:
-    title: Crear Nueva Despachadora de Combustible
+    title: Crear Nuevo Servicio de Combustible
 
 listaNegraCombustible:
   valor: Valor

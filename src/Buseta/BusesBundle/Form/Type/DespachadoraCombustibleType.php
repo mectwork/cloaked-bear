@@ -3,9 +3,11 @@
 namespace Buseta\BusesBundle\Form\Type;
 
 use Buseta\BusesBundle\Form\Type\ChoferInDespachadoraCombustibleType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class DespachadoraCombustibleType extends AbstractType
 {
@@ -28,6 +30,17 @@ class DespachadoraCombustibleType extends AbstractType
             ))
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
+
+                'query_builder' => function(EntityRepository $repository) {
+                    $qb = $repository->createQueryBuilder('bus');
+                    $qb
+                        ->where('NOT EXISTS(SELECT ln FROM BusetaBusesBundle:ListaNegraCombustible ln INNER JOIN ln.autobus a WHERE a=bus AND ln.fechaInicio<=:fechaActual AND ln.fechaFinal>=:fechaActual )')
+                        ->orderBy('bus.matricula')
+                        ->setParameter('fechaActual', new \DateTime())
+                    ;
+                    return $qb;
+                },
+
                 'empty_value' => '---Seleccione---',
                 'label' => 'Autobús',
                 'required' => true,
@@ -35,6 +48,7 @@ class DespachadoraCombustibleType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
+
             ->add('cantidadLibros', 'integer', array(
                 'required' => true,
                 'label' => 'Cantidad de Libros',

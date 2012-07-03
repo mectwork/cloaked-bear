@@ -4,6 +4,7 @@ namespace Buseta\BodegaBundle\Extras;
 
 use Buseta\TallerBundle\Entity\Impuesto;
 use Buseta\BodegaBundle\Entity\InformeStock;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class FuncionesExtras
 {
@@ -238,5 +239,24 @@ class FuncionesExtras
         }
 
         return $cantidadReal;
+    }
+
+    /* Devuelve un booleano al comprobar si un Autobus se encuentra en la ListaNegraCombustible */
+    public function comprobarAutobusesListaNegra($autobus, $em)
+    {
+        $listaNegrasCombustible = $em->getRepository('BusetaBusesBundle:ListaNegraCombustible')->findAll();
+        $today = new \DateTime('now');
+
+        foreach ($listaNegrasCombustible as $lista) {
+
+            //Comprobar si el autobus se encuentra en la lista y la fecha actual
+            if ($lista->getAutobus() == $autobus) {
+                if($lista->getFechaInicio() <= $today && $lista->getFechaFinal() >= $today) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

@@ -28,24 +28,22 @@ class ListaNegraCombustible
     private $autobus;
 
     /**
-     * @var date
+     * @var datetime
      *
-     * @ORM\Column(name="fechaInicio", type="date")
+     * @ORM\Column(name="fechaInicio", type="datetime")
      * @Assert\Date()
      * @Assert\NotBlank()
      */
     private $fechaInicio;
 
     /**
-     * @var date
+     * @var datetime
      *
-     * @ORM\Column(name="fechaFinal", type="date")
+     * @ORM\Column(name="fechaFinal", type="datetime")
      * @Assert\Date()
      * @Assert\NotBlank()
      */
     private $fechaFinal;
-
-
 
     /**
      * Get id
@@ -66,6 +64,10 @@ class ListaNegraCombustible
     public function setFechaInicio($fechaInicio)
     {
         $this->fechaInicio = $fechaInicio;
+
+        if($this->fechaInicio !== null){
+            $this->fechaInicio->setTime(3,0);
+        }
     
         return $this;
     }
@@ -89,6 +91,10 @@ class ListaNegraCombustible
     public function setFechaFinal($fechaFinal)
     {
         $this->fechaFinal = $fechaFinal;
+
+        if($this->fechaFinal !== null){
+            $this->fechaFinal->setTime(3,0);
+        }
     
         return $this;
     }
