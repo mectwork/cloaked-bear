@@ -45,3 +45,12 @@ services:
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'buses_lista_negra_combustible'}
+
+#VALIDATORS
+    buses.capacidad_tanque.validador:
+        class: Buseta\BusesBundle\Validator\Constraints\CapacidadTanqueValidoValidator
+        arguments:
+            - @security.context
+            - @doctrine.orm.entity_manager
+        tags:
+            - {name: validator.constraint_validator, alias: capacidadTanque_validador}

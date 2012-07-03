@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @BusetaCoreAssert\CodigoYPinValido
  */
 class ChoferInDespachadoraCombustible {
-
     /**
      * @var \Buseta\BusesBundle\Entity\Chofer
      */
@@ -28,7 +27,6 @@ class ChoferInDespachadoraCombustible {
      * @Assert\NotBlank
      */
     private $pin;
-
 
     /**
      * @param mixed $chofer

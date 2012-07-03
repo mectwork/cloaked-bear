@@ -6,10 +6,14 @@ use Buseta\BusesBundle\Entity\Chofer;
 use Buseta\BusesBundle\Entity\DespachadoraCombustible;
 use Buseta\BusesBundle\Form\Model\ChoferInDespachadoraCombustible;
 use Doctrine\ORM\Mapping as ORM;
+
+use Buseta\BusesBundle\Validator\Constraints as BusetaBusesAssert;
 use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * DespachadoraCombustibleModel
+ * @BusetaBusesAssert\CapacidadTanqueValido
  */
 class DespachadoraCombustibleModel
 {

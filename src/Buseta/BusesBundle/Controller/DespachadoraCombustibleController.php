@@ -131,18 +131,7 @@ class DespachadoraCombustibleController extends Controller
                     'form'   => $form->createView(),
                 ));
             }
-            //Si no existe la cantidad solicitada en el almacen del producto seleccionado
-            elseif ($cantidadDisponible < 0) {
-                //Volver al menu de de crear nuevo DespachadoraCombustible
-                $form   = $this->createCreateForm($entityModel);
-
-                $form->addError(new FormError("No existe en la bodega '".$bodega->getNombre()."' la cantidad de productos solicitados para el producto: ".$producto->getNombre()));
-
-                return $this->render('BusetaBusesBundle:DespachadoraCombustible:new.html.twig', array(
-                    'entity' => $entityModel,
-                    'form'   => $form->createView(),
-                ));
-            }
+            
             //Si sí existe la cantidad del producto en la bodega seleccionada
             else {
 
