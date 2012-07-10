@@ -38,7 +38,7 @@ class AddProductoFieldSubscriber implements EventSubscriberInterface
             ));
         } else {
             $form->add('producto','entity', array(
-                'class'         => 'BusetaBusesBundle:Producto',
+                'class'         => 'BusetaBodegaBundle:Producto',
                 'empty_value'   => '---Seleccione---',
                 'auto_initialize' => false,
                 'data'          => $producto,
