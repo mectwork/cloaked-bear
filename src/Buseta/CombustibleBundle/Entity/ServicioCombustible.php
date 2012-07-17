@@ -44,11 +44,11 @@ class ServicioCombustible
     private $chofer;
 
     /**
-     * @var \Buseta\BusesBundle\Entity\Autobus
+     * @var \Buseta\BusesBundle\Entity\Vehiculo
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus")
+     * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Vehiculo")
      */
-    private $autobus;
+    private $vehiculo;
 
     /**
      * @var \DateTime
@@ -311,25 +311,25 @@ class ServicioCombustible
     }
 
     /**
-     * Set autobus
+     * Set vehiculo
      *
-     * @param \Buseta\BusesBundle\Entity\Autobus $autobus
+     * @param \Buseta\BusesBundle\Entity\Vehiculo $vehiculo
      * @return ServicioCombustible
      */
-    public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
+    public function setVehiculo(\Buseta\BusesBundle\Entity\Vehiculo $vehiculo = null)
     {
-        $this->autobus = $autobus;
+        $this->vehiculo = $vehiculo;
 
         return $this;
     }
 
     /**
-     * Get autobus
+     * Get vehiculo
      *
-     * @return \Buseta\BusesBundle\Entity\Autobus
+     * @return \Buseta\BusesBundle\Entity\Vehiculo
      */
-    public function getAutobus()
+    public function getVehiculo()
     {
-        return $this->autobus;
+        return $this->vehiculo;
     }
 }

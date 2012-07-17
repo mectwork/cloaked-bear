@@ -50,7 +50,30 @@ class ServicioCombustibleType extends AbstractType
             $fechaActualFinal->modify('+1 days');
 
 
-            $form->add('autobus', 'entity', array(
+            $form->add('vehiculo', 'entity', array(
+                'class' => 'BusetaBusesBundle:Vehiculo',
+                'query_builder' => function(EntityRepository $repository) use ($fechaActualInicial,$fechaActualFinal) {
+                    $qb = $repository->createQueryBuilder('vehiculo');
+                    $qb
+                        ->where('NOT EXISTS(SELECT ln FROM BusetaCombustibleBundle:ListaNegraCombustible ln INNER JOIN ln.autobus a WHERE a=vehiculo AND ln.fechaInicio<=:fechaActual AND ln.fechaFinal>=:fechaActual )')
+                        ->andWhere('NOT EXISTS(SELECT s FROM BusetaCombustibleBundle:ServicioCombustible s INNER JOIN s.vehiculo v WHERE v=vehiculo AND s.created>:fechaActualInicial AND s.created<:fechaActualFinal)')
+                        ->orderBy('vehiculo.matricula')
+                        ->setParameter('fechaActual', new \DateTime())
+                        ->setParameter('fechaActualInicial', $fechaActualInicial)
+                        ->setParameter('fechaActualFinal', $fechaActualFinal)
+                    ;
+                    return $qb;
+                },
+
+                'empty_value' => '---Seleccione---',
+                'label' => 'Vehículo',
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ));
+
+            /*$form->add('autobus', 'entity', array(
                 'class' => 'BusetaBusesBundle:Autobus',
                 'query_builder' => function(EntityRepository $repository) use ($fechaActualInicial,$fechaActualFinal) {
                     $qb = $repository->createQueryBuilder('bus');
@@ -71,36 +94,10 @@ class ServicioCombustibleType extends AbstractType
                 'attr' => array(
                     'class' => 'form-control',
                 )
-            ));
+            ));*/
 
         });
 
-/*
-
-        ->add('autobus','entity',array(
-        'class' => 'BusetaBusesBundle:Autobus',
-
-        'query_builder' => function(EntityRepository $repository) {
-            $qb = $repository->createQueryBuilder('bus');
-            $qb
-                ->where('NOT EXISTS(SELECT ln FROM BusetaCombustibleBundle:ListaNegraCombustible ln INNER JOIN ln.autobus a WHERE a=bus AND ln.fechaInicio<=:fechaActual AND ln.fechaFinal>=:fechaActual )')
-                ->andWhere('EXISTS(SELECT d FROM BusetaCombustibleBundle:ServicioCombustible d INNER JOIN d.autobus au WHERE au=bus AND d.created=:fechaActual)')
-                ->orderBy('bus.matricula')
-                ->setParameter('fechaActual', new \DateTime())
-                ->setParameter('fechaActualInicial', new \DateTime())
-                ->setParameter('fechaActualFinal', new \DateTime())
-            ;
-            return $qb;
-        },
-
-        'empty_value' => '---Seleccione---',
-        'label' => 'Autobús',
-        'required' => true,
-        'attr' => array(
-            'class' => 'form-control',
-        )
-    ))
-        ;*/
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

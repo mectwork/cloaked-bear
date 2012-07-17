@@ -40,9 +40,9 @@ class ServicioCombustibleModel
     private $chofer;
 
     /**
-     * @var \Buseta\BusesBundle\Entity\Autobus
+     * @var \Buseta\BusesBundle\Entity\Vehiculo
      */
-    private $autobus;
+    private $vehiculo;
 
     /**
      * @var \DateTime
@@ -100,8 +100,8 @@ class ServicioCombustibleModel
         if ($this->getChofer() !== null) {
             $servicioCombustible->setChofer($this->getChofer()->getChofer());
         }
-        if ($this->getAutobus() !== null) {
-            $servicioCombustible->setAutobus($this->getAutobus());
+        if ($this->getVehiculo() !== null) {
+            $servicioCombustible->setVehiculo($this->getVehiculo());
         }
 
         return $servicioCombustible;
@@ -274,19 +274,19 @@ class ServicioCombustibleModel
     }
 
     /**
-     * @return Autobus
+     * @return Vehiculo
      */
-    public function getAutobus()
+    public function getVehiculo()
     {
-        return $this->autobus;
+        return $this->vehiculo;
     }
 
     /**
-     * @param Autobus $autobus
+     * @param Vehiculo $vehiculo
      */
-    public function setAutobus($autobus)
+    public function setVehiculo($vehiculo)
     {
-        $this->autobus = $autobus;
+        $this->vehiculo = $vehiculo;
     }
 
 }

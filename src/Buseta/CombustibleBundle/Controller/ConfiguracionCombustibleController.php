@@ -159,7 +159,7 @@ class ConfiguracionCombustibleController extends Controller
             }
         }
 
-        $renderView =  $this->renderView('@BusetaBuses/ConfiguracionCombustible/delete_modal.html.twig', array(
+        $renderView =  $this->renderView('@BusetaCombustible/ConfiguracionCombustible/delete_modal.html.twig', array(
             'entity' => $configuracionCombustible,
             'form' => $deleteForm->createView(),
         ));
