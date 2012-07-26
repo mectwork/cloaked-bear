@@ -5,12 +5,12 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Categoria
+ * Condicion
  *
- * @ORM\Table(name="n_categoria")
+ * @ORM\Table(name="n_condicion")
  * @ORM\Entity
  */
-class Categoria extends BaseNomenclador
+class Condicion extends BaseNomenclador
 {
     /**
      * @var integer
@@ -24,9 +24,16 @@ class Categoria extends BaseNomenclador
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Producto", mappedBy="categoria", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Producto", mappedBy="condicion", cascade={"all"})
      */
     private $productos;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=255)
+     */
+    private $descripcion;
 
     /**
      * @param int $id
@@ -58,6 +65,31 @@ class Categoria extends BaseNomenclador
     public function getProductos()
     {
         return $this->productos;
+    }
+
+
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     * @return Color
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
     }
 
 

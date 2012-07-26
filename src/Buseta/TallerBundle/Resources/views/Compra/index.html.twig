@@ -22,7 +22,7 @@
         <thead>
             <tr>
                 <th>Número</th>
-                <th>Tipo</th>
+                <th># Factura Proveedor</th>
                 <th>Fecha pedido</th>
                 <th>Prioridad</th>
                 <th>Importe general</th>
@@ -34,7 +34,7 @@
         {% for entity in entities %}
             <tr>
                 <td>{{ entity.numero }}</td>
-                <td>{{ entity.tipo }}</td>
+                <td>{{ entity.numero_factura_proveedor }}</td>
                 <td>{% if entity.fechapedido %}{{ entity.fechapedido|date('d/m/Y') }}{% endif %}</td>
                 <td>
                     {% if entity.ordenprioridad == null %}

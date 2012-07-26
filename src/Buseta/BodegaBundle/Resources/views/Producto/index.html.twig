@@ -24,10 +24,12 @@
             <th>Código</th>
             <th>Nombre</th>
             <th>U/M</th>
-            <th>Categoría</th>
+            <th>Condición</th>
             <th>Precio/Costo</th>
             <th>Precio/Salida</th>
             <th>Bodega</th>
+            <th>Mín</th>
+            <th>Máx</th>
             <th>Activo</th>
             <th>Acciones</th>
         </tr>
@@ -38,10 +40,12 @@
                 <td>{{ entity.codigo }}</td>
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.uom }}</td>
-                <td>{{ entity.categoria }}</td>
+                <td>{{ entity.condicion }}</td>
                 <td>{{ entity.preciocosto }}</td>
                 <td>{{ entity.preciosalida }}</td>
                 <td>{{ entity.bodega }}</td>
+                <td>{{ entity.minimobodega }}</td>
+                <td>{{ entity.maximobodega }}</td>
                 <td>
                     {% if entity.activo == 1 %}
                         Sí

@@ -32,9 +32,9 @@ class Compra
     /**
      * @var string
      *
-     * @ORM\Column(name="tipo", type="string", nullable=false)
+     * @ORM\Column(name="numero_factura_proveedor", type="string", nullable=false)
      */
-    private $tipo;
+    private $numero_factura_proveedor;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="compras")
@@ -170,30 +170,7 @@ class Compra
     {
         return $this->numero;
     }
-
-    /**
-     * Set tipo
-     *
-     * @param string $tipo
-     * @return Compra
-     */
-    public function setTipo($tipo)
-    {
-        $this->tipo = $tipo;
     
-        return $this;
-    }
-
-    /**
-     * Get tipo
-     *
-     * @return string 
-     */
-    public function getTipo()
-    {
-        return $this->tipo;
-    }
-
     /**
      * Set descripcion
      *
@@ -464,5 +441,28 @@ class Compra
     public function getLineas()
     {
         return $this->lineas;
+    }
+
+    /**
+     * Set numero_factura_proveedor
+     *
+     * @param string $numeroFacturaProveedor
+     * @return Compra
+     */
+    public function setNumeroFacturaProveedor($numeroFacturaProveedor)
+    {
+        $this->numero_factura_proveedor = $numeroFacturaProveedor;
+    
+        return $this;
+    }
+
+    /**
+     * Get numero_factura_proveedor
+     *
+     * @return string 
+     */
+    public function getNumeroFacturaProveedor()
+    {
+        return $this->numero_factura_proveedor;
     }
 }

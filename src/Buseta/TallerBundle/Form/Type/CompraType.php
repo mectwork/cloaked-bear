@@ -24,11 +24,10 @@ class CompraType extends AbstractType
                         'class' => 'form-control',
                     )
                 ))
-            ->add('tipo','entity',array(
-                'class' => 'BusetaNomencladorBundle:TipoCompra',
-                'empty_value' => '---Seleccione tipo de compra---',
-                'required' => false,
-                'attr' => array(
+            ->add('numero_factura_proveedor', 'text', array(
+                'required' => true,
+                'label'  => 'Número factura de proveedor',
+                'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
@@ -57,7 +56,6 @@ class CompraType extends AbstractType
                 'format'  => 'dd/MM/yyyy',
                 'attr'   => array(
                     'class' => 'form-control',
-                    'style' => 'width: 250px',
                 )
             ))
             ->add('forma_pago', 'choice', array(

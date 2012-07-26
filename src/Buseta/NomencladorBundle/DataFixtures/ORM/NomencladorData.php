@@ -6,9 +6,9 @@ use Buseta\NomencladorBundle\Entity\AceiteCajaCambios;
 use Buseta\NomencladorBundle\Entity\AceiteHidraulico;
 use Buseta\NomencladorBundle\Entity\AceiteMotor;
 use Buseta\NomencladorBundle\Entity\AceiteTransmision;
-use Buseta\NomencladorBundle\Entity\Categoria;
 use Buseta\NomencladorBundle\Entity\Color;
 use Buseta\NomencladorBundle\Entity\Combustible;
+use Buseta\NomencladorBundle\Entity\Condicion;
 use Buseta\NomencladorBundle\Entity\Estilo;
 use Buseta\NomencladorBundle\Entity\Grupo;
 use Buseta\NomencladorBundle\Entity\Marca;
@@ -103,10 +103,11 @@ class NomencladorData extends AbstractFixture
 
             /*******************************/
 
-            $objeto = new Categoria();
+            $objeto = new Condicion();
             $codigo = uniqid();
             $objeto->setCodigo($codigo);
-            $objeto->setValor($this->categorias[$i]);
+            $objeto->setValor($this->condiciones[$i]);
+            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($objeto);
             $manager->flush();
@@ -254,10 +255,10 @@ class NomencladorData extends AbstractFixture
         'Rojo',
     );
 
-    private $categorias = array(
-        'Cat A',
-        'Cat B',
-        'Cat C',
+    private $condiciones = array(
+        'Condiciones A',
+        'Condiciones B',
+        'Condiciones C',
     );
 
     private $combustibles = array(

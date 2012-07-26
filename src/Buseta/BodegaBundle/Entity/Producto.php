@@ -56,9 +56,9 @@ class Producto
     private $uom;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Categoria", inversedBy="productos")
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Condicion", inversedBy="productos")
      */
-    private $categoria;
+    private $condicion;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="productos")
@@ -85,6 +85,22 @@ class Producto
     private $lineas;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="minimo_bodega", type="integer")
+     * @Assert\Type(type="integer")
+     */
+    private $minimo_bodega;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="maximo_bodega", type="integer")
+     * @Assert\Type(type="integer")
+     */
+    private $maximo_bodega;
+
+    /**
      * @param mixed $activo
      */
     public function setActivo($activo)
@@ -101,19 +117,19 @@ class Producto
     }
 
     /**
-     * @param mixed $categoria
+     * @param mixed $condicion
      */
-    public function setCategoria($categoria)
+    public function setCondicion($condicion)
     {
-        $this->categoria = $categoria;
+        $this->condicion = $condicion;
     }
 
     /**
      * @return mixed
      */
-    public function getCategoria()
+    public function getCondicion()
     {
-        return $this->categoria;
+        return $this->condicion;
     }
 
     /**
@@ -316,5 +332,51 @@ class Producto
     public function getMovimientos()
     {
         return $this->movimientos;
+    }
+
+    /**
+     * Set minimo_bodega
+     *
+     * @param integer $minimoBodega
+     * @return Producto
+     */
+    public function setMinimoBodega($minimoBodega)
+    {
+        $this->minimo_bodega = $minimoBodega;
+    
+        return $this;
+    }
+
+    /**
+     * Get minimo_bodega
+     *
+     * @return integer 
+     */
+    public function getMinimoBodega()
+    {
+        return $this->minimo_bodega;
+    }
+
+    /**
+     * Set maximo_bodega
+     *
+     * @param integer $maximoBodega
+     * @return Producto
+     */
+    public function setMaximoBodega($maximoBodega)
+    {
+        $this->maximo_bodega = $maximoBodega;
+    
+        return $this;
+    }
+
+    /**
+     * Get maximo_bodega
+     *
+     * @return integer 
+     */
+    public function getMaximoBodega()
+    {
+        return $this->maximo_bodega;
     }
 }

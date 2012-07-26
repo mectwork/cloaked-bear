@@ -1,6 +1,6 @@
 generator: admingenerator.generator.doctrine
 params:
-    model: Buseta\NomencladorBundle\Entity\Categoria
+    model: Buseta\NomencladorBundle\Entity\Condicion
     namespace_prefix: Buseta
     concurrency_lock: ~
     bundle_name: NomencladorBundle
@@ -10,6 +10,8 @@ params:
             label: Valor
       codigo:
             label: Código
+      descripcion:
+            label: Descripción
     object_actions:
         delete: ~
     batch_actions:
@@ -17,8 +19,8 @@ params:
 builders:
     list:
         params:
-            title: Listado de categorías
-            display: [valor, codigo]
+            title: Listado de condiciones
+            display: [valor, codigo, descripcion]
             actions:
                 new: ~
             object_actions:
@@ -27,25 +29,25 @@ builders:
                 delete: ~
     filters:
         params:
-            display: [valor, codigo]
+            display: [valor, codigo, descripcion]
     new:
         params:
-            title: Adicionar nueva categoría
-            display: [valor, codigo]
+            title: Adicionar nuevo condición
+            display: [valor, codigo, descripcion]
             actions:
                 save: ~
                 list: ~
     edit:
         params:
-            title: "Usted está modificando la categoría: \"%object%\"|{ %object%: Categoria.valor }|"
-            display: [valor, codigo]
+            title: "Usted está modificando la condición: \"%object%\"|{ %object%: Condicion.valor }|"
+            display: [valor, codigo, descripcion]
             actions:
                 save: ~
                 list: ~
     show:
         params:
-            title: "Usted está mostrando los datos de la categoría: \"%object%\"|{ %object%: Categoria.valor }|"
-            display: [valor, codigo]
+            title: "Usted está mostrando los datos de la condición: \"%object%\"|{ %object%: Condicion.valor }|"
+            display: [valor, codigo, descripcion]
             actions:
                 list: ~
                 new: ~

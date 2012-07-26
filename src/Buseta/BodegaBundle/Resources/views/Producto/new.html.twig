@@ -40,8 +40,8 @@
         </div>
 
         <div class="col-lg-4">
-            <label>Categoría:</label>
-            {{ form_widget(form.categoria) }}
+            <label>Condición:</label>
+            {{ form_widget(form.condicion) }}
         </div>
     </div>
 
@@ -51,6 +51,18 @@
             {{ form_widget(form.bodega) }}
         </div>
 
+        <div class="col-lg-4">
+            <label>Mínimo en bodega:</label></br>
+            {{ form_widget(form.minimo_bodega) }}
+        </div>
+
+        <div class="col-lg-4">
+            <label>Máximo en bodega:</label></br>
+            {{ form_widget(form.maximo_bodega) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
         <div class="col-lg-4">
             <label>Activo:</label></br>
             {{ form_widget(form.activo) }}
