@@ -101,8 +101,8 @@
         </div>
 
         <div class="col-md-4">
-            <label>Modelo:</label>
-            {{ form_widget(edit_form.modelo) }}
+            <label>Estilo:</label>
+            {{ form_widget(edit_form.estilo) }}
         </div>
     </div>
 
@@ -113,34 +113,32 @@
         </div>
 
         <div class="col-md-4">
-            <label>Fecha RTV 2</label>
+            <label>Fecha RTV 2:</label>
             {{ form_widget(edit_form.fecha_rtv_2) }}
         </div>
 
         <div class="col-md-4">
-            <label>Marca:</label>
-            {{ form_widget(edit_form.marca) }}
+            <label>Combustible:</label>
+            {{ form_widget(edit_form.combustible) }}
         </div>
 
     </div>
 
     <div class="row show-grid">
+        <div class="col-md-4">
+            <label>Marca:</label>
+            {{ form_widget(edit_form.marca) }}
+        </div>
 
         <div class="col-md-4">
-            <label>Estilo:</label>
-            {{ form_widget(edit_form.estilo) }}
+            <label>Modelo:</label>
+            {{ form_widget(edit_form.modelo) }}
         </div>
 
         <div class="col-md-4">
             <label>Color:</label>
             {{ form_widget(edit_form.color) }}
         </div>
-
-        <div class="col-md-4">
-            <label>Capacidad del Tanque en Litros:</label>
-            {{ form_widget(edit_form.capacidad_tanque) }}
-        </div>
-
     </div>
 
     <div class="row show-grid">
@@ -148,10 +146,9 @@
             <label>Marca de Motor:</label>
             {{ form_widget(edit_form.marca_motor) }}
         </div>
-
         <div class="col-md-4">
-            <label>Combustible:</label>
-            {{ form_widget(edit_form.combustible) }}
+            <label>Capacidad del Tanque en Litros:</label>
+            {{ form_widget(edit_form.capacidad_tanque) }}
         </div>
     </div>
 
@@ -444,5 +441,11 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var json = {{ json|raw }};
+        console.log(json);
+    </script>
+    <script src="{{ asset('vendors/selectDinamico.js') }}"></script>
     <script src="{{ asset('vendors/funciones_datetime_new.js') }}"></script>
 {% endblock %}

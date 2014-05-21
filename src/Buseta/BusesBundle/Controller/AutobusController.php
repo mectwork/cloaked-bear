@@ -142,6 +142,18 @@ class AutobusController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        $json = $this->getMarcasModelosJSON($em);
+
+        return $this->render('BusetaBusesBundle:Autobus:new.html.twig', array(
+            'entity'          => $entity,
+            'form'            => $form->createView(),
+            'json'            => json_encode($json),
+            'archivo_adjunto' => $archivo_adjunto->createView(),
+        ));
+    }
+
+    private function getMarcasModelosJSON($em)
+    {
         $json = array();
 
         $marcas  = $em->getRepository('BusetaNomencladorBundle:Marca')->findAll();
@@ -164,12 +176,7 @@ class AutobusController extends Controller
             );
         }
 
-        return $this->render('BusetaBusesBundle:Autobus:new.html.twig', array(
-            'entity'          => $entity,
-            'form'            => $form->createView(),
-            'json'            => json_encode($json),
-            'archivo_adjunto' => $archivo_adjunto->createView(),
-        ));
+        return $json;
     }
 
     /**
@@ -213,10 +220,13 @@ class AutobusController extends Controller
         $editForm = $this->createEditForm($handler->fillDataAutobusModel($entity));
         $deleteForm = $this->createDeleteForm($id);
 
+        $json = $this->getMarcasModelosJSON($em);
+
         return $this->render('BusetaBusesBundle:Autobus:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'json'        => json_encode($json),
         ));
     }
 
