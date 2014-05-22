@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * ArchivoAdjunto
  *
- * @ORM\Table(name="d_archivoadjunto")
+ * @ORM\Table(name="d_autobus_archivo_adjunto")
  * @ORM\Entity
  */
 class ArchivoAdjunto
