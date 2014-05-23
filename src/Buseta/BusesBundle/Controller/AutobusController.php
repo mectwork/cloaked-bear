@@ -2,14 +2,21 @@
 
 namespace Buseta\BusesBundle\Controller;
 
+use Buseta\BusesBundle\Entity\ArchivoAdjunto;
+use Buseta\BusesBundle\Form\Model\FileModel;
+use Buseta\BusesBundle\Form\Type\ArchivoAdjuntoType;
 use Doctrine\Tests\Common\Annotations\Null;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Buseta\BusesBundle\Handle\HandleAutobus;
-use Buseta\BusesBundle\Entity\Autobus;
 use Buseta\BusesBundle\Form\Model\AutobusModel;
 use Buseta\BusesBundle\Form\Type\AutobusType;
+use Buseta\BusesBundle\Form\Filtro\BusquedaAutobusType;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Buseta\BusesBundle\Entity\Autobus;
+
+
 
 /**
  * Autobus controller.
@@ -17,22 +24,40 @@ use Buseta\BusesBundle\Form\Type\AutobusType;
  */
 class AutobusController extends Controller
 {
+    /**
+     * Module Autobus entiy.
+     *
+     */
+    public function principalAction()
+    {
+        return $this->render('BusetaBusesBundle:Default:principal.html.twig');
+    }
+
 
     /**
      * Lists all Autobus entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->createQueryBuilder()
-            ->select('a')
-            ->from('BusetaBusesBundle:Autobus','a')
-            ->orderBy('a.id', 'DESC')
-            ->getQuery();
+        $busqueda = $this->createForm(new BusquedaAutobusType());
 
-        //CASO CAJERO
+        if($request->getMethod() === 'GET'){
+            $busqueda->submit($request);
+
+            if($busqueda->isValid()){
+
+                $entities = $em->getRepository('BusetaBusesBundle:Autobus')->buscarAutobus($busqueda,$em);
+            }
+        }
+        else
+        {
+            $entities = $em->getRepository('BusetaBusesBundle:Autobus')->buscarTodos($em);
+        }
+
+        //CASO BUSQUEDA-AUTOBUS
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
             $entities,
@@ -43,6 +68,7 @@ class AutobusController extends Controller
 
         return $this->render('BusetaBusesBundle:Autobus:index.html.twig', array(
             'entities' => $entities,
+            'busqueda' => $busqueda->createView(),
         ));
     }
 
@@ -52,14 +78,18 @@ class AutobusController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entityModel = new AutobusModel();
+        //echo '<pre>';
+        //print_r($request->files);exit;
 
+        $entityModel = new AutobusModel();
         $form = $this->createCreateForm($entityModel);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $model = $this->get('handlebuses');
-            $entity = $model->HandleAutobusNew($entityModel);
+
+            $em = $this->getDoctrine()->getManager();
+            $entity = $model->HandleAutobusNew($em,$entityModel);
 
             if($model)
                 return $this->redirect($this->generateUrl('autobus_show', array('id' => $entity->getId())));
@@ -103,10 +133,27 @@ class AutobusController extends Controller
     public function newAction()
     {
         $entity = new AutobusModel();
+
+        $archivo_adjunto = $this->createForm(new ArchivoAdjuntoType());
+
+        //$entity->addArchivoAdjunto(new FileModel());
+
         $form   = $this->createCreateForm($entity);
 
         $em = $this->getDoctrine()->getManager();
 
+        $json = $this->getMarcasModelosJSON($em);
+
+        return $this->render('BusetaBusesBundle:Autobus:new.html.twig', array(
+            'entity'          => $entity,
+            'form'            => $form->createView(),
+            'json'            => json_encode($json),
+            'archivo_adjunto' => $archivo_adjunto->createView(),
+        ));
+    }
+
+    private function getMarcasModelosJSON($em)
+    {
         $json = array();
 
         $marcas  = $em->getRepository('BusetaNomencladorBundle:Marca')->findAll();
@@ -120,20 +167,16 @@ class AutobusController extends Controller
             $childrens = array();
 
             foreach($modelos as $modelo){
-                $childrens[$modelo->getId()] = $modelo->getCodigo();
+                $childrens[$modelo->getId()] = $modelo->getValor();
             }
 
             $json[$m->getId()] = array(
-                'name' => $m->getCodigo(),
+                'name' => $m->getValor(),
                 'childrens' => $childrens,
             );
         }
 
-        return $this->render('BusetaBusesBundle:Autobus:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-            'json'   => json_encode($json),
-        ));
+        return $json;
     }
 
     /**
@@ -177,10 +220,13 @@ class AutobusController extends Controller
         $editForm = $this->createEditForm($handler->fillDataAutobusModel($entity));
         $deleteForm = $this->createDeleteForm($id);
 
+        $json = $this->getMarcasModelosJSON($em);
+
         return $this->render('BusetaBusesBundle:Autobus:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'json'        => json_encode($json),
         ));
     }
 

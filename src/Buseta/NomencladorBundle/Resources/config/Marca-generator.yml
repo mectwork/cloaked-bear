@@ -17,7 +17,7 @@ params:
 builders:
     list:
         params:
-            title: Listado de Marcas
+            title: Listado de marcas
             display: [valor, codigo]
             actions:
                 new: ~
@@ -30,21 +30,21 @@ builders:
             display: [valor, codigo]
     new:
         params:
-            title: Adicionar nuevo marca
+            title: Adicionar nueva marca
             display: [valor, codigo]
             actions:
                 save: ~
                 list: ~
     edit:
         params:
-            title: "Usted está modificando el marca: \"%object%\"|{ %object%: Marca.valor }|"
+            title: "Usted está modificando la marca: \"%object%\"|{ %object%: Marca.valor }|"
             display: [valor, codigo]
             actions:
                 save: ~
                 list: ~
     show:
         params:
-            title: "Usted está mostrando los datos del marca: \"%object%\"|{ %object%: Marca.valor }|"
+            title: "Usted está mostrando los datos de la marca: \"%object%\"|{ %object%: Marca.valor }|"
             display: [valor, codigo]
             actions:
                 list: ~

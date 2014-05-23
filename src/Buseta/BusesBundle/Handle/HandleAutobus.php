@@ -2,46 +2,70 @@
 
 namespace Buseta\BusesBundle\Handle;
 
+use Buseta\BusesBundle\Entity\ArchivoAdjunto;
 use Buseta\BusesBundle\Entity\Autobus;
 use Buseta\BusesBundle\Form\Model\AutobusModel;
-use Doctrine\ORM\EntityManager;
-
+use Buseta\BusesBundle\Form\Model\FileModel;
+use Symfony\Component\HttpFoundation\File\File;
 
 class HandleAutobus
 {
-    private $em;
-
-    function __construct(EntityManager $em)
-    {
-        $this->em = $em;
-    }
-
-
-    public function HandleAutobusNew(AutobusModel $entityModel)
+    public function HandleAutobusNew($em, AutobusModel $entityModel)
     {
         /** @var Autobus $entity */
         $entity = new Autobus();
+        $directorio = __DIR__.'/../../../../web/images/';
 
         $fileFrontal = $entityModel->getImagenFrontal();
-        $directorio = __DIR__.'/../../../../web/images/';
-        $nombre = $entityModel->getMatricula()."-frontal.jpg";
-        $entity->setImagenFrontal($nombre);
-        $fileFrontal->move($directorio,$nombre);
+
+        if($fileFrontal != null)
+        {
+            $nombre = $entityModel->getMatricula()."-frontal.jpg";
+            $entity->setImagenFrontal($nombre);
+            $fileFrontal->move($directorio,$nombre);
+        }
 
         $fileLateralD = $entityModel->getImagenLateralD();
-        $nombre = $entityModel->getMatricula()."-lateral_d.jpg";
-        $entity->setImagenLateralD($nombre);
-        $fileLateralD->move($directorio,$nombre);
+        if($fileLateralD != null)
+        {
+            $nombre = $entityModel->getMatricula()."-lateral_d.jpg";
+            $entity->setImagenLateralD($nombre);
+            $fileLateralD->move($directorio,$nombre);
+        }
 
         $fileLateralI = $entityModel->getImagenLateralI();
-        $nombre = $entityModel->getMatricula()."-lateral_i.jpg";
-        $entity->setImagenLateralI($nombre);
-        $fileLateralI->move($directorio,$nombre);
+        if($fileLateralI != null)
+        {
+            $nombre = $entityModel->getMatricula()."-lateral_i.jpg";
+            $entity->setImagenLateralI($nombre);
+            $fileLateralI->move($directorio,$nombre);
+        }
 
         $fileTrasera = $entityModel->getImagenTrasera();
-        $nombre = $entityModel->getMatricula()."-trasera.jpg";
-        $entity->setImagenTrasera($nombre);
-        $fileTrasera->move($directorio,$nombre);
+        if($fileTrasera != null)
+        {
+            $nombre = $entityModel->getMatricula()."-trasera.jpg";
+            $entity->setImagenTrasera($nombre);
+            $fileTrasera->move($directorio,$nombre);
+        }
+
+        /*$directorio = __DIR__.'/../../../../web/files/';
+        $fileArchivoAdjunto = $entityModel->getArchivoAdjunto();
+        foreach($fileArchivoAdjunto as $files)
+        {
+
+            $nombre = $files->getValor()->getClientOriginalName();
+
+            $archivo = new ArchivoAdjunto();
+            $archivo->setValor($nombre);
+
+            $entity->addArchivoAdjunto($archivo);
+            $files->getValor()->move($directorio, $nombre);
+        }
+
+
+        print_r(count($entity->getArchivoAdjunto()));exit;
+        */
 
         $entity->setMatricula($entityModel->getMatricula());
         $entity->setNumeroChasis($entityModel->getNumeroChasis());
@@ -93,20 +117,26 @@ class HandleAutobus
         $entity->setMarcaCajacambio($entityModel->getMarcaCajacambio());
         $entity->setTipoCajacambio($entityModel->getTipoCajacambio());
 
-        $entity->setCartelCapacidadlitros($entityModel->getCartelCapacidadlitros());
+        $entity->setCarterCapacidadlitros($entityModel->getCarterCapacidadlitros());
 
-        $entity->setFiltroAceite($entityModel->getFiltroAceite());
-        $entity->setFiltroAgua($entityModel->getFiltroAgua());
-        $entity->setFiltroDiesel($entityModel->getFiltroDiesel());
-        $entity->setFiltroHidraulico($entityModel->getFiltroHidraulico());
-        $entity->setFiltroTransmision($entityModel->getFiltroTransmision());
-        $entity->setFiltroCaja($entityModel->getFiltroCaja());
+        if($entityModel->getFiltroAceite()->hasData())
+            $entity->setFiltroAceite($entityModel->getFiltroAceite());
+        if($entityModel->getFiltroAgua()->hasData())
+            $entity->setFiltroAgua($entityModel->getFiltroAgua());
+        if($entityModel->getFiltroDiesel()->hasData())
+            $entity->setFiltroDiesel($entityModel->getFiltroDiesel());
+        if($entityModel->getFiltroHidraulico()->hasData())
+            $entity->setFiltroHidraulico($entityModel->getFiltroHidraulico());
+        if($entityModel->getFiltroTransmision()->hasData())
+            $entity->setFiltroTransmision($entityModel->getFiltroTransmision());
+        if($entityModel->getFiltroCaja()->hasData())
+            $entity->setFiltroCaja($entityModel->getFiltroCaja());
 
         $entity->setBateria1($entityModel->getBateria1());
         $entity->setBateria2($entityModel->getBateria2());
 
-        $this->em->persist($entity);
-        $this->em->flush();
+        $em->persist($entity);
+        $em->flush();
 
         return $entity;
 
@@ -115,27 +145,39 @@ class HandleAutobus
     public function HandleAutobusEdit(AutobusModel $entityModel, Autobus $entity)
     {
         /** @var Autobus $entity */
+        $directorio = __DIR__.'/../../../../web/images/';
 
         $fileFrontal = $entityModel->getImagenFrontal();
-        $directorio = __DIR__.'/../../../../web/images/';
-        $nombre = $entityModel->getMatricula()."-frontal.jpg";
-        $entity->setImagenFrontal($nombre);
-        $fileFrontal->move($directorio,$nombre);
+        if($fileFrontal != null)
+        {
+            $nombre = $entityModel->getMatricula()."-frontal.jpg";
+            $entity->setImagenFrontal($nombre);
+            $fileFrontal->move($directorio,$nombre);
+        }
 
         $fileLateralD = $entityModel->getImagenLateralD();
-        $nombre = $entityModel->getMatricula()."-lateral_d.jpg";
-        $entity->setImagenLateralD($nombre);
-        $fileLateralD->move($directorio,$nombre);
+        if($fileLateralD != null)
+        {
+            $nombre = $entityModel->getMatricula()."-lateral_d.jpg";
+            $entity->setImagenLateralD($nombre);
+            $fileLateralD->move($directorio,$nombre);
+        }
 
         $fileLateralI = $entityModel->getImagenLateralI();
-        $nombre = $entityModel->getMatricula()."-lateral_i.jpg";
-        $entity->setImagenLateralI($nombre);
-        $fileLateralI->move($directorio,$nombre);
+        if($fileLateralI != null)
+        {
+            $nombre = $entityModel->getMatricula()."-lateral_i.jpg";
+            $entity->setImagenLateralI($nombre);
+            $fileLateralI->move($directorio,$nombre);
+        }
 
         $fileTrasera = $entityModel->getImagenTrasera();
-        $nombre = $entityModel->getMatricula()."-trasera.jpg";
-        $entity->setImagenTrasera($nombre);
-        $fileTrasera->move($directorio,$nombre);
+        if($fileTrasera != null)
+        {
+            $nombre = $entityModel->getMatricula()."-trasera.jpg";
+            $entity->setImagenTrasera($nombre);
+            $fileTrasera->move($directorio,$nombre);
+        }
 
         $entity->setMatricula($entityModel->getMatricula());
         $entity->setNumeroChasis($entityModel->getNumeroChasis());
@@ -187,14 +229,20 @@ class HandleAutobus
         $entity->setMarcaCajacambio($entityModel->getMarcaCajacambio());
         $entity->setTipoCajacambio($entityModel->getTipoCajacambio());
 
-        $entity->setCartelCapacidadlitros($entityModel->getCartelCapacidadlitros());
+        $entity->setCarterCapacidadlitros($entityModel->getCarterCapacidadlitros());
 
-        $entity->setFiltroAceite($entityModel->getFiltroAceite());
-        $entity->setFiltroAgua($entityModel->getFiltroAgua());
-        $entity->setFiltroDiesel($entityModel->getFiltroDiesel());
-        $entity->setFiltroHidraulico($entityModel->getFiltroHidraulico());
-        $entity->setFiltroTransmision($entityModel->getFiltroTransmision());
-        $entity->setFiltroCaja($entityModel->getFiltroCaja());
+        if($entityModel->getFiltroAceite()->hasData())
+            $entity->setFiltroAceite($entityModel->getFiltroAceite());
+        if($entityModel->getFiltroAgua()->hasData())
+            $entity->setFiltroAgua($entityModel->getFiltroAgua());
+        if($entityModel->getFiltroDiesel()->hasData())
+            $entity->setFiltroDiesel($entityModel->getFiltroDiesel());
+        if($entityModel->getFiltroHidraulico()->hasData())
+            $entity->setFiltroHidraulico($entityModel->getFiltroHidraulico());
+        if($entityModel->getFiltroTransmision()->hasData())
+            $entity->setFiltroTransmision($entityModel->getFiltroTransmision());
+        if($entityModel->getFiltroCaja()->hasData())
+            $entity->setFiltroCaja($entityModel->getFiltroCaja());
 
         $entity->setBateria1($entityModel->getBateria1());
         $entity->setBateria2($entityModel->getBateria2());
@@ -253,7 +301,7 @@ class HandleAutobus
 
         $model->setMarcaCajacambio($entity->getMarcaCajacambio());
         $model->setTipoCajacambio($entity->getTipoCajacambio());
-        $model->setCartelCapacidadlitros($entity->getCartelCapacidadlitros());
+        $model->setCarterCapacidadlitros($entity->getCarterCapacidadlitros());
 
         $model->setAceitecajacambios($entity->getAceitecajacambios());
         $model->setAceitehidraulico($entity->getAceitehidraulico());

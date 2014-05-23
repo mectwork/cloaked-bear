@@ -1,0 +1,74 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Adicionar nuevo producto
+{% endblock %}
+
+{% block area_trabajo %}
+
+<form action="{{ path('producto_create') }}" method="post" {{ form_enctype(form) }}>
+    <div class="row show-grid">
+        <div class="col-md-4">
+            <label>Nombre:</label>
+            {{ form_widget(form.nombre) }}
+        </div>
+
+        <div class="col-md-4">
+            <label>Código:</label>
+            {{ form_widget(form.codigo) }}
+        </div>
+
+        <div class="col-md-4">
+            <label>Unidad de Medida (U/M):</label>
+            {{ form_widget(form.uom) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            <label>Precio de Costo:</label>
+            {{ form_widget(form.precio_costo) }}
+        </div>
+
+        <div class="col-md-4">
+            <label>Precio de Salida:</label>
+            {{ form_widget(form.precio_salida) }}
+        </div>
+
+        <div class="col-md-4">
+            <label>Categoría:</label>
+            {{ form_widget(form.categoria) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            <label>Activo:</label></br>
+            {{ form_widget(form.activo) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+
+            <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+            <div class="btn-group">
+                <a class="btn btn-primary" href="{{ path('producto') }}"> Cancelar</a>
+            </div>
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+</form>
+
+
+{% endblock %}
+
+
+{% block contenido %}
+
+{% endblock %}

@@ -1,11 +1,11 @@
-{% extends "CoreBundle::layout.html.twig" %}
+{% extends "BusetaBusesBundle::layout.html.twig" %}
 
 {% block nombre_menu_superior %}
 
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Modificar Datos de Autobus con matr&iacute;cula: {{ entity.matricula }}
+    Modificar datos de autobús con matrícula: {{ entity.matricula }}
 {% endblock %}
 
 {% block area_trabajo %}
@@ -27,6 +27,9 @@
     <li>
         <a href="#filtros" data-toggle="tab">Filtros</a>
     </li>
+    <li>
+        <a href="#imagenes" data-toggle="tab">Imágenes</a>
+    </li>
 </ul>
 
 <!-- Tab panes -->
@@ -34,37 +37,6 @@
 <form action="{{ path('autobus_update',{'id':entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
 <div class="tab-content">
 <div class="tab-pane fade in active" id="basicos">
-    <div class="row show-grid">
-        <div class="col-md-6">
-            <label>Vista Frontal:</label>
-            {% set path = 'images/' ~ entity.imagenfrontal %}
-            <img src="{{ asset(path)}}" alt="Imagen frontal" class="imagen-autobus" />
-            {{ form_widget(edit_form.imagen_frontal) }}
-        </div>
-
-        <div class="col-md-6">
-            <label>Vista Trasera:</label>
-            {% set path = 'images/' ~ entity.imagentrasera %}
-            <img src="{{ asset(path)}}" alt="Imagen trasera" class="imagen-autobus" />
-            {{ form_widget(edit_form.imagen_trasera) }}
-        </div>
-    </div>
-
-    <div class="row show-grid">
-        <div class="col-md-6">
-            <label>Vista Lateral Izquierda:</label>
-            {% set path = 'images/' ~ entity.imagenlaterali %}
-            <img src="{{ asset(path)}}" alt="Imagen lateral izquierda" class="imagen-autobus" />
-            {{ form_widget(edit_form.imagen_lateral_i) }}
-        </div>
-
-        <div class="col-md-6">
-            <label>Vista Lateral Derecha:</label>
-            {% set path = 'images/' ~ entity.imagenlaterald %}
-            <img src="{{ asset(path)}}" alt="Imagen lateral derecha" class="imagen-autobus" />
-            {{ form_widget(edit_form.imagen_lateral_d) }}
-        </div>
-    </div>
 
     <div class="row show-grid">
         <div class="col-md-4">
@@ -129,8 +101,8 @@
         </div>
 
         <div class="col-md-4">
-            <label>Modelo:</label>
-            {{ form_widget(edit_form.modelo) }}
+            <label>Estilo:</label>
+            {{ form_widget(edit_form.estilo) }}
         </div>
     </div>
 
@@ -141,34 +113,32 @@
         </div>
 
         <div class="col-md-4">
-            <label>Fecha RTV 2</label>
+            <label>Fecha RTV 2:</label>
             {{ form_widget(edit_form.fecha_rtv_2) }}
         </div>
 
         <div class="col-md-4">
-            <label>Marca:</label>
-            {{ form_widget(edit_form.marca) }}
+            <label>Combustible:</label>
+            {{ form_widget(edit_form.combustible) }}
         </div>
 
     </div>
 
     <div class="row show-grid">
+        <div class="col-md-4">
+            <label>Marca:</label>
+            {{ form_widget(edit_form.marca) }}
+        </div>
 
         <div class="col-md-4">
-            <label>Estilo:</label>
-            {{ form_widget(edit_form.estilo) }}
+            <label>Modelo:</label>
+            {{ form_widget(edit_form.modelo) }}
         </div>
 
         <div class="col-md-4">
             <label>Color:</label>
             {{ form_widget(edit_form.color) }}
         </div>
-
-        <div class="col-md-4">
-            <label>Capacidad del Tanque en Litros:</label>
-            {{ form_widget(edit_form.capacidad_tanque) }}
-        </div>
-
     </div>
 
     <div class="row show-grid">
@@ -176,10 +146,9 @@
             <label>Marca de Motor:</label>
             {{ form_widget(edit_form.marca_motor) }}
         </div>
-
         <div class="col-md-4">
-            <label>Combustible:</label>
-            {{ form_widget(edit_form.combustible) }}
+            <label>Capacidad del Tanque en Litros:</label>
+            {{ form_widget(edit_form.capacidad_tanque) }}
         </div>
     </div>
 
@@ -292,8 +261,8 @@
         </div>
 
         <div class="col-md-4">
-            <label>Cartel Capacidad de Litros:</label>
-            {{ form_widget(edit_form.cartel_capacidadlitros) }}
+            <label>Carter Capacidad de Litros:</label>
+            {{ form_widget(edit_form.carter_capacidadlitros) }}
         </div>
     </div>
 
@@ -412,6 +381,34 @@
 
 </div>
 
+<div class="tab-pane fade" id="imagenes">
+
+    <div class="row show-grid">
+        <div class="col-md-6">
+            <label>Vista Frontal:</label>
+            {{ form_widget(edit_form.imagen_frontal) }}
+        </div>
+
+        <div class="col-md-6">
+            <label>Vista Trasera:</label>
+            {{ form_widget(edit_form.imagen_trasera) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-6">
+            <label>Vista Lateral Izquierda:</label>
+            {{ form_widget(edit_form.imagen_lateral_i) }}
+        </div>
+
+        <div class="col-md-6">
+            <label>Vista Lateral Derecha:</label>
+            {{ form_widget(edit_form.imagen_lateral_d) }}
+        </div>
+    </div>
+
+</div>
+
 
 
 </div>
@@ -444,5 +441,11 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var json = {{ json|raw }};
+        console.log(json);
+    </script>
+    <script src="{{ asset('vendors/selectDinamico.js') }}"></script>
     <script src="{{ asset('vendors/funciones_datetime_new.js') }}"></script>
 {% endblock %}
