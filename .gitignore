@@ -6,3 +6,5 @@ web/bundles/*
 app/cache/*
 app/logs/*
 app/config/parameters.yml
+web/images/*
+web/components/*
