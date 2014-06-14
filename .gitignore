@@ -1,5 +1,4 @@
 .idea
-composer.phar
 vendor/
 nbproject/
 web/bundles/*
