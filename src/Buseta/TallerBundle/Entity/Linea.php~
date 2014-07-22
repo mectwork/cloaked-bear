@@ -213,4 +213,27 @@ class Linea
     {
         return $this->impuesto;
     }
+
+    /**
+     * Set compra
+     *
+     * @param \Buseta\TallerBundle\Entity\Compra $compra
+     * @return Linea
+     */
+    public function setCompra(\Buseta\TallerBundle\Entity\Compra $compra = null)
+    {
+        $this->compra = $compra;
+    
+        return $this;
+    }
+
+    /**
+     * Get compra
+     *
+     * @return \Buseta\TallerBundle\Entity\Compra 
+     */
+    public function getCompra()
+    {
+        return $this->compra;
+    }
 }

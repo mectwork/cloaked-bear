@@ -1,0 +1,69 @@
+{% extends "BusetaTallerBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo %}
+    Listado de condiciones de pago
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Listado de condiciones de pago
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <div class="btn-group" style="padding-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('condicionespago_new') }}"><i class="fa fa-plus-circle"></i> Adicionar condición de pago</a>
+    </div>
+
+    <table class="records_list table table-striped table-bordered table-condensed table-hover">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Meses de plazo</th>
+            <th>Días de plazo</th>
+            <th>Nota</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.descripcion }}</td>
+                <td>{{ entity.mesesplazo }}</td>
+                <td>{{ entity.diasplazo }}</td>
+                <td>{{ entity.nota }}</td>
+
+                <td  style="width: 18% !important; text-align: center;">
+                    <div class="btn-group">
+                        <a class="btn btn-success btn-xs" href="{{ path('condicionespago_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
+                    </div>
+
+                    <div class="btn-group">
+                        <a class="btn btn-danger btn-xs" href="{{ path('condicionespago_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
+                    </div>
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">No se encontraron registros de condiciones de pago en el sistema.</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                {{ knp_pagination_render(entities) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -279,10 +279,6 @@ class AutobusController extends Controller
             return $this->redirect($this->generateUrl('autobus_show', array('id' => $entity->getId())));
         }
 
-        echo '<pre>';
-        var_dump($editForm->isSubmitted());
-        exit;
-
         return $this->render('BusetaBusesBundle:Autobus:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
@@ -306,8 +302,17 @@ class AutobusController extends Controller
                 throw $this->createNotFoundException('Unable to find Autobus entity.');
             }
 
-            $em->remove($entity);
-            $em->flush();
+            try {
+                $em->remove($entity);
+                $em->flush();
+
+                $this->get('session')->getFlashBag()->add('success', 'Ha sido eliminado satisfactoriamente.');
+            } catch (\Exception $e) {
+                $this->get('logger')->addCritical(
+                    sprintf('Ha ocurrido un error eliminando un Autobús. Detalles: %s',
+                        $e->getMessage()
+                    ));
+            }
         }
 
         return $this->redirect($this->generateUrl('autobus'));
