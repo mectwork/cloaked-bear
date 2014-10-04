@@ -1,0 +1,62 @@
+{% extends "BusetaTallerBundle::layout.html.twig" %}
+
+{% trans_default_domain 'BusetaTallerBundle' %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Datos de la tarea de mantenimiento
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <table class="table table-striped" style="font-size: 16px;">
+        <tbody>
+            <tr>
+                <th>Tarea</th>
+                <td>{{ entity.tarea }}</td>
+            </tr>
+            <tr>
+                <th>Grupo</th>
+                <td>{{ entity.grupos }}</td>
+            </tr>
+            <tr>
+                <th>Subgrupo</th>
+                <td>{{ entity.subgrupos }}</td>
+            </tr>
+            <tr>
+                <th>Kilometraje</th>
+                <td>{{ entity.kilometraje }}</td>
+            </tr>
+            <tr>
+                <th>Horas</th>
+                <td>{{ entity.horas }}</td>
+            </tr>
+            <tr>
+                <th>Recorrido inicio</th>
+                <td>{{ entity.recorridoinicio | date('d/m/Y') }}</td>
+            </tr>
+            <tr>
+                <th>Ultimo cumplio</th>
+                <td>{{ entity.ultimocumplio | date('d/m/Y') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="form-actions">
+        {{ form_start(delete_form) }}
+        <a class="btn btn-primary" href="{{ path('tareamantenimiento_edit', { 'id': entity.id }) }}"> Editar</a>
+        <a class="btn btn-primary" href="{{ path('tareamantenimiento') }}"> Listado</a>
+        <button type="sumbit" class="btn btn-primary">Eliminar</button>
+        {{ form_end(delete_form) }}
+    </div>
+
+
+{% endblock %}
+
+
+{% block contenido %}
+
+{% endblock %}

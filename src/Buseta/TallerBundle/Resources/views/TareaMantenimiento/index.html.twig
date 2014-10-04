@@ -1,0 +1,69 @@
+{% extends "BusetaTallerBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo %}
+    Listado de tarea_mantenimientos
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Listado de tareas de mantenimiento
+{% endblock %}
+
+{% block area_trabajo %}
+
+<div class="btn-group" style="padding-bottom: 8px;">
+    <a class="btn btn-primary" href="{{ path('tareamantenimiento_new') }}"><i class="fa fa-plus-circle"></i> Adicionar tarea de mantenimiento</a>
+</div>
+
+<table class="records_list table table-striped table-bordered table-condensed table-hover">
+
+       <thead>
+            <tr>
+                <th>Tarea</th>
+                <th>Kilometraje</th>
+                <th>Horas</th>
+                <th>Recorrido inicio</th>
+                <th>Ultimo cumplio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.tarea }}</td>
+                <td>{{ entity.kilometraje }}</td>
+                <td>{{ entity.horas }}</td>
+                <td>{% if entity.recorridoinicio %}{{ entity.recorridoinicio |date('d/m/Y') }}{% endif %}</td>
+                <td>{% if entity.ultimocumplio %}{{ entity.ultimocumplio |date('d/m/Y') }}{% endif %}</td>
+                <td  style="width: 18% !important; text-align: center;">
+                    <div class="btn-group">
+                        <a class="btn btn-success btn-xs" href="{{ path('tareamantenimiento_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
+                    </div>
+
+                    <div class="btn-group">
+                        <a class="btn btn-danger btn-xs" href="{{ path('tareamantenimiento_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
+                    </div>
+                </td>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">No se encontraron registros de tareas mantenimientos en el sistema.</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+</table>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                {{ knp_pagination_render(entities) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

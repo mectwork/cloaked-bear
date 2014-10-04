@@ -36,6 +36,13 @@ class Subgrupo
     private $grupo;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\OrdenTrabajo", mappedBy="subgrupos", cascade={"all"})
+     */
+    private $orden_trabajo;
+
+    /**
      * @param \Buseta\NomencladorBundle\Entity\Grupo $grupo
      */
     public function setGrupo($grupo)
@@ -79,11 +86,6 @@ class Subgrupo
      * @return string
      */
     public function getValor()
-    {
-        return $this->valor;
-    }
-
-    public function __toString()
     {
         return $this->valor;
     }

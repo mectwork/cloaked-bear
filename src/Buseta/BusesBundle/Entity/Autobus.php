@@ -1552,4 +1552,9 @@ class Autobus
     {
         return $this->archivo_adjunto;
     }
+
+    public function __toString()
+    {
+        return $this->matricula;
+    }
 }

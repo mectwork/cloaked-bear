@@ -30,14 +30,11 @@ class Compra
     private $numero;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\TipoCompra")
+     * @var string
+     *
+     * @ORM\Column(name="tipo", type="string", nullable=false)
      */
     private $tipo;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Moneda")
-     */
-    private $moneda;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="compras")
@@ -54,16 +51,16 @@ class Compra
     /**
      * @var string
      *
-     * @ORM\Column(name="orden_prioridad", type="string", nullable=true)
+     * @ORM\Column(name="descripcion", type="string", nullable=true)
      */
-    private $orden_prioridad;
+    private $descripcion;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", nullable=true)
+     * @ORM\Column(name="orden_prioridad", type="string", nullable=true)
      */
-    private $descripcion;
+    private $orden_prioridad;
 
     /**
      * @var date
@@ -79,6 +76,20 @@ class Compra
      * @ORM\Column(name="forma_pago", type="string", nullable=false)
      */
     private $forma_pago;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="moneda", type="string", nullable=false)
+     */
+    private $moneda;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="condiciones_pago", type="string", nullable=false)
+     */
+    private $condiciones_pago;
 
     /**
      * @var float
@@ -109,19 +120,24 @@ class Compra
     private $estado;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\CondicionesPago", inversedBy="compras")
+     * @param string $orden_prioridad
      */
-    private $condiciones_pago;
-
-    
-    /**
-     * Constructor
-     */
-    public function __construct()
+    public function setOrdenPrioridad($orden_prioridad)
     {
-        $this->lineas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->orden_prioridad = $orden_prioridad;
     }
-    
+
+    /**
+     * @return string
+     */
+    public function getOrdenPrioridad()
+    {
+        return $this->orden_prioridad;
+    }
+
+
+
+
     /**
      * Get id
      *
@@ -156,26 +172,26 @@ class Compra
     }
 
     /**
-     * Set orden_prioridad
+     * Set tipo
      *
-     * @param string $ordenPrioridad
+     * @param string $tipo
      * @return Compra
      */
-    public function setOrdenPrioridad($ordenPrioridad)
+    public function setTipo($tipo)
     {
-        $this->orden_prioridad = $ordenPrioridad;
+        $this->tipo = $tipo;
     
         return $this;
     }
 
     /**
-     * Get orden_prioridad
+     * Get tipo
      *
      * @return string 
      */
-    public function getOrdenPrioridad()
+    public function getTipo()
     {
-        return $this->orden_prioridad;
+        return $this->tipo;
     }
 
     /**
@@ -245,6 +261,52 @@ class Compra
     public function getFormaPago()
     {
         return $this->forma_pago;
+    }
+
+    /**
+     * Set moneda
+     *
+     * @param string $moneda
+     * @return Compra
+     */
+    public function setMoneda($moneda)
+    {
+        $this->moneda = $moneda;
+    
+        return $this;
+    }
+
+    /**
+     * Get moneda
+     *
+     * @return string 
+     */
+    public function getMoneda()
+    {
+        return $this->moneda;
+    }
+
+    /**
+     * Set condiciones_pago
+     *
+     * @param string $condicionesPago
+     * @return Compra
+     */
+    public function setCondicionesPago($condicionesPago)
+    {
+        $this->condiciones_pago = $condicionesPago;
+    
+        return $this;
+    }
+
+    /**
+     * Get condiciones_pago
+     *
+     * @return string 
+     */
+    public function getCondicionesPago()
+    {
+        return $this->condiciones_pago;
     }
 
     /**
@@ -340,52 +402,6 @@ class Compra
     }
 
     /**
-     * Set tipo
-     *
-     * @param \Buseta\NomencladorBundle\Entity\TipoCompra $tipo
-     * @return Compra
-     */
-    public function setTipo(\Buseta\NomencladorBundle\Entity\TipoCompra $tipo = null)
-    {
-        $this->tipo = $tipo;
-    
-        return $this;
-    }
-
-    /**
-     * Get tipo
-     *
-     * @return \Buseta\NomencladorBundle\Entity\TipoCompra 
-     */
-    public function getTipo()
-    {
-        return $this->tipo;
-    }
-
-    /**
-     * Set moneda
-     *
-     * @param \Buseta\NomencladorBundle\Entity\Moneda $moneda
-     * @return Compra
-     */
-    public function setMoneda(\Buseta\NomencladorBundle\Entity\Moneda $moneda = null)
-    {
-        $this->moneda = $moneda;
-    
-        return $this;
-    }
-
-    /**
-     * Get moneda
-     *
-     * @return \Buseta\NomencladorBundle\Entity\Moneda 
-     */
-    public function getMoneda()
-    {
-        return $this->moneda;
-    }
-
-    /**
      * Set tercero
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $tercero
@@ -407,7 +423,14 @@ class Compra
     {
         return $this->tercero;
     }
-
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->lineas = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Add lineas
      *
@@ -441,28 +464,5 @@ class Compra
     public function getLineas()
     {
         return $this->lineas;
-    }
-
-    /**
-     * Set condiciones_pago
-     *
-     * @param \Buseta\TallerBundle\Entity\CondicionesPago $condicionesPago
-     * @return Compra
-     */
-    public function setCondicionesPago(\Buseta\TallerBundle\Entity\CondicionesPago $condicionesPago = null)
-    {
-        $this->condiciones_pago = $condicionesPago;
-    
-        return $this;
-    }
-
-    /**
-     * Get condiciones_pago
-     *
-     * @return \Buseta\TallerBundle\Entity\CondicionesPago 
-     */
-    public function getCondicionesPago()
-    {
-        return $this->condiciones_pago;
     }
 }

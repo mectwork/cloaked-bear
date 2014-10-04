@@ -1,0 +1,84 @@
+<?php
+
+namespace Buseta\TallerBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * TareaMantenimiento
+ *
+ * @ORM\Table(name="d_tarea_mantenimiento")
+ * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\TareaMantimientoRepository")
+ */
+class TareaMantenimiento
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo")
+     */
+    private $grupos;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Subgrupo")
+     */
+    private $subgrupos;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus")
+     */
+    private $autobus;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tarea", type="string", nullable=false)
+     */
+    private $tarea;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="kilometraje", type="float", nullable=true)
+     */
+    private $kilometraje;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="horas", type="string", nullable=true)
+     */
+    private $horas;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="recorrido_inicio", type="string", nullable=false)
+     */
+    private $recorrido_inicio;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ultimo_cumplio", type="string", nullable=false)
+     */
+    private $ultimo_cumplio;
+
+
+    
+
+}

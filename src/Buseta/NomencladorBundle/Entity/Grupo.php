@@ -35,53 +35,7 @@ class Grupo
      */
     private $subgrupos;
 
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param \Doctrine\Common\Collections\ArrayCollection $subgrupos
-     */
-    public function setSubgrupos($subgrupos)
-    {
-        $this->subgrupos = $subgrupos;
-    }
-
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getSubgrupos()
-    {
-        return $this->subgrupos;
-    }
-
-    /**
-     * @param string $valor
-     */
-    public function setValor($valor)
-    {
-        $this->valor = $valor;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValor()
-    {
-        return $this->valor;
-    }
 
     public function __toString()
     {
@@ -92,4 +46,79 @@ class Grupo
 
 
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->subgrupos = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set valor
+     *
+     * @param string $valor
+     * @return Grupo
+     */
+    public function setValor($valor)
+    {
+        $this->valor = $valor;
+    
+        return $this;
+    }
+
+    /**
+     * Get valor
+     *
+     * @return string 
+     */
+    public function getValor()
+    {
+        return $this->valor;
+    }
+
+    /**
+     * Add subgrupos
+     *
+     * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos
+     * @return Grupo
+     */
+    public function addSubgrupo(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos)
+    {
+        $subgrupos->setGrupo($this);
+
+        $this->subgrupos[] = $subgrupos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove subgrupos
+     *
+     * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos
+     */
+    public function removeSubgrupo(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos)
+    {
+        $this->subgrupos->removeElement($subgrupos);
+    }
+
+    /**
+     * Get subgrupos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSubgrupos()
+    {
+        return $this->subgrupos;
+    }
 }
