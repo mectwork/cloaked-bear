@@ -26,6 +26,14 @@ class OrdenTrabajoController extends Controller
 
         $entities = $em->getRepository('BusetaTallerBundle:OrdenTrabajo')->findAll();
 
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $this->get('request')->query->get('page', 1),
+            10,
+            array('pageParameterName' => 'page')
+        );
+
         return $this->render('BusetaTallerBundle:OrdenTrabajo:index.html.twig', array(
             'entities' => $entities,
         ));
@@ -129,12 +137,15 @@ class OrdenTrabajoController extends Controller
             throw $this->createNotFoundException('Unable to find OrdenTrabajo entity.');
         }
 
+        $tarea_adicional = $this->createForm(new TareaAdicionalType());
+
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('BusetaTallerBundle:OrdenTrabajo:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
+            'tarea_adicional'       => $tarea_adicional->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -153,7 +164,7 @@ class OrdenTrabajoController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -178,7 +189,7 @@ class OrdenTrabajoController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('ordentrabajo_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('ordentrabajo_show', array('id' => $id)));
         }
 
         return $this->render('BusetaTallerBundle:OrdenTrabajo:edit.html.twig', array(

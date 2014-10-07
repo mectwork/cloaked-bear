@@ -70,17 +70,6 @@ class TareaMantenimientoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            /*
-            ->add('grupos','entity',array(
-                'class' => 'BusetaNomencladorBundle:Grupo',
-                'empty_value' => '---Seleccione un grupo---',
-                'required' => false,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
-            ->add('subgrupos')
-            */
         ;
     }
     

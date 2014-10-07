@@ -1,41 +1,84 @@
-{% extends '::base.html.twig' %}
+{% extends "BusetaTallerBundle::layout.html.twig" %}
 
-{% block body -%}
-    <h1>OrdenTrabajo list</h1>
+{% block nombre_menu_superior %}
 
-    <table class="records_list">
+{% endblock %}
+
+{% block titulo %}
+    Listado de órdenes de trabajo
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Listado de órdenes de trabajo
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <div class="btn-group" style="padding-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('ordentrabajo_new') }}"><i class="fa fa-plus-circle"></i> Adicionar Orden de Trabajo</a>
+    </div>
+
+    <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Realizada_por</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th>Realizado por</th>
+            <th></th>
+            <th>Acciones</th>
+        </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.realizadapor }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
+                <td></td>
+
+                <td  style="width: 18% !important; text-align: center;">
+                    <div class="btn-group">
+                        <a class="btn btn-success btn-xs" href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
+                    </div>
+
+                    <div class="btn-group">
+                        <a class="btn btn-danger btn-xs" href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
+                    </div>
+
                 </td>
+            </tr>
+            <tr>
+                <th>Tareas adicionales existentes</th>
+                <td>
+                    <table class="table table-striped" style="font-size: 16px;">
+                        <th>Autobus</th>
+
+                        {% for tarea in entity.tareaadicional %}
+                        <tbody>
+                        <tr>
+                            <td>{{ tarea.autobus }}</td>
+                        </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">
+                                    <span class="label label-danger">No existen tareas adicionales disponibles</span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                    </table>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">No se encontraron registros de tareas adicionales en el sistema.</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-        <ul>
-        <li>
-            <a href="{{ path('ordentrabajo_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                {{ knp_pagination_render(entities) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
