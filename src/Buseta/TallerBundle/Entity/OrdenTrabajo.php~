@@ -29,4 +29,11 @@ class OrdenTrabajo
      */
     private $realizada_por;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\TareaAdicional", mappedBy="orden_trabajo", cascade={"all"})
+     */
+    private $tarea_adicional;
+
 }

@@ -29,7 +29,21 @@ class OrdenTrabajo
      */
     private $realizada_por;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\TareaAdicional", mappedBy="orden_trabajo", cascade={"all"})
+     */
+    private $tarea_adicional;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tarea_adicional = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -61,5 +75,40 @@ class OrdenTrabajo
     public function getRealizadaPor()
     {
         return $this->realizada_por;
+    }
+
+    /**
+     * Add tarea_adicional
+     *
+     * @param \Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional
+     * @return OrdenTrabajo
+     */
+    public function addTareaAdicional(\Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional)
+    {
+        $tareaAdicional->setOrdenTrabajo($this);
+
+        $this->tarea_adicional[] = $tareaAdicional;
+    
+        return $this;
+    }
+
+    /**
+     * Remove tarea_adicional
+     *
+     * @param \Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional
+     */
+    public function removeTareaAdicional(\Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional)
+    {
+        $this->tarea_adicional->removeElement($tareaAdicional);
+    }
+
+    /**
+     * Get tarea_adicional
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTareaAdicional()
+    {
+        return $this->tarea_adicional;
     }
 }

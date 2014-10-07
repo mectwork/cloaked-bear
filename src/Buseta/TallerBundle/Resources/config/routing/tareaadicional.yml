@@ -1,0 +1,35 @@
+tareaadicional:
+    pattern:  /
+    defaults: { _controller: "BusetaTallerBundle:TareaAdicional:index" }
+
+tareaadicional_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaTallerBundle:TareaAdicional:show" }
+
+tareaadicional_new:
+    pattern:  /new
+    defaults: { _controller: "BusetaTallerBundle:TareaAdicional:new" }
+
+tareaadicional_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaTallerBundle:TareaAdicional:create" }
+    requirements: { _method: post }
+
+tarea_adicional_orden_trabajo_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaTallerBundle:TareaAdicional:create_orden_trabajo" }
+    requirements: { _method: post }
+
+tareaadicional_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BusetaTallerBundle:TareaAdicional:edit" }
+
+tareaadicional_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BusetaTallerBundle:TareaAdicional:update" }
+    requirements: { _method: post|put }
+
+tareaadicional_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BusetaTallerBundle:TareaAdicional:delete" }
+    requirements: { _method: post|delete }

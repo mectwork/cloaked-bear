@@ -56,6 +56,13 @@ class Compra
     private $descripcion;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="orden_prioridad", type="string", nullable=true)
+     */
+    private $orden_prioridad;
+
+    /**
      * @var date
      *
      * @ORM\Column(name="fecha_pedido", type="date")
@@ -111,6 +118,23 @@ class Compra
      * @ORM\Column(name="estado", type="string", nullable=false)
      */
     private $estado;
+
+    /**
+     * @param string $orden_prioridad
+     */
+    public function setOrdenPrioridad($orden_prioridad)
+    {
+        $this->orden_prioridad = $orden_prioridad;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrdenPrioridad()
+    {
+        return $this->orden_prioridad;
+    }
+
 
 
 

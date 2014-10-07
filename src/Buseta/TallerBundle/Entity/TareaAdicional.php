@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * TareaMantenimiento
+ * Linea
  *
- * @ORM\Table(name="d_tarea_mantenimiento")
- * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\TareaMantimientoRepository")
+ * @ORM\Table(name="d_tarea_adicional")
+ * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\TareaAdicionalRepository")
  */
-class TareaMantenimiento
+class TareaAdicional
 {
     /**
      * @var integer
@@ -44,6 +44,11 @@ class TareaMantenimiento
     private $autobus;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\OrdenTrabajo", inversedBy="tarea_adicional")
+     */
+    private $orden_trabajo;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="tarea", type="string", nullable=false)
@@ -51,35 +56,12 @@ class TareaMantenimiento
     private $tarea;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="kilometraje", type="float", nullable=true)
-     */
-    private $kilometraje;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="horas", type="string", nullable=true)
-     */
-    private $horas;
-
-    /**
      * @var date
      *
-     * @ORM\Column(name="recorrido_inicio", type="date")
+     * @ORM\Column(name="fecha_estimada", type="date")
      * @Assert\Date()
      */
-    private $recorrido_inicio;
-
-    /**
-     * @var date
-     *
-     * @ORM\Column(name="ultimo_cumplio", type="date")
-     * @Assert\Date()
-     */
-    private $ultimo_cumplio;
-
+    private $fecha_estimada;
 
     /**
      * Get id
@@ -95,7 +77,7 @@ class TareaMantenimiento
      * Set tarea
      *
      * @param string $tarea
-     * @return TareaMantenimiento
+     * @return TareaAdicional
      */
     public function setTarea($tarea)
     {
@@ -115,56 +97,33 @@ class TareaMantenimiento
     }
 
     /**
-     * Set kilometraje
+     * Set fecha_estimada
      *
-     * @param float $kilometraje
-     * @return TareaMantenimiento
+     * @param \DateTime $fechaEstimada
+     * @return TareaAdicional
      */
-    public function setKilometraje($kilometraje)
+    public function setFechaEstimada($fechaEstimada)
     {
-        $this->kilometraje = $kilometraje;
+        $this->fecha_estimada = $fechaEstimada;
     
         return $this;
     }
 
     /**
-     * Get kilometraje
+     * Get fecha_estimada
      *
-     * @return float 
+     * @return \DateTime 
      */
-    public function getKilometraje()
+    public function getFechaEstimada()
     {
-        return $this->kilometraje;
-    }
-
-    /**
-     * Set horas
-     *
-     * @param string $horas
-     * @return TareaMantenimiento
-     */
-    public function setHoras($horas)
-    {
-        $this->horas = $horas;
-    
-        return $this;
-    }
-
-    /**
-     * Get horas
-     *
-     * @return string 
-     */
-    public function getHoras()
-    {
-        return $this->horas;
+        return $this->fecha_estimada;
     }
 
     /**
      * Set grupos
      *
      * @param \Buseta\NomencladorBundle\Entity\Grupo $grupos
-     * @return TareaMantenimiento
+     * @return TareaAdicional
      */
     public function setGrupos(\Buseta\NomencladorBundle\Entity\Grupo $grupos = null)
     {
@@ -187,7 +146,7 @@ class TareaMantenimiento
      * Set subgrupos
      *
      * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos
-     * @return TareaMantenimiento
+     * @return TareaAdicional
      */
     public function setSubgrupos(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos = null)
     {
@@ -210,7 +169,7 @@ class TareaMantenimiento
      * Set autobus
      *
      * @param \Buseta\BusesBundle\Entity\Autobus $autobus
-     * @return TareaMantenimiento
+     * @return TareaAdicional
      */
     public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
     {
@@ -230,48 +189,25 @@ class TareaMantenimiento
     }
 
     /**
-     * Set recorrido_inicio
+     * Set orden_trabajo
      *
-     * @param \DateTime $recorridoInicio
-     * @return TareaMantenimiento
+     * @param \Buseta\TallerBundle\Entity\OrdenTrabajo $ordenTrabajo
+     * @return TareaAdicional
      */
-    public function setRecorridoInicio($recorridoInicio)
+    public function setOrdenTrabajo(\Buseta\TallerBundle\Entity\OrdenTrabajo $ordenTrabajo = null)
     {
-        $this->recorrido_inicio = $recorridoInicio;
+        $this->orden_trabajo = $ordenTrabajo;
     
         return $this;
     }
 
     /**
-     * Get recorrido_inicio
+     * Get orden_trabajo
      *
-     * @return \DateTime 
+     * @return \Buseta\TallerBundle\Entity\OrdenTrabajo 
      */
-    public function getRecorridoInicio()
+    public function getOrdenTrabajo()
     {
-        return $this->recorrido_inicio;
-    }
-
-    /**
-     * Set ultimo_cumplio
-     *
-     * @param \DateTime $ultimoCumplio
-     * @return TareaMantenimiento
-     */
-    public function setUltimoCumplio($ultimoCumplio)
-    {
-        $this->ultimo_cumplio = $ultimoCumplio;
-    
-        return $this;
-    }
-
-    /**
-     * Get ultimo_cumplio
-     *
-     * @return \DateTime 
-     */
-    public function getUltimoCumplio()
-    {
-        return $this->ultimo_cumplio;
+        return $this->orden_trabajo;
     }
 }
