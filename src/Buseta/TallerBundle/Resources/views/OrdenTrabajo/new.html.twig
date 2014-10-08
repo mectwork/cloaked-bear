@@ -213,14 +213,21 @@
             });
         });
 
-        $( "#buseta_tallerbundle_tarea_adicional_fecha_estimada" ).datepicker({
+        $( "#buseta_tallerbundle_tarea_adicional_fecha_estimada").datepicker({
             defaultDate: "+1w",
-            maxDate: "today+1D",
-            showButtonPanel: true,
-            numberOfMonths: 1,
-            showOtherMonths: true,
-            selectOtherMonths: true
+            language: "es",
+            autoclose: true,
+            format: "dd/mm/yyyy"
         });
+
+        /* REVISA ESTO PARA QUE LAS FECHAS DE LAS TAREAS LISTADAS COJAN TAMBIEN PICKERDATE */
+        $('select[id^="buseta_tallerbundle_ordentrabajo_tarea_adicional_"][id$="_fecha_estimada"]').datepicker({
+            defaultDate: "+1w",
+            language: "es",
+            autoclose: true,
+            format: "dd/mm/yyyy"
+        });
+
 
         $('#{{ tarea_adicional.grupos.vars.id }}').change(function(){
             var data = {

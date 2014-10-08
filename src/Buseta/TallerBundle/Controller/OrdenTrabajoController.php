@@ -89,6 +89,7 @@ class OrdenTrabajoController extends Controller
     public function newAction()
     {
         $entity = new OrdenTrabajo();
+
         //$entity->addTareaAdicional(new TareaAdicional());
 
         $tarea_adicional = $this->createForm(new TareaAdicionalType());
