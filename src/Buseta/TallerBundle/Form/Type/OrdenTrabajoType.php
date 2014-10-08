@@ -24,6 +24,14 @@ class OrdenTrabajoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
+            ->add('autobus','entity',array(
+                'class' => 'BusetaBusesBundle:Autobus',
+                'empty_value' => '---Seleccione un autobus---',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('tarea_adicional','collection',array(
                 'type' => new TareaAdicionalType(),
                 'label'  => false,

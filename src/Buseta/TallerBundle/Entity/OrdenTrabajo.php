@@ -32,6 +32,13 @@ class OrdenTrabajo
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
+     * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus")
+     */
+    private $autobus;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\TareaAdicional", mappedBy="orden_trabajo", cascade={"all"})
      */
     private $tarea_adicional;
@@ -110,5 +117,28 @@ class OrdenTrabajo
     public function getTareaAdicional()
     {
         return $this->tarea_adicional;
+    }
+
+    /**
+     * Set autobus
+     *
+     * @param \Buseta\BusesBundle\Entity\Autobus $autobus
+     * @return OrdenTrabajo
+     */
+    public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
+    {
+        $this->autobus = $autobus;
+    
+        return $this;
+    }
+
+    /**
+     * Get autobus
+     *
+     * @return \Buseta\BusesBundle\Entity\Autobus 
+     */
+    public function getAutobus()
+    {
+        return $this->autobus;
     }
 }

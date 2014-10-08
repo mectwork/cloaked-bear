@@ -20,17 +20,18 @@ class AddGrupoFieldSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_SUBMIT     => 'preBind'
+            FormEvents::PRE_SET_DATA    => 'preSetData',
+            FormEvents::PRE_SUBMIT      => 'preBind'
         );
     }
 
-    private function addGrupoForm($form, $grupo)
+    private function addGrupoForm($form, $grupo = null)
     {
-        $form->add($this->factory->createNamed('grupos', 'entity', $grupo, array(
+        $form->add('grupos', 'entity', array(
             'class'         => 'BusetaNomencladorBundle:Grupo',
             'auto_initialize' => false,
             'empty_value'   => '---Seleccione un grupo---',
+            'data' => $grupo,
             'attr' => array(
                 'class' => 'form-control',
             ),
@@ -39,7 +40,7 @@ class AddGrupoFieldSubscriber implements EventSubscriberInterface
 
                     return $qb;
                 }
-        )));
+        ));
     }
 
     public function preSetData(FormEvent $event)
@@ -48,12 +49,12 @@ class AddGrupoFieldSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
 
         if (null === $data) {
-            return;
+            $this->addGrupoForm($form);
+        } else {
+            //$grupo = ($data->city) ? $data->city->getSubgrupo()->getGrupo() : null ;
+            $grupo = ($data->getGrupos()) ? $data->getGrupos() : null ;
+            $this->addGrupoForm($form, $grupo);
         }
-
-        //$grupo = ($data->city) ? $data->city->getSubgrupo()->getGrupo() : null ;
-        $grupo = ($data->getGrupos()) ? $data->getGrupos() : null ;
-        $this->addGrupoForm($form, $grupo);
     }
 
     public function preBind(FormEvent $event)

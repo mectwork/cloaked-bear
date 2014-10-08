@@ -20,10 +20,14 @@
         </tr>
 
         <tr>
+            <th>Autobus</th>
+            <td>{{ entity.autobus }}</td>
+        </tr>
+
+        <tr>
             <th>Tareas adicionales existentes</th>
             <td>
                 <table class="table table-striped" style="font-size: 16px;">
-                    <th>Autobus</th>
                     <th>Grupo</th>
                     <th>Subgrupo</th>
                     <th>Fecha estimada</th>
@@ -32,7 +36,6 @@
                     {% for tarea in entity.tareaadicional %}
                     <tbody>
                     <tr>
-                        <td>{{ tarea.autobus }}</td>
                         <td>{{ tarea.grupos.valor }}</td>
                         <td>{{ tarea.subgrupos.valor }}</td>
                         <td>{{ tarea.fechaestimada | date('d/m/Y')  }}</td>

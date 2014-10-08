@@ -37,13 +37,6 @@ class TareaAdicional
     private $subgrupos;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus")
-     */
-    private $autobus;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\OrdenTrabajo", inversedBy="tarea_adicional")
      */
     private $orden_trabajo;
@@ -163,29 +156,6 @@ class TareaAdicional
     public function getSubgrupos()
     {
         return $this->subgrupos;
-    }
-
-    /**
-     * Set autobus
-     *
-     * @param \Buseta\BusesBundle\Entity\Autobus $autobus
-     * @return TareaAdicional
-     */
-    public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
-    {
-        $this->autobus = $autobus;
-    
-        return $this;
-    }
-
-    /**
-     * Get autobus
-     *
-     * @return \Buseta\BusesBundle\Entity\Autobus 
-     */
-    public function getAutobus()
-    {
-        return $this->autobus;
     }
 
     /**

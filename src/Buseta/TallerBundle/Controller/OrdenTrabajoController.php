@@ -4,6 +4,7 @@ namespace Buseta\TallerBundle\Controller;
 
 use Buseta\TallerBundle\Entity\TareaAdicional;
 use Buseta\TallerBundle\Form\Type\TareaAdicionalType;
+use Buseta\TallerBundle\Form\Type\TareaAdicionalModalType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -88,8 +89,7 @@ class OrdenTrabajoController extends Controller
     public function newAction()
     {
         $entity = new OrdenTrabajo();
-
-        $tarea_adicional = new TareaAdicional();
+        //$entity->addTareaAdicional(new TareaAdicional());
 
         $tarea_adicional = $this->createForm(new TareaAdicionalType());
 

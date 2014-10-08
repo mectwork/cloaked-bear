@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Buseta\TallerBundle\Form\EventListener\AddGrupoFieldSubscriber;
 use Buseta\TallerBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
 
-class TareaAdicionalType extends AbstractType
+class TareaAdicionalModalType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -57,8 +57,7 @@ class TareaAdicionalType extends AbstractType
                 'attr'   => array(
                     'class' => 'form-control',
                 )
-            ))
-        ;
+            ));
     }
 
     /**
@@ -76,6 +75,6 @@ class TareaAdicionalType extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_tallerbundle_tarea_adicional';
+        return 'tallerbundle_tarea_adicional_modal';
     }
 }
