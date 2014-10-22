@@ -1,0 +1,30 @@
+ordentrabajo:
+    pattern:  /
+    defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:index" }
+
+ordentrabajo_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:show" }
+
+ordentrabajo_new:
+    pattern:  /new
+    defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:new" }
+
+ordentrabajo_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:create" }
+    requirements: { _method: post }
+
+ordentrabajo_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:edit" }
+
+ordentrabajo_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:update" }
+    requirements: { _method: post|put }
+
+ordentrabajo_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:delete" }
+    requirements: { _method: post|delete }

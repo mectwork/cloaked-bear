@@ -1,0 +1,72 @@
+{% extends "BusetaTallerBundle::layout.html.twig" %}
+
+{% trans_default_domain 'BusetaTallerBundle' %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Datos de la Orden de Trabajo
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <table class="table table-striped" style="font-size: 16px;">
+        <tbody>
+        <tr>
+            <th>Realizada por</th>
+            <td>{{ entity.realizadapor }}</td>
+        </tr>
+
+        <tr>
+            <th>Autobus</th>
+            <td>{{ entity.autobus }}</td>
+        </tr>
+
+        <tr>
+            <th>Tareas adicionales existentes</th>
+            <td>
+                <table class="table table-striped" style="font-size: 16px;">
+                    <th>Grupo</th>
+                    <th>Subgrupo</th>
+                    <th>Fecha estimada</th>
+                    <th>Tarea</th>
+
+                    {% for tarea in entity.tareaadicional %}
+                    <tbody>
+                    <tr>
+                        <td>{{ tarea.grupos.valor }}</td>
+                        <td>{{ tarea.subgrupos.valor }}</td>
+                        <td>{{ tarea.fechaestimada | date('d/m/Y')  }}</td>
+                        <td>{{ tarea.tarea }}</td>
+                   </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">
+                                <span class="label label-danger">No existen tareas adicionales disponibles</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="btn-group">
+        <a class="btn btn-primary" href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"> Editar</a>
+    </div>
+
+    <div class="btn-group">
+        <a class="btn btn-primary" href="{{ path('ordentrabajo') }}"> Listado</a>
+    </div>
+
+
+{% endblock %}
+
+
+{% block contenido %}
+
+
+{% endblock %}

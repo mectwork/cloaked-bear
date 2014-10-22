@@ -1,0 +1,37 @@
+tareamantenimiento:
+    pattern:  /
+    defaults: { _controller: "BusetaTallerBundle:TareaMantenimiento:index" }
+
+tareamantenimiento_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaTallerBundle:TareaMantenimiento:show" }
+
+tareamantenimiento_new:
+    pattern:  /new
+    defaults: { _controller: "BusetaTallerBundle:TareaMantenimiento:new" }
+
+tareamantenimiento_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaTallerBundle:TareaMantenimiento:create" }
+    requirements: { _method: post }
+
+tareamantenimiento_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BusetaTallerBundle:TareaMantenimiento:edit" }
+
+tareamantenimiento_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BusetaTallerBundle:TareaMantenimiento:update" }
+    requirements: { _method: post|put }
+
+tareamantenimiento_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BusetaTallerBundle:TareaMantenimiento:delete" }
+    requirements: { _method: post|delete }
+
+tareamantenimiento_ajax_grupos_subgrupos:
+  pattern: /select_grupo_subgrupo
+  defaults: { _controller: "BusetaTallerBundle:TareaMantenimiento:select_grupo_subgrupo" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true

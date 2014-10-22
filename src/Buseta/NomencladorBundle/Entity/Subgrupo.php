@@ -83,6 +83,11 @@ class Subgrupo
         return $this->valor;
     }
 
+    public function __toString()
+    {
+        return $this->valor;
+    }
+
 
 
 }

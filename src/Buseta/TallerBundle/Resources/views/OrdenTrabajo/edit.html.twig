@@ -1,0 +1,279 @@
+{% extends "BusetaTallerBundle::layout.html.twig" %}
+
+{% form_theme edit_form.tarea_adicional 'BusetaTemplateBundle:Widgets:collection_tareas_adicionales.html.twig' %}
+
+{% block nombre_menu_superior %}
+
+    {% block stylesheets %}
+        {{ parent() }}
+
+        <link rel="stylesheet" href="{{ asset('vendors/datetime/css/datepicker.css') }}" media="screen">
+        <link rel="stylesheet" href="{{ asset('vendors/datetime/css/datepicker3.css') }}" media="screen">
+
+    {% endblock %}
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Modificar Orden de Trabajo
+{% endblock %}
+
+{% block area_trabajo %}
+    {{ form_start(edit_form) }}
+    <div class="row show-grid">
+        <div class="col-md-6">
+            {{ form_row(edit_form.realizada_por) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_row(edit_form.autobus) }}
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            {{ form_row(edit_form.tarea_adicional) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            <div class="btn-group" style="padding-bottom: 8px;">
+                <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar tarea adicional</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+            <div class="btn-group">
+                <a class="btn btn-primary" href="{{ path('ordentrabajo') }}"> Cancelar</a>
+            </div>
+        </div>
+    </div>
+
+    {{ form_rest(edit_form) }}
+    {{ form_end(edit_form) }}
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="newLinea" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 850px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title" id="myModalLabel">Datos de nueva tarea adicional</h3>
+                </div>
+                <div class="modal-body" style="width: 800px;">
+                    <form action="{{ path('tarea_adicional_orden_trabajo_create') }}" method="post" {{ form_enctype(tarea_adicional) }}>
+                        <div class="row show-grid">
+                            <div class="col-md-4">
+                                {{ form_row(tarea_adicional.grupos) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(tarea_adicional.subgrupos) }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form_row(tarea_adicional.fecha_estimada) }}
+                            </div>
+                        </div>
+
+                        <div class="row show-grid">
+                            <div class="col-md-12">
+                                {{ form_row(tarea_adicional.tarea) }}
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
+                    <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</i></a>
+
+                </div>
+                {{ form_rest(tarea_adicional) }}
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('vendors/datetime/js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('vendors/datetime/js/locales/bootstrap-datepicker.es.js') }}"></script>
+
+    <script type="text/javascript">
+        var collectionHolder = $('div#buseta_tallerbundle_ordentrabajo_tarea_adicional');
+        var $addTagLink = $('a.add_tag_link');
+
+        jQuery(document).ready(function() {
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
+
+            updateDeleteLink();
+            updateView();
+
+            function addTagForm(collectionHolder) {
+                // Get the data-prototype explained earlier
+                var prototype = collectionHolder.data('prototype');
+
+                // get the new index
+                var index = collectionHolder.data('index');
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = prototype.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                collectionHolder.data('index', index + 1);
+
+                // Display the form in the page in an li, before the "Add a tag" link li
+                var $newFormDiv = $('<div></div>').append(newForm);
+                collectionHolder.find('#tbody').append($newFormDiv);
+                updateDeleteLink();
+                updateView();
+            }
+
+            function updateDeleteLink(){
+                $('a.delete_tag_link').on('click', function(e) {
+                    // prevent the link from creating a "#" on the URL
+                    e.preventDefault();
+
+                    // remove the li for the tag form
+                    $(this).parent().parent().remove();
+
+                    updateView();
+                });
+            }
+
+            function updateView(){
+                counter = collectionHolder.find('a.delete_tag_link').length;
+                if(counter == 0){
+                    $('div#no-elements-tr').show();
+                }else{
+                    $('div#no-elements-tr').hide();
+                }
+            }
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                var modal = $('#newLinea');
+
+                // captura de valores del modal
+                var tareaadicional_grupo     = modal.find('#buseta_tallerbundle_tarea_adicional_grupos');
+                var tareaadicional_subgrupo  = modal.find('#buseta_tallerbundle_tarea_adicional_subgrupos');
+                var tareaadicional_tarea     = modal.find('#buseta_tallerbundle_tarea_adicional_tarea');
+                var tareaadicional_fecha_estimada   = modal.find('#buseta_tallerbundle_tarea_adicional_fecha_estimada');
+
+                var data = {
+                    grupo_id: $(tareaadicional_grupo).val()
+                };
+
+                //Realizar tareas cuando ha finalizado una peticion AJAX (emula comportamiento sincrona)
+                //Actualiza los subgrupos a partir de los grupos en el listado de Tareas Adicionales
+                $.when(
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
+                                    data: data
+                                })
+                        ).done(function(data, textStatus, jqXHR){
+
+                            var values = $.parseJSON(data);
+
+                            var index = collectionHolder.data('index');
+
+                            addTagForm(collectionHolder);
+
+                            dinamicSelects();
+
+                            var $subgrupo_selector = $('select[id="buseta_tallerbundle_ordentrabajo_tarea_adicional_' + index + '_subgrupos"]');
+
+                            $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
+
+                            for (var i=0, total = values.length; i < total; i++) {
+                                $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                            }
+
+                            $('#buseta_tallerbundle_ordentrabajo_tarea_adicional_' + index + '_grupos').val(tareaadicional_grupo.val());
+                            $('#buseta_tallerbundle_ordentrabajo_tarea_adicional_' + index + '_subgrupos').val(tareaadicional_subgrupo.val());
+                            $('#buseta_tallerbundle_ordentrabajo_tarea_adicional_' + index + '_tarea').val(tareaadicional_tarea.val());
+                            $('#buseta_tallerbundle_ordentrabajo_tarea_adicional_' + index + '_fecha_estimada').val(tareaadicional_fecha_estimada.val());
+                        })
+            });
+        });
+
+        dinamicSelects();
+
+        function dinamicSelects(){
+            $('select[id^="buseta_tallerbundle_ordentrabajo_tarea_adicional_"][id$="_grupos"]').change(function(){
+                var $selectGroup = $(this);
+                var data = {
+                    grupo_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+
+                        var $subgrupo_selector = $selectGroup.parent().parent().find('select[id^="buseta_tallerbundle_ordentrabajo_tarea_adicional_"][id$="_subgrupos"]');
+
+                        $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
+
+                        for (var i=0, total = values.length; i < total; i++) {
+                            $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                        }
+                    }
+                });
+            })
+        }
+
+        $( "#buseta_tallerbundle_tarea_adicional_fecha_estimada").datepicker({
+            defaultDate: "+1w",
+            language: "es",
+            autoclose: true,
+            format: "dd/mm/yyyy"
+        });
+
+        //Actualiza los subgrupos a partir de los grupos seleccionados con peticiones AJAX
+        $('#{{ tarea_adicional.grupos.vars.id }}').change(function(){
+            var data = {
+                grupo_id: $(this).val()
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
+                data: data,
+                success: function(data) {
+                    var values = $.parseJSON(data);
+                    var $subgrupo_selector = $('#{{ tarea_adicional.subgrupos.vars.id }}');
+
+                    $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
+
+                    for (var i=0, total = values.length; i < total; i++) {
+                        $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                    }
+                }
+            });
+        });
+
+
+    </script>
+
+{% endblock javascripts %}

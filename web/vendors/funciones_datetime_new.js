@@ -14,6 +14,14 @@ var autobus_valido_hasta = $('#buseta_databundle_autobus_valido_hasta').pickadat
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
 });
+var recorrido_inicio = $('#buseta_tallerbundle_tareamantenimiento_recorrido_inicio').pickadate({
+    format: 'dd/mm/yyyy',
+    formatSubmit: 'dd/mm/yyyy'
+});
+var ultimo_cumplio = $('#buseta_tallerbundle_tareamantenimiento_ultimo_cumplio').pickadate({
+    format: 'dd/mm/yyyy',
+    formatSubmit: 'dd/mm/yyyy'
+});
 
 var picker = autobus_fecha_ingreso.pickadate('picker');
 var $fechaIngreso;
@@ -45,6 +53,12 @@ $('input:hidden[name^="buseta_databundle_autobus[fecha_ingreso]_submit"]').val(f
 
 var fechapedido = $('#buseta_tallerbundle_compra_fecha_pedido').val();
 $('input:hidden[name^="buseta_tallerbundle_compra[fecha_pedido]_submit"]').val(fechapedido);
+
+var recorrido_inicio = $('#buseta_tallerbundle_tareamantenimiento_recorrido_inicio').val();
+$('input:hidden[name^="buseta_tallerbundle_tareamantenimiento[recorrido_inicio]_submit"]').val(recorrido_inicio);
+
+var ultimo_cumplio = $('#buseta_tallerbundle_tareamantenimiento_ultimo_cumplio').val();
+$('input:hidden[name^="buseta_tallerbundle_tareamantenimiento[ultimo_cumplio]_submit"]').val(ultimo_cumplio);
 
 localChange()
 $("input#barras").click(localChange);
