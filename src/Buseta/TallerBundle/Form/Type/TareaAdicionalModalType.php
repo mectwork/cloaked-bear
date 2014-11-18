@@ -30,6 +30,7 @@ class TareaAdicionalModalType extends AbstractType
                 'label'  => 'Tarea',
                 'attr'   => array(
                     'class' => 'form-control',
+                    'width' => '40px',
                 )
             ))
             /*

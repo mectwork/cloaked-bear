@@ -19,7 +19,7 @@ class OrdenTrabajoType extends AbstractType
         $builder
             ->add('realizada_por', 'text', array(
                 'required' => true,
-                'label'  => 'Realizada por:',
+                'label'  => 'Responsable:',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
