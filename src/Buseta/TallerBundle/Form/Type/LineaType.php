@@ -5,6 +5,8 @@ namespace Buseta\TallerBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Buseta\TallerBundle\Form\EventListener\AddGrupoFieldSubscriber;
+use Buseta\TallerBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
 
 class LineaType extends AbstractType
 {
@@ -14,6 +16,12 @@ class LineaType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $objeto = $builder->getFormFactory();
+        $subgrupoSubscriber = new AddSubgrupoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($subgrupoSubscriber);
+        $grupoSubscriber = new AddGrupoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($grupoSubscriber);
+
         $builder
             ->add('numero', 'text', array(
                     'required' => true,
@@ -28,6 +36,13 @@ class LineaType extends AbstractType
                         'class' => 'form-control',
                     )
                 ))
+            ->add('condicion', 'text', array(
+                'required' => true,
+                'label'  => 'Condición',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('cantidad_pedido', 'integer', array(
                     'required' => true,
                    'label'  => 'Cantidad de pedido',

@@ -20,14 +20,49 @@
 {% block area_trabajo %}
     {{ form_start(form) }}
     <div class="row show-grid">
-        <div class="col-md-6">
+        <div class="col-md-4">
+            {{ form_row(form.numero) }}
+        </div>
+
+        <div class="col-md-4">
             {{ form_row(form.realizada_por) }}
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-4">
+            {{ form_row(form.ayudante) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
             {{ form_row(form.autobus) }}
         </div>
 
+        <div class="col-md-4">
+            {{ form_row(form.fecha_inicio) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.fecha_final) }}
+        </div>
+
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.diagnostico) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.prioridad) }}
+        </div>
+
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-12">
+            {{ form_row(form.observaciones) }}
+        </div>
     </div>
 
     <div class="row">
@@ -36,11 +71,38 @@
         </div>
     </div>
 
+
     <div class="row show-grid">
         <div class="col-md-4">
             <div class="btn-group" style="padding-bottom: 8px;">
                 <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar tarea adicional</a>
             </div>
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h4>Resumen de Orden de Trabajo:</h4>
+
+                <div class="col-md-4">
+                    {{ form_row(form.duracion_dias) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.duracion_horas_laboradas) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.revisado) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.aprobado) }}
         </div>
     </div>
 
@@ -71,18 +133,35 @@
                             <div class="col-md-4">
                                 {{ form_row(tarea_adicional.grupos) }}
                             </div>
-
                             <div class="col-md-4">
                                 {{ form_row(tarea_adicional.subgrupos) }}
                             </div>
                             <div class="col-md-4">
+                                {{ form_row(tarea_adicional.garantias_tareas) }}
+                            </div>
+                        </div>
+
+                        <div class="row show-grid">
+                            <div class="col-md-4">
                                 {{ form_row(tarea_adicional.fecha_estimada) }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form_row(tarea_adicional.hora_inicio) }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form_row(tarea_adicional.hora_final) }}
                             </div>
                         </div>
 
                         <div class="row show-grid">
                             <div class="col-md-12">
                                 {{ form_row(tarea_adicional.tarea) }}
+                            </div>
+                        </div>
+
+                        <div class="row show-grid">
+                            <div class="col-md-12">
+                                {{ form_row(tarea_adicional.descripcion) }}
                             </div>
                         </div>
                 </div>
@@ -108,6 +187,7 @@
 {% block javascripts %}
     {{ parent() }}
 
+    <script src="{{ asset('vendors/funciones_datetime_new.js') }}"></script>
     <script src="{{ asset('vendors/datetime/js/bootstrap-datepicker.js') }}"></script>
     <script src="{{ asset('vendors/datetime/js/locales/bootstrap-datepicker.es.js') }}"></script>
 

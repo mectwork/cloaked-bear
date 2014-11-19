@@ -167,6 +167,13 @@ class CompraType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
+            ->add('mecanico_solicita', 'text', array(
+                'required' => true,
+                'label'  => 'Mecánico que solicita',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
         ;
     }
     

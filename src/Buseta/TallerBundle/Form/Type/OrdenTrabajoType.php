@@ -17,9 +17,48 @@ class OrdenTrabajoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('numero', 'text', array(
+                'required' => true,
+                'label'  => 'Número',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('realizada_por', 'text', array(
                 'required' => true,
-                'label'  => 'Responsable:',
+                'label'  => 'Responsable',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('diagnostico', 'text', array(
+                'required' => true,
+                'label'  => 'Diagnóstico',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('observaciones', 'textarea', array(
+                'required' => true,
+                'label'  => 'Observaciones',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('prioridad', 'choice', array(
+                'required' => true,
+                'label'  => 'Prioridad',
+                'choices' => array(
+                    'rapida'=>'Rápida',
+                    'normal' => 'Normal',
+                ),
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('ayudante', 'text', array(
+                'required' => true,
+                'label'  => 'Ayudante',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
@@ -39,6 +78,44 @@ class OrdenTrabajoType extends AbstractType
                 'by_reference' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
+            ))
+            ->add('fecha_inicio', 'date', array(
+                'required' => true,
+                'label'  => 'Fecha inicio',
+                'format' => 'dd/MM/yyyy',
+                'widget' => 'single_text',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('fecha_final', 'date', array(
+                'required' => true,
+                'label'  => 'Fecha final',
+                'format' => 'dd/MM/yyyy',
+                'widget' => 'single_text',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('duracion_dias', 'text', array(
+                'required' => true,
+                'label'  => 'Duración de días',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('duracion_horas_laboradas', 'text', array(
+                'required' => true,
+                'label'  => 'Duración de horas laboradas',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('revisado', null, array(
+                'required' => false,
+            ))
+            ->add('aprobado', null, array(
+                'required' => false,
             ))
         ;
     }

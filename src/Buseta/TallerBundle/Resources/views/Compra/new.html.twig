@@ -89,6 +89,10 @@
             <div class="col-md-4">
                 {{ form_row(form.orden_prioridad) }}
             </div>
+
+            <div class="col-md-4">
+                {{ form_row(form.mecanico_solicita) }}
+            </div>
         </div>
 
         <div class="row show-grid">
@@ -121,6 +125,20 @@
 
                             <div class="col-md-4">
                                 {{ form_row(linea.tipo) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(linea.condicion) }}
+                            </div>
+                        </div>
+
+                        <div class="row show-grid">
+                            <div class="col-md-4">
+                                {{ form_row(linea.grupos) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(linea.subgrupos) }}
                             </div>
 
                             <div class="col-md-4">
@@ -167,6 +185,33 @@
     <script src="{{ asset('vendors/funciones_datetime_new.js') }}"></script>
 
     <script type="text/javascript">
+
+        $(function(){
+            $('#{{ form.grupos.vars.id }}').change(function(){
+                var data = {
+                    grupo_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+                        var $subgrupo_selector = $('#{{ form.subgrupos.vars.id }}');
+
+                        $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
+
+                        for (var i=0, total = values.length; i < total; i++) {
+                            $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                        }
+                    }
+                });
+            });
+
+
+        });
+
         var collectionHolder = $('div#buseta_tallerbundle_compra_lineas');
         var $addTagLink = $('a.add_tag_link');
 

@@ -5,6 +5,8 @@ namespace Buseta\BodegaBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Buseta\TallerBundle\Form\EventListener\AddGrupoFieldSubscriber;
+use Buseta\TallerBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
 
 class ProductoType extends AbstractType
 {
@@ -14,6 +16,12 @@ class ProductoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $objeto = $builder->getFormFactory();
+        $subgrupos = new AddSubgrupoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($subgrupos);
+        $grupos = new AddGrupoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($grupos);
+
         $builder
             ->add('codigo', 'text', array(
                     'required' => false,
@@ -85,7 +93,8 @@ class ProductoType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Entity\Producto'
+            'data_class' => 'Buseta\BodegaBundle\Entity\Producto',
+            'action' => 'POST'
         ));
     }
 

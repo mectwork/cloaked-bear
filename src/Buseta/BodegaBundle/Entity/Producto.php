@@ -101,6 +101,20 @@ class Producto
     private $maximo_bodega;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo")
+     */
+    private $grupos;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Subgrupo")
+     */
+    private $subgrupos;
+
+    /**
      * @param mixed $activo
      */
     public function setActivo($activo)
@@ -378,5 +392,51 @@ class Producto
     public function getMaximoBodega()
     {
         return $this->maximo_bodega;
+    }
+
+    /**
+     * Set grupos
+     *
+     * @param \Buseta\NomencladorBundle\Entity\Grupo $grupos
+     * @return Producto
+     */
+    public function setGrupos(\Buseta\NomencladorBundle\Entity\Grupo $grupos = null)
+    {
+        $this->grupos = $grupos;
+    
+        return $this;
+    }
+
+    /**
+     * Get grupos
+     *
+     * @return \Buseta\NomencladorBundle\Entity\Grupo 
+     */
+    public function getGrupos()
+    {
+        return $this->grupos;
+    }
+
+    /**
+     * Set subgrupos
+     *
+     * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos
+     * @return Producto
+     */
+    public function setSubgrupos(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos = null)
+    {
+        $this->subgrupos = $subgrupos;
+    
+        return $this;
+    }
+
+    /**
+     * Get subgrupos
+     *
+     * @return \Buseta\NomencladorBundle\Entity\Subgrupo 
+     */
+    public function getSubgrupos()
+    {
+        return $this->subgrupos;
     }
 }

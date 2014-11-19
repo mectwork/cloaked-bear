@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Controller;
 
 use Buseta\BodegaBundle\Entity\MecanismoContacto;
+use Buseta\BodegaBundle\Form\Type\DireccionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -94,12 +95,15 @@ class TerceroController extends Controller
 
         //$entity->addMecanismoscontacto(new MecanismoContacto());
 
+        $direccion = $this->createForm(new DireccionType());
+
         $form   = $this->createCreateForm($entity);
 
         return $this->render('BusetaBodegaBundle:Tercero:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
             'tipo_contacto' => $tipo_contacto->createView(),
+            'direccion' => $direccion->createView(),
         ));
     }
 

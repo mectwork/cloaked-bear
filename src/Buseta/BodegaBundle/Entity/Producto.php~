@@ -101,6 +101,20 @@ class Producto
     private $maximo_bodega;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo")
+     */
+    private $grupos;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Subgrupo")
+     */
+    private $subgrupos;
+
+    /**
      * @param mixed $activo
      */
     public function setActivo($activo)
@@ -332,5 +346,51 @@ class Producto
     public function getMovimientos()
     {
         return $this->movimientos;
+    }
+
+    /**
+     * Set minimo_bodega
+     *
+     * @param integer $minimoBodega
+     * @return Producto
+     */
+    public function setMinimoBodega($minimoBodega)
+    {
+        $this->minimo_bodega = $minimoBodega;
+    
+        return $this;
+    }
+
+    /**
+     * Get minimo_bodega
+     *
+     * @return integer 
+     */
+    public function getMinimoBodega()
+    {
+        return $this->minimo_bodega;
+    }
+
+    /**
+     * Set maximo_bodega
+     *
+     * @param integer $maximoBodega
+     * @return Producto
+     */
+    public function setMaximoBodega($maximoBodega)
+    {
+        $this->maximo_bodega = $maximoBodega;
+    
+        return $this;
+    }
+
+    /**
+     * Get maximo_bodega
+     *
+     * @return integer 
+     */
+    public function getMaximoBodega()
+    {
+        return $this->maximo_bodega;
     }
 }

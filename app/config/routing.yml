@@ -1,3 +1,8 @@
+BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_garantiatarea:
+    resource: "@BusetaNomencladorBundle/Controller/Garantiatarea/"
+    type:     admingenerator
+    prefix:   /admin/nomenclador/garantiatarea
+
 BusetaTallerBundle_tareaadicional:
         resource: "@BusetaTallerBundle/Resources/config/routing/tareaadicional.yml"
         prefix:   /tareaadicional

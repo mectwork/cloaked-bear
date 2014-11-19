@@ -28,3 +28,10 @@ producto_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "BusetaBodegaBundle:Producto:delete" }
     requirements: { _method: post|delete }
+
+producto_ajax_grupos_subgrupos:
+  pattern: /select_grupo_subgrupo
+  defaults: { _controller: "BusetaBodegaBundle:Producto:select_grupo_subgrupo" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true

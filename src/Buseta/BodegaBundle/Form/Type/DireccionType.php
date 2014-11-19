@@ -19,42 +19,41 @@ class DireccionType extends AbstractType
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
+//                        'style' => 'width: 250px',
                     )
                 ))
             ->add('numero', 'text', array(
                     'required' => false,
+                    'label'  => 'Número',
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     )
                 ))
             ->add('entre_calles', 'text', array(
                     'required' => false,
+                    'label'  => 'Entre calles',
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     )
                 ))
             ->add('pais', 'country', array(
                     'required' => false,
+                    'label'  => 'País',
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     )
                 ))
             ->add('subdivision', 'text', array(
                     'required' => false,
+                    'label'  => 'Subdivisión (Estado)',
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     )
                 ))
             ->add('ciudad', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     )
                 ))
             ->add('activo', null, array(

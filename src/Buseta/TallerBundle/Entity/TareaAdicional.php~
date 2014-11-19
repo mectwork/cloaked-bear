@@ -49,12 +49,40 @@ class TareaAdicional
     private $tarea;
 
     /**
-     * @var date
+     * @var string
+     *
+     * @ORM\Column(name="hora_inicio", type="string", nullable=false)
+     */
+    private $hora_inicio;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="hora_final", type="string", nullable=false)
+     */
+    private $hora_final;
+
+    /**
+     * @var \DateTime
      *
      * @ORM\Column(name="fecha_estimada", type="date")
      * @Assert\Date()
      */
     private $fecha_estimada;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", nullable=false)
+     */
+    private $descripcion;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\GarantiaTarea")
+     */
+    private $garantias_tareas;
 
     /**
      * Get id
@@ -179,5 +207,51 @@ class TareaAdicional
     public function getOrdenTrabajo()
     {
         return $this->orden_trabajo;
+    }
+
+    /**
+     * Set hora_inicio
+     *
+     * @param string $horaInicio
+     * @return TareaAdicional
+     */
+    public function setHoraInicio($horaInicio)
+    {
+        $this->hora_inicio = $horaInicio;
+    
+        return $this;
+    }
+
+    /**
+     * Get hora_inicio
+     *
+     * @return string 
+     */
+    public function getHoraInicio()
+    {
+        return $this->hora_inicio;
+    }
+
+    /**
+     * Set hora_final
+     *
+     * @param string $horaFinal
+     * @return TareaAdicional
+     */
+    public function setHoraFinal($horaFinal)
+    {
+        $this->hora_final = $horaFinal;
+    
+        return $this;
+    }
+
+    /**
+     * Get hora_final
+     *
+     * @return string 
+     */
+    public function getHoraFinal()
+    {
+        return $this->hora_final;
     }
 }

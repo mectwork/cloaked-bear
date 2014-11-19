@@ -37,6 +37,27 @@ class Linea
     private $tipo;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="condicion", type="string", nullable=false)
+     */
+    private $condicion;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo")
+     */
+    private $grupos;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Subgrupo")
+     */
+    private $subgrupos;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto", inversedBy="lineas")
      */
     private $producto;

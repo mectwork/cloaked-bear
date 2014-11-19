@@ -37,6 +37,27 @@ class Linea
     private $tipo;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="condicion", type="string", nullable=false)
+     */
+    private $condicion;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo")
+     */
+    private $grupos;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Subgrupo")
+     */
+    private $subgrupos;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto", inversedBy="lineas")
      */
     private $producto;
@@ -235,5 +256,74 @@ class Linea
     public function getCompra()
     {
         return $this->compra;
+    }
+
+    /**
+     * Set condicion
+     *
+     * @param string $condicion
+     * @return Linea
+     */
+    public function setCondicion($condicion)
+    {
+        $this->condicion = $condicion;
+    
+        return $this;
+    }
+
+    /**
+     * Get condicion
+     *
+     * @return string 
+     */
+    public function getCondicion()
+    {
+        return $this->condicion;
+    }
+
+    /**
+     * Set grupos
+     *
+     * @param \Buseta\NomencladorBundle\Entity\Grupo $grupos
+     * @return Linea
+     */
+    public function setGrupos(\Buseta\NomencladorBundle\Entity\Grupo $grupos = null)
+    {
+        $this->grupos = $grupos;
+    
+        return $this;
+    }
+
+    /**
+     * Get grupos
+     *
+     * @return \Buseta\NomencladorBundle\Entity\Grupo 
+     */
+    public function getGrupos()
+    {
+        return $this->grupos;
+    }
+
+    /**
+     * Set subgrupos
+     *
+     * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos
+     * @return Linea
+     */
+    public function setSubgrupos(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos = null)
+    {
+        $this->subgrupos = $subgrupos;
+    
+        return $this;
+    }
+
+    /**
+     * Get subgrupos
+     *
+     * @return \Buseta\NomencladorBundle\Entity\Subgrupo 
+     */
+    public function getSubgrupos()
+    {
+        return $this->subgrupos;
     }
 }

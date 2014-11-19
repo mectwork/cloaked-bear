@@ -31,7 +31,7 @@ class AddSubgrupoFieldSubscriber implements EventSubscriberInterface
         if($grupo === null) {
             $form->add('subgrupos','choice',array(
                 'choices' => array(),
-                'empty_value'   => '---Debe seleccionar un grupo---',
+                'empty_value'   => '---Seleccione un subgrupo---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),

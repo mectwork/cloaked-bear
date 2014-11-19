@@ -25,10 +25,27 @@ class TareaAdicionalType extends AbstractType
 
 
         $builder
-            ->add('tarea', 'text', array(
+            ->add('tarea', 'textarea', array(
                 'required' => true,
                 'label'  => 'Tarea',
                 'attr'   => array(
+                    'class' => 'form-control',
+                    'style' => 'height: 120px',
+                )
+            ))
+            ->add('descripcion', 'textarea', array(
+                'required' => true,
+                'label'  => 'Descripción',
+                'attr'   => array(
+                    'class' => 'form-control',
+                    'style' => 'height: 120px',
+                )
+            ))
+            ->add('garantias_tareas','entity',array(
+                'class' => 'BusetaNomencladorBundle:GarantiaTarea',
+                'label'  => 'Garantía de tarea',
+                'empty_value' => '---Seleccione una garantía---',
+                'attr' => array(
                     'class' => 'form-control',
                 )
             ))
@@ -54,6 +71,20 @@ class TareaAdicionalType extends AbstractType
             ->add('fecha_estimada','date',array(
                 'widget' => 'single_text',
                 'format'  => 'dd/MM/yyyy',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('hora_inicio', 'text', array(
+                'required' => true,
+                'label'  => 'Hora inicio',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('hora_final', 'text', array(
+                'required' => true,
+                'label'  => 'Hora final',
                 'attr'   => array(
                     'class' => 'form-control',
                 )

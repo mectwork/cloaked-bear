@@ -15,6 +15,33 @@ use Buseta\BodegaBundle\Form\Type\ProductoType;
  */
 class ProductoController extends Controller
 {
+    /**
+     * Updated automatically select Subgrupos when change select Grupos
+     *
+     */
+    public function select_grupo_subgrupoAction(Request $request) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+
+        $request = $this->getRequest();
+        if (!$request->isXmlHttpRequest())
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+
+        $em = $this->getDoctrine()->getManager();
+        $subgrupos = $em->getRepository('BusetaNomencladorBundle:Subgrupo')->findBy(array(
+            'grupo' => $request->query->get('grupo_id')
+        ));
+
+        $json = array();
+        foreach ($subgrupos as $subgrupo) {
+            $json[] = array(
+                'id' => $subgrupo->getId(),
+                'valor' => $subgrupo->getValor(),
+            );
+        }
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
 
     /**
      * Lists all Producto entities.

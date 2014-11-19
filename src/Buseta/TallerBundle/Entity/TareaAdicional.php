@@ -49,12 +49,40 @@ class TareaAdicional
     private $tarea;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="hora_inicio", type="string", nullable=false)
+     */
+    private $hora_inicio;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="hora_final", type="string", nullable=false)
+     */
+    private $hora_final;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_estimada", type="date")
      * @Assert\Date()
      */
     private $fecha_estimada;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", nullable=false)
+     */
+    private $descripcion;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\GarantiaTarea")
+     */
+    private $garantias_tareas;
 
     /**
      * Get id
@@ -179,5 +207,97 @@ class TareaAdicional
     public function getOrdenTrabajo()
     {
         return $this->orden_trabajo;
+    }
+
+    /**
+     * Set hora_inicio
+     *
+     * @param string $horaInicio
+     * @return TareaAdicional
+     */
+    public function setHoraInicio($horaInicio)
+    {
+        $this->hora_inicio = $horaInicio;
+    
+        return $this;
+    }
+
+    /**
+     * Get hora_inicio
+     *
+     * @return string 
+     */
+    public function getHoraInicio()
+    {
+        return $this->hora_inicio;
+    }
+
+    /**
+     * Set hora_final
+     *
+     * @param string $horaFinal
+     * @return TareaAdicional
+     */
+    public function setHoraFinal($horaFinal)
+    {
+        $this->hora_final = $horaFinal;
+    
+        return $this;
+    }
+
+    /**
+     * Get hora_final
+     *
+     * @return string 
+     */
+    public function getHoraFinal()
+    {
+        return $this->hora_final;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     * @return TareaAdicional
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string 
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * Set garantias_tareas
+     *
+     * @param \Buseta\NomencladorBundle\Entity\GarantiaTarea $garantiasTareas
+     * @return TareaAdicional
+     */
+    public function setGarantiasTareas(\Buseta\NomencladorBundle\Entity\GarantiaTarea $garantiasTareas = null)
+    {
+        $this->garantias_tareas = $garantiasTareas;
+    
+        return $this;
+    }
+
+    /**
+     * Get garantias_tareas
+     *
+     * @return \Buseta\NomencladorBundle\Entity\GarantiaTarea 
+     */
+    public function getGarantiasTareas()
+    {
+        return $this->garantias_tareas;
     }
 }

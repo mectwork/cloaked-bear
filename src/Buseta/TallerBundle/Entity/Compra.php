@@ -120,6 +120,13 @@ class Compra
     private $estado;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="mecanico_solicita", type="string", nullable=false)
+     */
+    private $mecanico_solicita;
+
+    /**
      * @param string $orden_prioridad
      */
     public function setOrdenPrioridad($orden_prioridad)
@@ -134,9 +141,6 @@ class Compra
     {
         return $this->orden_prioridad;
     }
-
-
-
 
     /**
      * Get id
@@ -464,5 +468,28 @@ class Compra
     public function getNumeroFacturaProveedor()
     {
         return $this->numero_factura_proveedor;
+    }
+
+    /**
+     * Set mecanico_solicita
+     *
+     * @param string $mecanicoSolicita
+     * @return Compra
+     */
+    public function setMecanicoSolicita($mecanicoSolicita)
+    {
+        $this->mecanico_solicita = $mecanicoSolicita;
+    
+        return $this;
+    }
+
+    /**
+     * Get mecanico_solicita
+     *
+     * @return string 
+     */
+    public function getMecanicoSolicita()
+    {
+        return $this->mecanico_solicita;
     }
 }
