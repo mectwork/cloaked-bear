@@ -42,6 +42,11 @@ class Compra
     private $tercero;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="compras")
+     */
+    private $centro_costo;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\Linea", mappedBy="compra", cascade={"all"})
@@ -71,9 +76,9 @@ class Compra
     private $fecha_pedido;
 
     /**
-     * @var string
+     * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\Column(name="forma_pago", type="string", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\FormaPago")
      */
     private $forma_pago;
 
@@ -219,29 +224,6 @@ class Compra
     public function getFechaPedido()
     {
         return $this->fecha_pedido;
-    }
-
-    /**
-     * Set forma_pago
-     *
-     * @param string $formaPago
-     * @return Compra
-     */
-    public function setFormaPago($formaPago)
-    {
-        $this->forma_pago = $formaPago;
-    
-        return $this;
-    }
-
-    /**
-     * Get forma_pago
-     *
-     * @return string 
-     */
-    public function getFormaPago()
-    {
-        return $this->forma_pago;
     }
 
     /**
@@ -491,5 +473,28 @@ class Compra
     public function getMecanicoSolicita()
     {
         return $this->mecanico_solicita;
+    }
+
+    /**
+     * Set centro_costo
+     *
+     * @param \Buseta\BusesBundle\Entity\Autobus $centroCosto
+     * @return Compra
+     */
+    public function setCentroCosto(\Buseta\BusesBundle\Entity\Autobus $centroCosto = null)
+    {
+        $this->centro_costo = $centroCosto;
+    
+        return $this;
+    }
+
+    /**
+     * Get centro_costo
+     *
+     * @return \Buseta\BusesBundle\Entity\Autobus 
+     */
+    public function getCentroCosto()
+    {
+        return $this->centro_costo;
     }
 }

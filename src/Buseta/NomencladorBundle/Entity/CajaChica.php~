@@ -1,0 +1,71 @@
+<?php
+
+namespace Buseta\NomencladorBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CajaChica
+ *
+ * @ORM\Table(name="n_cajachica")
+ * @ORM\Entity
+ */
+class CajaChica extends BaseNomenclador
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=255)
+     */
+    private $descripcion;
+
+    /**
+     * @var \Buseta\NomencladorBundle\Entity\FormaPago
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\FormaPago", inversedBy="cajas_chicas")
+     */
+    private $forma_pago;
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     * @return CajaChica
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string 
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+}

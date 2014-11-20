@@ -1,0 +1,34 @@
+<form id="form_direccion" action="{{ path('direccion_create') }}" method="post" {{ form_enctype(direccion) }}>
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(direccion.calle) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(direccion.numero) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(direccion.entre_calles) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(direccion.pais) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(direccion.subdivision) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(direccion.ciudad) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(direccion.activo) }}
+        </div>
+    </div>
+    {{ form_rest(direccion) }}
+</form>

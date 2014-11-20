@@ -14,6 +14,8 @@ direccion_create:
     pattern:  /create
     defaults: { _controller: "BusetaBodegaBundle:Direccion:create" }
     requirements: { _method: post }
+    options:
+        expose: true
 
 direccion_edit:
     pattern:  /{id}/edit

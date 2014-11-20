@@ -66,62 +66,6 @@
             </div>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="newDireccion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content" style="width: 850px;">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3 class="modal-title" id="myModalLabel">Datos de nueva dirección</h3>
-                    </div>
-                    <div class="modal-body" style="width: 800px;">
-                        <form id="form_direccion" action="{{ path('direccion_create') }}" method="post" {{ form_enctype(direccion) }}>
-                            <div class="row show-grid">
-                                <div class="col-md-4">
-                                    {{ form_row(direccion.calle) }}
-                                </div>
-
-                                <div class="col-md-4">
-                                    {{ form_row(direccion.numero) }}
-                                </div>
-                                <div class="col-md-4">
-                                    {{ form_row(direccion.entre_calles) }}
-                                </div>
-                            </div>
-
-                            <div class="row show-grid">
-                                <div class="col-md-4">
-                                    {{ form_row(direccion.pais) }}
-                                </div>
-
-                                <div class="col-md-4">
-                                    {{ form_row(direccion.subdivision) }}
-                                </div>
-                                <div class="col-md-4">
-                                    {{ form_row(direccion.ciudad) }}
-                                </div>
-                            </div>
-
-                            <div class="row show-grid">
-                                <div class="col-md-4">
-                                    {{ form_row(direccion.activo) }}
-                                </div>
-                            </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
-                        <a data-dismiss="modal" class="btn btn-primary add_tag_link_direccion" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</i></a>
-                    </div>
-
-                    {{ form_end(direccion) }}
-
-    </div>
-    <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-    </div>
-
         <div class="row show-grid">
             <div class="col-md-4">
                 <label>Activo:</label>
@@ -145,7 +89,26 @@
         {{ form_rest(form) }}
     </form>
 
-
+    <!-- Modal -->
+    <div class="modal fade" id="newDireccion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 850px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title" id="myModalLabel">Datos de nueva dirección</h3>
+                </div>
+                <div class="modal-body" style="width: 800px;">
+                    {% include 'BusetaBodegaBundle:Extras:modal_direccion.html.twig'  %}
+                </div>
+                <div class="modal-footer">
+                    <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
+                    <a class="btn btn-primary add_tag_link_direccion" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</span></a>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 {% endblock %}
 
 
@@ -160,7 +123,6 @@
     var collectionHolder = $('table#buseta_bodegabundle_tercero_mecanismoscontacto');
     var $addTagLink = $('a.add_tag_link');
     var $addTagLinkDireccion = $('a.add_tag_link_direccion');
-    var direccion_form = $('#form_direccion');
 
     jQuery(document).ready(function() {
         // count the current form inputs we have (e.g. 2), use that as the new
@@ -179,7 +141,20 @@
             // prevent the link from creating a "#" on the URL
             e.preventDefault();
 
-            direccion_form.submit();
+            var data = $('form#form_direccion').serialize();
+            $.ajax({
+                url: Routing.generate('direccion_create'),
+                type: 'POST',
+                data: data
+            })
+                    .done(function (response) {
+                        $('form#form_direccion').replaceWith(response);
+                        $('div#newDireccion').modal('hide');
+                    })
+                    .fail(function(error){
+                        console.error('Ha ocurrido un error');
+                        $('form#form_direccion').replaceWith(error.responseText);
+                    })
         });
 
         updateDeleteLink();

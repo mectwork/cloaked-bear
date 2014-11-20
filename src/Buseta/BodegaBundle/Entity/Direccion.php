@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Direccion
@@ -32,6 +33,7 @@ class Direccion
      * @var string
      *
      * @ORM\Column(name="calle", type="string")
+     * @Assert\NotBlank()
      */
     private $calle;
 

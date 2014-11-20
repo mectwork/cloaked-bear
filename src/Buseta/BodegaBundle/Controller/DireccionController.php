@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Buseta\BodegaBundle\Entity\Direccion;
 use Buseta\BodegaBundle\Form\Type\DireccionType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Direccion controller.
@@ -45,10 +46,6 @@ class DireccionController extends Controller
     }
     /**
      * Creates a new Direccion entity.
-     *
-     * @Route("/", name="direccion_create")
-     * @Method("POST")
-     * @Template("BusetaBodegaBundle:Direccion:new.html.twig")
      */
     public function createAction(Request $request)
     {
@@ -61,13 +58,26 @@ class DireccionController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('direccion_show', array('id' => $entity->getId())));
+            if ($request->isXmlHttpRequest()) {
+                $response = $this->renderView('@BusetaBodega/Extras/modal_direccion.html.twig', array(
+                    'direccion' => $form->createView(),
+                ));
+
+                return new Response($response, 200);
+            } else {
+                return $this->redirect($this->generateUrl('direccion_show', array('id' => $entity->getId())));
+            }
         }
 
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
+        if ($request->isXmlHttpRequest()) {
+            $response = $this->renderView('@BusetaBodega/Extras/modal_direccion.html.twig', array(
+                'direccion' => $form->createView(),
+            ));
+
+            return new Response($response, 500);
+        } else {
+            return $this->redirect($this->generateUrl('direccion_show', array('id' => $entity->getId())));
+        }
     }
 
     /**

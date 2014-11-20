@@ -58,25 +58,12 @@ class CompraType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('forma_pago', 'choice', array(
-                'required' => true,
+            ->add('forma_pago','entity',array(
+                'class' => 'BusetaNomencladorBundle:FormaPago',
+                'label' => 'Forma de Pago',
                 'empty_value' => '---Seleccione forma de pago---',
-                'translation_domain'=> 'BusetaTallerBundle',
-                'choices' => array(
-                    '1'=>'forma_pago.1',
-                    '2' => 'forma_pago.2',
-                    '3' => 'forma_pago.3',
-                    '4' => 'forma_pago.4',
-                    '5' => 'forma_pago.5',
-                    'B' => 'forma_pago.B',
-                    'C' => 'forma_pago.C',
-                    'K' => 'forma_pago.K',
-                    'P' => 'forma_pago.P',
-                    'R' => 'forma_pago.R',
-                    'T' => 'forma_pago.T',
-                    'W' => 'forma_pago.W',
-                ),
-                'attr'   => array(
+                'required' => false,
+                'attr' => array(
                     'class' => 'form-control',
                 )
             ))
@@ -171,6 +158,15 @@ class CompraType extends AbstractType
                 'required' => true,
                 'label'  => 'Mecánico que solicita',
                 'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('centro_costo','entity',array(
+                'class' => 'BusetaBusesBundle:Autobus',
+                'label' => 'Centro de costo',
+                'empty_value' => '---Seleccione centro de costo---',
+                'required' => false,
+                'attr' => array(
                     'class' => 'form-control',
                 )
             ))

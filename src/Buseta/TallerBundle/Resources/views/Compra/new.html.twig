@@ -39,7 +39,7 @@
             </div>
 
             <div class="col-md-4">
-                {{ form_row(form.estado) }}
+                {{ form_row(form.centro_costo) }}
             </div>
         </div>
 
@@ -92,6 +92,10 @@
 
             <div class="col-md-4">
                 {{ form_row(form.mecanico_solicita) }}
+            </div>
+
+            <div class="col-md-4">
+                {{ form_row(form.estado) }}
             </div>
         </div>
 
@@ -187,7 +191,7 @@
     <script type="text/javascript">
 
         $(function(){
-            $('#{{ form.grupos.vars.id }}').change(function(){
+            $('#{{ linea.grupos.vars.id }}').change(function(){
                 var data = {
                     grupo_id: $(this).val()
                 };
@@ -198,7 +202,7 @@
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
-                        var $subgrupo_selector = $('#{{ form.subgrupos.vars.id }}');
+                        var $subgrupo_selector = $('#{{ linea.subgrupos.vars.id }}');
 
                         $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
 

@@ -1,3 +1,13 @@
+BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_formapago:
+    resource: "@BusetaNomencladorBundle/Controller/Formapago/"
+    type:     admingenerator
+    prefix:   /admin/nomenclador/formapago
+
+BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_cajachica:
+    resource: "@BusetaNomencladorBundle/Controller/Cajachica/"
+    type:     admingenerator
+    prefix:   /admin/nomenclador/cajachica
+
 BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_garantiatarea:
     resource: "@BusetaNomencladorBundle/Controller/Garantiatarea/"
     type:     admingenerator
