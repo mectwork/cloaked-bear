@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\Entity\Direccion;
 use Buseta\BodegaBundle\Entity\MecanismoContacto;
 use Buseta\BodegaBundle\Form\Type\DireccionType;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,10 +49,19 @@ class TerceroController extends Controller
     {
         $entity = new Tercero();
         $form = $this->createCreateForm($entity);
-        $form->handleRequest($request);
+        $form->submit($request);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        //$request = $this->get('request');
+        $datos = $request->request->get('buseta_bodegabundle_tercero');
+
+        $direccion_id = $datos['prueba'];
+
+        $em = $this->getDoctrine()->getManager();
+        $direccion = $em->getRepository('BusetaBodegaBundle:Direccion')->find($direccion_id);
+
+        if (!$form->isValid()) {
+
+            $entity->setDireccion($direccion);
             $em->persist($entity);
             $em->flush();
 

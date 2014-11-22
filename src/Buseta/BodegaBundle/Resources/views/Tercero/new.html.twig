@@ -68,6 +68,12 @@
 
         <div class="row show-grid">
             <div class="col-md-4">
+                <input id="buseta_bodegabundle_tercero_prueba" class="form-control" type="hidden" style="width: 300px" name="buseta_bodegabundle_tercero[prueba]">
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-md-4">
                 <label>Activo:</label>
                 {{ form_widget(form.activo) }}
             </div>
@@ -141,6 +147,11 @@
             // prevent the link from creating a "#" on the URL
             e.preventDefault();
 
+            var modal = $('#newDireccion');
+
+            //captura de valores del modal
+            var direccion_modal = modal.find('#buseta_bodegabundle_direccion_calle');
+
             var data = $('form#form_direccion').serialize();
             $.ajax({
                 url: Routing.generate('direccion_create'),
@@ -148,8 +159,13 @@
                 data: data
             })
                     .done(function (response) {
+                        var response = response;
+                        var values = $.parseJSON(response);
+
                         $('form#form_direccion').replaceWith(response);
                         $('div#newDireccion').modal('hide');
+                        $('#buseta_bodegabundle_tercero_direccion').val(direccion_modal.val());
+                        $('#buseta_bodegabundle_tercero_prueba').val(values.id);
                     })
                     .fail(function(error){
                         console.error('Ha ocurrido un error');

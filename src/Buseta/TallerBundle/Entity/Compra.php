@@ -32,6 +32,13 @@ class Compra
     /**
      * @var string
      *
+     * @ORM\Column(name="consecutivo_compra", type="string", nullable=false)
+     */
+    private $consecutivo_compra;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="numero_factura_proveedor", type="string", nullable=false)
      */
     private $numero_factura_proveedor;
@@ -116,6 +123,13 @@ class Compra
      * @ORM\Column(name="total_general", type="decimal", scale=2)
      */
     private $importe_general;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="precio_general", type="decimal", scale=2)
+     */
+    private $precio_general;
 
     /**
      * @var string
@@ -519,5 +533,51 @@ class Compra
     public function getFormaPago()
     {
         return $this->forma_pago;
+    }
+
+    /**
+     * Set precio_general
+     *
+     * @param float $precioGeneral
+     * @return Compra
+     */
+    public function setPrecioGeneral($precioGeneral)
+    {
+        $this->precio_general = $precioGeneral;
+    
+        return $this;
+    }
+
+    /**
+     * Get precio_general
+     *
+     * @return float 
+     */
+    public function getPrecioGeneral()
+    {
+        return $this->precio_general;
+    }
+
+    /**
+     * Set consecutivo_compra
+     *
+     * @param string $consecutivoCompra
+     * @return Compra
+     */
+    public function setConsecutivoCompra($consecutivoCompra)
+    {
+        $this->consecutivo_compra = $consecutivoCompra;
+    
+        return $this;
+    }
+
+    /**
+     * Get consecutivo_compra
+     *
+     * @return string 
+     */
+    public function getConsecutivoCompra()
+    {
+        return $this->consecutivo_compra;
     }
 }

@@ -14,11 +14,15 @@
 
     {{ form_start(form) }}
         <div class="row show-grid">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 {{ form_row(form.numero) }}
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
+                {{ form_row(form.consecutivo_compra) }}
+            </div>
+
+            <div class="col-md-4">
                 {{ form_row(form.tercero) }}
             </div>
         </div>
@@ -101,9 +105,16 @@
 
         <div class="row show-grid">
             <div class="col-md-4">
+                {{ form_row(form.precio_general) }}
+            </div>
+
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-md-4">
                 <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
                 <div class="btn-group">
-                    <a class="btn btn-primary" href="{{ path('ordentrabajo') }}"> Cancelar</a>
+                    <a class="btn btn-primary" href="{{ path('compra') }}"> Cancelar</a>
                 </div>
             </div>
         </div>
@@ -146,18 +157,25 @@
                             </div>
 
                             <div class="col-md-4">
-                                {{ form_row(linea.producto) }}
+                                {{ form_row(linea.productos) }}
                             </div>
                         </div>
 
                         <div class="row show-grid">
                             <div class="col-md-4">
-                                {{ form_row(linea.impuesto) }}
+                                {{ form_row(linea.precio_producto) }}
                             </div>
 
                             <div class="col-md-4">
                                 {{ form_row(linea.cantidad_pedido) }}
                             </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(linea.impuesto) }}
+                            </div>
+                        </div>
+
+                        <div class="row show-grid">
 
                             <div class="col-md-4" style="display: none;">
                                 {{ form_row(linea.monto) }}
@@ -191,6 +209,7 @@
     <script type="text/javascript">
 
         $(function(){
+
             $('#{{ linea.grupos.vars.id }}').change(function(){
                 var data = {
                     grupo_id: $(this).val()
@@ -213,10 +232,50 @@
                 });
             });
 
+            $('#{{ linea.subgrupos.vars.id }}').change(function(){
+                var data = {
+                    subgrupo_id: $(this).val()
+                };
 
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("tareamantenimiento_ajax_subgrupos_productos") }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+                        var $producto_selector = $('#{{ linea.productos.vars.id }}');
+
+                        $producto_selector.html('<option>---Seleccione un producto---</option>');
+
+                        for (var i=0, total = values.length; i < total; i++) {
+                            $producto_selector.append('<option value="' + values[i].id + '">' + values[i].nombre + '</option>');
+                        }
+                    }
+                });
+            });
+
+            $('#{{ linea.productos.vars.id }}').change(function(){
+                var data = {
+                    producto_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("producto_ajax_productos_all") }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+                        var precio_text = $('#{{ linea.precio_producto.vars.id }}');
+
+                        //console.log(values);
+
+                        precio_text.val(values.precio);
+                    }
+                });
+            });
         });
 
-        var collectionHolder = $('div#buseta_tallerbundle_compra_lineas');
+        var collectionHolder = $('div#taller_compra_lineas');
         var $addTagLink = $('a.add_tag_link');
 
         jQuery(document).ready(function() {
@@ -272,16 +331,24 @@
             }
 
             function actualizarMontoTotal(){
-                /*Obtener cada valor de las lineas y sumarlas a una variable*/
+                //Obtener cada valor de las lineas y sumarlas a una variable
                 var montototal = 0;
-                $('[id^="buseta_tallerbundle_compra_lineas_"][id$="_monto"]').each(function(key, value){
+                var precioTotal = 0;
+
+                $('[id^="taller_compra_lineas_"][id$="_monto"]').each(function(key, value){
                     montototal += parseInt($(value).val());
                 });
 
-                /*Actualizar el valor del monto de todas las lineas*/
-                $('#buseta_tallerbundle_compra_importe_general').val(montototal);
-                $('#buseta_tallerbundle_compra_importe_con_impuesto').val(montototal);
-                $('#buseta_tallerbundle_compra_importe_libre_impuesto').val(montototal);
+                $('[id^="taller_compra_lineas_"][id$="_precio_producto"]').each(function(key, value){
+                    precioTotal += parseInt($(value).val());
+                });
+
+                //Actualizar el valor del precio y monto de todas las lineas
+                $('#taller_compra_importe_general').val(montototal);
+                $('#taller_compra_importe_con_impuesto').val(montototal);
+                $('#taller_compra_importe_libre_impuesto').val(montototal);
+
+                $('#taller_compra_precio_general').val(precioTotal);
             }
 
             $addTagLink.on('click', function(e) {
@@ -291,48 +358,133 @@
                 var modal = $('#newLinea');
 
                 // captura de valores del modal
-                var linea_numero   = modal.find('#buseta_tallerbundle_linea_numero');
-                var linea_tipo     = modal.find('#buseta_tallerbundle_linea_tipo');
-                var linea_producto = modal.find('#buseta_tallerbundle_linea_producto');
-                var linea_impuesto = modal.find('#buseta_tallerbundle_linea_impuesto');
+                var linea_numero      = modal.find('#buseta_tallerbundle_linea_numero');
+                var linea_tipo        = modal.find('#buseta_tallerbundle_linea_tipo');
+                var linea_condicion   = modal.find('#buseta_tallerbundle_linea_condicion');
+
+                var linea_grupo   = modal.find('#buseta_tallerbundle_linea_grupos');
+                var linea_subgrupo   = modal.find('#buseta_tallerbundle_linea_subgrupos');
+                var linea_producto = modal.find('#buseta_tallerbundle_linea_productos');
+
+                var linea_precio_producto = modal.find('#buseta_tallerbundle_linea_precio_producto');
                 var linea_cantidad_pedido = modal.find('#buseta_tallerbundle_linea_cantidad_pedido');
+                var linea_impuesto = modal.find('#buseta_tallerbundle_linea_impuesto');
                 var linea_monto = modal.find('#buseta_tallerbundle_linea_monto');
 
-                var index = collectionHolder.data('index');
+                var dataA = {
+                    grupo_id: $(linea_grupo).val()
+                };
 
-                addTagForm(collectionHolder);
+                var dataB = {
+                    subgrupo_id: $(linea_subgrupo).val()
+                };
 
-                $('#buseta_tallerbundle_compra_lineas_' + index + '_numero').val(linea_numero.val()).prop('readonly','readonly');
-                $('#buseta_tallerbundle_compra_lineas_' + index + '_tipo').val(linea_tipo.val());
-                $('#buseta_tallerbundle_compra_lineas_' + index + '_producto').val(linea_producto.val());
-                $('#buseta_tallerbundle_compra_lineas_' + index + '_impuesto').val(linea_impuesto.val());
-                $('#buseta_tallerbundle_compra_lineas_' + index + '_cantidad_pedido').val(linea_cantidad_pedido.val());
 
-                var json = {{ json|raw }};
-                //console.log(json);
+                $.when(
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
+                            data: dataA
+                        }),
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ path("tareamantenimiento_ajax_subgrupos_productos") }}',
+                            data: dataB
+                        })
+                ).done(function(respuestaA, respuestaB){
 
-                $.each(json, function(key,value){
-                    if(key == linea_producto.val()){
-                        var monto = value.precio_salida * linea_cantidad_pedido.val();
-                        $('#buseta_tallerbundle_compra_lineas_' + index + '_monto').val(monto);
-                    }
-                });
+                            var valorA = $.parseJSON(respuestaA[0]);
+                            var valorB = $.parseJSON(respuestaB[0]);
 
-                /*Obtener cada valor de las lineas y sumarlas a una variable*/
-                actualizarMontoTotal();
+                            var index = collectionHolder.data('index');
 
-                linea_numero.val('');
-                linea_tipo.val('');
-                linea_producto.val('');
-                linea_impuesto.val('');
-                linea_cantidad_pedido.val('');
-                linea_monto.val('');
+                            addTagForm(collectionHolder);
+
+                            dinamicSelects();
+
+                            var $subgrupo_selector = $('select[id="taller_compra_lineas_' + index + '_subgrupos"]');
+                            var $producto_selector = $('select[id="taller_compra_lineas_' + index + '_productos"]');
+
+                            $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
+                            $producto_selector.html('<option>---Seleccione un producto---</option>');
+
+
+                            for (var i=0, total = valorA.length; i < total; i++) {
+                                $subgrupo_selector.append('<option value="' + valorA[i].id + '">' + valorA[i].valor + '</option>');
+                            }
+
+                            for (var i=0, total = valorB.length; i < total; i++) {
+                                $producto_selector.append('<option value="' + valorB[i].id + '">' + valorB[i].nombre + '</option>');
+                            }
+
+                            $('#taller_compra_lineas_' + index + '_numero').val(linea_numero.val()).prop('readonly','readonly');
+                            $('#taller_compra_lineas_' + index + '_tipo').val(linea_tipo.val()).prop('readonly','readonly');
+                            $('#taller_compra_lineas_' + index + '_condicion').val(linea_condicion.val()).prop('readonly','readonly');
+
+                            $('#taller_compra_lineas_' + index + '_grupos').val(linea_grupo.val());
+                            $('#taller_compra_lineas_' + index + '_subgrupos').val(linea_subgrupo.val());
+                            $('#taller_compra_lineas_' + index + '_productos').val(linea_producto.val());
+
+                            $('#taller_compra_lineas_' + index + '_precio_producto').val(linea_precio_producto.val()).prop('readonly','readonly');
+                            $('#taller_compra_lineas_' + index + '_cantidad_pedido').val(linea_cantidad_pedido.val()).prop('readonly','readonly');
+                            $('#taller_compra_lineas_' + index + '_monto').val(linea_monto.val()).prop('readonly','readonly');
+                            $('#taller_compra_lineas_' + index + '_impuesto').val(linea_impuesto.val()).prop;
+
+
+
+                            var json = {{ json|raw }};
+                            //console.log(json);
+
+                            $.each(json, function(key,value){
+                                if(key == linea_producto.val()){
+                                    var monto = value.precio_salida * linea_cantidad_pedido.val();
+                                    $('#taller_compra_lineas_' + index + '_monto').val(monto);
+                                }
+                            });
+
+                            /*Obtener cada valor de las lineas y sumarlas a una variable*/
+                            actualizarMontoTotal();
+
+
+                        })
+
+
+                /*var index = collectionHolder.data('index');
+
+                addTagForm(collectionHolder);*/
+
             });
 
 
         });
 
+        dinamicSelects();
 
+        function dinamicSelects(){
+            $('select[id^="taller_compra_lineas_"][id$="_grupos"]').change(function(){
+                var $selectGroup = $(this);
+                var data = {
+                    grupo_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+
+                        var $subgrupo_selector = $selectGroup.parent().parent().find('select[id^="taller_compra_lineas_"][id$="_subgrupos"]');
+
+                        $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
+
+                        for (var i=0, total = values.length; i < total; i++) {
+                            $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                        }
+                    }
+                });
+            })
+       }
 
     </script>
 

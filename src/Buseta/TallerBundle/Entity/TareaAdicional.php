@@ -51,14 +51,14 @@ class TareaAdicional
     /**
      * @var string
      *
-     * @ORM\Column(name="hora_inicio", type="string", nullable=false)
+     * @ORM\Column(name="hora_inicio", type="string", nullable=true)
      */
     private $hora_inicio;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="hora_final", type="string", nullable=false)
+     * @ORM\Column(name="hora_final", type="string", nullable=true)
      */
     private $hora_final;
 
@@ -73,7 +73,7 @@ class TareaAdicional
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", nullable=false)
+     * @ORM\Column(name="descripcion", type="string", nullable=true)
      */
     private $descripcion;
 

@@ -60,7 +60,14 @@ class Linea
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto", inversedBy="lineas")
      */
-    private $producto;
+    private $productos;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="precio_producto", type="decimal", scale=2)
+     */
+    private $precio_producto;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Impuesto", inversedBy="lineas")
@@ -190,26 +197,26 @@ class Linea
     }
 
     /**
-     * Set producto
+     * Set productos
      *
-     * @param \Buseta\BodegaBundle\Entity\Producto $producto
+     * @param \Buseta\BodegaBundle\Entity\Producto $productos
      * @return Linea
      */
-    public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
+    public function setProductos(\Buseta\BodegaBundle\Entity\Producto $productos = null)
     {
-        $this->producto = $producto;
+        $this->productos = $productos;
     
         return $this;
     }
 
     /**
-     * Get producto
+     * Get productos
      *
      * @return \Buseta\BodegaBundle\Entity\Producto 
      */
-    public function getProducto()
+    public function getProductos()
     {
-        return $this->producto;
+        return $this->productos;
     }
 
     /**
@@ -325,5 +332,28 @@ class Linea
     public function getSubgrupos()
     {
         return $this->subgrupos;
+    }
+
+    /**
+     * Set precio_producto
+     *
+     * @param float $precioProducto
+     * @return Linea
+     */
+    public function setPrecioProducto($precioProducto)
+    {
+        $this->precio_producto = $precioProducto;
+    
+        return $this;
+    }
+
+    /**
+     * Get precio_producto
+     *
+     * @return float 
+     */
+    public function getPrecioProducto()
+    {
+        return $this->precio_producto;
     }
 }

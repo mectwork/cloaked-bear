@@ -61,8 +61,6 @@ class GarantiaTarea extends BaseNomenclador
         return $this->descripcion;
     }
 
-    public function setId ($id)
-    {
-        $this->id = $id;
-    }
+
+
 }

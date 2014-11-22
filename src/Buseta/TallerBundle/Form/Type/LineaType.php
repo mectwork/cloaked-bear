@@ -2,6 +2,7 @@
 
 namespace Buseta\TallerBundle\Form\Type;
 
+use Buseta\TallerBundle\Form\EventListener\AddProductoFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -17,6 +18,8 @@ class LineaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $objeto = $builder->getFormFactory();
+        $productoSubscriber = new AddProductoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($productoSubscriber);
         $subgrupoSubscriber = new AddSubgrupoFieldSubscriber($objeto);
         $builder->addEventSubscriber($subgrupoSubscriber);
         $grupoSubscriber = new AddGrupoFieldSubscriber($objeto);
@@ -50,20 +53,27 @@ class LineaType extends AbstractType
                         'class' => 'form-control',
                     )
                 ))
+            ->add('precio_producto', 'integer', array(
+                'required' => true,
+                'label'  => 'Precio de producto',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('monto', 'text', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
                     )
                 ))
-            ->add('producto','entity',array(
+            /*->add('producto','entity',array(
                     'class' => 'BusetaBodegaBundle:Producto',
                     'empty_value' => '---Seleccione un producto---',
                     'required' => true,
                     'attr' => array(
                         'class' => 'form-control',
                     )
-                ))
+                ))*/
             ->add('impuesto','entity',array(
                     'class' => 'BusetaTallerBundle:Impuesto',
                     'empty_value' => '---Seleccione un impuesto---',

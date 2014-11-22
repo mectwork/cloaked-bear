@@ -19,6 +19,7 @@
                                 <div class="col-lg-2" style="text-align: center;"><b>Subgrupo</b></div>
                                 <div class="col-lg-4" style="text-align: center;"><b>Tarea</b></div>
                                 <div class="col-lg-2" style="text-align: center;"><b>Fecha estimada</b></div>
+                                <div class="col-lg-2" style="text-align: center;"><b>Descripcion</b></div>
                             </div>
                         </div>
 
@@ -71,6 +72,26 @@
     <div class="col-lg-2 form-group">
         {{ form_errors(prototype.fecha_estimada) }}
         {{ form_widget(prototype.fecha_estimada) }}
+    </div>
+    <div class="col-lg-2 form-group">
+        {{ form_errors(prototype.descripcion) }}
+        {{ form_widget(prototype.descripcion) }}
+    </div>
+    <div class="col-lg-2 form-group">
+        {{ form_errors(prototype.hora_inicio) }}
+        {{ form_widget(prototype.hora_inicio) }}
+    </div>
+    <div class="col-lg-2 form-group">
+        {{ form_errors(prototype.hora_final) }}
+        {{ form_widget(prototype.hora_final) }}
+    </div>
+    <div class="col-lg-2 form-group">
+        {{ form_errors(prototype.garantias_tareas) }}
+        {{ form_widget(prototype.garantias_tareas) }}
+    </div>
+    <div class="col-lg-2 form-group">
+        {{ form_errors(prototype.horas_laboradas) }}
+        {{ form_widget(prototype.horas_laboradas) }}
     </div>
 
     <div class="col-lg-1 form-group">

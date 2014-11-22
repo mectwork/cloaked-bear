@@ -58,16 +58,22 @@ class DireccionController extends Controller
             $em->persist($entity);
             $em->flush();
 
+            $json = array(
+                'id' => $entity->getId()
+            );
+
             if ($request->isXmlHttpRequest()) {
                 $response = $this->renderView('@BusetaBodega/Extras/modal_direccion.html.twig', array(
                     'direccion' => $form->createView(),
                 ));
 
-                return new Response($response, 200);
+                //return new Response($response, 200);
+                return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
             } else {
                 return $this->redirect($this->generateUrl('direccion_show', array('id' => $entity->getId())));
             }
         }
+
 
         if ($request->isXmlHttpRequest()) {
             $response = $this->renderView('@BusetaBodega/Extras/modal_direccion.html.twig', array(

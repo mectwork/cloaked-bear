@@ -2,7 +2,7 @@ var fecha = $('#buseta_informestock_autobus_fecha').pickadate({
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
 });
-var fecha_pedido = $('#buseta_tallerbundle_compra_fecha_pedido').pickadate({
+var fecha_pedido = $('#taller_compra_fecha_pedido').pickadate({
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
 });
@@ -22,14 +22,14 @@ var ultimo_cumplio = $('#buseta_tallerbundle_tareamantenimiento_ultimo_cumplio')
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
 });
-var fecha_inicio = $('#buseta_tallerbundle_ordentrabajo_fecha_inicio').pickadate({
+/*var fecha_inicio = $('#buseta_tallerbundle_ordentrabajo_fecha_inicio').pickadate({
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
-});
-var fecha_final = $('#buseta_tallerbundle_ordentrabajo_fecha_final').pickadate({
+});*/
+/*var fecha_final = $('#buseta_tallerbundle_ordentrabajo_fecha_final').pickadate({
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
-});
+});*/
 
 var picker = autobus_fecha_ingreso.pickadate('picker');
 var $fechaIngreso;
@@ -59,8 +59,8 @@ $('input:hidden[name^="buseta_databundle_autobus[valido_hasta]_submit"]').val(va
 var fechaingreso = $('#buseta_databundle_autobus_fecha_ingreso').val();
 $('input:hidden[name^="buseta_databundle_autobus[fecha_ingreso]_submit"]').val(fechaingreso);
 
-var fechapedido = $('#buseta_tallerbundle_compra_fecha_pedido').val();
-$('input:hidden[name^="buseta_tallerbundle_compra[fecha_pedido]_submit"]').val(fechapedido);
+var fechapedido = $('#taller_compra_fecha_pedido').val();
+$('input:hidden[name^="taller_compra[fecha_pedido]_submit"]').val(fechapedido);
 
 var recorrido_inicio = $('#buseta_tallerbundle_tareamantenimiento_recorrido_inicio').val();
 $('input:hidden[name^="buseta_tallerbundle_tareamantenimiento[recorrido_inicio]_submit"]').val(recorrido_inicio);
@@ -68,11 +68,11 @@ $('input:hidden[name^="buseta_tallerbundle_tareamantenimiento[recorrido_inicio]_
 var ultimo_cumplio = $('#buseta_tallerbundle_tareamantenimiento_ultimo_cumplio').val();
 $('input:hidden[name^="buseta_tallerbundle_tareamantenimiento[ultimo_cumplio]_submit"]').val(ultimo_cumplio);
 
-var fecha_inicio = $('#buseta_tallerbundle_ordentrabajo_fecha_inicio').val();
-$('input:hidden[name^="buseta_tallerbundle_ordentrabajo_fecha_inicio]_submit"]').val(fecha_inicio);
+/*var fecha_inicio = $('#buseta_tallerbundle_ordentrabajo_fecha_inicio').val();
+$('input:hidden[name^="buseta_tallerbundle_ordentrabajo_fecha_inicio]_submit"]').val(fecha_inicio);*/
 
-var fecha_final = $('#buseta_tallerbundle_ordentrabajo_fecha_final').val();
-$('input:hidden[name^="buseta_tallerbundle_ordentrabajo_fecha_final]_submit"]').val(fecha_final);
+/*var fecha_final = $('#buseta_tallerbundle_ordentrabajo_fecha_final').val();
+$('input:hidden[name^="buseta_tallerbundle_ordentrabajo_fecha_final]_submit"]').val(fecha_final);*/
 
 localChange()
 $("input#barras").click(localChange);
@@ -155,8 +155,9 @@ function localChange(){
         $('label#lector').fadeIn();
     }
 
-
 }
+
+
 
 
 

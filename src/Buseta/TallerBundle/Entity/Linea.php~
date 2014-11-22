@@ -63,6 +63,13 @@ class Linea
     private $producto;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="precio_producto", type="decimal", scale=2)
+     */
+    private $precio_producto;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Impuesto", inversedBy="lineas")
      */
     private $impuesto;
@@ -256,5 +263,74 @@ class Linea
     public function getCompra()
     {
         return $this->compra;
+    }
+
+    /**
+     * Set condicion
+     *
+     * @param string $condicion
+     * @return Linea
+     */
+    public function setCondicion($condicion)
+    {
+        $this->condicion = $condicion;
+    
+        return $this;
+    }
+
+    /**
+     * Get condicion
+     *
+     * @return string 
+     */
+    public function getCondicion()
+    {
+        return $this->condicion;
+    }
+
+    /**
+     * Set grupos
+     *
+     * @param \Buseta\NomencladorBundle\Entity\Grupo $grupos
+     * @return Linea
+     */
+    public function setGrupos(\Buseta\NomencladorBundle\Entity\Grupo $grupos = null)
+    {
+        $this->grupos = $grupos;
+    
+        return $this;
+    }
+
+    /**
+     * Get grupos
+     *
+     * @return \Buseta\NomencladorBundle\Entity\Grupo 
+     */
+    public function getGrupos()
+    {
+        return $this->grupos;
+    }
+
+    /**
+     * Set subgrupos
+     *
+     * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos
+     * @return Linea
+     */
+    public function setSubgrupos(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos = null)
+    {
+        $this->subgrupos = $subgrupos;
+    
+        return $this;
+    }
+
+    /**
+     * Get subgrupos
+     *
+     * @return \Buseta\NomencladorBundle\Entity\Subgrupo 
+     */
+    public function getSubgrupos()
+    {
+        return $this->subgrupos;
     }
 }

@@ -43,6 +43,34 @@ class TareaMantenimientoController extends Controller
     }
 
     /**
+     * Updated automatically select Productos when change select Subgrupos
+     *
+     */
+    public function select_subgrupo_productoAction(Request $request) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+
+        $request = $this->getRequest();
+        if (!$request->isXmlHttpRequest())
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+
+        $em = $this->getDoctrine()->getManager();
+        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findBy(array(
+            'subgrupos' => $request->query->get('subgrupo_id')
+        ));
+
+        $json = array();
+        foreach ($productos as $producto) {
+            $json[] = array(
+                'id' => $producto->getId(),
+                'nombre' => $producto->getNombre(),
+            );
+        }
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
+
+    /**
      * Lists all TareaMantenimiento entities.
      *
      */

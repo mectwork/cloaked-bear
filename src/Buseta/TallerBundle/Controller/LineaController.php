@@ -59,13 +59,10 @@ class LineaController extends Controller
         $form = $this->createCreateCompraForm($entity);
         $form->handleRequest($request);
 
-
-
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-
         }
     }
 

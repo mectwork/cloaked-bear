@@ -35,3 +35,10 @@ tareamantenimiento_ajax_grupos_subgrupos:
   requirements: { _method: "GET" }
   options:
       expose: true
+
+tareamantenimiento_ajax_subgrupos_productos:
+  pattern: /select_subgrupo_producto
+  defaults: { _controller: "BusetaTallerBundle:TareaMantenimiento:select_subgrupo_producto" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true

@@ -89,6 +89,13 @@ class TareaAdicionalType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
+            ->add('horas_laboradas', 'hidden', array(
+                'required' => false,
+                'mapped' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
         ;
     }
 

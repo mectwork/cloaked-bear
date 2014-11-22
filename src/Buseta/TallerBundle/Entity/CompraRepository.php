@@ -12,4 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class CompraRepository extends EntityRepository
 {
+
+    public function consecutivoLast()
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $q = $qb->select('c.consecutivo_compra')
+                ->from('BusetaTallerBundle:Compra', 'c')
+                ->orderBy('c.consecutivo_compra','DESC')
+            ->getQuery()
+            ->setMaxResults(1);
+
+        try {
+            return $q->getSingleResult();
+        } catch (NoResultException $e) {
+            return false;
+        }
+    }
 }

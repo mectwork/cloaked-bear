@@ -16,6 +16,31 @@ use Buseta\BodegaBundle\Form\Type\ProductoType;
 class ProductoController extends Controller
 {
     /**
+     * Updated automatically select All when change select Producto
+     *
+     */
+    public function select_productos_allAction(Request $request) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+
+        $request = $this->getRequest();
+        if (!$request->isXmlHttpRequest())
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+
+        $em = $this->getDoctrine()->getManager();
+        $producto = $em->getRepository('BusetaBodegaBundle:Producto')->findOneBy(array(
+            'id' => $request->query->get('producto_id')
+        ));
+
+        $json = array(
+            'id' => $producto->getId(),
+            'precio' => $producto->getPrecioCosto(),
+        );
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
+
+    /**
      * Updated automatically select Subgrupos when change select Grupos
      *
      */

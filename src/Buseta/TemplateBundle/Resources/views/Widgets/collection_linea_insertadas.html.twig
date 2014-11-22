@@ -15,12 +15,18 @@
 
                         <div class="row form-group" >
                             <div class="col-lg-12">
-                                <div class="col-lg-1" style="text-align: center;"><b>Número</b></div>
-                                <div class="col-lg-2" style="text-align: center;"><b>Producto</b></div>
-                                <div class="col-lg-2" style="text-align: center;"><b>Pedido</b></div>
+                                <div class="col-lg-2" style="text-align: center;"><b>Número</b></div>
                                 <div class="col-lg-2" style="text-align: center;"><b>Tipo</b></div>
-                                <div class="col-lg-2" style="text-align: center;"><b>Monto</b></div>
+                                <div class="col-lg-2" style="text-align: center;"><b>Condicion</b></div>
+
+                                <div class="col-lg-2" style="text-align: center;"><b>Grupo</b></div>
+                                <div class="col-lg-2" style="text-align: center;"><b>Subgrupo</b></div>
+                                <div class="col-lg-2" style="text-align: center;"><b>Producto</b></div>
+
+                                <div class="col-lg-2" style="text-align: center;"><b>Cantidad Pedido</b></div>
+                                <div class="col-lg-2" style="text-align: center;"><b>Precio</b></div>
                                 <div class="col-lg-2" style="text-align: center;"><b>Impuesto</b></div>
+                                <div class="col-lg-2" style="text-align: center;"><b>Monto</b></div>
                             </div>
                         </div>
 
@@ -58,29 +64,54 @@
 {% endblock collection_item_widget %}
 
 {% macro template(prototype) %}
-    <div class="col-lg-1 form-group">
+    <div class="col-lg-2 form-group">
         {{ form_errors(prototype.numero) }}
         {{ form_widget(prototype.numero) }}
     </div>
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.producto) }}
-        {{ form_widget(prototype.producto) }}
-    </div>
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.cantidad_pedido) }}
-        {{ form_widget(prototype.cantidad_pedido) }}
-    </div>
+
     <div class="col-lg-2 form-group">
         {{ form_errors(prototype.tipo) }}
         {{ form_widget(prototype.tipo) }}
     </div>
+
     <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.monto) }}
-        {{ form_widget(prototype.monto) }}
+        {{ form_errors(prototype.condicion) }}
+        {{ form_widget(prototype.condicion) }}
     </div>
+
+    <div class="col-lg-2 form-group">
+        {{ form_errors(prototype.grupos) }}
+        {{ form_widget(prototype.grupos) }}
+    </div>
+
+    <div class="col-lg-2 form-group">
+        {{ form_errors(prototype.subgrupos) }}
+        {{ form_widget(prototype.subgrupos) }}
+    </div>
+
+    <div class="col-lg-2 form-group">
+        {{ form_errors(prototype.productos) }}
+        {{ form_widget(prototype.productos) }}
+    </div>
+
+    <div class="col-lg-2 form-group">
+        {{ form_errors(prototype.cantidad_pedido) }}
+        {{ form_widget(prototype.cantidad_pedido) }}
+    </div>
+
+    <div class="col-lg-2 form-group">
+        {{ form_errors(prototype.precio_producto) }}
+        {{ form_widget(prototype.precio_producto) }}
+    </div>
+
     <div class="col-lg-2 form-group">
         {{ form_errors(prototype.impuesto) }}
         {{ form_widget(prototype.impuesto) }}
+    </div>
+
+    <div class="col-lg-2 form-group">
+        {{ form_errors(prototype.monto) }}
+        {{ form_widget(prototype.monto) }}
     </div>
 
     <div class="col-lg-1 form-group">

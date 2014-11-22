@@ -2,20 +2,42 @@
 
 namespace Buseta\TallerBundle\Form\Type;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CompraType extends AbstractType
 {
-        /**
+    /**
+     * @var ObjectManager
+     */
+    private $em;
+
+    /**
+     * @var Container
+     */
+    private $serviceContainer;
+
+    function __construct(ObjectManager $em, Container $serviceContainer)
+    {
+        $this->em = $em;
+        $this->serviceContainer = $serviceContainer;
+    }
+
+
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA,array($this,'preSetData'));
         $builder
             ->add('numero', 'text', array(
                     'required' => true,
@@ -170,6 +192,14 @@ class CompraType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
+            ->add('precio_general', 'text', array(
+                'required' => true,
+                'read_only' => true,
+                'label'  => 'Precio general',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
         ;
     }
     
@@ -188,6 +218,30 @@ class CompraType extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_tallerbundle_compra';
+        return 'taller_compra';
+    }
+
+    public function preSetData(FormEvent $formEvent)
+    {
+        $form = $formEvent->getForm();
+
+        //Compruebo que existe el consecutivo automatico de Compra
+        //Si no existe captu$consecutivoCompraro la configuracion predeterminada,
+        //Si existe obtengo el maximo valor de consecutivo de compra y le incremento en 1
+        $results = $this->em->getRepository('BusetaTallerBundle:Compra')->consecutivoLast();
+
+        $consecutivoCompra = $results ?
+            $results['consecutivo_compra'] + 1 :
+            $this->serviceContainer->getParameter('consecutivoCompra');
+
+        $form->add('consecutivo_compra', 'text', array(
+            'required' => true,
+            'read_only' => true,
+            'label'  => 'Consecutivo automático',
+            'attr'   => array(
+                'class' => 'form-control',
+            ),
+            'data' => $consecutivoCompra,
+        ));
     }
 }
