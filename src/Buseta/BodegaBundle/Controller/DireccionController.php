@@ -69,6 +69,7 @@ class DireccionController extends Controller
 
                 //return new Response($response, 200);
                 return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+                //return new \Symfony\Component\HttpFoundation\Response($response, 200);
             } else {
                 return $this->redirect($this->generateUrl('direccion_show', array('id' => $entity->getId())));
             }

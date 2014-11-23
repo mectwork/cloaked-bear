@@ -5,55 +5,54 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Modificar del producto: "{{ entity.nombre }}"
+    Adicionar nuevo producto
 {% endblock %}
 
 {% block area_trabajo %}
 
-    <form action="{{ path('producto_update',{'id':entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
-
+    <form action="{{ path('producto_create') }}" method="post" {{ form_enctype(edit_form) }}>
         <div class="row show-grid">
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <label>Nombre:</label>
                 {{ form_widget(edit_form.nombre) }}
             </div>
 
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <label>Código:</label>
                 {{ form_widget(edit_form.codigo) }}
             </div>
 
-            <div class="col-md-4">
-                <label>Unidad de medida (U/M):</label>
+            <div class="col-lg-4">
+                <label>Unidad de Medida (U/M):</label>
                 {{ form_widget(edit_form.uom) }}
             </div>
         </div>
 
         <div class="row show-grid">
-            <div class="col-md-4">
-                <label>Precio de costo:</label>
+            <div class="col-lg-4">
+                <label>Precio de Costo:</label>
                 {{ form_widget(edit_form.precio_costo) }}
             </div>
 
-            <div class="col-md-4">
-                <label>Precio de salida:</label>
+            <div class="col-lg-4">
+                <label>Precio de Salida:</label>
                 {{ form_widget(edit_form.precio_salida) }}
             </div>
 
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <label>Condición:</label>
                 {{ form_widget(edit_form.condicion) }}
             </div>
         </div>
 
         <div class="row show-grid">
-            <div class="col-md-4">
-                <label>Bodega:</label>
+            <div class="col-lg-4">
+                <label>Bodega:</label></br>
                 {{ form_widget(edit_form.bodega) }}
             </div>
 
-            <div class="col-md-4">
-                <label>Mínimo en bodega:</label>
+            <div class="col-lg-4">
+                <label>Mínimo en bodega:</label></br>
                 {{ form_widget(edit_form.minimo_bodega) }}
             </div>
 
@@ -64,13 +63,13 @@
         </div>
 
         <div class="row show-grid">
-            <div class="col-md-4">
-                <label>Grupo:</label>
+            <div class="col-lg-4">
+                <label>Grupo:</label></br>
                 {{ form_widget(edit_form.grupos) }}
             </div>
 
-            <div class="col-md-4">
-                <label>Subgrupo:</label>
+            <div class="col-lg-4">
+                <label>Subgrupo:</label></br>
                 {{ form_widget(edit_form.subgrupos) }}
             </div>
         </div>
@@ -83,7 +82,7 @@
         </div>
 
         <div class="row show-grid">
-            <div class="col-md-4">
+            <div class="col-lg-4">
 
                 <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
                 <div class="btn-group">
@@ -94,12 +93,10 @@
 
         {{ form_rest(edit_form) }}
     </form>
-    </div>
-    <!-- /.col-lg-6 -->
 
-    </div>
 
 {% endblock %}
+
 
 {% block contenido %}
 

@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Modificar del tercero: "{{ entity.nombres }}"
+    Adicionar nuevo tercero
 {% endblock %}
 
 {% block area_trabajo %}
@@ -44,7 +44,7 @@
             <div class="col-md-4">
                 <label>&nbsp;</label> <br>
                 <div class="btn-group" style="padding-bottom: 8px;">
-                    <a class="btn btn-primary" href="{{ path('direccion_new') }}"><i class="fa fa-plus-circle"></i></a>
+                    <a data-toggle="modal" data-target="#newDireccion" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i></a>
                 </div>
             </div>
         </div>
@@ -63,6 +63,12 @@
             <div class="col-md-4">
                 <label>Proveedor:</label>
                 {{ form_widget(edit_form.proveedor) }}
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-md-4">
+                <input id="buseta_bodegabundle_tercero_prueba" class="form-control" type="hidden" style="width: 300px" name="buseta_bodegabundle_tercero[prueba]">
             </div>
         </div>
 
@@ -89,7 +95,26 @@
         {{ form_rest(edit_form) }}
     </form>
 
-
+    <!-- Modal -->
+    <div class="modal fade" id="newDireccion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 850px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title" id="myModalLabel">Datos de nueva dirección</h3>
+                </div>
+                <div class="modal-body" style="width: 800px;">
+                    {% include 'BusetaBodegaBundle:Extras:modal_direccion.html.twig'  %}
+                </div>
+                <div class="modal-footer">
+                    <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
+                    <a class="btn btn-primary add_tag_link_direccion" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</span></a>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 {% endblock %}
 
 
@@ -99,9 +124,11 @@
 
 {% block javascripts %}
     {{ parent() }}
+
     <script type="text/javascript">
         var collectionHolder = $('table#buseta_bodegabundle_tercero_mecanismoscontacto');
         var $addTagLink = $('a.add_tag_link');
+        var $addTagLinkDireccion = $('a.add_tag_link_direccion');
 
         jQuery(document).ready(function() {
             // count the current form inputs we have (e.g. 2), use that as the new
@@ -114,6 +141,36 @@
 
                 // add a new tag form (see next code block)
                 addTagForm(collectionHolder);
+            });
+
+            $addTagLinkDireccion.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                var modal = $('#newDireccion');
+
+                //captura de valores del modal
+                var direccion_modal = modal.find('#buseta_bodegabundle_direccion_calle');
+
+                var data = $('form#form_direccion').serialize();
+                $.ajax({
+                    url: Routing.generate('direccion_create'),
+                    type: 'POST',
+                    data: data
+                })
+                        .done(function (response) {
+                            var response = response;
+                            var values = $.parseJSON(response);
+
+                            $('form#form_direccion').replaceWith(response);
+                            $('div#newDireccion').modal('hide');
+                            $('#buseta_bodegabundle_tercero_direccion').val(direccion_modal.val());
+                            $('#buseta_bodegabundle_tercero_prueba').val(values.id);
+                        })
+                        .fail(function(error){
+                            console.error('Ha ocurrido un error');
+                            $('form#form_direccion').replaceWith(error.responseText);
+                        })
             });
 
             updateDeleteLink();
