@@ -51,19 +51,7 @@ class CompraController extends Controller
 
         $linea = $this->createForm(new LineaType());
 
-        //Compruebo que existe el consecutivo automatico de Compra
-        //Si no existe capturo la configuracion predeterminada,
-        //Si existe obtengo el maximo valor de consecutivo de compra y le incremento en 1
         $em = $this->getDoctrine()->getManager();
-        $results = $em->getRepository('BusetaTallerBundle:Compra')->consecutivoLast();
-
-        if(count($results) != 0){
-            $consecutivoCompra = $results['consecutivo_compra'];
-            $consecutivoCompra += 1;
-        }
-        else {
-            $consecutivoCompra = $this->get('service_container')->getParameter('consecutivoCompra');
-        }
 
         if ($form->isValid()) {
 
@@ -225,7 +213,7 @@ class CompraController extends Controller
     */
     private function createEditForm(Compra $entity)
     {
-        $form = $this->createForm(new CompraType(), $entity, array(
+        $form = $this->createForm('taller_compra',$entity, array(
             'action' => $this->generateUrl('compra_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));

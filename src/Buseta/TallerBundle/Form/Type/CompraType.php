@@ -30,7 +30,6 @@ class CompraType extends AbstractType
         $this->serviceContainer = $serviceContainer;
     }
 
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
