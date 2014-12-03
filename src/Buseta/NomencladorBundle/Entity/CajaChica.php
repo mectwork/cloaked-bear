@@ -22,11 +22,6 @@ class CajaChica extends BaseNomenclador
     protected $id;
 
     /**
-     * @var string
-     */
-    protected $valor;
-
-    /**
      * @var \Buseta\NomencladorBundle\Entity\FormaPago
      *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\FormaPago", inversedBy="cajas_chicas")

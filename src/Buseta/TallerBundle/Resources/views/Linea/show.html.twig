@@ -28,17 +28,19 @@
         </tbody>
     </table>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('linea') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('linea_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <div class="btn-group">
+        <a class="btn btn-primary" href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"> Editar</a>
+    </div>
+
+    <div class="btn-group">
+        <a class="btn btn-primary" href="{{ path('ordentrabajo') }}"> Listado</a>
+    </div>
+
+
+{% endblock %}
+
+
+{% block contenido %}
+
+
 {% endblock %}

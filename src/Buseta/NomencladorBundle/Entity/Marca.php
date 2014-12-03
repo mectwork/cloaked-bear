@@ -22,6 +22,13 @@ class Marca extends BaseNomenclador
     protected $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=255)
+     */
+    private $descripcion;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Buseta\NomencladorBundle\Entity\Modelo", mappedBy="marca", cascade={"all"})
@@ -42,6 +49,24 @@ class Marca extends BaseNomenclador
     {
         $this->modelos = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+    /**
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * @param string $descripcion
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    }
+
+
     
     /**
      * Get id
