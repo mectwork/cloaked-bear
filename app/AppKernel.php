@@ -24,9 +24,9 @@ class AppKernel extends Kernel
             new Buseta\SecurityBundle\BusetaSecurityBundle(),
 
             // extra bundles
-            new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),
+            //new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+            //new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
