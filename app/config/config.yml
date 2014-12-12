@@ -123,6 +123,7 @@ sonata_block:
 sonata_admin:
     title:  Administración
     title_logo: images/logo.jpg
+
 #    dashboard:
 #      blocks:
 #        groups:
