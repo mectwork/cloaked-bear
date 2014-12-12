@@ -5,3 +5,122 @@ services:
 #    nomenclador.example:
 #        class: %nomenclador.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+    buseta_nomenclador.admin.aceite_caja_cambios:
+        class: Buseta\NomencladorBundle\Admin\AceiteCajaCambiosAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\AceiteCajaCambios, BusetaNomencladorBundle:AceiteCajaCambiosAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Aceite Caja de Cambios}
+
+    buseta_nomenclador.admin.aceite_hidraulico:
+        class: Buseta\NomencladorBundle\Admin\AceiteHidraulicoAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\AceiteHidraulico, BusetaNomencladorBundle:AceiteHidraulicoAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Aceite Hidráulico}
+
+    buseta_nomenclador.admin.aceite_motor:
+        class: Buseta\NomencladorBundle\Admin\AceiteMotorAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\AceiteMotor, BusetaNomencladorBundle:AceiteMotorAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Aceite de Motor}
+
+    buseta_nomenclador.admin.aceite_transmision:
+        class: Buseta\NomencladorBundle\Admin\AceiteTransmisionAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\AceiteTransmision, BusetaNomencladorBundle:AceiteTransmisionAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Aceite de Transmisión}
+
+    buseta_nomenclador.admin.color:
+        class: Buseta\NomencladorBundle\Admin\ColorAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\Color, BusetaNomencladorBundle:ColorAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Color}
+
+    buseta_nomenclador.admin.caja_chica:
+        class: Buseta\NomencladorBundle\Admin\CajaChicaAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\CajaChica, BusetaNomencladorBundle:CajaChicaAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Caja Chica}
+
+    buseta_nomenclador.admin.combustible:
+        class: Buseta\NomencladorBundle\Admin\CombustibleAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\Combustible, BusetaNomencladorBundle:CombustibleAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Combustible}
+
+    buseta_nomenclador.admin.condicion:
+        class: Buseta\NomencladorBundle\Admin\CondicionAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\Condicion, BusetaNomencladorBundle:CondicionAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Condición}
+
+    buseta_nomenclador.admin.estilo:
+        class: Buseta\NomencladorBundle\Admin\EstiloAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\Estilo, BusetaNomencladorBundle:EstiloAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Estilo}
+
+    buseta_nomenclador.admin.forma_pago:
+        class: Buseta\NomencladorBundle\Admin\FormaPagoAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\FormaPago, BusetaNomencladorBundle:FormaPagoAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Forma de Pago}
+
+    buseta_nomenclador.admin.garantia_tarea:
+        class: Buseta\NomencladorBundle\Admin\GarantiaTareaAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\GarantiaTarea, BusetaNomencladorBundle:GarantiaTareaAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Garantía de Tarea}
+
+    buseta_nomenclador.admin.grupo:
+        class: Buseta\NomencladorBundle\Admin\GrupoAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\Grupo, BusetaNomencladorBundle:GrupoAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Grupo}
+
+    buseta_nomenclador.admin.marca:
+        class: Buseta\NomencladorBundle\Admin\MarcaAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\Marca, BusetaNomencladorBundle:MarcaAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Marca}
+
+    buseta_nomenclador.admin.marca_motor:
+        class: Buseta\NomencladorBundle\Admin\MarcaMotorAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\MarcaMotor, BusetaNomencladorBundle:MarcaMotorAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Marca de Motor}
+
+    buseta_nomenclador.admin.modelo:
+        class: Buseta\NomencladorBundle\Admin\ModeloAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\Modelo, BusetaNomencladorBundle:ModeloAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Modelo}
+
+    buseta_nomenclador.admin.moneda:
+        class: Buseta\NomencladorBundle\Admin\MonedaAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\Moneda, BusetaNomencladorBundle:MonedaAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Moneda}
+
+    buseta_nomenclador.admin.subgrupo:
+        class: Buseta\NomencladorBundle\Admin\SubgrupoAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\Subgrupo, BusetaNomencladorBundle:SubgrupoAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Subgrupo}
+
+    buseta_nomenclador.admin.tipo_compra:
+        class: Buseta\NomencladorBundle\Admin\TipoCompraAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\TipoCompra, BusetaNomencladorBundle:TipoCompraAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Tipo de Compra}
+
+    buseta_nomenclador.admin.tipo_contacto:
+        class: Buseta\NomencladorBundle\Admin\TipoContactoAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\TipoContacto, BusetaNomencladorBundle:TipoContactoAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Tipo de Contacto}
+
+    buseta_nomenclador.admin.uom:
+        class: Buseta\NomencladorBundle\Admin\UOMAdmin
+        arguments: [~, Buseta\NomencladorBundle\Entity\UOM, BusetaNomencladorBundle:UOMAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: UOM (Unidad de Medida)}

@@ -1,18 +1,3 @@
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_formapago:
-    resource: "@BusetaNomencladorBundle/Controller/Formapago/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/formapago
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_cajachica:
-    resource: "@BusetaNomencladorBundle/Controller/Cajachica/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/cajachica
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_garantiatarea:
-    resource: "@BusetaNomencladorBundle/Controller/Garantiatarea/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/garantiatarea
-
 BusetaTallerBundle_tareaadicional:
         resource: "@BusetaTallerBundle/Resources/config/routing/tareaadicional.yml"
         prefix:   /tareaadicional
@@ -29,21 +14,6 @@ BusetaTallerBundle_condicionespago:
         resource: "@BusetaTallerBundle/Resources/config/routing/condicionespago.yml"
         prefix:   /condicionespago
 
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_condicion:
-    resource: "@BusetaNomencladorBundle/Controller/Condicion/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/condicion
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_moneda:
-    resource: "@BusetaNomencladorBundle/Controller/Moneda/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/moneda
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_tipocompra:
-    resource: "@BusetaNomencladorBundle/Controller/Tipocompra/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/tipocompra
-
 BusetaTallerBundle_linea:
         resource: "@BusetaTallerBundle/Resources/config/routing/linea.yml"
         prefix:   /linea
@@ -55,16 +25,6 @@ BusetaTallerBundle_compra:
 BusetaTallerBundle_impuesto:
         resource: "@BusetaTallerBundle/Resources/config/routing/impuesto.yml"
         prefix:   /impuesto
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_tipocontacto:
-    resource: "@BusetaNomencladorBundle/Controller/Tipocontacto/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/tipocontacto
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_uom:
-    resource: "@BusetaNomencladorBundle/Controller/Uom/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/uom
 
 buseta_template:
     resource: "@BusetaTemplateBundle/Resources/config/routing.yml"
@@ -90,26 +50,6 @@ BusetaBodegaBundle_tercero:
     resource: "@BusetaBodegaBundle/Resources/config/routing/tercero.yml"
     prefix:   /bodega/tercero
 
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_subgrupo:
-    resource: "@BusetaNomencladorBundle/Controller/Subgrupo/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/subgrupo
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_grupo:
-    resource: "@BusetaNomencladorBundle/Controller/Grupo/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/grupo
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_aceitetransmision:
-    resource: "@BusetaNomencladorBundle/Controller/Aceitetransmision/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/aceitetransmision
-
-BusetaNomencladoBundle_admin_buseta_nomenclado_bundle_aceitemotor:
-    resource: "@BusetaNomencladorBundle/Controller/Aceitemotor/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/aceitemotor
-
 buseta_bodega:
     resource: "@BusetaBodegaBundle/Resources/config/routing.yml"
     prefix:   /
@@ -122,49 +62,9 @@ buseta_buses:
     resource: "@BusetaBusesBundle/Resources/config/routing.yml"
     prefix:   /
 
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_marcamotor:
-    resource: "@BusetaNomencladorBundle/Controller/Marcamotor/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/marcamotor
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_estilo:
-    resource: "@BusetaNomencladorBundle/Controller/Estilo/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/estilo
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_combustible:
-    resource: "@BusetaNomencladorBundle/Controller/Combustible/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/combustible
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_aceitehidraulico:
-    resource: "@BusetaNomencladorBundle/Controller/Aceitehidraulico/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/aceitehidraulico
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_modelo:
-    resource: "@BusetaNomencladorBundle/Controller/Modelo/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/modelo
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_marca:
-    resource: "@BusetaNomencladorBundle/Controller/Marca/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/marca
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_aceitecajacambios:
-    resource: "@BusetaNomencladorBundle/Controller/Aceitecajacambios/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/aceitecajacambios
-
 buseta_security:
     resource: "@BusetaSecurityBundle/Resources/config/routing.yml"
     prefix:   /
-
-BusetaNomencladorBundle_admin_buseta_nomenclador_bundle_color:
-    resource: "@BusetaNomencladorBundle/Controller/Color/"
-    type:     admingenerator
-    prefix:   /admin/nomenclador/color
 
 _welcome_dashboard:
     resource: "@BusetaNomencladorBundle/Resources/config/routing.yml"
@@ -178,7 +78,14 @@ data:
     resource: "@DataBundle/Resources/config/routing.yml"
     prefix:   /data
 
+admin:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /admin
 
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"

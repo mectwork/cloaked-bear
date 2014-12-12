@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="n_subgrupo")
  * @ORM\Entity
  */
-class Subgrupo
+class Subgrupo extends BaseNomenclador
 {
     /**
      * @var integer
@@ -24,9 +24,9 @@ class Subgrupo
     /**
      * @var string
      *
-     * @ORM\Column(name="valor", type="string", length=255)
+     * @ORM\Column(name="descripcion", type="string", length=255)
      */
-    protected $valor;
+    private $descripcion;
 
     /**
      * @var \Buseta\NomencladorBundle\Entity\Grupo
@@ -34,6 +34,22 @@ class Subgrupo
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo", inversedBy="subgrupos")
      */
     private $grupo;
+
+    /**
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * @param string $descripcion
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    }
 
     /**
      * @param \Buseta\NomencladorBundle\Entity\Grupo $grupo
