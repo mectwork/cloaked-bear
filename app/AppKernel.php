@@ -24,9 +24,7 @@ class AppKernel extends Kernel
             new Buseta\SecurityBundle\BusetaSecurityBundle(),
 
             // extra bundles
-            new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
@@ -40,7 +38,7 @@ class AppKernel extends Kernel
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
 
-            new Liip\ImagineBundle\LiipImagineBundle(),
+//            new Liip\ImagineBundle\LiipImagineBundle(),
             new Buseta\TemplateBundle\BusetaTemplateBundle(),
         );
 

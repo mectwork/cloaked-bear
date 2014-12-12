@@ -323,6 +323,8 @@ class Producto
      */
     public function addMovimiento(\Buseta\BodegaBundle\Entity\Movimiento $movimientos)
     {
+        $movimientos->setProducto($this);
+
         $this->movimientos[] = $movimientos;
     
         return $this;

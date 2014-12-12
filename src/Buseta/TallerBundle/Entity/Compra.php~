@@ -557,4 +557,27 @@ class Compra
     {
         return $this->precio_general;
     }
+
+    /**
+     * Set consecutivo_compra
+     *
+     * @param string $consecutivoCompra
+     * @return Compra
+     */
+    public function setConsecutivoCompra($consecutivoCompra)
+    {
+        $this->consecutivo_compra = $consecutivoCompra;
+    
+        return $this;
+    }
+
+    /**
+     * Get consecutivo_compra
+     *
+     * @return string 
+     */
+    public function getConsecutivoCompra()
+    {
+        return $this->consecutivo_compra;
+    }
 }

@@ -28,3 +28,8 @@ movimiento_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "BusetaBodegaBundle:Movimiento:delete" }
     requirements: { _method: post|delete }
+
+movimientos_productos_create:
+    pattern:  /movimientos/create
+    defaults: { _controller: "BusetaBodegaBundle:Movimiento:create_movimiento" }
+    requirements: { _method: post }

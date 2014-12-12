@@ -74,6 +74,14 @@ class LineaType extends AbstractType
                         'class' => 'form-control',
                     )
                 ))*/
+            ->add('bodegas','entity',array(
+                'class' => 'BusetaBodegaBundle:Bodega',
+                'empty_value' => '---Seleccione una bodega---',
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('impuesto','entity',array(
                     'class' => 'BusetaTallerBundle:Impuesto',
                     'empty_value' => '---Seleccione un impuesto---',

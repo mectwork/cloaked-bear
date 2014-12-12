@@ -21,24 +21,20 @@
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
         <tr>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Movido a</th>
             <th>Fecha de Movimiento</th>
+            <th>Almacén Origen</th>
+            <th>Almacén Destino</th>
             <th>Realizado por</th>
-            <th>Descripción</th>
             <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.producto }}</td>
-                <td>{{ entity.cantidadProductos }}</td>
-                <td>{{ entity.movidoA }}</td>
-                <td>{{ entity.fechaMovimiento|date('d/m/Y') }}</td>
-                <td>{{ entity.movidoBy }}</td>
-                <td>{{ entity.descripcion }}</td>
+                <td>{{ entity.created|date('d/m/Y') }}</td>
+                <td>{{ entity.almacenOrigen }}</td>
+                <td>{{ entity.almacenDestino }}</td>
+                <td>{{ entity.createdBy }}</td>
                 <td  style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs" href="{{ path('movimiento_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>

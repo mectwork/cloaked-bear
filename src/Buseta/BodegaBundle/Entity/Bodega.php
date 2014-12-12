@@ -65,6 +65,55 @@ class Bodega
     private $movimientos;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\Linea", mappedBy="bodegas", cascade={"all"})
+     */
+    private $lineas;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->lineas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->productos = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add lineas
+     *
+     * @param \Buseta\TallerBundle\Entity\Linea $lineas
+     * @return Bodega
+     */
+    public function addLinea(\Buseta\TallerBundle\Entity\Linea $lineas)
+    {
+        $this->lineas[] = $lineas;
+
+        return $this;
+    }
+
+    /**
+     * Remove lineas
+     *
+     * @param \Buseta\TallerBundle\Entity\Linea $lineas
+     */
+    public function removeLinea(\Buseta\TallerBundle\Entity\Linea $lineas)
+    {
+        $this->lineas->removeElement($lineas);
+    }
+
+    /**
+     * Get lineas
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLineas()
+    {
+        return $this->lineas;
+    }
+
+    /**
      * @param string $codigo
      */
     public function setCodigo($codigo)
@@ -144,13 +193,6 @@ class Bodega
         return $this->nombre;
     }
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->productos = new \Doctrine\Common\Collections\ArrayCollection();
-    }
     
     /**
      * Add productos
@@ -160,6 +202,8 @@ class Bodega
      */
     public function addProducto(\Buseta\BodegaBundle\Entity\Producto $productos)
     {
+        $productos->setBodega($this);
+
         $this->productos[] = $productos;
     
         return $this;

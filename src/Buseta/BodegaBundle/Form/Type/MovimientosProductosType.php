@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class MovimientoType extends AbstractType
+class MovimientosProductosType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,27 +15,18 @@ class MovimientoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('almacenOrigen','entity',array(
-                'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione bodega de origen---',
+            ->add('producto','entity',array(
+                'class' => 'BusetaBodegaBundle:Producto',
+                'empty_value' => '---Seleccione un producto---',
                 'attr' => array(
                     'class' => 'form-control',
                 )
             ))
-            ->add('almacenDestino','entity',array(
-                'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione bodega destino---',
-                'attr' => array(
+            ->add('cantidad', 'integer', array(
+                'required' => true,
+                'attr'   => array(
                     'class' => 'form-control',
                 )
-            ))
-            ->add('movimientos_productos','collection',array(
-                'type' => new MovimientosProductosType(),
-                'label'  => false,
-                'required' => false,
-                'by_reference' => false,
-                'allow_add' => true,
-                'allow_delete' => true,
             ))
         ;
     }
@@ -46,7 +37,7 @@ class MovimientoType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Entity\Movimiento'
+            'data_class' => 'Buseta\BodegaBundle\Entity\MovimientosProductos'
         ));
     }
 
@@ -55,6 +46,6 @@ class MovimientoType extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_bodegabundle_movimiento';
+        return 'buseta_bodegabundle_movimientosProductos';
     }
 }

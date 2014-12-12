@@ -63,6 +63,11 @@ class Linea
     private $productos;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="lineas")
+     */
+    private $bodegas;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="precio_producto", type="decimal", scale=2)
@@ -355,5 +360,28 @@ class Linea
     public function getPrecioProducto()
     {
         return $this->precio_producto;
+    }
+
+    /**
+     * Set bodegas
+     *
+     * @param \Buseta\BodegaBundle\Entity\Bodega $bodegas
+     * @return Linea
+     */
+    public function setBodegas(\Buseta\BodegaBundle\Entity\Bodega $bodegas = null)
+    {
+        $this->bodegas = $bodegas;
+    
+        return $this;
+    }
+
+    /**
+     * Get bodegas
+     *
+     * @return \Buseta\BodegaBundle\Entity\Bodega 
+     */
+    public function getBodegas()
+    {
+        return $this->bodegas;
     }
 }

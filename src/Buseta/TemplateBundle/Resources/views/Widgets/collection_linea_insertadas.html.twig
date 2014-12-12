@@ -22,6 +22,7 @@
                                 <div class="col-lg-2" style="text-align: center;"><b>Grupo</b></div>
                                 <div class="col-lg-2" style="text-align: center;"><b>Subgrupo</b></div>
                                 <div class="col-lg-2" style="text-align: center;"><b>Producto</b></div>
+                                <div class="col-lg-2" style="text-align: center;"><b>Bodega</b></div>
 
                                 <div class="col-lg-2" style="text-align: center;"><b>Cantidad Pedido</b></div>
                                 <div class="col-lg-2" style="text-align: center;"><b>Precio</b></div>
@@ -92,6 +93,11 @@
     <div class="col-lg-2 form-group">
         {{ form_errors(prototype.productos) }}
         {{ form_widget(prototype.productos) }}
+    </div>
+
+    <div class="col-lg-2 form-group">
+        {{ form_errors(prototype.bodegas) }}
+        {{ form_widget(prototype.bodegas) }}
     </div>
 
     <div class="col-lg-2 form-group">
