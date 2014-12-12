@@ -40,7 +40,7 @@ class AppKernel extends Kernel
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
 
-            new Liip\ImagineBundle\LiipImagineBundle(),
+//            new Liip\ImagineBundle\LiipImagineBundle(),
             new Buseta\TemplateBundle\BusetaTemplateBundle(),
         );
 

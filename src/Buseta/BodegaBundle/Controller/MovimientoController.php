@@ -2,11 +2,15 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Buseta\BodegaBundle\Entity\MovimientosProductos;
+use Buseta\BodegaBundle\Form\Type\MovimientosProductosType;
 use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Form\Type\MovimientoType;
+use Buseta\BodegaBundle\Entity\InformeProductosBodega;
 
 /**
  * Movimiento controller.
@@ -14,6 +18,18 @@ use Buseta\BodegaBundle\Form\Type\MovimientoType;
  */
 class MovimientoController extends Controller
 {
+    public function create_movimientoAction(Request $request)
+    {
+        $entity = new MovimientosProductos();
+        $form = $this->createCreateCompraForm($entity);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+        }
+    }
 
     /**
      * Lists all Movimiento entities.
@@ -47,25 +63,109 @@ class MovimientoController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $entity->setProducto($entity->getProducto());
-            $entity->setCreatedBy($this->getUser()->getUsername());
-            $entity->setUpdatedBy($this->getUser()->getUsername());
-            $entity->setMovidoBy($this->getUser()->getUsername());
-            $entity->setMovidoA($entity->getMovidoA());
-            $entity->setProducto($entity->getProducto());
+        $em = $this->getDoctrine()->getManager();
 
-            $em = $this->getDoctrine()->getManager();
+        if ($form->isValid()) {
+            $request = $this->get('request');
+            $datos = $request->request->get('buseta_bodegabundle_movimiento');
+
+            //Comprar la existencia de cantidad de productos disponibles en el almacen
+            //a partir de la solicitud de movimiento de productos entre almacenes
+
+            $idAlmacenOrigen  = $datos['almacenOrigen'];
+            $idAlmacenDestino = $datos['almacenDestino'];
+
+            $movimientos = $datos['movimientos_productos'];
+
+            foreach($movimientos as $movimiento) {
+                $idProducto = $movimiento['producto'];
+
+                $informeProductoBodega = $em->getRepository('BusetaBodegaBundle:InformeProductosBodega')->findOneBy(array(
+                    'producto' => $idProducto,
+                    'almacen' => $idAlmacenOrigen
+                ));
+
+                //Si NO existe ese producto en ese almacen
+                if(count($informeProductoBodega) == 0){
+                    $form->addError(new FormError("Mensaje error"));
+                }
+                else //Si ya existe ese producto en ese almacen
+                {
+                    $cantidad_disponible = $informeProductoBodega->getCantidadProductos() - $movimiento['cantidad'];
+
+                    //Si existen la cantidad requerida de productos en el almacen
+                    if($cantidad_disponible >= 0){
+
+                        //Extraigo la cantidad de productos del almacen de origen
+                        $informeProductoBodega->setCantidadProductos($cantidad_disponible);
+                        $em->persist($informeProductoBodega);
+
+                        //Adiciono la cantidad de productos en el almacen de destino
+                        $informeProductoBodega = $em->getRepository('BusetaBodegaBundle:InformeProductosBodega')->findOneBy(array(
+                            'producto' => $idProducto,
+                            'almacen' => $idAlmacenDestino
+                        ));
+
+                        //Si no existe ese producto en ese almacen
+                        $informeProductosBodega = new InformeProductosBodega();
+                        $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
+                        $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
+
+                        if(count($informeProductoBodega) == 0){
+                            $informeProductosBodega->setProducto($producto);
+                            $informeProductosBodega->setAlmacen($bodega);
+                            $informeProductosBodega->setCantidadProductos($movimiento['cantidad']);
+                            $em->persist($informeProductosBodega);
+                        }
+                        else //Si ya existe ese producto en ese almacen
+                        {
+                            $informeProductoBodega->setCantidadProductos($informeProductoBodega->getCantidadProductos() + $movimiento['cantidad']);
+                            $em->persist($informeProductoBodega);
+                        }
+
+                    }
+                    else {
+
+                        //Volver al menu de de crear nuevo Movimiento
+                        $movimientosProductos = $this->createForm(new MovimientosProductosType());
+
+                        $form   = $this->createCreateForm($entity);
+                        $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
+                        $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
+
+
+                        $form->addError(new FormError("No existe en el almacén '".$bodega->getNombre()."' la cantidad de productos solicitados para el producto: ".$producto->getNombre()));
+
+                        /*<script type="text/javascript">
+                            jQuery(document).ready(function() {
+                                $('#error').fadeIn(200);
+                            });
+                        </script>*/
+
+
+                        return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
+                            'entity' => $entity,
+                            'movimientosProductos' => $movimientosProductos->createView(),
+                            'form'   => $form->createView(),
+                        ));
+                        //$this->get('session')->getFlashBag()->add('success', 'Ha ocurrido un error.');
+                    }
+
+                }
+            }
+
+            $entity->setCreatedBy($this->getUser()->getUsername());
+            $entity->setMovidoBy($this->getUser()->getUsername());
             $em->persist($entity);
             $em->flush();
 
             return $this->redirect($this->generateUrl('movimiento_show', array('id' => $entity->getId())));
         }
 
-        return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
+        /*return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
-        ));
+        ));*/
     }
 
     /**
@@ -94,10 +194,15 @@ class MovimientoController extends Controller
     public function newAction()
     {
         $entity = new Movimiento();
+
+        $movimientosProductos = new MovimientosProductos();
+        $movimientosProductos = $this->createForm(new MovimientosProductosType());
+
         $form   = $this->createCreateForm($entity);
 
         return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
             'entity' => $entity,
+            'movimientosProductos' => $movimientosProductos->createView(),
             'form'   => $form->createView(),
         ));
     }
@@ -137,12 +242,15 @@ class MovimientoController extends Controller
             throw $this->createNotFoundException('Unable to find Movimiento entity.');
         }
 
+        $movimientosProductos = $this->createForm(new MovimientosProductosType());
+
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('BusetaBodegaBundle:Movimiento:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
+            'movimientosProductos'   => $movimientosProductos->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -156,7 +264,7 @@ class MovimientoController extends Controller
      */
     private function createEditForm(Movimiento $entity)
     {
-        $form = $this->createForm(new MovimientoType(), $entity, array(
+        $form = $this->createForm('buseta_bodegabundle_movimiento', $entity, array(
             'action' => $this->generateUrl('movimiento_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
@@ -212,8 +320,17 @@ class MovimientoController extends Controller
                 throw $this->createNotFoundException('Unable to find Movimiento entity.');
             }
 
-            $em->remove($entity);
-            $em->flush();
+            try {
+                $em->remove($entity);
+                $em->flush();
+
+                $this->get('session')->getFlashBag()->add('success', 'Ha sido eliminado satisfactoriamente.');
+            } catch (\Exception $e) {
+                $this->get('logger')->addCritical(
+                    sprintf('Ha ocurrido un error eliminando un movimiento de almacén. Detalles: %s',
+                        $e->getMessage()
+                    ));
+            }
         }
 
         return $this->redirect($this->generateUrl('movimiento'));

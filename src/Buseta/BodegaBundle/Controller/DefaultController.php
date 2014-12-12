@@ -15,31 +15,18 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $busqueda = $this->createForm(new InformeStockType());
+        $entities = $em->getRepository('BusetaBodegaBundle:InformeStock')->findAll();
 
-        $busqueda->submit($request);
-
-        if ($busqueda->isValid()) {
-            $entities = $em->getRepository('BusetaBodegaBundle:Producto')->informeStock($busqueda,$em);
-        } else {
-            $entities = $em->getRepository('BusetaBodegaBundle:Producto')->buscarTodos($em);
-        }
-
-        //CASO INFORME-STOCK
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
             $entities,
             $this->get('request')->query->get('page', 1),
-            10,
+            5,
             array('pageParameterName' => 'page')
         );
 
-        $fecha = new \DateTime();
-
-        return $this->render('@BusetaBodega/Default/informe_stock.html.twig', array(
+        return $this->render('BusetaBodegaBundle:InformeStock:index.html.twig', array(
             'entities' => $entities,
-            'fecha' => $fecha,
-            'busqueda' => $busqueda->createView(),
         ));
     }
 

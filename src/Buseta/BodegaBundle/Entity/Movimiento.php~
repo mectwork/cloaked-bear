@@ -42,7 +42,7 @@ class Movimiento
     /**
      * @var string
      *
-     * @ORM\Column(name="movidoBy", type="string", nullable=true)
+     * @ORM\Column(name="movidoBy", type="string")
      */
     private $movidoBy;
 
@@ -72,6 +72,8 @@ class Movimiento
     {
         $this->created = new \DateTime();
     }
+
+
 
     /**
      * Get id
@@ -219,40 +221,5 @@ class Movimiento
     public function getAlmacenDestino()
     {
         return $this->almacenDestino;
-    }
-
-    /**
-     * Add movimientos_productos
-     *
-     * @param \Buseta\BodegaBundle\Entity\MovimientosProductos $movimientosProductos
-     * @return Movimiento
-     */
-    public function addMovimientosProducto(\Buseta\BodegaBundle\Entity\MovimientosProductos $movimientosProductos)
-    {
-        $movimientosProductos->setMovimiento($this);
-
-        $this->movimientos_productos[] = $movimientosProductos;
-    
-        return $this;
-    }
-
-    /**
-     * Remove movimientos_productos
-     *
-     * @param \Buseta\BodegaBundle\Entity\MovimientosProductos $movimientosProductos
-     */
-    public function removeMovimientosProducto(\Buseta\BodegaBundle\Entity\MovimientosProductos $movimientosProductos)
-    {
-        $this->movimientos_productos->removeElement($movimientosProductos);
-    }
-
-    /**
-     * Get movimientos_productos
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getMovimientosProductos()
-    {
-        return $this->movimientos_productos;
     }
 }

@@ -163,19 +163,22 @@
 
                         <div class="row show-grid">
                             <div class="col-md-4">
+                                {{ form_row(linea.bodegas) }}
+                            </div>
+
+                            <div class="col-md-4">
                                 {{ form_row(linea.precio_producto) }}
                             </div>
 
                             <div class="col-md-4">
                                 {{ form_row(linea.cantidad_pedido) }}
                             </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(linea.impuesto) }}
-                            </div>
                         </div>
 
                         <div class="row show-grid">
+                            <div class="col-md-4">
+                                {{ form_row(linea.impuesto) }}
+                            </div>
 
                             <div class="col-md-4" style="display: none;">
                                 {{ form_row(linea.monto) }}
@@ -370,6 +373,7 @@
                 var linea_cantidad_pedido = modal.find('#buseta_tallerbundle_linea_cantidad_pedido');
                 var linea_impuesto = modal.find('#buseta_tallerbundle_linea_impuesto');
                 var linea_monto = modal.find('#buseta_tallerbundle_linea_monto');
+                var linea_bodega = modal.find('#buseta_tallerbundle_linea_bodegas');
 
                 var dataA = {
                     grupo_id: $(linea_grupo).val()
@@ -429,6 +433,7 @@
                             $('#taller_compra_lineas_' + index + '_cantidad_pedido').val(linea_cantidad_pedido.val()).prop('readonly','readonly');
                             $('#taller_compra_lineas_' + index + '_monto').val(linea_monto.val()).prop('readonly','readonly');
                             $('#taller_compra_lineas_' + index + '_impuesto').val(linea_impuesto.val()).prop;
+                            $('#taller_compra_lineas_' + index + '_bodegas').val(linea_bodega.val()).prop;
 
 
 

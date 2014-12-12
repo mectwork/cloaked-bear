@@ -12,37 +12,49 @@
 
     <table class="table table-striped" style="font-size: 16px;">
     <tbody>
+    <tr>
+        <th>Almacén Origen</th>
+        <td>{{ entity.almacenOrigen }}</td>
+        <th>Almacén Destino</th>
+        <td>{{ entity.almacenDestino }}</td>
+    </tr>
+    <tr>
 
-    <tr>
-        <th>Producto</th>
-        <td>{{ entity.producto }}</td>
-    </tr>
-    <tr>
-        <th>Cantidad</th>
-        <td>{{ entity.cantidadProductos }}</td>
-    </tr>
-    <tr>
-        <th>Movido a</th>
-        <td>{{ entity.movidoA }}</td>
     </tr>
     <tr>
         <th>Fecha de movimiento</th>
-        <td>{{ entity.fechaMovimiento|date('d/m/Y')  }}</td>
+        <td>{{ entity.created|date('d/m/Y')  }}</td>
+        <th></th>
+        <td></td>
     </tr>
+
     <tr>
-        <th>Realizado por</th>
-        <td>{{ entity.movidoBy  }}</td>
+        <th>Producto</th>
+        <td></td>
+        <th>Cantidad</th>
+        <td></td>
     </tr>
-    <tr>
-        <th>Descripción</th>
-        <td>{{ entity.descripcion  }}</td>
-    </tr>
+
+    {% for objeto in entity.movimientosproductos %}
+
+        <tr>
+            <td>{{ objeto.producto }}</td>
+            <td></td>
+            <td>{{ objeto.cantidad }}</td>
+            <td></td>
+        </tr>
+
+    {% endfor %}
 
     </tbody>
     </table>
 
-    <div class="btn-group">
+    <div class="form-actions">
+        {{ form_start(delete_form) }}
+        <a class="btn btn-primary" href="{{ path('movimiento_edit', { 'id': entity.id }) }}"> Editar</a>
         <a class="btn btn-primary" href="{{ path('movimiento') }}"> Listado</a>
+        <button type="sumbit" class="btn btn-primary">Eliminar</button>
+        {{ form_end(delete_form) }}
     </div>
 
 {% endblock %}
