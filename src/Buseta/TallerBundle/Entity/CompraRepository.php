@@ -3,6 +3,7 @@
 namespace Buseta\TallerBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 
 /**
  * CompraRepository
