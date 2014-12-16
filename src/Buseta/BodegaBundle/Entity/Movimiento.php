@@ -40,6 +40,11 @@ class Movimiento
     private $movimientos_productos;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto", inversedBy="movimientos")
+     */
+    private $producto;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="movidoBy", type="string", nullable=true)
@@ -254,5 +259,34 @@ class Movimiento
     public function getMovimientosProductos()
     {
         return $this->movimientos_productos;
+    }
+
+    public function __toString()
+    {
+        return $this->descripcion;
+    }
+    
+
+    /**
+     * Set producto
+     *
+     * @param \Buseta\BodegaBundle\Entity\Producto $producto
+     * @return Movimiento
+     */
+    public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
+    {
+        $this->producto = $producto;
+    
+        return $this;
+    }
+
+    /**
+     * Get producto
+     *
+     * @return \Buseta\BodegaBundle\Entity\Producto 
+     */
+    public function getProducto()
+    {
+        return $this->producto;
     }
 }

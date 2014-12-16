@@ -2,7 +2,9 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\Entity\InformeProductosBodega;
 use Buseta\BodegaBundle\Entity\Movimiento;
+use Buseta\BodegaBundle\Entity\MovimientosProductos;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -101,17 +103,20 @@ class ProductoController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $movimiento = new Movimiento();
-
-            $movimiento->setCreatedBy($this->getUser()->getUsername());
-            $movimiento->setUpdatedBy($this->getUser()->getUsername());
-            $movimiento->setMovidoBy($this->getUser()->getUsername());
-            $movimiento->setMovidoA($entity->getBodega());
-            $movimiento->setProducto($entity);
-
             $em = $this->getDoctrine()->getManager();
-            $em->persist($movimiento);
 
+            $request = $this->get('request');
+            $datos = $request->request->get('buseta_bodegabundle_producto');
+            $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($datos['bodega']);
+
+            $informe = new InformeProductosBodega();
+
+            $informe->setProducto($entity);
+            $informe->setAlmacen($bodega);
+            $informe->setCantidadProductos(0);
+            $informe->setUpdatedBy($this->getUser()->getUsername());
+            $em->persist($informe);
+            
             $em->persist($entity);
             $em->flush();
 
