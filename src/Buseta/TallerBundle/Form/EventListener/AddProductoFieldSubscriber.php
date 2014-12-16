@@ -75,7 +75,7 @@ class AddProductoFieldSubscriber implements EventSubscriberInterface
         } else {
             //$province = ($data->city) ? $data->city->getProducto() : null ;
             $producto = ($data->getProductos()) ? $data->getProductos() : null ;
-            $subgrupo = ($producto) ? $producto->getSubgrupo() : null ;
+            $subgrupo = ($producto) ? $producto->getSubgrupos() : null ;
             $this->addProductoForm($form, $producto, $subgrupo);
         }
     }
