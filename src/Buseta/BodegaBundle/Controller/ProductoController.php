@@ -116,7 +116,7 @@ class ProductoController extends Controller
             $informe->setCantidadProductos(0);
             $informe->setUpdatedBy($this->getUser()->getUsername());
             $em->persist($informe);
-            
+
             $em->persist($entity);
             $em->flush();
 

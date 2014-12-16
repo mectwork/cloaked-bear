@@ -5,6 +5,7 @@ namespace Buseta\BodegaBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Buseta\BodegaBundle\Form\Model\TerceroModel;
 
 class TerceroType extends AbstractType
 {
@@ -43,16 +44,16 @@ class TerceroType extends AbstractType
                         'style' => 'width: 250px',
                     )
                 ))
-            ->add('cliente', null, array(
+            ->add('cliente', 'checkbox', array(
                     'required' => false,
                 ))
-            ->add('institucion', null, array(
+            ->add('institucion', 'checkbox', array(
                     'required' => false,
                 ))
-            ->add('proveedor', null, array(
+            ->add('proveedor', 'checkbox', array(
                     'required' => false,
                 ))
-            ->add('activo', null, array(
+            ->add('activo', 'checkbox', array(
                     'required' => false,
                 ))
             ->add('direccion', 'text', array(
@@ -60,6 +61,9 @@ class TerceroType extends AbstractType
                 'attr'   => array(
                     'class' => 'form-control',
                 )
+            ))
+            ->add('direccionId', 'hidden', array(
+                'required' => false,
             ))
             /*->add('direccion','entity',array(
                     'class' => 'BusetaBodegaBundle:Direccion',
@@ -83,7 +87,7 @@ class TerceroType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Entity\Tercero'
+            'data_class' => 'Buseta\BodegaBundle\Form\Model\TerceroModel'
         ));
     }
 

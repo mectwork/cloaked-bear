@@ -99,8 +99,6 @@ class AutobusController extends Controller
                 ));
         }
 
-        print_r($form->getErrorsAsString());die;
-
         return $this->render('BusetaBusesBundle:Autobus:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),

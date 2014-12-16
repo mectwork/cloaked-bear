@@ -68,12 +68,6 @@
 
         <div class="row show-grid">
             <div class="col-md-4">
-                <input id="buseta_bodegabundle_tercero_prueba" class="form-control" type="hidden" style="width: 300px" name="buseta_bodegabundle_tercero[prueba]">
-            </div>
-        </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
                 <label>Activo:</label>
                 {{ form_widget(form.activo) }}
             </div>
@@ -172,7 +166,7 @@
                         //$('form#form_direccion').replaceWith(values.vista);
                         $('div#newDireccion').modal('hide');
                         $('#buseta_bodegabundle_tercero_direccion').val(textDireccion).prop('readonly','readonly');
-                        $('#buseta_bodegabundle_tercero_prueba').val(values.id);
+                        $('#buseta_bodegabundle_tercero_direccionId').val(values.id);
                     })
                     .fail(function(error){
                         console.error('Ha ocurrido un error');

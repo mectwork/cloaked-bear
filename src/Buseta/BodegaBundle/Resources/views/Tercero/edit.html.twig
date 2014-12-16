@@ -68,12 +68,6 @@
 
         <div class="row show-grid">
             <div class="col-md-4">
-                <input id="buseta_bodegabundle_tercero_prueba" class="form-control" type="hidden" style="width: 300px" name="buseta_bodegabundle_tercero[prueba]">
-            </div>
-        </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
                 <label>Activo:</label>
                 {{ form_widget(edit_form.activo) }}
             </div>
@@ -150,7 +144,15 @@
                 var modal = $('#newDireccion');
 
                 //captura de valores del modal
-                var direccion_modal = modal.find('#buseta_bodegabundle_direccion_calle');
+                var direccion_modalA = modal.find('#buseta_bodegabundle_direccion_calle');
+                var direccion_modalB = modal.find('#buseta_bodegabundle_direccion_numero');
+                var direccion_modalC = modal.find('#buseta_bodegabundle_direccion_entre_calles');
+                var direccion_modalD = modal.find('#buseta_bodegabundle_direccion_pais');
+                var direccion_modalE = modal.find('#buseta_bodegabundle_direccion_subdivision');
+                var direccion_modalF = modal.find('#buseta_bodegabundle_direccion_ciudad');
+
+                var textDireccion = direccion_modalA.val()+". "+direccion_modalB.val()+". "+direccion_modalC.val()+". "+direccion_modalD.val()+". "+direccion_modalE.val()+". "+direccion_modalF.val();
+
 
                 var data = $('form#form_direccion').serialize();
                 $.ajax({
@@ -159,13 +161,12 @@
                     data: data
                 })
                         .done(function (response) {
-                            var response = response;
                             var values = $.parseJSON(response);
 
-                            $('form#form_direccion').replaceWith(response);
+                            //$('form#form_direccion').replaceWith(values.vista);
                             $('div#newDireccion').modal('hide');
-                            $('#buseta_bodegabundle_tercero_direccion').val(direccion_modal.val());
-                            $('#buseta_bodegabundle_tercero_prueba').val(values.id);
+                            $('#buseta_bodegabundle_tercero_direccion').val(textDireccion).prop('readonly','readonly');
+                            $('#buseta_bodegabundle_tercero_direccionId').val(values.id);
                         })
                         .fail(function(error){
                             console.error('Ha ocurrido un error');
