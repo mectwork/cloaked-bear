@@ -8,10 +8,10 @@
         <div class="row-fluid">
             <div class="span8 offset2">
                 <div class="alert alert-error">
+
+
                     <strong>Ha ocurrido un error inesperado.</strong>
-                    {% if app.user and is_granted('ROLE_ADMINISTRADOR') %}
                         <div>{{ exception.message|nl2br|format_file_from_text }}</div>
-                    {% endif %}
                     <div><a href="javascript:history.go(-1);" class="btn"><i class="icon-chevron-left"></i> Volver</a></div>
                 </div>
             </div>

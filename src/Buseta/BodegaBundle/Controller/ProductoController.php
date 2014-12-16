@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Buseta\BodegaBundle\Entity\Producto;
 use Buseta\BodegaBundle\Form\Type\ProductoType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Producto controller.
