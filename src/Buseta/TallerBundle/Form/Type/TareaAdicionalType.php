@@ -23,7 +23,6 @@ class TareaAdicionalType extends AbstractType
         $grupos = new AddGrupoFieldSubscriber($objeto);
         $builder->addEventSubscriber($grupos);
 
-
         $builder
             ->add('tarea', 'textarea', array(
                 'required' => true,

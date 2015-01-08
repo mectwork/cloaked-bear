@@ -33,3 +33,10 @@ movimientos_productos_create:
     pattern:  /movimientos/create
     defaults: { _controller: "BusetaBodegaBundle:Movimiento:create_movimiento" }
     requirements: { _method: post }
+
+movimientos_ajax_almacenOrigen_almacenDestino:
+  pattern: /select_almacenOrigen_almacenDestino
+  defaults: { _controller: "BusetaBodegaBundle:Movimiento:select_almacenOrigen_almacenDestino" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true

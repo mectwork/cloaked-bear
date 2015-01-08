@@ -183,6 +183,29 @@
 
     });
 
+    //Actualiza los almacenes de destino a partir de los almacenes de origen seleccionados con peticiones AJAX
+    $('#{{ form.almacenOrigen.vars.id }}').change(function(){
+        var data = {
+            almacenOrigen_id: $(this).val()
+        };
+
+        $.ajax({
+            type: 'GET',
+            url: '{{ path("movimientos_ajax_almacenOrigen_almacenDestino") }}',
+            data: data,
+            success: function(data) {
+                var values = $.parseJSON(data);
+                var $almacenDestino_selector = $('#{{ form.almacenDestino.vars.id }}');
+
+                $almacenDestino_selector.html('<option>---Seleccione almacén destino---</option>');
+
+                for (var i=0, total = values.length; i < total; i++) {
+                    $almacenDestino_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                }
+            }
+        });
+    });
+
 
     </script>
 

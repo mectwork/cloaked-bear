@@ -268,7 +268,7 @@ class Producto
     public function addLinea(\Buseta\TallerBundle\Entity\Linea $lineas)
     {
         $this->lineas[] = $lineas;
-    
+
         return $this;
     }
 
@@ -285,7 +285,7 @@ class Producto
     /**
      * Get lineas
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getLineas()
     {
@@ -326,7 +326,7 @@ class Producto
         $movimientos->setProducto($this);
 
         $this->movimientos[] = $movimientos;
-    
+
         return $this;
     }
 
@@ -343,7 +343,7 @@ class Producto
     /**
      * Get movimientos
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMovimientos()
     {

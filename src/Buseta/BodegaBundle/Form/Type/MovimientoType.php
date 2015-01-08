@@ -5,6 +5,8 @@ namespace Buseta\BodegaBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Buseta\BodegaBundle\Form\EventListener\AddAlmacenDestinoFieldSubscriber;
+use Buseta\BodegaBundle\Form\EventListener\AddAlmacenOrigenFieldSubscriber;
 
 class MovimientoType extends AbstractType
 {
@@ -14,6 +16,12 @@ class MovimientoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+//        $objeto = $builder->getFormFactory();
+//        $almacenDestino = new AddAlmacenDestinoFieldSubscriber($objeto);
+//        $builder->addEventSubscriber($almacenDestino);
+//        $almacenOrigen = new AddAlmacenOrigenFieldSubscriber($objeto);
+//        $builder->addEventSubscriber($almacenOrigen);
+
         $builder
             ->add('almacenOrigen','entity',array(
                 'class' => 'BusetaBodegaBundle:Bodega',
@@ -29,6 +37,7 @@ class MovimientoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
+
             ->add('movimientos_productos','collection',array(
                 'type' => new MovimientosProductosType(),
                 'label'  => false,

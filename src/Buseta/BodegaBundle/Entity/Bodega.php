@@ -57,12 +57,12 @@ class Bodega
      */
     private $productos;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Movimiento", mappedBy="movidoA", cascade={"all"})
-     */
-    private $movimientos;
+//    /**
+//     * @var \Doctrine\Common\Collections\ArrayCollection
+//     *
+//     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Movimiento", mappedBy="movidoA", cascade={"all"})
+//     */
+//    private $movimientos;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -235,36 +235,36 @@ class Bodega
     }
 
 
-    /**
-     * Add movimientos
-     *
-     * @param \Buseta\BodegaBundle\Entity\Movimiento $movimientos
-     * @return Bodega
-     */
-    public function addMovimiento(\Buseta\BodegaBundle\Entity\Movimiento $movimientos)
-    {
-        $this->movimientos[] = $movimientos;
-    
-        return $this;
-    }
-
-    /**
-     * Remove movimientos
-     *
-     * @param \Buseta\BodegaBundle\Entity\Movimiento $movimientos
-     */
-    public function removeMovimiento(\Buseta\BodegaBundle\Entity\Movimiento $movimientos)
-    {
-        $this->movimientos->removeElement($movimientos);
-    }
-
-    /**
-     * Get movimientos
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getMovimientos()
-    {
-        return $this->movimientos;
-    }
+//    /**
+//     * Add movimientos
+//     *
+//     * @param \Buseta\BodegaBundle\Entity\Movimiento $movimientos
+//     * @return Bodega
+//     */
+//    public function addMovimiento(\Buseta\BodegaBundle\Entity\Movimiento $movimientos)
+//    {
+//        $this->movimientos[] = $movimientos;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Remove movimientos
+//     *
+//     * @param \Buseta\BodegaBundle\Entity\Movimiento $movimientos
+//     */
+//    public function removeMovimiento(\Buseta\BodegaBundle\Entity\Movimiento $movimientos)
+//    {
+//        $this->movimientos->removeElement($movimientos);
+//    }
+//
+//    /**
+//     * Get movimientos
+//     *
+//     * @return \Doctrine\Common\Collections\Collection
+//     */
+//    public function getMovimientos()
+//    {
+//        return $this->movimientos;
+//    }
 }

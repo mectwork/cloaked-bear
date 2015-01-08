@@ -210,14 +210,14 @@ class Linea
     public function setProductos(\Buseta\BodegaBundle\Entity\Producto $productos = null)
     {
         $this->productos = $productos;
-    
+
         return $this;
     }
 
     /**
      * Get productos
      *
-     * @return \Buseta\BodegaBundle\Entity\Producto 
+     * @return \Buseta\BodegaBundle\Entity\Producto
      */
     public function getProductos()
     {

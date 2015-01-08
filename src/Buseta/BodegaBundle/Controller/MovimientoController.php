@@ -18,6 +18,40 @@ use Buseta\BodegaBundle\Entity\InformeProductosBodega;
  */
 class MovimientoController extends Controller
 {
+    /**
+     * Updated automatically select AlmacenDestino when change select AlmacenOrigen
+     *
+     */
+    public function select_almacenOrigen_almacenDestinoAction(Request $request) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+
+        $request = $this->getRequest();
+        if (!$request->isXmlHttpRequest())
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+
+        $em = $this->getDoctrine()->getManager();
+//        $almacenDestino = $em->getRepository('BusetaBodegaBundle:Bodega')->findBy(array(
+//            'id' => $request->query->get('almacenOrigen_id')
+//        ));
+
+        $almacenDestino = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
+
+        $json = array();
+        foreach ($almacenDestino as $almacenDestino)
+        {
+            if($almacenDestino->getId() != $request->query->get('almacenOrigen_id'))
+            {
+                $json[] = array(
+                    'id' => $almacenDestino->getId(),
+                    'valor' => $almacenDestino->getNombre(),
+                );
+            }
+        }
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
+
     public function create_movimientoAction(Request $request)
     {
         $entity = new MovimientosProductos();
@@ -348,7 +382,7 @@ class MovimientoController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('movimiento_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            //->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
             ;
     }
