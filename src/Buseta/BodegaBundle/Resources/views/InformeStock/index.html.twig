@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block titulo %}
-    Listado de operaciones en almacenes
+    Informe de Stock
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listado de operaciones en almacenes
+    Informe de Stock
 {% endblock %}
 
 {% block area_trabajo %}
@@ -17,25 +17,21 @@
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
         <tr>
-            <th>Fecha Compra</th>
-            <th>Producto</th>
+            <th  style="text-align: left;">Almacén</th>
+            <th  style="text-align: left;">Producto</th>
             <th>Cantidad de productos</th>
-            <th>Almacén</th>
-            <th>Realizado por</th>
         </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.updated|date('d/m/Y') }}</td>
-                <td>{{ entity.producto }}</td>
-                <td>{{ entity.cantidadProductos }}</td>
                 <td>{{ entity.almacen }}</td>
-                <td>{{ entity.updatedBy }}</td>
+                <td>{{ entity.producto }}</td>
+                <td  style="text-align: center;">{{ entity.cantidadProductos }}</td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="12">No se encontraron registros de operaciones en almacenes en el sistema.</td>
+                <td colspan="12">No se encontraron registros en el sistema.</td>
             </tr>
         {% endfor %}
 
