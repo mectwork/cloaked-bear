@@ -5,28 +5,28 @@
 {% endblock %}
 
 {% block titulo %}
-    Listado de compras
+    Listado de prefacturas pendientes
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listado de compras
+    Listado de prefacturas pendientes
 {% endblock %}
 
 {% block area_trabajo %}
 
     <div class="btn-group" style="padding-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('compra_new') }}"><i class="fa fa-plus-circle"></i> Adicionar compra</a>
+        <a class="btn btn-primary" href="{{ path('compra_new') }}"><i class="fa fa-plus-circle"></i> Adicionar prefactura</a>
     </div>
 
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
             <tr>
-                <th>Número</th>
-                <th># Factura Proveedor</th>
-                <th>Fecha pedido</th>
-                <th>Prioridad</th>
-                <th>Importe general</th>
-                <th>Estado</th>
+                <th style="text-align: left;">Número</th>
+                <th style="text-align: left;"># Factura Proveedor</th>
+                <th style="text-align: left;">Fecha pedido</th>
+                <th style="text-align: left;">Prioridad</th>
+                <th style="text-align: left;">Importe general</th>
+                <th style="text-align: left;">Estado</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="btn-group">
-                        <a class="btn btn-danger btn-xs" href="{{ path('compra_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
+                        <a class="btn btn-danger btn-xs" href="{{ path('compra_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Procesar</i></a>
                     </div>
 
                 </td>

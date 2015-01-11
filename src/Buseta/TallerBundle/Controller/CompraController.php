@@ -45,6 +45,96 @@ class CompraController extends Controller
      * Creates a new Compra entity.
      *
      */
+//    public function createAction(Request $request)
+//    {
+//        $entity = new Compra();
+//        $form = $this->createCreateForm($entity);
+//        $form->handleRequest($request);
+//
+//        $linea = $this->createForm(new LineaType());
+//
+//        $em = $this->getDoctrine()->getManager();
+//
+//        if ($form->isValid()) {
+//
+//            $request = $this->get('request');
+//            $datos = $request->request->get('taller_compra');
+//
+//            $lineas = $datos['lineas'];
+//
+//            foreach($lineas as $datos){
+//                //---Inform Stock
+//                $idproducto = $datos['productos'];
+//                $idbodega   = $datos['bodegas'];
+//                $cantPedido = $datos['cantidad_pedido'];
+//
+//                $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idproducto);
+//                $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idbodega);
+//
+//                $informeStock = new InformeStock();
+//                $informeStock->setProducto($producto);
+//                $informeStock->setAlmacen($bodega);
+//                $informeStock->setCantidadProductos($cantPedido);
+//                $informeStock->setFechaCompra($entity->getFechaPedido());
+//                $em->persist($informeStock);
+//                //---final-Inform Stock
+//
+//                //---Inform Productos Bodegas
+//                $idproducto = $datos['productos'];
+//                $idbodega   = $datos['bodegas'];
+//
+//                $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idproducto);
+//                $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idbodega);
+//
+//                $informeProductoBodega = $em->getRepository('BusetaBodegaBundle:InformeProductosBodega')->findOneBy(array(
+//                    'producto' => $idproducto,
+//                    'almacen' => $idbodega
+//                ));
+//
+//                //Si no existe ese producto en ese almacen
+//                $informeProductosBodega = new InformeProductosBodega();
+//
+//                if(count($informeProductoBodega) == 0){
+//                    $informeProductosBodega->setProducto($producto);
+//                    $informeProductosBodega->setAlmacen($bodega);
+//                    $informeProductosBodega->setCantidadProductos($cantPedido);
+//                    $em->persist($informeProductosBodega);
+//                }
+//                else //Si ya existe ese producto en ese almacen
+//                {
+//                    $informeProductoBodega->setCantidadProductos($informeProductoBodega->getCantidadProductos() + $cantPedido);
+//                    $em->persist($informeProductoBodega);
+//                }
+//                //---final--Inform Productos Bodegas
+//            }
+//
+//            $em->persist($entity);
+//            $em->flush();
+//
+//            return $this->redirect($this->generateUrl('compra_show', array('id' => $entity->getId())));
+//        }
+//
+//        $em = $this->getDoctrine()->getManager();
+//        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
+//
+//        $json = array();
+//
+//        foreach($productos as $p){
+//
+//            $json[$p->getId()] = array(
+//                'nombre' => $p->getNombre(),
+//                'precio_salida' => $p->getPrecioSalida(),
+//            );
+//        }
+//
+//        return $this->render('BusetaTallerBundle:Compra:new.html.twig', array(
+//            'entity' => $entity,
+//            'linea'  => $linea->createView(),
+//            'form'   => $form->createView(),
+//            'json'   => json_encode($json),
+//        ));
+//    }
+
     public function createAction(Request $request)
     {
         $entity = new Compra();
@@ -58,55 +148,6 @@ class CompraController extends Controller
         if ($form->isValid()) {
 
             $request = $this->get('request');
-            $datos = $request->request->get('taller_compra');
-
-            $lineas = $datos['lineas'];
-
-            foreach($lineas as $datos){
-                //---Inform Stock
-                $idproducto = $datos['productos'];
-                $idbodega   = $datos['bodegas'];
-                $cantPedido = $datos['cantidad_pedido'];
-
-                $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idproducto);
-                $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idbodega);
-
-                $informeStock = new InformeStock();
-                $informeStock->setProducto($producto);
-                $informeStock->setAlmacen($bodega);
-                $informeStock->setCantidadProductos($cantPedido);
-                $informeStock->setFechaCompra($entity->getFechaPedido());
-                $em->persist($informeStock);
-                //---final-Inform Stock
-
-                //---Inform Productos Bodegas
-                $idproducto = $datos['productos'];
-                $idbodega   = $datos['bodegas'];
-
-                $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idproducto);
-                $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idbodega);
-
-                $informeProductoBodega = $em->getRepository('BusetaBodegaBundle:InformeProductosBodega')->findOneBy(array(
-                    'producto' => $idproducto,
-                    'almacen' => $idbodega
-                ));
-
-                //Si no existe ese producto en ese almacen
-                $informeProductosBodega = new InformeProductosBodega();
-
-                if(count($informeProductoBodega) == 0){
-                    $informeProductosBodega->setProducto($producto);
-                    $informeProductosBodega->setAlmacen($bodega);
-                    $informeProductosBodega->setCantidadProductos($cantPedido);
-                    $em->persist($informeProductosBodega);
-                }
-                else //Si ya existe ese producto en ese almacen
-                {
-                    $informeProductoBodega->setCantidadProductos($informeProductoBodega->getCantidadProductos() + $cantPedido);
-                    $em->persist($informeProductoBodega);
-                }
-                //---final--Inform Productos Bodegas
-            }
 
             $em->persist($entity);
             $em->flush();

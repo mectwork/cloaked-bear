@@ -1,4 +1,4 @@
-{% extends "BusetaTallerBundle::layout.html.twig" %}
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
 
 {% form_theme form 'BusetaTemplateBundle:Widgets:collection_linea_insertadas.html.twig' %}
 
@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Adicionar nueva compra
+    Adicionar nueva prefactura
 {% endblock %}
 
 {% block area_trabajo %}
@@ -112,7 +112,7 @@
 
         <div class="row show-grid">
             <div class="col-md-4">
-                <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+                <input class="btn btn-primary" style="height: 34px" type="submit" value="Guardar">
                 <div class="btn-group">
                     <a class="btn btn-primary" href="{{ path('compra') }}"> Cancelar</a>
                 </div>
@@ -162,9 +162,9 @@
                         </div>
 
                         <div class="row show-grid">
-                            <div class="col-md-4">
-                                {{ form_row(linea.bodegas) }}
-                            </div>
+                            {#<div class="col-md-4">#}
+                                {#{{ form_row(linea.bodegas) }}#}
+                            {#</div>#}
 
                             <div class="col-md-4">
                                 {{ form_row(linea.precio_producto) }}
@@ -173,13 +173,13 @@
                             <div class="col-md-4">
                                 {{ form_row(linea.cantidad_pedido) }}
                             </div>
-                        </div>
 
-                        <div class="row show-grid">
                             <div class="col-md-4">
                                 {{ form_row(linea.impuesto) }}
                             </div>
+                        </div>
 
+                        <div class="row show-grid">
                             <div class="col-md-4" style="display: none;">
                                 {{ form_row(linea.monto) }}
                             </div>
@@ -373,7 +373,7 @@
                 var linea_cantidad_pedido = modal.find('#buseta_tallerbundle_linea_cantidad_pedido');
                 var linea_impuesto = modal.find('#buseta_tallerbundle_linea_impuesto');
                 var linea_monto = modal.find('#buseta_tallerbundle_linea_monto');
-                var linea_bodega = modal.find('#buseta_tallerbundle_linea_bodegas');
+//                var linea_bodega = modal.find('#buseta_tallerbundle_linea_bodegas');
 
                 var dataA = {
                     grupo_id: $(linea_grupo).val()
@@ -433,7 +433,7 @@
                             $('#taller_compra_lineas_' + index + '_cantidad_pedido').val(linea_cantidad_pedido.val()).prop('readonly','readonly');
                             $('#taller_compra_lineas_' + index + '_monto').val(linea_monto.val()).prop('readonly','readonly');
                             $('#taller_compra_lineas_' + index + '_impuesto').val(linea_impuesto.val()).prop;
-                            $('#taller_compra_lineas_' + index + '_bodegas').val(linea_bodega.val()).prop;
+//                            $('#taller_compra_lineas_' + index + '_bodegas').val(linea_bodega.val()).prop;
 
 
 

@@ -5,6 +5,7 @@ namespace Buseta\BodegaBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 /**
  * Tercero
  *
@@ -40,6 +41,7 @@ class Tercero
      * @var string
      *
      * @ORM\Column(name="nombres", type="string")
+     * @Assert\NotBlank()
      */
     private $nombres;
 
