@@ -1,0 +1,67 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo %}
+    Listado de pedidos de compras pendientes
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Listado de pedidos de compras pendientes
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <div class="btn-group" style="padding-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('pedidocompra_new') }}"><i class="fa fa-plus-circle"></i> Adicionar pedido de compra</a>
+    </div>
+
+    <table class="records_list table table-striped table-bordered table-condensed table-hover">
+        <thead>
+            <tr>
+                <th style="text-align: left;">Nro.Doc</th>
+                <th style="text-align: left;">Nro.Ref</th>
+                <th style="text-align: left;">Tercero (Proveedor)</th>
+                <th style="text-align: left;">Fecha Pedido</th>
+                <th style="text-align: left;">Almacén</th>
+                <th style="text-align: left;">Estado</th>
+                <th style="text-align: left;">Importe total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.numerodocumento }}</td>
+                <td>{{ entity.consecutivocompra }}</td>
+                <td>{{ entity.tercero }}</td>
+                <td>{% if entity.fechapedido %}{{ entity.fechapedido|date('d/m/Y') }}{% endif %}</td>
+                <td>{{ entity.almacen }}</td>
+                <td>{{ entity.estadodocumento }}</td>
+                <td>{{ entity.importetotal }}</td>
+
+                <td  style="width: 18% !important; text-align: center;">
+                    <div class="btn-group">
+                        <a class="btn btn-success btn-xs" href="{{ path('pedidocompra_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">No se encontraron registros de pedidos de compras en el sistema.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                {{ knp_pagination_render(entities) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

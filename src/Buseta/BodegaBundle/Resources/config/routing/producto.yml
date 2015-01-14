@@ -41,4 +41,4 @@ producto_ajax_productos_all:
   defaults: { _controller: "BusetaBodegaBundle:Producto:select_productos_all" }
   requirements: { _method: "GET" }
   options:
-      expose: trues
+      expose: true

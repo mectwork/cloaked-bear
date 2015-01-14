@@ -13,37 +13,32 @@
                     <div  {{ block('widget_container_attributes') }}>
                         <h4>Listado de líneas insertadas:</h4>
 
-                        <div class="row form-group" >
-                            <div class="col-lg-12">
-                                <div class="col-lg-2" style="text-align: center;"><b>Número</b></div>
-                                <div class="col-lg-2" style="text-align: center;"><b>Tipo</b></div>
-                                <div class="col-lg-2" style="text-align: center;"><b>Condicion</b></div>
+                        <table  class="records_list table table-striped table-bordered table-condensed table-hover" style="font-size: 13px;">
+                            <thead>
+                                <tr>
+                                    <th>Línea</th>
+                                    <th>Producto</th>
+                                    <th>Cant.Pedido</th>
+                                    <th>UOM</th>
+                                    <th>Precio</th>
+                                    <th>Impuesto</th>
+                                    <th>Moneda</th>
+                                    <th>%Descuento</th>
+                                    <th>Importe</th>
+                                </tr>
+                            </thead>
 
-                                <div class="col-lg-2" style="text-align: center;"><b>Grupo</b></div>
-                                <div class="col-lg-2" style="text-align: center;"><b>Subgrupo</b></div>
-                                <div class="col-lg-2" style="text-align: center;"><b>Producto</b></div>
-                                {#<div class="col-lg-2" style="text-align: center;"><b>Bodega</b></div>#}
+                            <tbody id="tbody">
+                                    {% set counter = form | length %}
+                                    {% for rows in form %}
+                                        <tr class="row form-group">
+                                            {{ _self.template(rows) }}
+                                        </tr>
+                                    {% endfor %}
+                            </tbody>
 
-                                <div class="col-lg-2" style="text-align: center;"><b>Cantidad Pedido</b></div>
-                                <div class="col-lg-2" style="text-align: center;"><b>Precio</b></div>
-                                <div class="col-lg-2" style="text-align: center;"><b>Impuesto</b></div>
-                                <div class="col-lg-2" style="text-align: center;"><b>Monto</b></div>
-                            </div>
-                        </div>
 
-                        <div id="tbody">
-                            {% set counter = form | length %}
-                            {% for rows in form %}
-                                <div class="row form-group">
-                                    {{ _self.template(rows) }}
-                                </div>
-                            {% endfor %}
-                            {% if counter == 0 %}
-                                <div id="no-elements-tr">No existen elementos. Presione "Adicionar" para agregar nuevos elementos.</div>
-                            {% else %}
-                                <div id="no-elements-tr">No existen elementos. Presione "Adicionar" para agregar nuevos elementos.</div>
-                            {% endif %}
-                        </div>
+                        </table>
                     </div>
                 </div>
 
@@ -65,60 +60,50 @@
 {% endblock collection_item_widget %}
 
 {% macro template(prototype) %}
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.numero) }}
-        {{ form_widget(prototype.numero) }}
-    </div>
+    <td>
+        {{ form_errors(prototype.linea) }}
+        {{ form_widget(prototype.linea) }}
+    </td>
 
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.tipo) }}
-        {{ form_widget(prototype.tipo) }}
-    </div>
+    <td>
+        {{ form_errors(prototype.producto) }}
+        {{ form_widget(prototype.producto) }}
+    </td>
 
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.condicion) }}
-        {{ form_widget(prototype.condicion) }}
-    </div>
-
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.grupos) }}
-        {{ form_widget(prototype.grupos) }}
-    </div>
-
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.subgrupos) }}
-        {{ form_widget(prototype.subgrupos) }}
-    </div>
-
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.productos) }}
-        {{ form_widget(prototype.productos) }}
-    </div>
-
-    {#<div class="col-lg-2 form-group">#}
-        {#{{ form_errors(prototype.bodegas) }}#}
-        {#{{ form_widget(prototype.bodegas) }}#}
-    {#</div>#}
-
-    <div class="col-lg-2 form-group">
+    <td>
         {{ form_errors(prototype.cantidad_pedido) }}
         {{ form_widget(prototype.cantidad_pedido) }}
-    </div>
+    </td>
 
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.precio_producto) }}
-        {{ form_widget(prototype.precio_producto) }}
-    </div>
+    <td>
+        {{ form_errors(prototype.uom) }}
+        {{ form_widget(prototype.uom) }}
+    </td>
 
-    <div class="col-lg-2 form-group">
+    <td>
+        {{ form_errors(prototype.precio_unitario) }}
+        {{ form_widget(prototype.precio_unitario) }}
+    </td>
+
+    <td>
         {{ form_errors(prototype.impuesto) }}
         {{ form_widget(prototype.impuesto) }}
-    </div>
+    </td>
 
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.monto) }}
-        {{ form_widget(prototype.monto) }}
-    </div>
+    <td>
+        {{ form_errors(prototype.moneda) }}
+        {{ form_widget(prototype.moneda) }}
+    </td>
+
+    <td>
+        {{ form_errors(prototype.porciento_descuento) }}
+        {{ form_widget(prototype.porciento_descuento) }}
+    </td>
+
+    <td>
+        {{ form_errors(prototype.importe_linea) }}
+        {{ form_widget(prototype.importe_linea) }}
+    </td>
 
     <div class="col-lg-1 form-group">
         <a class="btn btn-primary delete_tag_link" href="#"><i class="fa fa-minus-circle"></i></a>

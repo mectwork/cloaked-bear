@@ -1,0 +1,404 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% form_theme form 'BusetaTemplateBundle:Widgets:collection_linea_insertadas.html.twig' %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Adicionar nuevo pedido de compra
+{% endblock %}
+
+{% block area_trabajo %}
+
+    {{ form_start(form) }}
+
+    <div class="row">
+    <div class="col-lg-12">
+    <div class="panel panel-default">
+    <!-- /.panel-heading -->
+    <div class="panel-body">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#basicos" data-toggle="tab">Datos básicos</a>
+        </li>
+        <li>
+            <a id="tab_lineas" href="#lineas" data-toggle="tab">Líneas</a>
+        </li>
+
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+    <div class="tab-pane fade in active" id="basicos">
+            <div class="row show-grid">
+                <div class="col-md-4">
+                    {{ form_row(form.numero_documento) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.consecutivo_compra) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.tercero) }}
+                </div>
+            </div>
+
+            <div class="row show-grid">
+                <div class="col-md-4">
+                    {{ form_row(form.almacen) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.fecha_pedido) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.forma_pago) }}
+                </div>
+            </div>
+
+            <div class="row show-grid">
+                <div class="col-md-4">
+                    {{ form_row(form.condiciones_pago) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.moneda) }}
+                </div>
+            </div>
+
+
+    </div>
+
+    <!-- TAB LINEAS-->
+    <div class="tab-pane fade" id="lineas">
+
+        <div class="row show-grid">
+            <div class="col-md-12">
+                {{ form_row(form.pedido_compra_lineas) }}
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-md-4">
+                <div class="btn-group">
+                    <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar línea</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-md-4">
+                {{ form_row(form.importe_total_lineas) }}
+            </div>
+
+            <div class="col-md-4">
+                {{ form_row(form.importe_total) }}
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+
+    </div>
+    <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+
+
+    </div>
+    <!-- /.col-lg-6 -->
+        <div class="row show-grid">
+            <div class="col-md-4">
+                <input id="guardarPedido" class="btn btn-primary" style="height: 34px" type="button" value="Guardar">
+                <input id="guardarLineas" class="btn btn-primary" style="height: 34px" type="submit" value="Procesar">
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="{{ path('pedidocompra') }}"> Cancelar</a>
+                </div>
+            </div>
+        </div>
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="newLinea" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 850px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title" id="myModalLabel">Datos de nueva línea</h3>
+                </div>
+                <div class="modal-body" style="width: 800px;">
+                    <form action="{{ path('pedido_compra_linea_compra_create') }}" method="post" {{ form_enctype(pedido_compra_linea) }}>
+                        <div class="row show-grid">
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.linea) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.producto) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.cantidad_pedido) }}
+                            </div>
+                        </div>
+
+                        <div class="row show-grid">
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.uom) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.precio_unitario) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.impuesto) }}
+                            </div>
+                        </div>
+
+                        <div class="row show-grid">
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.moneda) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.porciento_descuento) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.importe_linea) }}
+                            </div>
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
+                    <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</i></a>
+
+                </div>
+                {{ form_rest(pedido_compra_linea) }}
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('vendors/funciones_datetime_new.js') }}"></script>
+
+    <script type="text/javascript">
+
+        $(function(){
+            //$('#tab_lineas').fadeOut(100);
+            $('#{{ pedido_compra_linea.precio_unitario.vars.id }}').prop('readonly','readonly');
+
+            $('#{{ pedido_compra_linea.producto.vars.id }}').change(function(){
+                var data = {
+                    producto_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("producto_ajax_productos_all") }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+                        var precio_text = $('#{{ pedido_compra_linea.precio_unitario.vars.id }}');
+
+                        precio_text.val(values.precio);
+                    }
+                });
+            });
+
+            $('#guardarPedido').click(function(){
+                var data = {
+                    numero_documento:           $('#{{ form.numero_documento.vars.id }}').val(),
+                    consecutivo_compra:         $('#{{ form.consecutivo_compra.vars.id }}').val(),
+                    tercero:                    $('#{{ form.tercero.vars.id }}').val(),
+                    almacen:                    $('#{{ form.almacen.vars.id }}').val(),
+                    fecha_pedido:               $('#{{ form.fecha_pedido.vars.id }}').val(),
+                    forma_pago:                 $('#{{ form.forma_pago.vars.id }}').val(),
+                    condiciones_pago:           $('#{{ form.condiciones_pago.vars.id }}').val(),
+                    moneda:                     $('#{{ form.moneda.vars.id }}').val(),
+                    importe_total_lineas:       $('#{{ form.importe_total_lineas.vars.id }}').val(),
+                    importe_total:              $('#{{ form.importe_total.vars.id }}').val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("guardarPedido") }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+                        $('#tab_lineas').fadeIn(100);
+                        console.log(values);
+                    }
+                });
+            });
+
+
+        });
+
+        var collectionHolder = $('div#bodega_pedido_compra_pedido_compra_lineas');
+        var $addTagLink = $('a.add_tag_link');
+
+        jQuery(document).ready(function() {
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
+
+            updateDeleteLink();
+            updateView();
+
+            function addTagForm(collectionHolder) {
+                // Get the data-prototype explained earlier
+                var prototype = collectionHolder.data('prototype');
+
+                // get the new index
+                var index = collectionHolder.data('index');
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = prototype.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                collectionHolder.data('index', index + 1);
+
+                // Display the form in the page in an li, before the "Add a tag" link li
+                var $newFormDiv = $('<tr></tr>').append(newForm);
+                collectionHolder.find('#tbody').append($newFormDiv);
+                updateDeleteLink();
+                updateView();
+            }
+
+            function updateDeleteLink(){
+                $('a.delete_tag_link').on('click', function(e) {
+                    // prevent the link from creating a "#" on the URL
+                    e.preventDefault();
+
+                    // remove the li for the tag form
+                    $(this).parent().parent().remove();
+
+                    actualizarMontoTotal();
+
+                    updateView();
+                });
+            }
+
+            function updateView(){
+                counter = collectionHolder.find('a.delete_tag_link').length;
+                if(counter == 0){
+                    $('div#no-elements-tr').show();
+                }else{
+                    $('div#no-elements-tr').hide();
+                }
+            }
+
+            function actualizarMontoTotal(){
+                //Obtener cada valor de las lineas y sumarlas a una variable
+                var montototal = 0;
+                var precioTotal = 0;
+
+                $('[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_importe_linea"]').each(function(key, value){
+                    montototal += parseFloat($(value).val());
+                });
+
+                //Actualizar el valor del precio y monto de todas las lineas
+                $('#bodega_pedido_compra_importe_total_lineas').val(montototal);
+                $('#bodega_pedido_compra_importe_total').val(montototal);
+            }
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                var modal = $('#newLinea');
+
+                // captura de valores del modal
+                var linea_linea             = modal.find('#buseta_bodegabundle_pedido_compra_linea_linea');
+                var linea_producto          = modal.find('#buseta_bodegabundle_pedido_compra_linea_producto');
+                var linea_cantidad_pedido   = modal.find('#buseta_bodegabundle_pedido_compra_linea_cantidad_pedido');
+
+                var linea_uom               = modal.find('#buseta_bodegabundle_pedido_compra_linea_uom');
+                var linea_precio_unitario   = modal.find('#buseta_bodegabundle_pedido_compra_linea_precio_unitario');
+                var linea_impuesto          = modal.find('#buseta_bodegabundle_pedido_compra_linea_impuesto');
+
+                var linea_moneda                = modal.find('#buseta_bodegabundle_pedido_compra_linea_moneda');
+                var linea_porciento_descuento   = modal.find('#buseta_bodegabundle_pedido_compra_linea_porciento_descuento');
+                var linea_importe_linea         = modal.find('#buseta_bodegabundle_pedido_compra_linea_importe_linea');
+
+                var dataA = {
+                    impuesto_id         : $('#{{ pedido_compra_linea.impuesto.vars.id }}').val(),
+                    cantidad_pedido     : $('#{{ pedido_compra_linea.cantidad_pedido.vars.id }}').val(),
+                    precio_unitario     : $('#{{ pedido_compra_linea.precio_unitario.vars.id }}').val(),
+                    porciento_descuento : $('#{{ pedido_compra_linea.porciento_descuento.vars.id }}').val()
+                };
+
+                $.when(
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ path("impuesto_ajax_productos_all") }}',
+                            data: dataA
+                        })
+
+                ).done(function(data, textStatus, jqXHR){
+
+                            var valorA = $.parseJSON(data);
+
+                            $('#{{ pedido_compra_linea.importe_linea.vars.id }}').val(valorA.importeLinea);
+
+                            var index = collectionHolder.data('index');
+
+                            addTagForm(collectionHolder);
+
+                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_linea').val(linea_linea.val());
+                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_producto').val(linea_producto.val());
+                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_cantidad_pedido').val(linea_cantidad_pedido.val());
+
+                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_uom').val(linea_uom.val());
+                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_precio_unitario').val(linea_precio_unitario.val());
+                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_impuesto').val(linea_impuesto.val());
+
+                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_moneda').val(linea_moneda.val());
+                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_porciento_descuento').val(linea_porciento_descuento.val());
+                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_importe_linea').val(linea_importe_linea.val());
+
+                            /*Obtener cada valor de las lineas y sumarlas a una variable*/
+                            actualizarMontoTotal();
+
+
+                        })
+
+
+                /*var index = collectionHolder.data('index');
+
+                addTagForm(collectionHolder);*/
+
+            });
+
+
+        });
+
+
+    </script>
+
+{% endblock javascripts %}

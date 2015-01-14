@@ -2,7 +2,7 @@ var fecha = $('#buseta_informestock_autobus_fecha').pickadate({
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
 });
-var fecha_pedido = $('#taller_compra_fecha_pedido').pickadate({
+var fecha_pedido = $('#bodega_pedido_compra_fecha_pedido').pickadate({
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
 });
@@ -59,8 +59,8 @@ $('input:hidden[name^="buseta_databundle_autobus[valido_hasta]_submit"]').val(va
 var fechaingreso = $('#buseta_databundle_autobus_fecha_ingreso').val();
 $('input:hidden[name^="buseta_databundle_autobus[fecha_ingreso]_submit"]').val(fechaingreso);
 
-var fechapedido = $('#taller_compra_fecha_pedido').val();
-$('input:hidden[name^="taller_compra[fecha_pedido]_submit"]').val(fechapedido);
+var fechapedido = $('#bodega_pedido_compra_fecha_pedido').val();
+$('input:hidden[name^="bodega_pedido_compra[fecha_pedido]_submit"]').val(fechapedido);
 
 var recorrido_inicio = $('#buseta_tallerbundle_tareamantenimiento_recorrido_inicio').val();
 $('input:hidden[name^="buseta_tallerbundle_tareamantenimiento[recorrido_inicio]_submit"]').val(recorrido_inicio);

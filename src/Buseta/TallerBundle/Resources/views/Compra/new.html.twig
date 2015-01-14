@@ -7,48 +7,123 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Adicionar nueva prefactura
+    Adicionar nuevo pedido de compra
 {% endblock %}
 
 {% block area_trabajo %}
 
-    {{ form_start(form) }}
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.numero) }}
+
+    <div class="row">
+    <div class="col-lg-12">
+    <div class="panel panel-default">
+    <!-- /.panel-heading -->
+    <div class="panel-body">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#basicos" data-toggle="tab">Datos básicos</a>
+        </li>
+        <li>
+            <a id="tab_lineas" href="#lineas" data-toggle="tab">Líneas</a>
+        </li>
+
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+    <div class="tab-pane fade in active" id="basicos">
+        {{ form_start(form) }}
+            <div class="row show-grid">
+                <div class="col-md-4">
+                    {{ form_row(form.numero) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.consecutivo_compra) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.tercero) }}
+                </div>
             </div>
 
-            <div class="col-md-4">
-                {{ form_row(form.consecutivo_compra) }}
+            <div class="row show-grid">
+                <div class="col-md-12">
+                    {{ form_row(form.descripcion) }}
+                </div>
             </div>
 
-            <div class="col-md-4">
-                {{ form_row(form.tercero) }}
+            <div class="row show-grid">
+                <div class="col-md-4">
+                    {{ form_row(form.numero_factura_proveedor) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.fecha_pedido) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.centro_costo) }}
+                </div>
             </div>
-        </div>
+
+            <div class="row show-grid">
+                <div class="col-md-4">
+                    {{ form_row(form.forma_pago) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.condiciones_pago) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.moneda) }}
+                </div>
+            </div>
+
+            <div class="row show-grid">
+                <div class="col-md-4">
+                    {{ form_row(form.importe_libre_impuesto) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.importe_con_impuesto) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.importe_general) }}
+                </div>
+            </div>
+
+            <div class="row show-grid">
+                <div class="col-md-4">
+                    {{ form_row(form.orden_prioridad) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.mecanico_solicita) }}
+                </div>
+
+                <div class="col-md-4">
+                    {{ form_row(form.estado) }}
+                </div>
+            </div>
+
+            <div class="row show-grid">
+                <div class="col-md-4">
+                    {{ form_row(form.precio_general) }}
+                </div>
+
+            </div>
+
+    </div>
+
+    <!-- TAB LINEAS-->
+    <div class="tab-pane fade" id="lineas">
 
         <div class="row show-grid">
             <div class="col-md-12">
-                {{ form_row(form.descripcion) }}
-            </div>
-        </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.numero_factura_proveedor) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.fecha_pedido) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.centro_costo) }}
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-12">
                 {{ form_row(form.lineas) }}
             </div>
         </div>
@@ -61,58 +136,21 @@
             </div>
         </div>
 
+    </div>
+
+    </div>
+
+    </div>
+    <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+
+
+    </div>
+    <!-- /.col-lg-6 -->
         <div class="row show-grid">
             <div class="col-md-4">
-                {{ form_row(form.forma_pago) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.condiciones_pago) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.moneda) }}
-            </div>
-        </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.importe_libre_impuesto) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.importe_con_impuesto) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.importe_general) }}
-            </div>
-        </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.orden_prioridad) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.mecanico_solicita) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.estado) }}
-            </div>
-        </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.precio_general) }}
-            </div>
-
-        </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                <input class="btn btn-primary" style="height: 34px" type="submit" value="Guardar">
+                <input id="guardarPedido" class="btn btn-primary" style="height: 34px" type="button" value="Guardar">
                 <div class="btn-group">
                     <a class="btn btn-primary" href="{{ path('compra') }}"> Cancelar</a>
                 </div>
@@ -120,8 +158,8 @@
         </div>
 
         {{ form_rest(form) }}
-    {{ form_end(form) }}
-
+        {{ form_end(form) }}
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="newLinea" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -212,6 +250,31 @@
     <script type="text/javascript">
 
         $(function(){
+            $('#tab_lineas').fadeOut(100);
+
+
+            $('#guardarPedido').click(function(){
+                var data = {
+                    numero:                     $('#{{ form.numero.vars.id }}').val(),
+                    consecutivo_compra:         $('#{{ form.consecutivo_compra.vars.id }}').val(),
+                    tercero:                    $('#{{ form.tercero.vars.id }}').val(),
+                    descripcion:                $('#{{ form.descripcion.vars.id }}').val(),
+                    numero_factura_proveedor:   $('#{{ form.numero_factura_proveedor.vars.id }}').val(),
+                    fecha_pedido:               $('#{{ form.fecha_pedido.vars.id }}').val(),
+                    centro_costo:               $('#{{ form.centro_costo.vars.id }}').val(),
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("guardarPedido") }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+                        $('#tab_lineas').fadeIn(100);
+                        console.log(values);
+                    }
+                });
+            });
 
             $('#{{ linea.grupos.vars.id }}').change(function(){
                 var data = {

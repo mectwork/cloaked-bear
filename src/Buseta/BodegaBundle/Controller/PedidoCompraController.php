@@ -1,22 +1,22 @@
 <?php
 
-namespace Buseta\TallerBundle\Controller;
+namespace Buseta\BodegaBundle\Controller;
 
 use Buseta\BodegaBundle\Entity\InformeProductosBodega;
 use Buseta\BodegaBundle\Entity\InformeStock;
-use Buseta\TallerBundle\Entity\Linea;
-use Buseta\TallerBundle\Form\Type\LineaType;
+use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
+use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use Buseta\TallerBundle\Entity\Compra;
-use Buseta\TallerBundle\Form\Type\CompraType;
+use Buseta\BodegaBundle\Entity\PedidoCompra;
+use Buseta\BodegaBundle\Form\Type\PedidoCompraType;
 
 /**
- * Compra controller.
+ * PedidoCompra controller.
  *
  */
-class CompraController extends Controller
+class PedidoCompraController extends Controller
 {
 
     public function guardarPedidoAction(Request $request) {
@@ -28,24 +28,65 @@ class CompraController extends Controller
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
 
         $em = $this->getDoctrine()->getManager();
-        $datos = $request->query->get('numero');
+
+        $numero_documento = $request->query->get('numero_documento');
+        $consecutivo_compra = $request->query->get('consecutivo_compra');
+        $tercero = $request->query->get('tercero');
+        $almacen = $request->query->get('almacen');
+        $fecha_pedido = $request->query->get('fecha_pedido');
+        //$estado_documento = $request->query->get('estado_documento');
+        $forma_pago = $request->query->get('forma_pago');
+        $condiciones_pago = $request->query->get('condiciones_pago');
+        $moneda = $request->query->get('moneda');
+        $importe_total_lineas = $request->query->get('importe_total_lineas');
+        $importe_total = $request->query->get('importe_total');
+
+        $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($tercero);
+        $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($almacen);
+        $forma_pago = $em->getRepository('BusetaNomencladorBundle:FormaPago')->find($forma_pago);
+        $condiciones_pago = $em->getRepository('BusetaTallerBundle:CondicionesPago')->find($condiciones_pago);
+
+        //$fecha = new \DateTime('now');
+        $date='%s-%s-%s GMT-0';
+        $fecha = explode("/", $fecha_pedido);
+        $d = $fecha[0]; $m = $fecha[1];
+        $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
+        $y = $fecha[0];
+
+        $fecha_pedido =  new \DateTime(sprintf($date,$y,$m,$d));
+
+        $pedidoCompra = new PedidoCompra();
+        $pedidoCompra->setNumeroDocumento($numero_documento);
+        $pedidoCompra->setConsecutivoCompra($consecutivo_compra);
+        $pedidoCompra->setTercero($tercero);
+        $pedidoCompra->setAlmacen($almacen);
+        $pedidoCompra->setFechaPedido($fecha_pedido);
+        //$pedidoCompra->setEstadoDocumento($estado_documento);
+        $pedidoCompra->setFormaPago($forma_pago);
+        $pedidoCompra->setCondicionesPago($condiciones_pago);
+        $pedidoCompra->setMoneda($moneda);
+        $pedidoCompra->setImporteTotalLineas($importe_total_lineas);
+        $pedidoCompra->setImporteTotal($importe_total);
+
+        $em->persist($pedidoCompra);
+        $em->flush();
 
         $json[] = array(
-            'id' => $datos,
+            'id' => $numero_documento,
         );
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
 
     /**
-     * Lists all Compra entities.
+     * Lists all PedidoCompra entities.
      *
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('BusetaTallerBundle:Compra')->findAll();
+        $entities = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->findAll();
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
@@ -55,17 +96,17 @@ class CompraController extends Controller
             array('pageParameterName' => 'page')
         );
 
-        return $this->render('BusetaTallerBundle:Compra:index.html.twig', array(
+        return $this->render('BusetaBodegaBundle:PedidoCompra:index.html.twig', array(
             'entities' => $entities,
         ));
     }
     /**
-     * Creates a new Compra entity.
+     * Creates a new PedidoCompra entity.
      *
      */
 //    public function createAction(Request $request)
 //    {
-//        $entity = new Compra();
+//        $entity = new PedidoCompra();
 //        $form = $this->createCreateForm($entity);
 //        $form->handleRequest($request);
 //
@@ -76,7 +117,7 @@ class CompraController extends Controller
 //        if ($form->isValid()) {
 //
 //            $request = $this->get('request');
-//            $datos = $request->request->get('taller_compra');
+//            $datos = $request->request->get('taller_pedidocompra');
 //
 //            $lineas = $datos['lineas'];
 //
@@ -93,7 +134,7 @@ class CompraController extends Controller
 //                $informeStock->setProducto($producto);
 //                $informeStock->setAlmacen($bodega);
 //                $informeStock->setCantidadProductos($cantPedido);
-//                $informeStock->setFechaCompra($entity->getFechaPedido());
+//                $informeStock->setFechaPedidoCompra($entity->getFechaPedido());
 //                $em->persist($informeStock);
 //                //---final-Inform Stock
 //
@@ -129,7 +170,7 @@ class CompraController extends Controller
 //            $em->persist($entity);
 //            $em->flush();
 //
-//            return $this->redirect($this->generateUrl('compra_show', array('id' => $entity->getId())));
+//            return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $entity->getId())));
 //        }
 //
 //        $em = $this->getDoctrine()->getManager();
@@ -145,7 +186,7 @@ class CompraController extends Controller
 //            );
 //        }
 //
-//        return $this->render('BusetaTallerBundle:Compra:new.html.twig', array(
+//        return $this->render('BusetaBodegaBundle:PedidoCompra:new.html.twig', array(
 //            'entity' => $entity,
 //            'linea'  => $linea->createView(),
 //            'form'   => $form->createView(),
@@ -155,56 +196,35 @@ class CompraController extends Controller
 
     public function createAction(Request $request)
     {
-        $entity = new Compra();
+        $entity = new PedidoCompra();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
-        $linea = $this->createForm(new LineaType());
-
-        $em = $this->getDoctrine()->getManager();
-
         if ($form->isValid()) {
-
-            $request = $this->get('request');
-
+            $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('compra_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $entity->getId())));
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
-
-        $json = array();
-
-        foreach($productos as $p){
-
-            $json[$p->getId()] = array(
-                'nombre' => $p->getNombre(),
-                'precio_salida' => $p->getPrecioSalida(),
-            );
-        }
-
-        return $this->render('BusetaTallerBundle:Compra:new.html.twig', array(
+        return $this->render('BusetaBodegaBundle:PedidoCompra:new.html.twig', array(
             'entity' => $entity,
-            'linea'  => $linea->createView(),
             'form'   => $form->createView(),
-            'json'   => json_encode($json),
         ));
     }
 
     /**
-    * Creates a form to create a Compra entity.
+    * Creates a form to create a PedidoCompra entity.
     *
-    * @param Compra $entity The entity
+    * @param PedidoCompra $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(Compra $entity)
+    private function createCreateForm(PedidoCompra $entity)
     {
-        $form = $this->createForm('taller_compra', $entity, array(
-            'action' => $this->generateUrl('compra_create'),
+        $form = $this->createForm('bodega_pedido_compra', $entity, array(
+            'action' => $this->generateUrl('pedidocompra_create'),
             'method' => 'POST',
         ));
 
@@ -214,14 +234,14 @@ class CompraController extends Controller
     }
 
     /**
-     * Displays a form to create a new Compra entity.
+     * Displays a form to create a new PedidoCompra entity.
      *
      */
     public function newAction()
     {
-        $entity = new Compra();
+        $entity = new PedidoCompra();
 
-        $linea = new Linea();
+        $pedido_compra_linea = new PedidoCompraLinea();
 
         $em = $this->getDoctrine()->getManager();
         $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
@@ -236,50 +256,50 @@ class CompraController extends Controller
             );
         }
 
-        $linea = $this->createForm(new LineaType());
+        $pedido_compra_linea = $this->createForm(new PedidoCompraLineaType());
         $form   = $this->createCreateForm($entity);
 
-        return $this->render('BusetaTallerBundle:Compra:new.html.twig', array(
+        return $this->render('BusetaBodegaBundle:PedidoCompra:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
-            'linea'  => $linea->createView(),
+            'pedido_compra_linea'  => $pedido_compra_linea->createView(),
             'json'   => json_encode($json),
         ));
     }
 
     /**
-     * Finds and displays a Compra entity.
+     * Finds and displays a PedidoCompra entity.
      *
      */
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaTallerBundle:Compra')->find($id);
+        $entity = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Compra entity.');
+            throw $this->createNotFoundException('Unable to find PedidoCompra entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('BusetaTallerBundle:Compra:show.html.twig', array(
+        return $this->render('BusetaBodegaBundle:PedidoCompra:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),        ));
     }
 
     /**
-     * Displays a form to edit an existing Compra entity.
+     * Displays a form to edit an existing PedidoCompra entity.
      *
      */
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaTallerBundle:Compra')->find($id);
+        $entity = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Compra entity.');
+            throw $this->createNotFoundException('Unable to find PedidoCompra entity.');
         }
 
         $linea = $this->createForm(new LineaType());
@@ -300,7 +320,7 @@ class CompraController extends Controller
             );
         }
 
-        return $this->render('BusetaTallerBundle:Compra:edit.html.twig', array(
+        return $this->render('BusetaBodegaBundle:PedidoCompra:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'linea'       => $linea->createView(),
@@ -310,16 +330,16 @@ class CompraController extends Controller
     }
 
     /**
-    * Creates a form to edit a Compra entity.
+    * Creates a form to edit a PedidoCompra entity.
     *
-    * @param Compra $entity The entity
+    * @param PedidoCompra $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Compra $entity)
+    private function createEditForm(PedidoCompra $entity)
     {
-        $form = $this->createForm('taller_compra',$entity, array(
-            'action' => $this->generateUrl('compra_update', array('id' => $entity->getId())),
+        $form = $this->createForm('taller_pedidocompra',$entity, array(
+            'action' => $this->generateUrl('pedidocompra_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -328,17 +348,17 @@ class CompraController extends Controller
         return $form;
     }
     /**
-     * Edits an existing Compra entity.
+     * Edits an existing PedidoCompra entity.
      *
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaTallerBundle:Compra')->find($id);
+        $entity = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Compra entity.');
+            throw $this->createNotFoundException('Unable to find PedidoCompra entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -348,7 +368,7 @@ class CompraController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('compra_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $id)));
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -364,7 +384,7 @@ class CompraController extends Controller
             );
         }
 
-        return $this->render('BusetaTallerBundle:Compra:edit.html.twig', array(
+        return $this->render('BusetaBodegaBundle:PedidoCompra:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -372,7 +392,7 @@ class CompraController extends Controller
         ));
     }
     /**
-     * Deletes a Compra entity.
+     * Deletes a PedidoCompra entity.
      *
      */
     public function deleteAction(Request $request, $id)
@@ -382,30 +402,30 @@ class CompraController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaTallerBundle:Compra')->find($id);
+            $entity = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Compra entity.');
+                throw $this->createNotFoundException('Unable to find PedidoCompra entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('compra'));
+        return $this->redirect($this->generateUrl('pedidocompra'));
     }
 
     /**
-     * Creates a form to delete a Compra entity by id.
+     * Creates a form to delete a PedidoCompra entity by id.
      *
      * @param mixed $id The entity id
-     *
+     *º
      * @return \Symfony\Component\Form\Form The form
      */
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('compra_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('pedidocompra_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

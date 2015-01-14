@@ -361,27 +361,4 @@ class Linea
 //    {
 //        return $this->bodegas;
 //    }
-
-    /**
-     * Set pedidoCompra
-     *
-     * @param \Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra
-     * @return Linea
-     */
-    public function setPedidoCompra(\Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra = null)
-    {
-        $this->pedidoCompra = $pedidoCompra;
-    
-        return $this;
-    }
-
-    /**
-     * Get pedidoCompra
-     *
-     * @return \Buseta\BodegaBundle\Entity\PedidoCompra 
-     */
-    public function getPedidoCompra()
-    {
-        return $this->pedidoCompra;
-    }
 }

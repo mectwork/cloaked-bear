@@ -28,3 +28,10 @@ compra_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "BusetaTallerBundle:Compra:delete" }
     requirements: { _method: post|delete }
+
+guardarPedido:
+  pattern: /guardarPedido
+  defaults: { _controller: "BusetaTallerBundle:Compra:guardarPedido" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true

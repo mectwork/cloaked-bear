@@ -408,37 +408,4 @@ class Producto
     {
         return $this->subgrupos;
     }
-
-    /**
-     * Add pedido_compra_lineas
-     *
-     * @param \Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas
-     * @return Producto
-     */
-    public function addPedidoCompraLinea(\Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas)
-    {
-        $this->pedido_compra_lineas[] = $pedidoCompraLineas;
-    
-        return $this;
-    }
-
-    /**
-     * Remove pedido_compra_lineas
-     *
-     * @param \Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas
-     */
-    public function removePedidoCompraLinea(\Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas)
-    {
-        $this->pedido_compra_lineas->removeElement($pedidoCompraLineas);
-    }
-
-    /**
-     * Get pedido_compra_lineas
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getPedidoCompraLineas()
-    {
-        return $this->pedido_compra_lineas;
-    }
 }

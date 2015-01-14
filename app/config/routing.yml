@@ -14,13 +14,17 @@ BusetaTallerBundle_condicionespago:
         resource: "@BusetaTallerBundle/Resources/config/routing/condicionespago.yml"
         prefix:   /condicionespago
 
-BusetaTallerBundle_linea:
-        resource: "@BusetaTallerBundle/Resources/config/routing/linea.yml"
-        prefix:   /linea
+BusetaTallerBundle_pedidocompralinea:
+        resource: "@BusetaBodegaBundle/Resources/config/routing/pedido_compra_linea.yml"
+        prefix:   /pedidocompralinea
 
-BusetaTallerBundle_compra:
-        resource: "@BusetaTallerBundle/Resources/config/routing/compra.yml"
-        prefix:   /compra
+BusetaTallerBundle_pedidocompra:
+        resource: "@BusetaBodegaBundle/Resources/config/routing/pedidocompra.yml"
+        prefix:   /pedidocompra
+
+BusetaTallerBundle_albaran:
+        resource: "@BusetaBodegaBundle/Resources/config/routing/albaran.yml"
+        prefix:   /albaran
 
 BusetaTallerBundle_impuesto:
         resource: "@BusetaTallerBundle/Resources/config/routing/impuesto.yml"

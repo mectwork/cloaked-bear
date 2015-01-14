@@ -5,17 +5,17 @@
 {% endblock %}
 
 {% block titulo %}
-    Listado de prefacturas pendientes
+    Listado de pedidos de compras pendientes
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listado de prefacturas pendientes
+    Listado de pedidos de compras pendientes
 {% endblock %}
 
 {% block area_trabajo %}
 
     <div class="btn-group" style="padding-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('compra_new') }}"><i class="fa fa-plus-circle"></i> Adicionar prefactura</a>
+        <a class="btn btn-primary" href="{{ path('compra_new') }}"><i class="fa fa-plus-circle"></i> Adicionar pedido de compra</a>
     </div>
 
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
@@ -66,7 +66,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="12">No se encontraron registros de compras en el sistema.</td>
+                <td colspan="12">No se encontraron registros de pedidos de compras en el sistema.</td>
             </tr>
         {% endfor %}
         </tbody>

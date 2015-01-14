@@ -342,37 +342,4 @@ class Tercero
     {
         return $this->pedidoCompra;
     }
-
-    /**
-     * Add albaran
-     *
-     * @param \Buseta\BodegaBundle\Entity\Albaran $albaran
-     * @return Tercero
-     */
-    public function addAlbaran(\Buseta\BodegaBundle\Entity\Albaran $albaran)
-    {
-        $this->albaran[] = $albaran;
-    
-        return $this;
-    }
-
-    /**
-     * Remove albaran
-     *
-     * @param \Buseta\BodegaBundle\Entity\Albaran $albaran
-     */
-    public function removeAlbaran(\Buseta\BodegaBundle\Entity\Albaran $albaran)
-    {
-        $this->albaran->removeElement($albaran);
-    }
-
-    /**
-     * Get albaran
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAlbaran()
-    {
-        return $this->albaran;
-    }
 }

@@ -146,6 +146,18 @@ class Compra
     private $mecanico_solicita;
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->lineas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->importe_con_impuesto = 0;
+        $this->importe_general = 0;
+        $this->importe_libre_impuesto = 0;
+        $this->precio_general = 0;
+    }
+
+    /**
      * @param string $orden_prioridad
      */
     public function setOrdenPrioridad($orden_prioridad)
@@ -400,14 +412,7 @@ class Compra
     {
         return $this->tercero;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->lineas = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
+
     /**
      * Add lineas
      *

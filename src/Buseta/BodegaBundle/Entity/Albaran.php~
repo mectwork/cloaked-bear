@@ -1,0 +1,40 @@
+<?php
+
+namespace Buseta\BodegaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * Albaran
+ *
+ * @ORM\Table(name="d_albaran")
+ * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\AlbaranRepository")
+ */
+class Albaran
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numero_documento", type="string", nullable=false)
+     * @Assert\NotBlank()
+     */
+    private $numero_documento;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="pedidoCompra")
+     */
+    private $tercero;
+    
+
+
+}

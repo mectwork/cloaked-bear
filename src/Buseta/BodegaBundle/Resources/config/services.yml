@@ -1,5 +1,5 @@
 parameters:
-#    buseta_bodega.example.class: Buseta\BodegaBundle\Example
+    consecutivoCompra: 89
 
 services:
     bodega.movimiento.type:
@@ -7,3 +7,8 @@ services:
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'buseta_bodegabundle_movimiento'}
+    bodega.compra.type:
+        class: Buseta\BodegaBundle\Form\Type\PedidoCompraType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'bodega_pedido_compra'}

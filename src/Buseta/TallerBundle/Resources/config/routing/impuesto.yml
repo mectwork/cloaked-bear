@@ -28,3 +28,10 @@ impuesto_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "BusetaTallerBundle:Impuesto:delete" }
     requirements: { _method: post|delete }
+
+impuesto_ajax_productos_all:
+  pattern: /select_impuesto_productos_all
+  defaults: { _controller: "BusetaTallerBundle:Impuesto:select_impuesto_productos_all" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true

@@ -1,0 +1,30 @@
+albaran:
+    pattern:  /
+    defaults: { _controller: "BusetaBodegaBundle:Albaran:index" }
+
+albaran_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaBodegaBundle:Albaran:show" }
+
+albaran_new:
+    pattern:  /new
+    defaults: { _controller: "BusetaBodegaBundle:Albaran:new" }
+
+albaran_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaBodegaBundle:Albaran:create" }
+    requirements: { _method: post }
+
+albaran_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BusetaBodegaBundle:Albaran:edit" }
+
+albaran_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BusetaBodegaBundle:Albaran:update" }
+    requirements: { _method: post|put }
+
+albaran_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BusetaBodegaBundle:Albaran:delete" }
+    requirements: { _method: post|delete }

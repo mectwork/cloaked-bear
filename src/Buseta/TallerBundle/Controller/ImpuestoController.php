@@ -14,6 +14,53 @@ use Buseta\TallerBundle\Form\Type\ImpuestoType;
  */
 class ImpuestoController extends Controller
 {
+    /**
+     * Updated automatically select All when change select Impuesto
+     *
+     */
+    public function select_impuesto_productos_allAction(Request $request) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+
+        $request = $this->getRequest();
+        if (!$request->isXmlHttpRequest())
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $impuesto = $em->getRepository('BusetaTallerBundle:Impuesto')->findOneBy(array(
+            'id' => $request->query->get('impuesto_id')
+        ));
+
+        $importeLinea = 0;
+
+        $cantidad_pedido     = $request->query->get('cantidad_pedido');
+        $precio_unitario     = $request->query->get('precio_unitario');
+        $porciento_descuento = $request->query->get('porciento_descuento');
+
+        $tipoImpuesto   = $impuesto->getTipo();
+        $tarifaImpuesto = $impuesto->getTarifa();
+
+        if($tipoImpuesto == "fijo")
+        {
+            $importeLinea     = ($cantidad_pedido * $precio_unitario) + $tarifaImpuesto;
+            $importeDescuento = $importeLinea * $porciento_descuento / 100;
+            $importeLinea     = $importeLinea - $importeDescuento;
+        }
+        elseif($tipoImpuesto == "porcentaje")
+        {
+            $importeImpuesto  = ($cantidad_pedido * $precio_unitario) * $tarifaImpuesto / 100;
+            $importeLinea     = ($cantidad_pedido * $precio_unitario) + $importeImpuesto;
+            $importeDescuento = $importeLinea * $porciento_descuento / 100;
+            $importeLinea     = $importeLinea - $importeDescuento;
+        }
+
+        $json = array(
+            'importeLinea' => $importeLinea,
+        );
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
 
     /**
      * Lists all Impuesto entities.

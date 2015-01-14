@@ -1,0 +1,37 @@
+pedidocompra:
+    pattern:  /
+    defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:index" }
+
+pedidocompra_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:show" }
+
+pedidocompra_new:
+    pattern:  /new
+    defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:new" }
+
+pedidocompra_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:create" }
+    requirements: { _method: post }
+
+pedidocompra_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:edit" }
+
+pedidocompra_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:update" }
+    requirements: { _method: post|put }
+
+pedidocompra_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:delete" }
+    requirements: { _method: post|delete }
+
+guardarPedido:
+  pattern: /guardarPedido
+  defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:guardarPedido" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true
