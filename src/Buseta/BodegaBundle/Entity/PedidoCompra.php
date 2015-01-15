@@ -81,7 +81,7 @@ class PedidoCompra
      *
      * @ORM\Column(name="estado_documento", type="string", nullable=false)
      */
-    private $estado_documento;
+    private $estado_documento = 'BO';
 
     /**
      * @var float
@@ -111,7 +111,6 @@ class PedidoCompra
         $this->pedido_compra_lineas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->importe_total_lineas = 0;
         $this->importe_total = 0;
-        $this->estado_documento = 'Borrador';
     }
     
     /**

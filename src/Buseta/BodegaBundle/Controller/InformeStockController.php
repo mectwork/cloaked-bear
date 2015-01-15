@@ -19,7 +19,7 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('BusetaBodegaBundle:InformeStock')->findAll();
+        $entities = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->findAll();
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(

@@ -1,0 +1,120 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% trans_default_domain 'BusetaBodegaBundle' %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Datos del albarán
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <table class="table table-striped" style="font-size: 16px;">
+        <tbody>
+
+            <tr>
+                <th>Nro.Documento</th>
+                <td>{{ entity.consecutivoCompra }}</td>
+            </tr>
+
+            <tr>
+                <th>Nro.Referencia</th>
+                <td>
+                    {% if entity.numeroReferencia == null %}
+                        -
+                    {% else %}
+                        {{ entity.numeroReferencia }}
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr>
+                <th>Fecha Movimiento</th>
+                <td>
+                    {% if entity.fechaMovimiento == null %}
+                        -
+                    {% else %}
+                        {{ entity.fechaMovimiento | date('d/m/Y') }}
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr>
+                <th>Fecha Contable</th>
+                <td>
+                    {% if entity.fechaContable == null %}
+                        -
+                    {% else %}
+                        {{ entity.fechaContable | date('d/m/Y') }}
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr>
+                <th>Almacén</th>
+                <td>{{ entity.almacen }}</td>
+            </tr>
+
+            <tr>
+                <th>Tercero (Nombres y apellidos)</th>
+                <td>{{ entity.tercero.nombres }} {{ entity.tercero.apellidos }}</td>
+            </tr>
+
+            <tr>
+                <th>Estado Documento</th>
+                <td>{{ ('estado.'~entity.estadoDocumento) | trans({}, 'BusetaTallerBundle') }}</td>
+            </tr>
+
+            <tr>
+                <th>Líneas existentes</th>
+                <td>
+                    <table class="table table-striped" style="font-size: 16px;">
+                        <th>Línea</th>
+                        <th>Producto</th>
+                        <th>Cantidad Movida</th>
+                        <th>Almacén</th>
+                        <th>UOM</th>
+                        <th>Valor Atributos</th>
+
+                        {% for linea in entity.albaranLinea %}
+                        <tbody>
+                        <tr>
+                            <td>{{ linea.linea }}</td>
+                            <td>{{ linea.producto.nombre }}</td>
+                            <td>{{ linea.cantidadMovida }}</td>
+                            <td>{{ linea.almacen.nombre }}</td>
+                            <td>{{ linea.uom.valor }}</td>
+                            <td>{{ linea.valoratributos }}</td>
+                        </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">
+                                    <span class="label label-danger">No existen líneas de albaranes disponibles</span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="btn-group">
+        <a class="btn btn-primary" href="{{ path('albaran_edit', { 'id': entity.id }) }}"> Procesar</a>
+    </div>
+
+    <div class="btn-group">
+        <a class="btn btn-primary" href="{{ path('albaran') }}"> Listado</a>
+    </div>
+
+
+{% endblock %}
+
+
+{% block contenido %}
+
+
+{% endblock %}

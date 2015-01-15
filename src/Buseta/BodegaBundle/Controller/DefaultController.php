@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Controller;
 
 
+use Buseta\BodegaBundle\Entity\InformeStock;
 use Symfony\Component\HttpFoundation\Request;
 use Buseta\BodegaBundle\Form\Model\InformeStockModel;
 use Buseta\BodegaBundle\Form\Type\InformeStockType;
@@ -15,36 +16,18 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('BusetaBodegaBundle:InformeStock')->findAll();
+        $informeStock = $em->getRepository('BusetaBodegaBundle:InformeStock')->findAll();
 
         $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-            $entities,
+        $informeStock = $paginator->paginate(
+            $informeStock,
             $this->get('request')->query->get('page', 1),
             5,
             array('pageParameterName' => 'page')
         );
 
         return $this->render('BusetaBodegaBundle:InformeStock:index.html.twig', array(
-            'entities' => $entities,
-        ));
-    }
-
-    /**
-     * Mostrar formulario de Informe de Stock
-     *
-     */
-    public function informeStock222Action()
-    {
-        $entity = new InformeStockModel();
-
-        $form   = $this->createCreateForm($entity);
-
-        $em = $this->getDoctrine()->getManager();
-
-        return $this->render('BusetaBodegaBundle:Default:informe_stock.html.twig', array(
-            'entity'          => $entity,
-            'form'            => $form->createView(),
+            'entities' => $informeStock,
         ));
     }
 

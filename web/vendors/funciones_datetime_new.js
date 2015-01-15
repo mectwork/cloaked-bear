@@ -2,6 +2,17 @@ var fecha = $('#buseta_informestock_autobus_fecha').pickadate({
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
 });
+
+var fechaMovimiento = $('#bodega_albaran_type_fechaMovimiento').pickadate({
+    format: 'dd/mm/yyyy',
+    formatSubmit: 'dd/mm/yyyy'
+});
+
+var fechaContable = $('#bodega_albaran_type_fechaContable').pickadate({
+    format: 'dd/mm/yyyy',
+    formatSubmit: 'dd/mm/yyyy'
+});
+
 var fecha_pedido = $('#bodega_pedido_compra_fecha_pedido').pickadate({
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
@@ -22,14 +33,6 @@ var ultimo_cumplio = $('#buseta_tallerbundle_tareamantenimiento_ultimo_cumplio')
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
 });
-/*var fecha_inicio = $('#buseta_tallerbundle_ordentrabajo_fecha_inicio').pickadate({
-    format: 'dd/mm/yyyy',
-    formatSubmit: 'dd/mm/yyyy'
-});*/
-/*var fecha_final = $('#buseta_tallerbundle_ordentrabajo_fecha_final').pickadate({
-    format: 'dd/mm/yyyy',
-    formatSubmit: 'dd/mm/yyyy'
-});*/
 
 var picker = autobus_fecha_ingreso.pickadate('picker');
 var $fechaIngreso;
@@ -58,6 +61,12 @@ $('input:hidden[name^="buseta_databundle_autobus[valido_hasta]_submit"]').val(va
 
 var fechaingreso = $('#buseta_databundle_autobus_fecha_ingreso').val();
 $('input:hidden[name^="buseta_databundle_autobus[fecha_ingreso]_submit"]').val(fechaingreso);
+
+var fechamovimiento = $('#bodega_albaran_type_fechaMovimiento').val();
+$('input:hidden[name^="bodega_albaran_type[fechaMovimiento]_submit"]').val(fechamovimiento);
+
+var fechacontable = $('#bodega_albaran_type_fechaContable').val();
+$('input:hidden[name^="bodega_albaran_type[fechaContable]_submit"]').val(fechacontable);
 
 var fechapedido = $('#bodega_pedido_compra_fecha_pedido').val();
 $('input:hidden[name^="bodega_pedido_compra[fecha_pedido]_submit"]').val(fechapedido);

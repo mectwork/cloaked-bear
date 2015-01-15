@@ -26,6 +26,10 @@ BusetaTallerBundle_albaran:
         resource: "@BusetaBodegaBundle/Resources/config/routing/albaran.yml"
         prefix:   /albaran
 
+BusetaTallerBundle_albaranlinea:
+        resource: "@BusetaBodegaBundle/Resources/config/routing/albaran_linea.yml"
+        prefix:   /albaranlinea
+
 BusetaTallerBundle_impuesto:
         resource: "@BusetaTallerBundle/Resources/config/routing/impuesto.yml"
         prefix:   /impuesto

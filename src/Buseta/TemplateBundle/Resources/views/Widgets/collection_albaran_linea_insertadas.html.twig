@@ -1,0 +1,97 @@
+{% block collection_widget %}
+    {% spaceless %}
+<div class="collection">
+    {% if prototype is defined %}
+        {% set attr = attr | merge({'data-prototype': block('collection_item_widget') }) %}
+    {% endif %}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div  {{ block('widget_container_attributes') }}>
+                        <h4>Listado de líneas insertadas:</h4>
+
+                        <table  class="records_list table table-striped table-bordered table-condensed table-hover" style="font-size: 13px;">
+                            <thead>
+                            <tr>
+                                <th>Línea</th>
+                                <th>Producto</th>
+                                <th>Cantidad Movida</th>
+                                <th>Almacén</th>
+                                <th>UOM</th>
+                                <th>Valor Atributos</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+
+                            <tbody id="tbody">
+                            {% set counter = form | length %}
+                            {% for rows in form %}
+                                <tr class="row form-group">
+                                    {{ _self.template(rows) }}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+
+
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+    <div>
+
+    </div>
+    {% endspaceless %}
+{% endblock collection_widget %}
+
+{% block collection_item_widget %}
+    {% spaceless %}
+        {{ _self.template(prototype) }}
+    {% endspaceless %}
+{% endblock collection_item_widget %}
+
+{% macro template(prototype) %}
+    <td>
+        {{ form_errors(prototype.linea) }}
+        {{ form_widget(prototype.linea) }}
+    </td>
+
+    <td>
+        {{ form_errors(prototype.producto) }}
+        {{ form_widget(prototype.producto) }}
+    </td>
+
+    <td>
+        {{ form_errors(prototype.cantidadMovida) }}
+        {{ form_widget(prototype.cantidadMovida) }}
+    </td>
+
+    <td>
+        {{ form_errors(prototype.almacen) }}
+        {{ form_widget(prototype.almacen) }}
+    </td>
+
+    <td>
+        {{ form_errors(prototype.uom) }}
+        {{ form_widget(prototype.uom) }}
+    </td>
+
+    <td>
+        {{ form_errors(prototype.valorAtributos) }}
+        {{ form_widget(prototype.valorAtributos) }}
+    </td>
+
+    <td>
+        <a class="btn btn-primary delete_tag_link" href="#"><i class="fa fa-minus-circle"></i></a>
+    </td>
+
+
+
+{% endmacro %}

@@ -25,6 +25,7 @@
                                     <th>Moneda</th>
                                     <th>%Descuento</th>
                                     <th>Importe</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
 
@@ -105,8 +106,10 @@
         {{ form_widget(prototype.importe_linea) }}
     </td>
 
-    <div class="col-lg-1 form-group">
+    <td>
         <a class="btn btn-primary delete_tag_link" href="#"><i class="fa fa-minus-circle"></i></a>
-    </div>
+    </td>
+
+
 
 {% endmacro %}

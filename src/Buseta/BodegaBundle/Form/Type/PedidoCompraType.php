@@ -99,34 +99,19 @@ class PedidoCompraType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-//            ->add('estado_documento', 'choice', array(
-//                'required' => true,
-//                'empty_value' => '---Seleccione estado documento---',
-//                'translation_domain'=> 'BusetaTallerBundle',
-//                'choices' => array(
-//                    '??'=>'estado.??',
-//                    'AP' => 'estado.AP',
-//                    'CH' => 'estado.CH',
-//                    'CL' => 'estado.CL',
-//                    'CO' => 'estado.CO',
-//                    'DR' => 'estado.DR',
-//                    'IN' => 'estado.IN',
-//                    'IP' => 'estado.IP',
-//                    'NA' => 'estado.NA',
-//                    'PE' => 'estado.PE',
-//                    'PO' => 'estado.PO',
-//                    'PR' => 'estado.PR',
-//                    'RE' => 'estado.RE',
-//                    'TE' => 'estado.TE',
-//                    'TR' => 'estado.TR',
-//                    'VO' => 'estado.VO',
-//                    'WP' => 'estado.WP',
-//                    'XX' => 'estado.XX',
-//                ),
-//                'attr'   => array(
-//                    'class' => 'form-control',
-//                )
-//            ))
+            ->add('estado_documento', 'choice', array(
+                'required' => true,
+                'empty_value' => '---Seleccione estado documento---',
+                'translation_domain'=> 'BusetaTallerBundle',
+                'choices' => array(
+                    'CO' => 'estado.CO',
+                    'BO' => 'estado.BO',
+                    'PR' => 'estado.PR',
+                ),
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('importe_total_lineas', 'text', array(
                 'required' => true,
                 'label'  => 'Importe total líneas',

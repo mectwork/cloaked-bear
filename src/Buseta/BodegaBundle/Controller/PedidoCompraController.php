@@ -2,6 +2,8 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\Entity\Albaran;
+use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\InformeProductosBodega;
 use Buseta\BodegaBundle\Entity\InformeStock;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
@@ -52,7 +54,6 @@ class PedidoCompraController extends Controller
         $d = $fecha[0]; $m = $fecha[1];
         $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
         $y = $fecha[0];
-
         $fecha_pedido =  new \DateTime(sprintf($date,$y,$m,$d));
 
         $pedidoCompra = new PedidoCompra();
@@ -100,99 +101,6 @@ class PedidoCompraController extends Controller
             'entities' => $entities,
         ));
     }
-    /**
-     * Creates a new PedidoCompra entity.
-     *
-     */
-//    public function createAction(Request $request)
-//    {
-//        $entity = new PedidoCompra();
-//        $form = $this->createCreateForm($entity);
-//        $form->handleRequest($request);
-//
-//        $linea = $this->createForm(new LineaType());
-//
-//        $em = $this->getDoctrine()->getManager();
-//
-//        if ($form->isValid()) {
-//
-//            $request = $this->get('request');
-//            $datos = $request->request->get('taller_pedidocompra');
-//
-//            $lineas = $datos['lineas'];
-//
-//            foreach($lineas as $datos){
-//                //---Inform Stock
-//                $idproducto = $datos['productos'];
-//                $idbodega   = $datos['bodegas'];
-//                $cantPedido = $datos['cantidad_pedido'];
-//
-//                $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idproducto);
-//                $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idbodega);
-//
-//                $informeStock = new InformeStock();
-//                $informeStock->setProducto($producto);
-//                $informeStock->setAlmacen($bodega);
-//                $informeStock->setCantidadProductos($cantPedido);
-//                $informeStock->setFechaPedidoCompra($entity->getFechaPedido());
-//                $em->persist($informeStock);
-//                //---final-Inform Stock
-//
-//                //---Inform Productos Bodegas
-//                $idproducto = $datos['productos'];
-//                $idbodega   = $datos['bodegas'];
-//
-//                $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idproducto);
-//                $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idbodega);
-//
-//                $informeProductoBodega = $em->getRepository('BusetaBodegaBundle:InformeProductosBodega')->findOneBy(array(
-//                    'producto' => $idproducto,
-//                    'almacen' => $idbodega
-//                ));
-//
-//                //Si no existe ese producto en ese almacen
-//                $informeProductosBodega = new InformeProductosBodega();
-//
-//                if(count($informeProductoBodega) == 0){
-//                    $informeProductosBodega->setProducto($producto);
-//                    $informeProductosBodega->setAlmacen($bodega);
-//                    $informeProductosBodega->setCantidadProductos($cantPedido);
-//                    $em->persist($informeProductosBodega);
-//                }
-//                else //Si ya existe ese producto en ese almacen
-//                {
-//                    $informeProductoBodega->setCantidadProductos($informeProductoBodega->getCantidadProductos() + $cantPedido);
-//                    $em->persist($informeProductoBodega);
-//                }
-//                //---final--Inform Productos Bodegas
-//            }
-//
-//            $em->persist($entity);
-//            $em->flush();
-//
-//            return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $entity->getId())));
-//        }
-//
-//        $em = $this->getDoctrine()->getManager();
-//        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
-//
-//        $json = array();
-//
-//        foreach($productos as $p){
-//
-//            $json[$p->getId()] = array(
-//                'nombre' => $p->getNombre(),
-//                'precio_salida' => $p->getPrecioSalida(),
-//            );
-//        }
-//
-//        return $this->render('BusetaBodegaBundle:PedidoCompra:new.html.twig', array(
-//            'entity' => $entity,
-//            'linea'  => $linea->createView(),
-//            'form'   => $form->createView(),
-//            'json'   => json_encode($json),
-//        ));
-//    }
 
     public function createAction(Request $request)
     {
@@ -200,9 +108,53 @@ class PedidoCompraController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
+        $request = $this->get('request');
+        $datos = $request->request->get('bodega_pedido_compra');
+
+        $fecha =  new \DateTime();
+
+        $em = $this->getDoctrine()->getManager();
+        $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($datos['almacen']);
+        $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($datos['tercero']);
+
+        //registro los datos del albarán
+        $albaran = new Albaran();
+        $albaran->setEstadoDocumento($datos['estado_documento']);
+        $albaran->setAlmacen($almacen);
+        $albaran->setConsecutivoCompra($datos['consecutivo_compra']);
+        $albaran->setTercero($tercero);
+
+        $em->persist($albaran);
+        $em->flush();
+
+        //registro los datos de las líneas del albarán
+        foreach($datos['pedido_compra_lineas'] as $linea){
+
+            $albaranLinea = new AlbaranLinea();
+            $albaranLinea->setAlbaran($albaran);
+            $albaranLinea->setLinea($linea['linea']);
+            $albaranLinea->setCantidadMovida($linea['cantidad_pedido']);
+
+            $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($linea['producto']);
+            $albaranLinea->setProducto($producto);
+
+            $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($datos['almacen']);
+            $albaranLinea->setAlmacen($almacen);
+
+            $uom = $em->getRepository('BusetaNomencladorBundle:UOM')->find($linea['uom']);
+            $albaranLinea->setUom($uom);
+
+            $em->persist($albaranLinea);
+            $em->flush();
+        }
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
+            $em->flush();
+
+            $albaran->setPedidoCompra($entity);
+            $em->persist($albaran);
             $em->flush();
 
             return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $entity->getId())));

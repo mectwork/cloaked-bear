@@ -30,7 +30,7 @@ class InformeStock
     /**
      * @var date
      *
-     * @ORM\Column(name="fechaCompra", type="date")
+     * @ORM\Column(name="fechaCompra", type="date", nullable=true)
      */
     private $fechaCompra;
 
@@ -38,6 +38,11 @@ class InformeStock
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="movimientos")
      */
     private $almacen;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\UOM")
+     */
+    private $uom;
 
     /**
      * @var date
@@ -89,6 +94,24 @@ class InformeStock
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUom()
+    {
+        return $this->uom;
+    }
+
+    /**
+     * @param mixed $uom
+     */
+    public function setUom($uom)
+    {
+        $this->uom = $uom;
+    }
+
+
 
     /**
      * Get id

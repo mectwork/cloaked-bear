@@ -39,7 +39,7 @@
                 <td>{{ entity.tercero }}</td>
                 <td>{% if entity.fechapedido %}{{ entity.fechapedido|date('d/m/Y') }}{% endif %}</td>
                 <td>{{ entity.almacen }}</td>
-                <td>{{ entity.estadodocumento }}</td>
+                <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
                 <td>{{ entity.importetotal }}</td>
 
                 <td  style="width: 18% !important; text-align: center;">

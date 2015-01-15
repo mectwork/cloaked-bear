@@ -85,6 +85,13 @@ class Producto
     private $pedido_compra_lineas;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\AlbaranLinea", mappedBy="producto", cascade={"all"})
+     */
+    private $albaranLinea;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="minimo_bodega", type="integer")
@@ -440,5 +447,38 @@ class Producto
     public function getPedidoCompraLineas()
     {
         return $this->pedido_compra_lineas;
+    }
+
+    /**
+     * Add albaranLinea
+     *
+     * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
+     * @return Producto
+     */
+    public function addAlbaranLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
+    {
+        $this->albaranLinea[] = $albaranLinea;
+    
+        return $this;
+    }
+
+    /**
+     * Remove albaranLinea
+     *
+     * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
+     */
+    public function removeAlbaranLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
+    {
+        $this->albaranLinea->removeElement($albaranLinea);
+    }
+
+    /**
+     * Get albaranLinea
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAlbaranLinea()
+    {
+        return $this->albaranLinea;
     }
 }

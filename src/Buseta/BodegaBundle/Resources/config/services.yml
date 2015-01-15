@@ -12,3 +12,8 @@ services:
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'bodega_pedido_compra'}
+    bodega.albaran.type:
+        class: Buseta\BodegaBundle\Form\Type\AlbaranType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'bodega_albaran_type'}

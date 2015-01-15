@@ -13,24 +13,9 @@ forma_pago:
   W: Retención
 
 estado:
-  ??: Desconocido
-  AP: Aceptado
-  CH: Modificado
-  CL: Cerrado
   CO: Completado
-  DR: Borrador
-  IN: Inactivo
-  IP: En proceso
-  NA: No aceptado
-  PE: Error de cuenta
-  PO: Publicado
-  PR: Impreso
-  RE: Re abierto
-  TE: Error de transferencia
-  TR: Transferido
-  VO: Anulado
-  WP: No pagado
-  XX: Procesando
+  BO: Borrador
+  PR: Procesado
 
 prioridad:
   High: Alta

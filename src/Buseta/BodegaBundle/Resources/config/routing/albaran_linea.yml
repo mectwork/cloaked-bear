@@ -1,0 +1,35 @@
+albaran_linea:
+    pattern:  /
+    defaults: { _controller: "BusetaBodegaBundle:AlbaranLinea:index" }
+
+albaran_linea_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaBodegaBundle:AlbaranLinea:show" }
+
+albaran_linea_new:
+    pattern:  /new
+    defaults: { _controller: "BusetaBodegaBundle:AlbaranLinea:new" }
+
+albaran_linea_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaBodegaBundle:AlbaranLinea:create" }
+    requirements: { _method: post }
+
+albaran_linea_compra_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaBodegaBundle:AlbaranLinea:create_compra" }
+    requirements: { _method: post }
+
+albaran_linea_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BusetaBodegaBundle:AlbaranLinea:edit" }
+
+albaran_linea_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BusetaBodegaBundle:AlbaranLinea:update" }
+    requirements: { _method: post|put }
+
+albaran_linea_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BusetaBodegaBundle:AlbaranLinea:delete" }
+    requirements: { _method: post|delete }

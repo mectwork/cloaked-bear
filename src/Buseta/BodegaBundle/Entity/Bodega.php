@@ -79,6 +79,20 @@ class Bodega
     private $pedidoCompra;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\AlbaranLinea", mappedBy="almacen", cascade={"all"})
+     */
+    private $albaranLinea;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Albaran", mappedBy="almacen", cascade={"all"})
+     */
+    private $albaran;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -306,5 +320,71 @@ class Bodega
     public function getPedidoCompra()
     {
         return $this->pedidoCompra;
+    }
+
+    /**
+     * Add albaran
+     *
+     * @param \Buseta\BodegaBundle\Entity\Albaran $albaran
+     * @return Bodega
+     */
+    public function addAlbaran(\Buseta\BodegaBundle\Entity\Albaran $albaran)
+    {
+        $this->albaran[] = $albaran;
+    
+        return $this;
+    }
+
+    /**
+     * Remove albaran
+     *
+     * @param \Buseta\BodegaBundle\Entity\Albaran $albaran
+     */
+    public function removeAlbaran(\Buseta\BodegaBundle\Entity\Albaran $albaran)
+    {
+        $this->albaran->removeElement($albaran);
+    }
+
+    /**
+     * Get albaran
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAlbaran()
+    {
+        return $this->albaran;
+    }
+
+    /**
+     * Add albaranLinea
+     *
+     * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
+     * @return Bodega
+     */
+    public function addAlbaranLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
+    {
+        $this->albaranLinea[] = $albaranLinea;
+    
+        return $this;
+    }
+
+    /**
+     * Remove albaranLinea
+     *
+     * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
+     */
+    public function removeAlbaranLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
+    {
+        $this->albaranLinea->removeElement($albaranLinea);
+    }
+
+    /**
+     * Get albaranLinea
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAlbaranLinea()
+    {
+        return $this->albaranLinea;
     }
 }

@@ -28,3 +28,10 @@ albaran_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "BusetaBodegaBundle:Albaran:delete" }
     requirements: { _method: post|delete }
+
+albaran_ajax:
+  pattern: /select_albaran_ajax
+  defaults: { _controller: "BusetaBodegaBundle:Albaran:select_albaran_ajax" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true

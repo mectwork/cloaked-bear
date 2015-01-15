@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Buseta\BodegaBundle\Form\Type\AlbaranLineaType;
 
 class AlbaranType extends AbstractType
 {
@@ -37,13 +38,26 @@ class AlbaranType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('numero_documento', 'text', array(
-                    'required' => true,
-                    'label'  => 'Nro.Documento',
+            ->add('numeroReferencia', 'text', array(
+                    'required' => false,
+                    'label'  => 'Nro.Referencia',
                     'attr'   => array(
                         'class' => 'form-control',
                     )
-                ))//
+                ))
+            ->add('consecutivoCompra', 'integer', array(
+                'required' => true,
+                'label'  => 'Nro.Documento',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('almacen','entity',array(
+                'class' => 'BusetaBodegaBundle:Bodega',
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('tercero','entity',array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'query_builder' => function(EntityRepository $er){
@@ -56,7 +70,43 @@ class AlbaranType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-
+            ->add('fechaMovimiento','date',array(
+                'widget' => 'single_text',
+                'label'  => 'Fecha Movimiento',
+                'format'  => 'dd/MM/yyyy',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('fechaContable','date',array(
+                'widget' => 'single_text',
+                'label'  => 'Fecha Contable',
+                'format'  => 'dd/MM/yyyy',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('estadoDocumento', 'choice', array(
+                'required' => true,
+                'empty_value' => '---Seleccione estado documento---',
+                'translation_domain'=> 'BusetaTallerBundle',
+                'choices' => array(
+                    'CO' => 'estado.CO',
+                    'BO' => 'estado.BO',
+                    'PR' => 'estado.PR',
+                ),
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('albaranLinea','collection',array(
+                'type' => new AlbaranLineaType(),
+                'label'  => false,
+                'required' => false,
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ))
         ;
     }
     
@@ -75,6 +125,6 @@ class AlbaranType extends AbstractType
      */
     public function getName()
     {
-        return 'bodega_pedido_compra';
+        return 'bodega_albaran_type';
     }
 }

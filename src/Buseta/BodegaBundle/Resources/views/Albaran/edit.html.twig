@@ -1,0 +1,281 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% form_theme edit_form 'BusetaTemplateBundle:Widgets:collection_albaran_linea_insertadas.html.twig' %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Adicionar nuevo albarán
+{% endblock %}
+
+{% block area_trabajo %}
+
+    {{ form_start(edit_form) }}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#basicos" data-toggle="tab">Datos básicos</a>
+                        </li>
+                        <li>
+                            <a id="tab_lineas" href="#lineas" data-toggle="tab">Líneas</a>
+                        </li>
+
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+
+                        <div class="tab-pane fade in active" id="basicos">
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.consecutivoCompra) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.numeroReferencia) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.tercero) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.almacen) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.fechaMovimiento) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.fechaContable) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.estadoDocumento) }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- TAB LINEAS-->
+                        <div class="tab-pane fade" id="lineas">
+
+                            <div class="row show-grid">
+                                <div class="col-md-12">
+                                    {{ form_row(edit_form.albaranLinea) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    <div class="btn-group">
+                                        <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar línea</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+
+
+        </div>
+        <!-- /.col-lg-6 -->
+        <div class="row show-grid">
+            <div class="col-md-4">
+                <input id="guardarPedido" class="btn btn-primary" style="height: 34px" type="button" value="Guardar">
+                <input id="guardarLineas" class="btn btn-primary" style="height: 34px" type="submit" value="Procesar">
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="{{ path('albaran') }}"> Cancelar</a>
+                </div>
+            </div>
+        </div>
+
+        {{ form_rest(edit_form) }}
+        {{ form_end(edit_form) }}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="newLinea" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 850px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title" id="myModalLabel">Datos de nueva línea</h3>
+                </div>
+                <div class="modal-body" style="width: 800px;">
+                    <form action="{{ path('albaran_linea_compra_create') }}" method="post" {{ form_enctype(albaranLinea) }}>
+                        <div class="row show-grid">
+                            <div class="col-md-4">
+                                {{ form_row(albaranLinea.linea) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(albaranLinea.producto) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(albaranLinea.cantidadMovida) }}
+                            </div>
+                        </div>
+
+                        <div class="row show-grid">
+                            <div class="col-md-4">
+                                {{ form_row(albaranLinea.almacen) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(albaranLinea.uom) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(albaranLinea.valorAtributos) }}
+                            </div>
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
+                    <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</i></a>
+
+                </div>
+                {{ form_rest(albaranLinea) }}
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('vendors/funciones_datetime_new.js') }}"></script>
+
+    <script type="text/javascript">
+
+//        $(function(){
+//            //$('#tab_lineas').fadeOut(100);
+//        });
+
+        var collectionHolder = $('div#bodega_albaran_type_albaranLinea');
+        var $addTagLink = $('a.add_tag_link');
+
+        jQuery(document).ready(function() {
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
+
+            updateDeleteLink();
+            updateView();
+
+            function addTagForm(collectionHolder) {
+                // Get the data-prototype explained earlier
+                var prototype = collectionHolder.data('prototype');
+
+                // get the new index
+                var index = collectionHolder.data('index');
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = prototype.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                collectionHolder.data('index', index + 1);
+
+                // Display the form in the page in an li, before the "Add a tag" link li
+                var $newFormDiv = $('<tr></tr>').append(newForm);
+                collectionHolder.find('#tbody').append($newFormDiv);
+                updateDeleteLink();
+                updateView();
+            }
+
+            function updateDeleteLink(){
+                $('a.delete_tag_link').on('click', function(e) {
+                    // prevent the link from creating a "#" on the URL
+                    e.preventDefault();
+
+                    // remove the li for the tag form
+                    $(this).parent().parent().remove();
+
+                    updateView();
+                });
+            }
+
+            function updateView(){
+                counter = collectionHolder.find('a.delete_tag_link').length;
+                if(counter == 0){
+                    $('div#no-elements-tr').show();
+                }else{
+                    $('div#no-elements-tr').hide();
+                }
+            }
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                var modal = $('#newLinea');
+
+                // captura de valores del modal
+                var linea_linea = modal.find('#buseta_bodegabundle_albaran_linea_linea');
+                var linea_producto = modal.find('#buseta_bodegabundle_albaran_linea_producto');
+                var linea_cantidadMovida = modal.find('#buseta_bodegabundle_albaran_linea_cantidadMovida');
+                var linea_almacen = modal.find('#buseta_bodegabundle_albaran_linea_almacen');
+                var linea_uom = modal.find('#buseta_bodegabundle_albaran_linea_uom');
+                var linea_valorAtributos = modal.find('#buseta_bodegabundle_albaran_linea_valorAtributos');
+
+                var dataA = {
+                    linea : $('#{{ albaranLinea.linea.vars.id }}').val()
+                };
+
+                $.when(
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ path("albaran_ajax") }}',
+                            data: dataA
+                        })
+
+                ).done(function(data, textStatus, jqXHR){
+
+                            var valorA = $.parseJSON(data);
+
+                            var index = collectionHolder.data('index');
+
+                            addTagForm(collectionHolder);
+
+                            $('#bodega_albaran_type_albaranLinea_' + index + '_linea').val(linea_linea.val());
+                       })
+
+            });
+
+
+        });
+
+    </script>
+
+{% endblock javascripts %}

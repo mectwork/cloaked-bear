@@ -135,7 +135,11 @@ class BitacoraAlmacen
      */
     private $deletedby;
 
-
+    function __construct()
+    {
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
+    }
 
     /**
      * Get id

@@ -14,29 +14,42 @@
 
 {% block area_trabajo %}
 
-    <table class="records_list table table-striped table-bordered table-condensed table-hover">
-        <thead>
-        <tr>
-            <th  style="text-align: left;">Almacén</th>
-            <th  style="text-align: left;">Producto</th>
-            <th>Cantidad de productos</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td>{{ entity.almacen }}</td>
-                <td>{{ entity.producto }}</td>
-                <td  style="text-align: center;">{{ entity.cantidadProductos }}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">No se encontraron registros en el sistema.</td>
-            </tr>
-        {% endfor %}
+    {% for entity in entities %}
 
-        </tbody>
-    </table>
+        <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+            <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <h4>Almacén "{{ entity.almacen }}"</h4>
+
+                    <table class="records_list table table-striped table-bordered table-condensed table-hover">
+                        <thead>
+                        <tr>
+                            <th  style="text-align: left;">Producto</th>
+                            <th>Cantidad de productos</th>
+                            <th>UOM</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ entity.producto }}</td>
+                                <td  style="text-align: center;">{{ entity.cantidadProductos }}</td>
+                                <td  style="text-align: center;">{{ entity.uom }}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+        <tr>
+            <td colspan="12">No se encontraron registros en el sistema.</td>
+        </tr>
+    {% endfor %}
 
     <div class="container">
         <div class="row">

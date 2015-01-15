@@ -1,7 +1,5 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% trans_default_domain 'BusetaBodegaBundle' %}
-
 {% block nombre_menu_superior %}
 
 {% endblock %}
@@ -67,7 +65,7 @@
 
             <tr>
                 <th>Estado Documento</th>
-                <td>{{ entity.estadodocumento }}</td>
+                <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
             </tr>
 
             <tr>
@@ -107,10 +105,6 @@
             </tr>
         </tbody>
     </table>
-
-    <div class="btn-group">
-        <a class="btn btn-primary" href="{{ path('albaran_edit', { 'id': entity.id }) }}"> Procesar</a>
-    </div>
 
     <div class="btn-group">
         <a class="btn btn-primary" href="{{ path('pedidocompra') }}"> Listado</a>
