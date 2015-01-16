@@ -204,16 +204,28 @@ class AlbaranController extends Controller
             $em->flush();
 
             //Actualizar InformeStock
-            $informeStock = new InformeStock();
-            $informeStock->setProducto($bitacora->getProducto());
-            $informeStock->setAlmacen($bitacora->getAlmacen());
-            $informeStock->setCantidadProductos($bitacora->getCantMovida());
-            $informeStock->setUom($bitacora->getProducto()->getUOM());
-            $em->persist($informeStock);
-            $em->flush();
+            //Comprobar que no exista ya un almacén con un producto determinado
+            $informeStock = $em->getRepository('BusetaBodegaBundle:InformeStock')->comprobarInformeStock($almacen,$producto);
+
+            //Si ya existe un producto en un almacen determinado
+            if($informeStock)
+            {
+                $informeStock->setCantidadProductos($bitacora->getCantMovida() + $informeStock->getCantidadProductos());
+                $informeStock->setUom($bitacora->getProducto()->getUOM());
+                $em->persist($informeStock);
+                $em->flush();
+            }
+            else //Si no existe
+            {
+                $informeStock = new InformeStock();
+                $informeStock->setProducto($bitacora->getProducto());
+                $informeStock->setAlmacen($bitacora->getAlmacen());
+                $informeStock->setCantidadProductos($bitacora->getCantMovida());
+                $informeStock->setUom($bitacora->getProducto()->getUOM());
+                $em->persist($informeStock);
+                $em->flush();
+            }
         }
-
-
 
         return $this->redirect($this->generateUrl('albaran_show', array('id' => $id)));
     }

@@ -10,7 +10,7 @@ use Buseta\BodegaBundle\Entity\MovimientosProductos;
 use Buseta\BodegaBundle\Form\Type\MovimientosProductosType;
 use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Form\Type\MovimientoType;
-use Buseta\BodegaBundle\Entity\InformeProductosBodega;
+use Buseta\BodegaBundle\Entity\InformeStock;
 
 /**
  * Movimiento controller.
@@ -103,7 +103,7 @@ class MovimientoController extends Controller
             $request = $this->get('request');
             $datos = $request->request->get('buseta_bodegabundle_movimiento');
 
-            //Comprar la existencia de cantidad de productos disponibles en el almacen
+            //Comparar la existencia de cantidad de productos disponibles en el almacen
             //a partir de la solicitud de movimiento de productos entre almacenes
 
             $idAlmacenOrigen  = $datos['almacenOrigen'];
@@ -114,47 +114,59 @@ class MovimientoController extends Controller
             foreach($movimientos as $movimiento) {
                 $idProducto = $movimiento['producto'];
 
-                $informeProductoBodega = $em->getRepository('BusetaBodegaBundle:InformeProductosBodega')->findOneBy(array(
-                    'producto' => $idProducto,
-                    'almacen' => $idAlmacenOrigen
-                ));
+                //Actualizar InformeStock
+                $producto   = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
+                $almacen    = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
+
+                //Comprobar que no exista ya un almacén con un producto determinado
+                $informeStock = $em->getRepository('BusetaBodegaBundle:InformeStock')->comprobarInformeStock($almacen,$producto);
 
                 //Si NO existe ese producto en ese almacen
-                if(count($informeProductoBodega) == 0){
+                if(!$informeStock){
+                    //Volver al menu de de crear nuevo Movimiento
+                    $movimientosProductos = $this->createForm(new MovimientosProductosType());
+
+                    $form   = $this->createCreateForm($entity);
+                    $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
+                    $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
                     $form->addError(new FormError("Mensaje error"));
+                    return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
+                        'entity' => $entity,
+                        'movimientosProductos' => $movimientosProductos->createView(),
+                        'form'   => $form->createView(),
+                    ));
+
                 }
                 else //Si ya existe ese producto en ese almacen
                 {
-                    $cantidad_disponible = $informeProductoBodega->getCantidadProductos() - $movimiento['cantidad'];
+                    $cantidadDisponible = $informeStock->getCantidadProductos() - $movimiento['cantidad'];
 
                     //Si existen la cantidad requerida de productos en el almacen
-                    if($cantidad_disponible >= 0){
+                    if($cantidadDisponible >= 0){
 
                         //Extraigo la cantidad de productos del almacen de origen
-                        $informeProductoBodega->setCantidadProductos($cantidad_disponible);
-                        $em->persist($informeProductoBodega);
+                        $informeStock->setCantidadProductos($cantidadDisponible);
+                        $em->persist($informeStock);
 
                         //Adiciono la cantidad de productos en el almacen de destino
-                        $informeProductoBodega = $em->getRepository('BusetaBodegaBundle:InformeProductosBodega')->findOneBy(array(
-                            'producto' => $idProducto,
-                            'almacen' => $idAlmacenDestino
-                        ));
+                        $almacen    = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
+
+                        //Comprobar que no exista ya un almacén con un producto determinado
+                        $informeStock = $em->getRepository('BusetaBodegaBundle:InformeStock')->comprobarInformeStock($almacen,$producto);
 
                         //Si no existe ese producto en ese almacen
-                        $informeProductosBodega = new InformeProductosBodega();
-                        $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
-                        $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
-
-                        if(count($informeProductoBodega) == 0){
-                            $informeProductosBodega->setProducto($producto);
-                            $informeProductosBodega->setAlmacen($bodega);
-                            $informeProductosBodega->setCantidadProductos($movimiento['cantidad']);
-                            $em->persist($informeProductosBodega);
+                        if(!$informeStock){
+                            $informeStock = new InformeStock();
+                            $informeStock->setProducto($producto);
+                            $informeStock->setAlmacen($almacen);
+                            $informeStock->setCantidadProductos($movimiento['cantidad']);
+                            $em->persist($informeStock);
+                            $em->flush();
                         }
                         else //Si ya existe ese producto en ese almacen
                         {
-                            $informeProductoBodega->setCantidadProductos($informeProductoBodega->getCantidadProductos() + $movimiento['cantidad']);
-                            $em->persist($informeProductoBodega);
+                            $informeStock->setCantidadProductos($informeStock->getCantidadProductos() + $movimiento['cantidad']);
+                            $em->persist($informeStock);
                         }
 
                     }
@@ -170,19 +182,11 @@ class MovimientoController extends Controller
 
                         $form->addError(new FormError("No existe en el almacén '".$bodega->getNombre()."' la cantidad de productos solicitados para el producto: ".$producto->getNombre()));
 
-                        /*<script type="text/javascript">
-                            jQuery(document).ready(function() {
-                                $('#error').fadeIn(200);
-                            });
-                        </script>*/
-
-
                         return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
                             'entity' => $entity,
                             'movimientosProductos' => $movimientosProductos->createView(),
                             'form'   => $form->createView(),
                         ));
-                        //$this->get('session')->getFlashBag()->add('success', 'Ha ocurrido un error.');
                     }
 
                 }
@@ -201,6 +205,121 @@ class MovimientoController extends Controller
             'form'   => $form->createView(),
         ));*/
     }
+
+//    public function createAction(Request $request)
+//    {
+//        $entity = new Movimiento();
+//        $form = $this->createCreateForm($entity);
+//        $form->handleRequest($request);
+//
+//        $em = $this->getDoctrine()->getManager();
+//
+//        if ($form->isValid()) {
+//            $request = $this->get('request');
+//            $datos = $request->request->get('buseta_bodegabundle_movimiento');
+//
+//            //Comparar la existencia de cantidad de productos disponibles en el almacen
+//            //a partir de la solicitud de movimiento de productos entre almacenes
+//
+//            $idAlmacenOrigen  = $datos['almacenOrigen'];
+//            $idAlmacenDestino = $datos['almacenDestino'];
+//
+//            $movimientos = $datos['movimientos_productos'];
+//
+//            foreach($movimientos as $movimiento) {
+//                $idProducto = $movimiento['producto'];
+//
+//                //Actualizar InformeStock
+//                //Comprobar que no exista ya un almacén con un producto determinado
+//                $informeStock = $em->getRepository('BusetaBodegaBundle:InformeStock')->comprobarInformeStock($almacen,$producto);
+//
+//                $informeProductoBodega = $em->getRepository('BusetaBodegaBundle:InformeProductosBodega')->findOneBy(array(
+//                    'producto' => $idProducto,
+//                    'almacen' => $idAlmacenOrigen
+//                ));
+//
+//                //Si NO existe ese producto en ese almacen
+//                if(count($informeProductoBodega) == 0){
+//                    $form->addError(new FormError("Mensaje error"));
+//                }
+//                else //Si ya existe ese producto en ese almacen
+//                {
+//                    $cantidad_disponible = $informeProductoBodega->getCantidadProductos() - $movimiento['cantidad'];
+//
+//                    //Si existen la cantidad requerida de productos en el almacen
+//                    if($cantidad_disponible >= 0){
+//
+//                        //Extraigo la cantidad de productos del almacen de origen
+//                        $informeProductoBodega->setCantidadProductos($cantidad_disponible);
+//                        $em->persist($informeProductoBodega);
+//
+//                        //Adiciono la cantidad de productos en el almacen de destino
+//                        $informeProductoBodega = $em->getRepository('BusetaBodegaBundle:InformeProductosBodega')->findOneBy(array(
+//                            'producto' => $idProducto,
+//                            'almacen' => $idAlmacenDestino
+//                        ));
+//
+//                        //Si no existe ese producto en ese almacen
+//                        $informeProductosBodega = new InformeProductosBodega();
+//                        $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
+//                        $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
+//
+//                        if(count($informeProductoBodega) == 0){
+//                            $informeProductosBodega->setProducto($producto);
+//                            $informeProductosBodega->setAlmacen($bodega);
+//                            $informeProductosBodega->setCantidadProductos($movimiento['cantidad']);
+//                            $em->persist($informeProductosBodega);
+//                        }
+//                        else //Si ya existe ese producto en ese almacen
+//                        {
+//                            $informeProductoBodega->setCantidadProductos($informeProductoBodega->getCantidadProductos() + $movimiento['cantidad']);
+//                            $em->persist($informeProductoBodega);
+//                        }
+//
+//                    }
+//                    else {
+//
+//                        //Volver al menu de de crear nuevo Movimiento
+//                        $movimientosProductos = $this->createForm(new MovimientosProductosType());
+//
+//                        $form   = $this->createCreateForm($entity);
+//                        $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
+//                        $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
+//
+//
+//                        $form->addError(new FormError("No existe en el almacén '".$bodega->getNombre()."' la cantidad de productos solicitados para el producto: ".$producto->getNombre()));
+//
+//                        /*<script type="text/javascript">
+//                            jQuery(document).ready(function() {
+//                                $('#error').fadeIn(200);
+//                            });
+//                        </script>*/
+//
+//
+//                        return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
+//                            'entity' => $entity,
+//                            'movimientosProductos' => $movimientosProductos->createView(),
+//                            'form'   => $form->createView(),
+//                        ));
+//                        //$this->get('session')->getFlashBag()->add('success', 'Ha ocurrido un error.');
+//                    }
+//
+//                }
+//            }
+//
+//            $entity->setCreatedBy($this->getUser()->getUsername());
+//            $entity->setMovidoBy($this->getUser()->getUsername());
+//            $em->persist($entity);
+//            $em->flush();
+//
+//            return $this->redirect($this->generateUrl('movimiento_show', array('id' => $entity->getId())));
+//        }
+//
+//        /*return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
+//            'entity' => $entity,
+//            'form'   => $form->createView(),
+//        ));*/
+//    }
 
     /**
      * Creates a form to create a Movimiento entity.

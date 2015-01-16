@@ -13,6 +13,33 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductoRepository extends EntityRepository
 {
+    public function comprobarInformeStock($almacen,$producto,$em)
+    {
+        $entities = $em->createQueryBuilder()
+            ->select('o')
+            ->from('BusetaBodegaBundle:InformeStock', 'o');
+
+        if($almacen){
+            $entities
+                ->where('o.almacen = :almacen');
+            $entities
+                ->setParameter('almacen', $almacen);
+        }
+
+        if($producto){
+            $entities
+                ->andWhere('o.producto = :producto');
+            $entities
+                ->setParameter('producto', $producto);
+        }
+
+        $entities = $entities
+            ->getQuery();
+
+        return $entities;
+
+    }
+
     public function informeStock($busqueda,$em)
     {
         $entities = $em->createQueryBuilder()
