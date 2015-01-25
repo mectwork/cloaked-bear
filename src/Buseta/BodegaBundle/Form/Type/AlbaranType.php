@@ -45,7 +45,7 @@ class AlbaranType extends AbstractType
                         'class' => 'form-control',
                     )
                 ))
-            ->add('consecutivoCompra', 'integer', array(
+            ->add('consecutivoCompra', 'text', array(
                 'required' => true,
                 'label'  => 'Nro.Documento',
                 'attr'   => array(

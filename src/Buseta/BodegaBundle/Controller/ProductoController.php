@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\Producto;
 use Buseta\BodegaBundle\Form\Type\ProductoType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Buseta\BodegaBundle\Extras\FuncionesExtras;
 
 /**
  * Producto controller.
@@ -35,9 +36,22 @@ class ProductoController extends Controller
             'id' => $request->query->get('producto_id')
         ));
 
+        $impuesto = $em->getRepository('BusetaTallerBundle:Impuesto')->findOneBy(array(
+            'id' => $request->query->get('impuesto_id')
+        ));
+
+        $cantidad_pedido     = $request->query->get('cantidad_pedido');
+        $precio_unitario     = $producto->getPrecioCosto();
+        $porciento_descuento = $request->query->get('porciento_descuento');
+
+        $funcionesExtras = new FuncionesExtras();
+        $importeLinea = $funcionesExtras->ImporteLinea($impuesto, $cantidad_pedido, $precio_unitario, $porciento_descuento);
+
         $json = array(
             'id' => $producto->getId(),
             'precio' => $producto->getPrecioCosto(),
+            'importeLinea' => $importeLinea,
+            'porciento_descuento' => $porciento_descuento,
         );
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);

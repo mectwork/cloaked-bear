@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Buseta\TallerBundle\Entity\Impuesto;
 use Buseta\TallerBundle\Form\Type\ImpuestoType;
+use Buseta\BodegaBundle\Extras\FuncionesExtras;
 
 /**
  * Impuesto controller.
@@ -32,28 +33,12 @@ class ImpuestoController extends Controller
             'id' => $request->query->get('impuesto_id')
         ));
 
-        $importeLinea = 0;
-
         $cantidad_pedido     = $request->query->get('cantidad_pedido');
         $precio_unitario     = $request->query->get('precio_unitario');
         $porciento_descuento = $request->query->get('porciento_descuento');
 
-        $tipoImpuesto   = $impuesto->getTipo();
-        $tarifaImpuesto = $impuesto->getTarifa();
-
-        if($tipoImpuesto == "fijo")
-        {
-            $importeLinea     = ($cantidad_pedido * $precio_unitario) + $tarifaImpuesto;
-            $importeDescuento = $importeLinea * $porciento_descuento / 100;
-            $importeLinea     = $importeLinea - $importeDescuento;
-        }
-        elseif($tipoImpuesto == "porcentaje")
-        {
-            $importeImpuesto  = ($cantidad_pedido * $precio_unitario) * $tarifaImpuesto / 100;
-            $importeLinea     = ($cantidad_pedido * $precio_unitario) + $importeImpuesto;
-            $importeDescuento = $importeLinea * $porciento_descuento / 100;
-            $importeLinea     = $importeLinea - $importeDescuento;
-        }
+        $funcionesExtras = new FuncionesExtras();
+        $importeLinea = $funcionesExtras->ImporteLinea($impuesto, $cantidad_pedido, $precio_unitario, $porciento_descuento);
 
         $json = array(
             'importeLinea' => $importeLinea,

@@ -51,6 +51,7 @@ class PedidoCompraLineaType extends AbstractType
             ))
             ->add('precio_unitario', 'integer', array(
                 'required' => true,
+                'read_only' => true,
                 'label'  => 'Precio unitario',
                 'attr'   => array(
                     'class' => 'form-control',
