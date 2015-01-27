@@ -25,108 +25,108 @@
     {{ form_start(edit_form) }}
 
     <div class="row">
-    <div class="col-lg-12">
-    <div class="panel panel-default">
-    <!-- /.panel-heading -->
-    <div class="panel-body">
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs">
-        <li class="active">
-            <a id="tab_basicos" href="#basicos" data-toggle="tab">Datos básicos</a>
-        </li>
-        <li>
-            <a id="tab_lineas" href="#lineas" data-toggle="tab">Líneas</a>
-        </li>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a id="tab_basicos" href="#basicos" data-toggle="tab">Datos básicos</a>
+                        </li>
+                        <li>
+                            <a id="tab_lineas" href="#lineas" data-toggle="tab">Líneas</a>
+                        </li>
 
-    </ul>
+                    </ul>
 
-    <!-- Tab panes -->
-    <div class="tab-content">
+                    <!-- Tab panes -->
+                    <div class="tab-content">
 
-    <div class="tab-pane fade in active" id="basicos">
-            <div class="row show-grid">
-                <div class="col-md-4">
-                    {{ form_row(edit_form.numero_documento) }}
+                        <div class="tab-pane fade in active" id="basicos">
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.numero_documento) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.consecutivo_compra) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.tercero) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.almacen) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.fecha_pedido) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.forma_pago) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.condiciones_pago) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.moneda) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.estado_documento) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.importe_total_lineas) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(edit_form.importe_total) }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- TAB LINEAS-->
+                        <div class="tab-pane fade" id="lineas">
+
+                            <div class="row show-grid">
+                                <div class="col-md-12">
+                                    {{ form_row(edit_form.pedido_compra_lineas) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    <div class="btn-group">
+                                        <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar línea</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
-
-                <div class="col-md-4">
-                    {{ form_row(edit_form.consecutivo_compra) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(edit_form.tercero) }}
-                </div>
+                <!-- /.panel-body -->
             </div>
+            <!-- /.panel -->
 
-            <div class="row show-grid">
-                <div class="col-md-4">
-                    {{ form_row(edit_form.almacen) }}
-                </div>
 
-                <div class="col-md-4">
-                    {{ form_row(edit_form.fecha_pedido) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(edit_form.forma_pago) }}
-                </div>
-            </div>
-
-            <div class="row show-grid">
-                <div class="col-md-4">
-                    {{ form_row(edit_form.condiciones_pago) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(edit_form.moneda) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(edit_form.estado_documento) }}
-                </div>
-            </div>
-
-            <div class="row show-grid">
-                <div class="col-md-4">
-                    {{ form_row(edit_form.importe_total_lineas) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(edit_form.importe_total) }}
-                </div>
-            </div>
-
-    </div>
-
-    <!-- TAB LINEAS-->
-    <div class="tab-pane fade" id="lineas">
-
-        <div class="row show-grid">
-            <div class="col-md-12">
-                {{ form_row(edit_form.pedido_compra_lineas) }}
-            </div>
         </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                <div class="btn-group">
-                    <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar línea</a>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    </div>
-
-    </div>
-    <!-- /.panel-body -->
-    </div>
-    <!-- /.panel -->
-
-
-    </div>
-    <!-- /.col-lg-6 -->
+        <!-- /.col-lg-6 -->
         <div class="row show-grid">
             <div class="col-md-4">
                 <input id="guardarPedido" class="btn btn-primary" style="height: 34px" type="button" value="Guardar">
@@ -220,17 +220,258 @@
 
     <script type="text/javascript">
 
-        $(function(){
+    $(function(){
 
-            //$('#tab_lineas').fadeOut(100);
+        //$('#tab_lineas').fadeOut(100);
+        $('#error').fadeOut(10);
+        $('#valido').fadeOut(10);
+        $('#tab_lineas').fadeOut(10);
+        $('#guardarLineas').hide();
+
+
+        $('#{{ pedido_compra_linea.producto.vars.id }}').change(function(){
+            var data = {
+                producto_id: $(this).val()
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("producto_ajax_productos_all") }}',
+                data: data,
+                success: function(data) {
+                    var values = $.parseJSON(data);
+                    var precio_text = $('#{{ pedido_compra_linea.precio_unitario.vars.id }}');
+
+                    precio_text.val(values.precio);
+                }
+            });
+        });
+
+        $('#tab_basicos').click(function(){
+            $('#tab_lineas').fadeOut(10);
+            $('#guardarPedido').show();
+            $('#guardarLineas').hide();
+
+            $('#error').hide();
+            $('#valido').hide();
+        });
+
+        $('#guardarPedido').click(function(){
             $('#error').fadeOut(10);
-            $('#valido').fadeOut(10);
-            //$('#tab_lineas').fadeOut(10);
+            $('#tab_lineas').fadeOut(10);
+
+            var data = {
+                numero_documento:           $('#{{ edit_form.numero_documento.vars.id }}').val(),
+                consecutivo_compra:         $('#{{ edit_form.consecutivo_compra.vars.id }}').val(),
+                tercero:                    $('#{{ edit_form.tercero.vars.id }}').val(),
+                almacen:                    $('#{{ edit_form.almacen.vars.id }}').val(),
+                fecha_pedido:               $('#{{ edit_form.fecha_pedido.vars.id }}').val(),
+                forma_pago:                 $('#{{ edit_form.forma_pago.vars.id }}').val(),
+                condiciones_pago:           $('#{{ edit_form.condiciones_pago.vars.id }}').val(),
+                moneda:                     $('#{{ edit_form.moneda.vars.id }}').val(),
+                importe_total_lineas:       $('#{{ edit_form.importe_total_lineas.vars.id }}').val(),
+                importe_total:              $('#{{ edit_form.importe_total.vars.id }}').val()
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("guardarPedido") }}',
+                data: data,
+                success: function(data) {
+                    var values = $.parseJSON(data);
+
+                    console.log(values.error);
+
+                    if(values.error == 'error')
+                    {
+                        //Si existe al menos un campo no correcto en PedidoCompra se lanza un mensaje de error
+                        $('#error').fadeIn(100);
+                        $('#error').fadeOut(20000);
+
+                        jQuery('body,html').animate({
+                            scrollTop: 0
+                        }, 25);
+                    }
+                    else
+                    {
+                        $('#error').hide();
+                        $('#guardarPedido').hide();
+                        $('#guardarLineas').show();
+
+                        $('#valido').fadeIn(100);
+                        $('#valido').fadeOut(20000);
+
+                        //Si todos los campos del PedidoCompra son correctos activo el tab de Lineas
+                        $('#basicos').attr('class', 'tab-pane fade');
+                        $('#tab_basicos').parent().removeAttr('class');
+
+                        $('#tab_lineas').fadeIn(200);
+                        $('#tab_lineas').parent().attr('class', 'active');
+
+                        $('#lineas').attr('class', 'tab-pane fade in active');
+
+                        jQuery('body,html').animate({
+                            scrollTop: 0
+                        }, 25);
+
+                    }
+
+                }
+            });
+        });
 
 
-            $('#{{ pedido_compra_linea.producto.vars.id }}').change(function(){
+    });
+
+    var collectionHolder = $('div#bodega_pedido_compra_pedido_compra_lineas');
+    var $addTagLink = $('a.add_tag_link');
+
+    jQuery(document).ready(function() {
+        // count the current form inputs we have (e.g. 2), use that as the new
+        // index when inserting a new item (e.g. 2)
+        collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
+
+        updateDeleteLink();
+        updateView();
+
+        function addTagForm(collectionHolder) {
+            // Get the data-prototype explained earlier
+            var prototype = collectionHolder.data('prototype');
+
+            // get the new index
+            var index = collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormDiv = $('<tr></tr>').append(newForm);
+            collectionHolder.find('#tbody').append($newFormDiv);
+            updateDeleteLink();
+            updateView();
+        }
+
+        function updateDeleteLink(){
+            $('a.delete_tag_link').on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $(this).parent().parent().remove();
+
+                actualizarMontoTotal();
+
+                updateView();
+            });
+        }
+
+        function updateView(){
+            counter = collectionHolder.find('a.delete_tag_link').length;
+            if(counter == 0){
+                $('div#no-elements-tr').show();
+            }else{
+                $('div#no-elements-tr').hide();
+            }
+        }
+
+        function actualizarMontoTotal(){
+            //Obtener cada valor de las lineas y sumarlas a una variable
+            var montototal = 0;
+            var precioTotal = 0;
+
+            $('[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_importe_linea"]').each(function(key, value){
+                montototal += parseFloat($(value).val());
+            });
+
+            //Actualizar el valor del precio y monto de todas las lineas
+            $('#bodega_pedido_compra_importe_total_lineas').val(montototal);
+            $('#bodega_pedido_compra_importe_total').val(montototal);
+        }
+
+        $addTagLink.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            var modal = $('#newLinea');
+
+            // captura de valores del modal
+            var linea_linea             = modal.find('#buseta_bodegabundle_pedido_compra_linea_linea');
+            var linea_producto          = modal.find('#buseta_bodegabundle_pedido_compra_linea_producto');
+            var linea_cantidad_pedido   = modal.find('#buseta_bodegabundle_pedido_compra_linea_cantidad_pedido');
+
+            var linea_uom               = modal.find('#buseta_bodegabundle_pedido_compra_linea_uom');
+            var linea_precio_unitario   = modal.find('#buseta_bodegabundle_pedido_compra_linea_precio_unitario');
+            var linea_impuesto          = modal.find('#buseta_bodegabundle_pedido_compra_linea_impuesto');
+
+            var linea_moneda                = modal.find('#buseta_bodegabundle_pedido_compra_linea_moneda');
+            var linea_porciento_descuento   = modal.find('#buseta_bodegabundle_pedido_compra_linea_porciento_descuento');
+            var linea_importe_linea         = modal.find('#buseta_bodegabundle_pedido_compra_linea_importe_linea');
+
+            var dataA = {
+                impuesto_id         : $('#{{ pedido_compra_linea.impuesto.vars.id }}').val(),
+                cantidad_pedido     : $('#{{ pedido_compra_linea.cantidad_pedido.vars.id }}').val(),
+                precio_unitario     : $('#{{ pedido_compra_linea.precio_unitario.vars.id }}').val(),
+                porciento_descuento : $('#{{ pedido_compra_linea.porciento_descuento.vars.id }}').val()
+            };
+
+            $.when(
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ path("impuesto_ajax_productos_all") }}',
+                        data: dataA
+                    })
+
+            ).done(function(data, textStatus, jqXHR){
+
+                        $('#guardarLineas').show();
+
+                        var valorA = $.parseJSON(data);
+
+                        $('#{{ pedido_compra_linea.importe_linea.vars.id }}').val(valorA.importeLinea);
+
+                        var index = collectionHolder.data('index');
+
+                        addTagForm(collectionHolder);
+
+                        dinamicSelects();
+
+                        $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_linea').val(linea_linea.val());
+                        $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_producto').val(linea_producto.val());
+                        $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_cantidad_pedido').val(linea_cantidad_pedido.val());
+
+                        $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_uom').val(linea_uom.val());
+                        $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_precio_unitario').val(linea_precio_unitario.val());
+                        $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_impuesto').val(linea_impuesto.val());
+
+                        $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_moneda').val(linea_moneda.val());
+                        $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_porciento_descuento').val(linea_porciento_descuento.val());
+                        $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_importe_linea').val(linea_importe_linea.val());
+
+                        /*Obtener cada valor de las lineas y sumarlas a una variable*/
+                        actualizarMontoTotal();
+                    })
+
+            /*var index = collectionHolder.data('index');
+             addTagForm(collectionHolder);*/
+
+        });
+
+
+        dinamicSelects();
+
+        function dinamicSelects(){
+            //Actualizar campo ImporteLinea al cambiar el select PRODUCTO
+            $('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_producto"]').change(function(){
+                var $selectObjeto = $(this);
                 var data = {
-                    producto_id: $(this).val()
+                    producto_id: $(this).val(),
+                    impuesto_id         : $selectObjeto.parent().parent().find('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_impuesto"]').val(),
+                    cantidad_pedido     : $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_cantidad_pedido"]').val(),
+                    porciento_descuento : $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_porciento_descuento"]').val()
                 };
 
                 $.ajax({
@@ -239,324 +480,99 @@
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
-                        var precio_text = $('#{{ pedido_compra_linea.precio_unitario.vars.id }}');
 
-                        precio_text.val(values.precio);
+                        var precioUnitario = $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_precio_unitario"]');
+                        var importeLinea   = $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_importe_linea"]');
+
+                        precioUnitario.val(values.precio);
+                        importeLinea.val(values.importeLinea);
+
+                        actualizarMontoTotal();
                     }
                 });
-            });
+            })
 
-            $('#guardarPedido').click(function(){
-                $('#error').fadeOut(10);
-                $('#tab_lineas').fadeOut(10);
-
+            //Actualizar campo ImporteLinea al cambiar el select IMPUESTO
+            $('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_impuesto"]').change(function(){
+                var $selectObjeto = $(this);
                 var data = {
-                    numero_documento:           $('#{{ edit_form.numero_documento.vars.id }}').val(),
-                    consecutivo_compra:         $('#{{ edit_form.consecutivo_compra.vars.id }}').val(),
-                    tercero:                    $('#{{ edit_form.tercero.vars.id }}').val(),
-                    almacen:                    $('#{{ edit_form.almacen.vars.id }}').val(),
-                    fecha_pedido:               $('#{{ edit_form.fecha_pedido.vars.id }}').val(),
-                    forma_pago:                 $('#{{ edit_form.forma_pago.vars.id }}').val(),
-                    condiciones_pago:           $('#{{ edit_form.condiciones_pago.vars.id }}').val(),
-                    moneda:                     $('#{{ edit_form.moneda.vars.id }}').val(),
-                    importe_total_lineas:       $('#{{ edit_form.importe_total_lineas.vars.id }}').val(),
-                    importe_total:              $('#{{ edit_form.importe_total.vars.id }}').val()
+                    impuesto_id: $(this).val(),
+                    producto_id         : $selectObjeto.parent().parent().find('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_producto"]').val(),
+                    cantidad_pedido     : $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_cantidad_pedido"]').val(),
+                    porciento_descuento : $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_porciento_descuento"]').val()
                 };
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ path("guardarPedido") }}',
+                    url: '{{ path("producto_ajax_productos_all") }}',
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
 
-                        console.log(values.error);
+                        var importeLinea   = $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_importe_linea"]');
+                        importeLinea.val(values.importeLinea);
 
-                        if(values.error == 'error')
-                        {
-                            //Si existe al menos un campo no correcto en PedidoCompra se lanza un mensaje de error
-                            $('#error').fadeIn(300);
-                            $('#error').fadeOut(20000);
-
-                            jQuery('body,html').animate({
-                                scrollTop: 0
-                            }, 25);
-                        }
-                        else
-                        {
-                            $('#valido').fadeIn(300);
-                            $('#valido').fadeOut(20000);
-
-                            //Si todos los campos del PedidoCompra son correctos activo el tab de Lineas
-                            $('#basicos').attr('class', 'tab-pane fade');
-                            $('#tab_basicos').parent().removeAttr('class');
-
-                            $('#tab_lineas').fadeIn(200);
-                            $('#tab_lineas').parent().attr('class', 'active');
-
-                            $('#lineas').attr('class', 'tab-pane fade in active');
-
-                            jQuery('body,html').animate({
-                                scrollTop: 0
-                            }, 25);
-
-                        }
-
+                        actualizarMontoTotal();
                     }
                 });
-            });
+            })
 
-
-        });
-
-        var collectionHolder = $('div#bodega_pedido_compra_pedido_compra_lineas');
-        var $addTagLink = $('a.add_tag_link');
-
-        jQuery(document).ready(function() {
-            // count the current form inputs we have (e.g. 2), use that as the new
-            // index when inserting a new item (e.g. 2)
-            collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
-
-            updateDeleteLink();
-            updateView();
-
-            function addTagForm(collectionHolder) {
-                // Get the data-prototype explained earlier
-                var prototype = collectionHolder.data('prototype');
-
-                // get the new index
-                var index = collectionHolder.data('index');
-
-                // Replace '__name__' in the prototype's HTML to
-                // instead be a number based on how many items we have
-                var newForm = prototype.replace(/__name__/g, index);
-
-                // increase the index with one for the next item
-                collectionHolder.data('index', index + 1);
-
-                // Display the form in the page in an li, before the "Add a tag" link li
-                var $newFormDiv = $('<tr></tr>').append(newForm);
-                collectionHolder.find('#tbody').append($newFormDiv);
-                updateDeleteLink();
-                updateView();
-            }
-
-            function updateDeleteLink(){
-                $('a.delete_tag_link').on('click', function(e) {
-                    // prevent the link from creating a "#" on the URL
-                    e.preventDefault();
-
-                    // remove the li for the tag form
-                    $(this).parent().parent().remove();
-
-                    actualizarMontoTotal();
-
-                    updateView();
-                });
-            }
-
-            function updateView(){
-                counter = collectionHolder.find('a.delete_tag_link').length;
-                if(counter == 0){
-                    $('div#no-elements-tr').show();
-                }else{
-                    $('div#no-elements-tr').hide();
-                }
-            }
-
-            function actualizarMontoTotal(){
-                //Obtener cada valor de las lineas y sumarlas a una variable
-                var montototal = 0;
-                var precioTotal = 0;
-
-                $('[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_importe_linea"]').each(function(key, value){
-                    montototal += parseFloat($(value).val());
-                });
-
-                //Actualizar el valor del precio y monto de todas las lineas
-                $('#bodega_pedido_compra_importe_total_lineas').val(montototal);
-                $('#bodega_pedido_compra_importe_total').val(montototal);
-            }
-
-            $addTagLink.on('click', function(e) {
-                // prevent the link from creating a "#" on the URL
-                e.preventDefault();
-
-                var modal = $('#newLinea');
-
-                // captura de valores del modal
-                var linea_linea             = modal.find('#buseta_bodegabundle_pedido_compra_linea_linea');
-                var linea_producto          = modal.find('#buseta_bodegabundle_pedido_compra_linea_producto');
-                var linea_cantidad_pedido   = modal.find('#buseta_bodegabundle_pedido_compra_linea_cantidad_pedido');
-
-                var linea_uom               = modal.find('#buseta_bodegabundle_pedido_compra_linea_uom');
-                var linea_precio_unitario   = modal.find('#buseta_bodegabundle_pedido_compra_linea_precio_unitario');
-                var linea_impuesto          = modal.find('#buseta_bodegabundle_pedido_compra_linea_impuesto');
-
-                var linea_moneda                = modal.find('#buseta_bodegabundle_pedido_compra_linea_moneda');
-                var linea_porciento_descuento   = modal.find('#buseta_bodegabundle_pedido_compra_linea_porciento_descuento');
-                var linea_importe_linea         = modal.find('#buseta_bodegabundle_pedido_compra_linea_importe_linea');
-
-                var dataA = {
-                    impuesto_id         : $('#{{ pedido_compra_linea.impuesto.vars.id }}').val(),
-                    cantidad_pedido     : $('#{{ pedido_compra_linea.cantidad_pedido.vars.id }}').val(),
-                    precio_unitario     : $('#{{ pedido_compra_linea.precio_unitario.vars.id }}').val(),
-                    porciento_descuento : $('#{{ pedido_compra_linea.porciento_descuento.vars.id }}').val()
+            //Al cambiar el campo CANTIDAD DE PEDIDO
+            $('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_cantidad_pedido"]').blur(function(){
+                var $selectObjeto = $(this);
+                var data = {
+                    cantidad_pedido: $(this).val(),
+                    producto_id         : $selectObjeto.parent().parent().find('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_producto"]').val(),
+                    impuesto_id         : $selectObjeto.parent().parent().find('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_impuesto"]').val(),
+                    porciento_descuento : $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_porciento_descuento"]').val()
                 };
 
-                $.when(
-                        $.ajax({
-                            type: 'GET',
-                            url: '{{ path("impuesto_ajax_productos_all") }}',
-                            data: dataA
-                        })
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("producto_ajax_productos_all") }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
 
-                ).done(function(data, textStatus, jqXHR){
+                        var importeLinea   = $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_importe_linea"]');
+                        importeLinea.val(values.importeLinea);
 
-                            var valorA = $.parseJSON(data);
+                        actualizarMontoTotal();
+                    }
+                });
+            })
 
-                            $('#{{ pedido_compra_linea.importe_linea.vars.id }}').val(valorA.importeLinea);
+            //Al cambiar el campo CANTIDAD DE PEDIDO
+            $('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_porciento_descuento"]').blur(function(){
+                var $selectObjeto = $(this);
+                var data = {
+                    porciento_descuento: $(this).val(),
+                    producto_id         : $selectObjeto.parent().parent().find('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_producto"]').val(),
+                    impuesto_id         : $selectObjeto.parent().parent().find('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_impuesto"]').val(),
+                    cantidad_pedido     : $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_cantidad_pedido"]').val(),
+                };
 
-                            var index = collectionHolder.data('index');
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("producto_ajax_productos_all") }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
 
-                            addTagForm(collectionHolder);
+                        var importeLinea   = $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_importe_linea"]');
+                        importeLinea.val(values.importeLinea);
 
-                            dinamicSelects();
+                        actualizarMontoTotal();
 
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_linea').val(linea_linea.val());
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_producto').val(linea_producto.val());
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_cantidad_pedido').val(linea_cantidad_pedido.val());
+                        console.log(values);
+                    }
+                });
+            })
 
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_uom').val(linea_uom.val());
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_precio_unitario').val(linea_precio_unitario.val());
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_impuesto').val(linea_impuesto.val());
-
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_moneda').val(linea_moneda.val());
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_porciento_descuento').val(linea_porciento_descuento.val());
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_importe_linea').val(linea_importe_linea.val());
-
-                            /*Obtener cada valor de las lineas y sumarlas a una variable*/
-                            actualizarMontoTotal();
-                        })
-
-                /*var index = collectionHolder.data('index');
-                addTagForm(collectionHolder);*/
-
-            });
-
-
-            dinamicSelects();
-
-            function dinamicSelects(){
-                //Actualizar campo ImporteLinea al cambiar el select PRODUCTO
-                $('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_producto"]').change(function(){
-                    var $selectObjeto = $(this);
-                    var data = {
-                        producto_id: $(this).val(),
-                        impuesto_id         : $selectObjeto.parent().parent().find('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_impuesto"]').val(),
-                        cantidad_pedido     : $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_cantidad_pedido"]').val(),
-                        porciento_descuento : $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_porciento_descuento"]').val()
-                    };
-
-                    $.ajax({
-                        type: 'GET',
-                        url: '{{ path("producto_ajax_productos_all") }}',
-                        data: data,
-                        success: function(data) {
-                            var values = $.parseJSON(data);
-
-                            var precioUnitario = $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_precio_unitario"]');
-                            var importeLinea   = $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_importe_linea"]');
-
-                            precioUnitario.val(values.precio);
-                            importeLinea.val(values.importeLinea);
-
-                            actualizarMontoTotal();
-                        }
-                    });
-                })
-
-                //Actualizar campo ImporteLinea al cambiar el select IMPUESTO
-                $('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_impuesto"]').change(function(){
-                    var $selectObjeto = $(this);
-                    var data = {
-                        impuesto_id: $(this).val(),
-                        producto_id         : $selectObjeto.parent().parent().find('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_producto"]').val(),
-                        cantidad_pedido     : $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_cantidad_pedido"]').val(),
-                        porciento_descuento : $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_porciento_descuento"]').val()
-                    };
-
-                    $.ajax({
-                        type: 'GET',
-                        url: '{{ path("producto_ajax_productos_all") }}',
-                        data: data,
-                        success: function(data) {
-                            var values = $.parseJSON(data);
-
-                            var importeLinea   = $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_importe_linea"]');
-                            importeLinea.val(values.importeLinea);
-
-                            actualizarMontoTotal();
-                        }
-                    });
-                })
-
-                //Al cambiar el campo CANTIDAD DE PEDIDO
-                $('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_cantidad_pedido"]').blur(function(){
-                    var $selectObjeto = $(this);
-                    var data = {
-                        cantidad_pedido: $(this).val(),
-                        producto_id         : $selectObjeto.parent().parent().find('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_producto"]').val(),
-                        impuesto_id         : $selectObjeto.parent().parent().find('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_impuesto"]').val(),
-                        porciento_descuento : $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_porciento_descuento"]').val()
-                    };
-
-                    $.ajax({
-                        type: 'GET',
-                        url: '{{ path("producto_ajax_productos_all") }}',
-                        data: data,
-                        success: function(data) {
-                            var values = $.parseJSON(data);
-
-                            var importeLinea   = $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_importe_linea"]');
-                            importeLinea.val(values.importeLinea);
-
-                            actualizarMontoTotal();
-                        }
-                    });
-                })
-
-                //Al cambiar el campo CANTIDAD DE PEDIDO
-                $('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_porciento_descuento"]').blur(function(){
-                    var $selectObjeto = $(this);
-                    var data = {
-                        porciento_descuento: $(this).val(),
-                        producto_id         : $selectObjeto.parent().parent().find('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_producto"]').val(),
-                        impuesto_id         : $selectObjeto.parent().parent().find('select[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_impuesto"]').val(),
-                        cantidad_pedido     : $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_cantidad_pedido"]').val(),
-                    };
-
-                    $.ajax({
-                        type: 'GET',
-                        url: '{{ path("producto_ajax_productos_all") }}',
-                        data: data,
-                        success: function(data) {
-                            var values = $.parseJSON(data);
-
-                            var importeLinea   = $selectObjeto.parent().parent().find('input[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_importe_linea"]');
-                            importeLinea.val(values.importeLinea);
-
-                            actualizarMontoTotal();
-
-                            console.log(values);
-                        }
-                    });
-                })
-
-            }
+        }
 
 
-        });
+    });
 
 
 

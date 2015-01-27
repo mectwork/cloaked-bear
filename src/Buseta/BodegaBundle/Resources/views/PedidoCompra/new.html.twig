@@ -226,6 +226,7 @@
             $('#error').fadeOut(10);
             $('#valido').fadeOut(10);
             $('#tab_lineas').fadeOut(10);
+            $('#guardarLineas').hide();
 
 
             $('#{{ pedido_compra_linea.producto.vars.id }}').change(function(){
@@ -244,6 +245,15 @@
                         precio_text.val(values.precio);
                     }
                 });
+            });
+
+            $('#tab_basicos').click(function(){
+                $('#tab_lineas').fadeOut(10);
+                $('#guardarPedido').show();
+                $('#guardarLineas').hide();
+
+                $('#error').hide();
+                $('#valido').hide();
             });
 
             $('#guardarPedido').click(function(){
@@ -275,7 +285,7 @@
                         if(values.error == 'error')
                         {
                             //Si existe al menos un campo no correcto en PedidoCompra se lanza un mensaje de error
-                            $('#error').fadeIn(300);
+                            $('#error').fadeIn(100);
                             $('#error').fadeOut(20000);
 
                             jQuery('body,html').animate({
@@ -284,7 +294,9 @@
                         }
                         else
                         {
-                            $('#valido').fadeIn(300);
+                            $('#error').hide();
+                            $('#guardarPedido').hide();
+                            $('#valido').fadeIn(100);
                             $('#valido').fadeOut(20000);
 
                             //Si todos los campos del PedidoCompra son correctos activo el tab de Lineas
@@ -412,6 +424,8 @@
                         })
 
                 ).done(function(data, textStatus, jqXHR){
+
+                            $('#guardarLineas').show();
 
                             var valorA = $.parseJSON(data);
 
