@@ -29,7 +29,9 @@
                             <tbody id="tbody">
                             {% set counter = form | length %}
                             {% for rows in form %}
-                                {{ _self.template(rows) }}
+                                <tr class="form-group">
+                                    {{ _self.template(rows) }}
+                                </tr>
                             {% endfor %}
                             </tbody>
 
@@ -56,7 +58,6 @@
 {% endblock collection_item_widget %}
 
 {% macro template(prototype) %}
-    <tr>
         <td>
             {{ form_errors(prototype.linea) }}
             {{ form_widget(prototype.linea) }}
@@ -90,5 +91,4 @@
         <td>
             <a class="btn btn-primary delete_tag_link" href="#"><i class="fa fa-minus-circle"></i></a>
         </td>
-    </tr>
 {% endmacro %}

@@ -35,3 +35,10 @@ albaran_ajax:
   requirements: { _method: "GET" }
   options:
       expose: true
+
+guardarAlbaran:
+  pattern: /guardarAlbaran
+  defaults: { _controller: "BusetaBodegaBundle:Albaran:guardarAlbaran" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true

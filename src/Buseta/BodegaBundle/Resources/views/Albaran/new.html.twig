@@ -1,16 +1,26 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% form_theme form 'BusetaTemplateBundle:Widgets:collection_linea_insertadas.html.twig' %}
+{% form_theme form 'BusetaBodegaBundle:Widgets:collection_albaran_linea_insertadas.html.twig' %}
 
 {% block nombre_menu_superior %}
 
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Adicionar nuevo pedido de compra
+    Adicionar nuevo albarán
 {% endblock %}
 
 {% block area_trabajo %}
+
+    <div id="error" class="alert alert-danger" >
+        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+        <strong>!ERROR!</strong> Debe comprobar que todos los campos del formulario sean válidos y no se encuentren vacíos.
+    </div>
+
+    <div id="valido" class="alert alert-success" >
+        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+        <strong>!OK!</strong> Los datos básicos del albarán han sido guardados satisfactoriamente.
+    </div>
 
     {{ form_start(form) }}
 
@@ -22,7 +32,7 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
         <li class="active">
-            <a href="#basicos" data-toggle="tab">Datos básicos</a>
+            <a id="tab_basicos" href="#basicos" data-toggle="tab">Datos básicos</a>
         </li>
         <li>
             <a id="tab_lineas" href="#lineas" data-toggle="tab">Líneas</a>
@@ -36,11 +46,11 @@
     <div class="tab-pane fade in active" id="basicos">
             <div class="row show-grid">
                 <div class="col-md-4">
-                    {{ form_row(form.numero_documento) }}
+                    {{ form_row(form.numeroReferencia) }}
                 </div>
 
                 <div class="col-md-4">
-                    {{ form_row(form.consecutivo_compra) }}
+                    {{ form_row(form.consecutivoCompra) }}
                 </div>
 
                 <div class="col-md-4">
@@ -54,21 +64,17 @@
                 </div>
 
                 <div class="col-md-4">
-                    {{ form_row(form.fecha_pedido) }}
+                    {{ form_row(form.fechaMovimiento) }}
                 </div>
 
                 <div class="col-md-4">
-                    {{ form_row(form.forma_pago) }}
+                    {{ form_row(form.fechaContable) }}
                 </div>
             </div>
 
             <div class="row show-grid">
                 <div class="col-md-4">
-                    {{ form_row(form.condiciones_pago) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(form.moneda) }}
+                    {{ form_row(form.estadoDocumento) }}
                 </div>
             </div>
 
@@ -80,7 +86,7 @@
 
         <div class="row show-grid">
             <div class="col-md-12">
-                {{ form_row(form.pedido_compra_lineas) }}
+                {{ form_row(form.albaranLinea) }}
             </div>
         </div>
 
@@ -89,16 +95,6 @@
                 <div class="btn-group">
                     <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar línea</a>
                 </div>
-            </div>
-        </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.importe_total_lineas) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.importe_total) }}
             </div>
         </div>
 
@@ -116,7 +112,7 @@
     <!-- /.col-lg-6 -->
         <div class="row show-grid">
             <div class="col-md-4">
-                <input id="guardarPedido" class="btn btn-primary" style="height: 34px" type="button" value="Guardar">
+                <input id="guardarAlbaran" class="btn btn-primary" style="height: 34px" type="button" value="Guardar">
                 <input id="guardarLineas" class="btn btn-primary" style="height: 34px" type="submit" value="Procesar">
                 <div class="btn-group">
                     <a class="btn btn-primary" href="{{ path('pedidocompra') }}"> Cancelar</a>
@@ -137,57 +133,43 @@
                     <h3 class="modal-title" id="myModalLabel">Datos de nueva línea</h3>
                 </div>
                 <div class="modal-body" style="width: 800px;">
-                    <form action="{{ path('pedido_compra_linea_compra_create') }}" method="post" {{ form_enctype(pedido_compra_linea) }}>
+                    <form action="{{ path('albaran_linea_compra_create') }}" method="post" {{ form_enctype(albaran_linea) }}>
                         <div class="row show-grid">
                             <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.linea) }}
+                                {{ form_row(albaran_linea.linea) }}
                             </div>
 
                             <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.producto) }}
+                                {{ form_row(albaran_linea.producto) }}
                             </div>
 
                             <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.cantidad_pedido) }}
+                                {{ form_row(albaran_linea.cantidadMovida) }}
                             </div>
                         </div>
 
                         <div class="row show-grid">
                             <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.uom) }}
+                                {{ form_row(albaran_linea.almacen) }}
                             </div>
 
                             <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.precio_unitario) }}
+                                {{ form_row(albaran_linea.uom) }}
                             </div>
 
                             <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.impuesto) }}
+                                {{ form_row(albaran_linea.valorAtributos) }}
                             </div>
                         </div>
-
-                        <div class="row show-grid">
-                            <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.moneda) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.porciento_descuento) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.importe_linea) }}
-                            </div>
-                        </div>
-
+                        {{ form_rest(albaran_linea) }}
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
                     <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</i></a>
 
                 </div>
-                {{ form_rest(pedido_compra_linea) }}
-                </form>
+
             </div>
             <!-- /.modal-content -->
         </div>
@@ -208,57 +190,82 @@
     <script type="text/javascript">
 
         $(function(){
-            //$('#tab_lineas').fadeOut(100);
-            $('#{{ pedido_compra_linea.precio_unitario.vars.id }}').prop('readonly','readonly');
+            $('#error').fadeOut(10);
+            $('#valido').fadeOut(10);
+            $('#tab_lineas').fadeOut(10);
+            $('#guardarLineas').hide();
 
-            $('#{{ pedido_compra_linea.producto.vars.id }}').change(function(){
+            $('#tab_basicos').click(function(){
+                $('#tab_lineas').fadeOut(10);
+                $('#guardarAlbaran').show();
+                $('#guardarLineas').hide();
+
+                $('#error').hide();
+                $('#valido').hide();
+            });
+
+            $('#guardarAlbaran').click(function(){
+                $('#error').fadeOut(10);
+                $('#tab_lineas').fadeOut(10);
+
                 var data = {
-                    producto_id: $(this).val()
+                    numeroReferencia:   $('#{{ form.numeroReferencia.vars.id }}').val(),
+                    consecutivoCompra:  $('#{{ form.consecutivoCompra.vars.id }}').val(),
+                    almacen:            $('#{{ form.almacen.vars.id }}').val(),
+                    tercero:            $('#{{ form.tercero.vars.id }}').val(),
+                    fechaMovimiento:    $('#{{ form.fechaMovimiento.vars.id }}').val(),
+                    fechaContable:      $('#{{ form.fechaContable.vars.id }}').val(),
+                    estadoDocumento:    $('#{{ form.estadoDocumento.vars.id }}').val()
                 };
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ path("producto_ajax_productos_all") }}',
+                    url: '{{ path("guardarAlbaran") }}',
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
-                        var precio_text = $('#{{ pedido_compra_linea.precio_unitario.vars.id }}');
 
-                        precio_text.val(values.precio);
+                        console.log(values.error);
+
+                        if(values.error == 'error')
+                        {
+                            //Si existe al menos un campo no correcto en PedidoCompra se lanza un mensaje de error
+                            $('#error').fadeIn(100);
+                            $('#error').fadeOut(20000);
+
+                            jQuery('body,html').animate({
+                                scrollTop: 0
+                            }, 25);
+                        }
+                        else
+                        {
+                            $('#guardarLineas').show();
+                            $('#error').hide();
+                            $('#guardarAlbaran').hide();
+                            $('#valido').fadeIn(100);
+                            $('#valido').fadeOut(20000);
+
+                            //Si todos los campos del Albaran son correctos activo el tab de Lineas
+                            $('#basicos').attr('class', 'tab-pane fade');
+                            $('#tab_basicos').parent().removeAttr('class');
+
+                            $('#tab_lineas').fadeIn(200);
+                            $('#tab_lineas').parent().attr('class', 'active');
+
+                            $('#lineas').attr('class', 'tab-pane fade in active');
+
+                            jQuery('body,html').animate({
+                                scrollTop: 0
+                            }, 25);
+
+                        }
+
                     }
                 });
             });
-
-            $('#guardarPedido').click(function(){
-                var data = {
-                    numero_documento:           $('#{{ form.numero_documento.vars.id }}').val(),
-                    consecutivo_compra:         $('#{{ form.consecutivo_compra.vars.id }}').val(),
-                    tercero:                    $('#{{ form.tercero.vars.id }}').val(),
-                    almacen:                    $('#{{ form.almacen.vars.id }}').val(),
-                    fecha_pedido:               $('#{{ form.fecha_pedido.vars.id }}').val(),
-                    forma_pago:                 $('#{{ form.forma_pago.vars.id }}').val(),
-                    condiciones_pago:           $('#{{ form.condiciones_pago.vars.id }}').val(),
-                    moneda:                     $('#{{ form.moneda.vars.id }}').val(),
-                    importe_total_lineas:       $('#{{ form.importe_total_lineas.vars.id }}').val(),
-                    importe_total:              $('#{{ form.importe_total.vars.id }}').val()
-                };
-
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ path("guardarPedido") }}',
-                    data: data,
-                    success: function(data) {
-                        var values = $.parseJSON(data);
-                        $('#tab_lineas').fadeIn(100);
-                        console.log(values);
-                    }
-                });
-            });
-
-
         });
 
-        var collectionHolder = $('div#bodega_pedido_compra_pedido_compra_lineas');
+        var collectionHolder = $('div#bodega_albaran_type_albaranLinea');
         var $addTagLink = $('a.add_tag_link');
 
         jQuery(document).ready(function() {
@@ -298,8 +305,6 @@
                     // remove the li for the tag form
                     $(this).parent().parent().remove();
 
-                    actualizarMontoTotal();
-
                     updateView();
                 });
             }
@@ -313,20 +318,6 @@
                 }
             }
 
-            function actualizarMontoTotal(){
-                //Obtener cada valor de las lineas y sumarlas a una variable
-                var montototal = 0;
-                var precioTotal = 0;
-
-                $('[id^="bodega_pedido_compra_pedido_compra_lineas_"][id$="_importe_linea"]').each(function(key, value){
-                    montototal += parseFloat($(value).val());
-                });
-
-                //Actualizar el valor del precio y monto de todas las lineas
-                $('#bodega_pedido_compra_importe_total_lineas').val(montototal);
-                $('#bodega_pedido_compra_importe_total').val(montototal);
-            }
-
             $addTagLink.on('click', function(e) {
                 // prevent the link from creating a "#" on the URL
                 e.preventDefault();
@@ -334,29 +325,21 @@
                 var modal = $('#newLinea');
 
                 // captura de valores del modal
-                var linea_linea             = modal.find('#buseta_bodegabundle_pedido_compra_linea_linea');
-                var linea_producto          = modal.find('#buseta_bodegabundle_pedido_compra_linea_producto');
-                var linea_cantidad_pedido   = modal.find('#buseta_bodegabundle_pedido_compra_linea_cantidad_pedido');
-
-                var linea_uom               = modal.find('#buseta_bodegabundle_pedido_compra_linea_uom');
-                var linea_precio_unitario   = modal.find('#buseta_bodegabundle_pedido_compra_linea_precio_unitario');
-                var linea_impuesto          = modal.find('#buseta_bodegabundle_pedido_compra_linea_impuesto');
-
-                var linea_moneda                = modal.find('#buseta_bodegabundle_pedido_compra_linea_moneda');
-                var linea_porciento_descuento   = modal.find('#buseta_bodegabundle_pedido_compra_linea_porciento_descuento');
-                var linea_importe_linea         = modal.find('#buseta_bodegabundle_pedido_compra_linea_importe_linea');
+                var linea_linea = modal.find('#buseta_bodegabundle_albaran_linea_linea');
+                var linea_producto = modal.find('#buseta_bodegabundle_albaran_linea_producto');
+                var linea_cantidadMovida = modal.find('#buseta_bodegabundle_albaran_linea_cantidadMovida');
+                var linea_almacen = modal.find('#buseta_bodegabundle_albaran_linea_almacen');
+                var linea_uom = modal.find('#buseta_bodegabundle_albaran_linea_uom');
+                var linea_valorAtributos = modal.find('#buseta_bodegabundle_albaran_linea_valorAtributos');
 
                 var dataA = {
-                    impuesto_id         : $('#{{ pedido_compra_linea.impuesto.vars.id }}').val(),
-                    cantidad_pedido     : $('#{{ pedido_compra_linea.cantidad_pedido.vars.id }}').val(),
-                    precio_unitario     : $('#{{ pedido_compra_linea.precio_unitario.vars.id }}').val(),
-                    porciento_descuento : $('#{{ pedido_compra_linea.porciento_descuento.vars.id }}').val()
+                    linea : $('#{{ albaran_linea.linea.vars.id }}').val()
                 };
 
                 $.when(
                         $.ajax({
                             type: 'GET',
-                            url: '{{ path("impuesto_ajax_productos_all") }}',
+                            url: '{{ path("albaran_ajax") }}',
                             data: dataA
                         })
 
@@ -364,40 +347,22 @@
 
                             var valorA = $.parseJSON(data);
 
-                            $('#{{ pedido_compra_linea.importe_linea.vars.id }}').val(valorA.importeLinea);
-
                             var index = collectionHolder.data('index');
 
                             addTagForm(collectionHolder);
 
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_linea').val(linea_linea.val());
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_producto').val(linea_producto.val());
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_cantidad_pedido').val(linea_cantidad_pedido.val());
-
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_uom').val(linea_uom.val());
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_precio_unitario').val(linea_precio_unitario.val());
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_impuesto').val(linea_impuesto.val());
-
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_moneda').val(linea_moneda.val());
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_porciento_descuento').val(linea_porciento_descuento.val());
-                            $('#bodega_pedido_compra_pedido_compra_lineas_' + index + '_importe_linea').val(linea_importe_linea.val());
-
-                            /*Obtener cada valor de las lineas y sumarlas a una variable*/
-                            actualizarMontoTotal();
-
-
+                            $('#bodega_albaran_type_albaranLinea_' + index + '_linea').val(linea_linea.val());
+                            $('#bodega_albaran_type_albaranLinea_' + index + '_producto ').val(linea_producto.val());
+                            $('#bodega_albaran_type_albaranLinea_' + index + '_cantidadMovida').val(linea_cantidadMovida.val());
+                            $('#bodega_albaran_type_albaranLinea_' + index + '_almacen').val(linea_almacen.val());
+                            $('#bodega_albaran_type_albaranLinea_' + index + '_uom').val(linea_uom.val());
+                            $('#bodega_albaran_type_albaranLinea_' + index + '_valorAtributos').val(linea_valorAtributos.val());
                         })
-
-
-                /*var index = collectionHolder.data('index');
-
-                addTagForm(collectionHolder);*/
 
             });
 
 
         });
-
 
     </script>
 

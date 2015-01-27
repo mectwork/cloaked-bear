@@ -21,6 +21,83 @@ use Buseta\BodegaBundle\Form\Type\AlbaranType;
  */
 class AlbaranController extends Controller
 {
+    public function guardarAlbaranAction(Request $request) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+
+        $request = $this->getRequest();
+        if (!$request->isXmlHttpRequest())
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $error = "Sin errores";
+
+        if($request->query->get('estadoDocumento'))
+        {
+            $estadoDocumento = $request->query->get('estadoDocumento');
+        }
+        else { $error = "error"; }
+
+        if($request->query->get('fechaMovimiento'))
+        {
+            $fechaMovimiento = $request->query->get('fechaMovimiento');
+
+            //$fecha = new \DateTime('now');
+            $date='%s-%s-%s GMT-0';
+            $fecha = explode("/", $fechaMovimiento);
+            $d = $fecha[0]; $m = $fecha[1];
+            $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
+            $y = $fecha[0];
+            $fechaMovimiento =  new \DateTime(sprintf($date,$y,$m,$d));
+        }
+        else { $error = "error"; }
+
+        if($request->query->get('fechaContable'))
+        {
+            $fechaContable = $request->query->get('fechaContable');
+
+            //$fecha = new \DateTime('now');
+            $date='%s-%s-%s GMT-0';
+            $fecha = explode("/", $fechaContable);
+            $d = $fecha[0]; $m = $fecha[1];
+            $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
+            $y = $fecha[0];
+            $fechaContable =  new \DateTime(sprintf($date,$y,$m,$d));
+        }
+        else { $error = "error"; }
+
+        if($request->query->get('tercero'))
+        {
+            $tercero = $request->query->get('tercero');
+        }
+        else { $error = "error"; }
+
+        if($request->query->get('almacen'))
+        {
+            $almacen = $request->query->get('almacen');
+        }
+        else { $error = "error"; }
+
+        if($request->query->get('numeroReferencia'))
+        {
+            $numeroReferencia = $request->query->get('numeroReferencia');
+        }
+        else { $error = "error"; }
+
+        if($request->query->get('consecutivoCompra'))
+        {
+            $consecutivoCompra = $request->query->get('consecutivoCompra');
+        }
+        else { $error = "error"; }
+
+        $json = array(
+            'error' => $error,
+        );
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
+
     public function select_albaran_ajaxAction(Request $request) {
         if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
@@ -228,6 +305,68 @@ class AlbaranController extends Controller
         }
 
         return $this->redirect($this->generateUrl('albaran_show', array('id' => $id)));
+    }
+
+    /**
+     * Creates a new Albaran entity.
+     *
+     */
+    public function createAction(Request $request)
+    {
+        $entity = new Albaran();
+        $form = $this->createCreateForm($entity);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('albaran_show', array('id' => $entity->getId())));
+        }
+
+        return $this->render('BusetaBodegaBundle:Albaran:new.html.twig', array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ));
+    }
+
+    /**
+     * Creates a form to create a Bodega entity.
+     *
+     * @param Albaran $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCreateForm(Albaran $entity)
+    {
+        $form = $this->createForm(new AlbaranType(), $entity, array(
+            'action' => $this->generateUrl('albaran_create'),
+            'method' => 'POST',
+        ));
+
+        return $form;
+    }
+
+    /**
+     * Displays a form to create a new Albaran entity.
+     *
+     */
+    public function newAction()
+    {
+        $entity = new Albaran();
+
+        $albaran_linea = new AlbaranLinea();
+        $albaran_linea = $this->createForm(new AlbaranLineaType());
+
+
+        $form   = $this->createCreateForm($entity);
+
+        return $this->render('BusetaBodegaBundle:Albaran:new.html.twig', array(
+            'entity' => $entity,
+            'albaran_linea'  => $albaran_linea->createView(),
+            'form'   => $form->createView(),
+        ));
     }
 
 }

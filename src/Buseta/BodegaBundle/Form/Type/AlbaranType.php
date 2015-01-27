@@ -18,18 +18,18 @@ class AlbaranType extends AbstractType
     /**
      * @var ObjectManager
      */
-    private $em;
+//    private $em;
 
     /**
      * @var Container
      */
-    private $serviceContainer;
-
-    function __construct(ObjectManager $em, Container $serviceContainer)
-    {
-        $this->em = $em;
-        $this->serviceContainer = $serviceContainer;
-    }
+//    private $serviceContainer;
+//
+//    function __construct(ObjectManager $em, Container $serviceContainer)
+//    {
+//        $this->em = $em;
+//        $this->serviceContainer = $serviceContainer;
+//    }
 
     /**
      * @param FormBuilderInterface $builder
