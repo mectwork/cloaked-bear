@@ -6,6 +6,7 @@ use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\InformeProductosBodega;
 use Buseta\BodegaBundle\Entity\InformeStock;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
+use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Form\Type\AlbaranLineaType;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraType;
@@ -317,6 +318,39 @@ class AlbaranController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
+        $request = $this->get('request');
+        $datos = $request->request->get('bodega_albaran_type');
+        $em = $this->getDoctrine()->getManager();
+
+        //var_dump($datos['albaranLinea']);die;
+
+        $albaranLineas = $datos['albaranLinea'];
+        $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($datos['tercero']);
+        $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($datos['almacen']);
+
+        $date='%s-%s-%s GMT-0';
+        $fecha = explode("/", $datos['fechaMovimiento']);
+        $d = $fecha[0]; $m = $fecha[1];
+        $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
+        $y = $fecha[0];
+        $fechaMovimiento =  new \DateTime(sprintf($date,$y,$m,$d));
+
+        //Actualizar Movimiento de productos
+        foreach($albaranLineas as $albaranLineas)
+        {
+            $movimiento = new Movimiento();
+            $movimiento->setAlmacenOrigen($almacen);
+            $movimiento->setAlmacenDestino($almacen);
+            $movimiento->setFechaMovimiento($fechaMovimiento);
+
+            $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($albaranLineas['producto']);
+            $movimiento->setProducto($producto);
+
+            $movimiento->setCantidadMovido($albaranLineas['cantidadMovida']);
+            $em->persist($movimiento);
+            $em->flush();
+        }
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
@@ -340,7 +374,7 @@ class AlbaranController extends Controller
      */
     private function createCreateForm(Albaran $entity)
     {
-        $form = $this->createForm(new AlbaranType(), $entity, array(
+        $form = $this->createForm('bodega_albaran_type', $entity, array(
             'action' => $this->generateUrl('albaran_create'),
             'method' => 'POST',
         ));
@@ -357,15 +391,14 @@ class AlbaranController extends Controller
         $entity = new Albaran();
 
         $albaran_linea = new AlbaranLinea();
+
         $albaran_linea = $this->createForm(new AlbaranLineaType());
-
-
         $form   = $this->createCreateForm($entity);
 
         return $this->render('BusetaBodegaBundle:Albaran:new.html.twig', array(
             'entity' => $entity,
-            'albaran_linea'  => $albaran_linea->createView(),
             'form'   => $form->createView(),
+            'albaran_linea'  => $albaran_linea->createView(),
         ));
     }
 

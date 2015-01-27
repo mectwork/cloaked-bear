@@ -18,7 +18,6 @@ class AlbaranLineaController extends Controller
 {
     public function create_compraAction(Request $request)
     {
-        die;
         $entity = new AlbaranLinea();
         $form = $this->createCreateCompraForm($entity);
         $form->handleRequest($request);

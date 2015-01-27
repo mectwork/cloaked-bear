@@ -18,18 +18,18 @@ class AlbaranType extends AbstractType
     /**
      * @var ObjectManager
      */
-//    private $em;
+    private $em;
 
     /**
      * @var Container
      */
-//    private $serviceContainer;
-//
-//    function __construct(ObjectManager $em, Container $serviceContainer)
-//    {
-//        $this->em = $em;
-//        $this->serviceContainer = $serviceContainer;
-//    }
+    private $serviceContainer;
+
+    function __construct(ObjectManager $em, Container $serviceContainer)
+    {
+        $this->em = $em;
+        $this->serviceContainer = $serviceContainer;
+    }
 
     /**
      * @param FormBuilderInterface $builder
@@ -102,7 +102,7 @@ class AlbaranType extends AbstractType
             ->add('albaranLinea','collection',array(
                 'type' => new AlbaranLineaType(),
                 'label'  => false,
-                'required' => false,
+                'required' => true,
                 'by_reference' => false,
                 'allow_add' => true,
                 'allow_delete' => true,

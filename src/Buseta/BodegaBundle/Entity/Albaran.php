@@ -75,7 +75,6 @@ class Albaran
      */
     private $pedidoCompra;
 
-
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
@@ -83,6 +82,15 @@ class Albaran
      */
     private $albaranLinea;
 
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->albaranLinea = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -253,48 +261,6 @@ class Albaran
     {
         return $this->almacen;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->albaranLinea = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
-    /**
-     * Add albaranLinea
-     *
-     * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
-     * @return Albaran
-     */
-    public function addAlbaranLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
-    {
-        $albaranLinea->setAlbaran($this);
-
-        $this->albaranLinea[] = $albaranLinea;
-    
-        return $this;
-    }
-
-    /**
-     * Remove albaranLinea
-     *
-     * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
-     */
-    public function removeAlbaranLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
-    {
-        $this->albaranLinea->removeElement($albaranLinea);
-    }
-
-    /**
-     * Get albaranLinea
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAlbaranLinea()
-    {
-        return $this->albaranLinea;
-    }
 
     /**
      * Set pedidoCompra
@@ -317,5 +283,75 @@ class Albaran
     public function getPedidoCompra()
     {
         return $this->pedidoCompra;
+    }
+
+    /**
+     * Add albaranLinea
+     *
+     * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
+     * @return Albaran
+     */
+    public function addAlbaranLineon(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
+    {
+        $albaranLinea->setAlbaran($this);
+
+        $this->albaranLinea[] = $albaranLinea;
+    
+        return $this;
+    }
+
+    /**
+     * Remove albaranLinea
+     *
+     * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
+     */
+    public function removeAlbaranLineon(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
+    {
+        $this->albaranLinea->removeElement($albaranLinea);
+    }
+
+    /**
+     * Get albaranLinea
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAlbaranLineon()
+    {
+        return $this->albaranLinea;
+    }
+
+    /**
+     * Add albaranLinea
+     *
+     * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
+     * @return Albaran
+     */
+    public function addAlbaranLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
+    {
+        $albaranLinea->setAlbaran($this);
+
+        $this->albaranLinea[] = $albaranLinea;
+
+        return $this;
+    }
+
+    /**
+     * Remove albaranLinea
+     *
+     * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
+     */
+    public function removeAlbaranLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
+    {
+        $this->albaranLinea->removeElement($albaranLinea);
+    }
+
+    /**
+     * Get albaranLinea
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAlbaranLinea()
+    {
+        return $this->albaranLinea;
     }
 }
