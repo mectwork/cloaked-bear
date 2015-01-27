@@ -47,6 +47,7 @@ class Albaran
      * @var date
      *
      * @ORM\Column(name="fechaMovimiento", type="date", nullable=true)
+     * @Assert\Date()
      */
     private $fechaMovimiento;
 
@@ -54,6 +55,7 @@ class Albaran
      * @var date
      *
      * @ORM\Column(name="fechaContable", type="date", nullable=true)
+     * @Assert\Date()
      */
     private $fechaContable;
 
