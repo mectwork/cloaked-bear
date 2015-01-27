@@ -12,6 +12,16 @@
 
 {% block area_trabajo %}
 
+    <div id="error" class="alert alert-danger" >
+        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+        <strong>!ERROR!</strong> Debe comprobar que todos los campos del formulario sean válidos y no se encuentren vacíos.
+    </div>
+
+    <div id="valido" class="alert alert-success" >
+        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+        <strong>!OK!</strong> Los datos básicos del pedido de compra han sido guardados satisfactoriamente.
+    </div>
+
     {{ form_start(form) }}
 
     <div class="row">
@@ -22,7 +32,7 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
         <li class="active">
-            <a href="#basicos" data-toggle="tab">Datos básicos</a>
+            <a id="tab_basicos" href="#basicos" data-toggle="tab">Datos básicos</a>
         </li>
         <li>
             <a id="tab_lineas" href="#lineas" data-toggle="tab">Líneas</a>
@@ -213,6 +223,10 @@
         $(function(){
 
             //$('#tab_lineas').fadeOut(100);
+            $('#error').fadeOut(10);
+            $('#valido').fadeOut(10);
+            $('#tab_lineas').fadeOut(10);
+
 
             $('#{{ pedido_compra_linea.producto.vars.id }}').change(function(){
                 var data = {
@@ -233,6 +247,9 @@
             });
 
             $('#guardarPedido').click(function(){
+                $('#error').fadeOut(10);
+                $('#tab_lineas').fadeOut(10);
+
                 var data = {
                     numero_documento:           $('#{{ form.numero_documento.vars.id }}').val(),
                     consecutivo_compra:         $('#{{ form.consecutivo_compra.vars.id }}').val(),
@@ -252,8 +269,39 @@
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
-                        $('#tab_lineas').fadeIn(100);
-                        console.log(values);
+
+                        console.log(values.error);
+
+                        if(values.error == 'error')
+                        {
+                            //Si existe al menos un campo no correcto en PedidoCompra se lanza un mensaje de error
+                            $('#error').fadeIn(300);
+                            $('#error').fadeOut(20000);
+
+                            jQuery('body,html').animate({
+                                scrollTop: 0
+                            }, 25);
+                        }
+                        else
+                        {
+                            $('#valido').fadeIn(300);
+                            $('#valido').fadeOut(20000);
+
+                            //Si todos los campos del PedidoCompra son correctos activo el tab de Lineas
+                            $('#basicos').attr('class', 'tab-pane fade');
+                            $('#tab_basicos').parent().removeAttr('class');
+
+                            $('#tab_lineas').fadeIn(200);
+                            $('#tab_lineas').parent().attr('class', 'active');
+
+                            $('#lineas').attr('class', 'tab-pane fade in active');
+
+                            jQuery('body,html').animate({
+                                scrollTop: 0
+                            }, 25);
+
+                        }
+
                     }
                 });
             });

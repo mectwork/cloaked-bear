@@ -31,49 +31,90 @@ class PedidoCompraController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $numero_documento = $request->query->get('numero_documento');
+        $error = "Sin errores";
+
         $consecutivo_compra = $request->query->get('consecutivo_compra');
-        $tercero = $request->query->get('tercero');
-        $almacen = $request->query->get('almacen');
-        $fecha_pedido = $request->query->get('fecha_pedido');
-        //$estado_documento = $request->query->get('estado_documento');
-        $forma_pago = $request->query->get('forma_pago');
-        $condiciones_pago = $request->query->get('condiciones_pago');
-        $moneda = $request->query->get('moneda');
         $importe_total_lineas = $request->query->get('importe_total_lineas');
         $importe_total = $request->query->get('importe_total');
 
-        $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($tercero);
-        $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($almacen);
-        $forma_pago = $em->getRepository('BusetaNomencladorBundle:FormaPago')->find($forma_pago);
-        $condiciones_pago = $em->getRepository('BusetaTallerBundle:CondicionesPago')->find($condiciones_pago);
+        if($request->query->get('numero_documento'))
+        {
+            $numero_documento = $request->query->get('numero_documento');
+        }
+        else { $error = "error"; }
 
-        //$fecha = new \DateTime('now');
-        $date='%s-%s-%s GMT-0';
-        $fecha = explode("/", $fecha_pedido);
-        $d = $fecha[0]; $m = $fecha[1];
-        $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
-        $y = $fecha[0];
-        $fecha_pedido =  new \DateTime(sprintf($date,$y,$m,$d));
+        if($request->query->get('fecha_pedido'))
+        {
+            $fecha_pedido = $request->query->get('fecha_pedido');
 
-        $pedidoCompra = new PedidoCompra();
-        $pedidoCompra->setNumeroDocumento($numero_documento);
-        $pedidoCompra->setConsecutivoCompra($consecutivo_compra);
-        $pedidoCompra->setTercero($tercero);
-        $pedidoCompra->setAlmacen($almacen);
-        $pedidoCompra->setFechaPedido($fecha_pedido);
-        //$pedidoCompra->setEstadoDocumento($estado_documento);
-        $pedidoCompra->setFormaPago($forma_pago);
-        $pedidoCompra->setCondicionesPago($condiciones_pago);
-        $pedidoCompra->setMoneda($moneda);
-        $pedidoCompra->setImporteTotalLineas($importe_total_lineas);
-        $pedidoCompra->setImporteTotal($importe_total);
+            //$fecha = new \DateTime('now');
+            $date='%s-%s-%s GMT-0';
+            $fecha = explode("/", $fecha_pedido);
+            $d = $fecha[0]; $m = $fecha[1];
+            $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
+            $y = $fecha[0];
+            $fecha_pedido =  new \DateTime(sprintf($date,$y,$m,$d));
+        }
+        else { $error = "error"; }
 
-        $em->persist($pedidoCompra);
-        $em->flush();
 
-        $json[] = array(
-            'id' => $numero_documento,
+        if($request->query->get('tercero'))
+        {
+            $tercero = $request->query->get('tercero');
+        }
+        else { $error = "error"; }
+
+        if($request->query->get('almacen'))
+        {
+            $almacen = $request->query->get('almacen');
+
+        }
+        else { $error = "error"; }
+
+        if($request->query->get('forma_pago'))
+        {
+            $forma_pago = $request->query->get('forma_pago');
+        }
+        else { $error = "error"; }
+
+        if($request->query->get('condiciones_pago'))
+        {
+            $condiciones_pago = $request->query->get('condiciones_pago');
+        }
+        else { $error = "error"; }
+
+        if($request->query->get('moneda'))
+        {
+            $moneda = $request->query->get('moneda');
+        }
+        else { $error = "error"; }
+
+        /*if($error != 'error')
+        {
+            $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($tercero);
+            $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($almacen);
+            $forma_pago = $em->getRepository('BusetaNomencladorBundle:FormaPago')->find($forma_pago);
+            $condiciones_pago = $em->getRepository('BusetaTallerBundle:CondicionesPago')->find($condiciones_pago);
+
+            $pedidoCompra = new PedidoCompra();
+            $pedidoCompra->setNumeroDocumento($numero_documento);
+            $pedidoCompra->setConsecutivoCompra($consecutivo_compra);
+            $pedidoCompra->setTercero($tercero);
+            $pedidoCompra->setAlmacen($almacen);
+            $pedidoCompra->setFechaPedido($fecha_pedido);
+            $pedidoCompra->setFormaPago($forma_pago);
+            $pedidoCompra->setCondicionesPago($condiciones_pago);
+            $pedidoCompra->setMoneda($moneda);
+            $pedidoCompra->setImporteTotalLineas($importe_total_lineas);
+            $pedidoCompra->setImporteTotal($importe_total);
+
+            $em->persist($pedidoCompra);
+            $em->flush();
+        }*/
+
+        $json = array(
+            //'id' => $numero_documento,
+            'error' => $error,
         );
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
@@ -254,7 +295,7 @@ class PedidoCompraController extends Controller
             throw $this->createNotFoundException('Unable to find PedidoCompra entity.');
         }
 
-        $linea = $this->createForm(new LineaType());
+        $linea = $this->createForm(new PedidoCompraLineaType());
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
@@ -275,7 +316,7 @@ class PedidoCompraController extends Controller
         return $this->render('BusetaBodegaBundle:PedidoCompra:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'linea'       => $linea->createView(),
+            'pedido_compra_linea'       => $linea->createView(),
             'delete_form' => $deleteForm->createView(),
             'json'   => json_encode($json),
         ));
@@ -290,7 +331,7 @@ class PedidoCompraController extends Controller
     */
     private function createEditForm(PedidoCompra $entity)
     {
-        $form = $this->createForm('taller_pedidocompra',$entity, array(
+        $form = $this->createForm('bodega_pedido_compra',$entity, array(
             'action' => $this->generateUrl('pedidocompra_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));

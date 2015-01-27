@@ -34,12 +34,12 @@
             </tr>
 
             <tr>
-                <th>Forma Pago</th>
+                <th>Forma de Pago</th>
                 <td>{{ entity.formapago }}</td>
             </tr>
 
             <tr>
-                <th>Condiciones Pago</th>
+                <th>Condiciones de Pago</th>
                 <td>{{ entity.condicionespago }}</td>
             </tr>
 
@@ -106,7 +106,8 @@
         </tbody>
     </table>
 
-    <div class="btn-group">
+    <div class="form-actions">
+        <a class="btn btn-primary" href="{{ path('pedidocompra_edit', { 'id': entity.id }) }}"> Editar</a>
         <a class="btn btn-primary" href="{{ path('pedidocompra') }}"> Listado</a>
     </div>
 

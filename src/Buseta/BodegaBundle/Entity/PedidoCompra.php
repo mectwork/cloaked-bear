@@ -56,23 +56,20 @@ class PedidoCompra
     private $almacen;
 
     /**
-     * @var string
      *
-     * @ORM\Column(name="moneda", type="string", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Moneda")
      */
     private $moneda;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\FormaPago")
      */
     private $forma_pago;
 
     /**
-     * @var string
      *
-     * @ORM\Column(name="condiciones_pago", type="string", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\CondicionesPago")
      */
     private $condiciones_pago;
 
@@ -190,52 +187,6 @@ class PedidoCompra
     public function getFechaPedido()
     {
         return $this->fecha_pedido;
-    }
-
-    /**
-     * Set moneda
-     *
-     * @param string $moneda
-     * @return PedidoCompra
-     */
-    public function setMoneda($moneda)
-    {
-        $this->moneda = $moneda;
-    
-        return $this;
-    }
-
-    /**
-     * Get moneda
-     *
-     * @return string 
-     */
-    public function getMoneda()
-    {
-        return $this->moneda;
-    }
-
-    /**
-     * Set condiciones_pago
-     *
-     * @param string $condicionesPago
-     * @return PedidoCompra
-     */
-    public function setCondicionesPago($condicionesPago)
-    {
-        $this->condiciones_pago = $condicionesPago;
-    
-        return $this;
-    }
-
-    /**
-     * Get condiciones_pago
-     *
-     * @return string 
-     */
-    public function getCondicionesPago()
-    {
-        return $this->condiciones_pago;
     }
 
     /**
@@ -376,8 +327,6 @@ class PedidoCompra
         return $this->forma_pago;
     }
 
-
-
     /**
      * Add pedido_compra_lineas
      *
@@ -411,5 +360,51 @@ class PedidoCompra
     public function getPedidoCompraLineas()
     {
         return $this->pedido_compra_lineas;
+    }
+
+    /**
+     * Set condiciones_pago
+     *
+     * @param \Buseta\TallerBundle\Entity\CondicionesPago $condicionesPago
+     * @return PedidoCompra
+     */
+    public function setCondicionesPago(\Buseta\TallerBundle\Entity\CondicionesPago $condicionesPago = null)
+    {
+        $this->condiciones_pago = $condicionesPago;
+    
+        return $this;
+    }
+
+    /**
+     * Get condiciones_pago
+     *
+     * @return \Buseta\TallerBundle\Entity\CondicionesPago 
+     */
+    public function getCondicionesPago()
+    {
+        return $this->condiciones_pago;
+    }
+
+    /**
+     * Set moneda
+     *
+     * @param \Buseta\NomencladorBundle\Entity\Moneda $moneda
+     * @return PedidoCompra
+     */
+    public function setMoneda(\Buseta\NomencladorBundle\Entity\Moneda $moneda = null)
+    {
+        $this->moneda = $moneda;
+    
+        return $this;
+    }
+
+    /**
+     * Get moneda
+     *
+     * @return \Buseta\NomencladorBundle\Entity\Moneda 
+     */
+    public function getMoneda()
+    {
+        return $this->moneda;
     }
 }

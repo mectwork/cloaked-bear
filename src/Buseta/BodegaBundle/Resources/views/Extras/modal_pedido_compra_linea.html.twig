@@ -1,0 +1,44 @@
+<form id="modalNewLinea" action="{{ path('pedido_compra_linea_compra_create') }}" method="post" {{ form_enctype(pedido_compra_linea) }}>
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(pedido_compra_linea.linea) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(pedido_compra_linea.producto) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(pedido_compra_linea.cantidad_pedido) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(pedido_compra_linea.uom) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(pedido_compra_linea.precio_unitario) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(pedido_compra_linea.impuesto) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(pedido_compra_linea.moneda) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(pedido_compra_linea.porciento_descuento) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(pedido_compra_linea.importe_linea) }}
+        </div>
+    </div>
+    {{ form_rest(pedido_compra_linea) }}
+</form>

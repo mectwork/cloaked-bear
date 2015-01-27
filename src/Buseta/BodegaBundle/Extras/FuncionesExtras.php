@@ -32,7 +32,7 @@ class FuncionesExtras
             }
         }
 
-        return $importeDescuento;
+        return $importeLinea;
     }
 }
 ?>
