@@ -5,31 +5,32 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Modificar datos del impuesto: "{{ entity.nombre }}"
+    Modificar impuesto: "{{ entity.nombre }}"
 {% endblock %}
 
 {% block area_trabajo %}
 
     <form action="{{ path('impuesto_update',{'id':entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
 
+        {{ form_errors(edit_form) }}
+
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Nombre:</label>
-                {{ form_widget(edit_form.nombre) }}
+                {{ form_row(edit_form.nombre) }}
             </div>
+
             <div class="col-md-4">
-                <label>Número:</label>
-                {{ form_widget(edit_form.numero) }}
+                {{ form_row(edit_form.numero) }}
             </div>
+
             <div class="col-md-4">
-                <label>Tipo:</label>
-                {{ form_widget(edit_form.tipo) }}
+                {{ form_row(edit_form.tipo) }}
             </div>
         </div>
+
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Tarifa:</label>
-                {{ form_widget(edit_form.tarifa) }}
+                {{ form_row(edit_form.tarifa) }}
             </div>
         </div>
 
@@ -53,3 +54,10 @@
 {% block contenido %}
 
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('vendors/bootstrap/js/bootstrap-modal.js') }}"></script>
+
+{% endblock javascripts %}

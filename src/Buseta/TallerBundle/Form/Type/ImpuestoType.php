@@ -16,14 +16,14 @@ class ImpuestoType extends AbstractType
     {
         $builder
             ->add('nombre', 'text', array(
-                    'required' => true,
+                    'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
                         'style' => 'width: 250px',
                     )
                 ))
             ->add('numero', 'text', array(
-                    'required' => true,
+                    'required' => false,
                     'label'  => 'Número',
                     'attr'   => array(
                         'class' => 'form-control',
@@ -37,14 +37,14 @@ class ImpuestoType extends AbstractType
                         'porcentaje' => 'Porcentaje (%)'),
                     'multiple' => false,
                     'expanded' => false,
-                    'required' => true,
+                    'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
                         'style' => 'width: 250px',
                     )
                 ))
-            ->add('tarifa', 'text', array(
-                    'required' => true,
+            ->add('tarifa', 'number', array(
+                    'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
                         'style' => 'width: 250px',

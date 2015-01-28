@@ -26,6 +26,7 @@ class Impuesto
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", nullable=false)
+     * @Assert\NotBlank()
      */
     private $nombre;
 
@@ -33,6 +34,7 @@ class Impuesto
      * @var string
      *
      * @ORM\Column(name="numero", type="string", nullable=false)
+     * @Assert\NotBlank()
      */
     private $numero;
 
@@ -47,6 +49,7 @@ class Impuesto
      * @var string
      *
      * @ORM\Column(name="tipo", type="string", nullable=false)
+     * @Assert\NotBlank()
      */
     private $tipo;
 
@@ -54,6 +57,7 @@ class Impuesto
      * @var float
      *
      * @ORM\Column(name="tarifa", type="decimal", scale=2)
+     * @Assert\NotBlank()
      */
     private $tarifa;
 

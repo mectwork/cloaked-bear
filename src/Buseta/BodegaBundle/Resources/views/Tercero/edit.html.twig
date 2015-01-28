@@ -7,38 +7,36 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Adicionar nuevo tercero
+    Modificar tercero: "{{ entity.nombres }}"
 {% endblock %}
 
 {% block area_trabajo %}
 
-    <form action="{{ path('tercero_create') }}" method="post" {{ form_enctype(edit_form) }}>
+    <form action="{{ path('tercero_update',{'id':entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
+
+        {{ form_errors(form) }}
+
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Nombres:</label>
-                {{ form_widget(edit_form.nombres) }}
+                {{ form_row(edit_form.nombres) }}
             </div>
 
             <div class="col-md-4">
-                <label>Apellidos:</label>
-                {{ form_widget(edit_form.apellidos) }}
+                {{ form_row(edit_form.apellidos) }}
             </div>
 
             <div class="col-md-4">
-                <label>Alias:</label>
-                {{ form_widget(edit_form.alias) }}
+                {{ form_row(edit_form.alias) }}
             </div>
         </div>
 
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Código:</label>
-                {{ form_widget(edit_form.codigo) }}
+                {{ form_row(edit_form.codigo) }}
             </div>
 
             <div class="col-md-4">
-                <label>Dirección:</label>
-                {{ form_widget(edit_form.direccion) }}
+                {{ form_row(edit_form.direccion) }}
             </div>
 
             <div class="col-md-4">
@@ -51,29 +49,25 @@
 
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Cliente:</label>
-                {{ form_widget(edit_form.cliente) }}
+                {{ form_row(edit_form.cliente) }}
             </div>
 
             <div class="col-md-4">
-                <label>Institución:</label>
-                {{ form_widget(edit_form.institucion) }}
+                {{ form_row(edit_form.institucion) }}
             </div>
 
             <div class="col-md-4">
-                <label>Proveedor:</label>
-                {{ form_widget(edit_form.proveedor) }}
+                {{ form_row(edit_form.proveedor) }}
             </div>
         </div>
 
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Activo:</label>
-                {{ form_widget(edit_form.activo) }}
+                {{ form_row(edit_form.activo) }}
             </div>
         </div>
 
-        {{ form_widget(edit_form.mecanismoscontacto) }}
+        {{ form_row(edit_form.mecanismoscontacto) }}
 
         <div class="row show-grid">
             <div class="col-md-4">

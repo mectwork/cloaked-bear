@@ -16,6 +16,9 @@ class TerceroModel
 
     private $codigo;
 
+    /**
+     * @Assert\NotBlank()
+     */
     private $nombres;
 
     private $apellidos;

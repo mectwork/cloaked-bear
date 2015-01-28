@@ -18,6 +18,7 @@ class TerceroType extends AbstractType
         $builder
             ->add('codigo', 'text', array(
                     'required' => false,
+                    'label' => 'Código',
                     'attr'   => array(
                         'class' => 'form-control',
                         'style' => 'width: 300px',
@@ -48,6 +49,7 @@ class TerceroType extends AbstractType
                     'required' => false,
                 ))
             ->add('institucion', 'checkbox', array(
+                    'label' => 'Institución',
                     'required' => false,
                 ))
             ->add('proveedor', 'checkbox', array(
@@ -57,6 +59,7 @@ class TerceroType extends AbstractType
                     'required' => false,
                 ))
             ->add('direccion', 'text', array(
+                'label' => 'Dirección',
                 'required' => false,
                 'attr'   => array(
                     'class' => 'form-control',
@@ -74,6 +77,7 @@ class TerceroType extends AbstractType
                 ))*/
             ->add('mecanismoscontacto','collection',array(
                     'type' => new MecanismoContactoType(),
+                    'label' => ' ',
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,

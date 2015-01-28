@@ -13,33 +13,30 @@
 {% block area_trabajo %}
 
     <form action="{{ path('tercero_create') }}" method="post" {{ form_enctype(form) }}>
+
+        {{ form_errors(form) }}
+
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Nombres:</label>
-                {{ form_widget(form.nombres) }}
-                {{ form_errors(form.nombres) }}
+                {{ form_row(form.nombres) }}
             </div>
 
             <div class="col-md-4">
-                <label>Apellidos:</label>
-                {{ form_widget(form.apellidos) }}
+                {{ form_row(form.apellidos) }}
             </div>
 
             <div class="col-md-4">
-                <label>Alias:</label>
-                {{ form_widget(form.alias) }}
+                {{ form_row(form.alias) }}
             </div>
         </div>
 
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Código:</label>
-                {{ form_widget(form.codigo) }}
+                {{ form_row(form.codigo) }}
             </div>
 
             <div class="col-md-4">
-                <label>Dirección:</label>
-                {{ form_widget(form.direccion) }}
+                {{ form_row(form.direccion) }}
             </div>
 
             <div class="col-md-4">
@@ -52,29 +49,25 @@
 
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Cliente:</label>
-                {{ form_widget(form.cliente) }}
+                {{ form_row(form.cliente) }}
             </div>
 
             <div class="col-md-4">
-                <label>Institución:</label>
-                {{ form_widget(form.institucion) }}
+                {{ form_row(form.institucion) }}
             </div>
 
             <div class="col-md-4">
-                <label>Proveedor:</label>
-                {{ form_widget(form.proveedor) }}
+                {{ form_row(form.proveedor) }}
             </div>
         </div>
 
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Activo:</label>
-                {{ form_widget(form.activo) }}
+                {{ form_row(form.activo) }}
             </div>
         </div>
 
-        {{ form_widget(form.mecanismoscontacto) }}
+        {{ form_row(form.mecanismoscontacto) }}
 
         <div class="row show-grid">
             <div class="col-md-4">

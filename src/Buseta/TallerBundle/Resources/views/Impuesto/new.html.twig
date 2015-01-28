@@ -11,27 +11,26 @@
 {% block area_trabajo %}
 
     <form action="{{ path('impuesto_create') }}" method="post" {{ form_enctype(form) }}>
+
+        {{ form_errors(form) }}
+
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Nombre:</label>
-                {{ form_widget(form.nombre) }}
+                {{ form_row(form.nombre) }}
             </div>
 
             <div class="col-md-4">
-                <label>Número:</label>
-                {{ form_widget(form.numero) }}
+                {{ form_row(form.numero) }}
             </div>
 
             <div class="col-md-4">
-                <label>Tipo:</label>
-                {{ form_widget(form.tipo) }}
+                {{ form_row(form.tipo) }}
             </div>
         </div>
 
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Tarifa:</label>
-                {{ form_widget(form.tarifa) }}
+                {{ form_row(form.tarifa) }}
             </div>
         </div>
 
