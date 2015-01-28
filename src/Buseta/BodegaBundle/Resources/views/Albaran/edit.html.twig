@@ -7,12 +7,14 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Adicionar nuevo albarán
+    Modificar datos del albarán
 {% endblock %}
 
 {% block area_trabajo %}
 
-    {{ form_start(edit_form) }}
+    <form action="{{ path('albaran_update',{'id':entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
+
+        {{ form_errors(edit_form) }}
 
     <div class="row">
         <div class="col-lg-12">
@@ -101,8 +103,7 @@
         <!-- /.col-lg-6 -->
         <div class="row show-grid">
             <div class="col-md-4">
-                <input id="guardarPedido" class="btn btn-primary" style="height: 34px" type="button" value="Guardar">
-                <input id="guardarLineas" class="btn btn-primary" style="height: 34px" type="submit" value="Procesar">
+                <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
                 <div class="btn-group">
                     <a class="btn btn-primary" href="{{ path('albaran') }}"> Cancelar</a>
                 </div>
@@ -110,7 +111,8 @@
         </div>
 
         {{ form_rest(edit_form) }}
-        {{ form_end(edit_form) }}
+    </form>
+
     </div>
 
     <!-- Modal -->

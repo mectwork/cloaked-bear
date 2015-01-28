@@ -21,7 +21,7 @@ use Buseta\BodegaBundle\Form\Type\PedidoCompraType;
 class PedidoCompraController extends Controller
 {
 
-    public function guardarPedidoAction(Request $request) {
+    public function comprobarPedidoAction(Request $request) {
         if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
 
@@ -32,10 +32,6 @@ class PedidoCompraController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $error = "Sin errores";
-
-        $request = $this->get('request');
-        $datos = $request->request->get('bodega_pedido_compra');
-
 
         $consecutivo_compra = $request->query->get('consecutivo_compra');
         $importe_total_lineas = $request->query->get('importe_total_lineas');
@@ -99,6 +95,7 @@ class PedidoCompraController extends Controller
             $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($almacen);
             $forma_pago = $em->getRepository('BusetaNomencladorBundle:FormaPago')->find($forma_pago);
             $condiciones_pago = $em->getRepository('BusetaTallerBundle:CondicionesPago')->find($condiciones_pago);
+            $moneda = $em->getRepository('BusetaNomencladorBundle:Moneda')->find($moneda);
 
             $pedidoCompra = new PedidoCompra();
             $pedidoCompra->setNumeroDocumento($numero_documento);
@@ -118,7 +115,7 @@ class PedidoCompraController extends Controller
 
         $json = array(
             //'id' => $numero_documento,
-            'error' => $datos,
+            'error' => $error,
         );
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
@@ -132,7 +129,9 @@ class PedidoCompraController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->findAll();
+        $entities = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->findBy(array(
+            'deleted' => false
+        ));
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
@@ -147,6 +146,63 @@ class PedidoCompraController extends Controller
         ));
     }
 
+    public function procesarPedidoAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $pedidoCompra = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->find($id);
+
+        if (!$pedidoCompra) {
+            throw $this->createNotFoundException('Unable to find PedidoCompra entity.');
+        }
+
+        $fecha =  new \DateTime();
+
+        $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($pedidoCompra->getAlmacen());
+        $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($pedidoCompra->getTercero());
+
+        //registro los datos del nuevo albarán que se crear al procesar el pedido
+        $albaran = new Albaran();
+        $albaran->setEstadoDocumento($pedidoCompra->getEstadoDocumento());
+        $albaran->setAlmacen($almacen);
+        $albaran->setConsecutivoCompra($pedidoCompra->getConsecutivoCompra());
+        $albaran->setTercero($tercero);
+        $albaran->setCreated(new \DateTime());
+
+        $em->persist($albaran);
+        $em->flush();
+
+        //registro los datos de las líneas del albarán
+        foreach($pedidoCompra->getPedidoCompraLineas() as $linea){
+
+            $albaranLinea = new AlbaranLinea();
+            $albaranLinea->setAlbaran($albaran);
+            $albaranLinea->setLinea($linea->getLinea());
+            $albaranLinea->setCantidadMovida($linea->getCantidadPedido());
+
+            $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($linea->getProducto());
+            $albaranLinea->setProducto($producto);
+
+            $albaranLinea->setAlmacen($almacen);
+
+            $uom = $em->getRepository('BusetaNomencladorBundle:UOM')->find($linea->getUOM());
+            $albaranLinea->setUom($uom);
+
+            $em->persist($albaranLinea);
+            $em->flush();
+        }
+
+        $pedidoCompra->setDeleted(true);
+        $em->persist($pedidoCompra);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('pedidocompra'));
+
+
+
+
+    }
+
     public function createAction(Request $request)
     {
         $entity = new PedidoCompra();
@@ -155,91 +211,10 @@ class PedidoCompraController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $entity->setCreated(new \DateTime());
+
             $em->persist($entity);
-            $em->flush();
-
-            $json = array(
-                'id' => $entity->getId()
-            );
-
-            if ($request->isXmlHttpRequest()) {
-                $response = $this->renderView('@BusetaBodega/PedidoCompra/new.html.twig', array(
-                    'form' => $form->createView(),
-                ));
-
-                //return new Response($response, 200);
-                return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
-                //return new \Symfony\Component\HttpFoundation\Response($response, 200);
-            } else {
-                return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $entity->getId())));
-            }
-        }
-
-
-        if ($request->isXmlHttpRequest()) {
-            $response = $this->renderView('@BusetaBodega/PedidoCompra/new.html.twig', array(
-                'form' => $form->createView(),
-            ));
-
-            return new Response($response, 500);
-        } else {
-            return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $entity->getId())));
-        }
-    }
-
-    public function createsAction(Request $request)
-    {
-        $entity = new PedidoCompra();
-        $form = $this->createCreateForm($entity);
-        $form->handleRequest($request);
-
-        $request = $this->get('request');
-        $datos = $request->request->get('bodega_pedido_compra');
-
-        $fecha =  new \DateTime();
-
-        $em = $this->getDoctrine()->getManager();
-        $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($datos['almacen']);
-        $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($datos['tercero']);
-
-        //registro los datos del albarán
-        $albaran = new Albaran();
-        $albaran->setEstadoDocumento($datos['estado_documento']);
-        $albaran->setAlmacen($almacen);
-        $albaran->setConsecutivoCompra($datos['consecutivo_compra']);
-        $albaran->setTercero($tercero);
-
-        $em->persist($albaran);
-        $em->flush();
-
-        //registro los datos de las líneas del albarán
-        foreach($datos['pedido_compra_lineas'] as $linea){
-
-            $albaranLinea = new AlbaranLinea();
-            $albaranLinea->setAlbaran($albaran);
-            $albaranLinea->setLinea($linea['linea']);
-            $albaranLinea->setCantidadMovida($linea['cantidad_pedido']);
-
-            $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($linea['producto']);
-            $albaranLinea->setProducto($producto);
-
-            $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($datos['almacen']);
-            $albaranLinea->setAlmacen($almacen);
-
-            $uom = $em->getRepository('BusetaNomencladorBundle:UOM')->find($linea['uom']);
-            $albaranLinea->setUom($uom);
-
-            $em->persist($albaranLinea);
-            $em->flush();
-        }
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            $albaran->setPedidoCompra($entity);
-            $em->persist($albaran);
             $em->flush();
 
             return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $entity->getId())));
@@ -365,7 +340,6 @@ class PedidoCompraController extends Controller
             'json'   => json_encode($json),
         ));
     }
-
     /**
     * Creates a form to edit a PedidoCompra entity.
     *
@@ -403,6 +377,8 @@ class PedidoCompraController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $entity->setCreated($entity->getCreated());
+            $entity->setUpdated(new \DateTime());
             $em->flush();
 
             return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $id)));
@@ -428,6 +404,7 @@ class PedidoCompraController extends Controller
             'json'   => json_encode($json),
         ));
     }
+
     /**
      * Deletes a PedidoCompra entity.
      *

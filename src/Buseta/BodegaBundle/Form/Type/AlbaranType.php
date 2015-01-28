@@ -46,7 +46,7 @@ class AlbaranType extends AbstractType
                     )
                 ))
             ->add('consecutivoCompra', 'text', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Nro.Documento',
                 'attr'   => array(
                     'class' => 'form-control',
@@ -54,6 +54,7 @@ class AlbaranType extends AbstractType
             ))
             ->add('almacen','entity',array(
                 'class' => 'BusetaBodegaBundle:Bodega',
+                'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 )
@@ -74,6 +75,7 @@ class AlbaranType extends AbstractType
                 'widget' => 'single_text',
                 'label'  => 'Fecha Movimiento',
                 'format'  => 'dd/MM/yyyy',
+                'required' => false,
                 'attr'   => array(
                     'class' => 'form-control',
                 )
@@ -82,12 +84,14 @@ class AlbaranType extends AbstractType
                 'widget' => 'single_text',
                 'label'  => 'Fecha Contable',
                 'format'  => 'dd/MM/yyyy',
+                'required' => false,
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('estadoDocumento', 'choice', array(
-                'required' => true,
+                'required' => false,
+                'read_only' => true,
                 'empty_value' => '---Seleccione estado documento---',
                 'translation_domain'=> 'BusetaTallerBundle',
                 'choices' => array(
@@ -102,7 +106,7 @@ class AlbaranType extends AbstractType
             ->add('albaranLinea','collection',array(
                 'type' => new AlbaranLineaType(),
                 'label'  => false,
-                'required' => true,
+                'required' => false,
                 'by_reference' => false,
                 'allow_add' => true,
                 'allow_delete' => true,

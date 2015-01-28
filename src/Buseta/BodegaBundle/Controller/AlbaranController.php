@@ -22,6 +22,75 @@ use Buseta\BodegaBundle\Form\Type\AlbaranType;
  */
 class AlbaranController extends Controller
 {
+    public function procesarAlbaranAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $albaran = $em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
+
+        $request = $this->get('request');
+        $datos = $request->request->get('bodega_albaran_type');
+
+        if($datos['fechaContable']){
+            $date='%s-%s-%s GMT-0';
+            $fecha = explode("/", $datos['fechaContable']);
+            $d = $fecha[0]; $m = $fecha[1];
+            $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
+            $y = $fecha[0];
+            $fechaContable =  new \DateTime(sprintf($date,$y,$m,$d));
+            $albaran->setFechaContable($fechaContable);
+        }
+
+        if($datos['fechaMovimiento']){
+            $date='%s-%s-%s GMT-0';
+            $fecha = explode("/", $datos['fechaMovimiento']);
+            $d = $fecha[0]; $m = $fecha[1];
+            $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
+            $y = $fecha[0];
+            $fechaMovimiento =  new \DateTime(sprintf($date,$y,$m,$d));
+            $albaran->setFechaMovimiento($fechaMovimiento);
+        }
+
+        $em->flush();
+
+        //Actualizar Lineas del Albaran
+        //registro los datos de las líneas del albarán
+        foreach($datos['albaranLinea'] as $linea){
+            $albaranLinea = $em->getRepository('BusetaBodegaBundle:AlbaranLinea')->findOneBy(array(
+                'albaran' => $albaran
+            ));
+
+            $albaranLinea->setLinea($linea['linea']);
+            $albaranLinea->setCantidadMovida($linea['cantidadMovida']);
+
+            $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($linea['producto']);
+            $albaranLinea->setProducto($producto);
+
+            $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($datos['almacen']);
+            $albaranLinea->setAlmacen($almacen);
+
+            $uom = $em->getRepository('BusetaNomencladorBundle:UOM')->find($linea['uom']);
+            $albaranLinea->setUom($uom);
+
+            $albaranLinea->setValorAtributos($linea['valorAtributos']);
+
+            $em->persist($albaranLinea);
+            $em->flush();
+
+            //Actualizar Bitácora
+            $bitacora = new BitacoraAlmacen();
+            $bitacora->setProducto($producto);
+            $bitacora->setFechaMovimiento($fechaMovimiento);
+            $bitacora->setAlmacen($almacen);
+            $bitacora->setCantMovida($linea['cantidadMovida']);
+            $bitacora->setTipoMovimiento('V+');
+            $em->persist($bitacora);
+            $em->flush();
+        }
+
+        return $this->redirect($this->generateUrl('albaran'));
+    }
+
     public function guardarAlbaranAction(Request $request) {
         if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
@@ -203,6 +272,7 @@ class AlbaranController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Albaran entity.
      *
@@ -271,38 +341,6 @@ class AlbaranController extends Controller
             $em->persist($albaranLinea);
             $em->flush();
 
-            //Actualizar Bitacora
-            $bitacora = new BitacoraAlmacen();
-            $bitacora->setProducto($producto);
-            $bitacora->setFechaMovimiento($fechaMovimiento);
-            $bitacora->setAlmacen($almacen);
-            $bitacora->setCantMovida($linea['cantidadMovida']);
-            $bitacora->setTipoMovimiento('V+');
-            $em->persist($bitacora);
-            $em->flush();
-
-            //Actualizar InformeStock
-            //Comprobar que no exista ya un almacén con un producto determinado
-            $informeStock = $em->getRepository('BusetaBodegaBundle:InformeStock')->comprobarInformeStock($almacen,$producto);
-
-            //Si ya existe un producto en un almacen determinado
-            if($informeStock)
-            {
-                $informeStock->setCantidadProductos($bitacora->getCantMovida() + $informeStock->getCantidadProductos());
-                $informeStock->setUom($bitacora->getProducto()->getUOM());
-                $em->persist($informeStock);
-                $em->flush();
-            }
-            else //Si no existe
-            {
-                $informeStock = new InformeStock();
-                $informeStock->setProducto($bitacora->getProducto());
-                $informeStock->setAlmacen($bitacora->getAlmacen());
-                $informeStock->setCantidadProductos($bitacora->getCantMovida());
-                $informeStock->setUom($bitacora->getProducto()->getUOM());
-                $em->persist($informeStock);
-                $em->flush();
-            }
         }
 
         return $this->redirect($this->generateUrl('albaran_show', array('id' => $id)));

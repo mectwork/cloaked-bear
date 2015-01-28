@@ -34,6 +34,7 @@ class Albaran
      * @var string
      *
      * @ORM\Column(name="consecutivoCompra", type="string", nullable=true)
+     * @Assert\NotBlank()
      */
     private $consecutivoCompra;
 
@@ -46,7 +47,6 @@ class Albaran
      * @var date
      *
      * @ORM\Column(name="fechaMovimiento", type="date", nullable=true)
-     * @Assert\Date()
      */
     private $fechaMovimiento;
 
@@ -54,7 +54,6 @@ class Albaran
      * @var date
      *
      * @ORM\Column(name="fechaContable", type="date", nullable=true)
-     * @Assert\Date()
      */
     private $fechaContable;
 
@@ -82,6 +81,38 @@ class Albaran
      */
     private $albaranLinea;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime", nullable=true)
+     */
+    private $created;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     */
+    private $createdby;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     */
+    private $updatedby;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="deleted", type="boolean", nullable=true)
+     */
+    private $deleted;
     
     /**
      * Constructor
@@ -89,6 +120,8 @@ class Albaran
     public function __construct()
     {
         $this->albaranLinea = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->updated = new \DateTime();
+        $this->deleted = false;
     }
     
     /**
@@ -353,5 +386,120 @@ class Albaran
     public function getAlbaranLinea()
     {
         return $this->albaranLinea;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Albaran
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime 
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     * @return Albaran
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+    
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime 
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Albaran
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Set createdby
+     *
+     * @param \Buseta\SecurityBundle\Entity\User $createdby
+     * @return Albaran
+     */
+    public function setCreatedby(\Buseta\SecurityBundle\Entity\User $createdby = null)
+    {
+        $this->createdby = $createdby;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdby
+     *
+     * @return \Buseta\SecurityBundle\Entity\User 
+     */
+    public function getCreatedby()
+    {
+        return $this->createdby;
+    }
+
+    /**
+     * Set updatedby
+     *
+     * @param \Buseta\SecurityBundle\Entity\User $updatedby
+     * @return Albaran
+     */
+    public function setUpdatedby(\Buseta\SecurityBundle\Entity\User $updatedby = null)
+    {
+        $this->updatedby = $updatedby;
+    
+        return $this;
+    }
+
+    /**
+     * Get updatedby
+     *
+     * @return \Buseta\SecurityBundle\Entity\User 
+     */
+    public function getUpdatedby()
+    {
+        return $this->updatedby;
     }
 }

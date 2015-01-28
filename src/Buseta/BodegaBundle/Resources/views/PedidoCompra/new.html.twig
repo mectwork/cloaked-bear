@@ -43,7 +43,6 @@
     <!-- Tab panes -->
     <div class="tab-content">
 
-    <!-- TAB DATOS BASICOS-->
     <div class="tab-pane fade in active" id="basicos">
             <div class="row show-grid">
                 <div class="col-md-4">
@@ -130,8 +129,8 @@
     <!-- /.col-lg-6 -->
         <div class="row show-grid">
             <div class="col-md-4">
-                <input id="guardarPedido" class="btn btn-primary" style="height: 34px" type="button" value="Guardar">
-                <input id="guardarLineas" class="btn btn-primary" style="height: 34px" type="submit" value="Procesar">
+                <input id="comprobarPedido" class="btn btn-primary" style="height: 34px" type="button" value="Comprobar">
+                <input id="guardarLineas" class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
                 <div class="btn-group">
                     <a class="btn btn-primary" href="{{ path('pedidocompra') }}"> Cancelar</a>
                 </div>
@@ -151,14 +150,57 @@
                     <h3 class="modal-title" id="myModalLabel">Datos de nueva línea</h3>
                 </div>
                 <div class="modal-body" style="width: 800px;">
-                     {% include 'BusetaBodegaBundle:Extras:modal_pedido_compra_linea.html.twig' %}
+                    <form id="modalNewLinea" action="{{ path('pedido_compra_linea_compra_create') }}" method="post" {{ form_enctype(pedido_compra_linea) }}>
+                        <div class="row show-grid">
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.linea) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.producto) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.cantidad_pedido) }}
+                            </div>
+                        </div>
+
+                        <div class="row show-grid">
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.uom) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.precio_unitario) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.impuesto) }}
+                            </div>
+                        </div>
+
+                        <div class="row show-grid">
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.moneda) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.porciento_descuento) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(pedido_compra_linea.importe_linea) }}
+                            </div>
+                        </div>
+
                 </div>
                 <div class="modal-footer">
                     <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
                     <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</i></a>
 
                 </div>
-
+                {{ form_rest(pedido_compra_linea) }}
+                </form>
             </div>
             <!-- /.modal-content -->
         </div>
@@ -184,7 +226,7 @@
             $('#error').fadeOut(10);
             $('#valido').fadeOut(10);
             $('#tab_lineas').fadeOut(10);
-            $('#guardarLineas').hide();
+            $('#comprobarLineas').hide();
 
 
             $('#{{ pedido_compra_linea.producto.vars.id }}').change(function(){
@@ -207,14 +249,14 @@
 
             $('#tab_basicos').click(function(){
                 $('#tab_lineas').fadeOut(10);
-                $('#guardarPedido').show();
+                $('#comprobarPedido').show();
                 $('#guardarLineas').hide();
 
                 $('#error').hide();
                 $('#valido').hide();
             });
 
-            $('#guardarPedido').click(function(){
+            $('#comprobarPedido').click(function(){
                 $('#error').fadeOut(10);
                 $('#tab_lineas').fadeOut(10);
 
@@ -232,8 +274,8 @@
                 };
 
                 $.ajax({
-                    type: 'POST',
-                    url: '{{ path("guardarPedido") }}',
+                    type: 'GET',
+                    url: '{{ path("comprobarPedido") }}',
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
@@ -254,7 +296,7 @@
                         {
                             $('#guardarLineas').show();
                             $('#error').hide();
-                            $('#guardarPedido').hide();
+                            $('#comprobarPedido').hide();
                             $('#valido').fadeIn(100);
                             $('#valido').fadeOut(20000);
 
@@ -274,7 +316,6 @@
                         }
 
                     }
-
                 });
             });
 

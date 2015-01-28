@@ -25,7 +25,7 @@ class PedidoCompra
     /**
      * @var string
      *
-     * @ORM\Column(name="numero_documento", type="string", nullable=false)
+     * @ORM\Column(name="numero_documento", type="string")
      * @Assert\NotBlank()
      */
     private $numero_documento;
@@ -33,7 +33,8 @@ class PedidoCompra
     /**
      * @var string
      *
-     * @ORM\Column(name="consecutivo_compra", type="string", nullable=false)
+     * @ORM\Column(name="consecutivo_compra", type="string")
+     * @Assert\NotBlank()
      */
     private $consecutivo_compra;
 
@@ -47,6 +48,7 @@ class PedidoCompra
      *
      * @ORM\Column(name="fecha_pedido", type="date")
      * @Assert\Date()
+     * @Assert\NotBlank()
      */
     private $fecha_pedido;
 
@@ -76,7 +78,8 @@ class PedidoCompra
     /**
      * @var string
      *
-     * @ORM\Column(name="estado_documento", type="string", nullable=false)
+     * @ORM\Column(name="estado_documento", type="string")
+     * @Assert\NotBlank()
      */
     private $estado_documento = 'BO';
 
@@ -84,6 +87,7 @@ class PedidoCompra
      * @var float
      *
      * @ORM\Column(name="importe_total_lineas", type="decimal", scale=2)
+     * @Assert\NotBlank()
      */
     private $importe_total_lineas;
 
@@ -91,6 +95,7 @@ class PedidoCompra
      * @var float
      *
      * @ORM\Column(name="importe_total", type="decimal", scale=2)
+     * @Assert\NotBlank()
      */
     private $importe_total;
 
@@ -100,6 +105,46 @@ class PedidoCompra
      * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\PedidoCompraLinea", mappedBy="pedidoCompra", cascade={"all"})
      */
     private $pedido_compra_lineas;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime", nullable=true)
+     */
+    private $created;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     */
+    private $createdby;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     */
+    private $updatedby;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="deleted", type="boolean", nullable=true)
+     */
+    private $deleted;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     */
+    private $deletedby;
+
     /**
      * Constructor
      */
@@ -108,6 +153,8 @@ class PedidoCompra
         $this->pedido_compra_lineas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->importe_total_lineas = 0;
         $this->importe_total = 0;
+        $this->updated = new \DateTime();
+        $this->deleted = false;
     }
     
     /**
@@ -406,5 +453,143 @@ class PedidoCompra
     public function getMoneda()
     {
         return $this->moneda;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return PedidoCompra
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime 
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     * @return PedidoCompra
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+    
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime 
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param \DateTime $deleted
+     * @return PedidoCompra
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return \DateTime 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Set createdby
+     *
+     * @param \Buseta\SecurityBundle\Entity\User $createdby
+     * @return PedidoCompra
+     */
+    public function setCreatedby(\Buseta\SecurityBundle\Entity\User $createdby = null)
+    {
+        $this->createdby = $createdby;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdby
+     *
+     * @return \Buseta\SecurityBundle\Entity\User 
+     */
+    public function getCreatedby()
+    {
+        return $this->createdby;
+    }
+
+    /**
+     * Set updatedby
+     *
+     * @param \Buseta\SecurityBundle\Entity\User $updatedby
+     * @return PedidoCompra
+     */
+    public function setUpdatedby(\Buseta\SecurityBundle\Entity\User $updatedby = null)
+    {
+        $this->updatedby = $updatedby;
+    
+        return $this;
+    }
+
+    /**
+     * Get updatedby
+     *
+     * @return \Buseta\SecurityBundle\Entity\User 
+     */
+    public function getUpdatedby()
+    {
+        return $this->updatedby;
+    }
+
+    /**
+     * Set deletedby
+     *
+     * @param \Buseta\SecurityBundle\Entity\User $deletedby
+     * @return PedidoCompra
+     */
+    public function setDeletedby(\Buseta\SecurityBundle\Entity\User $deletedby = null)
+    {
+        $this->deletedby = $deletedby;
+    
+        return $this;
+    }
+
+    /**
+     * Get deletedby
+     *
+     * @return \Buseta\SecurityBundle\Entity\User 
+     */
+    public function getDeletedby()
+    {
+        return $this->deletedby;
     }
 }

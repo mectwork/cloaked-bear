@@ -61,7 +61,7 @@ class PedidoCompraType extends AbstractType
             ))
             ->add('fecha_pedido','date',array(
                 'widget' => 'single_text',
-                'required' => true,
+                'required' => false,
                 'format'  => 'dd/MM/yyyy',
                 'attr'   => array(
                     'class' => 'form-control',
@@ -103,7 +103,7 @@ class PedidoCompraType extends AbstractType
                 )
             ))
             ->add('estado_documento', 'choice', array(
-                'required' => true,
+                'required' => false,
                 'read_only' => true,
                 'empty_value' => '---Seleccione estado documento---',
                 'translation_domain'=> 'BusetaTallerBundle',
@@ -117,7 +117,7 @@ class PedidoCompraType extends AbstractType
                 )
             ))
             ->add('importe_total_lineas', 'text', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Importe total líneas',
                 'read_only' => true,
                 'attr'   => array(
@@ -125,7 +125,7 @@ class PedidoCompraType extends AbstractType
                 )
             ))
             ->add('importe_total', 'text', array(
-                'required' => true,
+                'required' => false,
                 'read_only' => true,
                 'label'  => 'Importe total',
                 'attr'   => array(

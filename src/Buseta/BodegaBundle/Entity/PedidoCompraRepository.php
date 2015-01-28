@@ -18,9 +18,9 @@ class PedidoCompraRepository extends EntityRepository
     {
         $qb = $this->_em->createQueryBuilder();
 
-        $q = $qb->select('c.consecutivo_compra')
-            ->from('BusetaBodegaBundle:PedidoCompra', 'c')
-            ->orderBy('c.consecutivo_compra','DESC')
+        $q = $qb->select('p.consecutivo_compra')
+            ->from('BusetaBodegaBundle:PedidoCompra', 'p')
+            ->orderBy('p.consecutivo_compra','DESC')
             ->getQuery()
             ->setMaxResults(1);
 
@@ -30,4 +30,5 @@ class PedidoCompraRepository extends EntityRepository
             return false;
         }
     }
+
 }

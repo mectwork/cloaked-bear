@@ -129,8 +129,8 @@
         <!-- /.col-lg-6 -->
         <div class="row show-grid">
             <div class="col-md-4">
-                <input id="guardarPedido" class="btn btn-primary" style="height: 34px" type="button" value="Guardar">
-                <input id="guardarLineas" class="btn btn-primary" style="height: 34px" type="submit" value="Procesar">
+                <input id="comprobarPedido" class="btn btn-primary" style="height: 34px" type="button" value="Comprobar">
+                <input id="guardarLineas" class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
                 <div class="btn-group">
                     <a class="btn btn-primary" href="{{ path('pedidocompra') }}"> Cancelar</a>
                 </div>
@@ -249,14 +249,14 @@
 
         $('#tab_basicos').click(function(){
             $('#tab_lineas').fadeOut(10);
-            $('#guardarPedido').show();
+            $('#comprobarPedido').show();
             $('#guardarLineas').hide();
 
             $('#error').hide();
             $('#valido').hide();
         });
 
-        $('#guardarPedido').click(function(){
+        $('#comprobarPedido').click(function(){
             $('#error').fadeOut(10);
             $('#tab_lineas').fadeOut(10);
 
@@ -275,7 +275,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: '{{ path("guardarPedido") }}',
+                url: '{{ path("comprobarPedido") }}',
                 data: data,
                 success: function(data) {
                     var values = $.parseJSON(data);
@@ -295,7 +295,7 @@
                     else
                     {
                         $('#error').hide();
-                        $('#guardarPedido').hide();
+                        $('#comprobarPedido').hide();
                         $('#guardarLineas').show();
 
                         $('#valido').fadeIn(100);

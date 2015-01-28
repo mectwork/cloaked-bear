@@ -29,9 +29,13 @@ pedidocompra_delete:
     defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:delete" }
     requirements: { _method: post|delete }
 
-guardarPedido:
-  pattern: /guardarPedido
-  defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:guardarPedido" }
-  requirements: { _method: "POST" }
+comprobarPedido:
+  pattern: /comprobarPedido
+  defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:comprobarPedido" }
+  requirements: { _method: "GET" }
   options:
       expose: true
+
+procesarPedido:
+    pattern:  /{id}/procesarPedido
+    defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:procesarPedido" }
