@@ -119,19 +119,6 @@ class ProductoController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
-            $request = $this->get('request');
-            $datos = $request->request->get('buseta_bodegabundle_producto');
-            $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($datos['bodega']);
-
-            $informe = new InformeProductosBodega();
-
-            $informe->setProducto($entity);
-            $informe->setAlmacen($bodega);
-            $informe->setCantidadProductos(0);
-            $informe->setUpdatedBy($this->getUser()->getUsername());
-            $em->persist($informe);
-
             $em->persist($entity);
             $em->flush();
 
@@ -284,7 +271,7 @@ class ProductoController extends Controller
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('BusetaBodegaBundle:Producto')->find($id);
 
-            if (!$entity) {
+           if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Producto entity.');
             }
 
@@ -317,6 +304,6 @@ class ProductoController extends Controller
             ->setAction($this->generateUrl('producto_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->getForm()
-        ;
+            ;
     }
 }

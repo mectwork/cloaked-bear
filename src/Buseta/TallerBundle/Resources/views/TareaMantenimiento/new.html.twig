@@ -11,6 +11,9 @@
 {% block area_trabajo %}
 
     <form action="{{ path('tareamantenimiento_create') }}" method="post" {{ form_enctype(form) }}>
+
+        {{ form_errors(form) }}
+
         <div class="row show-grid">
             <div class="col-md-4">
                 {{ form_row(form.autobus) }}

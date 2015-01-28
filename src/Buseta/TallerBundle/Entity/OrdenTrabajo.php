@@ -40,6 +40,7 @@ class OrdenTrabajo
      * @var string
      *
      * @ORM\Column(name="numero", type="string", nullable=false)
+     * @Assert\NotBlank()
      */
     private $numero;
 

@@ -18,35 +18,35 @@ class OrdenTrabajoType extends AbstractType
     {
         $builder
             ->add('numero', 'text', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Número',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('realizada_por', 'text', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Responsable',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('diagnostico', 'text', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Diagnóstico',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('observaciones', 'textarea', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Observaciones',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('prioridad', 'choice', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Prioridad',
                 'choices' => array(
                     'rapida'=>'Rápida',
@@ -57,7 +57,7 @@ class OrdenTrabajoType extends AbstractType
                 )
             ))
             ->add('ayudante', 'text', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Ayudante',
                 'attr'   => array(
                     'class' => 'form-control',
@@ -74,13 +74,13 @@ class OrdenTrabajoType extends AbstractType
             ->add('tarea_adicional','collection',array(
                 'type' => new TareaAdicionalType(),
                 'label'  => false,
-                'required' => false,
+                'required' => true,
                 'by_reference' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
             ->add('fecha_inicio', 'date', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Fecha inicio',
                 'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text',
@@ -89,7 +89,7 @@ class OrdenTrabajoType extends AbstractType
                 )
             ))
             ->add('fecha_final', 'date', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Fecha final',
                 'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text',
@@ -98,14 +98,14 @@ class OrdenTrabajoType extends AbstractType
                 )
             ))
             ->add('duracion_dias', 'text', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Duración de días',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('duracion_horas_laboradas', 'text', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Duración de horas laboradas',
                 'attr'   => array(
                     'class' => 'form-control',

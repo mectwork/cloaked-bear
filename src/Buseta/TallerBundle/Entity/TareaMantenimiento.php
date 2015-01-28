@@ -46,7 +46,8 @@ class TareaMantenimiento
     /**
      * @var string
      *
-     * @ORM\Column(name="tarea", type="string", nullable=false)
+     * @ORM\Column(name="tarea", type="string")
+     * @Assert\NotBlank()
      */
     private $tarea;
 
@@ -54,6 +55,7 @@ class TareaMantenimiento
      * @var float
      *
      * @ORM\Column(name="kilometraje", type="float", nullable=true)
+     * @Assert\NotBlank()
      */
     private $kilometraje;
 
@@ -61,6 +63,7 @@ class TareaMantenimiento
      * @var string
      *
      * @ORM\Column(name="horas", type="string", nullable=true)
+     * @Assert\NotBlank()
      */
     private $horas;
 
@@ -69,6 +72,7 @@ class TareaMantenimiento
      *
      * @ORM\Column(name="recorrido_inicio", type="date")
      * @Assert\Date()
+     * @Assert\NotBlank()
      */
     private $recorrido_inicio;
 
@@ -77,6 +81,7 @@ class TareaMantenimiento
      *
      * @ORM\Column(name="ultimo_cumplio", type="date")
      * @Assert\Date()
+     * @Assert\NotBlank()
      */
     private $ultimo_cumplio;
 
@@ -92,22 +97,15 @@ class TareaMantenimiento
     }
 
     /**
-     * Set tarea
-     *
      * @param string $tarea
-     * @return TareaMantenimiento
      */
     public function setTarea($tarea)
     {
-        $this->tarea = $tarea;
-    
-        return $this;
+        return $this->tarea = $tarea;
     }
 
     /**
-     * Get tarea
-     *
-     * @return string 
+     * @return string
      */
     public function getTarea()
     {

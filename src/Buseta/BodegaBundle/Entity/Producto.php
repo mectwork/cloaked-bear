@@ -26,6 +26,7 @@ class Producto
      * @var string
      *
      * @ORM\Column(name="codigo", type="string", nullable=true)
+     * @Assert\NotBlank()
      */
     private $codigo;
 
@@ -33,6 +34,7 @@ class Producto
      * @var string
      *
      * @ORM\Column(name="nombre", type="string")
+     * @Assert\NotBlank()
      */
     private $nombre;
 
@@ -40,6 +42,7 @@ class Producto
      * @var float
      *
      * @ORM\Column(name="precio_costo", type="decimal", scale=2)
+     * @Assert\NotBlank()
      */
     private $precio_costo;
 
@@ -47,6 +50,7 @@ class Producto
      * @var float
      *
      * @ORM\Column(name="precio_salida", type="decimal", scale=2)
+     * @Assert\NotBlank()
      */
     private $precio_salida;
 
@@ -95,7 +99,7 @@ class Producto
      * @var integer
      *
      * @ORM\Column(name="minimo_bodega", type="integer")
-     * @Assert\Type(type="integer")
+     * @Assert\NotBlank()
      */
     private $minimo_bodega;
 
@@ -103,7 +107,7 @@ class Producto
      * @var integer
      *
      * @ORM\Column(name="maximo_bodega", type="integer")
-     * @Assert\Type(type="integer")
+     * @Assert\NotBlank()
      */
     private $maximo_bodega;
 

@@ -22,7 +22,11 @@
 {% endblock %}
 
 {% block area_trabajo %}
-    {{ form_start(form) }}
+
+    <form action="{{ path('ordentrabajo_create') }}" method="post" {{ form_enctype(form) }}>
+
+    {{ form_errors(form) }}
+
     <div class="row show-grid">
         <div class="col-md-4">
             {{ form_row(form.numero) }}
@@ -120,8 +124,7 @@
     </div>
 
     {{ form_rest(form) }}
-    {{ form_end(form) }}
-
+</form>
 
     <!-- Modal -->
     <div class="modal fade" id="newLinea" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

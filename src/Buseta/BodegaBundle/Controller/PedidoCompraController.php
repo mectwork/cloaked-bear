@@ -33,6 +33,10 @@ class PedidoCompraController extends Controller
 
         $error = "Sin errores";
 
+        $request = $this->get('request');
+        $datos = $request->request->get('bodega_pedido_compra');
+
+
         $consecutivo_compra = $request->query->get('consecutivo_compra');
         $importe_total_lineas = $request->query->get('importe_total_lineas');
         $importe_total = $request->query->get('importe_total');
@@ -114,7 +118,7 @@ class PedidoCompraController extends Controller
 
         $json = array(
             //'id' => $numero_documento,
-            'error' => $error,
+            'error' => $datos,
         );
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
@@ -144,6 +148,46 @@ class PedidoCompraController extends Controller
     }
 
     public function createAction(Request $request)
+    {
+        $entity = new PedidoCompra();
+        $form = $this->createCreateForm($entity);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+
+            $json = array(
+                'id' => $entity->getId()
+            );
+
+            if ($request->isXmlHttpRequest()) {
+                $response = $this->renderView('@BusetaBodega/PedidoCompra/new.html.twig', array(
+                    'form' => $form->createView(),
+                ));
+
+                //return new Response($response, 200);
+                return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+                //return new \Symfony\Component\HttpFoundation\Response($response, 200);
+            } else {
+                return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $entity->getId())));
+            }
+        }
+
+
+        if ($request->isXmlHttpRequest()) {
+            $response = $this->renderView('@BusetaBodega/PedidoCompra/new.html.twig', array(
+                'form' => $form->createView(),
+            ));
+
+            return new Response($response, 500);
+        } else {
+            return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $entity->getId())));
+        }
+    }
+
+    public function createsAction(Request $request)
     {
         $entity = new PedidoCompra();
         $form = $this->createCreateForm($entity);

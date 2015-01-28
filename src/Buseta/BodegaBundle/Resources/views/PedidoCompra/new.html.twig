@@ -43,6 +43,7 @@
     <!-- Tab panes -->
     <div class="tab-content">
 
+    <!-- TAB DATOS BASICOS-->
     <div class="tab-pane fade in active" id="basicos">
             <div class="row show-grid">
                 <div class="col-md-4">
@@ -150,57 +151,14 @@
                     <h3 class="modal-title" id="myModalLabel">Datos de nueva línea</h3>
                 </div>
                 <div class="modal-body" style="width: 800px;">
-                    <form id="modalNewLinea" action="{{ path('pedido_compra_linea_compra_create') }}" method="post" {{ form_enctype(pedido_compra_linea) }}>
-                        <div class="row show-grid">
-                            <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.linea) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.producto) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.cantidad_pedido) }}
-                            </div>
-                        </div>
-
-                        <div class="row show-grid">
-                            <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.uom) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.precio_unitario) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.impuesto) }}
-                            </div>
-                        </div>
-
-                        <div class="row show-grid">
-                            <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.moneda) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.porciento_descuento) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(pedido_compra_linea.importe_linea) }}
-                            </div>
-                        </div>
-
+                     {% include 'BusetaBodegaBundle:Extras:modal_pedido_compra_linea.html.twig' %}
                 </div>
                 <div class="modal-footer">
                     <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
                     <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</i></a>
 
                 </div>
-                {{ form_rest(pedido_compra_linea) }}
-                </form>
+
             </div>
             <!-- /.modal-content -->
         </div>
@@ -274,7 +232,7 @@
                 };
 
                 $.ajax({
-                    type: 'GET',
+                    type: 'POST',
                     url: '{{ path("guardarPedido") }}',
                     data: data,
                     success: function(data) {
@@ -316,6 +274,7 @@
                         }
 
                     }
+
                 });
             });
 

@@ -104,6 +104,7 @@ class PedidoCompraType extends AbstractType
             ))
             ->add('estado_documento', 'choice', array(
                 'required' => true,
+                'read_only' => true,
                 'empty_value' => '---Seleccione estado documento---',
                 'translation_domain'=> 'BusetaTallerBundle',
                 'choices' => array(

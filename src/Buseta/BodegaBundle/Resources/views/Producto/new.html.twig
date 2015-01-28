@@ -11,73 +11,64 @@
 {% block area_trabajo %}
 
 <form action="{{ path('producto_create') }}" method="post" {{ form_enctype(form) }}>
+
+    {{ form_errors(form) }}
+
     <div class="row show-grid">
         <div class="col-lg-4">
-            <label>Nombre:</label>
-            {{ form_widget(form.nombre) }}
+            {{ form_row(form.nombre) }}
         </div>
 
         <div class="col-lg-4">
-            <label>Código:</label>
-            {{ form_widget(form.codigo) }}
+            {{ form_row(form.codigo) }}
         </div>
 
         <div class="col-lg-4">
-            <label>Unidad de Medida (U/M):</label>
-            {{ form_widget(form.uom) }}
+            {{ form_row(form.uom) }}
         </div>
     </div>
 
     <div class="row show-grid">
         <div class="col-lg-4">
-            <label>Precio de Costo:</label>
-            {{ form_widget(form.precio_costo) }}
+            {{ form_row(form.precio_costo) }}
         </div>
 
         <div class="col-lg-4">
-            <label>Precio de Salida:</label>
-            {{ form_widget(form.precio_salida) }}
+            {{ form_row(form.precio_salida) }}
         </div>
 
         <div class="col-lg-4">
-            <label>Condición:</label>
-            {{ form_widget(form.condicion) }}
+            {{ form_row(form.condicion) }}
         </div>
     </div>
 
     <div class="row show-grid">
         <div class="col-lg-4">
-            <label>Bodega:</label></br>
-            {{ form_widget(form.bodega) }}
+            {{ form_row(form.bodega) }}
         </div>
 
         <div class="col-lg-4">
-            <label>Mínimo en bodega:</label></br>
-            {{ form_widget(form.minimo_bodega) }}
+            {{ form_row(form.minimo_bodega) }}
         </div>
 
         <div class="col-lg-4">
-            <label>Máximo en bodega:</label></br>
-            {{ form_widget(form.maximo_bodega) }}
+            {{ form_row(form.maximo_bodega) }}
         </div>
     </div>
 
     <div class="row show-grid">
         <div class="col-lg-4">
-            <label>Grupo:</label></br>
-            {{ form_widget(form.grupos) }}
+            {{ form_row(form.grupos) }}
         </div>
 
         <div class="col-lg-4">
-            <label>Subgrupo:</label></br>
-            {{ form_widget(form.subgrupos) }}
+            {{ form_row(form.subgrupos) }}
         </div>
     </div>
 
     <div class="row show-grid">
         <div class="col-lg-4">
-            <label>Activo:</label></br>
-            {{ form_widget(form.activo) }}
+            {{ form_row(form.activo) }}
         </div>
     </div>
 

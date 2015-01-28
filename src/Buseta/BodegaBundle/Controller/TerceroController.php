@@ -56,7 +56,7 @@ class TerceroController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            if ($entity->getDireccionId() !== null || $entity->getDireccionId() !== '') {
+            if ($entity->getDireccionId() !== null && $entity->getDireccionId() !== '') {
                 $direccion = $em->find('BusetaBodegaBundle:Direccion',$entity->getDireccionId());
             }
 

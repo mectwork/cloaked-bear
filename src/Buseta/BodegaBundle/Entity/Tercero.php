@@ -68,6 +68,7 @@ class Tercero
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Direccion", inversedBy="terceros")
+     *
      */
     private $direccion;
 

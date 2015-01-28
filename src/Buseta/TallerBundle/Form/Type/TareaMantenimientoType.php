@@ -25,35 +25,35 @@ class TareaMantenimientoType extends AbstractType
         $builder
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione un autobus---',
-                'required' => false,
+                'empty_value' => '---Seleccione un autobús---',
+                'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('tarea', 'text', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Tarea',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
-            ->add('kilometraje', 'text', array(
-                'required' => true,
+            ->add('kilometraje', 'number', array(
+                'required' => false,
                 'label'  => 'Kilometraje',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
-            ->add('horas', 'text', array(
-                'required' => true,
+            ->add('horas', 'number', array(
+                'required' => false,
                 'label'  => 'Horas',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('recorrido_inicio', 'date', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Recorrido Inició',
                 'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text',
@@ -62,7 +62,7 @@ class TareaMantenimientoType extends AbstractType
                 )
             ))
             ->add('ultimo_cumplio', 'date', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Ultimo cumplió',
                 'format' => 'dd/MM/yyyy',
                 'widget' => 'single_text',

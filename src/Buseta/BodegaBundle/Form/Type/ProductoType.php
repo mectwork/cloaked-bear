@@ -10,7 +10,7 @@ use Buseta\TallerBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
 
 class ProductoType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -24,69 +24,79 @@ class ProductoType extends AbstractType
 
         $builder
             ->add('codigo', 'text', array(
-                    'required' => false,
-                    'attr'   => array(
-                        'class' => 'form-control',
-                    )
-                ))
-            ->add('nombre', 'text', array(
-                    'required' => true,
-                    'attr'   => array(
-                        'class' => 'form-control',
-                    )
-                ))
-            ->add('uom','entity',array(
-                    'class' => 'BusetaNomencladorBundle:UOM',
-                    'empty_value' => '---Seleccione una UOM---',
-                    'attr' => array(
-                        'class' => 'form-control',
-                    )
-                ))
-            ->add('condicion','entity',array(
-                    'class' => 'BusetaNomencladorBundle:Condicion',
-                    'empty_value' => '---Seleccione una condición---',
-                    'attr' => array(
-                        'class' => 'form-control',
-                    )
-                ))
-            ->add('bodega','entity',array(
-                'class' => 'BusetaBodegaBundle:Bodega',
                 'required' => false,
-                'empty_value' => '---Seleccione una bodega---',
+                'label' => 'Código',
                 'attr' => array(
                     'class' => 'form-control',
                 )
             ))
-            ->add('precio_costo', 'text', array(
-                    'required' => true,
-                    'attr'   => array(
-                        'class' => 'form-control',
-                    )
-                ))
-            ->add('precio_salida', 'text', array(
-                    'required' => true,
-                    'attr'   => array(
-                        'class' => 'form-control',
-                    )
-                ))
+            ->add('nombre', 'text', array(
+                'required' => false,
+                'label' => 'Nombre',
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('uom', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:UOM',
+                'empty_value' => '---Seleccione UOM---',
+                'label' => 'Unidad de Medida (UOM)',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('condicion', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:Condicion',
+                'empty_value' => '---Seleccione condición---',
+                'label' => 'Condición',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('bodega', 'entity', array(
+                'class' => 'BusetaBodegaBundle:Bodega',
+                'required' => false,
+                'empty_value' => '---Seleccione bodega---',
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('precio_costo', 'number', array(
+                'required' => false,
+                'label' => 'Precio de Costo',
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('precio_salida', 'number', array(
+                'required' => false,
+                'label' => 'Precio de Salida',
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('minimo_bodega', 'integer', array(
-                'required' => true,
-                'attr'   => array(
+                'required' => false,
+                'label' => 'Mínimo en Bodega',
+                'attr' => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('maximo_bodega', 'integer', array(
-                'required' => true,
-                'attr'   => array(
+                'required' => false,
+                'label' => 'Máximo en Bodega',
+                'attr' => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('activo', null, array(
-                    'required' => false,
-                ))
-        ;
+                'label' => 'Activo',
+                'required' => false,
+            ));
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
