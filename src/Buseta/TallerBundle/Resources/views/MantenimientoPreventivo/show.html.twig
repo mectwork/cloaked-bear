@@ -1,0 +1,59 @@
+{% extends "BusetaTallerBundle::layout.html.twig" %}
+
+{% trans_default_domain 'BusetaTallerBundle' %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Datos del mantenimiento preventivo
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <table class="table table-striped" style="font-size: 16px;">
+        <tbody>
+        <tr>
+            <th>Tarea</th>
+            <td>{{ entity.tarea }}</td>
+        </tr>
+        <tr>
+            <th>Grupo</th>
+            <td>{{ entity.grupo }}</td>
+        </tr>
+        <tr>
+            <th>Subgrupo</th>
+            <td>{{ entity.subgrupo }}</td>
+        </tr>
+        <tr>
+            <th>Autobus</th>
+            <td>{{ entity.autobus }}</td>
+        </tr>
+        <tr>
+            <th>Kilometraje</th>
+            <td>{{ entity.kilometraje }}</td>
+        </tr>
+        <tr>
+            <th>Fecha Inicio</th>
+            <td>{{ entity.fechaInicio | date('d/m/Y') }}</td>
+        </tr>
+        <tr>
+            <th>Fecha Final</th>
+            <td>{{ entity.fechaFinal | date('d/m/Y') }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="form-actions">
+        <form action="{{ delete_form.vars.action }}" method="{{ delete_form.vars.method }}" enctype="multipart/form-data">
+            <a class="btn btn-primary" href="{{ path('mantenimientopreventivo_edit', { 'id': entity.id }) }}"> Editar</a>
+            <a class="btn btn-primary" href="{{ path('mantenimientopreventivo') }}"> Listado</a>
+            <button type="submit" class="btn btn-primary">Eliminar</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
