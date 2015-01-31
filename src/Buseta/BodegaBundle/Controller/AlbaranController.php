@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Form\Type\AlbaranType;
+use Buseta\BodegaBundle\Form\Filtro\BusquedaAlbaranType;
 
 /**
  * Albaran controller.
@@ -22,6 +23,29 @@ use Buseta\BodegaBundle\Form\Type\AlbaranType;
  */
 class AlbaranController extends Controller
 {
+    public function busquedaAvanzadaAction($page,$cantResult){
+        $em = $this->get('doctrine.orm.entity_manager');
+        $request = $this->getRequest();
+
+        $orderBy = $request->query->get('orderBy');
+        $filter  = $request->query->get('filter');
+
+        $filter = $filter;
+
+        $busqueda = $em->getRepository('BusetaBodegaBundle:Albaran')
+            ->busquedaAvanzada($page,$cantResult,$filter,$orderBy);
+        $paginacion = $busqueda['paginacion'];
+        $results    = $busqueda['results'];
+
+        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-albaran.html.twig',array(
+            'albaranes'   => $results,
+            'page'       => $page,
+            'cantResult' => $cantResult,
+            'orderBy'    => $orderBy,
+            'paginacion' => $paginacion,
+        ));
+    }
+
     public function procesarAlbaranAction($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -172,22 +196,12 @@ class AlbaranController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
-        $entities = $em->getRepository('BusetaBodegaBundle:Albaran')->findBy(array(
-            'deleted' => false
-        ));
-
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-            $entities,
-            $this->get('request')->query->get('page', 1),
-            10,
-            array('pageParameterName' => 'page')
-        );
+        $albaran = $this->createForm(new BusquedaAlbaranType());
 
         return $this->render('BusetaBodegaBundle:Albaran:index.html.twig', array(
-            'entities' => $entities,
+            'albaran' => $albaran->createView(),
         ));
     }
 

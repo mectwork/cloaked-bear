@@ -46,3 +46,8 @@ guardarAlbaran:
 procesarAlbaran:
     pattern:  /{id}/procesarAlbaran
     defaults: { _controller: "BusetaBodegaBundle:Albaran:procesarAlbaran" }
+
+albaran_ajax_busqueda_avanzada:
+  pattern: /busqueda-avanzada/{page}/{cantResult}
+  defaults: { _controller: "BusetaBodegaBundle:Albaran:busquedaAvanzada", page: 0, cantResult: 10 }
+  requirements: { _method: "GET" }
