@@ -7,6 +7,7 @@ use Buseta\BodegaBundle\Entity\InformeProductosBodega;
 use Buseta\BodegaBundle\Entity\InformeStock;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\Movimiento;
+use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Buseta\BodegaBundle\Form\Type\AlbaranLineaType;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraType;
@@ -70,7 +71,14 @@ class AlbaranController extends Controller
             $em->persist($bitacora);
             $em->persist($albaran);
             $em->flush();
+
+            $funcionesExtras = new FuncionesExtras();
+
+            //Se actualiza la informacion del InformeStock
+            $funcionesExtras->ActualizarInformeStock($em);
         }
+
+
 
         return $this->redirect($this->generateUrl('albaran'));
     }

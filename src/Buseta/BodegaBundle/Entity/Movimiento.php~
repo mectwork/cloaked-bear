@@ -40,9 +40,9 @@ class Movimiento
     /**
      * @var integer
      *
-     * @ORM\Column(name="cantidadMovido", type="integer")
+     * @ORM\Column(name="cantidadMovida", type="integer")
      */
-    private $cantidadMovido;
+    private $cantidadMovida;
 
     /**
      * @var date
@@ -50,6 +50,13 @@ class Movimiento
      * @ORM\Column(name="fechaMovimiento", type="date")
      */
     private $fechaMovimiento;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\MovimientosProductos", mappedBy="movimiento", cascade={"all"})
+     */
+    private $movimientos_productos;
 
     /**
      * @var string
@@ -92,6 +99,7 @@ class Movimiento
         $this->updated = new \DateTime();
     }
 
+    
 
     /**
      * Get id
@@ -104,26 +112,26 @@ class Movimiento
     }
 
     /**
-     * Set cantidadMovido
+     * Set cantidadMovida
      *
-     * @param integer $cantidadMovido
+     * @param integer $cantidadMovida
      * @return Movimiento
      */
-    public function setCantidadMovido($cantidadMovido)
+    public function setCantidadMovida($cantidadMovida)
     {
-        $this->cantidadMovido = $cantidadMovido;
+        $this->cantidadMovida = $cantidadMovida;
     
         return $this;
     }
 
     /**
-     * Get cantidadMovido
+     * Get cantidadMovida
      *
      * @return integer 
      */
-    public function getCantidadMovido()
+    public function getCantidadMovida()
     {
-        return $this->cantidadMovido;
+        return $this->cantidadMovida;
     }
 
     /**

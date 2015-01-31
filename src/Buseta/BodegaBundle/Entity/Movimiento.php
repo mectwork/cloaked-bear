@@ -40,9 +40,9 @@ class Movimiento
     /**
      * @var integer
      *
-     * @ORM\Column(name="cantidadMovido", type="integer")
+     * @ORM\Column(name="cantidadMovida", type="integer")
      */
-    private $cantidadMovido;
+    private $cantidadMovida;
 
     /**
      * @var date
@@ -50,6 +50,13 @@ class Movimiento
      * @ORM\Column(name="fechaMovimiento", type="date")
      */
     private $fechaMovimiento;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\MovimientosProductos", mappedBy="movimiento", cascade={"all"})
+     */
+    private $movimientos_productos;
 
     /**
      * @var string
@@ -104,26 +111,26 @@ class Movimiento
     }
 
     /**
-     * Set cantidadMovido
+     * Set cantidadMovida
      *
-     * @param integer $cantidadMovido
+     * @param integer $cantidadMovida
      * @return Movimiento
      */
-    public function setCantidadMovido($cantidadMovido)
+    public function setCantidadMovida($cantidadMovida)
     {
-        $this->cantidadMovido = $cantidadMovido;
+        $this->cantidadMovida = $cantidadMovida;
     
         return $this;
     }
 
     /**
-     * Get cantidadMovido
+     * Get cantidadMovida
      *
      * @return integer 
      */
-    public function getCantidadMovido()
+    public function getCantidadMovida()
     {
-        return $this->cantidadMovido;
+        return $this->cantidadMovida;
     }
 
     /**
@@ -331,5 +338,40 @@ class Movimiento
     public function getProducto()
     {
         return $this->producto;
+    }
+
+    /**
+     * Add movimientos_productos
+     *
+     * @param \Buseta\BodegaBundle\Entity\MovimientosProductos $movimientosProductos
+     * @return Movimiento
+     */
+    public function addMovimientosProducto(\Buseta\BodegaBundle\Entity\MovimientosProductos $movimientosProductos)
+    {
+        $movimientosProductos->setMovimiento($this);
+
+        $this->movimientos_productos[] = $movimientosProductos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove movimientos_productos
+     *
+     * @param \Buseta\BodegaBundle\Entity\MovimientosProductos $movimientosProductos
+     */
+    public function removeMovimientosProducto(\Buseta\BodegaBundle\Entity\MovimientosProductos $movimientosProductos)
+    {
+        $this->movimientos_productos->removeElement($movimientosProductos);
+    }
+
+    /**
+     * Get movimientos_productos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMovimientosProductos()
+    {
+        return $this->movimientos_productos;
     }
 }
