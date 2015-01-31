@@ -1,0 +1,98 @@
+{# RESULTADOS POR PÁGINA #}
+<div class="row">
+  <div class="pull-right" style="padding: 0px 20px 5px 0px;">
+    <strong>Resultados por página: </strong>
+    {% if cantResult == 5 %}
+    <strong>5</strong>
+    {% else %}
+      <a onclick="setCantResult(5)">5</a>
+    {% endif %}
+    {% if cantResult == 10 %}
+      <strong>10</strong>
+    {% else %}
+      <a onclick="setCantResult(10)">10</a>
+    {% endif %}
+    {% if cantResult == 25 %}
+      <strong>25</strong>
+    {% else %}
+      <a onclick="setCantResult(25)">25</a>
+    {% endif %}
+    {% if cantResult == 50 %}
+      <strong>50</strong>
+    {% else %}
+      <a onclick="setCantResult(50)">50</a>
+    {% endif %}
+  </div>
+</div>
+{# END RESULTADOS POR PÁGINA #}
+
+{# TABLA DE RESULTADOS #}
+
+<table class="records_list table table-striped table-bordered table-condensed table-hover">
+    <thead>
+    <tr>
+        <th style="text-align: left;">Nro.Doc</th>
+        <th style="text-align: left;">Nro.Ref</th>
+        <th style="text-align: left;">Tercero (Proveedor)</th>
+        <th style="text-align: left;">Fecha Pedido</th>
+        <th style="text-align: left;">Almacén</th>
+        <th style="text-align: left;">Estado</th>
+        <th style="text-align: left;">Importe total</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for pedidoCompra in pedidosCompras %}
+        <tr>
+            <td>{{ pedidoCompra.numerodocumento }}</td>
+            <td>{{ pedidoCompra.consecutivocompra }}</td>
+            <td>{{ pedidoCompra.tercero }}</td>
+            <td>{% if pedidoCompra.fechapedido %}{{ pedidoCompra.fechapedido|date('d/m/Y') }}{% endif %}</td>
+            <td>{{ pedidoCompra.almacen }}</td>
+            <td>{{ ('estado.'~pedidoCompra.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
+            <td>{{ pedidoCompra.importetotal }}</td>
+
+            <td  style="width: 18% !important; text-align: center;">
+                <div class="btn-group">
+                    <a class="btn btn-success btn-xs" href="{{ path('pedidocompra_show', { 'id': pedidoCompra.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
+                </div>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="12">No se encontraron registros de pedidos de compras en el sistema.</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{# PAGINACIÓN #}
+<br/>
+<div style="text-align: center;">
+{% if paginacion|length > 0 %}
+  {# Elemento first #}
+  {% if paginacion.first %}
+    <img src="{{asset('/Taller/web/images/first.gif')}}" onclick="setPage(0)" style="cursor: pointer;"/>
+  {% else %}
+    <img src="{{asset('/Taller/web/images/first.gif')}}" style="cursor: default;opacity: 0.6;"/>
+  {% endif %}
+  {# Elemento prev #}
+  {% if paginacion.prev %}
+    <img src="{{asset('/Taller/web/images/previous.gif')}}" onclick="setPage({{page}}-1)" style="cursor: pointer;"/>
+  {% else %}
+    <img src="{{asset('/Taller/web/images/previous.gif')}}" style="cursor: default;opacity: 0.6;"/>
+  {% endif %}
+  {# Elemento next #}
+  {% if paginacion.next %}
+    <img src="{{asset('/Taller/web/images/next.gif')}}" onclick="setPage({{page}}+1)" style="cursor: pointer;"/>
+  {% else %}
+    <img src="{{asset('/Taller/web/images/next.gif')}}" style="cursor: default;opacity: 0.6;"/>
+  {% endif %}
+  {# Elemento last #}
+  {% if paginacion.last and paginacion.last != page %}
+    <img src="{{asset('/Taller/web/images/last.gif')}}" onclick="setPage({{paginacion.last}})" style="cursor: pointer;"/>
+  {% else %}
+    <img src="{{asset('/Taller/web/images/last.gif')}}" style="cursor: default;opacity: 0.6;"/>
+  {% endif %}
+{% endif %}
+</div>
+{# END PAGINACIÓN #}

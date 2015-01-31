@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Buseta\BodegaBundle\Entity\PedidoCompra;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraType;
+use Buseta\BodegaBundle\Form\Filtro\BusquedaPedidoCompraType;
 
 /**
  * PedidoCompra controller.
@@ -20,6 +21,28 @@ use Buseta\BodegaBundle\Form\Type\PedidoCompraType;
  */
 class PedidoCompraController extends Controller
 {
+    public function busquedaAvanzadaAction($page,$cantResult){
+        $em = $this->get('doctrine.orm.entity_manager');
+        $request = $this->getRequest();
+
+        $orderBy = $request->query->get('orderBy');
+        $filter  = $request->query->get('filter');
+
+        $filter = $filter;
+
+        $busqueda = $em->getRepository('BusetaBodegaBundle:PedidoCompra')
+            ->busquedaAvanzada($page,$cantResult,$filter,$orderBy);
+        $paginacion = $busqueda['paginacion'];
+        $results    = $busqueda['results'];
+
+        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-pedidos-compras.html.twig',array(
+            'pedidosCompras'   => $results,
+            'page'       => $page,
+            'cantResult' => $cantResult,
+            'orderBy'    => $orderBy,
+            'paginacion' => $paginacion,
+        ));
+    }
 
     public function comprobarPedidoAction(Request $request) {
         if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
@@ -127,22 +150,12 @@ class PedidoCompraController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
-        $entities = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->findBy(array(
-            'deleted' => false
-        ));
-
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-            $entities,
-            $this->get('request')->query->get('page', 1),
-            10,
-            array('pageParameterName' => 'page')
-        );
+        $pedidoCompra = $this->createForm(new BusquedaPedidoCompraType());
 
         return $this->render('BusetaBodegaBundle:PedidoCompra:index.html.twig', array(
-            'entities' => $entities,
+            'pedidoCompra' => $pedidoCompra->createView(),
         ));
     }
 

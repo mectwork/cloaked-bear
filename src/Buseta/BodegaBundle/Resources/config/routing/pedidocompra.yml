@@ -39,3 +39,8 @@ comprobarPedido:
 procesarPedido:
     pattern:  /{id}/procesarPedido
     defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:procesarPedido" }
+
+pedidoCompra_ajax_busqueda_avanzada:
+  pattern: /busqueda-avanzada/{page}/{cantResult}
+  defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:busquedaAvanzada", page: 0, cantResult: 10 }
+  requirements: { _method: "GET" }

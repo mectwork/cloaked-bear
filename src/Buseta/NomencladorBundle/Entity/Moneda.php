@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Color
  *
  * @ORM\Table(name="n_moneda")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Buseta\NomencladorBundle\Entity\MonedaRepository")
  */
 class Moneda extends BaseNomenclador
 {
