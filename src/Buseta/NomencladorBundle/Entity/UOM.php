@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * UOM
  *
  * @ORM\Table(name="n_uom")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Buseta\NomencladorBundle\Entity\UOMRepository")
  */
 class UOM extends BaseNomenclador
 {

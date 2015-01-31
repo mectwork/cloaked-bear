@@ -12,6 +12,7 @@ use Buseta\BodegaBundle\Entity\Producto;
 use Buseta\BodegaBundle\Form\Type\ProductoType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
+use Buseta\BodegaBundle\Form\Filtro\BusquedaProductoType;
 
 /**
  * Producto controller.
@@ -19,6 +20,29 @@ use Buseta\BodegaBundle\Extras\FuncionesExtras;
  */
 class ProductoController extends Controller
 {
+    public function busquedaAvanzadaAction($page,$cantResult){
+        $em = $this->get('doctrine.orm.entity_manager');
+        $request = $this->getRequest();
+
+        $orderBy = $request->query->get('orderBy');
+        $filter  = $request->query->get('filter');
+
+        $filter = $filter;
+
+        $busqueda = $em->getRepository('BusetaBodegaBundle:Producto')
+            ->busquedaAvanzada($page,$cantResult,$filter,$orderBy);
+        $paginacion = $busqueda['paginacion'];
+        $results    = $busqueda['results'];
+
+        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-productos.html.twig',array(
+            'productos'   => $results,
+            'page'       => $page,
+            'cantResult' => $cantResult,
+            'orderBy'    => $orderBy,
+            'paginacion' => $paginacion,
+        ));
+    }
+
     /**
      * Updated automatically select All when change select Producto
      *
@@ -91,20 +115,12 @@ class ProductoController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
-        $entities = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
-
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-            $entities,
-            $this->get('request')->query->get('page', 1),
-            5,
-            array('pageParameterName' => 'page')
-        );
+        $producto = $this->createForm(new BusquedaProductoType());
 
         return $this->render('BusetaBodegaBundle:Producto:index.html.twig', array(
-            'entities' => $entities,
+            'producto' => $producto->createView(),
         ));
     }
     /**

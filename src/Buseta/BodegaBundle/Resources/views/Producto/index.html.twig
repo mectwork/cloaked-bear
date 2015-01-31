@@ -14,71 +14,69 @@
 
 {% block area_trabajo %}
 
-    <div class="btn-group" style="padding-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('producto_new') }}"><i class="fa fa-plus-circle"></i> Adicionar producto</a>
-    </div>
+    <h4><a id="busqueda_producto" style="cursor: pointer; "><i class="icon-chevron-down"></i> Búsqueda de Productos</a></h4>
+    <div id="busqueda_producto_div" class="panel panel-default" style="display: none;">
+        <div class="panel-body">
+            <fieldset>
+                <legend><h4>Búsqueda Avanzada</h4></legend>
 
-    <table class="records_list table table-striped table-bordered table-condensed table-hover">
-        <thead>
-        <tr>
-            <th>Código</th>
-            <th>Nombre</th>
-            <th>U/M</th>
-            <th>Condición</th>
-            <th>Precio/Costo</th>
-            <th>Precio/Salida</th>
-            <th>Bodega</th>
-            <th>Mín</th>
-            <th>Máx</th>
-            <th>Activo</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td>{{ entity.codigo }}</td>
-                <td>{{ entity.nombre }}</td>
-                <td>{{ entity.uom }}</td>
-                <td>{{ entity.condicion }}</td>
-                <td>{{ entity.preciocosto }}</td>
-                <td>{{ entity.preciosalida }}</td>
-                <td>{{ entity.bodega }}</td>
-                <td>{{ entity.minimobodega }}</td>
-                <td>{{ entity.maximobodega }}</td>
-                <td>
-                    {% if entity.activo == 1 %}
-                        Sí
-                    {% else %}
-                        No
-                    {% endif %}
-                </td>
-                <td  style="width: 18% !important; text-align: center;">
-                    <div class="btn-group">
-                        <a class="btn btn-success btn-xs" href="{{ path('producto_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
+                {{ form_start(producto) }}
+                <div class="row show-grid" style="padding-top: 0px">
+                    <div class="col-md-4">
+                        {{ form_row(producto.codigo) }}
                     </div>
-
-                    <div class="btn-group">
-                        <a class="btn btn-danger btn-xs" href="{{ path('producto_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
+                    <div class="col-md-8">
+                        {{ form_row(producto.nombre) }}
                     </div>
+                </div>
+                <div class="row show-grid" style="padding-top: 0px">
+                    <div class="col-md-4">
+                        {{ form_row(producto.uom) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(producto.condicion) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(producto.bodega) }}
+                    </div>
+                </div>
+                <div class="row show-grid" style="padding-top: 0px">
+                    <div class="col-md-4">
+                        {{ form_row(producto.precio_costo) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(producto.precio_salida) }}
+                    </div>
+                </div>
 
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">No se encontraron registros de productos en el sistema.</td>
-            </tr>
-        {% endfor %}
+                {{ form_end(producto) }}
 
-        </tbody>
-    </table>
+                <div class="row show-grid">
+                    <div class="col-md-6">
+                        <input class="btn btn-primary btn-bg" style="width: 100px;" value="Buscar" name="buscar" onclick="setFilters()">
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                {{ knp_pagination_render(entities) }}
-            </div>
+                        <div class="btn-group">
+                            <a class="btn btn-success btn-bg" href="{{ path('producto') }}"><i class="fa fa-search"> Reiniciar Búsqueda</i></a>
+                        </div>
+                    </div>
+                </div>
+
+
+            </fieldset>
         </div>
     </div>
 
+    <div class="btn-group" style="padding-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('producto_new') }}"><i class="fa fa-plus-circle"></i> Adicionar Producto</a>
+    </div>
+    <div class="productos-result-table" style="text-align: center;"> </div>
+
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{asset('vendors/busquedaProducto.js')}}" type="text/javascript"></script>
+
+{% endblock %}
+

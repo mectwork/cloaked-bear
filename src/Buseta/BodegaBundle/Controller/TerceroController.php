@@ -34,7 +34,7 @@ class TerceroController extends Controller
         $paginacion = $busqueda['paginacion'];
         $results    = $busqueda['results'];
 
-        return $this->render('BusetaBodegaBundle:Tercero:table\\busqueda-avanzada-table.html.twig',array(
+        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-terceros.html.twig',array(
             'terceros'   => $results,
             'page'       => $page,
             'cantResult' => $cantResult,
