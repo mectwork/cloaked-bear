@@ -28,63 +28,23 @@ class AlbaranController extends Controller
 
         $albaran = $em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
 
-        $request = $this->get('request');
-        $datos = $request->request->get('bodega_albaran_type');
+        $albaranLineas = $em->getRepository('BusetaBodegaBundle:AlbaranLinea')->findBy(array(
+            'albaran' => $albaran
+        ));
 
-        if($datos['fechaContable']){
-            $date='%s-%s-%s GMT-0';
-            $fecha = explode("/", $datos['fechaContable']);
-            $d = $fecha[0]; $m = $fecha[1];
-            $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
-            $y = $fecha[0];
-            $fechaContable =  new \DateTime(sprintf($date,$y,$m,$d));
-            $albaran->setFechaContable($fechaContable);
-        }
-
-        if($datos['fechaMovimiento']){
-            $date='%s-%s-%s GMT-0';
-            $fecha = explode("/", $datos['fechaMovimiento']);
-            $d = $fecha[0]; $m = $fecha[1];
-            $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
-            $y = $fecha[0];
-            $fechaMovimiento =  new \DateTime(sprintf($date,$y,$m,$d));
-            $albaran->setFechaMovimiento($fechaMovimiento);
-        }
-
-        $em->flush();
-
-        //Actualizar Lineas del Albaran
-        //registro los datos de las líneas del albarán
-        foreach($datos['albaranLinea'] as $linea){
-            $albaranLinea = $em->getRepository('BusetaBodegaBundle:AlbaranLinea')->findOneBy(array(
-                'albaran' => $albaran
-            ));
-
-            $albaranLinea->setLinea($linea['linea']);
-            $albaranLinea->setCantidadMovida($linea['cantidadMovida']);
-
-            $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($linea['producto']);
-            $albaranLinea->setProducto($producto);
-
-            $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($datos['almacen']);
-            $albaranLinea->setAlmacen($almacen);
-
-            $uom = $em->getRepository('BusetaNomencladorBundle:UOM')->find($linea['uom']);
-            $albaranLinea->setUom($uom);
-
-            $albaranLinea->setValorAtributos($linea['valorAtributos']);
-
-            $em->persist($albaranLinea);
-            $em->flush();
+        foreach($albaranLineas as $linea){
 
             //Actualizar Bitácora
             $bitacora = new BitacoraAlmacen();
-            $bitacora->setProducto($producto);
-            $bitacora->setFechaMovimiento($fechaMovimiento);
-            $bitacora->setAlmacen($almacen);
-            $bitacora->setCantMovida($linea['cantidadMovida']);
+            $bitacora->setProducto($linea->getProducto());
+            $bitacora->setFechaMovimiento($albaran->getFechaMovimiento());
+            $bitacora->setAlmacen($linea->getAlmacen());
+            $bitacora->setCantMovida($linea->getCantidadMovida());
             $bitacora->setTipoMovimiento('V+');
+
+            $albaran->setDeleted(true);
             $em->persist($bitacora);
+            $em->persist($albaran);
             $em->flush();
         }
 
@@ -214,13 +174,15 @@ class AlbaranController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('BusetaBodegaBundle:Albaran')->findAll();
+        $entities = $em->getRepository('BusetaBodegaBundle:Albaran')->findBy(array(
+            'deleted' => false
+        ));
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
             $entities,
             $this->get('request')->query->get('page', 1),
-            5,
+            10,
             array('pageParameterName' => 'page')
         );
 
@@ -294,6 +256,9 @@ class AlbaranController extends Controller
 
         $albaran->setConsecutivoCompra($datos['consecutivoCompra']);
         $albaran->setEstadoDocumento($datos['estadoDocumento']);
+
+        $albaran->setCreated($albaran->getCreated());
+        $albaran->setUpdated(new \DateTime());
 
         if($datos['fechaContable']){
             $date='%s-%s-%s GMT-0';

@@ -102,11 +102,9 @@
         </tbody>
     </table>
 
-    <div class="btn-group">
+    <div class="form-actions">
         <a class="btn btn-primary" href="{{ path('albaran_edit', { 'id': entity.id }) }}"> Editar</a>
-    </div>
-
-    <div class="btn-group">
+        <a class="btn btn-primary" href="{{ path('procesarAlbaran', { 'id': entity.id }) }}"> Procesar</a>
         <a class="btn btn-primary" href="{{ path('albaran') }}"> Listado</a>
     </div>
 

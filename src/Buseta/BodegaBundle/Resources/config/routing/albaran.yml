@@ -42,3 +42,7 @@ guardarAlbaran:
   requirements: { _method: "GET" }
   options:
       expose: true
+
+procesarAlbaran:
+    pattern:  /{id}/procesarAlbaran
+    defaults: { _controller: "BusetaBodegaBundle:Albaran:procesarAlbaran" }

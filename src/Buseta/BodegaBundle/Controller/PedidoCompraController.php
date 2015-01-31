@@ -197,10 +197,6 @@ class PedidoCompraController extends Controller
         $em->flush();
 
         return $this->redirect($this->generateUrl('pedidocompra'));
-
-
-
-
     }
 
     public function createAction(Request $request)
@@ -340,6 +336,7 @@ class PedidoCompraController extends Controller
             'json'   => json_encode($json),
         ));
     }
+
     /**
     * Creates a form to edit a PedidoCompra entity.
     *
@@ -358,6 +355,7 @@ class PedidoCompraController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing PedidoCompra entity.
      *

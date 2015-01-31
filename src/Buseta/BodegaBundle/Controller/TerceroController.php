@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\Tercero;
 use Buseta\BodegaBundle\Form\Type\TerceroType;
 use Buseta\BodegaBundle\Form\Type\MecanismoContactoType;
+use Buseta\BodegaBundle\Form\Filtro\BusquedaTerceroType;
 
 /**
  * Tercero controller.
@@ -19,6 +20,28 @@ use Buseta\BodegaBundle\Form\Type\MecanismoContactoType;
  */
 class TerceroController extends Controller
 {
+    public function busquedaAvanzadaAction($page,$cantResult){
+        $em = $this->get('doctrine.orm.entity_manager');
+        $request = $this->getRequest();
+
+        $orderBy = $request->query->get('orderBy');
+        $filter  = $request->query->get('filter');
+
+        $filter = $filter;
+
+        $busqueda = $em->getRepository('BusetaBodegaBundle:Tercero')
+            ->busquedaAvanzada($page,$cantResult,$filter,$orderBy);
+        $paginacion = $busqueda['paginacion'];
+        $results    = $busqueda['results'];
+
+        return $this->render('BusetaBodegaBundle:Tercero:table\\busqueda-avanzada-table.html.twig',array(
+            'terceros'   => $results,
+            'page'       => $page,
+            'cantResult' => $cantResult,
+            'orderBy'    => $orderBy,
+            'paginacion' => $paginacion,
+        ));
+    }
 
     /**
      * Lists all Tercero entities.
@@ -26,22 +49,15 @@ class TerceroController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
-        $entities = $em->getRepository('BusetaBodegaBundle:Tercero')->findAll();
-
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-            $entities,
-            $this->get('request')->query->get('page', 1),
-            5,
-            array('pageParameterName' => 'page')
-        );
+        $tercero = $this->createForm(new BusquedaTerceroType());
 
         return $this->render('BusetaBodegaBundle:Tercero:index.html.twig', array(
-                'entities' => $entities,
-            ));
+            'tercero' => $tercero->createView(),
+        ));
     }
+
     /**
      * Creates a new Tercero entity.
      *
@@ -189,6 +205,7 @@ class TerceroController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Tercero entity.
      *
@@ -219,6 +236,7 @@ class TerceroController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a Tercero entity.
      *
