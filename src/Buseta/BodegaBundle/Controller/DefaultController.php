@@ -11,26 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
-
-    public function informeStockAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $informeStock = $em->getRepository('BusetaBodegaBundle:InformeStock')->findAll();
-
-        $paginator = $this->get('knp_paginator');
-        $informeStock = $paginator->paginate(
-            $informeStock,
-            $this->get('request')->query->get('page', 1),
-            5,
-            array('pageParameterName' => 'page')
-        );
-
-        return $this->render('BusetaBodegaBundle:InformeStock:index.html.twig', array(
-            'entities' => $informeStock,
-        ));
-    }
-
     /**
      *
      * @param InformeStockModel $entity The entity

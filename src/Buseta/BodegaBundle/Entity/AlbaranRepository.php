@@ -14,7 +14,7 @@ use Doctrine\ORM\NoResultException;
 class AlbaranRepository extends EntityRepository
 {
     public function busquedaAvanzada($page, $cantResult, $filter = array(), $orderBy = null) {
-        $q = 'SELECT p FROM BusetaBodegaBundle:Albaran p WHERE p.id != 0';
+        $q = 'SELECT p FROM BusetaBodegaBundle:Albaran p WHERE p.id != 0 AND p.deleted = false';
 
         //Obteniendo resto de la consulta dql
         $q.=$this->constructSubDQL($filter);

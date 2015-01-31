@@ -8,4 +8,4 @@ bodega_principal:
 
 bodega_informe_stock:
     pattern:  /modulo/bodega/informe_stock
-    defaults: { _controller: "BusetaBodegaBundle:Default:informeStock" }
+    defaults: { _controller: "BusetaBodegaBundle:InformeStock:index" }
