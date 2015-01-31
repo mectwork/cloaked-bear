@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Buseta\BodegaBundle\Entity\Bodega;
 use Buseta\BodegaBundle\Form\Type\BodegaType;
+use Buseta\BodegaBundle\Form\Filtro\BusquedaAlmacenType;
 
 /**
  * Bodega controller.
@@ -14,6 +15,28 @@ use Buseta\BodegaBundle\Form\Type\BodegaType;
  */
 class BodegaController extends Controller
 {
+    public function busquedaAvanzadaAction($page,$cantResult){
+        $em = $this->get('doctrine.orm.entity_manager');
+        $request = $this->getRequest();
+
+        $orderBy = $request->query->get('orderBy');
+        $filter  = $request->query->get('filter');
+
+        $filter = $filter;
+
+        $busqueda = $em->getRepository('BusetaBodegaBundle:Bodega')
+            ->busquedaAvanzada($page,$cantResult,$filter,$orderBy);
+        $paginacion = $busqueda['paginacion'];
+        $results    = $busqueda['results'];
+
+        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-almacen.html.twig',array(
+            'almacenes'   => $results,
+            'page'       => $page,
+            'cantResult' => $cantResult,
+            'orderBy'    => $orderBy,
+            'paginacion' => $paginacion,
+        ));
+    }
 
     /**
      * Module Bodega entiy.
@@ -24,29 +47,21 @@ class BodegaController extends Controller
         return $this->render('BusetaBodegaBundle:Default:principal.html.twig');
     }
 
-
     /**
      * Lists all Bodega entities.
      *
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
-        $entities = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
-
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-            $entities,
-            $this->get('request')->query->get('page', 1),
-            5,
-            array('pageParameterName' => 'page')
-        );
+        $almacen = $this->createForm(new BusquedaAlmacenType());
 
         return $this->render('BusetaBodegaBundle:Bodega:index.html.twig', array(
-                'entities' => $entities,
-            ));
+            'almacen' => $almacen->createView(),
+        ));
     }
+
     /**
      * Creates a new Bodega entity.
      *
@@ -166,6 +181,7 @@ class BodegaController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Bodega entity.
      *
@@ -196,6 +212,7 @@ class BodegaController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a Bodega entity.
      *

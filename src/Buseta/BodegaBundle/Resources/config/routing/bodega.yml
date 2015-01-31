@@ -37,3 +37,8 @@ informe_stock_create:
 informe_stock_show:
     pattern:  /informe_stock/{id}/show
     defaults: { _controller: "BusetaBodegaBundle:Default:show" }
+
+almacen_ajax_busqueda_avanzada:
+  pattern: /busqueda-avanzada/{page}/{cantResult}
+  defaults: { _controller: "BusetaBodegaBundle:Bodega:busquedaAvanzada", page: 0, cantResult: 10 }
+  requirements: { _method: "GET" }
