@@ -1,0 +1,3 @@
+informeStock:
+    pattern:  /
+    defaults: { _controller: "BusetaBodegaBundle:InformeStock:index" }

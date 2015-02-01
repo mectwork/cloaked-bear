@@ -32,4 +32,72 @@ class InformeStockRepository extends EntityRepository
         }
     }
 
+    public function busquedaAvanzada($filter = array())
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $q = $qb->select('o')
+            ->from('BusetaBodegaBundle:BitacoraAlmacen', 'o')
+            ->where('o.almacen = :almacen')
+            ->andWhere('o.producto = :producto')
+            ->andWhere('o.fechaMovimiento < :fecha')
+
+            ->setParameter('almacen', $filter['almacen'])
+            ->setParameter('producto', $filter['producto'])
+            ->setParameter('fecha', $filter['fecha'])
+            ->getQuery();
+
+
+        try {
+            $results = $q->getResult();
+            return array(
+                'results' => $results,
+            );
+        } catch (NoResultException $e) {
+            return array(
+                'results' => array(),
+            );
+        }
+    }
+
+    public function buscarTodos()
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $q = $qb->select('o')
+            ->from('BusetaBodegaBundle:InformeStock', 'o')
+            ->getQuery();
+
+        try {
+            return $q->getResult();
+        } catch (NoResultException $e) {
+            return false;
+        }
+    }
+
+
+    public function buscarInformeStock($busqueda)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $datos = $busqueda->getData();
+
+        $q = $qb->select('o')
+            ->from('BusetaBodegaBundle:BitacoraAlmacen', 'o')
+            ->where('o.almacen = :almacen')
+            ->andWhere('o.producto = :producto')
+            ->setParameter('almacen', $datos['almacen'])
+            ->setParameter('producto', $datos['producto'])
+            ->getQuery();
+
+        try {
+            return $q->getResult();
+        } catch (NoResultException $e) {
+            return false;
+        }
+
+
+    }
+
+
 }

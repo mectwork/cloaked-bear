@@ -12,8 +12,6 @@
 
 {% block area_trabajo %}
 
-
-
   {{ form_start(form) }}
 
     {% if form_errors(form) %}
@@ -162,21 +160,13 @@
 
         $('#adicionarMovimiento').on('click', function () {
 
+            //Resetear valores del modal "newMovimiento"
             var modal = $('#newMovimiento');
             var movimiento_producto = modal.find('#buseta_bodegabundle_movimientosProductos_producto');
             var movimiento_cantidad = modal.find('#buseta_bodegabundle_movimientosProductos_cantidad');
 
             movimiento_producto.val('');
             movimiento_cantidad.val('');
-
-//
-//            $('#buseta_bodegabundle_movimiento_movimientos_productos_' + index + '_producto')
-//
-//            var valor = $('select[id^="buseta_bodegabundle_movimiento_movimientos_productos_"][id$="_producto"]').val();
-//
-//            alert(valor);
-
-
 
         });
 

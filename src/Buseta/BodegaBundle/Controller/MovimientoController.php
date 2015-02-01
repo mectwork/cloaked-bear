@@ -20,6 +20,7 @@ use Buseta\BodegaBundle\Extras\FuncionesExtras;
  */
 class MovimientoController extends Controller
 {
+
     /**
      * Updated automatically select AlmacenDestino when change select AlmacenOrigen
      *
@@ -356,6 +357,7 @@ class MovimientoController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Movimiento entity.
      *
@@ -386,6 +388,7 @@ class MovimientoController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a Movimiento entity.
      *

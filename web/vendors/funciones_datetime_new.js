@@ -3,6 +3,11 @@ var fecha = $('#buseta_informestock_autobus_fecha').pickadate({
     formatSubmit: 'dd/mm/yyyy'
 });
 
+var fechaInformeStock = $('#data_busqueda_informe_stock_type_fecha').pickadate({
+    format: 'dd/mm/yyyy',
+    formatSubmit: 'dd/mm/yyyy'
+});
+
 var fechaMovimiento = $('#bodega_albaran_type_fechaMovimiento').pickadate({
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
@@ -55,6 +60,9 @@ if(picker != null)
 
 var fecha = $('#buseta_informestock_autobus_fecha').val();
 $('input:hidden[name^="buseta_informestock_autobus[fecha]_submit"]').val(fecha);
+
+var fechaInformeStock = $('#data_busqueda_informe_stock_type_fecha').val();
+$('input:hidden[name^="data_busqueda_informe_stock_type[fecha]_submit"]').val(fechaInformeStock);
 
 var valido = $('#buseta_databundle_autobus_valido_hasta').val();
 $('input:hidden[name^="buseta_databundle_autobus[valido_hasta]_submit"]').val(valido);

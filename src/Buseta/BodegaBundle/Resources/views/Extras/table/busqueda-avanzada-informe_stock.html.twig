@@ -1,0 +1,82 @@
+
+{# TABLA DE RESULTADOS #}
+{#{% for almacen in almacenes %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <h4>Almacén "{{ almacen.nombre }}"</h4>
+
+                    <table class="records_list table table-striped table-bordered table-condensed table-hover">
+                        <thead>
+                        <tr>
+                            <th  style="text-align: left;">Producto</th>
+                            <th>Cantidad de productos</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% set comprobar = '' %}
+
+                        {% for entity in entities %}
+
+                            {% if entity.almacen == almacen %}
+                                <tr>
+                                    <td>{{ entity.producto }}</td>
+                                    <td  style="text-align: center;">{{ entity.cantidadProductos }}</td>
+                                </tr>
+
+                                {% set comprobar = 'ok' %}
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                        {% if comprobar != 'ok' %}
+                            <tr>
+                                <td colspan="12">No se encontraron registros de productos para este almacén.</td>
+                            </tr>
+                        {% endif %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endfor %}#}
+
+
+<table class="records_list table table-striped table-bordered table-condensed table-hover">
+    <thead>
+    <tr>
+        <th>Almacén</th>
+        <th>Producto</th>
+        <th>Fecha</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for entity in informeStock %}
+        <tr>
+
+            <td>{{ entity.almacen }}</td>
+            <td>{{ entity.producto }}</td>
+            <td>{{ entity.fechaMovimiento | date('d/m/Y') }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="12">No se encontraron registros de la búsqueda en el sistema.</td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
+{# END PAGINACIÓN #}

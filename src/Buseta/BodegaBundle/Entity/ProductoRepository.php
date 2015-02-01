@@ -13,6 +13,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductoRepository extends EntityRepository
 {
+    public function searchByValor($valores) {
+        $q = "SELECT r FROM BusetaBodegaBundle:Producto r WHERE r.id = :valores";
+
+        $query = $this->_em->createQuery($q);
+        $query->setParameter('valores', $valores);
+
+        try {
+            return $query->getResult();
+        } catch (NoResultException $e) {
+            return false;
+        }
+    }
+
     public function comprobarInformeStock($almacen,$producto,$em)
     {
         $entities = $em->createQueryBuilder()

@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Form\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Buseta\BodegaBundle\Entity\Tercero;
 
@@ -29,6 +30,9 @@ class TerceroModel
 
     private $direccionId;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
     private $mecanismoscontacto;
 
     /**
@@ -53,6 +57,8 @@ class TerceroModel
 
     function __construct(Tercero $tercero = null)
     {
+        $this->mecanismoscontacto = new ArrayCollection();
+
         if ($tercero !== null) {
             $this->id = $tercero->getId();
             $this->compras = $tercero->getCompras();
@@ -236,7 +242,7 @@ class TerceroModel
     }
 
     /**
-     * @return mixed
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getMecanismoscontacto()
     {
@@ -244,7 +250,7 @@ class TerceroModel
     }
 
     /**
-     * @param mixed $mecanismoscontacto
+     * @param \Doctrine\Common\Collections\ArrayCollection $mecanismoscontacto
      */
     public function setMecanismoscontacto($mecanismoscontacto)
     {

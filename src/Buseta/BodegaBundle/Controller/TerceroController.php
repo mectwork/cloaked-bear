@@ -68,7 +68,6 @@ class TerceroController extends Controller
         $form = $this->createCreateForm($entity);
 
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
@@ -97,10 +96,12 @@ class TerceroController extends Controller
             return $this->redirect($this->generateUrl('tercero_show', array('id' => $tercero->getId())));
         }
 
+        $direccion = $this->createForm(new DireccionType());
 
         return $this->render('BusetaBodegaBundle:Tercero:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'direccion' => $direccion->createView(),
         ));
     }
 
@@ -129,7 +130,7 @@ class TerceroController extends Controller
      */
     public function newAction(Request $request)
     {
-        $tipo_contacto = $this->createForm(new MecanismoContactoType());
+        //$tipo_contacto = $this->createForm(new MecanismoContactoType());
 
         //$entity->addMecanismoscontacto(new MecanismoContacto());
 
@@ -140,7 +141,7 @@ class TerceroController extends Controller
 
         return $this->render('BusetaBodegaBundle:Tercero:new.html.twig', array(
             'form'   => $form->createView(),
-            'tipo_contacto' => $tipo_contacto->createView(),
+            //'tipo_contacto' => $tipo_contacto->createView(),
             'direccion' => $direccion->createView(),
         ));
     }

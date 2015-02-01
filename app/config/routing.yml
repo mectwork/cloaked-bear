@@ -58,6 +58,10 @@ BusetaBodegaBundle_tercero:
     resource: "@BusetaBodegaBundle/Resources/config/routing/tercero.yml"
     prefix:   /bodega/tercero
 
+BusetaTallerBundle_informestock:
+        resource: "@BusetaBodegaBundle/Resources/config/routing/informe_stock.yml"
+        prefix:   /informestock
+
 buseta_bodega:
     resource: "@BusetaBodegaBundle/Resources/config/routing.yml"
     prefix:   /

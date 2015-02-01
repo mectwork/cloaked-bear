@@ -84,7 +84,7 @@ class TerceroType extends AbstractType
                 ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
@@ -94,6 +94,7 @@ class TerceroType extends AbstractType
             'data_class' => 'Buseta\BodegaBundle\Form\Model\TerceroModel'
         ));
     }
+
 
     /**
      * @return string
