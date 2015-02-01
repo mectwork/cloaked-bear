@@ -110,7 +110,7 @@
         <div class="row show-grid">
             <div class="col-md-4">
                 <div class="btn-group">
-                    <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar línea</a>
+                    <a id="adicionarLinea" data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar línea</a>
                 </div>
             </div>
         </div>
@@ -227,6 +227,34 @@
             $('#valido').fadeOut(10);
             $('#tab_lineas').fadeOut(10);
             $('#comprobarLineas').hide();
+
+            //Resetear valores de campos del modal "newLinea"
+            $('#adicionarLinea').on('click', function(){
+                var modal = $('#newLinea');
+
+                var linea_linea             = modal.find('#buseta_bodegabundle_pedido_compra_linea_linea');
+                var linea_producto          = modal.find('#buseta_bodegabundle_pedido_compra_linea_producto');
+                var linea_cantidad_pedido   = modal.find('#buseta_bodegabundle_pedido_compra_linea_cantidad_pedido');
+
+                var linea_uom               = modal.find('#buseta_bodegabundle_pedido_compra_linea_uom');
+                var linea_precio_unitario   = modal.find('#buseta_bodegabundle_pedido_compra_linea_precio_unitario');
+                var linea_impuesto          = modal.find('#buseta_bodegabundle_pedido_compra_linea_impuesto');
+
+                var linea_moneda                = modal.find('#buseta_bodegabundle_pedido_compra_linea_moneda');
+                var linea_porciento_descuento   = modal.find('#buseta_bodegabundle_pedido_compra_linea_porciento_descuento');
+                var linea_importe_linea         = modal.find('#buseta_bodegabundle_pedido_compra_linea_importe_linea');
+
+                linea_linea.val('');
+                linea_producto.val('');
+                linea_cantidad_pedido.val('');
+                linea_uom.val('');
+                linea_precio_unitario.val('');
+                linea_impuesto.val('');
+                linea_moneda.val('');
+                linea_porciento_descuento.val('');
+                linea_importe_linea.val('');
+
+            });
 
 
             $('#{{ pedido_compra_linea.producto.vars.id }}').change(function(){

@@ -93,7 +93,7 @@
         <div class="row show-grid">
             <div class="col-md-4">
                 <div class="btn-group">
-                    <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar línea</a>
+                    <a id="adicionarLinea" data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar línea</a>
                 </div>
             </div>
         </div>
@@ -202,6 +202,25 @@
 
                 $('#error').hide();
                 $('#valido').hide();
+            });
+
+            //Resetear valores de campos del modal "newLinea"
+            $('#adicionarLinea').on('click', function(){
+                var modal = $('#newLinea');
+
+                var linea_linea = modal.find('#buseta_bodegabundle_albaran_linea_linea');
+                var linea_producto = modal.find('#buseta_bodegabundle_albaran_linea_producto');
+                var linea_cantidadMovida = modal.find('#buseta_bodegabundle_albaran_linea_cantidadMovida');
+                var linea_almacen = modal.find('#buseta_bodegabundle_albaran_linea_almacen');
+                var linea_uom = modal.find('#buseta_bodegabundle_albaran_linea_uom');
+                var linea_valorAtributos = modal.find('#buseta_bodegabundle_albaran_linea_valorAtributos');
+
+                linea_linea.val('');
+                linea_producto.val('');
+                linea_cantidadMovida.val('');
+                linea_almacen.val('');
+                linea_uom.val('');
+                linea_valorAtributos.val('');
             });
 
             $('#guardarAlbaran').click(function(){

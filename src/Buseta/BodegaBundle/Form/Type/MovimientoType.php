@@ -25,14 +25,14 @@ class MovimientoType extends AbstractType
         $builder
             ->add('almacenOrigen','entity',array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione bodega de origen---',
+                'empty_value' => '---Seleccione almacén origen---',
                 'attr' => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('almacenDestino','entity',array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione bodega destino---',
+                'empty_value' => '---Seleccione almacén destino---',
                 'attr' => array(
                     'class' => 'form-control',
                 )

@@ -45,7 +45,7 @@
     <div class="row show-grid">
         <div class="col-md-4">
             <div class="btn-group" style="padding-bottom: 8px;">
-                <a data-toggle="modal" data-target="#newMovimiento" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar movimiento</a>
+                <a id="adicionarMovimiento" data-toggle="modal" data-target="#newMovimiento" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar movimiento</a>
             </div>
         </div>
     </div>
@@ -160,6 +160,26 @@
             }
         }
 
+        $('#adicionarMovimiento').on('click', function () {
+
+            var modal = $('#newMovimiento');
+            var movimiento_producto = modal.find('#buseta_bodegabundle_movimientosProductos_producto');
+            var movimiento_cantidad = modal.find('#buseta_bodegabundle_movimientosProductos_cantidad');
+
+            movimiento_producto.val('');
+            movimiento_cantidad.val('');
+
+//
+//            $('#buseta_bodegabundle_movimiento_movimientos_productos_' + index + '_producto')
+//
+//            var valor = $('select[id^="buseta_bodegabundle_movimiento_movimientos_productos_"][id$="_producto"]').val();
+//
+//            alert(valor);
+
+
+
+        });
+
         $addTagLink.on('click', function(e) {
             // prevent the link from creating a "#" on the URL
             e.preventDefault();
@@ -174,7 +194,6 @@
 
             addTagForm(collectionHolder);
 
-            console.log(index);
 
             $('#buseta_bodegabundle_movimiento_movimientos_productos_' + index + '_producto').val(movimiento_producto.val()).prop('readonly','readonly');
             $('#buseta_bodegabundle_movimiento_movimientos_productos_' + index + '_cantidad').val(movimiento_cantidad.val()).prop('readonly','readonly');
