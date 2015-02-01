@@ -10,6 +10,8 @@
 
 {% block area_trabajo %}
 
+
+
     <table class="table table-striped" style="font-size: 16px;">
     <tbody>
 
@@ -76,6 +78,7 @@
         <a class="btn btn-primary" href="{{ path('producto_edit', { 'id': entity.id }) }}"> Editar</a>
         <a class="btn btn-primary" href="{{ path('producto') }}"> Listado</a>
         <button type="submit" class="btn btn-primary">Eliminar</button>
+        <a class="btn btn-primary" href="{{ path('producto_bitacora', { 'id': entity.id }) }}"> Bitácora</a>
         {{ form_end(delete_form) }}
     </div>
 

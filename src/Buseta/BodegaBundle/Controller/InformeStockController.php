@@ -29,18 +29,12 @@ class InformeStockController extends Controller
         $almacenes = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
         $entities = $em->getRepository('BusetaBodegaBundle:InformeStock')->findAll();
 
-        /*$paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-            $entities,
-            $this->get('request')->query->get('page', 1),
-            5,
-            array('pageParameterName' => 'page')
-        );*/
-
         return $this->render('BusetaBodegaBundle:InformeStock:index.html.twig', array(
             'entities' => $entities,
             'almacenes' => $almacenes,
         ));
+
+
     }
 
 

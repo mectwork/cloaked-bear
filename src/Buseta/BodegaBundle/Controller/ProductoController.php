@@ -20,6 +20,34 @@ use Buseta\BodegaBundle\Form\Filtro\BusquedaProductoType;
  */
 class ProductoController extends Controller
 {
+    public function productoBitacoraAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($id);
+
+        $bitacora = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->findBy(
+            array(
+                'producto' => $producto
+            )
+        );
+
+        $paginator = $this->get('knp_paginator');
+        $bitacora = $paginator->paginate(
+            $bitacora,
+            $this->get('request')->query->get('page', 1),
+            10,
+            array('pageParameterName' => 'page')
+        );
+
+        return $this->render('BusetaBodegaBundle:Producto:bitacora.html.twig', array(
+            'bitacora' => $bitacora,
+            'producto' => $producto,
+        ));
+
+
+    }
+
     public function busquedaAvanzadaAction($page,$cantResult){
         $em = $this->get('doctrine.orm.entity_manager');
         $request = $this->getRequest();
@@ -123,6 +151,7 @@ class ProductoController extends Controller
             'producto' => $producto->createView(),
         ));
     }
+
     /**
      * Creates a new Producto entity.
      *
@@ -244,6 +273,7 @@ class ProductoController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Producto entity.
      *
@@ -274,6 +304,7 @@ class ProductoController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a Producto entity.
      *
