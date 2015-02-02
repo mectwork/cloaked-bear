@@ -14,49 +14,65 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class InformeStockController extends Controller
 {
 
-    /**
-     * Lists all InformeStock entities.
-     *
-     */
-    /*public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $funcionesExtras = new FuncionesExtras();
-
-        //Se actualiza la informacion del InformeStock
-        $funcionesExtras->ActualizarInformeStock($em);
-
-        $almacenes = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
-        $entities = $em->getRepository('BusetaBodegaBundle:InformeStock')->findAll();
-
-        return $this->render('BusetaBodegaBundle:InformeStock:index.html.twig', array(
-            'entities' => $entities,
-            'almacenes' => $almacenes,
-        ));
-
-
-    }*/
     public function indexAction(Request $request)
     {
         $em = $this->get('doctrine.orm.entity_manager');
 
         $informeStock = $this->createForm(new BusquedaInformeStockType());
 
-        if($request->getMethod() === 'GET'){
+        if($request->getMethod() === 'POST'){
+
             $informeStock->submit($request);
+
 
             if($informeStock->isValid()){
 
-                $entities = $em->getRepository('BusetaBodegaBundle:InformeStock')->buscarInformeStock($informeStock);
+                $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->busquedaBitacoraAlmacen($informeStock);
+                $almacenes = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
+
+
+                $funcionesExtras = new FuncionesExtras();
+                $almacenesArray = $funcionesExtras->generarInformeStock($bitacoras, $em);
+                $almacenesFinal = null;
+                $pos = 0;
+
+
+                foreach($almacenes as $almacen)
+                {
+
+                    foreach($almacenesArray as $almacenArray)
+                    {
+                        if($almacen == $almacenArray['almacen'])
+                        {
+                            $almacenesFinal[$pos] = $almacen;
+                            $pos++;
+                            break;
+                        }
+                    }
+                }
+
             }
+
+
+            return $this->render('BusetaBodegaBundle:InformeStock:index.html.twig', array(
+                'entities' => $almacenesArray,
+                'almacenes' => $almacenesFinal,
+                'informeStock' => $informeStock->createView(),
+            ));
+
+
         }
         else
         {
-            $entities = $em->getRepository('BusetaBusesBundle:InformeStock')->buscarTodos($em);
+            return $this->render('BusetaBodegaBundle:InformeStock:index.html.twig', array(
+                'entities' => null,
+                'almacenes' => null,
+                'informeStock' => $informeStock->createView(),
+            ));
         }
 
-        //CASO BUSQUEDA-AUTOBUS
+
+        /*//CASO BUSQUEDA
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
             $entities,
@@ -65,12 +81,14 @@ class InformeStockController extends Controller
             array('pageParameterName' => 'page')
         );
 
+        $almacenes = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
+
         return $this->render('BusetaBodegaBundle:InformeStock:index.html.twig', array(
             'entities' => $entities,
+            'almacenes' => $almacenes,
             'informeStock' => $informeStock->createView(),
-        ));
+        ));*/
 
     }
-
 
 }

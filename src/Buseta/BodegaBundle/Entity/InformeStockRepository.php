@@ -32,31 +32,35 @@ class InformeStockRepository extends EntityRepository
         }
     }
 
-    public function busquedaAvanzada($filter = array())
+    public function busquedaInformeStock($filter = array())
     {
         $qb = $this->_em->createQueryBuilder();
 
         $q = $qb->select('o')
             ->from('BusetaBodegaBundle:BitacoraAlmacen', 'o')
-            ->where('o.almacen = :almacen')
-            ->andWhere('o.producto = :producto')
-            ->andWhere('o.fechaMovimiento < :fecha')
+            ->where($qb->expr()->eq(true,true));
 
-            ->setParameter('almacen', $filter['almacen'])
-            ->setParameter('producto', $filter['producto'])
-            ->setParameter('fecha', $filter['fecha'])
-            ->getQuery();
+        if($filter['almacen'] !== null && $filter['almacen'] !== '') {
+            $q->andWhere('o.almacen = :almacen')
+                ->setParameter('almacen', $filter['almacen']);
+        }
 
+        if($filter['producto'] !== null && $filter['producto'] !== '') {
+            $q->andWhere('o.almacen = :almacen')
+                ->setParameter('producto', $filter['producto']);
+        }
+
+        if($filter['fecha'] !== null && $filter['fecha'] !== '') {
+            $q->andWhere('o.fechaMovimiento = :fecha')
+                ->setParameter('fecha', $filter['fecha']);
+        }
+
+        $q = $q->getQuery(); //Se devuelve para paginar
 
         try {
-            $results = $q->getResult();
-            return array(
-                'results' => $results,
-            );
+            return $q->getResult(); //No se debe devolver para paginar, es mas trabajoso
         } catch (NoResultException $e) {
-            return array(
-                'results' => array(),
-            );
+            return array();
         }
     }
 
@@ -65,7 +69,7 @@ class InformeStockRepository extends EntityRepository
         $qb = $this->_em->createQueryBuilder();
 
         $q = $qb->select('o')
-            ->from('BusetaBodegaBundle:InformeStock', 'o')
+            ->from('BusetaBodegaBundle:BitacoraAlmacen', 'o')
             ->getQuery();
 
         try {
@@ -76,18 +80,16 @@ class InformeStockRepository extends EntityRepository
     }
 
 
-    public function buscarInformeStock($busqueda)
+    public function buscarAlmacenBitacora($almacen, $fecha)
     {
         $qb = $this->_em->createQueryBuilder();
-
-        $datos = $busqueda->getData();
 
         $q = $qb->select('o')
             ->from('BusetaBodegaBundle:BitacoraAlmacen', 'o')
             ->where('o.almacen = :almacen')
-            ->andWhere('o.producto = :producto')
-            ->setParameter('almacen', $datos['almacen'])
-            ->setParameter('producto', $datos['producto'])
+            ->andWhere('o.fechaMovimiento < :fecha')
+            ->setParameter('almacen', $almacen)
+            ->setParameter('fecha', $fecha)
             ->getQuery();
 
         try {

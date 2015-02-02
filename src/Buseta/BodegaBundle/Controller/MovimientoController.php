@@ -200,10 +200,6 @@ class MovimientoController extends Controller
                         $em->persist($bitacora);
                         $em->flush();
 
-                        //Se actualiza la informacion del InformeStock
-                        $funcionesExtras = new FuncionesExtras();
-                        $funcionesExtras->ActualizarInformeStock($em);
-
                     }
                     else {
 

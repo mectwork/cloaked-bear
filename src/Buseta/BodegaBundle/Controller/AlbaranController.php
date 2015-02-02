@@ -71,11 +71,6 @@ class AlbaranController extends Controller
             $em->persist($bitacora);
             $em->persist($albaran);
             $em->flush();
-
-            $funcionesExtras = new FuncionesExtras();
-
-            //Se actualiza la informacion del InformeStock
-            $funcionesExtras->ActualizarInformeStock($em);
         }
 
 

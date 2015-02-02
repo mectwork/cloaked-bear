@@ -16,6 +16,7 @@ class BusquedaInformeStockType extends AbstractType{
 
             ->add('almacen','entity',array(
                 'class' => 'BusetaBodegaBundle:Bodega',
+                'empty_value' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -23,6 +24,7 @@ class BusquedaInformeStockType extends AbstractType{
             ))
             ->add('producto','entity',array(
                 'class' => 'BusetaBodegaBundle:Producto',
+                'empty_value' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -30,6 +32,7 @@ class BusquedaInformeStockType extends AbstractType{
             ))
             ->add('fecha','date',array(
                 'widget' => 'single_text',
+                'empty_value' => '---Seleccione---',
                 'required' => false,
                 'format'  => 'dd/MM/yyyy',
                 'attr'   => array(
