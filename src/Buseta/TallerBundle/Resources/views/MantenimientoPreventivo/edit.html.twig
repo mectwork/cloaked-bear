@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block area_trabajo %}
-
+    {{ form_errors(edit_form) }}
     <form action="{{ edit_form.vars.action }}" method="{{ edit_form.vars.method }}" enctype="multipart/form-data">
         <div class="row show-grid">
             <div class="col-md-4">
@@ -23,7 +23,7 @@
             </div>
 
             <div class="col-md-4">
-                <label>Kilometraje:</label>
+                <label>Fecha Inicio:</label>
                 {{ form_widget(edit_form.fechaFinal) }}
             </div>
         </div>
@@ -47,7 +47,7 @@
 
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Fecha Final:</label>
+                <label>Kilometraje:</label>
                 {{ form_widget(edit_form.kilometraje) }}
             </div>
         </div>
@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        {#{{ form_rest(edit_form) }}#}
+        {{ form_rest(edit_form) }}
     </form>
 {% endblock %}
 

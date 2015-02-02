@@ -46,10 +46,13 @@
     </table>
 
     <div class="form-actions">
-        <form action="{{ delete_form.vars.action }}" method="{{ delete_form.vars.method }}" enctype="multipart/form-data">
+        {{ form_errors(delete_form) }}
+        <form action="{{ delete_form.vars.action }}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="_method" value="DELETE"/>
             <a class="btn btn-primary" href="{{ path('mantenimientopreventivo_edit', { 'id': entity.id }) }}"> Editar</a>
             <a class="btn btn-primary" href="{{ path('mantenimientopreventivo') }}"> Listado</a>
             <button type="submit" class="btn btn-primary">Eliminar</button>
+            {{ form_rest(delete_form) }}
         </form>
     </div>
 {% endblock %}

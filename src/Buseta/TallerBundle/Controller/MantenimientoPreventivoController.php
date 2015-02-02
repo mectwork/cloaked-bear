@@ -42,7 +42,7 @@ class MantenimientoPreventivoController extends Controller
     /**
      * Creates a new MantenimientoPreventivo entity.
      *
-     * @Route("/", name="mantenimientopreventivo_create", methods={"POST"})
+     * @Route("/create", name="mantenimientopreventivo_create", methods={"POST"})
      */
     public function createAction(Request $request)
     {
@@ -78,8 +78,6 @@ class MantenimientoPreventivoController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
-
         return $form;
     }
 
@@ -102,11 +100,11 @@ class MantenimientoPreventivoController extends Controller
     /**
      * Finds and displays a MantenimientoPreventivo entity.
      *
-     * @Route("/{id}", name="mantenimientopreventivo_show", methods={"GET"})
+     * @Route("/{id}/show", name="mantenimientopreventivo_show", methods={"GET"})
      */
     public function showAction(MantenimientoPreventivo $entity)
     {
-        $deleteForm = $this->createDeleteForm($entity->getId());
+        $deleteForm = $this->createDeleteForm($entity);
 
         return $this->render('BusetaTallerBundle:MantenimientoPreventivo:show.html.twig', array(
             'entity'      => $entity,
@@ -122,12 +120,10 @@ class MantenimientoPreventivoController extends Controller
     public function editAction(MantenimientoPreventivo $entity)
     {
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($entity->getId());
 
         return $this->render('BusetaTallerBundle:MantenimientoPreventivo:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -145,26 +141,25 @@ class MantenimientoPreventivoController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
-
         return $form;
     }
     /**
      * Edits an existing MantenimientoPreventivo entity.
      *
-     * @Route("/{id}", name="mantenimientopreventivo_update", methods={"PUT"})
+     * @Route("/{id}/update", name="mantenimientopreventivo_update", methods={"PUT"})
      */
     public function updateAction(Request $request, MantenimientoPreventivo $entity)
     {
-        $deleteForm = $this->createDeleteForm($entity->getId());
+        $deleteForm = $this->createDeleteForm($entity);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
+            $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('mantenimientopreventivo_edit', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('mantenimientopreventivo_edit', array('id' => $entity)));
         }
 
         return $this->render('', array(
@@ -176,18 +171,26 @@ class MantenimientoPreventivoController extends Controller
     /**
      * Deletes a MantenimientoPreventivo entity.
      *
-     * @Route("/{id}", name="mantenimientopreventivo_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="mantenimientopreventivo_delete", methods={"DELETE"})
      */
     public function deleteAction(Request $request, MantenimientoPreventivo $entity)
     {
-        $form = $this->createDeleteForm($entity->getId());
+        $form = $this->createDeleteForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
 
-            $em->remove($entity);
-            $em->flush();
+            try {
+                $em->remove($entity);
+                $em->flush();
+                $this->get('session')->getFlashBag()->add('success', 'Ha sido eliminado satisfactoriamente.');
+            } catch (\Exception $e) {
+                $this->get('logger')->addCritical(
+                    sprintf('Ha ocurrido un error eliminando una tarea de mantenimiento. Detalles: %s',
+                        $e->getMessage()
+                    ));
+            }
         }
 
         return $this->redirect($this->generateUrl('mantenimientopreventivo'));
@@ -196,16 +199,15 @@ class MantenimientoPreventivoController extends Controller
     /**
      * Creates a form to delete a MantenimientoPreventivo entity by id.
      *
-     * @param mixed $id The entity id
+     * @param mixed $entity The entity id
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm(MantenimientoPreventivo $entity)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('mantenimientopreventivo_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('mantenimientopreventivo_delete', array('id' => $entity->getId())))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
     }

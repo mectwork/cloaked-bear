@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block area_trabajo %}
-
+    {{ form_errors(form) }}
     <form action="{{ path('mantenimientopreventivo_create') }}" method="post" enctype="multipart/form-data">
         <div class="row show-grid">
             <div class="col-md-4">
@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        {#{{ form_rest(form) }}#}
+        {{ form_widget(form._token) }}
     </form>
 {% endblock %}
 
@@ -64,6 +64,17 @@
 
 {% block javascripts %}
     {{ parent() }}
-
+    <script type="text/javascript">
+        $(function(){
+            $('#{{ form.fechaInicio.vars.id }}').datetimepicker({
+                pickTime: false,
+                format: 'DD/MM/YYYY'
+            });
+            $('#{{ form.fechaFinal.vars.id }}').pickadate({
+                format: 'dd/mm/yyyy',
+                formatSubmit: 'dd/mm/yyyy'
+            });
+        })
+    </script>
     <script src="{{ asset('vendors/funciones_datetime_new.js') }}"></script>
 {% endblock %}
