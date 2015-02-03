@@ -2,6 +2,8 @@
 
 namespace Buseta\TallerBundle\Form\Type;
 
+use Buseta\TallerBundle\Form\EventListener\AddGrupoFieldSubscriber;
+use Buseta\TallerBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -14,6 +16,12 @@ class MantenimientoPreventivoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $objeto = $builder->getFormFactory();
+        $subgrupoSubscriber = new AddSubgrupoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($subgrupoSubscriber);
+        $grupoSubscriber = new AddGrupoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($grupoSubscriber);
+
         $builder
             ->add('kilometraje', 'number', array(
                 'required' => true,
@@ -40,22 +48,22 @@ class MantenimientoPreventivoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('grupo','entity',array(
-                'class' => 'BusetaNomencladorBundle:Grupo',
-                'empty_value' => '---Seleccione un grupo---',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
-            ->add('subgrupo','entity',array(
-                'class' => 'BusetaNomencladorBundle:Subgrupo',
-                'empty_value' => '---Seleccione un subgrupo---',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
+//            ->add('grupo','entity',array(
+//                'class' => 'BusetaNomencladorBundle:Grupo',
+//                'empty_value' => '---Seleccione un grupo---',
+//                'required' => true,
+//                'attr' => array(
+//                    'class' => 'form-control',
+//                )
+//            ))
+//            ->add('subgrupo','entity',array(
+//                'class' => 'BusetaNomencladorBundle:Subgrupo',
+//                'empty_value' => '---Seleccione un subgrupo---',
+//                'required' => true,
+//                'attr' => array(
+//                    'class' => 'form-control',
+//                )
+//            ))
             ->add('tarea', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Tarea',
                 'empty_value' => '---Seleccione una tarea---',

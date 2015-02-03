@@ -29,7 +29,7 @@ class AddSubgrupoFieldSubscriber implements EventSubscriberInterface
     private function addSubgrupoForm($form, $subgrupo = null, $grupo = null)
     {
         if($grupo === null) {
-            $form->add('subgrupos','choice',array(
+            $form->add('subgrupo','choice',array(
                 'choices' => array(),
                 'empty_value'   => '---Seleccione un subgrupo---',
                 'attr' => array(
@@ -37,7 +37,7 @@ class AddSubgrupoFieldSubscriber implements EventSubscriberInterface
                 ),
             ));
         } else {
-            $form->add('subgrupos','entity', array(
+            $form->add('subgrupo','entity', array(
                 'class'         => 'BusetaNomencladorBundle:Subgrupo',
                 'empty_value'   => '---Seleccione un subgrupo---',
                 'auto_initialize' => false,
@@ -46,17 +46,17 @@ class AddSubgrupoFieldSubscriber implements EventSubscriberInterface
                     'class' => 'form-control',
                 ),
                 'query_builder' => function (EntityRepository $repository) use ($grupo) {
-                        $qb = $repository->createQueryBuilder('subgrupos')
-                            ->innerJoin('subgrupos.grupo', 'grupos');
+                        $qb = $repository->createQueryBuilder('subgrupo')
+                            ->innerJoin('subgrupo.grupo', 'grupo');
                         if($grupo instanceof Grupo){
-                            $qb->where('grupos = :grupos')
-                                ->setParameter('grupos', $grupo);
+                            $qb->where('grupo = :grupo')
+                                ->setParameter('grupo', $grupo);
                         }elseif(is_numeric($grupo)){
-                            $qb->where('grupos.id = :grupos')
-                                ->setParameter('grupos', $grupo);
+                            $qb->where('grupo.id = :grupo')
+                                ->setParameter('grupo', $grupo);
                         }else{
-                            $qb->where('grupos.valor = :grupos')
-                                ->setParameter('grupos', null);
+                            $qb->where('grupo.valor = :grupo')
+                                ->setParameter('grupo', null);
                         }
 
                         return $qb;
@@ -74,7 +74,7 @@ class AddSubgrupoFieldSubscriber implements EventSubscriberInterface
             $this->addSubgrupoForm($form);
         } else {
             //$province = ($data->city) ? $data->city->getSubgrupo() : null ;
-            $subgrupo = ($data->getSubgrupos()) ? $data->getSubgrupos() : null ;
+            $subgrupo = ($data->getSubgrupo()) ? $data->getSubgrupo() : null ;
             $grupo = ($subgrupo) ? $subgrupo->getGrupo() : null ;
             $this->addSubgrupoForm($form, $subgrupo, $grupo);
         }
@@ -89,8 +89,8 @@ class AddSubgrupoFieldSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $subgrupo = array_key_exists('subgrupos', $data) ? $data['subgrupos'] : null;
-        $grupo = array_key_exists('grupos', $data) ? $data['grupos'] : null;
+        $subgrupo = array_key_exists('subgrupo', $data) ? $data['subgrupo'] : null;
+        $grupo = array_key_exists('grupo', $data) ? $data['grupo'] : null;
         $this->addSubgrupoForm($form, $subgrupo, $grupo);
     }
 }

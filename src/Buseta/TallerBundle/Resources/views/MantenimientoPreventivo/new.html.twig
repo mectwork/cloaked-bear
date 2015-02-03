@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        {{ form_widget(form._token) }}
+        {{ form_rest(form) }}
     </form>
 {% endblock %}
 
@@ -66,15 +66,37 @@
     {{ parent() }}
     <script type="text/javascript">
         $(function(){
-            $('#{{ form.fechaInicio.vars.id }}').datetimepicker({
-                pickTime: false,
-                format: 'DD/MM/YYYY'
+            $('#{{ form.fechaInicio.vars.id }}').pickadate({
+                format: 'dd/mm/yyyy',
+                formatSubmit: 'dd/mm/yyyy'
             });
+
             $('#{{ form.fechaFinal.vars.id }}').pickadate({
                 format: 'dd/mm/yyyy',
                 formatSubmit: 'dd/mm/yyyy'
             });
-        })
+
+            $('#{{ form.grupo.vars.id }}').change(function() {
+                var data = {
+                    grupo_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_subgrupo_grupo') }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+                        var subgrupo_selector = $('#{{ form.subgrupo.vars.id }}');
+
+                        subgrupo_selector.html('<option>---Seleccione un grupo---</option>');
+                        for (var i = 0, len = values.length; i < len; i++) {
+                            subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>')
+                        }
+                    }
+                });
+            });
+
+        });
     </script>
-    <script src="{{ asset('vendors/funciones_datetime_new.js') }}"></script>
 {% endblock %}

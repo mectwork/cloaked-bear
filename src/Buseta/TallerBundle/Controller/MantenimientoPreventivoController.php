@@ -211,4 +211,33 @@ class MantenimientoPreventivoController extends Controller
             ->getForm()
         ;
     }
+
+    /**
+     * Selecciona los Subgrupos asociados al Grupo seleccionado.
+     * @param Request $request
+     * @Route("/select_subgrupo_grupo", name="ajax_select_subgrupo_grupo", methods={"GET"})
+     */
+    public function selectSubgroupBelongGroupAction(Request $request) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+
+        if (!$request->isXmlHttpRequest())
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $grupo_id = $request->query->get('grupo_id');
+        $subgrupos = $em->getRepository('BusetaNomencladorBundle:Subgrupo')->findBy(array(
+                'grupo' => $grupo_id
+            ));
+
+        $json = array();
+        foreach ($subgrupos as $subgrupo) {
+            $json[] = array(
+                'id' => $subgrupo->getId(),
+                'valor' => $subgrupo->getValor()
+            );
+        }
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
 }
