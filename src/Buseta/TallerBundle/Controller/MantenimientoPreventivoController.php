@@ -159,7 +159,7 @@ class MantenimientoPreventivoController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('mantenimientopreventivo_edit', array('id' => $entity)));
+            return $this->redirect($this->generateUrl('mantenimientopreventivo_edit', array('id' => $entity->getId())));
         }
 
         return $this->render('', array(

@@ -36,8 +36,8 @@
                     {% for tarea in entity.tareaadicional %}
                     <tbody>
                     <tr>
-                        <td>{{ tarea.grupos.valor }}</td>
-                        <td>{{ tarea.subgrupos.valor }}</td>
+                        <td>{{ tarea.grupo.valor }}</td>
+                        <td>{{ tarea.subgrupo.valor }}</td>
                         <td>{{ tarea.fechaestimada | date('d/m/Y')  }}</td>
                         <td>{{ tarea.tarea }}</td>
                    </tr>

@@ -135,10 +135,10 @@
                     <form action="{{ path('tarea_adicional_orden_trabajo_create') }}" method="post" {{ form_enctype(tarea_adicional) }}>
                         <div class="row show-grid">
                             <div class="col-md-4">
-                                {{ form_row(tarea_adicional.grupos) }}
+                                {{ form_row(tarea_adicional.grupo) }}
                             </div>
                             <div class="col-md-4">
-                                {{ form_row(tarea_adicional.subgrupos) }}
+                                {{ form_row(tarea_adicional.subgrupo) }}
                             </div>
                             <div class="col-md-4">
                                 {{ form_row(tarea_adicional.garantias_tareas) }}
@@ -353,8 +353,8 @@
             var modal = $('#newLinea');
 
             // captura de valores del modal
-            var tareaadicional_grupo     = modal.find('#buseta_tallerbundle_tarea_adicional_grupos');
-            var tareaadicional_subgrupo  = modal.find('#buseta_tallerbundle_tarea_adicional_subgrupos');
+            var tareaadicional_grupo     = modal.find('#buseta_tallerbundle_tarea_adicional_grupo');
+            var tareaadicional_subgrupo  = modal.find('#buseta_tallerbundle_tarea_adicional_subgrupo');
             var tareaadicional_tarea     = modal.find('#buseta_tallerbundle_tarea_adicional_tarea');
             var tareaadicional_fecha_estimada   = modal.find('#buseta_tallerbundle_tarea_adicional_fecha_estimada');
             var tareaadicional_descripcion     = modal.find('#buseta_tallerbundle_tarea_adicional_descripcion');
@@ -384,7 +384,7 @@
 
                         dinamicSelects();
 
-                        var $subgrupo_selector = $('select[id="buseta_tallerbundle_ordentrabajo_tarea_adicional_' + index + '_subgrupos"]');
+                        var $subgrupo_selector = $('select[id="buseta_tallerbundle_ordentrabajo_tarea_adicional_' + index + '_subgrupo"]');
 
                         $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
 
@@ -392,8 +392,8 @@
                             $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
                         }
 
-                        $('#buseta_tallerbundle_ordentrabajo_tarea_adicional_' + index + '_grupos').val(tareaadicional_grupo.val());
-                        $('#buseta_tallerbundle_ordentrabajo_tarea_adicional_' + index + '_subgrupos').val(tareaadicional_subgrupo.val());
+                        $('#buseta_tallerbundle_ordentrabajo_tarea_adicional_' + index + '_grupo').val(tareaadicional_grupo.val());
+                        $('#buseta_tallerbundle_ordentrabajo_tarea_adicional_' + index + '_subgrupo').val(tareaadicional_subgrupo.val());
                         $('#buseta_tallerbundle_ordentrabajo_tarea_adicional_' + index + '_tarea').val(tareaadicional_tarea.val());
                         $('#buseta_tallerbundle_ordentrabajo_tarea_adicional_' + index + '_fecha_estimada').val(tareaadicional_fecha_estimada.val());
                         $('#buseta_tallerbundle_ordentrabajo_tarea_adicional_' + index + '_descripcion').val(tareaadicional_descripcion.val());
@@ -450,7 +450,7 @@
     dinamicSelects();
 
     function dinamicSelects(){
-        $('select[id^="buseta_tallerbundle_ordentrabajo_tarea_adicional_"][id$="_grupos"]').change(function(){
+        $('select[id^="buseta_tallerbundle_ordentrabajo_tarea_adicional_"][id$="_grupo"]').change(function(){
             var $selectGroup = $(this);
             var data = {
                 grupo_id: $(this).val()
@@ -463,7 +463,7 @@
                 success: function(data) {
                     var values = $.parseJSON(data);
 
-                    var $subgrupo_selector = $selectGroup.parent().parent().find('select[id^="buseta_tallerbundle_ordentrabajo_tarea_adicional_"][id$="_subgrupos"]');
+                    var $subgrupo_selector = $selectGroup.parent().parent().find('select[id^="buseta_tallerbundle_ordentrabajo_tarea_adicional_"][id$="_subgrupo"]');
 
                     $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
 
@@ -478,7 +478,7 @@
     //$('buseta_tallerbundle_tarea_adicional_hora_inicio').timepicker();
 
     //Actualiza los subgrupos a partir de los grupos seleccionados con peticiones AJAX
-    $('#{{ tarea_adicional.grupos.vars.id }}').change(function(){
+    $('#{{ tarea_adicional.grupo.vars.id }}').change(function(){
         var data = {
             grupo_id: $(this).val()
         };
@@ -489,7 +489,7 @@
             data: data,
             success: function(data) {
                 var values = $.parseJSON(data);
-                var $subgrupo_selector = $('#{{ tarea_adicional.subgrupos.vars.id }}');
+                var $subgrupo_selector = $('#{{ tarea_adicional.subgrupo.vars.id }}');
 
                 $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
 

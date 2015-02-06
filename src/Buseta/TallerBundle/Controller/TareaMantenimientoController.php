@@ -26,9 +26,10 @@ class TareaMantenimientoController extends Controller
         if (!$request->isXmlHttpRequest())
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
+        $grupo_id = $request->query->get('grupo_id');
         $subgrupos = $em->getRepository('BusetaNomencladorBundle:Subgrupo')->findBy(array(
-            'grupo' => $request->query->get('grupo_id')
+            'grupo' => $grupo_id
         ));
 
         $json = array();

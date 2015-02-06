@@ -9,8 +9,9 @@
 {% endblock %}
 
 {% block area_trabajo %}
-    {{ form_errors(edit_form) }}
-    <form action="{{ edit_form.vars.action }}" method="{{ edit_form.vars.method }}" enctype="multipart/form-data">
+    <form action="{{ edit_form.vars.action }}" method="POST" enctype="multipart/form-data">
+        {{ form_errors(edit_form) }}
+        <input type="hidden" name="_method" value="PUT"/>
         <div class="row show-grid">
             <div class="col-md-4">
                 <label>Tarea:</label>
@@ -60,7 +61,6 @@
                 </div>
             </div>
         </div>
-
         {{ form_rest(edit_form) }}
     </form>
 {% endblock %}
@@ -72,6 +72,39 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript">
+        $(function(){
+            $('#{{ edit_form.fechaInicio.vars.id }}').pickadate({
+                format: 'dd/mm/yyyy',
+                formatSubmit: 'dd/mm/yyyy'
+            });
 
-    <script src="{{ asset('vendors/funciones_datetime_new.js') }}"></script>
+            $('#{{ edit_form.fechaFinal.vars.id }}').pickadate({
+                format: 'dd/mm/yyyy',
+                formatSubmit: 'dd/mm/yyyy'
+            });
+
+            $('#{{ edit_form.grupo.vars.id }}').change(function() {
+                var data = {
+                    grupo_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_subgrupo_grupo') }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+                        var subgrupo_selector = $('#{{ edit_form.subgrupo.vars.id }}');
+
+                        subgrupo_selector.html('<option>---Seleccione un grupo---</option>');
+                        for (var i = 0, len = values.length; i < len; i++) {
+                            subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>')
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
 {% endblock %}
