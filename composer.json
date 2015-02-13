@@ -9,7 +9,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.3.*",
+        "symfony/symfony": "2.4.*",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "doctrine/doctrine-bundle": "1.2.*",
         "twig/extensions": "1.0.*",
@@ -28,7 +28,8 @@
         "sonata-project/admin-bundle": "~2.2",
         "sonata-project/block-bundle": "~2.2",
         "sonata-project/core-bundle": "~2.2",
-        "sonata-project/doctrine-orm-admin-bundle": "~2.2"
+        "sonata-project/doctrine-orm-admin-bundle": "~2.2",
+        "javiereguiluz/easyadmin-bundle": "@dev"
     },
     "scripts": {
         "post-install-cmd": [
@@ -50,7 +51,7 @@
         "bin-dir": "bin",
         "component-dir": "web/components"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",

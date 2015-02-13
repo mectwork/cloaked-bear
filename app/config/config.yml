@@ -130,3 +130,31 @@ sonata_admin:
 #          nomencladores:
 #            label:  prueba.admin.group
 #            label_catalogue: MTTOMTTOBundle
+
+easy_admin:
+    site_name: 'Nomencladores <a href="../" style="font">Volver</a>'
+    assets:
+        css:
+            - '/bundles/busetanomenclador/css/admin.css'
+    entities:
+        - Buseta\NomencladorBundle\Entity\AceiteCajaCambios
+        - Buseta\NomencladorBundle\Entity\AceiteHidraulico
+        - Buseta\NomencladorBundle\Entity\AceiteMotor
+        - Buseta\NomencladorBundle\Entity\AceiteTransmision
+        - Buseta\NomencladorBundle\Entity\CajaChica
+        - Buseta\NomencladorBundle\Entity\Color
+        - Buseta\NomencladorBundle\Entity\Combustible
+        - Buseta\NomencladorBundle\Entity\Condicion
+        - Buseta\NomencladorBundle\Entity\Estilo
+        - Buseta\NomencladorBundle\Entity\FormaPago
+        - Buseta\NomencladorBundle\Entity\GarantiaTarea
+        - Buseta\NomencladorBundle\Entity\Grupo
+        - Buseta\NomencladorBundle\Entity\Subgrupo
+        - Buseta\NomencladorBundle\Entity\Tarea
+        - Buseta\NomencladorBundle\Entity\Marca
+        - Buseta\NomencladorBundle\Entity\MarcaMotor
+        - Buseta\NomencladorBundle\Entity\Modelo
+        - Buseta\NomencladorBundle\Entity\Moneda
+        - Buseta\NomencladorBundle\Entity\TipoCompra
+        - Buseta\NomencladorBundle\Entity\TipoContacto
+        - Buseta\NomencladorBundle\Entity\UOM
