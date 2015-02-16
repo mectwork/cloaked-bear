@@ -363,6 +363,14 @@ class Autobus
      */
     private $wifi;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="kilometraje", type="integer", options={"defaultValue": "0"})
+     * @Assert\Type("integer")
+     */
+    private $kilometraje;
+
     
 
     /**
@@ -1598,5 +1606,28 @@ class Autobus
     public function getCompras()
     {
         return $this->compras;
+    }
+
+    /**
+     * Set kilometraje
+     *
+     * @param integer $kilometraje
+     * @return Autobus
+     */
+    public function setKilometraje($kilometraje)
+    {
+        $this->kilometraje = $kilometraje;
+    
+        return $this;
+    }
+
+    /**
+     * Get kilometraje
+     *
+     * @return integer 
+     */
+    public function getKilometraje()
+    {
+        return $this->kilometraje;
     }
 }

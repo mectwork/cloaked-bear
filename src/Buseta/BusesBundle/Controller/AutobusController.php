@@ -183,7 +183,7 @@ class AutobusController extends Controller
      */
     public function showAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
         $entity = $em->getRepository('BusetaBusesBundle:Autobus')->find($id);
 
@@ -191,11 +191,15 @@ class AutobusController extends Controller
             throw $this->createNotFoundException('Unable to find Autobus entity.');
         }
 
+        $mpreventivos = $em->getRepository('BusetaTallerBundle:MantenimientoPreventivo')->findByAutobus($id);
+
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('BusetaBusesBundle:Autobus:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        ));
+            'entity'       => $entity,
+            'mpreventivos' => $mpreventivos,
+            'delete_form'  => $deleteForm->createView(),
+        ));
     }
 
     /**

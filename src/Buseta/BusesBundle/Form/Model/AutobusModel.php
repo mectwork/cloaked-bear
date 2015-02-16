@@ -279,6 +279,11 @@ class AutobusModel
     private $wifi;
 
     /**
+     * @var integer
+     */
+    private $kilometraje;
+
+    /**
      * @param \Buseta\NomencladorBundle\Entity\AceiteCajaCambios $aceitecajacambios
      */
     public function setAceitecajacambios($aceitecajacambios)
@@ -1119,4 +1124,19 @@ class AutobusModel
         return $this->archivo_adjunto;
     }
 
+    /**
+     * @param int $kilometraje
+     */
+    public function setKilometraje($kilometraje)
+    {
+        $this->kilometraje = $kilometraje;
+    }
+
+    /**
+     * @return int
+     */
+    public function getKilometraje()
+    {
+        return $this->kilometraje;
+    }
 }

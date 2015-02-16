@@ -12,22 +12,6 @@
     <form action="{{ edit_form.vars.action }}" method="POST" enctype="multipart/form-data">
         {{ form_errors(edit_form) }}
         <input type="hidden" name="_method" value="PUT"/>
-        <div class="row show-grid">
-            <div class="col-md-4">
-                <label>Tarea:</label>
-                {{ form_widget(edit_form.tarea) }}
-            </div>
-
-            <div class="col-md-4">
-                <label>Fecha Inicio:</label>
-                {{ form_widget(edit_form.fechaInicio) }}
-            </div>
-
-            <div class="col-md-4">
-                <label>Fecha Inicio:</label>
-                {{ form_widget(edit_form.fechaFinal) }}
-            </div>
-        </div>
 
         <div class="row show-grid">
             <div class="col-md-4">
@@ -43,6 +27,23 @@
             <div class="col-md-4">
                 <label>Subgrupo:</label>
                 {{ form_widget(edit_form.subgrupo) }}
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-md-4">
+                <label>Tarea:</label>
+                {{ form_widget(edit_form.tarea) }}
+            </div>
+
+            <div class="col-md-4">
+                <label>Fecha Inicio:</label>
+                {{ form_widget(edit_form.fechaInicio) }}
+            </div>
+
+            <div class="col-md-4">
+                <label>Fecha Inicio:</label>
+                {{ form_widget(edit_form.fechaFinal) }}
             </div>
         </div>
 
@@ -74,14 +75,14 @@
     {{ parent() }}
     <script type="text/javascript">
         $(function(){
-            $('#{{ edit_form.fechaInicio.vars.id }}').pickadate({
-                format: 'dd/mm/yyyy',
-                formatSubmit: 'dd/mm/yyyy'
+            $('#{{ edit_form.fechaInicio.vars.id }}').datetimepicker({
+                format: 'DD/MM/YYYY',
+                pickTime: false
             });
 
-            $('#{{ edit_form.fechaFinal.vars.id }}').pickadate({
-                format: 'dd/mm/yyyy',
-                formatSubmit: 'dd/mm/yyyy'
+            $('#{{ edit_form.fechaFinal.vars.id }}').datetimepicker({
+                format: 'DD/MM/YYYY',
+                pickTime: false
             });
 
             $('#{{ edit_form.grupo.vars.id }}').change(function() {

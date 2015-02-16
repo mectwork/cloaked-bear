@@ -4,6 +4,8 @@ namespace Buseta\BusesBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AutobusType extends AbstractType
@@ -14,6 +16,31 @@ class AutobusType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $autobus = $event->getData();
+            $form = $event->getForm();
+
+            // este es un autobus nuevo
+            if (!$autobus || null === $autobus->getId()) {
+                $form->add('kilometraje', 'integer', array(
+                    'required' => false,
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'style' => 'width: 250px',
+                    )
+                ));
+            } else {
+                $form->add('kilometraje', 'integer', array(
+                    'required' => false,
+                    'read_only' => true,
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'style' => 'width: 250px',
+                    )
+                ));
+            }
+        });
+
         $builder
             ->add('imagen_frontal', 'file', array(
                     'required' => false,
@@ -221,7 +248,7 @@ class AutobusType extends AbstractType
                     'widget' => 'single_text',
                     'format'  => 'dd/MM/yyyy',
                     'attr'   => array(
-                        'class' => 'form-control',
+                        'class' => 'form-control date',
                         'style' => 'width: 250px',
                     )
                 ))
@@ -269,7 +296,7 @@ class AutobusType extends AbstractType
                     'widget' => 'single_text',
                     'format'  => 'dd/MM/yyyy',
                     'attr'   => array(
-                        'class' => 'form-control',
+                        'class' => 'form-control date',
                         'style' => 'width: 250px',
                     )
                 ))

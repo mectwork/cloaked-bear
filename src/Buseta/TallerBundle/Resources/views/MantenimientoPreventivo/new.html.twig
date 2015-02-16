@@ -9,21 +9,8 @@
 {% endblock %}
 
 {% block area_trabajo %}
-    <form action="{{ path('mantenimientopreventivo_create') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ path('mantenimientopreventivo_create') }}" method="POST" enctype="multipart/form-data">
         {{ form_errors(form) }}
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.tarea) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.fechaInicio) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.fechaFinal) }}
-            </div>
-        </div>
 
         <div class="row show-grid">
             <div class="col-md-4">
@@ -36,6 +23,20 @@
 
             <div class="col-md-4">
                 {{ form_row(form.subgrupo) }}
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-md-4">
+                {{ form_row(form.tarea) }}
+            </div>
+
+            <div class="col-md-4">
+                {{ form_row(form.fechaInicio) }}
+            </div>
+
+            <div class="col-md-4">
+                {{ form_row(form.fechaFinal) }}
             </div>
         </div>
 
@@ -65,14 +66,14 @@
     {{ parent() }}
     <script type="text/javascript">
         $(function(){
-            $('#{{ form.fechaInicio.vars.id }}').pickadate({
-                format: 'dd/mm/yyyy',
-                formatSubmit: 'dd/mm/yyyy'
+            $('#{{ form.fechaInicio.vars.id }}').datetimepicker({
+                format: 'DD/MM/YYYY',
+                pickTime: false
             });
 
-            $('#{{ form.fechaFinal.vars.id }}').pickadate({
-                format: 'dd/mm/yyyy',
-                formatSubmit: 'dd/mm/yyyy'
+            $('#{{ form.fechaFinal.vars.id }}').datetimepicker({
+                format: 'DD/MM/YYYY',
+                pickTime: false
             });
 
             $('#{{ form.grupo.vars.id }}').change(function() {

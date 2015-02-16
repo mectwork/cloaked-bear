@@ -32,9 +32,9 @@
         {% for entity in entities %}
             <tr>
                 <td>{{ entity.tarea }}</td>
+                <td>{{ entity.autobus }}</td>
                 <td>{{ entity.grupo }}</td>
                 <td>{{ entity.subgrupo }}</td>
-                <td>{{ entity.autobus }}</td>
                 <td>{{ entity.kilometraje }}</td>
                 <td>{%  if entity.fechaInicio %}{{ entity.fechaInicio | date('d/m/Y') }}{% endif %}</td>
                 <td>{%  if entity.fechaFinal %}{{ entity.fechaFinal | date('d/m/Y') }}{% endif %}</td>
