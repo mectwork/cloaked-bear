@@ -113,26 +113,8 @@ knp_paginator:
 #            filters:
 #                thumbnail: { size: [32, 32], mode: inset } # Transforms 50x40 to 32x26, no cropping
 
-sonata_block:
-    default_contexts: [cms]
-    blocks:
-      # Enable the SonataAdminBundle block
-      sonata.admin.block.admin_list:
-        contexts:   [admin]
-
-sonata_admin:
-    title:  Administración
-    title_logo: images/logo.jpg
-
-#    dashboard:
-#      blocks:
-#        groups:
-#          nomencladores:
-#            label:  prueba.admin.group
-#            label_catalogue: MTTOMTTOBundle
-
 easy_admin:
-    site_name: 'Nomencladores <a href="../" style="font">Volver</a>'
+    site_name: 'Nomencladores'
     assets:
         css:
             - '/bundles/busetanomenclador/css/admin.css'

@@ -1,3 +1,0 @@
-my_dashboard_welcome:
-    pattern:  /
-    defaults: { _controller: "BusetaNomencladorBundle:Default:index" }

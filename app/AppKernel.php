@@ -33,11 +33,6 @@ class AppKernel extends Kernel
             new Buseta\TallerBundle\BusetaTallerBundle(),
             new Buseta\BodegaBundle\BusetaBodegaBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-
-            new Sonata\AdminBundle\SonataAdminBundle(),
-            new Sonata\CoreBundle\SonataCoreBundle(),
-            new Sonata\BlockBundle\SonataBlockBundle(),
-            new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
             new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
 
 //            new Liip\ImagineBundle\LiipImagineBundle(),
