@@ -25,10 +25,6 @@
         "doctrine/doctrine-fixtures-bundle": "2.2.*",
         "knplabs/knp-paginator-bundle": "2.4.*@dev",
         "friendsofsymfony/jsrouting-bundle": "1.5.*",
-        "sonata-project/admin-bundle": "~2.2",
-        "sonata-project/block-bundle": "~2.2",
-        "sonata-project/core-bundle": "~2.2",
-        "sonata-project/doctrine-orm-admin-bundle": "~2.2",
         "javiereguiluz/easyadmin-bundle": "@dev"
     },
     "scripts": {
