@@ -104,7 +104,6 @@ class FuncionesExtras
         }
     }
 
-
     public function generarInformeStock($bitacoras, $em)
     {
         $almacenes = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
@@ -160,6 +159,39 @@ class FuncionesExtras
         }
 
         return $almacenesArray;
+    }
+
+    public function comprobarCantProductoAlmacen($producto, $almacen, $cantidad, $em)
+    {
+        $cantidadPedido = 0;
+        $existe = false;
+        $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->findAll();
+
+        foreach($bitacoras as $bitacora)
+        {
+            //Si se encuentra en la bitácora el almacen y producto seleccionado
+            if($bitacora->getAlmacen() == $almacen && $bitacora->getProducto() == $producto)
+            {
+                $existe = true;
+                //Comprobar tipo de movimiento para realizar operación de sustracción o adición
+                //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
+                if($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+')
+                {
+                    $cantidadPedido += $bitacora->getCantMovida();
+                }
+                if($bitacora->getTipoMovimiento() == 'M-')
+                {
+                    $cantidadPedido -= $bitacora->getCantMovida();
+                }
+            }
+        }
+
+        if($existe)
+        {
+            return $cantidadPedido - $cantidad;
+        }
+
+        return 'No existe';
     }
 }
 ?>

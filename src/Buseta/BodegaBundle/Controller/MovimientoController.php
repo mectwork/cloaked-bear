@@ -118,18 +118,21 @@ class MovimientoController extends Controller
 
             $movimientos = $datos['movimientos_productos'];
 
+            $cantidadDisponible = 0;
+
             foreach($movimientos as $movimiento) {
                 $idProducto = $movimiento['producto'];
 
-                //Actualizar InformeStock
-                $producto   = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
-                $almacen    = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
+                $producto           = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
+                $almacen            = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
+                $cantidadProducto   = $movimiento['cantidad'];
 
-                //Comprobar que no exista ya un almacén con un producto determinado
-                $informeStock = $em->getRepository('BusetaBodegaBundle:InformeStock')->comprobarInformeStock($almacen,$producto);
+                $fe = new FuncionesExtras();
+                $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $almacen, $cantidadProducto, $em);
 
-                //Si NO existe ese producto en ese almacen
-                if(!$informeStock){
+                //Comprobar la existencia del producto en el almacén seleccionado
+                if($cantidadDisponible == 'No existe')
+                {
                     //Volver al menu de de crear nuevo Movimiento
                     $movimientosProductos = $this->createForm(new MovimientosProductosType());
 
@@ -144,99 +147,66 @@ class MovimientoController extends Controller
                         'movimientosProductos' => $movimientosProductos->createView(),
                         'form'   => $form->createView(),
                     ));
-
                 }
-                else //Si ya existe ese producto en ese almacen
+                //Si no existe la cantidad solicitada en el almacen del producto seleccionado
+                elseif($cantidadDisponible < 0)
                 {
-                    $cantidadDisponible = $informeStock->getCantidadProductos() - $movimiento['cantidad'];
+                    //Volver al menu de de crear nuevo Movimiento
+                    $movimientosProductos = $this->createForm(new MovimientosProductosType());
 
-                    //Si existen la cantidad requerida de productos en el almacen
-                    if($cantidadDisponible >= 0){
-
-                        //Extraigo la cantidad de productos del almacen de origen
-                        $informeStock->setCantidadProductos($cantidadDisponible);
-                        $em->persist($informeStock);
-
-                        //Adiciono la cantidad de productos en el almacen de destino
-                        $almacen    = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
-
-                        //Comprobar que no exista ya un almacén con un producto determinado
-                        $informeStock = $em->getRepository('BusetaBodegaBundle:InformeStock')->comprobarInformeStock($almacen,$producto);
-
-                        //Si no existe ese producto en ese almacen
-                        if(!$informeStock){
-                            $informeStock = new InformeStock();
-                            $informeStock->setProducto($producto);
-                            $informeStock->setAlmacen($almacen);
-                            $informeStock->setCantidadProductos($movimiento['cantidad']);
-                            $em->persist($informeStock);
-                            $em->flush();
-                        }
-                        else //Si ya existe ese producto en ese almacen
-                        {
-                            $informeStock->setCantidadProductos($informeStock->getCantidadProductos() + $movimiento['cantidad']);
-                            $em->persist($informeStock);
-                        }
-
-                        //Actualizar Bitácora - AlmacenOrigen
-                        $bitacora = new BitacoraAlmacen();
-                        $bitacora->setProducto($producto);
-                        $bitacora->setFechaMovimiento($fechaMovimiento);
-                        $origen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
-                        $bitacora->setAlmacen($origen);
-                        $bitacora->setCantMovida($movimiento['cantidad']);
-                        $bitacora->setTipoMovimiento('M-');
-                        $em->persist($bitacora);
-                        $em->flush();
-
-                        //Actualizar Bitácora - AlmacenDestino
-                        $bitacora = new BitacoraAlmacen();
-                        $bitacora->setProducto($producto);
-                        $bitacora->setFechaMovimiento($fechaMovimiento);
-                        $destino = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
-                        $bitacora->setAlmacen($destino);
-                        $bitacora->setCantMovida($movimiento['cantidad']);
-                        $bitacora->setTipoMovimiento('M+');
-                        $em->persist($bitacora);
-                        $em->flush();
-
-                    }
-                    else {
-
-                        //Volver al menu de de crear nuevo Movimiento
-                        $movimientosProductos = $this->createForm(new MovimientosProductosType());
-
-                        $form   = $this->createCreateForm($entity);
-                        $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
-                        $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
+                    $form   = $this->createCreateForm($entity);
+                    $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
+                    $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
 
 
-                        $form->addError(new FormError("No existe en el almacén '".$bodega->getNombre()."' la cantidad de productos solicitados para el producto: ".$producto->getNombre()));
+                    $form->addError(new FormError("No existe en el almacén '".$bodega->getNombre()."' la cantidad de productos solicitados para el producto: ".$producto->getNombre()));
 
-                        return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
-                            'entity' => $entity,
-                            'movimientosProductos' => $movimientosProductos->createView(),
-                            'form'   => $form->createView(),
-                        ));
-                    }
-
+                    return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
+                        'entity' => $entity,
+                        'movimientosProductos' => $movimientosProductos->createView(),
+                        'form'   => $form->createView(),
+                    ));
                 }
+                //Si sí existe la cantidad del producto en el almacén seleccionado
+                else
+                {
+                    //Actualizar Bitácora - AlmacenOrigen
+                    $bitacora = new BitacoraAlmacen();
+                    $bitacora->setProducto($producto);
+                    $bitacora->setFechaMovimiento($fechaMovimiento);
+                    $origen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
+                    $bitacora->setAlmacen($origen);
+                    $bitacora->setCantMovida($movimiento['cantidad']);
+                    $bitacora->setTipoMovimiento('M-');
+                    $em->persist($bitacora);
+                    $em->flush();
 
+                    //Actualizar Bitácora - AlmacenDestino
+                    $bitacora = new BitacoraAlmacen();
+                    $bitacora->setProducto($producto);
+                    $bitacora->setFechaMovimiento($fechaMovimiento);
+                    $destino = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
+                    $bitacora->setAlmacen($destino);
+                    $bitacora->setCantMovida($movimiento['cantidad']);
+                    $bitacora->setTipoMovimiento('M+');
+                    $em->persist($bitacora);
+                    $em->flush();
 
-                $almacenOrigen    = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
-                $almacenDestino   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
+                    $almacenOrigen    = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
+                    $almacenDestino   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
 
-                //Persistimos los movimientos
-                $entity->setCreatedBy($this->getUser()->getUsername());
-                $entity->setMovidoBy($this->getUser()->getUsername());
-                $entity->setProducto($producto);
-                $entity->setAlmacenOrigen($almacenOrigen);
-                $entity->setAlmacenDestino($almacenDestino);
-                $entity->setFechaMovimiento($fechaMovimiento);
-                $entity->setCantidadMovida($movimiento['cantidad']);
-                $em->persist($entity);
-                $em->flush();
-            }
+                    //Persistimos los movimientos
+                    $entity->setCreatedBy($this->getUser()->getUsername());
+                    $entity->setMovidoBy($this->getUser()->getUsername());
+                    $entity->setProducto($producto);
+                    $entity->setAlmacenOrigen($almacenOrigen);
+                    $entity->setAlmacenDestino($almacenDestino);
+                    $entity->setFechaMovimiento($fechaMovimiento);
+                    $entity->setCantidadMovida($movimiento['cantidad']);
+                    $em->persist($entity);
+                    $em->flush();
+                }
+             }
 
 
             return $this->redirect($this->generateUrl('movimiento_show', array('id' => $entity->getId())));
