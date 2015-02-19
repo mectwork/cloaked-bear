@@ -206,7 +206,7 @@ class MovimientoController extends Controller
                     $em->persist($entity);
                     $em->flush();
                 }
-             }
+            }
 
 
             return $this->redirect($this->generateUrl('movimiento_show', array('id' => $entity->getId())));
@@ -275,7 +275,8 @@ class MovimientoController extends Controller
 
         return $this->render('BusetaBodegaBundle:Movimiento:show.html.twig', array(
             'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        ));
+            'delete_form' => $deleteForm->createView(),
+        ));
     }
 
     /**
