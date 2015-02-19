@@ -2,6 +2,8 @@
 
 namespace Buseta\TallerBundle\Controller;
 
+use Buseta\TallerBundle\Form\Filter\MantenimientoPreventivoFilter;
+use Buseta\TallerBundle\Form\Model\MantenimientoPreventivoFilterModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -21,11 +23,23 @@ class MantenimientoPreventivoController extends Controller
      *
      * @Route("/", name="mantenimientopreventivo", methods={"GET"})
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
-        $entities = $em->getRepository('BusetaTallerBundle:MantenimientoPreventivo')->findAll();
+        $filter_param = new MantenimientoPreventivoFilterModel();
+
+        $form = $this->createForm(new MantenimientoPreventivoFilter(), $filter_param, array(
+            'action' => $this->generateUrl('mantenimientopreventivo'),
+        ));
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entities = $em->getRepository('BusetaTallerBundle:MantenimientoPreventivo')->filter($filter_param);
+        } else {
+            $entities = $em->getRepository('BusetaTallerBundle:MantenimientoPreventivo')->findAll();
+        }
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
@@ -37,6 +51,7 @@ class MantenimientoPreventivoController extends Controller
 
         return $this->render('BusetaTallerBundle:MantenimientoPreventivo:index.html.twig', array(
             'entities' => $entities,
+            'filter_form' => $form->createView(),
         ));
     }
     /**

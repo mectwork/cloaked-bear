@@ -135,6 +135,8 @@ class HandleAutobus
         $entity->setBateria1($entityModel->getBateria1());
         $entity->setBateria2($entityModel->getBateria2());
 
+        $entity->setKilometraje($entityModel->getKilometraje());
+
         $em->persist($entity);
         $em->flush();
 
@@ -247,6 +249,8 @@ class HandleAutobus
         $entity->setBateria1($entityModel->getBateria1());
         $entity->setBateria2($entityModel->getBateria2());
 
+        $entity->setKilometraje($entityModel->getKilometraje());
+
         return $entity;
     }
 
@@ -318,9 +322,8 @@ class HandleAutobus
         $model->setFiltroDiesel($entity->getFiltroDiesel());
         $model->setFiltroAceite($entity->getFiltroAceite());
 
+        $model->setKilometraje($entity->getKilometraje());
         return $model;
     }
 
 }
-
-?>

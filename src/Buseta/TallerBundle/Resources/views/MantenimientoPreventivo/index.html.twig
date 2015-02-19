@@ -10,18 +10,44 @@
 
 {% block area_trabajo %}
 
+    {% set display = '' %}
+    {% set headericon = 'glyphicon-chevron-down' %}
+    {% if (filter_form.vars.value.grupo is null or filter_form.vars.value.grupo is empty)
+    and (filter_form.vars.value.subgrupo is null or filter_form.vars.value.subgrupo is empty)
+    and (filter_form.vars.value.tarea is null or filter_form.vars.value.tarea is empty)
+    and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)%}
+        {% set display = 'display: none;' %}
+        {% set headericon = 'glyphicon-chevron-right' %}
+    {% endif %}
+
+    <h4><a id="filter_form_header" style="cursor: pointer; "><span class="glyphicon {{ headericon }}"></span> Búsqueda</a></h4>
+    <div id="filter_form_component" style="{{ display }} margin-bottom: 10px;">
+        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+            <div class="row">
+                <div class="col-lg-3">{{ form_row(filter_form.grupo) }}</div>
+                <div class="col-lg-3">{{ form_row(filter_form.subgrupo) }}</div>
+                <div class="col-lg-3">{{ form_row(filter_form.tarea) }}</div>
+                <div class="col-lg-3">{{ form_row(filter_form.autobus) }}</div>
+            </div>
+            {{ form_widget(filter_form._token) }}
+            <div class="filter-actions" style="margin-top: 8px;">
+                <a id="filter_form_submit_btn" class="btn btn-success btn-small"><span class="glyphicon glyphicon-filter"></span> Filtrar</a>
+                <a id="filter_form_reset_btn" class="btn btn-danger btn-small"><span class="glyphicon glyphicon-repeat"></span> Reiniciar</a>
+            </div>
+        </form>
+    </div>
+
     <div class="btn-group" style="padding-bottom: 8px;">
         <a class="btn btn-primary" href="{{ path('mantenimientopreventivo_new') }}"><i class="fa fa-plus-circle"></i> Adicionar mantenimiento preventivo</a>
     </div>
 
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
-
         <thead>
         <tr>
-            <th>Tarea</th>
+            <th>Autobus</th>
             <th>Grupo</th>
             <th>Subgrupo</th>
-            <th>Autobus</th>
+            <th>Tarea</th>
             <th>Kilometraje</th>
             <th>Fecha Inicio</th>
             <th>Fecha Final</th>
@@ -31,10 +57,10 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.tarea }}</td>
                 <td>{{ entity.autobus }}</td>
                 <td>{{ entity.grupo }}</td>
                 <td>{{ entity.subgrupo }}</td>
+                <td>{{ entity.tarea }}</td>
                 <td>{{ entity.kilometraje }}</td>
                 <td>{%  if entity.fechaInicio %}{{ entity.fechaInicio | date('d/m/Y') }}{% endif %}</td>
                 <td>{%  if entity.fechaFinal %}{{ entity.fechaFinal | date('d/m/Y') }}{% endif %}</td>
@@ -66,3 +92,42 @@
     </div>
 
 {% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('a#filter_form_header').click(function(){
+                if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-right')
+                            .addClass('glyphicon-chevron-down');
+                } else {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-down')
+                            .addClass('glyphicon-chevron-right');
+                }
+
+                $('div#filter_form_component').slideToggle(500);
+            });
+
+            $('form#filter_form input[id^=\'mantenimientopreventivo\']').keyup(function(e) {
+                if (e.keyCode == 13) {
+                    $('form#filter_form').submit();
+                }
+            });
+
+            $('a#filter_form_submit_btn').click(function(){
+                $('form#filter_form').submit();
+            });
+
+            $('a#filter_form_reset_btn').click(function(){
+                $('form#filter_form').find('input').each(function(){
+                    $(this).val(null);
+                });
+                $('form#filter_form').find('select').each(function(){
+                    $(this).val(null);
+                })
+            });
+        });
+    </script>
+{% endblock javascripts %}

@@ -368,10 +368,9 @@
                             <table class="records_list table table-striped table-bordered table-condensed table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Tarea</th>
-                                        <th>Autobus</th>
                                         <th>Grupo</th>
                                         <th>Subgrupo</th>
+                                        <th>Tarea</th>
                                         <th>Kilometraje</th>
                                         <th>Fecha Inicio</th>
                                         <th>Fecha Final</th>
@@ -381,19 +380,18 @@
                                 <tbody>
                                     {% for mpreventivo in mpreventivos %}
                                         <tr>
-                                            <td>{{ mpreventivo.tarea }}</td>
-                                            <td>{{ mpreventivo.autobus }}</td>
                                             <td>{{ mpreventivo.grupo }}</td>
                                             <td>{{ mpreventivo.subgrupo }}</td>
+                                            <td>{{ mpreventivo.tarea }}</td>
                                             <td>{{ mpreventivo.kilometraje }}</td>
                                             <td>{%  if mpreventivo.fechaInicio %}{{ mpreventivo.fechaInicio | date('d/m/Y') }}{% endif %}</td>
                                             <td>{%  if mpreventivo.fechaFinal %}{{ mpreventivo.fechaFinal | date('d/m/Y') }}{% endif %}</td>
                                             <td style="text-align: center">
                                                 {% set today = "now" | date('d/m/Y') %}
                                                 {% if (today >= mpreventivo.fechaInicio | date('d/m/Y')) and (today <= mpreventivo.fechaFinal | date('d/m/Y')) %}
-                                                    <label class="label label-danger">activo</label>
+                                                    <label class="label label-success">activo</label>
                                                 {% else %}
-                                                    <label class="label label-success">inactivo</label>
+                                                    <label class="label label-danger">inactivo</label>
                                                 {% endif %}
                                             </td>
                                         </tr>

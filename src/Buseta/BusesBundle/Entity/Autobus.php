@@ -366,7 +366,7 @@ class Autobus
     /**
      * @var integer
      *
-     * @ORM\Column(name="kilometraje", type="integer", options={"defaultValue": "0"})
+     * @ORM\Column(name="kilometraje", type="integer", columnDefinition="INT( 11 ) NOT NULL DEFAULT '0'")
      * @Assert\Type("integer")
      */
     private $kilometraje;

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * MantenimientoPreventivo
  *
  * @ORM\Table(name="d_mantenimiento_preventivo")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\MantenimientoPreventivoRepository")
  */
 class MantenimientoPreventivo
 {

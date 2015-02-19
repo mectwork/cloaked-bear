@@ -446,9 +446,11 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-        $('.date').datetimepicker({
-            format: 'DD/MM/YYYY',
-            pickTime: false
+        $(function() {
+            $('.date').datetimepicker({
+                format: 'DD/MM/YYYY',
+                pickTime: false
+            });
         });
     </script>
     <script src="{{ asset('vendors/selectDinamico.js') }}"></script>
