@@ -1,6 +1,11 @@
-
+*********************************************************************************************************************
+Hasta X Febrero 2015
+*********************************************************
 
 -Creada entidad PrecioProducto y relacionada con Producto, se actualizaron todas las dependencias de ambas entidades
+-Creada entidad CategoriaProducto y relacionada con Producto
+
+
 
 *********************************************************************************************************************
 Hasta 13 Febrero 2015

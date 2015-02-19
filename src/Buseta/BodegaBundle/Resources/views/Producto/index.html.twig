@@ -23,8 +23,11 @@
                     <div class="col-md-4">
                         {{ form_row(producto.codigo) }}
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-4">
                         {{ form_row(producto.nombre) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(producto.categoriaProducto) }}
                     </div>
                 </div>
                 <div class="row show-grid" style="padding-top: 0px">
@@ -32,10 +35,10 @@
                         {{ form_row(producto.uom) }}
                     </div>
                     <div class="col-md-4">
-                        {{ form_row(producto.condicion) }}
+                        {{ form_row(producto.bodega) }}
                     </div>
                     <div class="col-md-4">
-                        {{ form_row(producto.bodega) }}
+                        {{ form_row(producto.condicion) }}
                     </div>
                 </div>
 

@@ -196,6 +196,16 @@ class ProductoRepository extends EntityRepository
                 $q.= " AND p.bodega = -1 ";
         }
 
+        if (isset($filter['categoriaProducto']) && !empty($filter['categoriaProducto'])){
+
+            $results = $this->_em->getRepository('BusetaBodegaBundle:CategoriaProducto')->searchByValor($filter['categoriaProducto']);
+
+            if(count($results) !=0)
+                $q.= " AND p.categoriaProducto = " . $results[0]->getId() . " ";
+            else
+                $q.= " AND p.categoriaProducto = -1 ";
+        }
+
         if (isset($filter['codigo']) && !empty($filter['codigo']))
             $q.= " AND UPPER(p.codigo) LIKE '%" . strtoupper($filter['codigo']) . "%'";
 

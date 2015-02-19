@@ -55,18 +55,20 @@ function setPage(page){
 function setFilters(){
     plegarFormulario();
 
-    codigo         = $('#data_busqueda_producto_type_codigo').val();
-    nombre         = $('#data_busqueda_producto_type_nombre').val();
-    uom            = $('#data_busqueda_producto_type_uom').val();
-    condicion      = $('#data_busqueda_producto_type_condicion').val();
-    bodega         = $('#data_busqueda_producto_type_bodega').val();
-    precio_costo   = $('#data_busqueda_producto_type_precio_costo').val();
-    precio_salida  = $('#data_busqueda_producto_type_precio_salida').val();
+    codigo              = $('#data_busqueda_producto_type_codigo').val();
+    nombre              = $('#data_busqueda_producto_type_nombre').val();
+    uom                 = $('#data_busqueda_producto_type_uom').val();
+    categoriaProducto   = $('#data_busqueda_producto_type_categoriaProducto').val();
+    condicion           = $('#data_busqueda_producto_type_condicion').val();
+    bodega              = $('#data_busqueda_producto_type_bodega').val();
+    precio_costo        = $('#data_busqueda_producto_type_precio_costo').val();
+    precio_salida       = $('#data_busqueda_producto_type_precio_salida').val();
 
     $filter = {
         'codigo': codigo,
         'nombre': nombre,
         'uom': uom,
+        'categoriaProducto': categoriaProducto,
         'condicion': condicion,
         'bodega': bodega,
         'precio_costo': precio_costo,

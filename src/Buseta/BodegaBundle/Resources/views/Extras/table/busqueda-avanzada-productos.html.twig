@@ -34,10 +34,11 @@
         <th>Código</th>
         <th>Nombre de Producto</th>
         <th>UOM</th>
-        <th>Condición</th>
+        <th>Categoría</th>
         <th>Bodega</th>
         <th>Mín.Bodega</th>
         <th>Máx.Bodega</th>
+        <th>Condición</th>
         <th>Activo</th>
         <th>Acciones</th>
     </tr>
@@ -48,10 +49,11 @@
             <td>{{ producto.codigo }}</td>
             <td>{{ producto.nombre }}</td>
             <td>{{ producto.uom }}</td>
-            <td>{{ producto.condicion }}</td>
+            <td>{{ producto.categoriaProducto }}</td>
             <td>{{ producto.bodega }}</td>
             <td>{{ producto.minimobodega }}</td>
             <td>{{ producto.maximobodega }}</td>
+            <td>{{ producto.condicion }}</td>
             <td>
                 {% if producto.activo %}
                     Sí
