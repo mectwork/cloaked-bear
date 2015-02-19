@@ -29,6 +29,8 @@ class BusquedaAlbaranType extends AbstractType{
             ))
             ->add('almacen','entity',array(
                 'class' => 'BusetaBodegaBundle:Bodega',
+                'label' => 'Almacén',
+                'empty_value' => '---Seleccione almacén---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -40,7 +42,7 @@ class BusquedaAlbaranType extends AbstractType{
                     return $er->createQueryBuilder('t')
                         ->where('t.proveedor = true');
                 },
-                'empty_value' => '---Seleccione un proveedor---',
+                'empty_value' => '---Seleccione proveedor---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',

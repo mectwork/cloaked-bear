@@ -52,20 +52,6 @@ class BusquedaProductoType extends AbstractType{
                     'class' => 'form-control',
                 )
             ))
-            ->add('precio_costo', 'number', array(
-                'required' => false,
-                'label' => 'Precio de Costo',
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
-            ->add('precio_salida', 'number', array(
-                'required' => false,
-                'label' => 'Precio de Salida',
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
         ;
     }
 

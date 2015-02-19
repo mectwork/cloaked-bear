@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Buseta\TallerBundle\Form\EventListener\AddGrupoFieldSubscriber;
 use Buseta\TallerBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
+use Buseta\BodegaBundle\Form\Type\PrecioProductoType;
 
 class ProductoType extends AbstractType
 {
@@ -63,20 +64,6 @@ class ProductoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('precio_costo', 'number', array(
-                'required' => false,
-                'label' => 'Precio de Costo',
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
-            ->add('precio_salida', 'number', array(
-                'required' => false,
-                'label' => 'Precio de Salida',
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
             ->add('minimo_bodega', 'integer', array(
                 'required' => false,
                 'label' => 'Mínimo en Bodega',
@@ -90,6 +77,14 @@ class ProductoType extends AbstractType
                 'attr' => array(
                     'class' => 'form-control',
                 )
+            ))
+            ->add('precioProducto','collection',array(
+                'type' => new PrecioProductoType(),
+                'label'  => false,
+                'required' => true,
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
             ))
             ->add('activo', null, array(
                 'label' => 'Activo',

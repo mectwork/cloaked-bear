@@ -22,6 +22,10 @@ BusetaTallerBundle_pedidocompra:
         resource: "@BusetaBodegaBundle/Resources/config/routing/pedidocompra.yml"
         prefix:   /pedidocompra
 
+BusetaTallerBundle_precioproducto:
+        resource: "@BusetaBodegaBundle/Resources/config/routing/precio_producto.yml"
+        prefix:   /precioproducto
+
 BusetaTallerBundle_albaran:
         resource: "@BusetaBodegaBundle/Resources/config/routing/albaran.yml"
         prefix:   /albaran

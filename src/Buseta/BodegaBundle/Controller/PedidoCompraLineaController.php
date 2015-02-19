@@ -55,7 +55,6 @@ class PedidoCompraLineaController extends Controller
 
     public function create_compraAction(Request $request)
     {
-        die;
         $entity = new PedidoCompraLinea();
         $form = $this->createCreateCompraForm($entity);
         $form->handleRequest($request);

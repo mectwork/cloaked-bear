@@ -24,7 +24,6 @@ class InformeStockController extends Controller
 
             $informeStock->submit($request);
 
-
             if($informeStock->isValid()){
 
                 $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->busquedaBitacoraAlmacen($informeStock);

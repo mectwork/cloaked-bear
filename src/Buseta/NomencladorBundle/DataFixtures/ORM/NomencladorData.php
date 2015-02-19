@@ -131,6 +131,7 @@ class NomencladorData extends AbstractFixture
             $codigo = uniqid();
             $marca->setCodigo($codigo);
             $marca->setValor($this->marca_autobuses[$i]);
+            $marca->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($marca);
             $manager->flush();
@@ -155,6 +156,8 @@ class NomencladorData extends AbstractFixture
             $objeto = new Grupo();
             $codigo = uniqid();
             $objeto->setValor($this->grupos[$i]);
+            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
+            $objeto->setCodigo($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($objeto);
             $manager->flush();
@@ -167,6 +170,8 @@ class NomencladorData extends AbstractFixture
             $codigo = uniqid();
             $objeto->setValor($this->grupos[$i]);
             $objeto->setGrupo($this->getReference('grupo'.$i));
+            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
+            $objeto->setCodigo($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($objeto);
             $manager->flush();
@@ -190,6 +195,7 @@ class NomencladorData extends AbstractFixture
             $codigo = uniqid();
             $objeto->setCodigo($codigo);
             $objeto->setValor($this->tipo_contactos[$i]);
+            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($objeto);
             $manager->flush();
@@ -201,6 +207,7 @@ class NomencladorData extends AbstractFixture
             $codigo = uniqid();
             $objeto->setCodigo($codigo);
             $objeto->setValor($this->oums[$i]);
+            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();

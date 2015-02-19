@@ -196,9 +196,6 @@ class ProductoRepository extends EntityRepository
                 $q.= " AND p.bodega = -1 ";
         }
 
-        if (isset($filter['precio_costo']) && !empty($filter['precio_costo']))
-            $q.= " AND p.precio_costo = ".$filter['precio_costo']." ";
-
         if (isset($filter['codigo']) && !empty($filter['codigo']))
             $q.= " AND UPPER(p.codigo) LIKE '%" . strtoupper($filter['codigo']) . "%'";
 

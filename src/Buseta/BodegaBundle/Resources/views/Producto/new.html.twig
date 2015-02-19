@@ -1,6 +1,17 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
+{% form_theme form 'BusetaBodegaBundle:Widgets:collection_precio_producto_insertados.html.twig' %}
+
 {% block nombre_menu_superior %}
+
+    {% block stylesheets %}
+        {{ parent() }}
+
+        {#<link rel="stylesheet" href="{{ asset('vendors/datetime/css/datepicker.css') }}" media="screen">
+        <link rel="stylesheet" href="{{ asset('vendors/datetime/css/datepicker3.css') }}" media="screen">#}
+
+        <link rel="stylesheet" href="{{ asset('vendors/timepicker_bootstrap/css/bootstrap-datetimepicker.min.css') }}" media="screen">
+    {% endblock %}
 
 {% endblock %}
 
@@ -10,81 +21,174 @@
 
 {% block area_trabajo %}
 
-<form action="{{ path('producto_create') }}" method="post" {{ form_enctype(form) }}>
-
-    {{ form_errors(form) }}
-
-    <div class="row show-grid">
-        <div class="col-lg-4">
-            {{ form_row(form.nombre) }}
-        </div>
-
-        <div class="col-lg-4">
-            {{ form_row(form.codigo) }}
-        </div>
-
-        <div class="col-lg-4">
-            {{ form_row(form.uom) }}
-        </div>
+    <div id="error" class="alert alert-danger" >
+        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+        <strong>!ERROR!</strong> Debe comprobar que todos los campos del formulario sean válidos y no se encuentren vacíos.
     </div>
 
-    <div class="row show-grid">
-        <div class="col-lg-4">
-            {{ form_row(form.precio_costo) }}
-        </div>
-
-        <div class="col-lg-4">
-            {{ form_row(form.precio_salida) }}
-        </div>
-
-        <div class="col-lg-4">
-            {{ form_row(form.condicion) }}
-        </div>
+    <div id="valido" class="alert alert-success" >
+        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+        <strong>!OK!</strong> Los datos básicos del precio de producto han sido guardados satisfactoriamente.
     </div>
 
-    <div class="row show-grid">
-        <div class="col-lg-4">
-            {{ form_row(form.bodega) }}
+    {{ form_start(form) }}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a id="tab_basicos" href="#basicos" data-toggle="tab">Datos básicos</a>
+                        </li>
+                        <li>
+                            <a id="tab_precios" href="#precios" data-toggle="tab">Precios</a>
+                        </li>
+
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+
+                        <div class="tab-pane fade in active" id="basicos">
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(form.nombre) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.codigo) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.uom) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(form.bodega) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.minimo_bodega) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.maximo_bodega) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(form.grupos) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.subgrupos) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.condicion) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-lg-4">
+                                    {{ form_row(form.activo) }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- TAB PRECIOS-->
+                        <div class="tab-pane fade" id="precios">
+
+                            <div class="row show-grid">
+                                <div class="col-md-12">
+                                    {{ form_row(form.precioProducto) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    <div class="btn-group">
+                                        <a id="adicionarPrecio" data-toggle="modal" data-target="#newPrecio" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar Precio Producto</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+
+
         </div>
-
-        <div class="col-lg-4">
-            {{ form_row(form.minimo_bodega) }}
-        </div>
-
-        <div class="col-lg-4">
-            {{ form_row(form.maximo_bodega) }}
-        </div>
-    </div>
-
-    <div class="row show-grid">
-        <div class="col-lg-4">
-            {{ form_row(form.grupos) }}
-        </div>
-
-        <div class="col-lg-4">
-            {{ form_row(form.subgrupos) }}
-        </div>
-    </div>
-
-    <div class="row show-grid">
-        <div class="col-lg-4">
-            {{ form_row(form.activo) }}
-        </div>
-    </div>
-
-    <div class="row show-grid">
-        <div class="col-lg-4">
-
-            <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
-            <div class="btn-group">
-                <a class="btn btn-primary" href="{{ path('producto') }}"> Cancelar</a>
+        <!-- /.col-lg-6 -->
+        <div class="row show-grid">
+            <div class="col-md-4">
+                <input id="comprobarProducto" class="btn btn-primary" style="height: 34px" type="button" value="Comprobar">
+                <input id="guardarPrecios" class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="{{ path('producto') }}"> Cancelar</a>
+                </div>
             </div>
         </div>
+
     </div>
 
     {{ form_rest(form) }}
-</form>
+    {{ form_end(form) }}
+    <!-- Modal -->
+    <div class="modal fade" id="newPrecio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 850px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title" id="myModalLabel">Datos de nuevo precio de producto</h3>
+                </div>
+                <div class="modal-body" style="width: 800px;">
+                    <form id="modalNewPrecio" action="{{ path('precio_producto_create') }}" method="post" {{ form_enctype(precioProducto) }}>
+                        <div class="row show-grid">
+                            <div class="col-md-4">
+                                {{ form_row(precioProducto.costo) }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form_row(precioProducto.precio) }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form_row(precioProducto.fechaInicio) }}
+                            </div>
+                        </div>
+                        <div class="row show-grid">
+                            <div class="col-md-4">
+                                {{ form_row(precioProducto.fechaFin) }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form_row(precioProducto.activo) }}
+                            </div>
+                        </div>
+                        {{ form_rest(precioProducto) }}
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
+                    <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</span></a>
 
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 
 {% endblock %}
 
@@ -96,8 +200,136 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script>
+    <script src="{{ asset('vendors/timepicker_bootstrap/jquery-2.1.1.min.js') }}"></script>
+    <script src="{{ asset('vendors/timepicker_bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('vendors/timepicker_bootstrap/moment.js') }}"></script>
+    <script src="{{ asset('vendors/timepicker_bootstrap/bootstrap-datetimepicker.js') }}"></script>
+    <script src="{{ asset('vendors/timepicker_bootstrap/ru.js') }}"></script>
+
+    <script type="text/javascript">
+
         $(function(){
+
+            $('#buseta_bodegabundle_precio_producto_fechaInicio').datetimepicker({
+                'pickTime' : false,
+                'format': 'DD/MM/YYYY',
+                'formatSubmit': 'DD/MM/YYYY'
+            });
+
+            var fechaInicio = $('#buseta_bodegabundle_precio_producto_fechaInicio').val();
+            $('input:hidden[name^="buseta_bodegabundle_precio_producto[fechaInicio]_submit"]').val(fechaInicio);
+
+            $('#buseta_bodegabundle_precio_producto_fechaFin').datetimepicker({
+                'pickTime' : false,
+                'format': 'DD/MM/YYYY',
+                'formatSubmit': 'DD/MM/YYYY'
+            });
+
+            var fechaFin = $('#buseta_bodegabundle_precio_producto_fechaFin').val();
+            $('input:hidden[name^="buseta_bodegabundle_precio_producto[fechaFin]_submit"]').val(fechaFin);
+
+            $("#buseta_bodegabundle_precio_producto_fechaInicio").on("dp.change",function (e) {
+                $('#buseta_bodegabundle_precio_producto_fechaFin').data("DateTimePicker").setMinDate(e.date);
+            });
+            $("#buseta_bodegabundle_precio_producto_fechaFin").on("dp.change",function (e) {
+                $('#buseta_bodegabundle_precio_producto_fechaInicio').data("DateTimePicker").setMaxDate(e.date);
+            });
+
+            $('#error').fadeOut(10);
+            $('#valido').fadeOut(10);
+            $('#tab_precios').fadeOut(10);
+            $('#comprobarPrecios').hide();
+
+            //Resetear valores de campos del modal "newPrecio"
+            $('#adicionarPrecio').on('click', function(){
+                var modal = $('#newPrecio');
+
+                var precio_costo    = modal.find('#buseta_bodegabundle_precio_producto_costo');
+                var precio_precio   = modal.find('#buseta_bodegabundle_precio_producto_precio');
+                var precio_inicio   = modal.find('#buseta_bodegabundle_precio_producto_fechaInicio');
+                var precio_fin      = modal.find('#buseta_bodegabundle_precio_producto_fechaFin');
+                var precio_activo   = modal.find('#buseta_bodegabundle_precio_producto_activo');
+
+                precio_costo.val('');
+                precio_precio.val('');
+                precio_inicio.val('');
+                precio_fin.val('');
+                precio_activo.val('');
+            });
+
+            $('#tab_basicos').click(function(){
+                $('#tab_precios').fadeOut(10);
+                $('#comprobarProducto').show();
+                $('#guardarPrecios').hide();
+
+                $('#error').hide();
+                $('#valido').hide();
+            });
+
+            $('#comprobarProducto').click(function(){
+                $('#error').fadeOut(10);
+                $('#tab_precios').fadeOut(10);
+
+                var data = {
+                    nombre:         $('#{{ form.nombre.vars.id }}').val(),
+                    codigo:         $('#{{ form.codigo.vars.id }}').val(),
+                    uom:            $('#{{ form.uom.vars.id }}').val(),
+                    bodega:         $('#{{ form.bodega.vars.id }}').val(),
+                    minimo_bodega:  $('#{{ form.minimo_bodega.vars.id }}').val(),
+                    maximo_bodega:  $('#{{ form.maximo_bodega.vars.id }}').val(),
+                    grupos:         $('#{{ form.grupos.vars.id }}').val(),
+                    subgrupos:      $('#{{ form.subgrupos.vars.id }}').val(),
+                    condicion:      $('#{{ form.condicion.vars.id }}').val(),
+                    activo:         $('#{{ form.activo.vars.id }}').val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("comprobarPrecio") }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+
+                        console.log(values.error);
+
+                        if(values.error == 'error')
+                        {
+                            //Si existe al menos un campo no correcto en PrecioProducto se lanza un mensaje de error
+                            $('#error').fadeIn(100);
+                            $('#error').fadeOut(20000);
+
+                            jQuery('body,html').animate({
+                                scrollTop: 0
+                            }, 25);
+                        }
+                        else
+                        {
+                            $('#guardarPrecios').show();
+                            $('#error').hide();
+                            $('#comprobarProducto').hide();
+                            $('#valido').fadeIn(100);
+                            $('#valido').fadeOut(20000);
+
+                            //Si todos los campos del PrecioProducto son correctos activo el tab de Precios
+                            $('#basicos').attr('class', 'tab-pane fade');
+                            $('#tab_basicos').parent().removeAttr('class');
+
+                            $('#tab_precios').fadeIn(200);
+                            $('#tab_precios').parent().attr('class', 'active');
+
+                            $('#precios').attr('class', 'tab-pane fade in active');
+
+                            jQuery('body,html').animate({
+                                scrollTop: 0
+                            }, 25);
+
+                        }
+
+                    }
+                });
+            });
+
+
             $('#{{ form.grupos.vars.id }}').change(function(){
                 var data = {
                     grupo_id: $(this).val()
@@ -120,7 +352,110 @@
                 });
             });
 
+        });
+
+        var collectionHolder = $('div#buseta_bodegabundle_producto_precioProducto');
+        var $addTagLink = $('a.add_tag_link');
+
+        jQuery(document).ready(function() {
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
+
+            updateDeleteLink();
+            updateView();
+
+            function addTagForm(collectionHolder) {
+                // Get the data-prototype explained earlier
+                var prototype = collectionHolder.data('prototype');
+
+                // get the new index
+                var index = collectionHolder.data('index');
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = prototype.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                collectionHolder.data('index', index + 1);
+
+                // Display the form in the page in an li, before the "Add a tag" link li
+                var $newFormDiv = $('<tr></tr>').append(newForm);
+                collectionHolder.find('#tbody').append($newFormDiv);
+                updateDeleteLink();
+                updateView();
+            }
+
+            function updateDeleteLink(){
+                $('a.delete_tag_link').on('click', function(e) {
+                    // prevent the link from creating a "#" on the URL
+                    e.preventDefault();
+
+                    // remove the li for the tag form
+                    $(this).parent().parent().remove();
+
+                    updateView();
+                });
+            }
+
+            function updateView(){
+                counter = collectionHolder.find('a.delete_tag_link').length;
+                if(counter == 0){
+                    $('div#no-elements-tr').show();
+                }else{
+                    $('div#no-elements-tr').hide();
+                }
+            }
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                var modal = $('#newPrecio');
+
+                // captura de valores del modal
+                var precio_costo         = modal.find('#buseta_bodegabundle_precio_producto_costo');
+                var precio_precio        = modal.find('#buseta_bodegabundle_precio_producto_precio');
+                var precio_fechaInicio   = modal.find('#buseta_bodegabundle_precio_producto_fechaInicio');
+                var precio_fechaFin      = modal.find('#buseta_bodegabundle_precio_producto_fechaFin');
+                var precio_activo        = modal.find('#buseta_bodegabundle_precio_producto_activo');
+
+                console.log(precio_costo.val());
+
+                var dataA = {
+                    costo       : $('#{{ precioProducto.costo.vars.id }}').val(),
+                    precio      : $('#{{ precioProducto.precio.vars.id }}').val(),
+                    fechaInicio : $('#{{ precioProducto.fechaInicio.vars.id }}').val(),
+                    fechaFin    : $('#{{ precioProducto.fechaFin.vars.id }}').val(),
+                    activo      : $('#{{ precioProducto.activo.vars.id }}').val()
+                };
+
+                $.when(
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ path("precio_ajax_productos_all") }}',
+                            data: dataA
+                        })
+
+                ).done(function(data, textStatus, jqXHR){
+
+                            var valorA = $.parseJSON(data);
+
+                            var index = collectionHolder.data('index');
+
+                            addTagForm(collectionHolder);
+
+                            $('#buseta_bodegabundle_producto_precioProducto_' + index + '_costo').val(precio_costo.val());
+                            $('#buseta_bodegabundle_producto_precioProducto_' + index + '_precio').val(precio_precio.val());
+                            $('#buseta_bodegabundle_producto_precioProducto_' + index + '_fechaInicio').val(precio_fechaInicio.val());
+                            $('#buseta_bodegabundle_producto_precioProducto_' + index + '_fechaFin').val(precio_fechaFin.val());
+                            $('#buseta_bodegabundle_producto_precioProducto_' + index + '_activo').val(precio_activo.val());
+                        })
+
+            });
+
 
         });
+
     </script>
 {% endblock %}

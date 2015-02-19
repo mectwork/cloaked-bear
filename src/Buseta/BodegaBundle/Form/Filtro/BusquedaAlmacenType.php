@@ -15,6 +15,7 @@ class BusquedaAlmacenType extends AbstractType{
         $builder
             ->add('codigo', 'text', array(
                 'required' => false,
+                'label' => 'Código',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
@@ -27,12 +28,14 @@ class BusquedaAlmacenType extends AbstractType{
             ))
             ->add('descripcion', 'textarea', array(
                 'required' => false,
+                'label' => 'Descripción',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('direccion', 'textarea', array(
                 'required' => false,
+                'label' => 'Dirección',
                 'attr'   => array(
                     'class' => 'form-control',
                 )

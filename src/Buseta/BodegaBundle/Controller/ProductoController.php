@@ -5,6 +5,8 @@ namespace Buseta\BodegaBundle\Controller;
 use Buseta\BodegaBundle\Entity\InformeProductosBodega;
 use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Entity\MovimientosProductos;
+use Buseta\BodegaBundle\Entity\PrecioProducto;
+use Buseta\BodegaBundle\Form\Type\PrecioProductoType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -93,7 +95,14 @@ class ProductoController extends Controller
         ));
 
         $cantidad_pedido     = $request->query->get('cantidad_pedido');
-        $precio_unitario     = $producto->getPrecioCosto();
+        foreach($producto->getPrecioProducto() as $precios)
+        {
+            if($precios->getActivo())
+            {
+                $precioSalida = ($precios->getPrecio());
+            }
+        }
+        $precio_unitario     = $precioSalida;
         $porciento_descuento = $request->query->get('porciento_descuento');
 
         $funcionesExtras = new FuncionesExtras();
@@ -101,7 +110,7 @@ class ProductoController extends Controller
 
         $json = array(
             'id' => $producto->getId(),
-            'precio' => $producto->getPrecioCosto(),
+            'precio' => $precio_unitario,
             'importeLinea' => $importeLinea,
             'porciento_descuento' => $porciento_descuento,
         );
@@ -163,6 +172,7 @@ class ProductoController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -189,9 +199,6 @@ class ProductoController extends Controller
             'action' => $this->generateUrl('producto_create'),
             'method' => 'POST',
         ));
-
-        //$form->add('submit', 'submit', array('label' => 'Create'));
-
         return $form;
     }
 
@@ -202,10 +209,15 @@ class ProductoController extends Controller
     public function newAction()
     {
         $entity = new Producto();
+
+        $precioProducto = new PrecioProducto();
+
+        $precioProducto = $this->createForm(new PrecioProductoType());
         $form   = $this->createCreateForm($entity);
 
         return $this->render('BusetaBodegaBundle:Producto:new.html.twig', array(
             'entity' => $entity,
+            'precioProducto'  => $precioProducto->createView(),
             'form'   => $form->createView(),
         ));
     }
@@ -245,11 +257,14 @@ class ProductoController extends Controller
             throw $this->createNotFoundException('Unable to find Producto entity.');
         }
 
+        $precio = $this->createForm(new PrecioProductoType());
+
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('BusetaBodegaBundle:Producto:edit.html.twig', array(
             'entity'      => $entity,
+            'precioProducto' => $precio->createView(),
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));

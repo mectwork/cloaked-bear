@@ -268,12 +268,23 @@ class PedidoCompraController extends Controller
         $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
 
         $json = array();
+        $precioSalida = 0;
 
         foreach($productos as $p){
 
+
+            foreach($p->getPrecioProducto() as $precios)
+            {
+                if($precios->getActivo())
+                {
+                    $precioSalida = ($precios->getPrecio());
+                }
+            }
+
             $json[$p->getId()] = array(
                 'nombre' => $p->getNombre(),
-                'precio_salida' => $p->getPrecioSalida(),
+                //'precio_salida' => $p->getPrecioSalida(),
+                'precio_salida' => $precioSalida,
             );
         }
 
@@ -335,9 +346,17 @@ class PedidoCompraController extends Controller
 
         foreach($productos as $p){
 
+            foreach($p->getPrecioProducto() as $precios)
+            {
+                if($precios->getActivo())
+                {
+                    $precioSalida = ($precios->getPrecio());
+                }
+            }
+
             $json[$p->getId()] = array(
                 'nombre' => $p->getNombre(),
-                'precio_salida' => $p->getPrecioSalida(),
+                'precio_salida' => $precioSalida,
             );
         }
 

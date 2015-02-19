@@ -1,0 +1,65 @@
+<?php
+
+namespace Buseta\BodegaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * PrecioProducto
+ *
+ * @ORM\Table(name="d_producto")
+ * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\PrecioProductoRepository")
+ */
+class PrecioProducto
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="costo", type="decimal", scale=2)
+     * @Assert\NotBlank()
+     */
+    private $costo;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="precio", type="decimal", scale=2)
+     * @Assert\NotBlank()
+     */
+    private $precio;
+
+    /**
+     * @var date
+     *
+     * @ORM\Column(name="fechaInicio", type="date")
+     */
+    private $fechaInicio;
+
+    /**
+     * @var date
+     *
+     * @ORM\Column(name="fechaFin", type="date")
+     */
+    private $fechaFin;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto", inversedBy="precioProducto")
+     */
+    private $producto;
+
+    /**
+     * @ORM\Column(name="activo", type="boolean", nullable=true)
+     */
+    private $activo;
+
+}

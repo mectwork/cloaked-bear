@@ -1,0 +1,44 @@
+precio_producto:
+    pattern:  /
+    defaults: { _controller: "BusetaBodegaBundle:PrecioProducto:index" }
+
+precio_producto_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaBodegaBundle:PrecioProducto:show" }
+
+precio_producto_new:
+    pattern:  /new
+    defaults: { _controller: "BusetaBodegaBundle:PrecioProducto:new" }
+
+precio_producto_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaBodegaBundle:PrecioProducto:create" }
+    requirements: { _method: post }
+
+precio_producto_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BusetaBodegaBundle:PrecioProducto:edit" }
+
+precio_producto_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BusetaBodegaBundle:PrecioProducto:update" }
+    requirements: { _method: post|put }
+
+precio_producto_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BusetaBodegaBundle:PrecioProducto:delete" }
+    requirements: { _method: post|delete }
+
+comprobarPrecio:
+  pattern: /comprobarPrecio
+  defaults: { _controller: "BusetaBodegaBundle:PrecioProducto:comprobarPrecio" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true
+
+precio_ajax_productos_all:
+  pattern: /select_precio_productos_all
+  defaults: { _controller: "BusetaBodegaBundle:PrecioProducto:select_precio_productos_all" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true

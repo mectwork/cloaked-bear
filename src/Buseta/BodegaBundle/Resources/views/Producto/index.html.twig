@@ -18,8 +18,6 @@
     <div id="busqueda_producto_div" class="panel panel-default" style="display: none;">
         <div class="panel-body">
             <fieldset>
-                <legend><h4>Búsqueda Avanzada</h4></legend>
-
                 {{ form_start(producto) }}
                 <div class="row show-grid" style="padding-top: 0px">
                     <div class="col-md-4">
@@ -38,14 +36,6 @@
                     </div>
                     <div class="col-md-4">
                         {{ form_row(producto.bodega) }}
-                    </div>
-                </div>
-                <div class="row show-grid" style="padding-top: 0px">
-                    <div class="col-md-4">
-                        {{ form_row(producto.precio_costo) }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ form_row(producto.precio_salida) }}
                     </div>
                 </div>
 
