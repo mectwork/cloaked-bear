@@ -64,6 +64,15 @@ class ProductoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
+            ->add('categoriaProducto', 'entity', array(
+                'class' => 'BusetaBodegaBundle:CategoriaProducto',
+                'label' => 'Categoría de Producto',
+                'required' => false,
+                'empty_value' => '---Seleccione categoría de producto---',
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('minimo_bodega', 'integer', array(
                 'required' => false,
                 'label' => 'Mínimo en Bodega',

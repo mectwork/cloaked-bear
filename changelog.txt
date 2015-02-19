@@ -1,4 +1,8 @@
-*********************************************************
+
+
+-Creada entidad PrecioProducto y relacionada con Producto, se actualizaron todas las dependencias de ambas entidades
+
+*********************************************************************************************************************
 Hasta 13 Febrero 2015
 *********************************************************
 -Nuevas soluciones a no conformidades de OrdenTrabajo, Producto, Compra

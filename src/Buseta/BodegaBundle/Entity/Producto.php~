@@ -39,22 +39,6 @@ class Producto
     private $nombre;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="precio_costo", type="decimal", scale=2)
-     * @Assert\NotBlank()
-     */
-    private $precio_costo;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="precio_salida", type="decimal", scale=2)
-     * @Assert\NotBlank()
-     */
-    private $precio_salida;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\UOM", inversedBy="productos")
      */
     private $uom;
@@ -68,6 +52,11 @@ class Producto
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="productos")
      */
     private $bodega;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\CategoriaProducto")
+     */
+    private $categoriaProducto;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -213,38 +202,6 @@ class Producto
     }
 
     /**
-     * @param float $precio_costo
-     */
-    public function setPrecioCosto($precio_costo)
-    {
-        $this->precio_costo = $precio_costo;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPrecioCosto()
-    {
-        return $this->precio_costo;
-    }
-
-    /**
-     * @param float $precio_salida
-     */
-    public function setPrecioSalida($precio_salida)
-    {
-        $this->precio_salida = $precio_salida;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPrecioSalida()
-    {
-        return $this->precio_salida;
-    }
-
-    /**
      * @param mixed $uom
      */
     public function setUom($uom)
@@ -264,10 +221,6 @@ class Producto
     {
         return $this->nombre;
     }
-
-
-
-
 
     /**
      * Constructor
@@ -491,5 +444,40 @@ class Producto
     public function getAlbaranLinea()
     {
         return $this->albaranLinea;
+    }
+
+    /**
+     * Add precioProducto
+     *
+     * @param \Buseta\BodegaBundle\Entity\PrecioProducto $precioProducto
+     * @return Producto
+     */
+    public function addPrecioProducto(\Buseta\BodegaBundle\Entity\PrecioProducto $precioProducto)
+    {
+        $precioProducto->setProducto($this);
+
+        $this->precioProducto[] = $precioProducto;
+    
+        return $this;
+    }
+
+    /**
+     * Remove precioProducto
+     *
+     * @param \Buseta\BodegaBundle\Entity\PrecioProducto $precioProducto
+     */
+    public function removePrecioProducto(\Buseta\BodegaBundle\Entity\PrecioProducto $precioProducto)
+    {
+        $this->precioProducto->removeElement($precioProducto);
+    }
+
+    /**
+     * Get precioProducto
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPrecioProducto()
+    {
+        return $this->precioProducto;
     }
 }

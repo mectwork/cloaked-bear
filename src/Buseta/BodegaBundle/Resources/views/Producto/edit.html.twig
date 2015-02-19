@@ -91,6 +91,12 @@
                                 </div>
 
                                 <div class="col-md-4">
+                                    {{ form_row(edit_form.categoriaProducto) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
                                     {{ form_row(edit_form.condicion) }}
                                 </div>
                             </div>
@@ -180,7 +186,7 @@
                 </div>
                 <div class="modal-footer">
                     <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
-                    <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</i></a>
+                    <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</span></a>
 
                 </div>
 
@@ -200,7 +206,7 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script src="{{ asset('vendors/timepicker_bootstrap/jquery-2.1.1.min.js') }}"></script>
+    {#<script src="{{ asset('vendors/timepicker_bootstrap/jquery-2.1.1.min.js') }}"></script>#}
     <script src="{{ asset('vendors/timepicker_bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('vendors/timepicker_bootstrap/moment.js') }}"></script>
     <script src="{{ asset('vendors/timepicker_bootstrap/bootstrap-datetimepicker.js') }}"></script>

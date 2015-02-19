@@ -7,9 +7,6 @@
     {% block stylesheets %}
         {{ parent() }}
 
-        {#<link rel="stylesheet" href="{{ asset('vendors/datetime/css/datepicker.css') }}" media="screen">
-        <link rel="stylesheet" href="{{ asset('vendors/datetime/css/datepicker3.css') }}" media="screen">#}
-
         <link rel="stylesheet" href="{{ asset('vendors/timepicker_bootstrap/css/bootstrap-datetimepicker.min.css') }}" media="screen">
     {% endblock %}
 
@@ -90,6 +87,12 @@
                                     {{ form_row(form.subgrupos) }}
                                 </div>
 
+                                <div class="col-md-4">
+                                    {{ form_row(form.categoriaProducto) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
                                 <div class="col-md-4">
                                     {{ form_row(form.condicion) }}
                                 </div>
@@ -200,7 +203,7 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script src="{{ asset('vendors/timepicker_bootstrap/jquery-2.1.1.min.js') }}"></script>
+    {#<script src="{{ asset('vendors/timepicker_bootstrap/jquery-2.1.1.min.js') }}"></script>#}
     <script src="{{ asset('vendors/timepicker_bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('vendors/timepicker_bootstrap/moment.js') }}"></script>
     <script src="{{ asset('vendors/timepicker_bootstrap/bootstrap-datetimepicker.js') }}"></script>
@@ -209,7 +212,6 @@
     <script type="text/javascript">
 
         $(function(){
-
             $('#buseta_bodegabundle_precio_producto_fechaInicio').datetimepicker({
                 'pickTime' : false,
                 'format': 'DD/MM/YYYY',

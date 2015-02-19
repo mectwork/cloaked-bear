@@ -54,6 +54,11 @@ class Producto
     private $bodega;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\CategoriaProducto")
+     */
+    private $categoriaProducto;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Movimiento", mappedBy="producto", cascade={"all"})
@@ -474,5 +479,28 @@ class Producto
     public function getPrecioProducto()
     {
         return $this->precioProducto;
+    }
+
+    /**
+     * Set categoriaProducto
+     *
+     * @param \Buseta\BodegaBundle\Entity\CategoriaProducto $categoriaProducto
+     * @return Producto
+     */
+    public function setCategoriaProducto(\Buseta\BodegaBundle\Entity\CategoriaProducto $categoriaProducto = null)
+    {
+        $this->categoriaProducto = $categoriaProducto;
+    
+        return $this;
+    }
+
+    /**
+     * Get categoriaProducto
+     *
+     * @return \Buseta\BodegaBundle\Entity\CategoriaProducto 
+     */
+    public function getCategoriaProducto()
+    {
+        return $this->categoriaProducto;
     }
 }

@@ -54,6 +54,10 @@ BusetaBodegaBundle_bodega:
     resource: "@BusetaBodegaBundle/Resources/config/routing/bodega.yml"
     prefix:   /bodega
 
+BusetaBodegaBundle_categoria_producto:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/categoria_producto.yml"
+    prefix:   /bodega/categoria_producto
+
 BusetaBodegaBundle_direccion:
     resource: "@BusetaBodegaBundle/Resources/config/routing/direccion.yml"
     prefix:   /bodega/direccion

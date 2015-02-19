@@ -1,0 +1,32 @@
+categoria_producto:
+    pattern:  /
+    defaults: { _controller: "BusetaBodegaBundle:CategoriaProducto:index" }
+
+categoria_producto_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaBodegaBundle:CategoriaProducto:show" }
+
+categoria_producto_new:
+    pattern:  /new
+    defaults: { _controller: "BusetaBodegaBundle:CategoriaProducto:new" }
+
+categoria_producto_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaBodegaBundle:CategoriaProducto:create" }
+    requirements: { _method: post }
+    options:
+        expose: true
+
+categoria_producto_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BusetaBodegaBundle:CategoriaProducto:edit" }
+
+categoria_producto_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BusetaBodegaBundle:CategoriaProducto:update" }
+    requirements: { _method: post|put }
+
+categoria_producto_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BusetaBodegaBundle:CategoriaProducto:delete" }
+    requirements: { _method: post|delete }
