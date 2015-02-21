@@ -17,25 +17,24 @@ class BitacoraAlmacenRepository extends EntityRepository
     public function busquedaBitacoraAlmacen($busqueda)
     {
         $qb = $this->_em->createQueryBuilder();
-
         $datos = $busqueda->getData();
 
         $q = $qb->select('o')
             ->from('BusetaBodegaBundle:BitacoraAlmacen', 'o')
-            ->where($qb->expr()->eq(true,true));
+            ->where($qb->expr()->eq(true, true));
 
-        if($datos['almacen'] !== null && $datos['almacen'] !== '') {
+        if ($datos['almacen'] !== null && $datos['almacen'] !== '') {
             $q->andWhere('o.almacen = :almacen')
                 ->setParameter('almacen', $datos['almacen']);
         }
 
-        if($datos['categoriaProducto'] !== null && $datos['categoriaProducto'] !== '') {
+        if ($datos['categoriaProducto'] !== null && $datos['categoriaProducto'] !== '') {
             $q->andWhere('o.categoriaProducto = :categoriaProducto')
                 ->setParameter('categoriaProducto', $datos['categoriaProducto']);
         }
 
-        if($datos['fecha'] !== null && $datos['fecha'] !== '') {
-            $q->andWhere('o.fechaMovimiento < :fecha')
+        if ($datos['fecha'] !== null && $datos['fecha'] !== '') {
+            $q->andWhere('o.fechaMovimiento <= :fecha')
                 ->setParameter('fecha', $datos['fecha']);
         }
 

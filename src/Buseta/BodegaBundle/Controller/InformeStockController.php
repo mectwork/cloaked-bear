@@ -2,7 +2,6 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
-
 use Buseta\BodegaBundle\Entity\InformeStock;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Buseta\BodegaBundle\Form\Filtro\BusquedaInformeStockType;
@@ -17,15 +16,12 @@ class InformeStockController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->get('doctrine.orm.entity_manager');
-
         $informeStock = $this->createForm(new BusquedaInformeStockType());
 
-        if($request->getMethod() === 'POST'){
-
+        if ($request->getMethod() === 'POST') {
             $informeStock->submit($request);
 
-            if($informeStock->isValid()){
-
+            if ($informeStock->isValid()) {
                 //Se obtienen todas las bitacoras que cumplieron con el filtro de búsqueda
                 $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->busquedaBitacoraAlmacen($informeStock);
                 $almacenes = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
@@ -35,23 +31,16 @@ class InformeStockController extends Controller
                 $almacenesFinal = null;
                 $pos = 0;
 
-
-                foreach($almacenes as $almacen)
-                {
-
-                    foreach($almacenesArray as $almacenArray)
-                    {
-                        if($almacen == $almacenArray['almacen'])
-                        {
+                foreach ($almacenes as $almacen) {
+                    foreach ($almacenesArray as $almacenArray) {
+                        if ($almacen == $almacenArray['almacen']) {
                             $almacenesFinal[$pos] = $almacen;
                             $pos++;
                             break;
                         }
                     }
                 }
-
             }
-
 
             return $this->render('BusetaBodegaBundle:InformeStock:index.html.twig', array(
                 'entities' => $almacenesArray,
@@ -60,34 +49,12 @@ class InformeStockController extends Controller
             ));
 
 
-        }
-        else
-        {
+        } else {
             return $this->render('BusetaBodegaBundle:InformeStock:index.html.twig', array(
                 'entities' => null,
                 'almacenes' => null,
                 'informeStock' => $informeStock->createView(),
             ));
         }
-
-
-        /*//CASO BUSQUEDA
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-            $entities,
-            $this->get('request')->query->get('page', 1),
-            10,
-            array('pageParameterName' => 'page')
-        );
-
-        $almacenes = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
-
-        return $this->render('BusetaBodegaBundle:InformeStock:index.html.twig', array(
-            'entities' => $entities,
-            'almacenes' => $almacenes,
-            'informeStock' => $informeStock->createView(),
-        ));*/
-
     }
-
 }

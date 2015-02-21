@@ -25,6 +25,7 @@ class BusquedaInformeStockType extends AbstractType{
             ->add('categoriaProducto','entity',array(
                 'class' => 'BusetaBodegaBundle:CategoriaProducto',
                 'empty_value' => '---Seleccione categoría de producto---',
+                'label' => 'Categoría de Producto',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
