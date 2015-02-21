@@ -5,8 +5,8 @@ namespace Buseta\BodegaBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Buseta\TallerBundle\Form\EventListener\AddGrupoFieldSubscriber;
-use Buseta\TallerBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
+use Buseta\BodegaBundle\Form\EventListener\AddGrupoFieldSubscriber;
+use Buseta\BodegaBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
 use Buseta\BodegaBundle\Form\Type\PrecioProductoType;
 
 class ProductoType extends AbstractType

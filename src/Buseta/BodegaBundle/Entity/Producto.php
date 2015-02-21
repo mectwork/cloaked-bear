@@ -39,7 +39,7 @@ class Producto
     private $nombre;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\UOM", inversedBy="productos")
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\UOM")
      */
     private $uom;
 

@@ -22,34 +22,11 @@ class Subgrupo extends BaseNomenclador
     protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=255)
-     */
-    private $descripcion;
-
-    /**
      * @var \Buseta\NomencladorBundle\Entity\Grupo
      *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo", inversedBy="subgrupos")
      */
     private $grupo;
-
-    /**
-     * @return string
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-
-    /**
-     * @param string $descripcion
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-    }
 
     /**
      * @param \Buseta\NomencladorBundle\Entity\Grupo $grupo

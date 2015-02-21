@@ -29,13 +29,6 @@ class FormaPago extends BaseNomenclador
     protected $valor;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Buseta\NomencladorBundle\Entity\CajaChica", mappedBy="forma_pago", cascade={"all"})
-     */
-    private $cajas_chicas;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -74,42 +67,6 @@ class FormaPago extends BaseNomenclador
     {
         return $this->valor;
     }
-
-    /**
-     * Add caja_chica
-     *
-     * @param \Buseta\NomencladorBundle\Entity\CajaChica $caja_chica
-     * @return Grupo
-     */
-    public function addCajaChica(\Buseta\NomencladorBundle\Entity\CajaChica $caja_chica)
-    {
-        $caja_chica->setGrupo($this);
-
-        $this->caja_chica[] = $caja_chica;
-
-        return $this;
-    }
-
-    /**
-     * Remove caja_chica
-     *
-     * @param \Buseta\NomencladorBundle\Entity\CajaChica $caja_chica
-     */
-    public function removeCajaChica(\Buseta\NomencladorBundle\Entity\CajaChica $caja_chica)
-    {
-        $this->caja_chica->removeElement($caja_chica);
-    }
-
-    /**
-     * Get caja_chica
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCajaChicas()
-    {
-        return $this->caja_chica;
-    }
-
 
     public function __toString()
     {

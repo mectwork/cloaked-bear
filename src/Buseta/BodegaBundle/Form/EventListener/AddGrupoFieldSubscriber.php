@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\TallerBundle\Form\EventListener;
+namespace Buseta\BodegaBundle\Form\EventListener;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

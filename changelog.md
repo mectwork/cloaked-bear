@@ -5,6 +5,9 @@ beta2:
   - Refactorizado el bundle BusesBundles para adicionar un histórico de los Mantenimientos Preventivos asociados a cada bus.
   - Adicionado filtros de grupo, subgrupo, tarea y autobus en los Mantenimientos Preventivos.
   - Cambiado campo de filtro para busqueda de InformeStock
+  - Eliminados campos 'descripcion' y 'codigo' de los Nomencladores
+  - Añadido proceso de Informe de Costos
+  - Cambiado campo de filtro 'producto' por 'categoriaProducto' para busqueda de InformeStock
   - Solucionado problema de funcionalidad MovimientoAlmacenes que no trabajaba correctamente
   - Añadido campo CategoriaProducto al filtro de Producto
   - Creada entidad CategoriaProducto y relacionada con Producto

@@ -22,25 +22,11 @@ class Marca extends BaseNomenclador
     protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=255)
-     */
-    private $descripcion;
-
-    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Buseta\NomencladorBundle\Entity\Modelo", mappedBy="marca", cascade={"all"})
      */
     private $modelos;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Buseta\BusesBundle\Entity\Autobus", mappedBy="marca", cascade={"all"})
-     */
-    private $autobuses;
 
     /**
      * Constructor
@@ -49,24 +35,6 @@ class Marca extends BaseNomenclador
     {
         $this->modelos = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
-    /**
-     * @return string
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-
-    /**
-     * @param string $descripcion
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-    }
-
-
     
     /**
      * Get id
@@ -110,22 +78,5 @@ class Marca extends BaseNomenclador
     {
         return $this->modelos;
     }
-
-    /**
-     * @param \Doctrine\Common\Collections\ArrayCollection $autobuses
-     */
-    public function setAutobuses($autobuses)
-    {
-        $this->autobuses = $autobuses;
-    }
-
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getAutobuses()
-    {
-        return $this->autobuses;
-    }
-
 
 }

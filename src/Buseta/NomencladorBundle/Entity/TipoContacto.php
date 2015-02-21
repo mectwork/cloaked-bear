@@ -22,36 +22,6 @@ class TipoContacto extends BaseNomenclador
     protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=255)
-     */
-    private $descripcion;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\MecanismoContacto", mappedBy="tipocontacto", cascade={"all"})
-     */
-    private $mecanismocontacto;
-
-    /**
-     * @return string
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-
-    /**
-     * @param string $descripcion
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-    }
-
-    /**
      * @param int $id
      */
     public function setId($id)
@@ -66,24 +36,4 @@ class TipoContacto extends BaseNomenclador
     {
         return $this->id;
     }
-
-    /**
-     * @param \Doctrine\Common\Collections\ArrayCollection $mecanismocontacto
-     */
-    public function setMecanismocontacto($mecanismocontacto)
-    {
-        $this->mecanismocontacto = $mecanismocontacto;
-    }
-
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getMecanismocontacto()
-    {
-        return $this->mecanismocontacto;
-    }
-
-
-
-
 }

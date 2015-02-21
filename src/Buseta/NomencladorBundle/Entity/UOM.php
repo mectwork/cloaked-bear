@@ -22,37 +22,6 @@ class UOM extends BaseNomenclador
     protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=255)
-     */
-    private $descripcion;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Producto", mappedBy="uom", cascade={"all"})
-     */
-    private $productos;
-
-    /**
-     * @return string
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-
-    /**
-     * @param string $descripcion
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-    }
-
-
-    /**
      * @param int $id
      */
     public function setId($id)
@@ -67,23 +36,4 @@ class UOM extends BaseNomenclador
     {
         return $this->id;
     }
-
-    /**
-     * @param \Doctrine\Common\Collections\ArrayCollection $productos
-     */
-    public function setProductos($productos)
-    {
-        $this->productos = $productos;
-    }
-
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getProductos()
-    {
-        return $this->productos;
-    }
-
-
-
 }

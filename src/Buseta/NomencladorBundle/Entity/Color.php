@@ -22,13 +22,6 @@ class Color extends BaseNomenclador
     protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=255)
-     */
-    private $descripcion;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -37,28 +30,4 @@ class Color extends BaseNomenclador
     {
         return $this->id;
     }
-
-    /**
-     * Set descripcion
-     *
-     * @param string $descripcion
-     * @return Color
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-    
-        return $this;
-    }
-
-    /**
-     * Get descripcion
-     *
-     * @return string 
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-
 }

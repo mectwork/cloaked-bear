@@ -29,13 +29,6 @@ class Grupo extends BaseNomenclador
     protected $valor;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=255)
-     */
-    private $descripcion;
-
-    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Buseta\NomencladorBundle\Entity\Subgrupo", mappedBy="grupo", cascade={"all"})
@@ -47,22 +40,6 @@ class Grupo extends BaseNomenclador
     public function __toString()
     {
         return $this->valor;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-
-    /**
-     * @param string $descripcion
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
     }
 
     /**

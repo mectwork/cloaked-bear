@@ -29,13 +29,6 @@ class Condicion extends BaseNomenclador
     private $productos;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=255)
-     */
-    private $descripcion;
-
-    /**
      * @param int $id
      */
     public function setId($id)
@@ -66,32 +59,4 @@ class Condicion extends BaseNomenclador
     {
         return $this->productos;
     }
-
-
-
-    /**
-     * Set descripcion
-     *
-     * @param string $descripcion
-     * @return Color
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-
-        return $this;
-    }
-
-    /**
-     * Get descripcion
-     *
-     * @return string
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-
-
-
 }

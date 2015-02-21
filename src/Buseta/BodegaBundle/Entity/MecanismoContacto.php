@@ -23,7 +23,7 @@ class MecanismoContacto
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\TipoContacto", inversedBy="mecanismocontacto")
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\TipoContacto")
      */
     private $tipocontacto;
 
@@ -56,19 +56,19 @@ class MecanismoContacto
     }
 
     /**
-     * @param mixed $tipocontacto
-     */
-    public function setTipocontacto($tipocontacto)
-    {
-        $this->tipocontacto = $tipocontacto;
-    }
-
-    /**
      * @return mixed
      */
     public function getTipocontacto()
     {
         return $this->tipocontacto;
+    }
+
+    /**
+     * @param mixed $tipocontacto
+     */
+    public function setTipocontacto($tipocontacto)
+    {
+        $this->tipocontacto = $tipocontacto;
     }
 
     /**
