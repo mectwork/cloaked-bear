@@ -629,7 +629,7 @@ class Autobus
     /**
      * Get numero_motor
      *
-     * @return string 
+     * @return string
      */
     public function getNumeroMotor()
     {
@@ -790,7 +790,7 @@ class Autobus
     /**
      * Get capacidad_tanque
      *
-     * @return integer 
+     * @return integer
      */
     public function getCapacidadTanque()
     {
