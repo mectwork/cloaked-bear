@@ -26,9 +26,9 @@ class InformeStockController extends Controller
 
             if($informeStock->isValid()){
 
+                //Se obtienen todas las bitacoras que cumplieron con el filtro de búsqueda
                 $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->busquedaBitacoraAlmacen($informeStock);
                 $almacenes = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
-
 
                 $funcionesExtras = new FuncionesExtras();
                 $almacenesArray = $funcionesExtras->generarInformeStock($bitacoras, $em);

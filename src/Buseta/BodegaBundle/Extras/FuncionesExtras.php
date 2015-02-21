@@ -136,10 +136,8 @@ class FuncionesExtras
                         {
                             $cantidadPedido -= $bitacora->getCantMovida();
                         }
-
                     }
                 }
-
 
                 //Actualizo el informeStock
                 if($cantidadPedido != 0)
@@ -148,12 +146,10 @@ class FuncionesExtras
                     $almacenesArray[$pos]['producto'] = $producto;
                     $almacenesArray[$pos]['cantidad'] = $cantidadPedido;
                     $pos +=1;
-
                 }
 
                 //Reinicio cantidad de pedidos
                 $cantidadPedido = 0;
-
             }
 
         }

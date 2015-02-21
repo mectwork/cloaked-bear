@@ -117,7 +117,7 @@ easy_admin:
     site_name: 'Nomencladores'
     assets:
         css:
-            - '/bundles/busetanomenclador/css/admin.css'
+            - '/Taller/web/bundles/busetanomenclador/css/admin.css'
     entities:
         - Buseta\NomencladorBundle\Entity\AceiteCajaCambios
         - Buseta\NomencladorBundle\Entity\AceiteHidraulico

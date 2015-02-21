@@ -40,6 +40,11 @@ class BitacoraAlmacen
     private $producto;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\CategoriaProducto")
+     */
+    private $categoriaProducto;
+
+    /**
      * @var date
      *
      * @ORM\Column(name="fechaMovimiento", type="date")
@@ -541,4 +546,21 @@ class BitacoraAlmacen
     {
         return $this->deletedby;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCategoriaProducto()
+    {
+        return $this->categoriaProducto;
+    }
+
+    /**
+     * @param mixed $categoriaProducto
+     */
+    public function setCategoriaProducto($categoriaProducto)
+    {
+        $this->categoriaProducto = $categoriaProducto;
+    }
+
 }

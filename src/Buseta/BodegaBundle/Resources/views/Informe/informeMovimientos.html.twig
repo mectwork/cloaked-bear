@@ -1,0 +1,70 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo %}
+    Informe de Movimientos de Almacenes
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Informe de Movimientos de Almacenes
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <h4><a id="busqueda_movimiento" style="cursor: pointer; "><i class="icon-chevron-down"></i> Búsqueda de Movimientos de Almacenes</a></h4>
+    <div id="busqueda_movimiento_div" class="panel panel-default" style="display: none">
+        <div class="panel-body">
+            <fieldset>
+                {{ form_start(movimiento) }}
+                <div class="row show-grid" style="padding-top: 0px">
+                    <div class="col-md-4">
+                        {{ form_row(movimiento.fechaInicio) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(movimiento.fechaFin) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(movimiento.categoriaProducto) }}
+                    </div>
+                </div>
+
+                <div class="row show-grid" style="padding-top: 0px">
+                    <div class="col-md-6">
+                        {{ form_row(movimiento.almacenOrigen) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(movimiento.almacenDestino) }}
+                    </div>
+                </div>
+
+                {{ form_end(movimiento) }}
+
+                <div class="row show-grid">
+                    <div class="col-md-6">
+                        <input class="btn btn-primary btn-bg" style="width: 100px;" value="Buscar" name="buscar" onclick="setFilters()">
+
+                        <div class="btn-group">
+                            <a class="btn btn-success btn-bg" href="{{ path('bodega') }}"><i class="fa fa-search"> Reiniciar Búsqueda</i></a>
+                        </div>
+                    </div>
+                </div>
+
+
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="movimientos-result-table" style="text-align: center;"> </div>
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{asset('bundles/busetabodega/busquedaMovimientoProducto.js')}}" type="text/javascript"></script>
+
+{% endblock %}

@@ -203,6 +203,7 @@ class MovimientoController extends Controller
                     $entity->setAlmacenDestino($almacenDestino);
                     $entity->setFechaMovimiento($fechaMovimiento);
                     $entity->setCantidadMovida($movimiento['cantidad']);
+                    $entity->setCategoriaProducto($producto->getCategoriaProducto());
                     $em->persist($entity);
                     $em->flush();
                 }

@@ -22,9 +22,9 @@ class BusquedaInformeStockType extends AbstractType{
                     'class' => 'form-control',
                 )
             ))
-            ->add('producto','entity',array(
-                'class' => 'BusetaBodegaBundle:Producto',
-                'empty_value' => '---Seleccione producto---',
+            ->add('categoriaProducto','entity',array(
+                'class' => 'BusetaBodegaBundle:CategoriaProducto',
+                'empty_value' => '---Seleccione categoría de producto---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',

@@ -2,7 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
-use Buseta\NomencladorBundle\Entity\CategoriaProducto;
+use Buseta\BodegaBundle\Entity\CategoriaProducto;
 use Doctrine\ORM\EntityRepository;
 
 /**

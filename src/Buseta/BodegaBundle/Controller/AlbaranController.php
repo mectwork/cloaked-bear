@@ -61,6 +61,7 @@ class AlbaranController extends Controller
             //Actualizar Bitácora
             $bitacora = new BitacoraAlmacen();
             $bitacora->setProducto($linea->getProducto());
+            $bitacora->setCategoriaProducto($linea->getProducto()->getCategoriaProducto());
             $bitacora->setFechaMovimiento($albaran->getFechaMovimiento());
             $bitacora->setAlmacen($linea->getAlmacen());
             $bitacora->setCantMovida($linea->getCantidadMovida());

@@ -38,6 +38,11 @@ class Movimiento
     private $producto;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\CategoriaProducto")
+     */
+    private $categoriaProducto;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="cantidadMovida", type="integer")
@@ -374,4 +379,21 @@ class Movimiento
     {
         return $this->movimientos_productos;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCategoriaProducto()
+    {
+        return $this->categoriaProducto;
+    }
+
+    /**
+     * @param mixed $categoriaProducto
+     */
+    public function setCategoriaProducto($categoriaProducto)
+    {
+        $this->categoriaProducto = $categoriaProducto;
+    }
+
 }

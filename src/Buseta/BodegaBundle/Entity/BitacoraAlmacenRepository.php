@@ -29,9 +29,9 @@ class BitacoraAlmacenRepository extends EntityRepository
                 ->setParameter('almacen', $datos['almacen']);
         }
 
-        if($datos['producto'] !== null && $datos['producto'] !== '') {
-            $q->andWhere('o.producto = :producto')
-                ->setParameter('producto', $datos['producto']);
+        if($datos['categoriaProducto'] !== null && $datos['categoriaProducto'] !== '') {
+            $q->andWhere('o.categoriaProducto = :categoriaProducto')
+                ->setParameter('categoriaProducto', $datos['categoriaProducto']);
         }
 
         if($datos['fecha'] !== null && $datos['fecha'] !== '') {
