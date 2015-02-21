@@ -13,7 +13,6 @@ use Doctrine\ORM\NoResultException;
  */
 class BitacoraAlmacenRepository extends EntityRepository
 {
-
     public function busquedaBitacoraAlmacen($busqueda)
     {
         $qb = $this->_em->createQueryBuilder();

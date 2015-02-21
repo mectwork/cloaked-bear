@@ -1,0 +1,127 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo %}
+    Informe de Costos
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Informe de Costos
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <div id="busqueda_informeCostos_div" class="panel panel-default" style="display: block;">
+        <div class="panel-body">
+            <fieldset>
+                <form action="{{ path('informeCostos') }}" method="post">
+
+                    <div class="row show-grid" style="padding-top: 0px">
+                        <div class="col-md-4">
+                            {{ form_row(informeCostos.almacen) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_row(informeCostos.categoriaProducto) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_row(informeCostos.fecha) }}
+                        </div>
+                    </div>
+                    <div class="row show-grid">
+                        <div class="col-md-6">
+                            <input class="btn btn-primary btn-bg" style="width: 100px;" type="submit" value="Buscar" name="buscar">
+
+                            <div class="btn-group">
+                                <a class="btn btn-success btn-bg" href="{{ path('informeCostos') }}"><i class="fa fa-search"> Reiniciar Búsqueda</i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+            </fieldset>
+        </div>
+    </div>
+
+    {%  if almacenes != null %}
+        {% for almacen in almacenes %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <h4>Almacén "{{ almacen.nombre }}"</h4>
+
+                            <table class="records_list table table-striped table-bordered table-condensed table-hover">
+                                <thead>
+                                <tr>
+                                    <th  style="text-align: left;">Producto</th>
+                                    <th>Cantidad de productos</th>
+                                    <th>Costo Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% set comprobar = '' %}
+
+                                {% for entity in entities %}
+
+                                    {% if entity.almacen == almacen %}
+                                        {% if entity.costos != 0 %}
+                                            <tr>
+                                                <td>{{ entity.producto }}</td>
+                                                <td  style="text-align: center;">{{ entity.cantidad }}</td>
+                                                <td  style="text-align: center;">{{ entity.costos }}</td>
+                                            </tr>
+                                        {% endif %}
+
+                                        {% set comprobar = 'ok' %}
+
+                                    {% endif %}
+
+                                {% endfor %}
+
+                                {% if comprobar != 'ok' %}
+                                    <tr>
+                                        <td colspan="12">No se encontraron registros de productos para este almacén.</td>
+                                    </tr>
+                                {% endif %}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        {% endfor %}
+
+        {% else %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <h4>No se encontraron registros para los parámetros de búsqueda seleccionados.</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    {% endif %}
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('vendors/funciones_datetime_new.js') }}"></script>
+
+{% endblock %}

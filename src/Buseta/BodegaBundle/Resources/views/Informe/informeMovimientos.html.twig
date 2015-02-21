@@ -14,7 +14,8 @@
 
 {% block area_trabajo %}
 
-    <h4><a id="busqueda_movimiento" style="cursor: pointer; "><i class="icon-chevron-down"></i> Búsqueda de Movimientos de Almacenes</a></h4>
+    <h4><a id="busqueda_movimiento" style="cursor: pointer; "><i class="icon-chevron-down"></i> Búsqueda de Movimientos
+            de Almacenes</a></h4>
     <div id="busqueda_movimiento_div" class="panel panel-default" style="display: none">
         <div class="panel-body">
             <fieldset>
@@ -44,10 +45,12 @@
 
                 <div class="row show-grid">
                     <div class="col-md-6">
-                        <input class="btn btn-primary btn-bg" style="width: 100px;" value="Buscar" name="buscar" onclick="setFilters()">
+                        <input class="btn btn-primary btn-bg" style="width: 100px;" value="Buscar" name="buscar"
+                               onclick="setFilters()">
 
                         <div class="btn-group">
-                            <a class="btn btn-success btn-bg" href="{{ path('bodega') }}"><i class="fa fa-search"> Reiniciar Búsqueda</i></a>
+                            <a class="btn btn-success btn-bg" href="{{ path('bodega') }}"><i class="fa fa-search">
+                                    Reiniciar Búsqueda</i></a>
                         </div>
                     </div>
                 </div>
@@ -57,7 +60,7 @@
         </div>
     </div>
 
-    <div class="movimientos-result-table" style="text-align: center;"> </div>
+    <div class="movimientos-result-table" style="text-align: center;"></div>
 
 {% endblock %}
 
@@ -65,6 +68,44 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script src="{{asset('bundles/busetabodega/busquedaMovimientoProducto.js')}}" type="text/javascript"></script>
+
+    <script src="{{ asset('vendors/timepicker_bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('vendors/timepicker_bootstrap/moment.js') }}"></script>
+    <script src="{{ asset('vendors/timepicker_bootstrap/bootstrap-datetimepicker.js') }}"></script>
+    <script src="{{ asset('vendors/timepicker_bootstrap/ru.js') }}"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            $('#data_busqueda_movimiento_producto_type_fechaInicio').datetimepicker({
+                'pickTime': false,
+                'format': 'DD/MM/YYYY',
+                'formatSubmit': 'DD/MM/YYYY'
+            });
+
+            var fechaInicio = $('#data_busqueda_movimiento_producto_type_fechaInicio').val();
+            $('input:hidden[name^="data_busqueda_movimiento_producto_type[fechaInicio]_submit"]').val(fechaInicio);
+
+            $('#data_busqueda_movimiento_producto_type_fechaFin').datetimepicker({
+                'pickTime': false,
+                'format': 'DD/MM/YYYY',
+                'formatSubmit': 'DD/MM/YYYY'
+            });
+
+            var fechaFin = $('#data_busqueda_movimiento_producto_type_fechaFin').val();
+            $('input:hidden[name^="data_busqueda_movimiento_producto_type[fechaFin]_submit"]').val(fechaFin);
+
+            $("#data_busqueda_movimiento_producto_type_fechaInicio").on("dp.change", function (e) {
+                $('#data_busqueda_movimiento_producto_type_fechaFin').data("DateTimePicker").setMinDate(e.date);
+            });
+            $("#data_busqueda_movimiento_producto_type_fechaFin").on("dp.change", function (e) {
+                $('#data_busqueda_movimiento_producto_type_fechaInicio').data("DateTimePicker").setMaxDate(e.date);
+            });
+
+        });
+
+    </script>
+
+    <script src="{{ asset('bundles/busetabodega/busquedaMovimientoProducto.js') }}" type="text/javascript"></script>
 
 {% endblock %}

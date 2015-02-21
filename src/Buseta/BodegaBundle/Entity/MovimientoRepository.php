@@ -13,17 +13,19 @@ use Doctrine\ORM\NoResultException;
  */
 class MovimientoRepository extends EntityRepository
 {
-    public function busquedaAvanzada($page, $cantResult, $filter = array(), $orderBy = null) {
+    public function busquedaAvanzada($page, $cantResult, $filter = array(), $orderBy = null)
+    {
         $q = 'SELECT p FROM BusetaBodegaBundle:Movimiento p WHERE p.id != 0';
 
         //Obteniendo resto de la consulta dql
-        $q.=$this->constructSubDQL($filter);
+        $q .= $this->constructSubDQL($filter);
 
         //Estableciendo Order By
-        if (empty($orderBy))
-            $q.=' ORDER BY p.id DESC';
-        else
-            $q.= ' ORDER BY ' . $orderBy;
+        if (empty($orderBy)) {
+            $q .= ' ORDER BY p.id DESC';
+        } else {
+            $q .= ' ORDER BY ' . $orderBy;
+        }
 
         $maxResult = $this->getNotDeletedMaxResult($filter);
         $firstResult = $page * $cantResult;
@@ -34,16 +36,18 @@ class MovimientoRepository extends EntityRepository
         }
 
         //Valores de navegación
-        if($maxResult < $cantResult)
+        if ($maxResult < $cantResult) {
             $last = 0;
-        elseif ($maxResult % $cantResult > 0)
+        } elseif ($maxResult % $cantResult > 0) {
             $last = floor($maxResult / $cantResult);
-        else
-            $last = floor($maxResult / $cantResult)-1;
+        } else {
+            $last = floor($maxResult / $cantResult) - 1;
+        }
 
 
-        if($last < 0)
+        if ($last < 0) {
             $last = 0;
+        }
         $next = ($page != $last) ? true : false;
         $prev = ($page != 0) ? true : false;
         $first = ($page == 0) ? false : true;
@@ -71,9 +75,10 @@ class MovimientoRepository extends EntityRepository
         }
     }
 
-    public function getNotDeletedMaxResult($filter) {
+    public function getNotDeletedMaxResult($filter)
+    {
         $q = 'SELECT COUNT(p) FROM BusetaBodegaBundle:Movimiento p WHERE p.id != 0';
-        $q.=$this->constructSubDQL($filter);
+        $q .= $this->constructSubDQL($filter);
 
         $query = $this->_em->createQuery($q);
         try {
@@ -83,37 +88,47 @@ class MovimientoRepository extends EntityRepository
         }
     }
 
-    public function constructSubDQL($filter) {
+    public function constructSubDQL($filter)
+    {
         $q = '';
 
-        if (isset($filter['almacenOrigen']) && !empty($filter['almacenOrigen'])){
+        if (isset($filter['fechaInicio']) && !empty($filter['fechaInicio']))
+            $q.= " AND p.fechaMovimiento <= '".$filter['fechaInicio']."' ";
+
+        if (isset($filter['fechaFin']) && !empty($filter['fechaFin']))
+            $q.= " AND p.fechaMovimiento <= '".$filter['fechaFin']."' ";
+
+        if (isset($filter['almacenOrigen']) && !empty($filter['almacenOrigen'])) {
 
             $results = $this->_em->getRepository('BusetaBodegaBundle:Bodega')->searchByValor($filter['almacenOrigen']);
 
-            if(count($results) !=0)
-                $q.= " AND p.almacenOrigen = " . $results[0]->getId() . " ";
-            else
-                $q.= " AND p.almacenOrigen = -1 ";
+            if (count($results) != 0) {
+                $q .= " AND p.almacenOrigen = " . $results[0]->getId() . " ";
+            } else {
+                $q .= " AND p.almacenOrigen = -1 ";
+            }
         }
 
-        if (isset($filter['almacenDestino']) && !empty($filter['almacenDestino'])){
+        if (isset($filter['almacenDestino']) && !empty($filter['almacenDestino'])) {
 
             $results = $this->_em->getRepository('BusetaBodegaBundle:Bodega')->searchByValor($filter['almacenDestino']);
 
-            if(count($results) !=0)
-                $q.= " AND p.almacenDestino = " . $results[0]->getId() . " ";
-            else
-                $q.= " AND p.almacenDestino = -1 ";
+            if (count($results) != 0) {
+                $q .= " AND p.almacenDestino = " . $results[0]->getId() . " ";
+            } else {
+                $q .= " AND p.almacenDestino = -1 ";
+            }
         }
 
-        if (isset($filter['categoriaProducto']) && !empty($filter['categoriaProducto'])){
+        if (isset($filter['categoriaProducto']) && !empty($filter['categoriaProducto'])) {
 
             $results = $this->_em->getRepository('BusetaBodegaBundle:CategoriaProducto')->searchByValor($filter['categoriaProducto']);
 
-            if(count($results) !=0)
-                $q.= " AND p.categoriaProducto = " . $results[0]->getId() . " ";
-            else
-                $q.= " AND p.categoriaProducto = -1 ";
+            if (count($results) != 0) {
+                $q .= " AND p.categoriaProducto = " . $results[0]->getId() . " ";
+            } else {
+                $q .= " AND p.categoriaProducto = -1 ";
+            }
         }
 
 
