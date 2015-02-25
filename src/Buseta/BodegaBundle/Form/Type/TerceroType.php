@@ -55,6 +55,9 @@ class TerceroType extends AbstractType
             ->add('proveedor', 'checkbox', array(
                     'required' => false,
                 ))
+            ->add('persona', 'checkbox', array(
+                'required' => false,
+            ))
             ->add('activo', 'checkbox', array(
                     'required' => false,
                 ))
