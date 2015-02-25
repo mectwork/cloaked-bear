@@ -47,14 +47,26 @@ class OrdenTrabajoController extends Controller
     {
         $entity = new OrdenTrabajo();
         $form = $this->createCreateForm($entity);
+
         $form->handleRequest($request);
-
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+            $em = $this->get('doctrine.orm.entity_manager');
 
-            return $this->redirect($this->generateUrl('ordentrabajo_show', array('id' => $entity->getId())));
+            try {
+                $em->persist($entity);
+                $em->flush();
+
+                $this->get('session')->getFlashBag()
+                    ->add('success', 'Se ha creado la Orden de Trabajo de forma satisfactoria.');
+
+                return $this->redirect($this->generateUrl('ordentrabajo_show', array('id' => $entity->getId())));
+            } catch(\Exception $e) {
+                $this->get('logger')
+                    ->addCritical(sprintf('Ha ocurrido un error creando la Orden de Trabajo. Detalles: %s', $e->getMessage()));
+
+                $this->get('session')->getFlashBag()
+                    ->add('danger', 'Ha ocurrido un error creando la Orden de Trabajo.');
+            }
         }
 
         return $this->render('BusetaTallerBundle:OrdenTrabajo:new.html.twig', array(

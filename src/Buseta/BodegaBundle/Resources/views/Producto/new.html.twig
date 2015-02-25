@@ -6,8 +6,6 @@
 
     {% block stylesheets %}
         {{ parent() }}
-
-        <link rel="stylesheet" href="{{ asset('vendors/timepicker_bootstrap/css/bootstrap-datetimepicker.min.css') }}" media="screen">
     {% endblock %}
 
 {% endblock %}
@@ -213,28 +211,24 @@
 
         $(function(){
             $('#buseta_bodegabundle_precio_producto_fechaInicio').datetimepicker({
-                'pickTime' : false,
-                'format': 'DD/MM/YYYY',
-                'formatSubmit': 'DD/MM/YYYY'
+                'format': 'DD/MM/YYYY'
             });
 
             var fechaInicio = $('#buseta_bodegabundle_precio_producto_fechaInicio').val();
             $('input:hidden[name^="buseta_bodegabundle_precio_producto[fechaInicio]_submit"]').val(fechaInicio);
 
             $('#buseta_bodegabundle_precio_producto_fechaFin').datetimepicker({
-                'pickTime' : false,
-                'format': 'DD/MM/YYYY',
-                'formatSubmit': 'DD/MM/YYYY'
+                'format': 'DD/MM/YYYY'
             });
 
             var fechaFin = $('#buseta_bodegabundle_precio_producto_fechaFin').val();
             $('input:hidden[name^="buseta_bodegabundle_precio_producto[fechaFin]_submit"]').val(fechaFin);
 
             $("#buseta_bodegabundle_precio_producto_fechaInicio").on("dp.change",function (e) {
-                $('#buseta_bodegabundle_precio_producto_fechaFin').data("DateTimePicker").setMinDate(e.date);
+                $('#buseta_bodegabundle_precio_producto_fechaFin').data("DateTimePicker").minDate(e.date);
             });
             $("#buseta_bodegabundle_precio_producto_fechaFin").on("dp.change",function (e) {
-                $('#buseta_bodegabundle_precio_producto_fechaInicio').data("DateTimePicker").setMaxDate(e.date);
+                $('#buseta_bodegabundle_precio_producto_fechaInicio').data("DateTimePicker").maxDate(e.date);
             });
 
             $('#error').fadeOut(10);

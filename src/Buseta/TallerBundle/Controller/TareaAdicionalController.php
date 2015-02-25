@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Buseta\TallerBundle\Entity\TareaAdicional;
-use Buseta\TallerBundle\Form\TareaAdicionalType;
+use Buseta\TallerBundle\Form\Type\TareaAdicionalType;
 
 /**
  * TareaAdicional controller.
@@ -14,6 +14,18 @@ use Buseta\TallerBundle\Form\TareaAdicionalType;
  */
 class TareaAdicionalController extends Controller
 {
+
+    public function newModalAction(Request $request)
+    {
+        $form = $this->createForm(new TareaAdicionalType(), null, array(
+            'method' => 'POST',
+            'action' => $this->generateUrl('tareaadicional_new_modal')
+        ));
+
+        return $this->render('@BusetaTaller/OrdenTrabajo/modal/modal_tarea_adicional.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
 
     /**
      * Lists all TareaAdicional entities.
@@ -29,6 +41,7 @@ class TareaAdicionalController extends Controller
             'entities' => $entities,
         ));
     }
+
     /**
      * Creates a new TareaAdicional entity.
      *

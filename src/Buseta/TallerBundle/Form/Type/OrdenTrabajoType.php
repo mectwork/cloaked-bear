@@ -24,7 +24,14 @@ class OrdenTrabajoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('realizada_por', 'entity', array(
+            ->add('requisionMateriales', 'text', array(
+                    'required' => false,
+                    'label' => 'Número control materiales',
+                    'attr'   => array(
+                        'class' => 'form-control',
+                    )
+                ))
+            ->add('realizadaPor', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'required' => false,
                 'label'  => 'Responsable',
@@ -38,27 +45,34 @@ class OrdenTrabajoType extends AbstractType
                     return $qb;
                 }
             ))
-            ->add('diagnostico', 'text', array(
+            ->add('diagnostico', 'entity', array(
+                'class' => 'BusetaBodegaBundle:Tercero',
                 'required' => false,
                 'label'  => 'Diagnóstico',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
+                'query_builder' => function(EntityRepository $repository) {
+                    $qb = $repository->createQueryBuilder('responsable');
+                    $qb->andWhere($qb->expr()->eq('responsable.persona', true));
+
+                    return $qb;
+                }
             ))
             ->add('observaciones', 'textarea', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Observaciones',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('prioridad', 'choice', array(
-                'required' => false,
                 'label'  => 'Prioridad',
                 'choices' => array(
                     'rapida'=>'Rápida',
                     'normal' => 'Normal',
                 ),
+                'data' => 'normal',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
@@ -80,12 +94,12 @@ class OrdenTrabajoType extends AbstractType
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
                 'empty_value' => '---Seleccione un autobus---',
-                'required' => false,
+                'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
                 )
             ))
-            ->add('tarea_adicional','collection',array(
+            ->add('tareasAdicionales','collection',array(
                 'type' => new TareaAdicionalType(),
                 'label'  => false,
                 'required' => true,
@@ -93,7 +107,7 @@ class OrdenTrabajoType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
-            ->add('fecha_inicio', 'date', array(
+            ->add('fechaInicio', 'date', array(
                 'required' => false,
                 'label'  => 'Fecha inicio',
                 'format' => 'dd/MM/yyyy',
@@ -102,7 +116,7 @@ class OrdenTrabajoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('fecha_final', 'date', array(
+            ->add('fechaFinal', 'date', array(
                 'required' => false,
                 'label'  => 'Fecha final',
                 'format' => 'dd/MM/yyyy',
@@ -111,14 +125,14 @@ class OrdenTrabajoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('duracion_dias', 'text', array(
+            ->add('duracionDias', 'text', array(
                 'required' => false,
                 'label'  => 'Duración de días',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
-            ->add('duracion_horas_laboradas', 'text', array(
+            ->add('duracionHorasLaboradas', 'text', array(
                 'required' => false,
                 'label'  => 'Duración de horas laboradas',
                 'attr'   => array(
@@ -126,6 +140,7 @@ class OrdenTrabajoType extends AbstractType
                 )
             ))
             ->add('estado', 'choice', array(
+                'required' => false,
                 'choices' => array(
                     'revisado' => 'REVISADO',
                     'aprobado' => 'APROBADO',

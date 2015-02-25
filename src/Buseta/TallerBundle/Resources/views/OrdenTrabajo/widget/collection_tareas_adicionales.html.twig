@@ -6,57 +6,50 @@
     {% endif %}
     {{ form_errors(form) }}
 
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div  {{ block('widget_container_attributes') }}>
-                        <h4>Listado de tareas adicionales insertadas:</h4>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div  {{ block('widget_container_attributes') }}>
+                <h4>Listado de tareas adicionales insertadas:</h4>
 
-                        <div class="row form-group" >
-                            <div class="col-lg-12">
-                                <div class="col-lg-2" style="text-align: center;"><b>Grupo</b></div>
-                                <div class="col-lg-2" style="text-align: center;"><b>Subgrupo</b></div>
-                                <div class="col-lg-4" style="text-align: center;"><b>Tarea</b></div>
-                                <div class="col-lg-2" style="text-align: center;"><b>Fecha estimada</b></div>
-                                <div class="col-lg-2" style="text-align: center;"><b>Descripcion</b></div>
-                            </div>
-                        </div>
-
-                        <div id="tbody">
-                            {% set counter = form | length %}
-                            {% for rows in form %}
-                                <div class="row form-group">
-                                    {{ _self.template(rows) }}
-                                </div>
-                            {% endfor %}
-                            {% if counter == 0 %}
-                                <div id="no-elements-tr">No existen elementos. Presione "Adicionar" para agregar nuevos elementos.</div>
-                            {% else %}
-                                <div id="no-elements-tr">No existen elementos. Presione "Adicionar" para agregar nuevos elementos.</div>
-                            {% endif %}
-                        </div>
+                <div class="row form-group" >
+                    <div class="col-lg-12">
+                        <div class="col-lg-2" style="text-align: center;"><b>Grupo</b></div>
+                        <div class="col-lg-2" style="text-align: center;"><b>Subgrupo</b></div>
+                        <div class="col-lg-4" style="text-align: center;"><b>Tarea</b></div>
+                        <div class="col-lg-2" style="text-align: center;"><b>Fecha estimada</b></div>
+                        <div class="col-lg-2" style="text-align: center;"><b>Descripcion</b></div>
                     </div>
                 </div>
 
+                <div id="tbody">
+                    {% set counter = form | length %}
+                    {% for rows in form %}
+                        <div class="row form-group">
+                            {{ _self.template(rows) }}
+                        </div>
+                    {% endfor %}
+                    {% if counter == 0 %}
+                        <div id="no-elements-tr">No existen elementos. Presione "Adicionar" para agregar nuevos elementos.</div>
+                    {% else %}
+                        <div id="no-elements-tr">No existen elementos. Presione "Adicionar" para agregar nuevos elementos.</div>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
 
     {{ form_rest(form) }}
-    <div>
-
-    </div>
+</div>
     {% endspaceless %}
-    {% endblock collection_widget %}
+{% endblock collection_widget %}
 
-    {% block collection_item_widget %}
-        {% spaceless %}
-            {{ _self.template(prototype) }}
-        {% endspaceless %}
-    {% endblock collection_item_widget %}
+{% block collection_item_widget %}
+    {% spaceless %}
+        {{ _self.template(prototype) }}
+    {% endspaceless %}
+{% endblock collection_item_widget %}
 
-    {% macro template(prototype) %}
+{% macro template(prototype) %}
     <div class="col-lg-2 form-group">
         {{ form_errors(prototype.grupo) }}
         {{ form_widget(prototype.grupo) }}
@@ -70,28 +63,28 @@
         {{ form_widget(prototype.tarea) }}
     </div>
     <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.fecha_estimada) }}
-        {{ form_widget(prototype.fecha_estimada) }}
+        {{ form_errors(prototype.fechaEstimada) }}
+        {{ form_widget(prototype.fechaEstimada) }}
     </div>
     <div class="col-lg-2 form-group">
         {{ form_errors(prototype.descripcion) }}
         {{ form_widget(prototype.descripcion) }}
     </div>
     <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.hora_inicio) }}
-        {{ form_widget(prototype.hora_inicio) }}
+        {{ form_errors(prototype.horaInicio) }}
+        {{ form_widget(prototype.horaInicio) }}
     </div>
     <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.hora_final) }}
-        {{ form_widget(prototype.hora_final) }}
+        {{ form_errors(prototype.horaFinal) }}
+        {{ form_widget(prototype.horaFinal) }}
     </div>
     <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.garantias_tareas) }}
-        {{ form_widget(prototype.garantias_tareas) }}
+        {{ form_errors(prototype.garantiaTarea) }}
+        {{ form_widget(prototype.garantiaTarea) }}
     </div>
     <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.horas_laboradas) }}
-        {{ form_widget(prototype.horas_laboradas) }}
+        {{ form_errors(prototype.horasLaboradas) }}
+        {{ form_widget(prototype.horasLaboradas) }}
     </div>
 
     <div class="col-lg-1 form-group">

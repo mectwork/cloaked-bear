@@ -33,13 +33,13 @@ class TareaAdicionalType extends AbstractType
             ))
             ->add('descripcion', 'textarea', array(
                 'required' => true,
-                'label'  => 'Descripción',
+                'label'  => 'Observación de tarea',
                 'attr'   => array(
                     'class' => 'form-control',
                     'style' => 'height: 120px',
                 )
             ))
-            ->add('garantias_tareas','entity',array(
+            ->add('garantiaTarea','entity',array(
                 'class' => 'BusetaNomencladorBundle:GarantiaTarea',
                 'label'  => 'Garantía de tarea',
                 'empty_value' => '---Seleccione una garantía---',
@@ -66,28 +66,28 @@ class TareaAdicionalType extends AbstractType
             ))
             */
 
-            ->add('fecha_estimada','date',array(
+            ->add('fechaEstimada','date',array(
                 'widget' => 'single_text',
                 'format'  => 'dd/MM/yyyy',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
-            ->add('hora_inicio', 'text', array(
+            ->add('horaInicio', 'text', array(
                 'required' => true,
                 'label'  => 'Hora inicio',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
-            ->add('hora_final', 'text', array(
+            ->add('horaFinal', 'text', array(
                 'required' => true,
                 'label'  => 'Hora final',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
-            ->add('horas_laboradas', 'hidden', array(
+            ->add('horasLaboradas', 'hidden', array(
                 'required' => false,
                 'mapped' => false,
                 'attr'   => array(

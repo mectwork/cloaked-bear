@@ -6,11 +6,6 @@
 
     {% block stylesheets %}
         {{ parent() }}
-
-        {#<link rel="stylesheet" href="{{ asset('vendors/datetime/css/datepicker.css') }}" media="screen">
-        <link rel="stylesheet" href="{{ asset('vendors/datetime/css/datepicker3.css') }}" media="screen">#}
-
-        <link rel="stylesheet" href="{{ asset('vendors/timepicker_bootstrap/css/bootstrap-datetimepicker.min.css') }}" media="screen">
     {% endblock %}
 {% endblock %}
 
@@ -190,40 +185,30 @@
 
     <script src="{{ asset('vendors/funciones_datetime_new.js') }}"></script>
 
-    <script src="{{ asset('vendors/timepicker_bootstrap/jquery-2.1.1.min.js') }}"></script>
-    <script src="{{ asset('vendors/timepicker_bootstrap/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('vendors/timepicker_bootstrap/moment.js') }}"></script>
-    <script src="{{ asset('vendors/timepicker_bootstrap/bootstrap-datetimepicker.js') }}"></script>
-    <script src="{{ asset('vendors/timepicker_bootstrap/ru.js') }}"></script>
-
     <script type="text/javascript">
     var collectionHolder = $('div#buseta_tallerbundle_ordentrabajo_tarea_adicional');
     var $addTagLink = $('a.add_tag_link');
 
     jQuery(document).ready(function() {
         $('#buseta_tallerbundle_ordentrabajo_fecha_inicio').datetimepicker({
-            'pickTime' : false,
-            'format': 'DD/MM/YYYY',
-            'formatSubmit': 'DD/MM/YYYY'
+            'format': 'DD/MM/YYYY'
         });
 
         var fecha_inicio = $('#buseta_tallerbundle_ordentrabajo_fecha_inicio').val();
         $('input:hidden[name^="buseta_tallerbundle_ordentrabajo[fecha_inicio]_submit"]').val(fecha_inicio);
 
         $('#buseta_tallerbundle_ordentrabajo_fecha_final').datetimepicker({
-            'pickTime' : false,
-            'format': 'DD/MM/YYYY',
-            'formatSubmit': 'DD/MM/YYYY'
+            'format': 'DD/MM/YYYY'
         });
 
         var fecha_final = $('#buseta_tallerbundle_ordentrabajo_fecha_final').val();
         $('input:hidden[name^="buseta_tallerbundle_ordentrabajo[fecha_final]_submit"]').val(fecha_final);
 
         $("#buseta_tallerbundle_ordentrabajo_fecha_inicio").on("dp.change",function (e) {
-            $('#buseta_tallerbundle_ordentrabajo_fecha_final').data("DateTimePicker").setMinDate(e.date);
+            $('#buseta_tallerbundle_ordentrabajo_fecha_final').data("DateTimePicker").minDate(e.date);
         });
         $("#buseta_tallerbundle_ordentrabajo_fecha_final").on("dp.change",function (e) {
-            $('#buseta_tallerbundle_ordentrabajo_fecha_inicio').data("DateTimePicker").setMaxDate(e.date);
+            $('#buseta_tallerbundle_ordentrabajo_fecha_inicio').data("DateTimePicker").maxDate(e.date);
         });
 
         $("#buseta_tallerbundle_ordentrabajo_fecha_final").change(function(){
@@ -244,22 +229,18 @@
 
 
         $('#buseta_tallerbundle_tarea_adicional_hora_inicio').datetimepicker({
-            'pickDate' : false,
-            'format': 'hh:mm A',
-            'formatSubmit': 'hh:mm'
+            'format': 'hh:mm A'
         });
 
         $('#buseta_tallerbundle_tarea_adicional_hora_final').datetimepicker({
-            'pickDate' : false,
-            'format': 'hh:mm A',
-            'formatSubmit': 'hh:mm'
+            'format': 'hh:mm A'
         });
 
         $("#buseta_tallerbundle_tarea_adicional_hora_inicio").on("dp.change",function (e) {
-            $('#buseta_tallerbundle_tarea_adicional_hora_final').data("DateTimePicker").setMinDate(e.date);
+            $('#buseta_tallerbundle_tarea_adicional_hora_final').data("DateTimePicker").minDate(e.date);
         });
         $("#buseta_tallerbundle_tarea_adicional_hora_final").on("dp.change",function (e) {
-            $('#buseta_tallerbundle_tarea_adicional_hora_inicio').data("DateTimePicker").setMaxDate(e.date);
+            $('#buseta_tallerbundle_tarea_adicional_hora_inicio').data("DateTimePicker").maxDate(e.date);
         });
 
         var hora_inicio = $('#buseta_tallerbundle_ordentrabajo_hora_inicio').val();
@@ -269,9 +250,7 @@
         $('input:hidden[name^="buseta_tallerbundle_ordentrabajo[hora_final]_submit"]').val(hora_final);
 
         $('#buseta_tallerbundle_tarea_adicional_fecha_estimada').datetimepicker({
-            'pickTime' : false,
-            'format': 'DD/MM/YYYY',
-            'formatSubmit': 'DD/MM/YYYY'
+            'format': 'DD/MM/YYYY'
         });
 
         var fecha_estimada = $('#buseta_tallerbundle_ordentrabajo_fecha_estimada').val();

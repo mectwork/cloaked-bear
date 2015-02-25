@@ -33,3 +33,10 @@ tareaadicional_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "BusetaTallerBundle:TareaAdicional:delete" }
     requirements: { _method: post|delete }
+
+tareaadicional_new_modal:
+    pattern: /modal/new
+    defaults: { _controller: "BusetaTallerBundle:TareaAdicional:newModal" }
+    requirements: { _method: get }
+    options:
+      expose: true

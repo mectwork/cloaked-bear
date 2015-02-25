@@ -78,28 +78,24 @@
 
         $(function () {
             $('#data_busqueda_movimiento_producto_type_fechaInicio').datetimepicker({
-                'pickTime': false,
-                'format': 'DD/MM/YYYY',
-                'formatSubmit': 'DD/MM/YYYY'
+                'format': 'DD/MM/YYYY'
             });
 
             var fechaInicio = $('#data_busqueda_movimiento_producto_type_fechaInicio').val();
             $('input:hidden[name^="data_busqueda_movimiento_producto_type[fechaInicio]_submit"]').val(fechaInicio);
 
             $('#data_busqueda_movimiento_producto_type_fechaFin').datetimepicker({
-                'pickTime': false,
-                'format': 'DD/MM/YYYY',
-                'formatSubmit': 'DD/MM/YYYY'
+                'format': 'DD/MM/YYYY'
             });
 
             var fechaFin = $('#data_busqueda_movimiento_producto_type_fechaFin').val();
             $('input:hidden[name^="data_busqueda_movimiento_producto_type[fechaFin]_submit"]').val(fechaFin);
 
             $("#data_busqueda_movimiento_producto_type_fechaInicio").on("dp.change", function (e) {
-                $('#data_busqueda_movimiento_producto_type_fechaFin').data("DateTimePicker").setMinDate(e.date);
+                $('#data_busqueda_movimiento_producto_type_fechaFin').data("DateTimePicker").minDate(e.date);
             });
             $("#data_busqueda_movimiento_producto_type_fechaFin").on("dp.change", function (e) {
-                $('#data_busqueda_movimiento_producto_type_fechaInicio').data("DateTimePicker").setMaxDate(e.date);
+                $('#data_busqueda_movimiento_producto_type_fechaInicio').data("DateTimePicker").maxDate(e.date);
             });
 
         });

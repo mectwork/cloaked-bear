@@ -27,48 +27,7 @@ class OrdenTrabajo
      *
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero")
      */
-    private $realizada_por;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus")
-     */
-    private $autobus;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="numero", type="string", nullable=false)
-     * @Assert\NotBlank()
-     */
-    private $numero;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="diagnostico", type="string", nullable=false)
-     */
-    private $diagnostico;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prioridad", type="string", nullable=false)
-     */
-    private $prioridad;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="observaciones", type="string", nullable=false)
-     */
-    private $observaciones;
-
-    /**
-     * @ORM\Column(name="estado", type="boolean", nullable=true)
-     */
-    private $estado;
+    private $realizadaPor;
 
     /**
      * @var \Buseta\BodegaBundle\Entity\Tercero
@@ -80,9 +39,61 @@ class OrdenTrabajo
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\TareaAdicional", mappedBy="orden_trabajo", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus")
+     * @Assert\NotNull
      */
-    private $tarea_adicional;
+    private $autobus;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numero", type="string")
+     * @Assert\NotBlank()
+     */
+    private $numero;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="requision_materiales", type="string", nullable=true)
+     */
+    private $requisionMateriales;
+
+    /**
+     * @var \Buseta\BodegaBundle\Entity\Tercero
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero")
+     */
+    private $diagnostico;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prioridad", type="string", nullable=false)
+     * @Assert\Choice(choices={"rapida", "normal"})
+     * @Assert\NotNull
+     * @Assert\NotBlank
+     */
+    private $prioridad;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="observaciones", type="string", nullable=true)
+     */
+    private $observaciones;
+
+    /**
+     * @ORM\Column(name="estado", type="string", nullable=true)
+     */
+    private $estado;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\TareaAdicional", mappedBy="ordenTrabajo", cascade={"all"})
+     */
+    private $tareasAdicionales;
 
     /**
      * @var \DateTime
@@ -90,29 +101,29 @@ class OrdenTrabajo
      * @ORM\Column(name="fecha_inicio", type="date")
      * @Assert\Date()
      */
-    private $fecha_inicio;
+    private $fechaInicio;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_final", type="date")
+     * @ORM\Column(name="fecha_final", type="date", nullable=true)
      * @Assert\Date()
      */
-    private $fecha_final;
+    private $fechaFinal;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="duracion_dias", type="string", nullable=false)
+     * @ORM\Column(name="duracion_dias", type="integer", nullable=true)
      */
-    private $duracion_dias;
+    private $duracionDias;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="duracion_horas_laboradas", type="string", nullable=false)
+     * @ORM\Column(name="duracion_horas_laboradas", type="integer", nullable=true)
      */
-    private $duracion_horas_laboradas;
+    private $duracionHorasLaboradas;
 
 
     /**
@@ -120,7 +131,7 @@ class OrdenTrabajo
      */
     public function __construct()
     {
-        $this->tarea_adicional = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tareasAdicionales = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function __toString()
@@ -254,118 +265,118 @@ class OrdenTrabajo
     }
 
     /**
-     * Set fecha_inicio
+     * Set fechaInicio
      *
      * @param \DateTime $fechaInicio
      * @return OrdenTrabajo
      */
     public function setFechaInicio($fechaInicio)
     {
-        $this->fecha_inicio = $fechaInicio;
+        $this->fechaInicio = $fechaInicio;
     
         return $this;
     }
 
     /**
-     * Get fecha_inicio
+     * Get fechaInicio
      *
      * @return \DateTime 
      */
     public function getFechaInicio()
     {
-        return $this->fecha_inicio;
+        return $this->fechaInicio;
     }
 
     /**
-     * Set fecha_final
+     * Set fechaFinal
      *
      * @param \DateTime $fechaFinal
      * @return OrdenTrabajo
      */
     public function setFechaFinal($fechaFinal)
     {
-        $this->fecha_final = $fechaFinal;
+        $this->fechaFinal = $fechaFinal;
     
         return $this;
     }
 
     /**
-     * Get fecha_final
+     * Get fechaFinal
      *
      * @return \DateTime 
      */
     public function getFechaFinal()
     {
-        return $this->fecha_final;
+        return $this->fechaFinal;
     }
 
     /**
-     * Set duracion_dias
+     * Set duracionDias
      *
      * @param string $duracionDias
      * @return OrdenTrabajo
      */
     public function setDuracionDias($duracionDias)
     {
-        $this->duracion_dias = $duracionDias;
+        $this->duracionDias = $duracionDias;
     
         return $this;
     }
 
     /**
-     * Get duracion_dias
+     * Get duracionDias
      *
      * @return string 
      */
     public function getDuracionDias()
     {
-        return $this->duracion_dias;
+        return $this->duracionDias;
     }
 
     /**
-     * Set duracion_horas_laboradas
+     * Set duracionHorasLaboradas
      *
      * @param string $duracionHorasLaboradas
      * @return OrdenTrabajo
      */
     public function setDuracionHorasLaboradas($duracionHorasLaboradas)
     {
-        $this->duracion_horas_laboradas = $duracionHorasLaboradas;
+        $this->duracionHorasLaboradas = $duracionHorasLaboradas;
     
         return $this;
     }
 
     /**
-     * Get duracion_horas_laboradas
+     * Get duracionHorasLaboradas
      *
      * @return string 
      */
     public function getDuracionHorasLaboradas()
     {
-        return $this->duracion_horas_laboradas;
+        return $this->duracionHorasLaboradas;
     }
 
     /**
-     * Set realizada_por
+     * Set realizadaPor
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $realizadaPor
      * @return OrdenTrabajo
      */
     public function setRealizadaPor(\Buseta\BodegaBundle\Entity\Tercero $realizadaPor = null)
     {
-        $this->realizada_por = $realizadaPor;
+        $this->realizadaPor = $realizadaPor;
     
         return $this;
     }
 
     /**
-     * Get realizada_por
+     * Get realizadaPor
      *
      * @return \Buseta\BodegaBundle\Entity\Tercero 
      */
     public function getRealizadaPor()
     {
-        return $this->realizada_por;
+        return $this->realizadaPor;
     }
 
     /**
@@ -415,36 +426,62 @@ class OrdenTrabajo
     }
 
     /**
-     * Add tarea_adicional
+     * Set requisionMateriales
      *
-     * @param \Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional
+     * @param string $requisionMateriales
      * @return OrdenTrabajo
      */
-    public function addTareaAdicional(\Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional)
+    public function setRequisionMateriales($requisionMateriales)
     {
-        $tareaAdicional->setOrdenTrabajo($this);
-        $this->tarea_adicional[] = $tareaAdicional;
+        $this->requisionMateriales = $requisionMateriales;
     
         return $this;
     }
 
     /**
-     * Remove tarea_adicional
+     * Get requisionMateriales
      *
-     * @param \Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional
+     * @return string 
      */
-    public function removeTareaAdicional(\Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional)
+    public function getRequisionMateriales()
     {
-        $this->tarea_adicional->removeElement($tareaAdicional);
+        return $this->requisionMateriales;
     }
 
     /**
-     * Get tarea_adicional
+     * Add tareasAdicionales
+     *
+     * @param \Buseta\TallerBundle\Entity\TareaAdicional $tareasAdicionales
+     * @return OrdenTrabajo
+     */
+    public function addTareasAdicionale(\Buseta\TallerBundle\Entity\TareaAdicional $tareasAdicionales)
+    {
+        $tareasAdicionales->setOrdenTrabajo($this);
+
+        $this->tareasAdicionales[] = $tareasAdicionales;
+    
+        return $this;
+    }
+
+    /**
+     * Remove tareasAdicionales
+     *
+     * @param \Buseta\TallerBundle\Entity\TareaAdicional $tareasAdicionales
+     */
+    public function removeTareasAdicionale(\Buseta\TallerBundle\Entity\TareaAdicional $tareasAdicionales)
+    {
+        $tareasAdicionales->setOrdenTrabajo(null);
+
+        $this->tareasAdicionales->removeElement($tareasAdicionales);
+    }
+
+    /**
+     * Get tareasAdicionales
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getTareaAdicional()
+    public function getTareasAdicionales()
     {
-        return $this->tarea_adicional;
+        return $this->tareasAdicionales;
     }
 }

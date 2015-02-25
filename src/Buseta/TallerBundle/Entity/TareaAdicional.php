@@ -38,14 +38,15 @@ class TareaAdicional
 
     /**
      * @var \Buseta\TallerBundle\Entity\OrdenTrabajo
-     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\OrdenTrabajo", inversedBy="tarea_adicional")
+     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\OrdenTrabajo", inversedBy="tareasAdicionales")
      */
-    private $orden_trabajo;
+    private $ordenTrabajo;
 
     /**
      * @var \Buseta\NomencladorBundle\Entity\Tarea
      *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Tarea")
+     * @Assert\NotNull
      */
     private $tarea;
 
@@ -54,22 +55,24 @@ class TareaAdicional
      *
      * @ORM\Column(name="hora_inicio", type="string", nullable=true)
      */
-    private $hora_inicio;
+    private $horaInicio;
 
     /**
      * @var string
      *
      * @ORM\Column(name="hora_final", type="string", nullable=true)
      */
-    private $hora_final;
+    private $horaFinal;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_estimada", type="date")
      * @Assert\Date()
+     * @Assert\NotNull
+     * @Assert\NotBlank
      */
-    private $fecha_estimada;
+    private $fechaEstimada;
 
     /**
      * @var string
@@ -83,7 +86,7 @@ class TareaAdicional
      *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\GarantiaTarea")
      */
-    private $garantias_tareas;
+    private $garantiaTarea;
     
 
     /**
@@ -97,72 +100,72 @@ class TareaAdicional
     }
 
     /**
-     * Set hora_inicio
+     * Set horaInicio
      *
      * @param string $horaInicio
      * @return TareaAdicional
      */
     public function setHoraInicio($horaInicio)
     {
-        $this->hora_inicio = $horaInicio;
+        $this->horaInicio = $horaInicio;
     
         return $this;
     }
 
     /**
-     * Get hora_inicio
+     * Get horaInicio
      *
      * @return string 
      */
     public function getHoraInicio()
     {
-        return $this->hora_inicio;
+        return $this->horaInicio;
     }
 
     /**
-     * Set hora_final
+     * Set horaFinal
      *
      * @param string $horaFinal
      * @return TareaAdicional
      */
     public function setHoraFinal($horaFinal)
     {
-        $this->hora_final = $horaFinal;
+        $this->horaFinal = $horaFinal;
     
         return $this;
     }
 
     /**
-     * Get hora_final
+     * Get horaFinal
      *
      * @return string 
      */
     public function getHoraFinal()
     {
-        return $this->hora_final;
+        return $this->horaFinal;
     }
 
     /**
-     * Set fecha_estimada
+     * Set fechaEstimada
      *
      * @param \DateTime $fechaEstimada
      * @return TareaAdicional
      */
     public function setFechaEstimada($fechaEstimada)
     {
-        $this->fecha_estimada = $fechaEstimada;
+        $this->fechaEstimada = $fechaEstimada;
     
         return $this;
     }
 
     /**
-     * Get fecha_estimada
+     * Get fechaEstimada
      *
      * @return \DateTime 
      */
     public function getFechaEstimada()
     {
-        return $this->fecha_estimada;
+        return $this->fechaEstimada;
     }
 
     /**
@@ -235,26 +238,26 @@ class TareaAdicional
     }
 
     /**
-     * Set orden_trabajo
+     * Set ordenTrabajo
      *
      * @param \Buseta\TallerBundle\Entity\OrdenTrabajo $ordenTrabajo
      * @return TareaAdicional
      */
     public function setOrdenTrabajo(\Buseta\TallerBundle\Entity\OrdenTrabajo $ordenTrabajo = null)
     {
-        $this->orden_trabajo = $ordenTrabajo;
+        $this->ordenTrabajo = $ordenTrabajo;
     
         return $this;
     }
 
     /**
-     * Get orden_trabajo
+     * Get ordenTrabajo
      *
      * @return \Buseta\TallerBundle\Entity\OrdenTrabajo 
      */
     public function getOrdenTrabajo()
     {
-        return $this->orden_trabajo;
+        return $this->ordenTrabajo;
     }
 
     /**
@@ -281,25 +284,25 @@ class TareaAdicional
     }
 
     /**
-     * Set garantias_tareas
+     * Set garantiaTarea
      *
-     * @param \Buseta\NomencladorBundle\Entity\GarantiaTarea $garantiasTareas
+     * @param \Buseta\NomencladorBundle\Entity\GarantiaTarea $garantiaTarea
      * @return TareaAdicional
      */
-    public function setGarantiasTareas(\Buseta\NomencladorBundle\Entity\GarantiaTarea $garantiasTareas = null)
+    public function setGarantiaTarea(\Buseta\NomencladorBundle\Entity\GarantiaTarea $garantiaTarea = null)
     {
-        $this->garantias_tareas = $garantiasTareas;
+        $this->garantiaTarea = $garantiaTarea;
     
         return $this;
     }
 
     /**
-     * Get garantias_tareas
+     * Get garantiaTarea
      *
      * @return \Buseta\NomencladorBundle\Entity\GarantiaTarea 
      */
-    public function getGarantiasTareas()
+    public function getGarantiaTarea()
     {
-        return $this->garantias_tareas;
+        return $this->garantiaTarea;
     }
 }
