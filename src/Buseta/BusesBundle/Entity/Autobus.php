@@ -371,7 +371,6 @@ class Autobus
      */
     private $kilometraje;
 
-    
 
     /**
      * Get id

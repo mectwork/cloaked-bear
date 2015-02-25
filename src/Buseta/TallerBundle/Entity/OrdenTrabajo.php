@@ -122,7 +122,11 @@ class OrdenTrabajo
     {
         $this->tarea_adicional = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
+    public function __toString()
+    {
+        return $this->getNumero();
+    }
 
     /**
      * Get id
