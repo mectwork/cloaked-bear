@@ -14,7 +14,7 @@
 
     <form action="{{ path('tercero_update',{'id':entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
 
-        {{ form_errors(form) }}
+        {{ form_errors(edit_form) }}
 
         <div class="row show-grid">
             <div class="col-md-4">
@@ -48,16 +48,20 @@
         </div>
 
         <div class="row show-grid">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 {{ form_row(edit_form.cliente) }}
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 {{ form_row(edit_form.institucion) }}
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 {{ form_row(edit_form.proveedor) }}
+            </div>
+
+            <div class="col-md-3">
+                {{ form_row(edit_form.persona) }}
             </div>
         </div>
 

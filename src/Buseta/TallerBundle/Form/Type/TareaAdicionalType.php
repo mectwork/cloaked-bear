@@ -93,8 +93,7 @@ class TareaAdicionalType extends AbstractType
                 'attr'   => array(
                     'class' => 'form-control',
                 )
-            ))
-        ;
+            ));
     }
 
     /**
