@@ -53,6 +53,11 @@ class TerceroModel
     /**
      * @var boolean
      */
+    private $persona;
+
+    /**
+     * @var boolean
+     */
     private $activo;
 
     function __construct(Tercero $tercero = null)
@@ -61,7 +66,7 @@ class TerceroModel
 
         if ($tercero !== null) {
             $this->id = $tercero->getId();
-            $this->compras = $tercero->getCompras();
+            $this->compras = $tercero->getPedidoCompra();
             $this->codigo = $tercero->getCodigo();
             $this->nombres = $tercero->getNombres();
             $this->apellidos = $tercero->getApellidos();
@@ -76,6 +81,7 @@ class TerceroModel
             $this->cliente = $tercero->getCliente();
             $this->institucion = $tercero->getInstitucion();
             $this->proveedor = $tercero->getProveedor();
+            $this->persona = $tercero->getPersona();
             $this->activo = $tercero->getActivo();
         }
     }
@@ -289,5 +295,19 @@ class TerceroModel
         $this->proveedor = $proveedor;
     }
 
+    /**
+     * @return boolean
+     */
+    public function getPersona()
+    {
+        return $this->persona;
+    }
 
+    /**
+     * @param boolean $persona
+     */
+    public function setPersona($persona)
+    {
+        $this->persona = $persona;
+    }
 }

@@ -17,7 +17,7 @@ function plegarFormulario(){
         if($('a#tercero_general_filter_header').find('i').hasClass('icon-chevron-down')){
             $('a#tercero_general_filter_header').find('i').removeClass('icon-chevron-down');
             $('a#tercero_general_filter_header').find('i').addClass('icon-chevron-up');
-        }else{
+        } else {
             $('a#tercero_general_filter_header').find('i').removeClass('icon-chevron-up');
             $('a#tercero_general_filter_header').find('i').addClass('icon-chevron-down');
         }
@@ -30,10 +30,10 @@ function updateReportesView(){
     $('div.terceros-result-table').html(cargando);
 
     $.ajax({
-        url: "busqueda-avanzada/"+$page+"/"+$cantResult,
-        data:{
+        url: "busqueda-avanzada/" + $page + "/" + $cantResult,
+        data: {
             'filter': $filter,
-            'orderBy': $orderBy,
+            'orderBy': $orderBy
         },
         type: "GET",
         success: function(response){
@@ -59,9 +59,10 @@ function setFilters(){
     nombres     = $('#data_busqueda_tercero_type_nombres').val();
     apellidos   = $('#data_busqueda_tercero_type_apellidos').val();
     alias       = $('#data_busqueda_tercero_type_alias').val();
-    cliente     = $('#data_busqueda_tercero_type_cliente').val();
-    proveedor   = $('#data_busqueda_tercero_type_proveedor').val();
-    institucion = $('#data_busqueda_tercero_type_institucion').val();
+    cliente     = $('#data_busqueda_tercero_type_cliente').is(':checked');
+    proveedor   = $('#data_busqueda_tercero_type_proveedor').is(':checked');
+    institucion = $('#data_busqueda_tercero_type_institucion').is(':checked');
+    persona = $('#data_busqueda_tercero_type_persona').is(':checked');
 
     $filter = {
         'codigo': codigo,
@@ -70,8 +71,10 @@ function setFilters(){
         'alias': alias,
         'cliente': cliente,
         'proveedor': proveedor,
-        'institucion': institucion
+        'institucion': institucion,
+        'persona': persona
     };
 
+    console.log($filter);
     updateReportesView();
 }

@@ -20,17 +20,16 @@ use Buseta\BodegaBundle\Form\Filtro\BusquedaTerceroType;
  */
 class TerceroController extends Controller
 {
-    public function busquedaAvanzadaAction($page,$cantResult){
+    public function busquedaAvanzadaAction($page, $cantResult){
         $em = $this->get('doctrine.orm.entity_manager');
         $request = $this->getRequest();
 
         $orderBy = $request->query->get('orderBy');
         $filter  = $request->query->get('filter');
 
-        $filter = $filter;
-
         $busqueda = $em->getRepository('BusetaBodegaBundle:Tercero')
-            ->busquedaAvanzada($page,$cantResult,$filter,$orderBy);
+            ->busquedaAvanzada($page, $cantResult, $filter, $orderBy);
+
         $paginacion = $busqueda['paginacion'];
         $results    = $busqueda['results'];
 
@@ -213,7 +212,7 @@ class TerceroController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
         $entity = $em->getRepository('BusetaBodegaBundle:Tercero')->find($id);
 
@@ -222,10 +221,12 @@ class TerceroController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $model = new TerceroModel($entity);
+        $editForm = $this->createEditForm($model);
         $editForm->submit($request);
 
         if ($editForm->isValid()) {
+            $em->persist($entity);
             $em->flush();
 
             return $this->redirect($this->generateUrl('tercero_edit', array('id' => $id)));

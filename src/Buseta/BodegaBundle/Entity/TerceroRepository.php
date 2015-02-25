@@ -16,7 +16,7 @@ class TerceroRepository extends EntityRepository
         $q = 'SELECT p FROM BusetaBodegaBundle:Tercero p WHERE p.id != 0';
 
         //Obteniendo resto de la consulta dql
-        $q.=$this->constructSubDQL($filter);
+        $q .= $this->constructSubDQL($filter);
 
         //Estableciendo Order By
         if (empty($orderBy))
@@ -72,7 +72,7 @@ class TerceroRepository extends EntityRepository
 
     public function getNotDeletedMaxResult($filter) {
         $q = 'SELECT COUNT(p) FROM BusetaBodegaBundle:Tercero p WHERE p.id != 0';
-        $q.=$this->constructSubDQL($filter);
+        $q .= $this->constructSubDQL($filter);
 
         $query = $this->_em->createQuery($q);
         try {
@@ -86,17 +86,31 @@ class TerceroRepository extends EntityRepository
         $q = '';
 
         if (isset($filter['codigo']) && !empty($filter['codigo']))
-            $q.= " AND UPPER(p.codigo) LIKE '%" . strtoupper($filter['codigo']) . "%'";
+            $q .= " AND UPPER(p.codigo) LIKE '%" . strtoupper($filter['codigo']) . "%'";
 
         if (isset($filter['nombres']) && !empty($filter['nombres']))
-            $q.= " AND UPPER(p.nombres) LIKE '%" . strtoupper($filter['nombres']) . "%'";
+            $q .= " AND UPPER(p.nombres) LIKE '%" . strtoupper($filter['nombres']) . "%'";
 
         if (isset($filter['apellidos']) && !empty($filter['apellidos']))
-            $q.= " AND UPPER(p.apellidos) LIKE '%" . strtoupper($filter['apellidos']) . "%'";
+            $q .= " AND UPPER(p.apellidos) LIKE '%" . strtoupper($filter['apellidos']) . "%'";
 
         if (isset($filter['alias']) && !empty($filter['alias']))
-            $q.= " AND UPPER(p.alias) LIKE '%" . strtoupper($filter['alias']) . "%'";
+            $q .= " AND UPPER(p.alias) LIKE '%" . strtoupper($filter['alias']) . "%'";
 
+        if (isset($filter['cliente']) && $filter['cliente'] === 'true')
+            $q .= " AND p.cliente = 1";
+
+        if (isset($filter['proveedor']) && $filter['proveedor'] === 'true')
+            $q .= " AND p.proveedor = 1";
+
+        if (isset($filter['institucion']) && $filter['institucion'] === 'true')
+            $q .= " AND p.institucion = 1";
+
+        if (isset($filter['persona']) && $filter['persona'] === 'true')
+            $q .= " AND p.persona = 1";
+
+        if (isset($filter['activo']) && $filter['activo'] === 'true')
+            $q .= " AND p.activo = 1";
 
         return $q;
     }
