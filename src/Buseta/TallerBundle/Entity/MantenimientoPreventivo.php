@@ -36,9 +36,9 @@ class MantenimientoPreventivo
     private $subgrupo;
 
     /**
-     * @var \Buseta\NomencladorBundle\Entity\Tarea
+     * @var \Buseta\TallerBundle\Entity\TareaMantenimiento
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Tarea")
+     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\TareaMantenimiento")
      */
     private $tarea;
 
@@ -55,6 +55,13 @@ class MantenimientoPreventivo
      * @ORM\Column(name="kilometraje", type="integer")
      */
     private $kilometraje;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="horas", type="string", nullable=true)
+     */
+    private $horas;
 
     /**
      * @var \DateTime
@@ -199,10 +206,10 @@ class MantenimientoPreventivo
     /**
      * Set tarea
      *
-     * @param \Buseta\NomencladorBundle\Entity\Tarea $tarea
+     * @param \Buseta\TallerBundle\Entity\TareaMantenimiento $tarea
      * @return MantenimientoPreventivo
      */
-    public function setTarea(\Buseta\NomencladorBundle\Entity\Tarea $tarea = null)
+    public function setTarea(\Buseta\TallerBundle\Entity\TareaMantenimiento $tarea = null)
     {
         $this->tarea = $tarea;
     
@@ -212,7 +219,7 @@ class MantenimientoPreventivo
     /**
      * Get tarea
      *
-     * @return \Buseta\NomencladorBundle\Entity\Tarea 
+     * @return \Buseta\TallerBundle\Entity\TareaMantenimiento
      */
     public function getTarea()
     {
@@ -240,5 +247,21 @@ class MantenimientoPreventivo
     public function getAutobus()
     {
         return $this->autobus;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHoras()
+    {
+        return $this->horas;
+    }
+
+    /**
+     * @param string $horas
+     */
+    public function setHoras($horas)
+    {
+        $this->horas = $horas;
     }
 }

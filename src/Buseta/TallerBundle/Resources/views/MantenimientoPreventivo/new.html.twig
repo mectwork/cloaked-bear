@@ -44,6 +44,9 @@
             <div class="col-md-4">
                 {{ form_row(form.kilometraje) }}
             </div>
+            <div class="col-md-4">
+                {{ form_row(form.horas) }}
+            </div>
         </div>
 
         <div class="row show-grid">
@@ -66,14 +69,29 @@
     {{ parent() }}
     <script type="text/javascript">
         $(function(){
-            $('#{{ form.fechaInicio.vars.id }}').datetimepicker({
-                format: 'DD/MM/YYYY',
-                pickTime: false
+            $('#buseta_tallerbundle_mantenimientopreventivo_fechaInicio').datetimepicker({
+                'pickTime': false,
+                'format': 'DD/MM/YYYY',
+                'formatSubmit': 'DD/MM/YYYY'
             });
 
-            $('#{{ form.fechaFinal.vars.id }}').datetimepicker({
-                format: 'DD/MM/YYYY',
-                pickTime: false
+            var fechaInicio = $('#buseta_tallerbundle_mantenimientopreventivo_fechaInicio').val();
+            $('input:hidden[name^="buseta_tallerbundle_mantenimientopreventivo[fechaInicio]_submit"]').val(fechaInicio);
+
+            $('#buseta_tallerbundle_mantenimientopreventivo_fechaFinal').datetimepicker({
+                'pickTime': false,
+                'format': 'DD/MM/YYYY',
+                'formatSubmit': 'DD/MM/YYYY'
+            });
+
+            var fechaFin = $('#buseta_tallerbundle_mantenimientopreventivo_fechaFinal').val();
+            $('input:hidden[name^="buseta_tallerbundle_mantenimientopreventivo[fechaFinal]_submit"]').val(fechaFin);
+
+            $("#buseta_tallerbundle_mantenimientopreventivo_fechaInicio").on("dp.change", function (e) {
+                $('#buseta_tallerbundle_mantenimientopreventivo_fechaFinal').data("DateTimePicker").setMinDate(e.date);
+            });
+            $("#buseta_tallerbundle_mantenimientopreventivo_fechaFinal").on("dp.change", function (e) {
+                $('#data_busqueda_movimiento_producto_type_fechaInicio').data("DateTimePicker").setMaxDate(e.date);
             });
 
             $('#{{ form.grupo.vars.id }}').change(function() {
@@ -89,10 +107,49 @@
                         var values = $.parseJSON(data);
                         var subgrupo_selector = $('#{{ form.subgrupo.vars.id }}');
 
-                        subgrupo_selector.html('<option>---Seleccione un grupo---</option>');
+                        subgrupo_selector.html('<option>---Seleccione subgrupo---</option>');
                         for (var i = 0, len = values.length; i < len; i++) {
                             subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>')
                         }
+                    }
+                });
+            });
+
+            $('#{{ form.subgrupo.vars.id }}').change(function() {
+                var data = {
+                    subgrupo_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_tarea_subgrupo') }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+                        var tarea_selector = $('#{{ form.tarea.vars.id }}');
+
+                        tarea_selector.html('<option>---Seleccione tarea de mantenimiento---</option>');
+                        for (var i = 0, len = values.length; i < len; i++) {
+                            tarea_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>')
+                        }
+                    }
+                });
+            });
+
+            $('#{{ form.tarea.vars.id }}').change(function () {
+                var data = {
+                    tarea_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_mpreventivo_tarea') }}',
+                    data: data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+
+                        $('#buseta_tallerbundle_mantenimientopreventivo_kilometraje').val(values[0]['kilometros']);
+                        $('#buseta_tallerbundle_mantenimientopreventivo_horas').val(values[0]['horas']);
                     }
                 });
             });

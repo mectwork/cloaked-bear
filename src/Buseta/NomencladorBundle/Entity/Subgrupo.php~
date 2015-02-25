@@ -29,6 +29,13 @@ class Subgrupo extends BaseNomenclador
     private $grupo;
 
     /**
+     * @var \Buseta\TallerBundle\Entity\TareaMantenimiento
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\TareaMantenimiento", inversedBy="subgrupos")
+     */
+    private $tareamantenimiento;
+
+    /**
      * @param \Buseta\NomencladorBundle\Entity\Grupo $grupo
      */
     public function setGrupo($grupo)
@@ -59,4 +66,28 @@ class Subgrupo extends BaseNomenclador
     {
         return $this->id;
     }
+
+    /**
+     * @param string $valor
+     */
+    public function setValor($valor)
+    {
+        $this->valor = $valor;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValor()
+    {
+        return $this->valor;
+    }
+
+    public function __toString()
+    {
+        return $this->valor;
+    }
+
+
+
 }

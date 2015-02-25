@@ -1,4 +1,5 @@
 beta2:
+  - Refactorizando las funcionalidades para la Tarea.
   - Adicionado nuevo nomenclador Tarea.
   - Creanda la estructura básica de la entidad MantenimientoPreventivo y creando el maquetado inicial del los formularios correspondiantes al CRUD.
   - Refactorizada la Orden de Trabajo para adaptarla a la nueva notación de grupo y subgrupo.

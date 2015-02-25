@@ -35,6 +35,14 @@ class Grupo extends BaseNomenclador
      */
     private $subgrupos;
 
+    /**
+     * @var \Buseta\TallerBundle\Entity\TareaMantenimiento
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\TareaMantenimiento", inversedBy="grupos")
+     */
+    private $tareamantenimiento;
+
+
     public function __toString()
     {
         return $this->valor;

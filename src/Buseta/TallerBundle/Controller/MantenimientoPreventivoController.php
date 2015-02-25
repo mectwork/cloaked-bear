@@ -161,7 +161,7 @@ class MantenimientoPreventivoController extends Controller
     /**
      * Edits an existing MantenimientoPreventivo entity.
      *
-     * @Route("/{id}/update", name="mantenimientopreventivo_update", methods={"PUT"})
+     * @Route("/{id}/update", name="mantenimientopreventivo_update", methods={"PUT","POST"})
      */
     public function updateAction(Request $request, MantenimientoPreventivo $entity)
     {
@@ -174,7 +174,7 @@ class MantenimientoPreventivoController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('mantenimientopreventivo_edit', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('mantenimientopreventivo_show', array('id' => $entity->getId())));
         }
 
         return $this->render('', array(
@@ -252,6 +252,63 @@ class MantenimientoPreventivoController extends Controller
                 'valor' => $subgrupo->getValor()
             );
         }
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
+
+    /**
+     * Selecciona las Tareas asociadas al Subgrupo seleccionado.
+     * @param Request $request
+     * @Route("/select_tarea_subgrupo", name="ajax_select_tarea_subgrupo", methods={"GET"})
+     */
+    public function selectTareaBelongSubgroupAction(Request $request) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+
+        if (!$request->isXmlHttpRequest())
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $subgrupo_id = $request->query->get('subgrupo_id');
+        $tareas = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->findBy(array(
+            'subgrupo' => $subgrupo_id
+        ));
+
+        $json = array();
+        foreach ($tareas as $tarea) {
+            $json[] = array(
+                'id' => $tarea->getId(),
+                'valor' => $tarea->getValor()
+            );
+        }
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
+
+    /**
+     * Modifica los campos 'kilometraje' y 'horas' del MantPreventivo asociados a la Tarea seleccionada.
+     * @param Request $request
+     * @Route("/select_mpreventivo_tarea", name="ajax_select_mpreventivo_tarea", methods={"GET"})
+     */
+    public function selectMPreventivoBelongSubgroupAction(Request $request) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+
+        if (!$request->isXmlHttpRequest())
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $tarea_id = $request->query->get('tarea_id');
+        $tarea = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->findOneBy(array(
+            'id' => $tarea_id
+        ));
+
+        $json = array();
+
+        $json[] = array(
+            'kilometros' => $tarea->getKilometros(),
+            'horas' => $tarea->getHoras()
+        );
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
