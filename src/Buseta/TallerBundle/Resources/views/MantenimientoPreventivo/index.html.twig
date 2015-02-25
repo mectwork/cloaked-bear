@@ -49,6 +49,7 @@
             <th>Subgrupo</th>
             <th>Tarea</th>
             <th>Kilometraje</th>
+            <th>Horas</th>
             <th>Fecha Inicio</th>
             <th>Fecha Final</th>
             <th>Acciones</th>
@@ -61,6 +62,7 @@
                 <td>{{ entity.grupo }}</td>
                 <td>{{ entity.subgrupo }}</td>
                 <td>{{ entity.tarea }}</td>
+                <td>{{ entity.horas }}</td>
                 <td>{{ entity.kilometraje }}</td>
                 <td>{%  if entity.fechaInicio %}{{ entity.fechaInicio | date('d/m/Y') }}{% endif %}</td>
                 <td>{%  if entity.fechaFinal %}{{ entity.fechaFinal | date('d/m/Y') }}{% endif %}</td>

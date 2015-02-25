@@ -132,7 +132,7 @@ easy_admin:
         - Buseta\NomencladorBundle\Entity\GarantiaTarea
         - Buseta\NomencladorBundle\Entity\Grupo
         - Buseta\NomencladorBundle\Entity\Subgrupo
-        - Buseta\NomencladorBundle\Entity\Tarea
+#        - Buseta\NomencladorBundle\Entity\Tarea
         - Buseta\NomencladorBundle\Entity\Marca
         - Buseta\NomencladorBundle\Entity\MarcaMotor
         - Buseta\NomencladorBundle\Entity\Modelo

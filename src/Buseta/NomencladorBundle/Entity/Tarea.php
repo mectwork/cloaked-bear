@@ -22,6 +22,7 @@ class Tarea extends BaseNomenclador
     protected $id;
 
 
+
     /**
      * Get id
      *

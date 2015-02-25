@@ -15,32 +15,20 @@
     <table class="table table-striped" style="font-size: 16px;">
         <tbody>
             <tr>
-                <th>Tarea</th>
-                <td>{{ entity.tarea }}</td>
-            </tr>
-            <tr>
                 <th>Grupo</th>
-                <td>{{ entity.grupos }}</td>
+                <td>{{ entity.grupo }}</td>
             </tr>
             <tr>
                 <th>Subgrupo</th>
-                <td>{{ entity.subgrupos }}</td>
+                <td>{{ entity.subgrupo }}</td>
             </tr>
             <tr>
-                <th>Kilometraje</th>
-                <td>{{ entity.kilometraje }}</td>
+                <th>Kilómetros</th>
+                <td>{{ entity.kilometros }}</td>
             </tr>
             <tr>
                 <th>Horas</th>
                 <td>{{ entity.horas }}</td>
-            </tr>
-            <tr>
-                <th>Recorrido inicio</th>
-                <td>{{ entity.recorridoinicio | date('d/m/Y') }}</td>
-            </tr>
-            <tr>
-                <th>Ultimo cumplio</th>
-                <td>{{ entity.ultimocumplio | date('d/m/Y') }}</td>
             </tr>
         </tbody>
     </table>

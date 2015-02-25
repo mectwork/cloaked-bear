@@ -5,58 +5,55 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Modificar mantenimiento preventivo: "{{ entity.id }}"
+    Adicionar nuevo mantenimiento preventivo
 {% endblock %}
 
 {% block area_trabajo %}
-    <form action="{{ edit_form.vars.action }}" method="POST" enctype="multipart/form-data">
-        {{ form_errors(edit_form) }}
+    <form action="{{ path('mantenimientopreventivo_update',{'id':entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
         <input type="hidden" name="_method" value="PUT"/>
+        {{ form_errors(edit_form) }}
 
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Autobus:</label>
-                {{ form_widget(edit_form.autobus) }}
+                {{ form_row(edit_form.autobus) }}
             </div>
 
             <div class="col-md-4">
-                <label>Grupo:</label>
-                {{ form_widget(edit_form.grupo) }}
+                {{ form_row(edit_form.grupo) }}
             </div>
 
             <div class="col-md-4">
-                <label>Subgrupo:</label>
-                {{ form_widget(edit_form.subgrupo) }}
+                {{ form_row(edit_form.subgrupo) }}
             </div>
         </div>
 
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Tarea:</label>
-                {{ form_widget(edit_form.tarea) }}
+                {{ form_row(edit_form.tarea) }}
             </div>
 
             <div class="col-md-4">
-                <label>Fecha Inicio:</label>
-                {{ form_widget(edit_form.fechaInicio) }}
+                {{ form_row(edit_form.fechaInicio) }}
             </div>
 
             <div class="col-md-4">
-                <label>Fecha Inicio:</label>
-                {{ form_widget(edit_form.fechaFinal) }}
+                {{ form_row(edit_form.fechaFinal) }}
             </div>
         </div>
 
         <div class="row show-grid">
             <div class="col-md-4">
-                <label>Kilometraje:</label>
-                {{ form_widget(edit_form.kilometraje) }}
+                {{ form_row(edit_form.kilometraje) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(edit_form.horas) }}
             </div>
         </div>
 
         <div class="row show-grid">
             <div class="col-md-4">
                 <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+
                 <div class="btn-group">
                     <a class="btn btn-primary" href="{{ path('mantenimientopreventivo') }}"> Cancelar</a>
                 </div>
@@ -66,7 +63,6 @@
     </form>
 {% endblock %}
 
-
 {% block contenido %}
 
 {% endblock %}
@@ -74,18 +70,33 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-        $(function(){
-            $('#{{ edit_form.fechaInicio.vars.id }}').datetimepicker({
-                format: 'DD/MM/YYYY',
-                pickTime: false
+        $(function () {
+            $('#buseta_tallerbundle_mantenimientopreventivo_fechaInicio').datetimepicker({
+                'pickTime': false,
+                'format': 'DD/MM/YYYY',
+                'formatSubmit': 'DD/MM/YYYY'
             });
 
-            $('#{{ edit_form.fechaFinal.vars.id }}').datetimepicker({
-                format: 'DD/MM/YYYY',
-                pickTime: false
+            var fechaInicio = $('#buseta_tallerbundle_mantenimientopreventivo_fechaInicio').val();
+            $('input:hidden[name^="buseta_tallerbundle_mantenimientopreventivo[fechaInicio]_submit"]').val(fechaInicio);
+
+            $('#buseta_tallerbundle_mantenimientopreventivo_fechaFinal').datetimepicker({
+                'pickTime': false,
+                'format': 'DD/MM/YYYY',
+                'formatSubmit': 'DD/MM/YYYY'
             });
 
-            $('#{{ edit_form.grupo.vars.id }}').change(function() {
+            var fechaFin = $('#buseta_tallerbundle_mantenimientopreventivo_fechaFinal').val();
+            $('input:hidden[name^="buseta_tallerbundle_mantenimientopreventivo[fechaFinal]_submit"]').val(fechaFin);
+
+            $("#buseta_tallerbundle_mantenimientopreventivo_fechaInicio").on("dp.change", function (e) {
+                $('#buseta_tallerbundle_mantenimientopreventivo_fechaFinal').data("DateTimePicker").setMinDate(e.date);
+            });
+            $("#buseta_tallerbundle_mantenimientopreventivo_fechaFinal").on("dp.change", function (e) {
+                $('#data_busqueda_movimiento_producto_type_fechaInicio').data("DateTimePicker").setMaxDate(e.date);
+            });
+
+            $('#{{ edit_form.grupo.vars.id }}').change(function () {
                 var data = {
                     grupo_id: $(this).val()
                 };
@@ -94,14 +105,53 @@
                     type: 'GET',
                     url: '{{ path('ajax_select_subgrupo_grupo') }}',
                     data: data,
-                    success: function(data) {
+                    success: function (data) {
                         var values = $.parseJSON(data);
                         var subgrupo_selector = $('#{{ edit_form.subgrupo.vars.id }}');
 
-                        subgrupo_selector.html('<option>---Seleccione un grupo---</option>');
+                        subgrupo_selector.html('<option>---Seleccione subgrupo---</option>');
                         for (var i = 0, len = values.length; i < len; i++) {
                             subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>')
                         }
+                    }
+                });
+            });
+
+            $('#{{ edit_form.subgrupo.vars.id }}').change(function () {
+                var data = {
+                    subgrupo_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_tarea_subgrupo') }}',
+                    data: data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+                        var tarea_selector = $('#{{ edit_form.tarea.vars.id }}');
+
+                        tarea_selector.html('<option>---Seleccione tarea de mantenimiento---</option>');
+                        for (var i = 0, len = values.length; i < len; i++) {
+                            tarea_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>')
+                        }
+                    }
+                });
+            });
+
+            $('#{{ edit_form.tarea.vars.id }}').change(function () {
+                var data = {
+                    tarea_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_mpreventivo_tarea') }}',
+                    data: data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+
+                        $('#buseta_tallerbundle_mantenimientopreventivo_kilometraje').val(values[0]['kilometros']);
+                        $('#buseta_tallerbundle_mantenimientopreventivo_horas').val(values[0]['horas']);
                     }
                 });
             });

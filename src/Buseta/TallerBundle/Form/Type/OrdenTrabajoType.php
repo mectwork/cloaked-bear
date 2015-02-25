@@ -60,7 +60,7 @@ class OrdenTrabajoType extends AbstractType
                 }
             ))
             ->add('observaciones', 'textarea', array(
-                'required' => false,
+                'required' => true,
                 'label'  => 'Observaciones',
                 'attr'   => array(
                     'class' => 'form-control',

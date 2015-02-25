@@ -441,7 +441,7 @@ class OrdenTrabajo
     /**
      * Get requisionMateriales
      *
-     * @return string 
+     * @return \Buseta\BusesBundle\Entity\Autobus 
      */
     public function getRequisionMateriales()
     {

@@ -23,24 +23,16 @@ class TareaMantenimientoType extends AbstractType
         $builder->addEventSubscriber($grupoSubscriber);
 
         $builder
-            ->add('autobus','entity',array(
-                'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione un autobús---',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
-            ->add('tarea', 'text', array(
+            ->add('valor', 'text', array(
                 'required' => false,
-                'label'  => 'Tarea',
+                'label'  => 'Valor',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
-            ->add('kilometraje', 'number', array(
+            ->add('kilometros', 'number', array(
                 'required' => false,
-                'label'  => 'Kilometraje',
+                'label'  => 'Kilómetros',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
@@ -48,24 +40,6 @@ class TareaMantenimientoType extends AbstractType
             ->add('horas', 'number', array(
                 'required' => false,
                 'label'  => 'Horas',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
-            ))
-            ->add('recorrido_inicio', 'date', array(
-                'required' => false,
-                'label'  => 'Recorrido Inició',
-                'format' => 'dd/MM/yyyy',
-                'widget' => 'single_text',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
-            ))
-            ->add('ultimo_cumplio', 'date', array(
-                'required' => false,
-                'label'  => 'Ultimo cumplió',
-                'format' => 'dd/MM/yyyy',
-                'widget' => 'single_text',
                 'attr'   => array(
                     'class' => 'form-control',
                 )

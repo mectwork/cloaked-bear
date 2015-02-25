@@ -22,22 +22,20 @@
 
        <thead>
             <tr>
-                <th>Tarea</th>
-                <th>Kilometraje</th>
+                <th>Grupo</th>
+                <th>Subgrupo</th>
+                <th>Kilómetros</th>
                 <th>Horas</th>
-                <th>Recorrido inicio</th>
-                <th>Ultimo cumplio</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.tarea }}</td>
-                <td>{{ entity.kilometraje }}</td>
+                <td>{{ entity.grupo }}</td>
+                <td>{{ entity.subgrupo }}</td>
+                <td>{{ entity.kilometros }}</td>
                 <td>{{ entity.horas }}</td>
-                <td>{% if entity.recorridoinicio %}{{ entity.recorridoinicio |date('d/m/Y') }}{% endif %}</td>
-                <td>{% if entity.ultimocumplio %}{{ entity.ultimocumplio |date('d/m/Y') }}{% endif %}</td>
                 <td  style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs" href="{{ path('tareamantenimiento_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
@@ -51,7 +49,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="12">No se encontraron registros de tareas mantenimientos en el sistema.</td>
+                <td colspan="12">No se encontraron registros de tareas de mantenimientos en el sistema.</td>
             </tr>
         {% endfor %}
 
