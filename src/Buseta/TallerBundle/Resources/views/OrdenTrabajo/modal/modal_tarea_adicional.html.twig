@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body" style="width: 800px;">
                 <form action="{{ path('tarea_adicional_orden_trabajo_create') }}" method="post" {{ form_enctype(form) }}>
-                    <div class="row show-grid">
+                    <div class="row">
                         <div class="col-md-4">
                             {{ form_row(form.fechaEstimada) }}
                         </div>
@@ -19,7 +19,7 @@
                         </div>
                     </div>
 
-                    <div class="row show-grid">
+                    <div class="row">
                         <div class="col-md-4">
                             {{ form_row(form.grupo) }}
                         </div>
@@ -33,7 +33,7 @@
 
 
 
-                    <div class="row show-grid">
+                    <div class="row">
                         <div class="col-md-4">
                             {{ form_row(form.garantiaTarea) }}
                         </div>
@@ -42,14 +42,14 @@
                         </div>
                     </div>
 
-                    <div class="row show-grid">
+                    <div class="row">
                         <div class="col-md-12">
                             {{ form_row(form.descripcion) }}
                         </div>
                     </div>
 
                     <div class="modal-footer">
-                        <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0 0 20px 20px;" href="#">
+                        <a data-dismiss="modal" class="btn btn-primary add_tarea_link" style="margin: 0 0 20px 20px;" href="#">
                             <span class="fa fa-plus-circle">Adicionar</span>
                         </a>
                     </div>

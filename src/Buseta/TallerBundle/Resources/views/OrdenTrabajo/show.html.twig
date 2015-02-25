@@ -15,40 +15,87 @@
     <table class="table table-striped" style="font-size: 16px;">
         <tbody>
         <tr>
-            <th>Responsable</th>
-            <td>{{ entity.realizadapor }}</td>
+            <th>Número OT</th>
+            <td>{{ entity.numero }}</td>
         </tr>
-
+        <tr>
+            <th>Número control materiales</th>
+            <td>{{ entity.requisionMateriales }}</td>
+        </tr>
+        <tr>
+            <th>Responsable</th>
+            <td>{{ entity.realizadaPor }}</td>
+        </tr>
+        <tr>
+            <th>Ayudante</th>
+            <td>{{ entity.ayudante }}</td>
+        </tr>
+        <tr>
+            <th>Diagnóstico</th>
+            <td>{{ entity.diagnostico }}</td>
+        </tr>
         <tr>
             <th>Autobus</th>
             <td>{{ entity.autobus }}</td>
         </tr>
+        <tr>
+            <th>Fecha Inicio</th>
+            <td>{{ entity.fechaInicio ? entity.fechaInicio | date('d/m/Y') : '-' }}</td>
+        </tr>
+        <tr>
+            <th>Fecha Final</th>
+            <td>{{ entity.fechaFinal ? entity.fechaFinal | date('d/m/Y') : '-' }}</td>
+        </tr>
+        <tr>
+            <th>Prioridad</th>
+            <td>{{ entity.prioridad }}</td>
+        </tr>
+        <tr>
+            <th>Observaciones</th>
+            <td>{{ entity.observaciones }}</td>
+        </tr>
 
         <tr>
-            <th>Tareas adicionales existentes</th>
-            <td>
-                <table class="table table-striped" style="font-size: 16px;">
-                    <th>Grupo</th>
-                    <th>Subgrupo</th>
-                    <th>Fecha estimada</th>
-                    <th>Tarea</th>
+            <td colspan="2">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div  {{ block('widget_container_attributes') }}>
+                            <h4>Listado de Tareas</h4>
 
-                    {% for tarea in entity.tareaadicional %}
-                    <tbody>
-                    <tr>
-                        <td>{{ tarea.grupo.valor }}</td>
-                        <td>{{ tarea.subgrupo.valor }}</td>
-                        <td>{{ tarea.fechaestimada | date('d/m/Y')  }}</td>
-                        <td>{{ tarea.tarea }}</td>
-                   </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="6">
-                                <span class="label label-danger">No existen tareas adicionales disponibles</span>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
+                            <table class="table table-striped" style="font-size: 16px;">
+                                <thead>
+                                    <th>Grupo</th>
+                                    <th>Subgrupo</th>
+                                    <th>Tarea</th>
+                                    <th>Observaciones</th>
+                                    <th>Fecha estimada</th>
+                                    <th>Hora Inicio</th>
+                                    <th>Hora Final</th>
+                                    <th>Garantía Tarea</th>
+                                </thead>
+                                <tbody>
+                                {% for tarea in entity.tareasAdicionales %}
+                                    <tr>
+                                        <td>{{ tarea.grupo }}</td>
+                                        <td>{{ tarea.subgrupo }}</td>
+                                        <td>{{ tarea.tarea }}</td>
+                                        <td>{{ tarea.descripcion }}</td>
+                                        <td>{{ tarea.fechaestimada | date('d/m/Y')  }}</td>
+                                        <td>{{ tarea.horaInicio ? tarea.horaInicio | date('h:i a') : '-' }}</td>
+                                        <td>{{ tarea.horaFinal ? tarea.horaFinal | date('h:i a') : '-' }}</td>
+                                        <td>{{ tarea.garantia }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="6">
+                                            <span class="label label-danger">No existen tareas adicionales disponibles</span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </td>
         </tr>
         </tbody>

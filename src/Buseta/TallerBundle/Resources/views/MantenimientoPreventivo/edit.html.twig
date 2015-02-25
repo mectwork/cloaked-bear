@@ -72,18 +72,14 @@
     <script type="text/javascript">
         $(function () {
             $('#buseta_tallerbundle_mantenimientopreventivo_fechaInicio').datetimepicker({
-                'pickTime': false,
-                'format': 'DD/MM/YYYY',
-                'formatSubmit': 'DD/MM/YYYY'
+                'format': 'DD/MM/YYYY'
             });
 
             var fechaInicio = $('#buseta_tallerbundle_mantenimientopreventivo_fechaInicio').val();
             $('input:hidden[name^="buseta_tallerbundle_mantenimientopreventivo[fechaInicio]_submit"]').val(fechaInicio);
 
             $('#buseta_tallerbundle_mantenimientopreventivo_fechaFinal').datetimepicker({
-                'pickTime': false,
-                'format': 'DD/MM/YYYY',
-                'formatSubmit': 'DD/MM/YYYY'
+                'format': 'DD/MM/YYYY'
             });
 
             var fechaFin = $('#buseta_tallerbundle_mantenimientopreventivo_fechaFinal').val();

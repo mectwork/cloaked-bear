@@ -11,22 +11,10 @@
             <div  {{ block('widget_container_attributes') }}>
                 <h4>Listado de tareas adicionales insertadas:</h4>
 
-                <div class="row form-group" >
-                    <div class="col-lg-12">
-                        <div class="col-lg-2" style="text-align: center;"><b>Grupo</b></div>
-                        <div class="col-lg-2" style="text-align: center;"><b>Subgrupo</b></div>
-                        <div class="col-lg-4" style="text-align: center;"><b>Tarea</b></div>
-                        <div class="col-lg-2" style="text-align: center;"><b>Fecha estimada</b></div>
-                        <div class="col-lg-2" style="text-align: center;"><b>Descripcion</b></div>
-                    </div>
-                </div>
-
-                <div id="tbody">
+                <div id="tareas-collection">
                     {% set counter = form | length %}
                     {% for rows in form %}
-                        <div class="row form-group">
-                            {{ _self.template(rows) }}
-                        </div>
+                        {{ _self.template(rows) }}
                     {% endfor %}
                     {% if counter == 0 %}
                         <div id="no-elements-tr">No existen elementos. Presione "Adicionar" para agregar nuevos elementos.</div>
@@ -50,45 +38,48 @@
 {% endblock collection_item_widget %}
 
 {% macro template(prototype) %}
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.grupo) }}
-        {{ form_widget(prototype.grupo) }}
+<div class="well well-small">
+    <div class="row">
+        <div class="col-lg-4 form-group">
+            {{ form_row(prototype.grupo) }}
+        </div>
+        <div class="col-lg-4 form-group">
+            {{ form_row(prototype.subgrupo) }}
+        </div>
+        <div class="col-lg-4 form-group">
+            {{ form_row(prototype.tarea) }}
+        </div>
     </div>
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.subgrupo) }}
-        {{ form_widget(prototype.subgrupo) }}
+    <div class="row">
+        <div class="col-lg-4 form-group">
+            {{ form_row(prototype.fechaEstimada) }}
+        </div>
+        <div class="col-lg-4 form-group">
+            {{ form_row(prototype.horaInicio) }}
+        </div>
+        <div class="col-lg-4 form-group">
+            {{ form_row(prototype.horaFinal) }}
+        </div>
     </div>
-    <div class="col-lg-4 form-group">
-        {{ form_errors(prototype.tarea) }}
-        {{ form_widget(prototype.tarea) }}
+    <div class="row">
+        <div class="col-lg-4 form-group">
+            {{ form_row(prototype.garantiaTarea) }}
+        </div>
+        <div class="col-lg-4 form-group">
+            {{ form_row(prototype.horasLaboradas) }}
+        </div>
     </div>
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.fechaEstimada) }}
-        {{ form_widget(prototype.fechaEstimada) }}
-    </div>
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.descripcion) }}
-        {{ form_widget(prototype.descripcion) }}
-    </div>
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.horaInicio) }}
-        {{ form_widget(prototype.horaInicio) }}
-    </div>
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.horaFinal) }}
-        {{ form_widget(prototype.horaFinal) }}
-    </div>
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.garantiaTarea) }}
-        {{ form_widget(prototype.garantiaTarea) }}
-    </div>
-    <div class="col-lg-2 form-group">
-        {{ form_errors(prototype.horasLaboradas) }}
-        {{ form_widget(prototype.horasLaboradas) }}
+    <div class="row">
+        <div class="col-lg-12 form-group">
+            {{ form_row(prototype.descripcion) }}
+        </div>
     </div>
 
-    <div class="col-lg-1 form-group">
-        <a class="btn btn-primary delete_tag_link" href="#"><i class="fa fa-minus-circle"></i></a>
+    <div class="row">
+        <div class="col-lg-2">
+            <a class="btn btn-link delete_tag_link" href="#"><i class="fa fa-remove"></i> Eliminar Tarea</a>
+        </div>
     </div>
+</div>
 
 {% endmacro %}

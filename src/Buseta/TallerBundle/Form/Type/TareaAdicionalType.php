@@ -2,6 +2,7 @@
 
 namespace Buseta\TallerBundle\Form\Type;
 
+use Buseta\TallerBundle\Form\EventListener\AddTareaMantenimientoFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -22,15 +23,16 @@ class TareaAdicionalType extends AbstractType
         $builder->addEventSubscriber($subgrupos);
         $grupos = new AddGrupoFieldSubscriber($objeto);
         $builder->addEventSubscriber($grupos);
-
+        $tarea = new AddTareaMantenimientoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($tarea);
         $builder
-            ->add('tarea', 'entity', array(
-                'class' => 'BusetaNomencladorBundle:Tarea',
-                'label' => 'Tarea',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
-            ))
+//            ->add('tarea', 'entity', array(
+//                'class' => 'BusetaNomencladorBundle:Tarea',
+//                'label' => 'Tarea',
+//                'attr'   => array(
+//                    'class' => 'form-control',
+//                )
+//            ))
             ->add('descripcion', 'textarea', array(
                 'required' => true,
                 'label'  => 'Observación de tarea',
