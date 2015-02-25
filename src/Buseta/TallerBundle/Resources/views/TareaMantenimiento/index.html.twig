@@ -22,6 +22,7 @@
 
        <thead>
             <tr>
+                <th>Tarea</th>
                 <th>Grupo</th>
                 <th>Subgrupo</th>
                 <th>Kilómetros</th>
@@ -32,6 +33,7 @@
         <tbody>
         {% for entity in entities %}
             <tr>
+                <td>{{ entity.valor }}</td>
                 <td>{{ entity.grupo }}</td>
                 <td>{{ entity.subgrupo }}</td>
                 <td>{{ entity.kilometros }}</td>
