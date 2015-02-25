@@ -30,7 +30,13 @@ class OrdenTrabajoType extends AbstractType
                 'label'  => 'Responsable',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
+                'query_builder' => function(EntityRepository $repository) {
+                    $qb = $repository->createQueryBuilder('responsable');
+                    $qb->andWhere($qb->expr()->eq('responsable.persona', true));
+
+                    return $qb;
+                }
             ))
             ->add('diagnostico', 'text', array(
                 'required' => false,
@@ -63,7 +69,13 @@ class OrdenTrabajoType extends AbstractType
                 'label'  => 'Ayudante',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
+                'query_builder' => function(EntityRepository $repository) {
+                    $qb = $repository->createQueryBuilder('ayudante');
+                    $qb->andWhere($qb->expr()->eq('ayudante.persona', true));
+
+                    return $qb;
+                }
             ))
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
