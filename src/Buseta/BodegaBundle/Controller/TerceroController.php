@@ -88,6 +88,7 @@ class TerceroController extends Controller
             $tercero->setInstitucion($entity->getDireccion());
             $tercero->setNombres($entity->getNombres());
             $tercero->setProveedor($entity->getProveedor());
+            $tercero->setPersona($entity->getPersona());
             $em->persist($tercero);
 
             $em->flush();
@@ -214,26 +215,45 @@ class TerceroController extends Controller
     {
         $em = $this->get('doctrine.orm.entity_manager');
 
-        $entity = $em->getRepository('BusetaBodegaBundle:Tercero')->find($id);
+        $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($id);
 
-        if (!$entity) {
+        if (!$tercero) {
             throw $this->createNotFoundException('Unable to find Tercero entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $model = new TerceroModel($entity);
+        $model = new TerceroModel($tercero);
         $editForm = $this->createEditForm($model);
-        $editForm->submit($request);
 
+        $editForm->handleRequest($request);
         if ($editForm->isValid()) {
-            $em->persist($entity);
+            if ($model->getDireccionId() !== null && $model->getDireccionId() !== '') {
+                $direccion = $em->find('BusetaBodegaBundle:Direccion', $model->getDireccionId());
+            }
+
+            $tercero->setActivo($model->getActivo());
+
+            if (isset($direccion)) {
+                $tercero->setDireccion($direccion);
+            }
+
+            $tercero->setAlias($model->getAlias());
+            $tercero->setApellidos($model->getApellidos());
+            $tercero->setCliente($model->getCliente());
+            $tercero->setCodigo($model->getCodigo());
+            $tercero->setInstitucion($model->getDireccion());
+            $tercero->setNombres($model->getNombres());
+            $tercero->setProveedor($model->getProveedor());
+            $tercero->setPersona($model->getPersona());
+
+            $em->persist($tercero);
             $em->flush();
 
             return $this->redirect($this->generateUrl('tercero_edit', array('id' => $id)));
         }
 
         return $this->render('BusetaBodegaBundle:Tercero:edit.html.twig', array(
-            'entity'      => $entity,
+            'entity'      => $tercero,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
