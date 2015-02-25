@@ -126,6 +126,20 @@ class OrdenTrabajo
      */
     private $duracionHorasLaboradas;
 
+    /**
+     * @var \Buseta\BodegaBundle\Entity\Tercero
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero")
+     */
+    private $revisadoPor;
+
+    /**
+     * @var \Buseta\BodegaBundle\Entity\Tercero
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero")
+     */
+    private $aprobadoPor;
+
 
     /**
      * Constructor
@@ -484,5 +498,51 @@ class OrdenTrabajo
     public function getTareasAdicionales()
     {
         return $this->tareasAdicionales;
+    }
+
+    /**
+     * Set revisadoPor
+     *
+     * @param \Buseta\BodegaBundle\Entity\Tercero $revisadoPor
+     * @return OrdenTrabajo
+     */
+    public function setRevisadoPor(\Buseta\BodegaBundle\Entity\Tercero $revisadoPor = null)
+    {
+        $this->revisadoPor = $revisadoPor;
+    
+        return $this;
+    }
+
+    /**
+     * Get revisadoPor
+     *
+     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     */
+    public function getRevisadoPor()
+    {
+        return $this->revisadoPor;
+    }
+
+    /**
+     * Set aprobadoPor
+     *
+     * @param \Buseta\BodegaBundle\Entity\Tercero $aprobadoPor
+     * @return OrdenTrabajo
+     */
+    public function setAprobadoPor(\Buseta\BodegaBundle\Entity\Tercero $aprobadoPor = null)
+    {
+        $this->aprobadoPor = $aprobadoPor;
+    
+        return $this;
+    }
+
+    /**
+     * Get aprobadoPor
+     *
+     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     */
+    public function getAprobadoPor()
+    {
+        return $this->aprobadoPor;
     }
 }

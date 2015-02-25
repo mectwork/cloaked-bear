@@ -139,15 +139,33 @@ class OrdenTrabajoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('estado', 'choice', array(
+            ->add('aprobadoPor', 'entity', array(
+                'class' => 'BusetaBodegaBundle:Tercero',
                 'required' => false,
-                'choices' => array(
-                    'revisado' => 'REVISADO',
-                    'aprobado' => 'APROBADO',
-                ),
-                'attr' => array(
+                'label'  => 'Aprobado por',
+                'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
+                'query_builder' => function(EntityRepository $repository) {
+                    $qb = $repository->createQueryBuilder('persona');
+                    $qb->andWhere($qb->expr()->eq('persona.persona', true));
+
+                    return $qb;
+                }
+            ))
+            ->add('revisadoPor', 'entity', array(
+                'class' => 'BusetaBodegaBundle:Tercero',
+                'required' => false,
+                'label'  => 'Revisado por',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+                'query_builder' => function(EntityRepository $repository) {
+                    $qb = $repository->createQueryBuilder('persona');
+                    $qb->andWhere($qb->expr()->eq('persona.persona', true));
+
+                    return $qb;
+                }
             ))
         ;
     }
