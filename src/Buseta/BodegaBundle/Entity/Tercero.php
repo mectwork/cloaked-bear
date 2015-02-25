@@ -83,6 +83,11 @@ class Tercero
     private $cliente;
 
     /**
+     * @ORM\Column(name="persona", type="boolean", nullable=true)
+     */
+    private $persona;
+
+    /**
      * @ORM\Column(name="institucion", type="boolean", nullable=true)
      */
     private $institucion;
@@ -375,5 +380,28 @@ class Tercero
     public function getAlbaran()
     {
         return $this->albaran;
+    }
+
+    /**
+     * Set persona
+     *
+     * @param boolean $persona
+     * @return Tercero
+     */
+    public function setPersona($persona)
+    {
+        $this->persona = $persona;
+    
+        return $this;
+    }
+
+    /**
+     * Get persona
+     *
+     * @return boolean 
+     */
+    public function getPersona()
+    {
+        return $this->persona;
     }
 }
