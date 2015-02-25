@@ -183,8 +183,6 @@
         function dinamicSelects(){
             $('select[id^="buseta_tallerbundle_ordentrabajo_tareasAdicionales_"][id$="_grupo"]').change(function(){
                 var $selectGroup = $(this);
-                console.log($selectGroup);
-                alert($selectGroup);
                 var data = {
                     grupo_id: $(this).val()
                 };
@@ -196,7 +194,7 @@
                     success: function(data) {
                         var values = $.parseJSON(data);
 
-                        var $subgrupo_selector = $selectGroup.parent().parent().find('select[id^="buseta_tallerbundle_ordentrabajo_tareasAdicionales_"][id$="_subgrupo"]');
+                        var $subgrupo_selector = $selectGroup.parent().parent().parent().find('select[id^="buseta_tallerbundle_ordentrabajo_tareasAdicionales_"][id$="_subgrupo"]');
 
                         $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
 
@@ -205,7 +203,30 @@
                         }
                     }
                 });
-            })
+            });
+            $('select[id^="buseta_tallerbundle_ordentrabajo_tareasAdicionales_"][id$="_subgrupo"]').change(function(){
+                var $selectGroup = $(this);
+                var data = {
+                    subgrupo_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("ajax_select_tarea_subgrupo") }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+
+                        var $tarea_selector = $selectGroup.parent().parent().parent().find('select[id^="buseta_tallerbundle_ordentrabajo_tareasAdicionales_"][id$="_tarea"]');
+
+                        $tarea_selector.html('<option>---Seleccione tarea---</option>');
+
+                        for (var i=0, total = values.length; i < total; i++) {
+                            $tarea_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                        }
+                    }
+                });
+            });
         }
     </script>
     <script type="text/javascript">

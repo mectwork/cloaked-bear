@@ -44,7 +44,7 @@ class Compra
     private $numero_factura_proveedor;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="compras")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero")
      */
     private $tercero;
 
@@ -53,12 +53,12 @@ class Compra
      */
     private $centro_costo;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\Linea", mappedBy="compra", cascade={"all"})
-     */
-    private $lineas;
+//    /**
+//     * @var \Doctrine\Common\Collections\ArrayCollection
+//     *
+//     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\Linea", mappedBy="compra", cascade={"all"})
+//     */
+//    private $lineas;
 
     /**
      * @var string
@@ -413,40 +413,40 @@ class Compra
         return $this->tercero;
     }
 
-    /**
-     * Add lineas
-     *
-     * @param \Buseta\TallerBundle\Entity\Linea $lineas
-     * @return Compra
-     */
-    public function addLinea(\Buseta\TallerBundle\Entity\Linea $lineas)
-    {
-        $lineas->setCompra($this);
-
-        $this->lineas[] = $lineas;
-    
-        return $this;
-    }
-
-    /**
-     * Remove lineas
-     *
-     * @param \Buseta\TallerBundle\Entity\Linea $lineas
-     */
-    public function removeLinea(\Buseta\TallerBundle\Entity\Linea $lineas)
-    {
-        $this->lineas->removeElement($lineas);
-    }
-
-    /**
-     * Get lineas
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getLineas()
-    {
-        return $this->lineas;
-    }
+//    /**
+//     * Add lineas
+//     *
+//     * @param \Buseta\TallerBundle\Entity\Linea $lineas
+//     * @return Compra
+//     */
+//    public function addLinea(\Buseta\TallerBundle\Entity\Linea $lineas)
+//    {
+//        $lineas->setCompra($this);
+//
+//        $this->lineas[] = $lineas;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Remove lineas
+//     *
+//     * @param \Buseta\TallerBundle\Entity\Linea $lineas
+//     */
+//    public function removeLinea(\Buseta\TallerBundle\Entity\Linea $lineas)
+//    {
+//        $this->lineas->removeElement($lineas);
+//    }
+//
+//    /**
+//     * Get lineas
+//     *
+//     * @return \Doctrine\Common\Collections\Collection
+//     */
+//    public function getLineas()
+//    {
+//        return $this->lineas;
+//    }
 
     /**
      * Set numero_factura_proveedor

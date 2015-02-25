@@ -100,6 +100,7 @@ class OrdenTrabajo
      *
      * @ORM\Column(name="fecha_inicio", type="date")
      * @Assert\Date()
+     * @Assert\NotNull()
      */
     private $fechaInicio;
 

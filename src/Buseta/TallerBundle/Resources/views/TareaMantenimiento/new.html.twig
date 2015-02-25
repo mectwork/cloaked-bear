@@ -13,8 +13,14 @@
     <form action="{{ path('tareamantenimiento_create') }}" method="post" {{ form_enctype(form) }}>
 
         {{ form_errors(form) }}
+        <div class="row">
+            <div class="col-md-12">
+                {{ form_row(form.valor) }}
+            </div>
+        </div>
 
-        <div class="row show-grid">
+        <br/>
+        <div class="row">
             <div class="col-md-4">
                 {{ form_row(form.grupo) }}
             </div>
@@ -26,13 +32,15 @@
             </div>
         </div>
 
-        <div class="row show-grid">
+        <br/>
+        <div class="row">
             <div class="col-md-4">
                 {{ form_row(form.horas) }}
             </div>
         </div>
 
-        <div class="row show-grid">
+        <br/>
+        <div class="row">
             <div class="col-md-4">
 
                 <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">

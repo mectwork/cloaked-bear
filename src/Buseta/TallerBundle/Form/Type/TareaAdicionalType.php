@@ -17,14 +17,21 @@ class TareaAdicionalType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $objeto = $builder->getFormFactory();
-        $subgrupos = new AddSubgrupoFieldSubscriber($objeto);
-        $builder->addEventSubscriber($subgrupos);
+
         $grupos = new AddGrupoFieldSubscriber($objeto);
         $builder->addEventSubscriber($grupos);
+
+        $subgrupos = new AddSubgrupoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($subgrupos);
+
         $tarea = new AddTareaMantenimientoFieldSubscriber($objeto);
         $builder->addEventSubscriber($tarea);
+
+
+
+
+
         $builder
 //            ->add('tarea', 'entity', array(
 //                'class' => 'BusetaNomencladorBundle:Tarea',

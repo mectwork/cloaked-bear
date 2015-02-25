@@ -2,6 +2,7 @@
 
 namespace Buseta\TallerBundle\Controller;
 
+use Buseta\NomencladorBundle\Entity\Tarea;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -51,7 +52,6 @@ class TareaMantenimientoController extends Controller
         if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
 
-        $request = $this->getRequest();
         if (!$request->isXmlHttpRequest())
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
 
@@ -79,7 +79,7 @@ class TareaMantenimientoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->findAll();
+        $entities = $em->getRepository('BusetaNomencladorBundle:Tarea')->findAll();
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
@@ -99,12 +99,13 @@ class TareaMantenimientoController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new TareaMantenimiento();
+        $entity = new Tarea();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->get('doctrine.orm.entity_manager');
+
             $em->persist($entity);
             $em->flush();
 
@@ -124,7 +125,7 @@ class TareaMantenimientoController extends Controller
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(TareaMantenimiento $entity)
+    private function createCreateForm(Tarea $entity)
     {
         $form = $this->createForm(new TareaMantenimientoType(), $entity, array(
             'action' => $this->generateUrl('tareamantenimiento_create'),
@@ -142,7 +143,7 @@ class TareaMantenimientoController extends Controller
      */
     public function newAction()
     {
-        $entity = new TareaMantenimiento();
+        $entity = new Tarea();
         $form   = $this->createCreateForm($entity);
 
         return $this->render('BusetaTallerBundle:TareaMantenimiento:new.html.twig', array(
@@ -159,7 +160,7 @@ class TareaMantenimientoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->find($id);
+        $entity = $em->getRepository('BusetaNomencladorBundle:Tarea')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find TareaMantenimiento entity.');
@@ -178,9 +179,9 @@ class TareaMantenimientoController extends Controller
      */
     public function editAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
-        $entity = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->find($id);
+        $entity = $em->getRepository('BusetaNomencladorBundle:Tarea')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find TareaMantenimiento entity.');
@@ -203,7 +204,7 @@ class TareaMantenimientoController extends Controller
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(TareaMantenimiento $entity)
+    private function createEditForm(Tarea $entity)
     {
         $form = $this->createForm(new TareaMantenimientoType(), $entity, array(
             'action' => $this->generateUrl('tareamantenimiento_update', array('id' => $entity->getId())),
@@ -222,7 +223,7 @@ class TareaMantenimientoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->find($id);
+        $entity = $em->getRepository('BusetaNomencladorBundle:Tarea')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find TareaMantenimiento entity.');
@@ -255,7 +256,7 @@ class TareaMantenimientoController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->find($id);
+            $entity = $em->getRepository('BusetaNomencladorBundle:Tarea')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find TareaMantenimiento entity.');

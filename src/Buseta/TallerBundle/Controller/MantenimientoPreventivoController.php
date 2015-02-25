@@ -270,7 +270,7 @@ class MantenimientoPreventivoController extends Controller
 
         $em = $this->get('doctrine.orm.entity_manager');
         $subgrupo_id = $request->query->get('subgrupo_id');
-        $tareas = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->findBy(array(
+        $tareas = $em->getRepository('BusetaNomencladorBundle:Tarea')->findBy(array(
             'subgrupo' => $subgrupo_id
         ));
 
@@ -299,7 +299,7 @@ class MantenimientoPreventivoController extends Controller
 
         $em = $this->get('doctrine.orm.entity_manager');
         $tarea_id = $request->query->get('tarea_id');
-        $tarea = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->findOneBy(array(
+        $tarea = $em->getRepository('BusetaNomencladorBundle:Tarea')->findOneBy(array(
             'id' => $tarea_id
         ));
 

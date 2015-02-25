@@ -36,9 +36,9 @@ class MantenimientoPreventivo
     private $subgrupo;
 
     /**
-     * @var \Buseta\TallerBundle\Entity\TareaMantenimiento
+     * @var \Buseta\NomencladorBundle\Entity\Tarea
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\TareaMantenimiento")
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Tarea")
      */
     private $tarea;
 
@@ -206,10 +206,10 @@ class MantenimientoPreventivo
     /**
      * Set tarea
      *
-     * @param \Buseta\TallerBundle\Entity\TareaMantenimiento $tarea
+     * @param \Buseta\NomencladorBundle\Entity\Tarea $tarea
      * @return MantenimientoPreventivo
      */
-    public function setTarea(\Buseta\TallerBundle\Entity\TareaMantenimiento $tarea = null)
+    public function setTarea(\Buseta\NomencladorBundle\Entity\Tarea $tarea = null)
     {
         $this->tarea = $tarea;
     
@@ -219,7 +219,7 @@ class MantenimientoPreventivo
     /**
      * Get tarea
      *
-     * @return \Buseta\TallerBundle\Entity\TareaMantenimiento
+     * @return \Buseta\NomencladorBundle\Entity\Tarea
      */
     public function getTarea()
     {

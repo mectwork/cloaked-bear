@@ -57,12 +57,12 @@ class CondicionesPago
      */
     private $nota;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\Compra", mappedBy="condiciones_pago", cascade={"all"})
-     */
-    private $compras;
+//    /**
+//     * @var \Doctrine\Common\Collections\ArrayCollection
+//     *
+//     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\Compra", mappedBy="condiciones_pago", cascade={"all"})
+//     */
+//    private $compras;
 
 
     /**
@@ -70,7 +70,7 @@ class CondicionesPago
      */
     public function __construct()
     {
-        $this->compras = new \Doctrine\Common\Collections\ArrayCollection();
+//        $this->compras = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -198,38 +198,38 @@ class CondicionesPago
         return $this->nota;
     }
 
-    /**
-     * Add compras
-     *
-     * @param \Buseta\TallerBundle\Entity\Compra $compras
-     * @return CondicionesPago
-     */
-    public function addCompra(\Buseta\TallerBundle\Entity\Compra $compras)
-    {
-        $this->compras[] = $compras;
-    
-        return $this;
-    }
-
-    /**
-     * Remove compras
-     *
-     * @param \Buseta\TallerBundle\Entity\Compra $compras
-     */
-    public function removeCompra(\Buseta\TallerBundle\Entity\Compra $compras)
-    {
-        $this->compras->removeElement($compras);
-    }
-
-    /**
-     * Get compras
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getCompras()
-    {
-        return $this->compras;
-    }
+//    /**
+//     * Add compras
+//     *
+//     * @param \Buseta\TallerBundle\Entity\Compra $compras
+//     * @return CondicionesPago
+//     */
+//    public function addCompra(\Buseta\TallerBundle\Entity\Compra $compras)
+//    {
+//        $this->compras[] = $compras;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Remove compras
+//     *
+//     * @param \Buseta\TallerBundle\Entity\Compra $compras
+//     */
+//    public function removeCompra(\Buseta\TallerBundle\Entity\Compra $compras)
+//    {
+//        $this->compras->removeElement($compras);
+//    }
+//
+//    /**
+//     * Get compras
+//     *
+//     * @return \Doctrine\Common\Collections\Collection
+//     */
+//    public function getCompras()
+//    {
+//        return $this->compras;
+//    }
 
     public function __toString()
     {
