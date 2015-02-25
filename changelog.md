@@ -13,6 +13,9 @@ beta2:
   - Añadido campo CategoriaProducto al filtro de Producto
   - Creada entidad CategoriaProducto y relacionada con Producto
   - Creada entidad PrecioProducto y relacionada con Producto, se actualizaron todas las dependencias de ambas entidades
+  - Refactoriza la Orden de Trabajo para adoptar el nomenclador de Tareas y los Terceros.
+  - Eliminados los campos: 'revisado' y 'aprobado' y se agrega el campo 'estado' a la entidad OrdenTrabajo para usar como select.
+  - Agregado el campo 'persona' a la entidad 'Tercero' y corregido filtro del Listado de Terceros.
 
 beta1(13/02/2015):
   - Solucionadas no conformidades final sin edit de Producto, Tercero, OrdenTrabajo, Compra
