@@ -24,12 +24,11 @@ class TareaAdicionalType extends AbstractType
         $builder->addEventSubscriber($grupos);
 
         $builder
-            ->add('tarea', 'textarea', array(
-                'required' => true,
-                'label'  => 'Tarea',
+            ->add('tarea', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:Tarea',
+                'label' => 'Tarea',
                 'attr'   => array(
                     'class' => 'form-control',
-                    'style' => 'height: 120px',
                 )
             ))
             ->add('descripcion', 'textarea', array(

@@ -22,107 +22,100 @@
 {% block area_trabajo %}
 
     <form action="{{ path('ordentrabajo_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_errors(form) }}
 
-    {{ form_errors(form) }}
+        <div class="row show-grid">
+            <div class="col-md-4">
+                {{ form_row(form.numero) }}
+            </div>
 
-    <div class="row show-grid">
-        <div class="col-md-4">
-            {{ form_row(form.numero) }}
-        </div>
+            <div class="col-md-4">
+                {{ form_row(form.realizada_por) }}
+            </div>
 
-        <div class="col-md-4">
-            {{ form_row(form.realizada_por) }}
-        </div>
-
-        <div class="col-md-4">
-            {{ form_row(form.ayudante) }}
-        </div>
-    </div>
-
-    <div class="row show-grid">
-        <div class="col-md-4">
-            {{ form_row(form.autobus) }}
-        </div>
-
-        <div class="col-md-4">
-            {{ form_row(form.fecha_inicio) }}
-        </div>
-
-        <div class="col-md-4">
-            {{ form_row(form.fecha_final) }}
-        </div>
-
-    </div>
-
-    <div class="row show-grid">
-        <div class="col-md-4">
-            {{ form_row(form.diagnostico) }}
-        </div>
-
-        <div class="col-md-4">
-            {{ form_row(form.prioridad) }}
-        </div>
-
-    </div>
-
-    <div class="row show-grid">
-        <div class="col-md-12">
-            {{ form_row(form.observaciones) }}
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-12">
-            {{ form_row(form.tarea_adicional) }}
-        </div>
-    </div>
-
-
-    <div class="row show-grid">
-        <div class="col-md-4">
-            <div class="btn-group" style="padding-bottom: 8px;">
-                <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar tarea adicional</a>
+            <div class="col-md-4">
+                {{ form_row(form.ayudante) }}
             </div>
         </div>
-    </div>
 
-    <div class="row show-grid">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h4>Resumen de Orden de Trabajo:</h4>
+        <div class="row show-grid">
+            <div class="col-md-4">
+                {{ form_row(form.autobus) }}
+            </div>
 
-                <div class="col-md-4">
-                    {{ form_row(form.duracion_dias) }}
-                </div>
+            <div class="col-md-4">
+                {{ form_row(form.fecha_inicio) }}
+            </div>
 
-                <div class="col-md-4">
-                    {{ form_row(form.duracion_horas_laboradas) }}
+            <div class="col-md-4">
+                {{ form_row(form.fecha_final) }}
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-md-4">
+                {{ form_row(form.diagnostico) }}
+            </div>
+
+            <div class="col-md-4">
+                {{ form_row(form.prioridad) }}
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-md-12">
+                {{ form_row(form.observaciones) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                {{ form_row(form.tarea_adicional) }}
+            </div>
+        </div>
+
+
+        <div class="row show-grid">
+            <div class="col-md-4">
+                <div class="btn-group" style="padding-bottom: 8px;">
+                    <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar tarea adicional</a>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row show-grid">
-        <div class="col-md-4">
-            {{ form_row(form.revisado) }}
-        </div>
+        <div class="row show-grid">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>Resumen de Orden de Trabajo:</h4>
 
-        <div class="col-md-4">
-            {{ form_row(form.aprobado) }}
-        </div>
-    </div>
+                    <div class="col-md-4">
+                        {{ form_row(form.duracion_dias) }}
+                    </div>
 
-    <div class="row show-grid">
-        <div class="col-md-4">
-            <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
-            <div class="btn-group">
-                <a class="btn btn-primary" href="{{ path('ordentrabajo') }}"> Cancelar</a>
+                    <div class="col-md-4">
+                        {{ form_row(form.duracion_horas_laboradas) }}
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    {{ form_rest(form) }}
-</form>
+        <div class="row show-grid">
+            <div class="col-md-4">
+                {{ form_row(form.estado) }}
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-md-4">
+                <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="{{ path('ordentrabajo') }}"> Cancelar</a>
+                </div>
+            </div>
+        </div>
+
+        {{ form_rest(form) }}
+    </form>
 
     <!-- Modal -->
     <div class="modal fade" id="newLinea" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -159,7 +152,7 @@
                         </div>
 
                         <div class="row show-grid">
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 {{ form_row(tarea_adicional.tarea) }}
                             </div>
                             <div class="col-md-12">
@@ -172,17 +165,19 @@
                                 {{ form_row(tarea_adicional.descripcion) }}
                             </div>
                         </div>
-                </div>
-                <div class="modal-footer">
-                    <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</span></a>
 
+                        <div class="modal-footer">
+                            <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0 0 20px 20px;" href="#">
+                                <span class="fa fa-plus-circle">Adicionar</span>
+                            </a>
+                        </div>
+                        {{ form_rest(tarea_adicional) }}
+                    </form>
                 </div>
-                {{ form_rest(tarea_adicional) }}
-                </form>
+                <!-- /.modal-content -->
             </div>
-            <!-- /.modal-content -->
+            <!-- /.modal-dialog -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
 
 {% endblock %}

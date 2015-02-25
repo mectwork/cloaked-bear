@@ -1,4 +1,13 @@
 {
+    "repositories": [
+        {
+          "packagist": false
+        },
+        {
+            "type": "composer",
+            "url": "http://composer.prod.uci.cu:8080"
+        }
+    ],
     "name": "dundivet/buses-taller-manager",
     "license": "MIT",
     "type": "project",
@@ -21,12 +30,12 @@
         "sensio/generator-bundle": "2.3.*",
         "incenteev/composer-parameter-handler": "~2.0",
         "friendsofsymfony/user-bundle": "2.0.*@dev",
-        "liip/imagine-bundle": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "2.2.*",
         "knplabs/knp-paginator-bundle": "2.4.*@dev",
         "friendsofsymfony/jsrouting-bundle": "1.5.*",
         "javiereguiluz/easyadmin-bundle": "@dev",
-        "knplabs/knp-menu-bundle": "~2.0"
+        "knplabs/knp-menu-bundle": "~2.0",
+        "liip/imagine-bundle": "~1.0@dev"
     },
     "scripts": {
         "post-install-cmd": [
@@ -48,7 +57,8 @@
         "bin-dir": "bin",
         "component-dir": "web/components"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",

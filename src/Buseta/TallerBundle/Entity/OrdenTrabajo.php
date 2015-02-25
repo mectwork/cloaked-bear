@@ -23,9 +23,9 @@ class OrdenTrabajo
     private $id;
 
     /**
-     * @var string
+     * @var \Buseta\BodegaBundle\Entity\Tercero
      *
-     * @ORM\Column(name="realizada_por", type="string", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero")
      */
     private $realizada_por;
 
@@ -66,19 +66,14 @@ class OrdenTrabajo
     private $observaciones;
 
     /**
-     * @ORM\Column(name="revisado", type="boolean", nullable=true)
+     * @ORM\Column(name="estado", type="boolean", nullable=true)
      */
-    private $revisado;
+    private $estado;
 
     /**
-     * @ORM\Column(name="aprobado", type="boolean", nullable=true)
-     */
-    private $aprobado;
-
-    /**
-     * @var string
+     * @var \Buseta\BodegaBundle\Entity\Tercero
      *
-     * @ORM\Column(name="ayudante", type="string", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero")
      */
     private $ayudante;
 
@@ -90,7 +85,7 @@ class OrdenTrabajo
     private $tarea_adicional;
 
     /**
-     * @var date
+     * @var \DateTime
      *
      * @ORM\Column(name="fecha_inicio", type="date")
      * @Assert\Date()
@@ -98,7 +93,7 @@ class OrdenTrabajo
     private $fecha_inicio;
 
     /**
-     * @var date
+     * @var \DateTime
      *
      * @ORM\Column(name="fecha_final", type="date")
      * @Assert\Date()
@@ -119,6 +114,7 @@ class OrdenTrabajo
      */
     private $duracion_horas_laboradas;
 
+
     /**
      * Constructor
      */
@@ -127,6 +123,7 @@ class OrdenTrabajo
         $this->tarea_adicional = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
+
     /**
      * Get id
      *
@@ -138,84 +135,26 @@ class OrdenTrabajo
     }
 
     /**
-     * Set realizada_por
+     * Set numero
      *
-     * @param string $realizadaPor
+     * @param string $numero
      * @return OrdenTrabajo
      */
-    public function setRealizadaPor($realizadaPor)
+    public function setNumero($numero)
     {
-        $this->realizada_por = $realizadaPor;
+        $this->numero = $numero;
     
         return $this;
     }
 
     /**
-     * Get realizada_por
+     * Get numero
      *
      * @return string 
      */
-    public function getRealizadaPor()
+    public function getNumero()
     {
-        return $this->realizada_por;
-    }
-
-    /**
-     * Add tarea_adicional
-     *
-     * @param \Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional
-     * @return OrdenTrabajo
-     */
-    public function addTareaAdicional(\Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional)
-    {
-        $tareaAdicional->setOrdenTrabajo($this);
-
-        $this->tarea_adicional[] = $tareaAdicional;
-    
-        return $this;
-    }
-
-    /**
-     * Remove tarea_adicional
-     *
-     * @param \Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional
-     */
-    public function removeTareaAdicional(\Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional)
-    {
-        $this->tarea_adicional->removeElement($tareaAdicional);
-    }
-
-    /**
-     * Get tarea_adicional
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getTareaAdicional()
-    {
-        return $this->tarea_adicional;
-    }
-
-    /**
-     * Set autobus
-     *
-     * @param \Buseta\BusesBundle\Entity\Autobus $autobus
-     * @return OrdenTrabajo
-     */
-    public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
-    {
-        $this->autobus = $autobus;
-    
-        return $this;
-    }
-
-    /**
-     * Get autobus
-     *
-     * @return \Buseta\BusesBundle\Entity\Autobus 
-     */
-    public function getAutobus()
-    {
-        return $this->autobus;
+        return $this->numero;
     }
 
     /**
@@ -265,49 +204,49 @@ class OrdenTrabajo
     }
 
     /**
-     * Set ayudante
+     * Set observaciones
      *
-     * @param string $ayudante
+     * @param string $observaciones
      * @return OrdenTrabajo
      */
-    public function setAyudante($ayudante)
+    public function setObservaciones($observaciones)
     {
-        $this->ayudante = $ayudante;
+        $this->observaciones = $observaciones;
     
         return $this;
     }
 
     /**
-     * Get ayudante
+     * Get observaciones
      *
      * @return string 
      */
-    public function getAyudante()
+    public function getObservaciones()
     {
-        return $this->ayudante;
+        return $this->observaciones;
     }
 
     /**
-     * Set numero
+     * Set estado
      *
-     * @param string $numero
+     * @param boolean $estado
      * @return OrdenTrabajo
      */
-    public function setNumero($numero)
+    public function setEstado($estado)
     {
-        $this->numero = $numero;
+        $this->estado = $estado;
     
         return $this;
     }
 
     /**
-     * Get numero
+     * Get estado
      *
-     * @return string 
+     * @return boolean 
      */
-    public function getNumero()
+    public function getEstado()
     {
-        return $this->numero;
+        return $this->estado;
     }
 
     /**
@@ -357,75 +296,6 @@ class OrdenTrabajo
     }
 
     /**
-     * Set observaciones
-     *
-     * @param string $observaciones
-     * @return OrdenTrabajo
-     */
-    public function setObservaciones($observaciones)
-    {
-        $this->observaciones = $observaciones;
-    
-        return $this;
-    }
-
-    /**
-     * Get observaciones
-     *
-     * @return string 
-     */
-    public function getObservaciones()
-    {
-        return $this->observaciones;
-    }
-
-    /**
-     * Set revisado
-     *
-     * @param boolean $revisado
-     * @return OrdenTrabajo
-     */
-    public function setRevisado($revisado)
-    {
-        $this->revisado = $revisado;
-    
-        return $this;
-    }
-
-    /**
-     * Get revisado
-     *
-     * @return boolean 
-     */
-    public function getRevisado()
-    {
-        return $this->revisado;
-    }
-
-    /**
-     * Set aprobado
-     *
-     * @param boolean $aprobado
-     * @return OrdenTrabajo
-     */
-    public function setAprobado($aprobado)
-    {
-        $this->aprobado = $aprobado;
-    
-        return $this;
-    }
-
-    /**
-     * Get aprobado
-     *
-     * @return boolean 
-     */
-    public function getAprobado()
-    {
-        return $this->aprobado;
-    }
-
-    /**
      * Set duracion_dias
      *
      * @param string $duracionDias
@@ -469,5 +339,108 @@ class OrdenTrabajo
     public function getDuracionHorasLaboradas()
     {
         return $this->duracion_horas_laboradas;
+    }
+
+    /**
+     * Set realizada_por
+     *
+     * @param \Buseta\BodegaBundle\Entity\Tercero $realizadaPor
+     * @return OrdenTrabajo
+     */
+    public function setRealizadaPor(\Buseta\BodegaBundle\Entity\Tercero $realizadaPor = null)
+    {
+        $this->realizada_por = $realizadaPor;
+    
+        return $this;
+    }
+
+    /**
+     * Get realizada_por
+     *
+     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     */
+    public function getRealizadaPor()
+    {
+        return $this->realizada_por;
+    }
+
+    /**
+     * Set autobus
+     *
+     * @param \Buseta\BusesBundle\Entity\Autobus $autobus
+     * @return OrdenTrabajo
+     */
+    public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
+    {
+        $this->autobus = $autobus;
+    
+        return $this;
+    }
+
+    /**
+     * Get autobus
+     *
+     * @return \Buseta\BusesBundle\Entity\Autobus 
+     */
+    public function getAutobus()
+    {
+        return $this->autobus;
+    }
+
+    /**
+     * Set ayudante
+     *
+     * @param \Buseta\BodegaBundle\Entity\Tercero $ayudante
+     * @return OrdenTrabajo
+     */
+    public function setAyudante(\Buseta\BodegaBundle\Entity\Tercero $ayudante = null)
+    {
+        $this->ayudante = $ayudante;
+    
+        return $this;
+    }
+
+    /**
+     * Get ayudante
+     *
+     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     */
+    public function getAyudante()
+    {
+        return $this->ayudante;
+    }
+
+    /**
+     * Add tarea_adicional
+     *
+     * @param \Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional
+     * @return OrdenTrabajo
+     */
+    public function addTareaAdicional(\Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional)
+    {
+        $tareaAdicional->setOrdenTrabajo($this);
+        $this->tarea_adicional[] = $tareaAdicional;
+    
+        return $this;
+    }
+
+    /**
+     * Remove tarea_adicional
+     *
+     * @param \Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional
+     */
+    public function removeTareaAdicional(\Buseta\TallerBundle\Entity\TareaAdicional $tareaAdicional)
+    {
+        $this->tarea_adicional->removeElement($tareaAdicional);
+    }
+
+    /**
+     * Get tarea_adicional
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTareaAdicional()
+    {
+        return $this->tarea_adicional;
     }
 }

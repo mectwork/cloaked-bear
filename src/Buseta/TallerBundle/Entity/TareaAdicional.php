@@ -37,14 +37,15 @@ class TareaAdicional
     private $subgrupo;
 
     /**
+     * @var \Buseta\TallerBundle\Entity\OrdenTrabajo
      * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\OrdenTrabajo", inversedBy="tarea_adicional")
      */
     private $orden_trabajo;
 
     /**
-     * @var string
+     * @var \Buseta\NomencladorBundle\Entity\Tarea
      *
-     * @ORM\Column(name="tarea", type="string", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Tarea")
      */
     private $tarea;
 
@@ -83,6 +84,7 @@ class TareaAdicional
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\GarantiaTarea")
      */
     private $garantias_tareas;
+    
 
     /**
      * Get id
@@ -95,26 +97,49 @@ class TareaAdicional
     }
 
     /**
-     * Set tarea
+     * Set hora_inicio
      *
-     * @param string $tarea
+     * @param string $horaInicio
      * @return TareaAdicional
      */
-    public function setTarea($tarea)
+    public function setHoraInicio($horaInicio)
     {
-        $this->tarea = $tarea;
+        $this->hora_inicio = $horaInicio;
     
         return $this;
     }
 
     /**
-     * Get tarea
+     * Get hora_inicio
      *
      * @return string 
      */
-    public function getTarea()
+    public function getHoraInicio()
     {
-        return $this->tarea;
+        return $this->hora_inicio;
+    }
+
+    /**
+     * Set hora_final
+     *
+     * @param string $horaFinal
+     * @return TareaAdicional
+     */
+    public function setHoraFinal($horaFinal)
+    {
+        $this->hora_final = $horaFinal;
+    
+        return $this;
+    }
+
+    /**
+     * Get hora_final
+     *
+     * @return string 
+     */
+    public function getHoraFinal()
+    {
+        return $this->hora_final;
     }
 
     /**
@@ -138,6 +163,29 @@ class TareaAdicional
     public function getFechaEstimada()
     {
         return $this->fecha_estimada;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     * @return TareaAdicional
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string 
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
     }
 
     /**
@@ -210,72 +258,26 @@ class TareaAdicional
     }
 
     /**
-     * Set hora_inicio
+     * Set tarea
      *
-     * @param string $horaInicio
+     * @param \Buseta\NomencladorBundle\Entity\Tarea $tarea
      * @return TareaAdicional
      */
-    public function setHoraInicio($horaInicio)
+    public function setTarea(\Buseta\NomencladorBundle\Entity\Tarea $tarea = null)
     {
-        $this->hora_inicio = $horaInicio;
+        $this->tarea = $tarea;
     
         return $this;
     }
 
     /**
-     * Get hora_inicio
+     * Get tarea
      *
-     * @return string 
+     * @return \Buseta\NomencladorBundle\Entity\Tarea 
      */
-    public function getHoraInicio()
+    public function getTarea()
     {
-        return $this->hora_inicio;
-    }
-
-    /**
-     * Set hora_final
-     *
-     * @param string $horaFinal
-     * @return TareaAdicional
-     */
-    public function setHoraFinal($horaFinal)
-    {
-        $this->hora_final = $horaFinal;
-    
-        return $this;
-    }
-
-    /**
-     * Get hora_final
-     *
-     * @return string 
-     */
-    public function getHoraFinal()
-    {
-        return $this->hora_final;
-    }
-
-    /**
-     * Set descripcion
-     *
-     * @param string $descripcion
-     * @return TareaAdicional
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-    
-        return $this;
-    }
-
-    /**
-     * Get descripcion
-     *
-     * @return string 
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
+        return $this->tarea;
     }
 
     /**
