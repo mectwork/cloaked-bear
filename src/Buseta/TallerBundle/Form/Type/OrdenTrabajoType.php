@@ -24,7 +24,8 @@ class OrdenTrabajoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('realizada_por', 'text', array(
+            ->add('realizada_por', 'entity', array(
+                'class' => 'BusetaBodegaBundle:Tercero',
                 'required' => false,
                 'label'  => 'Responsable',
                 'attr'   => array(
@@ -39,7 +40,7 @@ class OrdenTrabajoType extends AbstractType
                 )
             ))
             ->add('observaciones', 'textarea', array(
-                'required' => false,
+                'required' => true,
                 'label'  => 'Observaciones',
                 'attr'   => array(
                     'class' => 'form-control',
@@ -56,7 +57,8 @@ class OrdenTrabajoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('ayudante', 'text', array(
+            ->add('ayudante', 'entity', array(
+                'class' => 'BusetaBodegaBundle:Tercero',
                 'required' => false,
                 'label'  => 'Ayudante',
                 'attr'   => array(
@@ -111,11 +113,14 @@ class OrdenTrabajoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('revisado', null, array(
-                'required' => false,
-            ))
-            ->add('aprobado', null, array(
-                'required' => false,
+            ->add('estado', 'choice', array(
+                'choices' => array(
+                    'revisado' => 'REVISADO',
+                    'aprobado' => 'APROBADO',
+                ),
+                'attr' => array(
+                    'class' => 'form-control',
+                )
             ))
         ;
     }

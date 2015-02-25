@@ -99,11 +99,7 @@
 
     <div class="row show-grid">
         <div class="col-md-4">
-            {{ form_row(edit_form.revisado) }}
-        </div>
-
-        <div class="col-md-4">
-            {{ form_row(edit_form.aprobado) }}
+            {{ form_row(edit_form.estado) }}
         </div>
     </div>
 
@@ -168,13 +164,13 @@
                                 {{ form_row(tarea_adicional.descripcion) }}
                             </div>
                         </div>
-                </div>
-                <div class="modal-footer">
-                    <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</span></a>
 
+                        <div class="modal-footer">
+                            <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</span></a>
+                        </div>
+                        {{ form_rest(tarea_adicional) }}
+                    </form>
                 </div>
-                {{ form_rest(tarea_adicional) }}
-                </form>
             </div>
             <!-- /.modal-content -->
         </div>
