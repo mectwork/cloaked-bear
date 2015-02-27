@@ -22,13 +22,6 @@ class Marca extends BaseNomenclador
     protected $id;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Buseta\NomencladorBundle\Entity\Modelo", mappedBy="marca", cascade={"all"})
-     */
-    private $modelos;
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -44,39 +37,6 @@ class Marca extends BaseNomenclador
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Add modelos
-     *
-     * @param \Buseta\NomencladorBundle\Entity\Modelo $modelos
-     * @return Marca
-     */
-    public function addModelo(\Buseta\NomencladorBundle\Entity\Modelo $modelos)
-    {
-        $this->modelos[] = $modelos;
-    
-        return $this;
-    }
-
-    /**
-     * Remove modelos
-     *
-     * @param \Buseta\NomencladorBundle\Entity\Modelo $modelos
-     */
-    public function removeModelo(\Buseta\NomencladorBundle\Entity\Modelo $modelos)
-    {
-        $this->modelos->removeElement($modelos);
-    }
-
-    /**
-     * Get modelos
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getModelos()
-    {
-        return $this->modelos;
     }
 
 }
