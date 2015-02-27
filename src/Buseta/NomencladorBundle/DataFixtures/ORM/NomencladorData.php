@@ -10,6 +10,7 @@ use Buseta\NomencladorBundle\Entity\Color;
 use Buseta\NomencladorBundle\Entity\Combustible;
 use Buseta\NomencladorBundle\Entity\Condicion;
 use Buseta\NomencladorBundle\Entity\Estilo;
+use Buseta\NomencladorBundle\Entity\FormaPago;
 use Buseta\NomencladorBundle\Entity\GarantiaTarea;
 use Buseta\NomencladorBundle\Entity\Grupo;
 use Buseta\NomencladorBundle\Entity\Marca;
@@ -19,6 +20,7 @@ use Buseta\NomencladorBundle\Entity\Moneda;
 use Buseta\NomencladorBundle\Entity\Subgrupo;
 use Buseta\NomencladorBundle\Entity\TipoCompra;
 use Buseta\NomencladorBundle\Entity\TipoContacto;
+use Buseta\NomencladorBundle\Entity\CajaChica;
 use Buseta\NomencladorBundle\Entity\UOM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -194,8 +196,41 @@ class NomencladorData extends AbstractFixture
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
+            /*******************************/
+
+            $objeto = new CajaChica();
+            $codigo = uniqid();
+            $objeto->setValor($this->caja_chicas[$i]);
+
+            $manager->persist($objeto);
+            $manager->flush();
+            $this->setReference('cajaChica' . $i, $objeto);
+            $manager->clear();
+            /*******************************/
+
+            $objeto = new FormaPago();
+            $codigo = uniqid();
+            $objeto->setValor($this->forma_pagos[$i]);
+            $objeto->setCajaChica($this->getReference('cajaChica' . $i));
+
+            $manager->persist($objeto);
+            $manager->flush();
+            $manager->clear();
+            /*******************************/
         }
     }
+
+    private $forma_pagos = array(
+        'Forma Pago A',
+        'Forma Pago B',
+        'Forma Pago C',
+    );
+
+    private $caja_chicas = array(
+        'Caja Chica A',
+        'Caja Chica B',
+        'Caja Chica C',
+    );
 
     private $garantia_compras = array(
         'Garantía Compra A',
