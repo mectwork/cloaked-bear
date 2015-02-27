@@ -16,17 +16,20 @@
 
         <div class="row show-grid">
             <div class="col-md-4">
+                {{ form_row(edit_form.valor) }}
+            </div>
+            <div class="col-md-4">
                 {{ form_row(edit_form.grupo) }}
             </div>
             <div class="col-md-4">
                 {{ form_row(edit_form.subgrupo) }}
             </div>
-            <div class="col-md-4">
-                {{ form_row(edit_form.kilometros) }}
-            </div>
         </div>
 
         <div class="row show-grid">
+            <div class="col-md-4">
+                {{ form_row(edit_form.kilometros) }}
+            </div>
             <div class="col-md-4">
                 {{ form_row(edit_form.horas) }}
             </div>

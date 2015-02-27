@@ -2,6 +2,7 @@
 
 namespace Buseta\BusesBundle\DataFixtures\ORM;
 
+use Buseta\BodegaBundle\Entity\CategoriaProducto;
 use Buseta\NomencladorBundle\Entity\AceiteCajaCambios;
 use Buseta\NomencladorBundle\Entity\AceiteHidraulico;
 use Buseta\NomencladorBundle\Entity\AceiteMotor;
@@ -18,10 +19,12 @@ use Buseta\NomencladorBundle\Entity\MarcaMotor;
 use Buseta\NomencladorBundle\Entity\Modelo;
 use Buseta\NomencladorBundle\Entity\Moneda;
 use Buseta\NomencladorBundle\Entity\Subgrupo;
+use Buseta\NomencladorBundle\Entity\Tarea;
 use Buseta\NomencladorBundle\Entity\TipoCompra;
 use Buseta\NomencladorBundle\Entity\TipoContacto;
 use Buseta\NomencladorBundle\Entity\CajaChica;
 use Buseta\NomencladorBundle\Entity\UOM;
+use Buseta\TallerBundle\Entity\Impuesto;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -128,26 +131,6 @@ class NomencladorData extends AbstractFixture
             $manager->clear();
             /*******************************/
 
-            $objeto = new Grupo();
-            $codigo = uniqid();
-            $objeto->setValor($this->grupos[$i]);
-
-            $manager->persist($objeto);
-            $manager->flush();
-            $this->setReference('grupo' . $i, $objeto);
-            $manager->clear();
-            /*******************************/
-
-            $objeto = new Subgrupo();
-            $codigo = uniqid();
-            $objeto->setValor($this->grupos[$i]);
-            $objeto->setGrupo($this->getReference('grupo' . $i));
-
-            $manager->persist($objeto);
-            $manager->flush();
-            $manager->clear();
-            /*******************************/
-
             $objeto = new MarcaMotor();
             $codigo = uniqid();
             $objeto->setValor($this->marca_motores[$i]);
@@ -201,24 +184,121 @@ class NomencladorData extends AbstractFixture
             $objeto = new CajaChica();
             $codigo = uniqid();
             $objeto->setValor($this->caja_chicas[$i]);
-
+            $objeto->setCajaChica($this->getReference('formaPago' . $i));
             $manager->persist($objeto);
             $manager->flush();
-            $this->setReference('cajaChica' . $i, $objeto);
             $manager->clear();
             /*******************************/
 
             $objeto = new FormaPago();
             $codigo = uniqid();
             $objeto->setValor($this->forma_pagos[$i]);
-            $objeto->setCajaChica($this->getReference('cajaChica' . $i));
+            $this->setReference('formaPago' . $i, $objeto);
+            $manager->persist($objeto);
+            $manager->flush();
+            $manager->clear();
+            /*******************************/
 
+            $objeto = new CategoriaProducto();
+            $codigo = uniqid();
+            $objeto->setValor($this->categoria_productos[$i]);
+            $objeto->setDescripcion($this->descripciones[$i]);
+            $manager->persist($objeto);
+            $manager->flush();
+            $manager->clear();
+            /*******************************/
+
+            $objeto = new Grupo();
+            $codigo = uniqid();
+            $objeto->setValor($this->grupos[$i]);
+            $manager->persist($objeto);
+            $manager->flush();
+            $this->setReference('grupo' . $i, $objeto);
+            $manager->clear();
+            /*******************************/
+
+            $objeto = new Subgrupo();
+            $codigo = uniqid();
+            $objeto->setValor($this->grupos[$i]);
+            $objeto->setGrupo($this->getReference('grupo' . $i));
+            $this->setReference('subgrupo' . $i, $objeto);
+            $manager->persist($objeto);
+            $manager->flush();
+            $manager->clear();
+            /*******************************/
+
+            $objeto = new Tarea();
+            $codigo = uniqid();
+            $objeto->setValor($this->tareas[$i]);
+            $objeto->setGrupo($this->getReference('grupo' . $i));
+            $objeto->setSubgrupo($this->getReference('subgrupo' . $i));
+            $objeto->setKilometros($this->kilometros[$i]);
+            $objeto->setHoras($this->horas[$i]);
+            $manager->persist($objeto);
+            $manager->flush();
+            $manager->clear();
+            /*******************************/
+
+            $objeto = new Impuesto();
+            $codigo = uniqid();
+            $objeto->setNombre($this->impuestos[$i]);
+            $objeto->setNumero($this->numero_impuestos[$i]);
+            $objeto->setTarifa($this->tarifa_impuestos[$i]);
+            $objeto->setTipo($this->tipo_impuestos[$i]);
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
             /*******************************/
         }
     }
+
+    private $tipo_impuestos = array(
+        'fijo',
+        'porcentaje',
+        'porcentaje',
+    );
+
+    private $tarifa_impuestos = array(
+        20,
+        30,
+        40,
+    );
+
+    private $numero_impuestos = array(
+        '1',
+        '2',
+        '3',
+    );
+
+    private $impuestos = array(
+        'Impuesto A',
+        'Impuesto B',
+        'Impuesto C',
+    );
+
+    private $horas = array(
+        400,
+        500,
+        600,
+    );
+
+    private $kilometros = array(
+        4500,
+        6500,
+        7500,
+    );
+
+    private $tareas = array(
+        'Tarea A',
+        'Tarea B',
+        'Tarea C',
+    );
+
+    private $categoria_productos = array(
+        'Categoría A',
+        'Categoría B',
+        'Categoría C',
+    );
 
     private $forma_pagos = array(
         'Forma Pago A',
