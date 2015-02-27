@@ -29,7 +29,7 @@ class NomencladorData extends AbstractFixture
      */
     function load(ObjectManager $manager)
     {
-        for ($i=0; $i < 3; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             $aceite_caja_cambios = new AceiteCajaCambios();
 
             $codigo = uniqid();
@@ -135,7 +135,7 @@ class NomencladorData extends AbstractFixture
 
             $manager->persist($marca);
             $manager->flush();
-            $this->setReference('marca'.$i, $marca);
+            $this->setReference('marca' . $i, $marca);
             $manager->clear();
 
             /*******************************/
@@ -144,7 +144,7 @@ class NomencladorData extends AbstractFixture
             $codigo = uniqid();
             $objeto->setCodigo($codigo);
             $objeto->setValor($this->marca_autobuses[$i]);
-            $objeto->setMarca($this->getReference('marca'.$i));
+            $objeto->setMarca($this->getReference('marca' . $i));
             $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($objeto);
@@ -161,7 +161,7 @@ class NomencladorData extends AbstractFixture
 
             $manager->persist($objeto);
             $manager->flush();
-            $this->setReference('grupo'.$i, $objeto);
+            $this->setReference('grupo' . $i, $objeto);
             $manager->clear();
 
             /*******************************/
@@ -169,7 +169,7 @@ class NomencladorData extends AbstractFixture
             $objeto = new Subgrupo();
             $codigo = uniqid();
             $objeto->setValor($this->grupos[$i]);
-            $objeto->setGrupo($this->getReference('grupo'.$i));
+            $objeto->setGrupo($this->getReference('grupo' . $i));
             $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
             $objeto->setCodigo($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
