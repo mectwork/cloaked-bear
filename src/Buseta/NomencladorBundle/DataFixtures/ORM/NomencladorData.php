@@ -10,11 +10,14 @@ use Buseta\NomencladorBundle\Entity\Color;
 use Buseta\NomencladorBundle\Entity\Combustible;
 use Buseta\NomencladorBundle\Entity\Condicion;
 use Buseta\NomencladorBundle\Entity\Estilo;
+use Buseta\NomencladorBundle\Entity\GarantiaTarea;
 use Buseta\NomencladorBundle\Entity\Grupo;
 use Buseta\NomencladorBundle\Entity\Marca;
 use Buseta\NomencladorBundle\Entity\MarcaMotor;
 use Buseta\NomencladorBundle\Entity\Modelo;
+use Buseta\NomencladorBundle\Entity\Moneda;
 use Buseta\NomencladorBundle\Entity\Subgrupo;
+use Buseta\NomencladorBundle\Entity\TipoCompra;
 use Buseta\NomencladorBundle\Entity\TipoContacto;
 use Buseta\NomencladorBundle\Entity\UOM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -33,186 +36,185 @@ class NomencladorData extends AbstractFixture
             $aceite_caja_cambios = new AceiteCajaCambios();
 
             $codigo = uniqid();
-            $aceite_caja_cambios->setCodigo($codigo);
             $aceite_caja_cambios->setValor($this->valores[$i]);
-            $aceite_caja_cambios->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($aceite_caja_cambios);
             $manager->flush();
             $manager->clear();
-
             /*******************************/
 
             $aceite_hidraulico = new AceiteHidraulico();
             $codigo = uniqid();
-            $aceite_hidraulico->setCodigo($codigo);
             $aceite_hidraulico->setValor($this->valores[$i]);
-            $aceite_hidraulico->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($aceite_hidraulico);
             $manager->flush();
             $manager->clear();
-
             /*******************************/
 
             $aceite_motor = new AceiteMotor();
             $codigo = uniqid();
-            $aceite_motor->setCodigo($codigo);
             $aceite_motor->setValor($this->valores[$i]);
-            $aceite_motor->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($aceite_motor);
             $manager->flush();
             $manager->clear();
-
             /*******************************/
 
             $aceite_transmision = new AceiteTransmision();
             $codigo = uniqid();
-            $aceite_transmision->setCodigo($codigo);
             $aceite_transmision->setValor($this->valores[$i]);
-            $aceite_transmision->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($aceite_transmision);
             $manager->flush();
             $manager->clear();
-
             /*******************************/
 
             $objeto = new Estilo();
             $codigo = uniqid();
-            $objeto->setCodigo($codigo);
             $objeto->setValor($this->estilos[$i]);
-            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
-
             /*******************************/
 
             $objeto = new Combustible();
             $codigo = uniqid();
-            $objeto->setCodigo($codigo);
             $objeto->setValor($this->combustibles[$i]);
-            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
-
             /*******************************/
 
             $objeto = new Condicion();
             $codigo = uniqid();
-            $objeto->setCodigo($codigo);
             $objeto->setValor($this->condiciones[$i]);
-            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
-
             /*******************************/
 
             $objeto = new Color();
             $codigo = uniqid();
-            $objeto->setCodigo($codigo);
             $objeto->setValor($this->colores[$i]);
-            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
-
             /*******************************/
 
             $marca = new Marca();
             $codigo = uniqid();
-            $marca->setCodigo($codigo);
             $marca->setValor($this->marca_autobuses[$i]);
-            $marca->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($marca);
             $manager->flush();
             $this->setReference('marca' . $i, $marca);
             $manager->clear();
-
             /*******************************/
 
             $objeto = new Modelo();
             $codigo = uniqid();
-            $objeto->setCodigo($codigo);
             $objeto->setValor($this->marca_autobuses[$i]);
             $objeto->setMarca($this->getReference('marca' . $i));
-            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
-
             /*******************************/
 
             $objeto = new Grupo();
             $codigo = uniqid();
             $objeto->setValor($this->grupos[$i]);
-            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
-            $objeto->setCodigo($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($objeto);
             $manager->flush();
             $this->setReference('grupo' . $i, $objeto);
             $manager->clear();
-
             /*******************************/
 
             $objeto = new Subgrupo();
             $codigo = uniqid();
             $objeto->setValor($this->grupos[$i]);
             $objeto->setGrupo($this->getReference('grupo' . $i));
-            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
-            $objeto->setCodigo($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
-
             /*******************************/
 
             $objeto = new MarcaMotor();
             $codigo = uniqid();
-            $objeto->setCodigo($codigo);
             $objeto->setValor($this->marca_motores[$i]);
-            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
-
             /*******************************/
 
             $objeto = new TipoContacto();
             $codigo = uniqid();
-            $objeto->setCodigo($codigo);
             $objeto->setValor($this->tipo_contactos[$i]);
-            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
 
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
-
             /*******************************/
 
             $objeto = new UOM();
             $codigo = uniqid();
-            $objeto->setCodigo($codigo);
             $objeto->setValor($this->oums[$i]);
-            $objeto->setDescripcion($this->descripciones[rand(0, count($this->descripciones) - 1)]);
+            $manager->persist($objeto);
+            $manager->flush();
+            $manager->clear();
+            /*******************************/
+
+            $objeto = new Moneda();
+            $codigo = uniqid();
+            $objeto->setValor($this->monedas[$i]);
+            $manager->persist($objeto);
+            $manager->flush();
+            $manager->clear();
+            /*******************************/
+
+            $objeto = new TipoCompra();
+            $codigo = uniqid();
+            $objeto->setValor($this->tipo_compras[$i]);
+            $manager->persist($objeto);
+            $manager->flush();
+            $manager->clear();
+            /*******************************/
+
+            $objeto = new GarantiaTarea();
+            $codigo = uniqid();
+            $objeto->setValor($this->garantia_compras[$i]);
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
         }
     }
+
+    private $garantia_compras = array(
+        'Garantía Compra A',
+        'Garantía Compra B',
+        'Garantía Compra C',
+    );
+
+    private $tipo_compras = array(
+        'Tipo Compra A',
+        'Tipo Compra B',
+        'Tipo Compra C',
+    );
+
+    private $monedas = array(
+        'euro',
+        'dólar americano',
+        'dólar canadiense',
+        'libra esterlina',
+    );
 
     private $oums = array(
         'lts',

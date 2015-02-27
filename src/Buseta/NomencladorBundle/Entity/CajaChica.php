@@ -22,11 +22,11 @@ class CajaChica extends BaseNomenclador
     protected $id;
 
     /**
-     * @var \Buseta\NomencladorBundle\Entity\FormaPago
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\FormaPago")
+     * @ORM\Column(name="valor", type="string", length=255)
      */
-    private $forma_pago;
+    protected $valor;
 
     /**
      * Get id
@@ -36,45 +36,6 @@ class CajaChica extends BaseNomenclador
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set valor
-     *
-     * @param string $valor
-     * @return CajaChica
-     */
-    public function setValor($valor)
-    {
-        $this->valor = $valor;
-    
-        return $this;
-    }
-
-    /**
-     * Get valor
-     *
-     * @return string 
-     */
-    public function getValor()
-    {
-        return $this->valor;
-    }
-
-    /**
-     * @return FormaPago
-     */
-    public function getFormaPago()
-    {
-        return $this->forma_pago;
-    }
-
-    /**
-     * @param FormaPago $forma_pago
-     */
-    public function setFormaPago($forma_pago)
-    {
-        $this->forma_pago = $forma_pago;
     }
 
     public function __toString()

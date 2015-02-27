@@ -5,12 +5,12 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Grupo
+ * CajaChica
  *
- * @ORM\Table(name="n_grupo")
+ * @ORM\Table(name="n_cajachica")
  * @ORM\Entity
  */
-class Grupo extends BaseNomenclador
+class CajaChica extends BaseNomenclador
 {
     /**
      * @var integer
@@ -22,16 +22,11 @@ class Grupo extends BaseNomenclador
     protected $id;
 
     /**
-     * @var string
+     * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\Column(name="valor", type="string", length=255)
+     * @ORM\OneToMany(targetEntity="Buseta\NomencladorBundle\Entity\FormaPago", mappedBy="cajaChica", cascade={"all"})
      */
-    protected $valor;
-
-    public function __toString()
-    {
-        return $this->valor;
-    }
+    private $formaPago;
 
     /**
      * Get id
@@ -47,7 +42,7 @@ class Grupo extends BaseNomenclador
      * Set valor
      *
      * @param string $valor
-     * @return Grupo
+     * @return CajaChica
      */
     public function setValor($valor)
     {
@@ -66,4 +61,8 @@ class Grupo extends BaseNomenclador
         return $this->valor;
     }
 
+    public function __toString()
+    {
+        return $this->valor;
+    }
 }
