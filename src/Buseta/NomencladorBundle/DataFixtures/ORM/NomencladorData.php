@@ -181,19 +181,19 @@ class NomencladorData extends AbstractFixture
             $manager->clear();
             /*******************************/
 
-            $objeto = new CajaChica();
+            $objeto = new FormaPago();
             $codigo = uniqid();
-            $objeto->setValor($this->caja_chicas[$i]);
-            $objeto->setCajaChica($this->getReference('formaPago' . $i));
+            $objeto->setValor($this->forma_pagos[$i]);
+            $this->setReference('formaPago' . $i, $objeto);
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
             /*******************************/
 
-            $objeto = new FormaPago();
+            $objeto = new CajaChica();
             $codigo = uniqid();
-            $objeto->setValor($this->forma_pagos[$i]);
-            $this->setReference('formaPago' . $i, $objeto);
+            $objeto->setValor($this->caja_chicas[$i]);
+            $objeto->setFormaPago($this->getReference('formaPago' . $i));
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
