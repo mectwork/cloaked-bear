@@ -97,6 +97,11 @@ class AutobusModel
     /**
      * @var string
      */
+    private $numero;
+
+    /**
+     * @var string
+     */
     private $numero_chasis;
 
     /**
@@ -601,6 +606,22 @@ class AutobusModel
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * @param string $numero
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
     }
 
     /**

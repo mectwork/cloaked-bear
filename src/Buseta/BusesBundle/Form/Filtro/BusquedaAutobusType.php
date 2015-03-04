@@ -16,16 +16,21 @@ class BusquedaAutobusType extends AbstractType{
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     )
                 ))
+
+            ->add('numero','text',array(
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
 
             ->add('estilo','entity',array(
                     'class' => 'BusetaNomencladorBundle:Estilo',
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     )
                 ))
 
@@ -34,7 +39,6 @@ class BusquedaAutobusType extends AbstractType{
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     )
                 ))
 
@@ -43,7 +47,6 @@ class BusquedaAutobusType extends AbstractType{
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     )
                 ))
 
@@ -52,7 +55,6 @@ class BusquedaAutobusType extends AbstractType{
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     )
                 ))
 
@@ -61,7 +63,6 @@ class BusquedaAutobusType extends AbstractType{
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     )
                 ))
 

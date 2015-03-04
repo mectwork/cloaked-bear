@@ -1,0 +1,78 @@
+{% extends '@OlimpiadaTemplate/base_template.html.twig' %}
+
+{% block headline %} Datos del tercero con identificación: "{{ entity.identificador }}" {% endblock headline %}
+
+{% block content %}
+
+    <div class="col-lg-3">
+        <a href="#" class="thumbnail">
+            {% if entity.persona is null or entity.persona.foto is null %}
+                <img src="{{ asset('bundles/olimpiadatemplate/images/default.png') }}" alt="" width="253" height="200"/>
+            {% else %}
+                <img src="{{ asset('uploads/resources/') }}{{entity.persona.foto.path }}" alt="" width="253" height="200"/>
+            {% endif %}
+        </a>
+    </div>
+
+    <div class="col-lg-9">
+        <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th>Identificador</th>
+                <td>{{ entity.identificador }}</td>
+            </tr>
+            <tr>
+                <th>Nombres</th>
+                <td>{{ entity.nombres }}</td>
+            </tr>
+            <tr>
+                <th>Apellidos</th>
+                <td>{{ entity.apellidos }}</td>
+            </tr>
+            <tr>
+                <th>Nombre Comercial</th>
+                <td>{{ entity.nombrecomercial }}</td>
+            </tr>
+            <tr>
+                <th>Nombre Fiscal</th>
+                <td>{{ entity.nombrefiscal }}</td>
+            </tr>
+            <tr>
+                <th>Descripción</th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>CIF/NIF</th>
+                <td>{{ entity.cifnif }}</td>
+            </tr>
+            <tr>
+                <th>Es persona</th>
+                <td>
+                    {% if entity.ispersona ==  1 %}
+                        Sí
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+    <div class="col-lg-offset-3">
+        <div class="btn-group">
+            <a class="btn btn-primary" href="{{ path('terceros_tercero_edit', { 'id': entity.id }) }}"> Editar</a>
+        </div>
+
+        <div class="btn-group">
+            <a class="btn btn-primary" href="{{ path('terceros_tercero') }}"> Volver</a>
+        </div>
+
+        <div class="btn-group">
+            {#{{ form_start(delete_form) }}#}
+                {#<button class="btn btn-primary" type="submit">Eliminar</button>#}
+            {#{{ form_end(delete_form) }}#}
+        </div>
+    </div>
+
+{% endblock content %}

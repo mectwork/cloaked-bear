@@ -157,7 +157,7 @@ class OrdenTrabajo
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -173,14 +173,14 @@ class OrdenTrabajo
     public function setNumero($numero)
     {
         $this->numero = $numero;
-    
+
         return $this;
     }
 
     /**
      * Get numero
      *
-     * @return string 
+     * @return string
      */
     public function getNumero()
     {
@@ -196,14 +196,14 @@ class OrdenTrabajo
     public function setDiagnostico($diagnostico)
     {
         $this->diagnostico = $diagnostico;
-    
+
         return $this;
     }
 
     /**
      * Get diagnostico
      *
-     * @return string 
+     * @return string
      */
     public function getDiagnostico()
     {
@@ -219,14 +219,14 @@ class OrdenTrabajo
     public function setPrioridad($prioridad)
     {
         $this->prioridad = $prioridad;
-    
+
         return $this;
     }
 
     /**
      * Get prioridad
      *
-     * @return string 
+     * @return string
      */
     public function getPrioridad()
     {
@@ -242,14 +242,14 @@ class OrdenTrabajo
     public function setObservaciones($observaciones)
     {
         $this->observaciones = $observaciones;
-    
+
         return $this;
     }
 
     /**
      * Get observaciones
      *
-     * @return string 
+     * @return string
      */
     public function getObservaciones()
     {
@@ -265,14 +265,14 @@ class OrdenTrabajo
     public function setEstado($estado)
     {
         $this->estado = $estado;
-    
+
         return $this;
     }
 
     /**
      * Get estado
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEstado()
     {
@@ -288,14 +288,14 @@ class OrdenTrabajo
     public function setFechaInicio($fechaInicio)
     {
         $this->fechaInicio = $fechaInicio;
-    
+
         return $this;
     }
 
     /**
      * Get fechaInicio
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaInicio()
     {
@@ -311,14 +311,14 @@ class OrdenTrabajo
     public function setFechaFinal($fechaFinal)
     {
         $this->fechaFinal = $fechaFinal;
-    
+
         return $this;
     }
 
     /**
      * Get fechaFinal
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaFinal()
     {
@@ -334,14 +334,14 @@ class OrdenTrabajo
     public function setDuracionDias($duracionDias)
     {
         $this->duracionDias = $duracionDias;
-    
+
         return $this;
     }
 
     /**
      * Get duracionDias
      *
-     * @return string 
+     * @return string
      */
     public function getDuracionDias()
     {
@@ -357,14 +357,14 @@ class OrdenTrabajo
     public function setDuracionHorasLaboradas($duracionHorasLaboradas)
     {
         $this->duracionHorasLaboradas = $duracionHorasLaboradas;
-    
+
         return $this;
     }
 
     /**
      * Get duracionHorasLaboradas
      *
-     * @return string 
+     * @return string
      */
     public function getDuracionHorasLaboradas()
     {
@@ -380,14 +380,14 @@ class OrdenTrabajo
     public function setRealizadaPor(\Buseta\BodegaBundle\Entity\Tercero $realizadaPor = null)
     {
         $this->realizadaPor = $realizadaPor;
-    
+
         return $this;
     }
 
     /**
      * Get realizadaPor
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getRealizadaPor()
     {
@@ -403,14 +403,14 @@ class OrdenTrabajo
     public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
     {
         $this->autobus = $autobus;
-    
+
         return $this;
     }
 
     /**
      * Get autobus
      *
-     * @return \Buseta\BusesBundle\Entity\Autobus 
+     * @return \Buseta\BusesBundle\Entity\Autobus
      */
     public function getAutobus()
     {
@@ -426,14 +426,14 @@ class OrdenTrabajo
     public function setAyudante(\Buseta\BodegaBundle\Entity\Tercero $ayudante = null)
     {
         $this->ayudante = $ayudante;
-    
+
         return $this;
     }
 
     /**
      * Get ayudante
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getAyudante()
     {
@@ -449,14 +449,14 @@ class OrdenTrabajo
     public function setRequisionMateriales($requisionMateriales)
     {
         $this->requisionMateriales = $requisionMateriales;
-    
+
         return $this;
     }
 
     /**
      * Get requisionMateriales
      *
-     * @return \Buseta\BusesBundle\Entity\Autobus 
+     * @return \Buseta\BusesBundle\Entity\Autobus
      */
     public function getRequisionMateriales()
     {
@@ -474,7 +474,7 @@ class OrdenTrabajo
         $tareasAdicionales->setOrdenTrabajo($this);
 
         $this->tareasAdicionales[] = $tareasAdicionales;
-    
+
         return $this;
     }
 
@@ -493,7 +493,7 @@ class OrdenTrabajo
     /**
      * Get tareasAdicionales
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTareasAdicionales()
     {
@@ -509,14 +509,14 @@ class OrdenTrabajo
     public function setRevisadoPor(\Buseta\BodegaBundle\Entity\Tercero $revisadoPor = null)
     {
         $this->revisadoPor = $revisadoPor;
-    
+
         return $this;
     }
 
     /**
      * Get revisadoPor
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getRevisadoPor()
     {
@@ -532,14 +532,14 @@ class OrdenTrabajo
     public function setAprobadoPor(\Buseta\BodegaBundle\Entity\Tercero $aprobadoPor = null)
     {
         $this->aprobadoPor = $aprobadoPor;
-    
+
         return $this;
     }
 
     /**
      * Get aprobadoPor
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getAprobadoPor()
     {

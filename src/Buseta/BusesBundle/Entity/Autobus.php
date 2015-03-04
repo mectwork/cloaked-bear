@@ -71,6 +71,13 @@ class Autobus
     /**
      * @var string
      *
+     * @ORM\Column(name="numero", type="string", length=32)
+     */
+    private $numero;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="marca_cajacambio", type="string", nullable=true)
      */
     private $marca_cajacambio;
@@ -495,6 +502,22 @@ class Autobus
     public function getMatricula()
     {
         return $this->matricula;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * @param string $numero
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
     }
 
     /**
@@ -1375,7 +1398,7 @@ class Autobus
 
     public function __toString()
     {
-        return $this->matricula;
+        return $this->matricula.'-'.$this->numero;
     }
 
     /**
