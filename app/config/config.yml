@@ -156,3 +156,4 @@ easy_admin:
         - Buseta\NomencladorBundle\Entity\NRegion
         - Buseta\NomencladorBundle\Entity\NTipoLente
         - Buseta\NomencladorBundle\Entity\NTipoSangre
+        - Buseta\NomencladorBundle\Entity\NMedioReporte

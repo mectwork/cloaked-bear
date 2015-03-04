@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Estilo
  *
- * @ORM\Table(name="n_medio_reporte)
+ * @ORM\Table(name="n_medio_reporte")
  * @ORM\Entity
  */
 class NMedioReporte extends BaseNomenclador
