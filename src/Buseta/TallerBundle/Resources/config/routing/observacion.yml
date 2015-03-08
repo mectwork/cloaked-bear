@@ -1,0 +1,42 @@
+observacion:
+    pattern:  /
+    defaults: { _controller: "BusetaTallerBundle:Observacion:index" }
+
+observacion_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaTallerBundle:Observacion:show" }
+
+observacion_new:
+    pattern:  /new
+    defaults: { _controller: "BusetaTallerBundle:Observacion:new" }
+
+observacion_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaTallerBundle:Observacion:create" }
+    requirements: { _method: post }
+
+observacion_reporte_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaTallerBundle:Observacion:create_reporte" }
+    requirements: { _method: post }
+
+observacion_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BusetaTallerBundle:Observacion:edit" }
+
+observacion_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BusetaTallerBundle:Observacion:update" }
+    requirements: { _method: post|put }
+
+observacion_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BusetaTallerBundle:Observacion:delete" }
+    requirements: { _method: post|delete }
+
+observacion_new_modal:
+    pattern: /modal/new
+    defaults: { _controller: "BusetaTallerBundle:Observacion:newModalObservacion" }
+    requirements: { _method: get }
+    options:
+      expose: true

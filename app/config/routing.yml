@@ -12,6 +12,14 @@ BusetaTallerBundle_ordentrabajo:
         resource: "@BusetaTallerBundle/Resources/config/routing/ordentrabajo.yml"
         prefix:   /ordentrabajo
 
+BusetaTallerBundle_reporte:
+        resource: "@BusetaTallerBundle/Resources/config/routing/reporte.yml"
+        prefix:   /reporte
+
+BusetaTallerBundle_observacion:
+        resource: "@BusetaTallerBundle/Resources/config/routing/observacion.yml"
+        prefix:   /observacion
+
 BusetaTallerBundle_tareamantenimiento:
         resource: "@BusetaTallerBundle/Resources/config/routing/tareamantenimiento.yml"
         prefix:   /tareamantenimiento
@@ -27,6 +35,7 @@ BusetaTallerBundle_pedidocompralinea:
 BusetaTallerBundle_pedidocompra:
         resource: "@BusetaBodegaBundle/Resources/config/routing/pedidocompra.yml"
         prefix:   /pedidocompra
+
 
 BusetaTallerBundle_precioproducto:
         resource: "@BusetaBodegaBundle/Resources/config/routing/precio_producto.yml"

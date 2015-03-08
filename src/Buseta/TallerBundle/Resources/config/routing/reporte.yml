@@ -1,0 +1,30 @@
+reporte:
+    pattern:  /
+    defaults: { _controller: "BusetaTallerBundle:Reporte:index" }
+
+reporte_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaTallerBundle:Reporte:show" }
+
+reporte_new:
+    pattern:  /new
+    defaults: { _controller: "BusetaTallerBundle:Reporte:new" }
+
+reporte_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaTallerBundle:Reporte:create" }
+    requirements: { _method: post }
+
+reporte_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BusetaTallerBundle:Reporte:edit" }
+
+reporte_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BusetaTallerBundle:Reporte:update" }
+    requirements: { _method: post|put }
+
+reporte_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BusetaTallerBundle:Reporte:delete" }
+    requirements: { _method: post|delete }

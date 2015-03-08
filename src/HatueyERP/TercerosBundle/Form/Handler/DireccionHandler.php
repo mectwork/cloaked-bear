@@ -29,6 +29,7 @@ class DireccionHandler extends TercerosAbstractHandler
     {
         $this->tercero      = $tercero;
         $this->direccion    = $direccion;
+        
         if (!$this->direccion) {
             // Creando una nueva Dirección
             $this->direccionModel = new DireccionModel();

@@ -83,7 +83,7 @@ class AutobusController extends Controller
 
         $entityModel = new AutobusModel();
         $form = $this->createCreateForm($entityModel);
-        $form->handleRequest($request);
+        $form->submit($request);
 
         if ($form->isValid()) {
             $model = $this->get('handlebuses');
@@ -100,7 +100,7 @@ class AutobusController extends Controller
         }
 
         return $this->render('BusetaBusesBundle:Autobus:new.html.twig', array(
-            'entity' => $entity,
+            'entity' => $entityModel,
             'form'   => $form->createView(),
         ));
     }

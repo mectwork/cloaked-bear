@@ -44,11 +44,25 @@ class Reporte
     private $autobus;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\Observacion", mappedBy="reporte", cascade={"all"})
+     */
+    private $observaciones;
+
+    /**
      *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\NMedioReporte")
      * @Assert\NotNull
      */
     private $medioReporte;
+
+    /**
+     * @var \Buseta\BodegaBundle\Entity\Tercero
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero")
+     */
+    private $reporta;
 
     /**
      * @ORM\Column(name="es_usuario", type="boolean", nullable=true)
@@ -76,15 +90,13 @@ class Reporte
      */
     private $telefonoPersona;
 
-
-
-
-
-
-
-
-
-    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->observaciones = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -255,5 +267,63 @@ class Reporte
     public function getMedioReporte()
     {
         return $this->medioReporte;
+    }
+
+    /**
+     * Set reporta
+     *
+     * @param \Buseta\BodegaBundle\Entity\Tercero $reporta
+     * @return Reporte
+     */
+    public function setReporta(\Buseta\BodegaBundle\Entity\Tercero $reporta = null)
+    {
+        $this->reporta = $reporta;
+    
+        return $this;
+    }
+
+    /**
+     * Get reporta
+     *
+     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     */
+    public function getReporta()
+    {
+        return $this->reporta;
+    }
+
+    /**
+     * Add observaciones
+     *
+     * @param \Buseta\TallerBundle\Entity\Observacion $observaciones
+     * @return Reporte
+     */
+    public function addObservacion(\Buseta\TallerBundle\Entity\Observacion $observaciones)
+    {
+        $observaciones->setReporte($this);
+
+        $this->observaciones[] = $observaciones;
+    
+        return $this;
+    }
+
+    /**
+     * Remove observaciones
+     *
+     * @param \Buseta\TallerBundle\Entity\Observacion $observaciones
+     */
+    public function removeObservacion(\Buseta\TallerBundle\Entity\Observacion $observaciones)
+    {
+        $this->observaciones->removeElement($observaciones);
+    }
+
+    /**
+     * Get observaciones
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
     }
 }

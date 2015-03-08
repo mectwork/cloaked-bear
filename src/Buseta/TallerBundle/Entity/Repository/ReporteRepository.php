@@ -2,6 +2,7 @@
 
 namespace Buseta\TallerBundle\Entity\Repository;
 
+use Buseta\TallerBundle\Form\Model\ReporteFilterModel;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +13,28 @@ use Doctrine\ORM\EntityRepository;
  */
 class ReporteRepository extends EntityRepository
 {
+    public function filter(ReporteFilterModel $filter = null)
+    {
+        $qb = $this->createQueryBuilder('r');
+        $query = $qb->where($qb->expr()->eq(true,true));
+
+        if($filter) {
+            if ($filter->getNumero() !== null && $filter->getNumero() !== '') {
+                $query->andWhere($qb->expr()->like('r.numero',':numero'))
+                    ->setParameter('numero', '%' . $filter->getNumero() . '%');
+            }
+            if ($filter->getAutobus() !== null && $filter->getAutobus() !== '') {
+                $query->andWhere($query->expr()->eq('r.autobus', ':autobus'))
+                    ->setParameter('autobus', $filter->getAutobus());
+            }
+        }
+
+        $query->orderBy('r.id', 'ASC');
+
+        try {
+            return $query->getQuery();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
 }

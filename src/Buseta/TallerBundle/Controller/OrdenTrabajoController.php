@@ -39,6 +39,7 @@ class OrdenTrabajoController extends Controller
             'entities' => $entities,
         ));
     }
+
     /**
      * Creates a new OrdenTrabajo entity.
      *
