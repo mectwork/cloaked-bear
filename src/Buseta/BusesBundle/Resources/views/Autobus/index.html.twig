@@ -14,6 +14,10 @@
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.matricula is null or filter_form.vars.value.matricula is empty)
     and (filter_form.vars.value.numero is null or filter_form.vars.value.numero is empty)
+    and (filter_form.vars.value.marca is null or filter_form.vars.value.marca is empty)
+    and (filter_form.vars.value.estilo is null or filter_form.vars.value.estilo is empty)
+    and (filter_form.vars.value.color is null or filter_form.vars.value.color is empty)
+    and (filter_form.vars.value.marcaMotor is null or filter_form.vars.value.marcaMotor is empty)
     %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
@@ -30,6 +34,10 @@
             <div class="row">
                 <div class="col-lg-4">{{ form_row(filter_form.matricula) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.numero) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.marca) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.estilo) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.color) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.marca_motor) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -58,6 +66,13 @@
             <tr>
                 <th>{{ knp_pagination_sortable(entities, 'Matrícula', 'a.matricula') }}</th>
                 <th>Número</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Color</th>
+                <th>Potencia</th>
+                <th>Fecha Ingreso</th>
+                <th>Válido Hasta</th>
+                <th>Kilometraje</th>
                 <th style="text-align: center">Acciones</th>
             </tr>
             </thead>
@@ -66,6 +81,13 @@
                 <tr>
                     <td>{{ entity.matricula }}</td>
                     <td>{{ entity.numero }}</td>
+                    <td>{{ entity.marca }}</td>
+                    <td>{{ entity.modelo }}</td>
+                    <td>{{ entity.color }}</td>
+                    <td>{{ entity.potencia }}</td>
+                    <td>{{ entity.fechaIngreso|date('d/m/y') }}</td>
+                    <td>{{ entity.validoHasta|date('d/m/y') }}</td>
+                    <td>{{ entity.kilometraje }}</td>
 
                     <td  style="width: 18% !important; text-align: center;">
                         <div class="btn-group">

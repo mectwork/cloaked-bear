@@ -29,7 +29,40 @@ class AutobusFilter extends AbstractType
                 'attr'      => array(
                     'class' => 'form-control',
                 )
-            ));
+            ))
+            ->add('marca','entity',array(
+                'class' => 'BusetaNomencladorBundle:Marca',
+                'empty_value' => '---Seleccione---',
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('estilo','entity',array(
+                'class' => 'BusetaNomencladorBundle:Estilo',
+                'empty_value' => '---Seleccione---',
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('color','entity',array(
+                'class' => 'BusetaNomencladorBundle:Color',
+                'empty_value' => '---Seleccione---',
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('marca_motor','entity',array(
+                'class' => 'BusetaNomencladorBundle:MarcaMotor',
+                'empty_value' => '---Seleccione---',
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+        ;
     }
 
     /**

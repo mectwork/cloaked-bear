@@ -28,6 +28,22 @@ class AutobusRepository extends EntityRepository
                 $query->andWhere($qb->expr()->like('a.numero',':numero'))
                     ->setParameter('numero', '%' . $filter->getNumero() . '%');
             }
+            if ($filter->getMarca() !== null && $filter->getMarca() !== '') {
+                $query->andWhere($query->expr()->eq('a.marca', ':marca'))
+                    ->setParameter('marca', $filter->getMarca());
+            }
+            if ($filter->getEstilo() !== null && $filter->getEstilo() !== '') {
+                $query->andWhere($query->expr()->eq('a.estilo', ':estilo'))
+                    ->setParameter('estilo', $filter->getEstilo());
+            }
+            if ($filter->getColor() !== null && $filter->getColor() !== '') {
+                $query->andWhere($query->expr()->eq('a.color', ':color'))
+                    ->setParameter('color', $filter->getColor());
+            }
+            if ($filter->getMarcaMotor() !== null && $filter->getMarcaMotor() !== '') {
+                $query->andWhere($query->expr()->eq('a.marca_motor', ':marca_motor'))
+                    ->setParameter('marca_motor', $filter->getMarcaMotor());
+            }
         }
 
         $query->orderBy('a.id', 'ASC');
@@ -38,59 +54,4 @@ class AutobusRepository extends EntityRepository
             return array();
         }
     }
-
-    /*public function buscarTodos($em)
-    {
-        $entities = $em->createQueryBuilder()
-            ->select('a')
-            ->from('BusetaBusesBundle:Autobus','a');
-
-        $entities = $entities
-            ->getQuery();
-
-        return $entities;
-    }
-
-    public function buscarAutobus($busqueda,$em)
-    {
-        $entities = $em->createQueryBuilder()
-            ->select('a')
-            ->from('BusetaBusesBundle:Autobus','a');
-
-        $datos = $busqueda->getData();
-        $entities
-            ->where('a.matricula LIKE :matricula');
-        $entities
-            ->setParameter('matricula', '%'.$datos['matricula'].'%');
-
-        if($datos['marca']){
-            $entities->andWhere('a.marca = :marca');
-            $entities->setParameter('marca', $datos['marca']);
-        }
-
-        if($datos['color']){
-            $entities->andWhere('a.color = :color');
-            $entities->setParameter('color', $datos['color']);
-        }
-
-        if($datos['estilo']){
-            $entities->andWhere('a.estilo = :estilo');
-            $entities->setParameter('estilo', $datos['estilo']);
-        }
-
-        if($datos['combustible']){
-            $entities->andWhere('a.combustible = :combustible');
-            $entities->setParameter('combustible', $datos['combustible']);
-        }
-
-        if($datos['marca_motor']){
-            $entities->andWhere('a.marca_motor = :marca_motor');
-            $entities->setParameter('marca_motor', $datos['marca_motor']);
-        }
-
-        $entities = $entities
-            ->getQuery();
-
-        return $entities;
-    }*/
 }
