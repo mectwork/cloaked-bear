@@ -117,11 +117,11 @@ easy_admin:
     site_name: 'Nomencladores'
     assets:
         css:
-            - '/Taller/web/bundles/busetanomenclador/css/admin.css'
+            - '/bundles/busetanomenclador/css/admin.css'
     entities:
         - Buseta\NomencladorBundle\Entity\AceiteCajaCambios
         - Buseta\NomencladorBundle\Entity\AceiteHidraulico
-        - Buseta\NomencladorBundle\Entity\AceiteMotor
+        - Buseta\NomencladorBundle\Entity\AceiteMotor2.4 crea
         - Buseta\NomencladorBundle\Entity\AceiteTransmision
         - Buseta\NomencladorBundle\Entity\CajaChica
         - Buseta\NomencladorBundle\Entity\Color
@@ -131,6 +131,7 @@ easy_admin:
         - Buseta\NomencladorBundle\Entity\FormaPago
         - Buseta\NomencladorBundle\Entity\GarantiaTarea
         - Buseta\NomencladorBundle\Entity\Grupo
+        - Buseta\NomencladorBundle\Entity\MantenimientoPorcientoCumplido
         - Buseta\NomencladorBundle\Entity\Subgrupo
 #        - Buseta\NomencladorBundle\Entity\Tarea
         - Buseta\NomencladorBundle\Entity\Marca
