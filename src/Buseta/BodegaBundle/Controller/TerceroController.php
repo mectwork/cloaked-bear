@@ -249,7 +249,7 @@ class TerceroController extends Controller
             $em->persist($tercero);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('tercero_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('tercero_show', array('id' => $id)));
         }
 
         return $this->render('BusetaBodegaBundle:Tercero:edit.html.twig', array(
