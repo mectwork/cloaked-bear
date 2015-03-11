@@ -1,18 +1,18 @@
 {% extends "BusetaTallerBundle::layout.html.twig" %}
 
 {% block titulo %}
-    Listado de Reportes
+    Listado de Diagnósticos
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listados de Reportes
+    Listados de Diagnósticos
 {% endblock %}
 
 {% block area_trabajo %}
 
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
-    {% if (filter_form.vars.value.numero is null or filter_form.vars.value.numero is empty)
+    {% if (filter_form.vars.value.reporte is null or filter_form.vars.value.reporte is empty)
         and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
     %}
         {% set display = 'display: none;' %}
@@ -28,7 +28,7 @@
     <div id="filter_form_component" style="{{ display }}">
         <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
             <div class="row">
-                <div class="col-lg-4">{{ form_row(filter_form.numero) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.reporte) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.autobus) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
@@ -46,41 +46,34 @@
 
     <hr/>
     <div class="btn-group" style="margin-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('reporte_new') }}">
-            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'reporte.btn.adicionar'|trans({}, 'BusetaTallerBundle') }}
+        <a class="btn btn-primary" href="{{ path('diagnostico_new') }}">
+            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'diagnostico.btn.adicionar'|trans({}, 'BusetaTallerBundle') }}
         </a>
     </div>
 
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
         <tr>
-            <th>{{ knp_pagination_sortable(entities, 'Número', 't.numero') }}</th>
-            <th>{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}</th>
+            <th>Reporte {{ knp_pagination_sortable(entities, 'Reporte', 'd.diagnostico') }}</th>
+            <th>Autobus {{ knp_pagination_sortable(entities, 'Autobús', 'd.autobus') }}</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.numero }}</td>
+                <td>{{ entity.reporte }}</td>
                 <td>{{ entity.autobus }}</td>
-                {#<td>
-                    {% if entity.ispersona %}
-                        <span class="glyphicon glyphicon-ok"></span>
-                    {% else %}
-                        <span class="glyphicon glyphicon-remove"></span>
-                    {% endif %}
-                </td>#}
                 <td style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"
-                           href="{{ path('reporte_show', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
+                           href="{{ path('diagnostico_show', { 'id': entity.id }) }}"><span
+                                    class="glyphicon glyphicon-file"> Mostrar</span></a>
                     </div>
 
                     {#<div class="btn-group">
                         <a class="btn btn-danger btn-xs"
-                           href="{{ path('reporte_edit', { 'id': entity.id }) }}"><span
+                           href="{{ path('diagnostico_edit', { 'id': entity.id }) }}"><span
                                     class="glyphicon glyphicon-edit"> Editar</span></a>
                     </div>#}
                 </td>

@@ -373,9 +373,6 @@ class AutobusType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        /*$resolver->setDefaults(array(
-            'data_class' => 'Buseta\BusesBundle\Form\Model\Autobus'
-        ));*/
         $resolver->setDefaults(array(
                 'data_class' => 'Buseta\BusesBundle\Form\Model\AutobusModel',
                 'method' => 'POST',

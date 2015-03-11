@@ -2,6 +2,10 @@
 
 namespace Buseta\TallerBundle\Controller;
 
+use Buseta\TallerBundle\Entity\Diagnostico;
+use Buseta\TallerBundle\Entity\Observacion;
+use Buseta\TallerBundle\Entity\ObservacionDiagnostico;
+use Buseta\TallerBundle\Form\Type\ObservacionReporteType;
 use Buseta\TallerBundle\Form\Type\ObservacionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,6 +21,41 @@ use Buseta\TallerBundle\Form\Filter\ReporteFilter;
  */
 class ReporteController extends Controller
 {
+    public function generarDiagnosticoAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $reporte = $em->getRepository('BusetaTallerBundle:Reporte')->find($id);
+
+        if (!$reporte) {
+            throw $this->createNotFoundException('Unable to find Reporte entity.');
+        }
+
+        //Crear nuevo Diagnostico a partir del Reporte seleccionado
+        $diagnostico = new Diagnostico();
+        $diagnostico->setReporte($reporte);
+        $diagnostico->setAutobus($reporte->getAutobus());
+        $em->persist($diagnostico);
+        $em->flush();
+
+       //registro los datos de las Observaciones del Reporte
+        foreach($reporte->getObservaciones() as $observacion){
+
+            $diagnosticoObservacion = new ObservacionDiagnostico();
+            $diagnosticoObservacion->setDiagnostico($diagnostico);
+            $diagnosticoObservacion->setValor($observacion->getValor());
+
+            $em->persist($diagnosticoObservacion);
+            $em->flush();
+        }
+
+        //Si se creó satisfactoriamente el Diagnostico
+        //entonces deshabilitamos la opción "Adicionar Observaciones en reporte_show"
+        //----PENDIENTE---
+
+        return $this->redirect($this->generateUrl('diagnostico'));
+    }
+
     /**
      * Lists all Reporte entities.
      */
@@ -61,9 +100,11 @@ class ReporteController extends Controller
         $form = $this->createCreateForm($entity);
 
         $form->handleRequest($request);
+
+        //$observacionesTemp = $request->request->get('buseta_tallerbundle_reporte');
+
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
-
             try {
                 $em->persist($entity);
                 $em->flush();

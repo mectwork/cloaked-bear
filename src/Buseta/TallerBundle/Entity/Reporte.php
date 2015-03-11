@@ -292,18 +292,22 @@ class Reporte
         return $this->reporta;
     }
 
+    public function __toString()
+    {
+        return $this->numero;
+    }
+
     /**
      * Add observaciones
      *
      * @param \Buseta\TallerBundle\Entity\Observacion $observaciones
      * @return Reporte
      */
-    public function addObservacion(\Buseta\TallerBundle\Entity\Observacion $observaciones)
+    public function addObservacione(\Buseta\TallerBundle\Entity\Observacion $observaciones)
     {
         $observaciones->setReporte($this);
-
         $this->observaciones[] = $observaciones;
-    
+
         return $this;
     }
 
@@ -312,7 +316,7 @@ class Reporte
      *
      * @param \Buseta\TallerBundle\Entity\Observacion $observaciones
      */
-    public function removeObservacion(\Buseta\TallerBundle\Entity\Observacion $observaciones)
+    public function removeObservacione(\Buseta\TallerBundle\Entity\Observacion $observaciones)
     {
         $this->observaciones->removeElement($observaciones);
     }

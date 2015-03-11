@@ -134,8 +134,6 @@ class AutobusController extends Controller
 
         $archivo_adjunto = $this->createForm(new ArchivoAdjuntoType());
 
-        //$entity->addArchivoAdjunto(new FileModel());
-
         $form   = $this->createCreateForm($entity);
 
         $em = $this->getDoctrine()->getManager();

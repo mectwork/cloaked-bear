@@ -3,6 +3,8 @@
 namespace Buseta\TallerBundle\Controller;
 
 use Buseta\TallerBundle\Entity\Reporte;
+use Buseta\TallerBundle\Form\Filter\DiagnosticoFilter;
+use Buseta\TallerBundle\Form\Model\DiagnosticoFilterModel;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -106,14 +108,34 @@ class ObservacionController extends Controller
      * Lists all Observacion entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $filter = new DiagnosticoFilterModel();
 
-        $entities = $em->getRepository('BusetaTallerBundle:Observacion')->findAll();
+        $form = $this->createForm(new DiagnosticoFilter(), $filter, array(
+            'action' => $this->generateUrl('diagnostico'),
+        ));
 
-        return $this->render('BusetaTallerBundle:Observacion:index.html.twig', array(
-            'entities' => $entities,
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaTallerBundle:Diagnostico')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaTallerBundle:Diagnostico')->filter();
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $request->query->get('page', 1),
+            10
+        );
+
+
+        return $this->render('BusetaTallerBundle:Diagnostico:index.html.twig', array(
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
         ));
     }
     /**

@@ -44,7 +44,14 @@ actions:
   edit: Editar
   delete: Eliminar
   cancel: Cancelar
-  list: Listar Existentes
+  list: Listar
+
+diagnostico:
+  valor: Valor
+  btn:
+    adicionar: Adicionar Diagnóstico
+  modal:
+    title: Crear Nuevo Diagnóstico
 
 reporte:
   btn:

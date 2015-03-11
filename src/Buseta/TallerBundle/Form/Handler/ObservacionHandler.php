@@ -20,11 +20,6 @@ class ObservacionHandler extends ReportesAbstractHandler
      */
     private $observacion;
 
-    /**
-     * @var \Buseta\TallerBundle\Form\Model\ObservacionModel
-     */
-    private $observacionModel;
-
     public function bindData(Reporte $reporte, Observacion $observacion = null)
     {
         $this->reporte      = $reporte;
@@ -32,17 +27,15 @@ class ObservacionHandler extends ReportesAbstractHandler
 
         if (!$this->observacion) {
             // Creando una nueva Observacion
-            $this->observacionModel = new ObservacionModel();
-            $this->observacionModel->setReporte($reporte);
+            $this->observacion = new Observacion();
+            $this->observacion->setReporte($reporte);
 
-            $this->form = $this->formFactory->create(new ObservacionType(), $this->observacionModel, array(
+            $this->form = $this->formFactory->create(new ObservacionType(), $this->observacion, array(
                 'method' => 'POST',
             ));
         } else {
             // Editando una Observacion ya existente
-            $this->observacionModel = new ObservacionModel($observacion);
-
-            $this->form = $this->formFactory->create(new ObservacionType(), $this->observacionModel, array(
+            $this->form = $this->formFactory->create(new ObservacionType(), $this->observacion, array(
                 'method' => 'PUT',
             ));
         }
@@ -64,12 +57,6 @@ class ObservacionHandler extends ReportesAbstractHandler
 
         $this->form->handleRequest($this->request);
         if($this->form->isSubmitted() && $this->form->isValid()) {
-            if(!$this->observacion) {
-                $this->observacion = $this->observacionModel->getEntityData();
-            } else {
-                $this->observacion->setModelData($this->observacionModel);
-            }
-
             try {
                 $this->em->persist($this->observacion);
                 $this->em->flush();

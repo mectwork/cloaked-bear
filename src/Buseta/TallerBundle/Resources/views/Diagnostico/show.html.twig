@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Datos del Reporte
+    Datos del Diagnóstico
 {% endblock %}
 
 {% block area_trabajo %}
@@ -16,7 +16,7 @@
         <div class="col-lg-12">
             {# Nav tabs #}
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos de Reporte</a></li>
+                <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos de Diagnóstico</a></li>
                 <li><a href="#observaciones" data-toggle="tab">Observaciones</a></li>
             </ul>
 
@@ -24,8 +24,8 @@
             <div class="tab-content" style="padding-top: 20px;">
                 <!-- TAB BASICOS-->
                 <div class="tab-pane fade in active" id="basicos">
-                    {% include '@BusetaTaller/Reporte/show_datos_basicos.html.twig' with {'entity': entity} %}
-                    <input type="hidden" id="reporte_id" name="reporte_id" value="{{ id }}"/>
+                    {% include '@BusetaTaller/Diagnostico/show_datos_basicos.html.twig' with {'entity': entity} %}
+                    <input type="hidden" id="diagnostico_id" name="diagnostico_id" value="{{ id }}"/>
                 </div>
 
                 <div class="tab-pane fade" id="observaciones">
@@ -40,15 +40,12 @@
     {# buttons group #}
     <div class="row">
         <div class="col-md-4">
-            <a class="btn btn-primary" href="{{ path('reporte_generar_diagnostico', { 'id': entity.id }) }}">
-                <span class="glyphicon glyphicon-save"></span>
-                 Generar Diagnóstico
-            </a>
+            <a class="btn btn-primary" href="{{ path('diagnostico') }}">
+                <span class="glyphicon glyphicon-save"></span> Generar Orden de Trabajo</a>
 
-            <a class="btn btn-default" id="btn_reporte_cancel" href="{{ path('reporte') }}"><span
+            <a class="btn btn-default" id="btn_reporte_cancel" href="{{ path('diagnostico') }}"><span
                         class="glyphicon glyphicon-chevron-left"></span>
-                {{ 'actions.list' | trans({}, 'BusetaTallerBundle') }}
-            </a>
+                {{ 'actions.list' | trans({}, 'BusetaTallerBundle') }}</a>
         </div>
     </div>
 

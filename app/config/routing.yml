@@ -16,6 +16,10 @@ BusetaTallerBundle_reporte:
         resource: "@BusetaTallerBundle/Resources/config/routing/reporte.yml"
         prefix:   /reporte
 
+BusetaTallerBundle_diagnostico:
+        resource: "@BusetaTallerBundle/Resources/config/routing/diagnostico.yml"
+        prefix:   /diagnostico
+
 BusetaTallerBundle_observacion:
         resource: "@BusetaTallerBundle/Resources/config/routing/observacion.yml"
         prefix:   /observacion

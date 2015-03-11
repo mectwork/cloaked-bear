@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ObservacionType extends AbstractType
+class ObservacionDiagnosticoType extends AbstractType
 {
      /**
      * @param FormBuilderInterface $builder
@@ -29,7 +29,7 @@ class ObservacionType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\TallerBundle\Entity\Observacion',
+            'data_class' => 'Buseta\TallerBundle\Entity\ObservacionDiagnostico',
         ));
     }
 
@@ -38,6 +38,6 @@ class ObservacionType extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_tallerbundle_observacion';
+        return 'buseta_tallerbundle_observacion_diagnostico';
     }
 }
