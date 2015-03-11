@@ -4,6 +4,7 @@ namespace Buseta\TallerBundle\Entity\Repository;
 
 use Buseta\TallerBundle\Form\Model\ReporteFilterModel;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 
 /**
  * ReporteRepository

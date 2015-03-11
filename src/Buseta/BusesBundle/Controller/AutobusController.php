@@ -3,6 +3,8 @@
 namespace Buseta\BusesBundle\Controller;
 
 use Buseta\BusesBundle\Entity\ArchivoAdjunto;
+use Buseta\BusesBundle\Form\Filter\AutobusFilter;
+use Buseta\BusesBundle\Form\Model\AutobusFilterModel;
 use Buseta\BusesBundle\Form\Model\FileModel;
 use Buseta\BusesBundle\Form\Type\ArchivoAdjuntoType;
 use Doctrine\Tests\Common\Annotations\Null;
@@ -15,8 +17,6 @@ use Buseta\BusesBundle\Form\Type\AutobusType;
 use Buseta\BusesBundle\Form\Filtro\BusquedaAutobusType;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Buseta\BusesBundle\Entity\Autobus;
-
-
 
 /**
  * Autobus controller.
@@ -36,9 +36,38 @@ class AutobusController extends Controller
 
     /**
      * Lists all Autobus entities.
-     *
      */
     public function indexAction(Request $request)
+    {
+        $filter = new AutobusFilterModel();
+
+        $form = $this->createForm(new AutobusFilter(), $filter, array(
+            'action' => $this->generateUrl('autobus'),
+        ));
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBusesBundle:Autobus')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBusesBundle:Autobus')->filter();
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $request->query->get('page', 1),
+            1
+        );
+
+        return $this->render('BusetaBusesBundle:Autobus:index.html.twig', array(
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
+        ));
+    }
+
+    /*public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -70,7 +99,7 @@ class AutobusController extends Controller
             'entities' => $entities,
             'busqueda' => $busqueda->createView(),
         ));
-    }
+    }*/
 
     /**
      * Creates a new Autobus entity.

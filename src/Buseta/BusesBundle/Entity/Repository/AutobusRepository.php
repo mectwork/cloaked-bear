@@ -1,9 +1,10 @@
 <?php
 
-namespace Buseta\BusesBundle\Entity;
+namespace Buseta\BusesBundle\Entity\Repository;
 
+use Buseta\BusesBundle\Form\Model\AutobusFilterModel;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\NoResultException;
 
 /**
  * AutobusRepository
@@ -13,7 +14,32 @@ use Doctrine\ORM\EntityManager;
  */
 class AutobusRepository extends EntityRepository
 {
-    public function buscarTodos($em)
+    public function filter(AutobusFilterModel $filter = null)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $query = $qb->where($qb->expr()->eq(true,true));
+
+        if($filter) {
+            if ($filter->getMatricula() !== null && $filter->getMatricula() !== '') {
+                $query->andWhere($qb->expr()->like('a.matricula',':matricula'))
+                    ->setParameter('matricula', '%' . $filter->getMatricula() . '%');
+            }
+            if ($filter->getNumero() !== null && $filter->getNumero() !== '') {
+                $query->andWhere($qb->expr()->like('a.numero',':numero'))
+                    ->setParameter('numero', '%' . $filter->getNumero() . '%');
+            }
+        }
+
+        $query->orderBy('a.id', 'ASC');
+
+        try {
+            return $query->getQuery();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
+
+    /*public function buscarTodos($em)
     {
         $entities = $em->createQueryBuilder()
             ->select('a')
@@ -66,7 +92,5 @@ class AutobusRepository extends EntityRepository
             ->getQuery();
 
         return $entities;
-    }
-
-
+    }*/
 }

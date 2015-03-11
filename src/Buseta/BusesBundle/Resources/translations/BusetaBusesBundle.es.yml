@@ -1,0 +1,23 @@
+autobus:
+  valor: Valor
+  btn:
+    adicionar: Adicionar Autobús
+  modal:
+    title: Crear Nuevo Autobús
+
+messages:
+  no_results: No existen elementos que mostrar.
+  unexpected_error: Ha ocurrido un error inesperado.
+  create.success: Se ha creado los datos de forma satisfactoria.
+  create.error.%key%: Ha ocurrido un error al crear una nueva entidad "key".
+  update.success: Se han actualizado los datos de forma satisfactoria.
+  update.error.%key%: Ha ocurrido un error al actualizar los datos de la entidad "key"
+
+actions:
+  confirm: Aceptar
+  save: Salvar
+  create: Crear
+  edit: Editar
+  delete: Eliminar
+  cancel: Cancelar
+  list: Listar
