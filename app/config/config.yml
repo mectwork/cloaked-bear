@@ -115,6 +115,7 @@ knp_paginator:
 
 easy_admin:
     site_name: 'Nomencladores'
+    list_actions: ['show', 'edit', 'delete']
     assets:
         css:
             - '/Taller/web/bundles/busetanomenclador/css/admin.css'
@@ -132,7 +133,7 @@ easy_admin:
         - Buseta\NomencladorBundle\Entity\GarantiaTarea
         - Buseta\NomencladorBundle\Entity\Grupo
         - Buseta\NomencladorBundle\Entity\Subgrupo
-#        - Buseta\NomencladorBundle\Entity\Tarea
+        #- Buseta\NomencladorBundle\Entity\Tarea
         - Buseta\NomencladorBundle\Entity\Marca
         - Buseta\NomencladorBundle\Entity\MarcaMotor
         - Buseta\NomencladorBundle\Entity\Modelo
