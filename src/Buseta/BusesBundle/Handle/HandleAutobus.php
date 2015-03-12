@@ -2,15 +2,13 @@
 
 namespace Buseta\BusesBundle\Handle;
 
-use Buseta\BusesBundle\Entity\ArchivoAdjunto;
 use Buseta\BusesBundle\Entity\Autobus;
 use Buseta\BusesBundle\Form\Model\AutobusModel;
-use Buseta\BusesBundle\Form\Model\FileModel;
-use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\ORM\EntityManager;
 
 class HandleAutobus
 {
-    public function HandleAutobusNew($em, AutobusModel $entityModel)
+    public function HandleAutobusNew(EntityManager $em, AutobusModel $entityModel)
     {
         /** @var Autobus $entity */
         $entity = new Autobus();
@@ -136,6 +134,7 @@ class HandleAutobus
         $entity->setBateria2($entityModel->getBateria2());
 
         $entity->setKilometraje($entityModel->getKilometraje());
+        $entity->setHoras($entityModel->getHoras());
 
         $em->persist($entity);
         $em->flush();
@@ -250,6 +249,7 @@ class HandleAutobus
         $entity->setBateria2($entityModel->getBateria2());
 
         $entity->setKilometraje($entityModel->getKilometraje());
+        $entity->setHoras($entityModel->getHoras());
 
         return $entity;
     }
@@ -323,6 +323,7 @@ class HandleAutobus
         $model->setFiltroAceite($entity->getFiltroAceite());
 
         $model->setKilometraje($entity->getKilometraje());
+        $model->setHoras($entity->getHoras());
         return $model;
     }
 

@@ -33,7 +33,7 @@
                             <a href="#imagenes" data-toggle="tab">Imágenes</a>
                         </li>
                         <li>
-                            <a href="#kilometraje" data-toggle="tab">Kilometraje</a>
+                            <a href="#otros" data-toggle="tab">Otros</a>
                         </li>
                     </ul>
 
@@ -404,12 +404,17 @@
                             </div>
                         </div>
 
-                        <!-- TAB KILOMETRAJE-->
-                        <div class="tab-pane fade" id="kilometraje">
+                        <!-- TAB OTROS-->
+                        <div class="tab-pane fade" id="otros">
                             <div class="row show-grid">
-                                <div class="col-md-2">
+                                <div class="col-md-6">
                                     <label>Kilometraje:</label>
                                     {{ form_widget(edit_form.kilometraje) }}
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Horas:</label>
+                                    {{ form_widget(edit_form.horas) }}
                                 </div>
                             </div>
                         </div>

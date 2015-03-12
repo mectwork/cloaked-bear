@@ -33,7 +33,7 @@
                                 <a href="#imagenes" data-toggle="tab">Imágenes</a>
                             </li>
                             <li>
-                                <a href="#kilometraje" data-toggle="tab">Kilometraje</a>
+                                <a href="#otros" data-toggle="tab">Otros</a>
                             </li>
                         </ul>
 
@@ -101,7 +101,7 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label>V&aacute;lido Hasta:</label>
+                                        <label>Válido Hasta:</label>
                                         {{ form_widget(form.valido_hasta) }}
                                     </div>
 
@@ -166,7 +166,7 @@
                                                 <input id="rampas" type="checkbox" value=""><strong>Tiene Rampas</strong>
                                             </label>
                                         </div>
-                                        <label id="rampas">Descripci&oacute;n de las Rampas:</label>
+                                        <label id="rampas">Descripción de las Rampas:</label>
                                         {{ form_widget(form.rampas) }}
                                     </div>
 
@@ -176,7 +176,7 @@
                                                 <input id="barras" type="checkbox" value=""><strong>Tiene Barras</strong>
                                             </label>
                                         </div>
-                                        <label id="barras">Descripci&oacute;n de Barras:</label>
+                                        <label id="barras">Descripción de Barras:</label>
                                         {{ form_widget(form.barras) }}
                                     </div>
 
@@ -186,7 +186,7 @@
                                                 <input id="camaras" type="checkbox" value=""><strong>Tiene Cámaras</strong>
                                             </label>
                                         </div>
-                                        <label id="camaras">Descripci&oacute;n de Cámaras:</label>
+                                        <label id="camaras">Descripción de Cámaras:</label>
                                         {{ form_widget(form.camaras) }}
                                     </div>
                                 </div>
@@ -198,7 +198,7 @@
                                                 <input id="lector" type="checkbox" value=""><strong>Tiene Lector de Cédulas</strong>
                                             </label>
                                         </div>
-                                        <label id="lector">Descripci&oacute;n del Lector de C&eacute;dulas:</label>
+                                        <label id="lector">Descripción del Lector de Cédulas:</label>
                                         {{ form_widget(form.lector_cedulas) }}
                                     </div>
 
@@ -208,7 +208,7 @@
                                                 <input id="publicidad" type="checkbox" value=""><strong>Tiene Publicidad</strong>
                                             </label>
                                         </div>
-                                        <label id="publicidad">Descripci&oacute;n de la Publicidad:</label>
+                                        <label id="publicidad">Descripción de la Publicidad:</label>
                                         {{ form_widget(form.publicidad) }}
                                     </div>
 
@@ -218,7 +218,7 @@
                                                 <input id="gps" type="checkbox" value=""><strong>Tiene GPS</strong>
                                             </label>
                                         </div>
-                                        <label id="gps" >Descripci&oacute;n de GPS:</label>
+                                        <label id="gps" >Descripción de GPS:</label>
                                         {{ form_widget(form.gps) }}
                                     </div>
                                 </div>
@@ -230,7 +230,7 @@
                                                 <input id="wifi" type="checkbox" value=""><strong>Tiene Wifi</strong>
                                             </label>
                                         </div>
-                                        <label id="wifi">Descripci&oacute;n de Wifi:</label>
+                                        <label id="wifi">Descripción de Wifi:</label>
                                         {{ form_widget(form.wifi) }}
                                     </div>
                                 </div>
@@ -282,7 +282,7 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label>Aceite Hidr&aacute;ulico:</label>
+                                        <label>Aceite Hidráulico:</label>
                                         {{ form_widget(form.aceitehidraulico) }}
                                     </div>
 
@@ -295,17 +295,17 @@
 
                                 <div class="row show-grid">
                                     <div class="col-md-4">
-                                        <label>Aceite de Transmisi&oacute;n:</label>
+                                        <label>Aceite de Transmisión:</label>
                                         {{ form_widget(form.aceitetransmision) }}
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label>Bater&iacute;a 1:</label>
+                                        <label>Batería 1:</label>
                                         {{ form_widget(form.bateria_1) }}
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label>Bater&iacute;a 2:</label>
+                                        <label>Batería 2:</label>
                                         {{ form_widget(form.bateria_2) }}
                                     </div>
                                 </div>
@@ -325,7 +325,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label>Filtro de Transmisi&oacute;n</label>
+                                        <label>Filtro de Transmisión</label>
                                         {{ form_widget(form.filtro_transmision.filtro_transmision) }}
                                     </div>
                                 </div>
@@ -341,7 +341,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label>Filtro de Hidr&aacute;ulico:</label>
+                                        <label>Filtro de Hidráulico:</label>
                                         {{ form_widget(form.filtro_hidraulico.filtro_hidraulico_1) }}
                                     </div>
                                     <div class="col-md-3">
@@ -416,12 +416,17 @@
 
                             </div>
 
-                            <!-- TAB KILOMETRAJE-->
-                            <div class="tab-pane fade" id="kilometraje">
+                            <!-- TAB OTROS-->
+                            <div class="tab-pane fade" id="otros">
                                 <div class="row show-grid">
-                                    <div class="col-md-2">
+                                    <div class="col-md-6">
                                         <label>Kilometraje:</label>
                                         {{ form_widget(form.kilometraje) }}
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label>Horas:</label>
+                                        {{ form_widget(form.horas) }}
                                     </div>
                                 </div>
                             </div>

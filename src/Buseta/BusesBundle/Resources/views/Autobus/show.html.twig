@@ -359,6 +359,10 @@
                                         <th>Kilometraje</th>
                                         <td>{{ entity.kilometraje }}</td>
                                     </tr>
+                                    <tr>
+                                        <th>Horas</th>
+                                        <td>{{ entity.horas }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -372,6 +376,7 @@
                                         <th>Subgrupo</th>
                                         <th>Tarea</th>
                                         <th>Kilometraje</th>
+                                        <th>Horas</th>
                                         <th>Fecha Inicio</th>
                                         <th>Fecha Final</th>
                                         <th>Estado</th>
@@ -384,6 +389,7 @@
                                             <td>{{ mpreventivo.subgrupo }}</td>
                                             <td>{{ mpreventivo.tarea }}</td>
                                             <td>{{ mpreventivo.kilometraje }}</td>
+                                            <td>{{ mpreventivo.horas }}</td>
                                             <td>{%  if mpreventivo.fechaInicio %}{{ mpreventivo.fechaInicio | date('d/m/Y') }}{% endif %}</td>
                                             <td>{%  if mpreventivo.fechaFinal %}{{ mpreventivo.fechaFinal | date('d/m/Y') }}{% endif %}</td>
                                             <td style="text-align: center">
@@ -413,7 +419,7 @@
         {{ form_start(delete_form) }}
         <a class="btn btn-primary" href="{{ path('autobus_edit', { 'id': entity.id }) }}"> Editar</a>
         <a class="btn btn-primary" href="{{ path('autobus') }}"> Listado</a>
-        <button type="sumbit" class="btn btn-primary">Eliminar</button>
+        <button type="submit" class="btn btn-primary">Eliminar</button>
         {{ form_end(delete_form) }}
     </div>
 

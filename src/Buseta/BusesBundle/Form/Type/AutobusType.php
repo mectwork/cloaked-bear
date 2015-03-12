@@ -22,22 +22,39 @@ class AutobusType extends AbstractType
 
             // este es un autobus nuevo
             if (!$autobus || null === $autobus->getId()) {
-                $form->add('kilometraje', 'integer', array(
-                    'required' => false,
-                    'attr' => array(
-                        'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    )
-                ));
+                $form
+                    ->add('kilometraje', 'integer', array(
+                        'required' => false,
+                        'attr' => array(
+                            'class' => 'form-control',
+                            'style' => 'width: 250px',
+                        )
+                    ))
+                    ->add('horas', 'integer', array(
+                        'required' => false,
+                        'attr' => array(
+                            'class' => 'form-control',
+                            'style' => 'width: 250px',
+                        )
+                    ));
             } else {
-                $form->add('kilometraje', 'integer', array(
-                    'required' => false,
-                    'read_only' => true,
-                    'attr' => array(
-                        'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    )
-                ));
+                $form
+                    ->add('kilometraje', 'integer', array(
+                        'required' => false,
+                        'read_only' => true,
+                        'attr' => array(
+                            'class' => 'form-control',
+                            'style' => 'width: 250px',
+                        )
+                    ))
+                    ->add('horas', 'integer', array(
+                        'required' => false,
+                        'read_only' => true,
+                        'attr' => array(
+                            'class' => 'form-control',
+                            'style' => 'width: 250px',
+                        )
+                    ));
             }
         });
 
@@ -50,12 +67,12 @@ class AutobusType extends AbstractType
                     )
                 ))
             ->add('imagen_lateral_d', 'file', array(
-                    'required' => false,
-                    'attr'   => array(
-                        'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    )
-                ))
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                    'style' => 'width: 250px',
+                )
+            ))
             ->add('imagen_lateral_i', 'file', array(
                     'required' => false,
                     'attr'   => array(

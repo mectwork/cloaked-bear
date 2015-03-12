@@ -2,8 +2,8 @@
 
 namespace Buseta\BusesBundle\Form\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * AutobusModel
@@ -40,7 +40,7 @@ class AutobusModel
     private $imagen_trasera;
 
     /**
-     * @var \Buseta\BusesBundle\Form\Model\FileModel
+     * @var \Doctrine\Common\Collections\Collection
      */
     private $archivo_adjunto;
 
@@ -222,7 +222,7 @@ class AutobusModel
     private $potencia;
 
     /**
-     * @var date
+     * @var \DateTime
      * @Assert\Date()
      */
     private $valido_hasta;
@@ -238,7 +238,7 @@ class AutobusModel
     private $fecha_rtv_2;
 
     /**
-     * @var date
+     * @var \DateTime
      * @Assert\Date()
      */
     private $fecha_ingreso;
@@ -280,8 +280,18 @@ class AutobusModel
 
     /**
      * @var integer
+     * @Assert\Type("integer")
+     * @Assert\NotBlank()
      */
     private $kilometraje;
+
+    /**
+     * @var integer
+     * @Assert\Type("integer")
+     * @Assert\NotBlank()
+     */
+    private $horas;
+
 
     /**
      * @param \Buseta\NomencladorBundle\Entity\AceiteCajaCambios $aceitecajacambios
@@ -524,7 +534,7 @@ class AutobusModel
     }
 
     /**
-     * @param \Buseta\BusesBundle\Form\Model\date $fecha_ingreso
+     * @param \DateTime $fecha_ingreso
      */
     public function setFechaIngreso($fecha_ingreso)
     {
@@ -532,7 +542,7 @@ class AutobusModel
     }
 
     /**
-     * @return \Buseta\BusesBundle\Form\Model\date
+     * @return \DateTime
      */
     public function getFechaIngreso()
     {
@@ -940,7 +950,7 @@ class AutobusModel
     }
 
     /**
-     * @param \Buseta\BusesBundle\Form\Model\date $valido_hasta
+     * @param \DateTime $valido_hasta
      */
     public function setValidoHasta($valido_hasta)
     {
@@ -948,7 +958,7 @@ class AutobusModel
     }
 
     /**
-     * @return \Buseta\BusesBundle\Form\Model\date
+     * @return \DateTime
      */
     public function getValidoHasta()
     {
@@ -1138,5 +1148,21 @@ class AutobusModel
     public function getKilometraje()
     {
         return $this->kilometraje;
+    }
+
+    /**
+     * @param int $horas
+     */
+    public function setHoras($horas)
+    {
+        $this->horas = $horas;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHoras()
+    {
+        return $this->horas;
     }
 }

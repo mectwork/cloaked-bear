@@ -2,7 +2,6 @@
 
 namespace Buseta\BusesBundle\Entity;
 
-use Buseta\BusesBundle\Form\Type\FiltroCajaType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -285,7 +284,7 @@ class Autobus
     private $potencia;
 
     /**
-     * @var date
+     * @var \DateTime
      *
      * @ORM\Column(name="valido_hasta", type="date")
      * @Assert\Date()
@@ -307,7 +306,7 @@ class Autobus
     private $fecha_rtv_2;
 
     /**
-     * @var date
+     * @var \DateTime
      *
      * @ORM\Column(name="fecha_ingreso", type="date")
      * @Assert\Date()
@@ -367,9 +366,15 @@ class Autobus
      * @var integer
      *
      * @ORM\Column(name="kilometraje", type="integer", columnDefinition="INT( 11 ) NOT NULL DEFAULT '0'")
-     * @Assert\Type("integer")
      */
     private $kilometraje;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="horas", type="integer", columnDefinition="INT( 11 ) NOT NULL DEFAULT '0'")
+     */
+    private $horas;
 
 
     /**
@@ -1335,6 +1340,8 @@ class Autobus
     public function __construct()
     {
         $this->archivo_adjunto = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->kilometraje = 0;
+        $this->horas = 0;
     }
 
     /**
@@ -1562,5 +1569,28 @@ class Autobus
     public function getKilometraje()
     {
         return $this->kilometraje;
+    }
+
+    /**
+     * Set horas
+     *
+     * @param integer $horas
+     * @return Autobus
+     */
+    public function setHoras($horas)
+    {
+        $this->horas = $horas;
+    
+        return $this;
+    }
+
+    /**
+     * Get horas
+     *
+     * @return integer 
+     */
+    public function getHoras()
+    {
+        return $this->horas;
     }
 }
