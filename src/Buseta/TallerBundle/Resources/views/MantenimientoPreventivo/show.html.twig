@@ -46,6 +46,10 @@
             <th>Fecha Final</th>
             <td>{{ entity.fechaFinal | date('d/m/Y') }}</td>
         </tr>
+        <tr>
+            <th>Cumplimiento</th>
+            <td>{{ entity | progress_bar_render }}</td>
+        </tr>
         </tbody>
     </table>
 

@@ -52,6 +52,7 @@
             <th>Horas</th>
             <th>Fecha Inicio</th>
             <th>Fecha Final</th>
+            <th>Cumplimiento</th>
             <th>Acciones</th>
         </tr>
         </thead>
@@ -62,10 +63,13 @@
                 <td>{{ entity.grupo }}</td>
                 <td>{{ entity.subgrupo }}</td>
                 <td>{{ entity.tarea }}</td>
-                <td>{{ entity.horas }}</td>
                 <td>{{ entity.kilometraje }}</td>
+                <td>{{ entity.horas }}</td>
                 <td>{%  if entity.fechaInicio %}{{ entity.fechaInicio | date('d/m/Y') }}{% endif %}</td>
                 <td>{%  if entity.fechaFinal %}{{ entity.fechaFinal | date('d/m/Y') }}{% endif %}</td>
+                <td>
+                    {{ entity | progress_bar_render }}
+                </td>
                 <td  style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs" href="{{ path('mantenimientopreventivo_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
@@ -130,6 +134,8 @@
                     $(this).val(null);
                 })
             });
+
+
         });
     </script>
 {% endblock javascripts %}
