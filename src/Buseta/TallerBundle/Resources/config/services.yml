@@ -1,1 +1,13 @@
+services:
+    # MantenimientoPreventivo Manager
+    buseta.manager.mantenimiento_preventivo:
+        class: Buseta\TallerBundle\Manager\MantenimientoPreventivoManager
 
+    # Twig extension
+    buseta.twig.progress_extension:
+        class: Buseta\TallerBundle\Twig\ProgressBarRenderExtension
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @buseta.manager.mantenimiento_preventivo
+        tags:
+            - { name: twig.extension }
