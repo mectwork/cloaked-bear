@@ -371,12 +371,16 @@ class Autobus
     private $wifi;
 
     /**
-     * @var integer
+     * @var \Buseta\BusesBundle\Entity\Kilometraje
      *
-     * @ORM\Column(name="kilometraje", type="integer", columnDefinition="INT( 11 ) NOT NULL DEFAULT '0'")
-     * @Assert\Type("integer")
+     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\Kilometraje", mappedBy="autobus")
      */
     private $kilometraje;
+
+    /**
+     * @ORM\Column(name="activo", type="boolean", nullable=true)
+     */
+    private $activo;
 
 
     /**
@@ -1549,6 +1553,22 @@ class Autobus
     }
 
     /**
+     * @return Kilometraje
+     */
+    public function getKilometraje()
+    {
+        return $this->kilometraje;
+    }
+
+    /**
+     * @param Kilometraje $kilometraje
+     */
+    public function setKilometraje($kilometraje)
+    {
+        $this->kilometraje = $kilometraje;
+    }
+
+    /**
      * @return mixed
      */
     public function getModelo()
@@ -1561,29 +1581,22 @@ class Autobus
      */
     public function setModelo($modelo)
     {
-        return $this->compras;
+        $this->modelo = $modelo;
     }
 
     /**
-     * Set kilometraje
-     *
-     * @param integer $kilometraje
-     * @return Autobus
+     * @return mixed
      */
-    public function setKilometraje($kilometraje)
+    public function getActivo()
     {
-        $this->kilometraje = $kilometraje;
-    
-        return $this;
+        return $this->activo;
     }
 
     /**
-     * Get kilometraje
-     *
-     * @return integer 
+     * @param mixed $activo
      */
-    public function getKilometraje()
+    public function setActivo($activo)
     {
-        return $this->kilometraje;
+        $this->activo = $activo;
     }
 }

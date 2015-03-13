@@ -45,13 +45,6 @@ class Diagnostico
     private $autobus;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="detalle_reporte", type="string", nullable=true)
-     */
-    private $detalleReporte;
-
-    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\ObservacionDiagnostico", mappedBy="diagnostico", cascade={"all"})
@@ -74,29 +67,6 @@ class Diagnostico
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set detalleReporte
-     *
-     * @param string $detalleReporte
-     * @return Diagnostico
-     */
-    public function setDetalleReporte($detalleReporte)
-    {
-        $this->detalleReporte = $detalleReporte;
-    
-        return $this;
-    }
-
-    /**
-     * Get detalleReporte
-     *
-     * @return string 
-     */
-    public function getDetalleReporte()
-    {
-        return $this->detalleReporte;
     }
 
     /**

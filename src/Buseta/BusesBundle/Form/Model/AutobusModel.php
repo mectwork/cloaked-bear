@@ -2,6 +2,7 @@
 
 namespace Buseta\BusesBundle\Form\Model;
 
+use Buseta\BusesBundle\Entity\Autobus;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -14,279 +15,247 @@ class AutobusModel
      * @var integer
      */
     private $id;
-
     /**
      * @Assert\File(maxSize="6000000")
      * @var UploadedFile $file
      */
     private $imagen_frontal;
-
     /**
      * @Assert\File(maxSize="6000000")
      * @var UploadedFile $file
      */
     private $imagen_lateral_d;
-
     /**
      * @Assert\File(maxSize="6000000")
      * @var UploadedFile $file
      */
     private $imagen_lateral_i;
-
     /**
      * @Assert\File(maxSize="6000000")
      * @var UploadedFile $file
      */
     private $imagen_trasera;
-
     /**
      * @var \Buseta\BusesBundle\Form\Model\FileModel
      */
     private $archivo_adjunto;
-
     /**
      * @var string
      */
     private $marca_cajacambio;
-
     /**
      * @var string
      */
     private $anno;
-
     /**
      * @var string
      */
     private $valor_unidad;
-
     /**
      * @var string
      */
     private $numero_unidad;
-
     /**
      * @var string
      */
     private $carter_capacidadlitros;
-
     /**
      * @var integer
      */
     private $capacidad_tanque;
-
     /**
      * @var string
      */
     private $tipo_cajacambio;
-
     /**
      * @var string
      */
     private $bateria_1;
-
     /**
      * @var string
      */
     private $bateria_2;
-
     /**
      * @var string
      */
     private $matricula;
-
     /**
      * @var string
      */
     private $numero;
-
     /**
      * @var string
      */
     private $numero_chasis;
-
     /**
      * @var string
      */
     private $numero_motor;
-
     /**
      * @var \Buseta\BusesBundle\Entity\FiltroAceite
      */
     private $filtro_aceite;
-
     /**
      * @var \Buseta\BusesBundle\Entity\FiltroDiesel
      */
     private $filtro_diesel;
-
     /**
      * @var \Buseta\BusesBundle\Entity\FiltroAgua
      */
     private $filtro_agua;
-
     /**
      * @var \Buseta\BusesBundle\Entity\FiltroHidraulico
      */
     private $filtro_hidraulico;
-
     /**
      * @var \Buseta\BusesBundle\Entity\FiltroTransmision
      */
     private $filtro_transmision;
-
     /**
      * @var \Buseta\BusesBundle\Entity\FiltroCaja
      */
     private $filtro_caja;
-
     /**
      * @var \Buseta\NomencladorBundle\Entity\Marca
      */
     private $marca;
-
     /**
      * @var \Buseta\NomencladorBundle\Entity\Modelo
      */
     private $modelo;
-
     /**
      * @var \Buseta\NomencladorBundle\Entity\Estilo
      */
     private $estilo;
-
     /**
      * @var integer
      * @Assert\Type("integer")
      */
     private $peso_tara;
-
     /**
      * @var integer
      * @Assert\Type("integer")
      */
     private $peso_bruto;
-
     /**
      * @var \Buseta\NomencladorBundle\Entity\Color
      */
     private $color;
-
     /**
      * @var integer
      * @Assert\Type("integer")
      */
     private $numero_plazas;
-
     /**
      * @var \Buseta\NomencladorBundle\Entity\MarcaMotor
      */
     private $marca_motor;
-
     /**
      * @var \Buseta\NomencladorBundle\Entity\Combustible
      */
     private $combustible;
-
     /**
      * @var \Buseta\NomencladorBundle\Entity\AceiteCajaCambios
      */
     private $aceitecajacambios;
-
     /**
      * @var \Buseta\NomencladorBundle\Entity\AceiteTransmision
      */
     private $aceitetransmision;
-
     /**
      * @var \Buseta\NomencladorBundle\Entity\AceiteHidraulico
      */
     private $aceitehidraulico;
-
     /**
      * @var \Buseta\NomencladorBundle\Entity\AceiteMotor
      */
     private $aceitemotor;
-
-
     /**
      * @var integer
      * @Assert\Type("integer")
      */
     private $numero_cilindros;
-
     /**
      * @var integer
      * @Assert\Type("integer")
      */
     private $cilindrada;
-
     /**
      * @var integer
      * @Assert\Type("integer")
      */
     private $potencia;
-
     /**
      * @var date
      * @Assert\Date()
      */
     private $valido_hasta;
-
     /**
      * @var string
      */
     private $fecha_rtv_1;
-
     /**
      * @var string
      */
     private $fecha_rtv_2;
-
     /**
      * @var date
      * @Assert\Date()
      */
     private $fecha_ingreso;
-
     /**
      * @var string
      */
     private $rampas;
-
     /**
      * @var string
      */
     private $barras;
-
     /**
      * @var string
      */
     private $camaras;
-
     /**
      * @var string
      */
     private $lector_cedulas;
-
     /**
      * @var string
      */
     private $publicidad;
-
     /**
      * @var string
      */
     private $gps;
-
     /**
      * @var string
      */
     private $wifi;
-
     /**
      * @var integer
      */
     private $kilometraje;
+    /**
+     * @var boolean
+     */
+    private $activo = true;
+
+
+    /**
+     * @return boolean
+     */
+    public function isActivo()
+    {
+        return $this->activo;
+    }
+
+    /**
+     * @param boolean $activo
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+    }
 
     /**
      * @param \Buseta\NomencladorBundle\Entity\AceiteCajaCambios $aceitecajacambios

@@ -7,6 +7,7 @@ use Buseta\BusesBundle\Form\Filter\AutobusFilter;
 use Buseta\BusesBundle\Form\Model\AutobusFilterModel;
 use Buseta\BusesBundle\Form\Model\FileModel;
 use Buseta\BusesBundle\Form\Type\ArchivoAdjuntoType;
+use Buseta\BusesBundle\Form\Type\KilometrajeType;
 use Doctrine\Tests\Common\Annotations\Null;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -67,40 +68,6 @@ class AutobusController extends Controller
         ));
     }
 
-    /*public function indexAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $busqueda = $this->createForm(new BusquedaAutobusType());
-
-        if($request->getMethod() === 'GET'){
-            $busqueda->submit($request);
-
-            if($busqueda->isValid()){
-
-                $entities = $em->getRepository('BusetaBusesBundle:Autobus')->buscarAutobus($busqueda,$em);
-            }
-        }
-        else
-        {
-            $entities = $em->getRepository('BusetaBusesBundle:Autobus')->buscarTodos($em);
-        }
-
-        //CASO BUSQUEDA-AUTOBUS
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-            $entities,
-            $this->get('request')->query->get('page', 1),
-            10,
-            array('pageParameterName' => 'page')
-        );
-
-        return $this->render('BusetaBusesBundle:Autobus:index.html.twig', array(
-            'entities' => $entities,
-            'busqueda' => $busqueda->createView(),
-        ));
-    }*/
-
     /**
      * Creates a new Autobus entity.
      *
@@ -159,21 +126,10 @@ class AutobusController extends Controller
      */
     public function newAction()
     {
-        $entity = new AutobusModel();
-
-        $archivo_adjunto = $this->createForm(new ArchivoAdjuntoType());
-
-        $form   = $this->createCreateForm($entity);
-
-        $em = $this->getDoctrine()->getManager();
-
-        $json = $this->getMarcasModelosJSON($em);
+        $form   = $this->createCreateForm(new AutobusModel());
 
         return $this->render('BusetaBusesBundle:Autobus:new.html.twig', array(
-            'entity'          => $entity,
-            'form'            => $form->createView(),
-            'json'            => json_encode($json),
-            'archivo_adjunto' => $archivo_adjunto->createView(),
+            'form'   => $form->createView(),
         ));
     }
 
@@ -386,6 +342,17 @@ class AutobusController extends Controller
         }
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
+
+    public function renderKilometrajeFormAction($entity = null)
+    {
+        $form = $this->createForm(new KilometrajeType(), $entity, array(
+            'method' => 'POST',
+        ));
+
+        return $this->render('@BusetaBuses/Autobus/Kilometraje/_form.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
 }

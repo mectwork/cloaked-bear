@@ -65,12 +65,15 @@ class DiagnosticoController extends Controller
 
         $entity = $em->getRepository('BusetaTallerBundle:Diagnostico')->find($id);
 
+        $reportes = $em->getRepository('BusetaTallerBundle:Reporte')->find($entity->getReporte()->getId());
+
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Diagnostico entity.');
         }
 
         return $this->render('BusetaTallerBundle:Diagnostico:show.html.twig', array(
             'entity' => $entity,
+            'reportes' => $reportes,
             'id' => $id
         ));
     }

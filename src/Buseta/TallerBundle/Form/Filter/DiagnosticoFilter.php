@@ -25,6 +25,7 @@ class DiagnosticoFilter extends AbstractType
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
                 'empty_value' => '---Seleccione---',
+                'label' => 'Autobús',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',

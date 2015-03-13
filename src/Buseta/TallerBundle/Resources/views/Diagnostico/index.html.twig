@@ -1,6 +1,6 @@
 {% extends "BusetaTallerBundle::layout.html.twig" %}
 
-{% block titulo %}
+{% block title %}
     Listado de Diagnósticos
 {% endblock %}
 
@@ -55,7 +55,7 @@
         <thead>
         <tr>
             <th>Reporte {{ knp_pagination_sortable(entities, 'Reporte', 'd.diagnostico') }}</th>
-            <th>Autobus {{ knp_pagination_sortable(entities, 'Autobús', 'd.autobus') }}</th>
+            <th>Autobús {{ knp_pagination_sortable(entities, 'Autobús', 'd.autobus') }}</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
@@ -68,7 +68,7 @@
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"
                            href="{{ path('diagnostico_show', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-file"> Mostrar</span></a>
+                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </div>
 
                     {#<div class="btn-group">
