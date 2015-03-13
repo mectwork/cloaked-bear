@@ -1,4 +1,3 @@
-
 <div class="panel panel-default">
     <!-- Default panel contents -->
     <div class="panel-heading">
@@ -10,13 +9,26 @@
         <li class="list-group-item"><b>Número:</b>  {{ reportes.numero }}</li>
         <li class="list-group-item"><b>Medio:</b>   {{ reportes.medioReporte }}</li>
         <li class="list-group-item"><b>Reporta:</b> {{ reportes.reporta }}</li>
-        {%  if reportes.esUsuario %}
-                <li class="list-group-item"><b>¿Es Usuario?:</b> Sí</li>
-                <li class="list-group-item"><b>Nombre de Persona:</b> {{ reportes.nombrePersona }}</li>
-                <li class="list-group-item"><b>Email de Persona:</b> {{ reportes.emailPersona }}</li>
-                <li class="list-group-item"><b>Teléfono de Persona:</b> {{ reportes.telefonoPersona }}</li>
-            {% else %}
-                <li class="list-group-item"><b>¿Es Usuario?:</b> No</li>
+        {% if reportes.esUsuario %}
+            <li class="list-group-item"><b>¿Es Usuario de la Empresa?:</b> Sí </li>
+            <li class="list-group-item">
+                <div class="panel panel-default" style="margin: 10px">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Datos de Persona</h3>
+                    </div>
+
+                    <!-- Datos de Persona -->
+                    <ul class="list-group">
+                        <li class="list-group-item"><b>Nombre:</b>   {{ reportes.nombrePersona }}</li>
+                        <li class="list-group-item"><b>Email:</b>    {{ reportes.emailPersona }}</li>
+                        <li class="list-group-item"><b>Teléfono:</b> {{ reportes.telefonoPersona }}</li>
+                    </ul>
+
+                </div>
+            </li>
+        {% else %}
+            <li class="list-group-item"><b>¿Es Usuario de la Empresa?:</b> No </li>
         {% endif %}
         <li class="list-group-item">
             <div class="panel panel-default" style="margin: 10px">
@@ -28,7 +40,7 @@
                 <!-- Observaciones del Reporte -->
                 <ul class="list-group">
                     {% for reporte in reportes.observaciones %}
-                        <li class="list-group-item"><b>Obs#{{ loop.index }}:</b> {{ reporte.valor }}</li>
+                        <li class="list-group-item">{{ reporte.valor }}</li>
                     {% else %}
                         <li class="list-group-item">No existen observaciones de reportes disponibles</li>
                     {% endfor %}
@@ -37,7 +49,6 @@
             </div>
         </li>
     </ul>
-
 </div>
 
 

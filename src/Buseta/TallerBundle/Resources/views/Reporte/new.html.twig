@@ -165,15 +165,10 @@
                 // prevent the link from creating a "#" on the URL
                 event.preventDefault();
 
-                var modal = $('div.modal#nuevaObservacion');
-
-                // captura de valores del modal
-                var reporte_valor = modal.find('#buseta_tallerbundle_observacion_valor');
-
                 var index = collectionHolder.data('index');
                 addTagForm(collectionHolder);
 
-                $('#buseta_tallerbundle_reporte_observaciones_' + index + '_valor').val(reporte_valor.val());
+                $('#buseta_tallerbundle_reporte_observaciones_' + index + '_valor').val();
 
             },
             _load: function () {
@@ -194,7 +189,7 @@
             updateDeleteLink();
             updateView();
 
-            $('a#adicionarNuevaObservacion').on('click', observacion._new);
+            $('a#adicionarNuevaObservacion').on('click', observacion._insert_new);
 
         });
     </script>

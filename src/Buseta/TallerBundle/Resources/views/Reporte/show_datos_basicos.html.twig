@@ -1,73 +1,37 @@
-<table class="table table-striped" style="font-size: 16px;">
-    <tbody>
-    <tr>
-        <th>Número Reporte</th>
-        <td>{{ entity.numero }}</td>
-    </tr>
-    <tr>
-        <th>Autobús</th>
-        <td>{{ entity.autobus }}</td>
-    </tr>
-    <tr>
-        <th>Medio Reporte</th>
-        <td>{{ entity.medioReporte }}</td>
-    </tr>
-    <tr>
-        <th>¿Es Usuario de la Empresa?</th>
-        <td>
-            {% if entity.esUsuario  %}
-                Sí
-            {% else %}
-                No
-            {% endif %}
-        </td>
-    </tr>
-    <tr>
-        <th>Nombre Persona</th>
-        <td>{{ entity.nombrePersona }}</td>
-    </tr>
-    <tr>
-        <th>Correo Persona</th>
-        <td>{{ entity.emailPersona }}</td>
-    </tr>
-    <tr>
-        <th>Teléfono Persona</th>
-        <td>{{ entity.telefonoPersona }}</td>
-    </tr>
-    </tr>
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <h3 class="panel-title">Datos del Reporte</h3>
+    </div>
 
-    <tr>
-        <th>Reporta</th>
-        <td>{{ entity.reporta }}</td>
-    </tr>
-    {#<tr>
-        <td colspan="2">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div  {{ block('widget_container_attributes') }}>
-                        <h4>Listado de Observaciones</h4>
+    <ul class="list-group">
+        <li class="list-group-item"><b>Número:</b>    {{ entity.numero }}</li>
+        <li class="list-group-item"><b>Autobús:</b>   {{ entity.autobus }}</li>
+        <li class="list-group-item"><b>Medio:</b>     {{ entity.medioReporte }}</li>
+        <li class="list-group-item"><b>Reporta:</b>   {{ entity.reporta }}</li>
 
-                        <table class="table table-striped" style="font-size: 16px;">
-                            <thead>
-                            <th>Detalles de Observaciones</th>
-                            </thead>
-                            <tbody>
-                            {% for observacion in entity.observaciones %}
-                                <tr>
-                                    <td>{{ observacion.valor }}</td>
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <td colspan="6">
-                                        <span class="label label-danger">No existen observaciones disponibles</span>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </table>
+        {% if entity.esUsuario %}
+                <li class="list-group-item"><b>¿Es Usuario de la Empresa?:</b> Sí </li>
+                <li class="list-group-item">
+                    <div class="panel panel-default" style="margin: 10px">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Datos de Persona</h3>
+                        </div>
+
+                        <!-- Datos de Persona -->
+                        <ul class="list-group">
+                            <li class="list-group-item"><b>Nombre:</b>   {{ entity.nombrePersona }}</li>
+                            <li class="list-group-item"><b>Email:</b>    {{ entity.emailPersona }}</li>
+                            <li class="list-group-item"><b>Teléfono:</b> {{ entity.telefonoPersona }}</li>
+                        </ul>
+
                     </div>
-                </div>
-            </div>
-        </td>
-    </tr>#}
-    </tbody>
-</table>
+                </li>
+            {% else %}
+                <li class="list-group-item"><b>¿Es Usuario de la Empresa?:</b> No </li>
+        {% endif %}
+
+
+    </ul>
+</div>

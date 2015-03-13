@@ -16,6 +16,7 @@ class ReporteFilter extends AbstractType
         $builder
             ->add('numero', null, array(
                 'required'  => false,
+                'label' => 'Número',
                 'trim'      => true,
                 'attr'      => array(
                     'class' => 'form-control',
