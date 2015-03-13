@@ -4,14 +4,10 @@ namespace Buseta\BodegaBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NoResultException;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Buseta\BodegaBundle\Form\Type\AlbaranLineaType;
 
 class AlbaranType extends AbstractType
 {
@@ -25,7 +21,7 @@ class AlbaranType extends AbstractType
      */
     private $serviceContainer;
 
-    function __construct(ObjectManager $em, Container $serviceContainer)
+    public function __construct(ObjectManager $em, Container $serviceContainer)
     {
         $this->em = $em;
         $this->serviceContainer = $serviceContainer;
@@ -33,7 +29,7 @@ class AlbaranType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -43,25 +39,25 @@ class AlbaranType extends AbstractType
                     'label'  => 'Nro.Referencia',
                     'attr'   => array(
                         'class' => 'form-control',
-                    )
+                    ),
                 ))
             ->add('consecutivoCompra', 'text', array(
                 'required' => false,
                 'label'  => 'Nro.Documento',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('almacen','entity',array(
+            ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('tercero','entity',array(
+            ->add('tercero', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
-                'query_builder' => function(EntityRepository $er){
+                'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('t')
                         ->where('t.proveedor = true');
                 },
@@ -69,31 +65,31 @@ class AlbaranType extends AbstractType
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('fechaMovimiento','date',array(
+            ->add('fechaMovimiento', 'date', array(
                 'widget' => 'single_text',
                 'label'  => 'Fecha Movimiento',
                 'format'  => 'dd/MM/yyyy',
                 'required' => false,
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('fechaContable','date',array(
+            ->add('fechaContable', 'date', array(
                 'widget' => 'single_text',
                 'label'  => 'Fecha Contable',
                 'format'  => 'dd/MM/yyyy',
                 'required' => false,
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('estadoDocumento', 'choice', array(
                 'required' => false,
                 'read_only' => true,
                 'empty_value' => '---Seleccione estado documento---',
-                'translation_domain'=> 'BusetaTallerBundle',
+                'translation_domain' => 'BusetaTallerBundle',
                 'choices' => array(
                     'CO' => 'estado.CO',
                     'BO' => 'estado.BO',
@@ -101,9 +97,9 @@ class AlbaranType extends AbstractType
                 ),
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('albaranLinea','collection',array(
+            ->add('albaranLinea', 'collection', array(
                 'type' => new AlbaranLineaType(),
                 'label'  => false,
                 'required' => true,
@@ -113,14 +109,14 @@ class AlbaranType extends AbstractType
             ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Entity\Albaran'
+            'data_class' => 'Buseta\BodegaBundle\Entity\Albaran',
         ));
     }
 

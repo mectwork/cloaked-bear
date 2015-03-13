@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * MantenimientoPorcientoCumplido
+ * MantenimientoPorcientoCumplido.
  *
  * @ORM\Table(name="n_mantenimiento_porciento_cumplido")
  * @ORM\Entity
@@ -35,11 +35,10 @@ class MantenimientoPorcientoCumplido extends BaseNomenclador
      */
     private $color;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -47,22 +46,23 @@ class MantenimientoPorcientoCumplido extends BaseNomenclador
     }
 
     /**
-     * Set porciento
+     * Set porciento.
      *
      * @param float $porciento
+     *
      * @return MantenimientoPorcientoCumplido
      */
     public function setPorciento($porciento)
     {
         $this->porciento = $porciento;
-    
+
         return $this;
     }
 
     /**
-     * Get porciento
+     * Get porciento.
      *
-     * @return float 
+     * @return float
      */
     public function getPorciento()
     {
@@ -70,29 +70,30 @@ class MantenimientoPorcientoCumplido extends BaseNomenclador
     }
 
     /**
-     * Set color
+     * Set color.
      *
      * @param string $color
+     *
      * @return MantenimientoPorcientoCumplido
      */
     public function setColor($color)
     {
         $this->color = $color;
-    
+
         return $this;
     }
 
     /**
-     * Get color
+     * Get color.
      *
-     * @return string 
+     * @return string
      */
     public function getColor()
     {
         return $this->color;
     }
 
-    function __toString()
+    public function __toString()
     {
         return $this->color;
     }

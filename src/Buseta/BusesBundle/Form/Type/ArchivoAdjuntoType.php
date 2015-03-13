@@ -6,8 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ArchivoAdjuntoType extends AbstractType{
-
+class ArchivoAdjuntoType extends AbstractType
+{
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -16,7 +16,7 @@ class ArchivoAdjuntoType extends AbstractType{
                     'attr'   => array(
                         'class' => 'form-control',
                         'style' => 'width: 830px',
-                    )
+                    ),
                 ))
         ;
     }

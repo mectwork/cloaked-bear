@@ -3,10 +3,9 @@
 namespace Buseta\BusesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * FiltroTransmision
+ * FiltroTransmision.
  *
  * @ORM\Table(name="d_filtro_transmision")
  * @ORM\Entity
@@ -28,7 +27,6 @@ class FiltroTransmision
      * @ORM\Column(name="filtro_transmision", type="string", length=15)
      */
     private $filtro_transmision;
-
 
     /**
      * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="filtro_transmision")
@@ -84,7 +82,7 @@ class FiltroTransmision
     }
 
     /**
-     * Comprueba si contiene datos el filtro
+     * Comprueba si contiene datos el filtro.
      *
      * @return bool
      */

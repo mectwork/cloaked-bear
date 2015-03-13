@@ -3,7 +3,6 @@ namespace Buseta\NomencladorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-
 abstract class BaseNomenclador
 {
     protected $id;
@@ -16,9 +15,10 @@ abstract class BaseNomenclador
     protected $valor;
 
     /**
-     * Set valor
+     * Set valor.
      *
      * @param string $valor
+     *
      * @return Color
      */
     public function setValor($valor)
@@ -29,7 +29,7 @@ abstract class BaseNomenclador
     }
 
     /**
-     * Get valor
+     * Get valor.
      *
      * @return string
      */
@@ -38,10 +38,8 @@ abstract class BaseNomenclador
         return $this->valor;
     }
 
-    function __toString()
+    public function __toString()
     {
         return (string) $this->valor;
     }
-
-
-} 
+}

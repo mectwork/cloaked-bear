@@ -3,10 +3,9 @@
 namespace Buseta\TallerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * CondicionesPago
+ * CondicionesPago.
  *
  * @ORM\Table(name="d_condiciones_pago")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\CondicionesPagoRepository")
@@ -66,17 +65,17 @@ class CondicionesPago
 
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
-//        $this->compras = new \Doctrine\Common\Collections\ArrayCollection();
+        //        $this->compras = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -84,22 +83,23 @@ class CondicionesPago
     }
 
     /**
-     * Set nombre
+     * Set nombre.
      *
      * @param string $nombre
+     *
      * @return CondicionesPago
      */
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-    
+
         return $this;
     }
 
     /**
-     * Get nombre
+     * Get nombre.
      *
-     * @return string 
+     * @return string
      */
     public function getNombre()
     {
@@ -107,22 +107,23 @@ class CondicionesPago
     }
 
     /**
-     * Set descripcion
+     * Set descripcion.
      *
      * @param string $descripcion
+     *
      * @return CondicionesPago
      */
     public function setDescripcion($descripcion)
     {
         $this->descripcion = $descripcion;
-    
+
         return $this;
     }
 
     /**
-     * Get descripcion
+     * Get descripcion.
      *
-     * @return string 
+     * @return string
      */
     public function getDescripcion()
     {
@@ -130,22 +131,23 @@ class CondicionesPago
     }
 
     /**
-     * Set meses_plazo
+     * Set meses_plazo.
      *
      * @param string $mesesPlazo
+     *
      * @return CondicionesPago
      */
     public function setMesesPlazo($mesesPlazo)
     {
         $this->meses_plazo = $mesesPlazo;
-    
+
         return $this;
     }
 
     /**
-     * Get meses_plazo
+     * Get meses_plazo.
      *
-     * @return string 
+     * @return string
      */
     public function getMesesPlazo()
     {
@@ -153,22 +155,23 @@ class CondicionesPago
     }
 
     /**
-     * Set dias_plazo
+     * Set dias_plazo.
      *
      * @param string $diasPlazo
+     *
      * @return CondicionesPago
      */
     public function setDiasPlazo($diasPlazo)
     {
         $this->dias_plazo = $diasPlazo;
-    
+
         return $this;
     }
 
     /**
-     * Get dias_plazo
+     * Get dias_plazo.
      *
-     * @return string 
+     * @return string
      */
     public function getDiasPlazo()
     {
@@ -176,22 +179,23 @@ class CondicionesPago
     }
 
     /**
-     * Set nota
+     * Set nota.
      *
      * @param string $nota
+     *
      * @return CondicionesPago
      */
     public function setNota($nota)
     {
         $this->nota = $nota;
-    
+
         return $this;
     }
 
     /**
-     * Get nota
+     * Get nota.
      *
-     * @return string 
+     * @return string
      */
     public function getNota()
     {

@@ -4,18 +4,17 @@ namespace Buseta\BodegaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\BodegaBundle\Entity\Bodega;
 use Buseta\BodegaBundle\Form\Type\BodegaType;
 use Buseta\BodegaBundle\Form\Filtro\BusquedaAlmacenType;
 
 /**
  * Bodega controller.
- *
  */
 class BodegaController extends Controller
 {
-    public function busquedaAvanzadaAction($page,$cantResult){
+    public function busquedaAvanzadaAction($page, $cantResult)
+    {
         $em = $this->get('doctrine.orm.entity_manager');
         $request = $this->getRequest();
 
@@ -25,11 +24,11 @@ class BodegaController extends Controller
         $filter = $filter;
 
         $busqueda = $em->getRepository('BusetaBodegaBundle:Bodega')
-            ->busquedaAvanzada($page,$cantResult,$filter,$orderBy);
+            ->busquedaAvanzada($page, $cantResult, $filter, $orderBy);
         $paginacion = $busqueda['paginacion'];
         $results    = $busqueda['results'];
 
-        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-almacen.html.twig',array(
+        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-almacen.html.twig', array(
             'almacenes'   => $results,
             'page'       => $page,
             'cantResult' => $cantResult,
@@ -40,7 +39,6 @@ class BodegaController extends Controller
 
     /**
      * Module Bodega entiy.
-     *
      */
     public function principalAction()
     {
@@ -49,7 +47,6 @@ class BodegaController extends Controller
 
     /**
      * Lists all Bodega entities.
-     *
      */
     public function indexAction()
     {
@@ -64,7 +61,6 @@ class BodegaController extends Controller
 
     /**
      * Creates a new Bodega entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -87,12 +83,12 @@ class BodegaController extends Controller
     }
 
     /**
-    * Creates a form to create a Bodega entity.
-    *
-    * @param Bodega $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a Bodega entity.
+     *
+     * @param Bodega $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(Bodega $entity)
     {
         $form = $this->createForm(new BodegaType(), $entity, array(
@@ -105,7 +101,6 @@ class BodegaController extends Controller
 
     /**
      * Displays a form to create a new Bodega entity.
-     *
      */
     public function newAction()
     {
@@ -120,7 +115,6 @@ class BodegaController extends Controller
 
     /**
      * Finds and displays a Bodega entity.
-     *
      */
     public function showAction($id)
     {
@@ -141,7 +135,6 @@ class BodegaController extends Controller
 
     /**
      * Displays a form to edit an existing Bodega entity.
-     *
      */
     public function editAction($id)
     {
@@ -164,12 +157,12 @@ class BodegaController extends Controller
     }
 
     /**
-    * Creates a form to edit a Bodega entity.
-    *
-    * @param Bodega $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Bodega entity.
+     *
+     * @param Bodega $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Bodega $entity)
     {
         $form = $this->createForm(new BodegaType(), $entity, array(
@@ -184,7 +177,6 @@ class BodegaController extends Controller
 
     /**
      * Edits an existing Bodega entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -215,7 +207,6 @@ class BodegaController extends Controller
 
     /**
      * Deletes a Bodega entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {

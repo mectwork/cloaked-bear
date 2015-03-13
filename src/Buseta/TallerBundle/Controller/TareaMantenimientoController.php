@@ -5,32 +5,31 @@ namespace Buseta\TallerBundle\Controller;
 use Buseta\NomencladorBundle\Entity\Tarea;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\TallerBundle\Entity\TareaMantenimiento;
 use Buseta\TallerBundle\Form\Type\TareaMantenimientoType;
 
 /**
  * TareaMantenimiento controller.
- *
  */
 class TareaMantenimientoController extends Controller
 {
-
     /**
-     * Updated automatically select Subgrupos when change select Grupos
-     *
+     * Updated automatically select Subgrupos when change select Grupos.
      */
-    public function select_grupo_subgrupoAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function select_grupo_subgrupoAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
 
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
 
         $em = $this->get('doctrine.orm.entity_manager');
         $grupo_id = $request->query->get('grupo_id');
         $subgrupos = $em->getRepository('BusetaNomencladorBundle:Subgrupo')->findBy(array(
-            'grupo' => $grupo_id
+            'grupo' => $grupo_id,
         ));
 
         $json = array();
@@ -45,19 +44,21 @@ class TareaMantenimientoController extends Controller
     }
 
     /**
-     * Updated automatically select Productos when change select Subgrupos
-     *
+     * Updated automatically select Productos when change select Subgrupos.
      */
-    public function select_subgrupo_productoAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function select_subgrupo_productoAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
 
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findBy(array(
-            'subgrupos' => $request->query->get('subgrupo_id')
+            'subgrupos' => $request->query->get('subgrupo_id'),
         ));
 
         $json = array();
@@ -73,7 +74,6 @@ class TareaMantenimientoController extends Controller
 
     /**
      * Lists all TareaMantenimiento entities.
-     *
      */
     public function indexAction()
     {
@@ -95,7 +95,6 @@ class TareaMantenimientoController extends Controller
     }
     /**
      * Creates a new TareaMantenimiento entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -119,12 +118,12 @@ class TareaMantenimientoController extends Controller
     }
 
     /**
-    * Creates a form to create a TareaMantenimiento entity.
-    *
-    * @param TareaMantenimiento $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a TareaMantenimiento entity.
+     *
+     * @param TareaMantenimiento $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(Tarea $entity)
     {
         $form = $this->createForm(new TareaMantenimientoType(), $entity, array(
@@ -139,7 +138,6 @@ class TareaMantenimientoController extends Controller
 
     /**
      * Displays a form to create a new TareaMantenimiento entity.
-     *
      */
     public function newAction()
     {
@@ -154,7 +152,6 @@ class TareaMantenimientoController extends Controller
 
     /**
      * Finds and displays a TareaMantenimiento entity.
-     *
      */
     public function showAction($id)
     {
@@ -175,7 +172,6 @@ class TareaMantenimientoController extends Controller
 
     /**
      * Displays a form to edit an existing TareaMantenimiento entity.
-     *
      */
     public function editAction($id)
     {
@@ -198,12 +194,12 @@ class TareaMantenimientoController extends Controller
     }
 
     /**
-    * Creates a form to edit a TareaMantenimiento entity.
-    *
-    * @param TareaMantenimiento $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a TareaMantenimiento entity.
+     *
+     * @param TareaMantenimiento $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Tarea $entity)
     {
         $form = $this->createForm(new TareaMantenimientoType(), $entity, array(
@@ -217,7 +213,6 @@ class TareaMantenimientoController extends Controller
     }
     /**
      * Edits an existing TareaMantenimiento entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -236,6 +231,7 @@ class TareaMantenimientoController extends Controller
         if ($editForm->isValid()) {
             $em->persist($entity);
             $em->flush();
+
             return $this->redirect($this->generateUrl('tareamantenimiento_show', array('id' => $id)));
         }
 
@@ -247,7 +243,6 @@ class TareaMantenimientoController extends Controller
     }
     /**
      * Deletes a TareaMantenimiento entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {

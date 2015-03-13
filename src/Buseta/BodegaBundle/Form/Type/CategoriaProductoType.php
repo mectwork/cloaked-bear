@@ -8,9 +8,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CategoriaProductoType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -19,26 +19,26 @@ class CategoriaProductoType extends AbstractType
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                    )
+                    ),
                 ))
             ->add('descripcion', 'textarea', array(
                 'label' => 'Descripción',
                 'required' => false,
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
 
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Entity\CategoriaProducto'
+            'data_class' => 'Buseta\BodegaBundle\Entity\CategoriaProducto',
         ));
     }
 

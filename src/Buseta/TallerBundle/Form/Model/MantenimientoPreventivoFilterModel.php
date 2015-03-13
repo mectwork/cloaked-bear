@@ -24,9 +24,8 @@ class MantenimientoPreventivoFilterModel
      */
     private $autobus;
 
-
     /**
-     * Set grupo
+     * Set grupo.
      *
      * @param string $grupo
      */
@@ -36,7 +35,7 @@ class MantenimientoPreventivoFilterModel
     }
 
     /**
-     * Get grupo
+     * Get grupo.
      *
      * @return string
      */
@@ -46,7 +45,7 @@ class MantenimientoPreventivoFilterModel
     }
 
     /**
-     * Set subgrupo
+     * Set subgrupo.
      *
      * @param string $subgrupo
      */
@@ -56,7 +55,7 @@ class MantenimientoPreventivoFilterModel
     }
 
     /**
-     * Get subgrupo
+     * Get subgrupo.
      *
      * @return string
      */
@@ -66,7 +65,7 @@ class MantenimientoPreventivoFilterModel
     }
 
     /**
-     * Set tarea
+     * Set tarea.
      *
      * @param string $tarea
      */
@@ -76,7 +75,7 @@ class MantenimientoPreventivoFilterModel
     }
 
     /**
-     * Get tarea
+     * Get tarea.
      *
      * @return string
      */
@@ -86,7 +85,7 @@ class MantenimientoPreventivoFilterModel
     }
 
     /**
-     * Set autobus
+     * Set autobus.
      *
      * @param string $autobus
      */
@@ -96,7 +95,7 @@ class MantenimientoPreventivoFilterModel
     }
 
     /**
-     * Get autobus
+     * Get autobus.
      *
      * @return string
      */

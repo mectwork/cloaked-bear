@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * UOM
+ * UOM.
  *
  * @ORM\Table(name="n_uom")
  * @ORM\Entity(repositoryClass="Buseta\NomencladorBundle\Entity\UOMRepository")

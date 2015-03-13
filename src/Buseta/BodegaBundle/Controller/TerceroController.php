@@ -8,7 +8,6 @@ use Buseta\BodegaBundle\Form\Model\TerceroModel;
 use Buseta\BodegaBundle\Form\Type\DireccionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\BodegaBundle\Entity\Tercero;
 use Buseta\BodegaBundle\Form\Type\TerceroType;
 use Buseta\BodegaBundle\Form\Type\MecanismoContactoType;
@@ -16,11 +15,11 @@ use Buseta\BodegaBundle\Form\Filtro\BusquedaTerceroType;
 
 /**
  * Tercero controller.
- *
  */
 class TerceroController extends Controller
 {
-    public function busquedaAvanzadaAction($page, $cantResult){
+    public function busquedaAvanzadaAction($page, $cantResult)
+    {
         $em = $this->get('doctrine.orm.entity_manager');
         $request = $this->getRequest();
 
@@ -33,7 +32,7 @@ class TerceroController extends Controller
         $paginacion = $busqueda['paginacion'];
         $results    = $busqueda['results'];
 
-        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-terceros.html.twig',array(
+        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-terceros.html.twig', array(
             'terceros'   => $results,
             'page'       => $page,
             'cantResult' => $cantResult,
@@ -44,7 +43,6 @@ class TerceroController extends Controller
 
     /**
      * Lists all Tercero entities.
-     *
      */
     public function indexAction()
     {
@@ -59,7 +57,6 @@ class TerceroController extends Controller
 
     /**
      * Creates a new Tercero entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -71,7 +68,7 @@ class TerceroController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             if ($entity->getDireccionId() !== null && $entity->getDireccionId() !== '') {
-                $direccion = $em->find('BusetaBodegaBundle:Direccion',$entity->getDireccionId());
+                $direccion = $em->find('BusetaBodegaBundle:Direccion', $entity->getDireccionId());
             }
 
             $tercero = new Tercero();
@@ -106,12 +103,12 @@ class TerceroController extends Controller
     }
 
     /**
-    * Creates a form to create a Tercero entity.
-    *
-    * @param Tercero $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a Tercero entity.
+     *
+     * @param Tercero $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(TerceroModel $entity)
     {
         $form = $this->createForm(new TerceroType(), $entity, array(
@@ -126,7 +123,6 @@ class TerceroController extends Controller
 
     /**
      * Displays a form to create a new Tercero entity.
-     *
      */
     public function newAction(Request $request)
     {
@@ -148,7 +144,6 @@ class TerceroController extends Controller
 
     /**
      * Finds and displays a Tercero entity.
-     *
      */
     public function showAction($id)
     {
@@ -170,7 +165,6 @@ class TerceroController extends Controller
 
     /**
      * Displays a form to edit an existing Tercero entity.
-     *
      */
     public function editAction(Tercero $tercero)
     {
@@ -189,12 +183,12 @@ class TerceroController extends Controller
     }
 
     /**
-    * Creates a form to edit a Tercero entity.
-    *
-    * @param Tercero $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Tercero entity.
+     *
+     * @param Tercero $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(TerceroModel $entity)
     {
         $form = $this->createForm(new TerceroType(), $entity, array(
@@ -209,7 +203,6 @@ class TerceroController extends Controller
 
     /**
      * Edits an existing Tercero entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -261,7 +254,6 @@ class TerceroController extends Controller
 
     /**
      * Deletes a Tercero entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {

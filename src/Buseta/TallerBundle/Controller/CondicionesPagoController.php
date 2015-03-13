@@ -4,20 +4,16 @@ namespace Buseta\TallerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\TallerBundle\Entity\CondicionesPago;
 use Buseta\TallerBundle\Form\Type\CondicionesPagoType;
 
 /**
  * CondicionesPago controller.
- *
  */
 class CondicionesPagoController extends Controller
 {
-
     /**
      * Lists all CondicionesPago entities.
-     *
      */
     public function indexAction()
     {
@@ -39,7 +35,6 @@ class CondicionesPagoController extends Controller
     }
     /**
      * Creates a new CondicionesPago entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -62,12 +57,12 @@ class CondicionesPagoController extends Controller
     }
 
     /**
-    * Creates a form to create a CondicionesPago entity.
-    *
-    * @param CondicionesPago $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a CondicionesPago entity.
+     *
+     * @param CondicionesPago $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(CondicionesPago $entity)
     {
         $form = $this->createForm(new CondicionesPagoType(), $entity, array(
@@ -82,7 +77,6 @@ class CondicionesPagoController extends Controller
 
     /**
      * Displays a form to create a new CondicionesPago entity.
-     *
      */
     public function newAction()
     {
@@ -97,7 +91,6 @@ class CondicionesPagoController extends Controller
 
     /**
      * Finds and displays a CondicionesPago entity.
-     *
      */
     public function showAction($id)
     {
@@ -118,7 +111,6 @@ class CondicionesPagoController extends Controller
 
     /**
      * Displays a form to edit an existing CondicionesPago entity.
-     *
      */
     public function editAction($id)
     {
@@ -141,12 +133,12 @@ class CondicionesPagoController extends Controller
     }
 
     /**
-    * Creates a form to edit a CondicionesPago entity.
-    *
-    * @param CondicionesPago $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a CondicionesPago entity.
+     *
+     * @param CondicionesPago $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(CondicionesPago $entity)
     {
         $form = $this->createForm(new CondicionesPagoType(), $entity, array(
@@ -160,7 +152,6 @@ class CondicionesPagoController extends Controller
     }
     /**
      * Edits an existing CondicionesPago entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -190,7 +181,6 @@ class CondicionesPagoController extends Controller
     }
     /**
      * Deletes a CondicionesPago entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {

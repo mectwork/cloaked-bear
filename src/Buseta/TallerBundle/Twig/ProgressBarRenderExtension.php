@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: luis
  * Date: 11/03/15
- * Time: 19:49
+ * Time: 19:49.
  */
 
 namespace Buseta\TallerBundle\Twig;
-
 
 use Buseta\TallerBundle\Entity\MantenimientoPreventivo;
 use Buseta\TallerBundle\Manager\MantenimientoPreventivoManager;
@@ -25,7 +24,6 @@ class ProgressBarRenderExtension extends \Twig_Extension
      */
     private $mpem;
 
-
     public function __construct(EntityManager $em, MantenimientoPreventivoManager $mpem)
     {
         $this->em = $em;
@@ -37,8 +35,8 @@ class ProgressBarRenderExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFilter('progress_bar_render', array($this, 'renderProgressBar'), array(
                     'is_safe' => array('html'),
-                    'needs_environment' => true
-                ))
+                    'needs_environment' => true,
+                )),
         );
     }
 
@@ -62,7 +60,7 @@ class ProgressBarRenderExtension extends \Twig_Extension
 
         return $twig->render('::progressbar.html.twig', array(
                 'percentage' => $percentage,
-                'color' => $color['color']
+                'color' => $color['color'],
             ));
     }
 
@@ -70,4 +68,4 @@ class ProgressBarRenderExtension extends \Twig_Extension
     {
         return 'progress_bar_render_extension';
     }
-} 
+}

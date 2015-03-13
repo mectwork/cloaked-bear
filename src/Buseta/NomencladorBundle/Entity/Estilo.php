@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Estilo
+ * Estilo.
  *
  * @ORM\Table(name="n_estilo")
  * @ORM\Entity
@@ -22,7 +22,7 @@ class Estilo extends BaseNomenclador
     protected $id;
 
     /**
-     * Get id
+     * Get id.
      *
      * @return integer
      */

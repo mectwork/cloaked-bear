@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Marca
+ * Marca.
  *
  * @ORM\Table(name="n_marca")
  * @ORM\Entity
@@ -29,17 +29,17 @@ class Marca extends BaseNomenclador
     private $modelos;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         $this->modelos = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -47,20 +47,21 @@ class Marca extends BaseNomenclador
     }
 
     /**
-     * Add modelos
+     * Add modelos.
      *
      * @param \Buseta\NomencladorBundle\Entity\Modelo $modelos
+     *
      * @return Marca
      */
     public function addModelo(\Buseta\NomencladorBundle\Entity\Modelo $modelos)
     {
         $this->modelos[] = $modelos;
-    
+
         return $this;
     }
 
     /**
-     * Remove modelos
+     * Remove modelos.
      *
      * @param \Buseta\NomencladorBundle\Entity\Modelo $modelos
      */
@@ -70,13 +71,12 @@ class Marca extends BaseNomenclador
     }
 
     /**
-     * Get modelos
+     * Get modelos.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getModelos()
     {
         return $this->modelos;
     }
-
 }

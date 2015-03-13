@@ -3,8 +3,6 @@
 namespace Buseta\BodegaBundle\Extras;
 
 use Buseta\TallerBundle\Entity\Impuesto;
-use Doctrine\DBAL\Types\FloatType;
-use Doctrine\ORM\EntityRepository;
 use Buseta\BodegaBundle\Entity\InformeStock;
 
 class FuncionesExtras
@@ -59,7 +57,6 @@ class FuncionesExtras
                         if ($bitacora->getTipoMovimiento() == 'M-') {
                             $cantidadPedido -= $bitacora->getCantMovida();
                         }
-
                     }
                 }
 
@@ -88,9 +85,7 @@ class FuncionesExtras
 
                 //Reinicio cantidad de pedidos
                 $cantidadPedido = 0;
-
             }
-
         }
     }
 
@@ -107,7 +102,6 @@ class FuncionesExtras
 
         //Recorro cada almacen
         foreach ($almacenes as $almacen) {
-
             $cantidadPedido = 0;
 
             //Busco cada producto existente para la bitacora actual
@@ -121,10 +115,8 @@ class FuncionesExtras
                         if ($bitacora->getTipoMovimiento() == 'M-') {
                             $cantidadPedido -= $bitacora->getCantMovida();
                         }
-
                     }
                 }
-
 
                 //Actualizo el informeStock
                 if ($cantidadPedido != 0) {
@@ -132,14 +124,11 @@ class FuncionesExtras
                     $almacenesArray[$pos]['producto'] = $producto;
                     $almacenesArray[$pos]['cantidad'] = $cantidadPedido;
                     $pos += 1;
-
                 }
 
                 //Reinicio cantidad de pedidos
                 $cantidadPedido = 0;
-
             }
-
         }
 
         return $almacenesArray;
@@ -187,7 +176,6 @@ class FuncionesExtras
 
         //Recorro cada almacen
         foreach ($almacenes as $almacen) {
-
             $cantidadPedido = 0;
             $costos = 0;
 
@@ -206,13 +194,11 @@ class FuncionesExtras
                         foreach ($producto->getPrecioProducto() as $precios) {
                             if ($precios->getActivo()) {
                                 $costoProducto = ($precios->getCosto());
-
                             }
                         }
                         $costos = $cantidadPedido * $costoProducto;
                     }
                 }
-
 
                 //Actualizo el informeStock
                 if ($cantidadPedido != 0) {
@@ -221,17 +207,13 @@ class FuncionesExtras
                     $almacenesArray[$pos]['cantidad'] = $cantidadPedido;
                     $almacenesArray[$pos]['costos'] = $costos;
                     $pos += 1;
-
                 }
 
                 //Reinicio cantidad de pedidos
                 $costos = 0;
             }
-
         }
 
         return $almacenesArray;
     }
 }
-
-?>

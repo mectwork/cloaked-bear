@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * HistoricoMantenimientos controller
+ * HistoricoMantenimientos controller.
  *
  * @Route("/historicom")
  */
@@ -43,22 +43,22 @@ class HistoricoMantenimientosController extends Controller
             if ($filter->getAutobus() !== null && $filter->getAutobus() !== '') {
                 $query->innerJoin('dot.autobus', 'da')
                     ->andWhere($qb->expr()->like('da.matricula', ':autobus'))
-                    ->setParameter('autobus', '%' . $filter->getAutobus() . '%');
+                    ->setParameter('autobus', '%'.$filter->getAutobus().'%');
             }
             if ($filter->getGrupo() !== null && $filter->getGrupo() !== '') {
                 $query->innerJoin('dta.grupo', 'ng')
                     ->andWhere($qb->expr()->like('ng.valor', ':grupo'))
-                    ->setParameter('grupo', '%' . $filter->getGrupo() . '%');
+                    ->setParameter('grupo', '%'.$filter->getGrupo().'%');
             }
             if ($filter->getSubgrupo() !== null && $filter->getSubgrupo() !== '') {
                 $query->innerJoin('dta.subgrupo', 'nsg')
                     ->andWhere($qb->expr()->like('nsg.valor', ':subgrupo'))
-                    ->setParameter('subgrupo', '%' . $filter->getSubgrupo() . '%');
+                    ->setParameter('subgrupo', '%'.$filter->getSubgrupo().'%');
             }
             if ($filter->getTarea() !== null && $filter->getTarea() !== '') {
                 $query->innerJoin('dta.tarea', 'nt')
                     ->andWhere($qb->expr()->like('nt.valor', ':tarea'))
-                    ->setParameter('tarea', '%' . $filter->getTarea() . '%');
+                    ->setParameter('tarea', '%'.$filter->getTarea().'%');
             }
         }
 
@@ -81,4 +81,4 @@ class HistoricoMantenimientosController extends Controller
                 'filter_form' => $form->createView(),
             ));
     }
-} 
+}

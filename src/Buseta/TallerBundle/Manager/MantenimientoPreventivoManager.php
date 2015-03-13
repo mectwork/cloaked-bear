@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: luis
  * Date: 11/03/15
- * Time: 20:35
+ * Time: 20:35.
  */
 
 namespace Buseta\TallerBundle\Manager;
@@ -13,10 +13,10 @@ use Doctrine\ORM\EntityManager;
 
 class MantenimientoPreventivoManager
 {
-
     /**
-     * @param EntityManager $em
+     * @param EntityManager           $em
      * @param MantenimientoPreventivo $entity
+     *
      * @return mixed
      */
     public function getPorciento(EntityManager $em, MantenimientoPreventivo $entity)
@@ -34,7 +34,7 @@ class MantenimientoPreventivoManager
                 'tarea' => $entity->getTarea(),
                 'grupo' => $entity->getGrupo(),
                 'subgrupo' => $entity->getSubgrupo(),
-                'autobus' => $entity->getAutobus()
+                'autobus' => $entity->getAutobus(),
             ))
             ->orderBy('dot.fechaFinal')
             ->setMaxResults(1);
@@ -54,4 +54,4 @@ class MantenimientoPreventivoManager
 
         return $porcientoKilometraje;
     }
-} 
+}

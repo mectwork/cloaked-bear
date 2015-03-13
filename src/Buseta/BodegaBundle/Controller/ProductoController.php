@@ -2,23 +2,17 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
-use Buseta\BodegaBundle\Entity\InformeProductosBodega;
-use Buseta\BodegaBundle\Entity\Movimiento;
-use Buseta\BodegaBundle\Entity\MovimientosProductos;
 use Buseta\BodegaBundle\Entity\PrecioProducto;
 use Buseta\BodegaBundle\Form\Type\PrecioProductoType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\BodegaBundle\Entity\Producto;
 use Buseta\BodegaBundle\Form\Type\ProductoType;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Buseta\BodegaBundle\Form\Filtro\BusquedaProductoType;
 
 /**
  * Producto controller.
- *
  */
 class ProductoController extends Controller
 {
@@ -30,7 +24,7 @@ class ProductoController extends Controller
 
         $bitacora = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->findBy(
             array(
-                'producto' => $producto
+                'producto' => $producto,
             )
         );
 
@@ -46,11 +40,10 @@ class ProductoController extends Controller
             'bitacora' => $bitacora,
             'producto' => $producto,
         ));
-
-
     }
 
-    public function busquedaAvanzadaAction($page,$cantResult){
+    public function busquedaAvanzadaAction($page, $cantResult)
+    {
         $em = $this->get('doctrine.orm.entity_manager');
         $request = $this->getRequest();
 
@@ -60,11 +53,11 @@ class ProductoController extends Controller
         $filter = $filter;
 
         $busqueda = $em->getRepository('BusetaBodegaBundle:Producto')
-            ->busquedaAvanzada($page,$cantResult,$filter,$orderBy);
+            ->busquedaAvanzada($page, $cantResult, $filter, $orderBy);
         $paginacion = $busqueda['paginacion'];
         $results    = $busqueda['results'];
 
-        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-productos.html.twig',array(
+        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-productos.html.twig', array(
             'productos'   => $results,
             'page'       => $page,
             'cantResult' => $cantResult,
@@ -74,31 +67,31 @@ class ProductoController extends Controller
     }
 
     /**
-     * Updated automatically select All when change select Producto
-     *
+     * Updated automatically select All when change select Producto.
      */
-    public function select_productos_allAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function select_productos_allAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
 
         $request = $this->getRequest();
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $producto = $em->getRepository('BusetaBodegaBundle:Producto')->findOneBy(array(
-            'id' => $request->query->get('producto_id')
+            'id' => $request->query->get('producto_id'),
         ));
 
         $impuesto = $em->getRepository('BusetaTallerBundle:Impuesto')->findOneBy(array(
-            'id' => $request->query->get('impuesto_id')
+            'id' => $request->query->get('impuesto_id'),
         ));
 
         $cantidad_pedido     = $request->query->get('cantidad_pedido');
-        foreach($producto->getPrecioProducto() as $precios)
-        {
-            if($precios->getActivo())
-            {
+        foreach ($producto->getPrecioProducto() as $precios) {
+            if ($precios->getActivo()) {
                 $precioSalida = ($precios->getPrecio());
             }
         }
@@ -119,20 +112,22 @@ class ProductoController extends Controller
     }
 
     /**
-     * Updated automatically select Subgrupos when change select Grupos
-     *
+     * Updated automatically select Subgrupos when change select Grupos.
      */
-    public function select_grupo_subgrupoAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function select_grupo_subgrupoAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
 
         $request = $this->getRequest();
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $subgrupos = $em->getRepository('BusetaNomencladorBundle:Subgrupo')->findBy(array(
-            'grupo' => $request->query->get('grupo_id')
+            'grupo' => $request->query->get('grupo_id'),
         ));
 
         $json = array();
@@ -148,7 +143,6 @@ class ProductoController extends Controller
 
     /**
      * Lists all Producto entities.
-     *
      */
     public function indexAction()
     {
@@ -163,7 +157,6 @@ class ProductoController extends Controller
 
     /**
      * Creates a new Producto entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -172,7 +165,6 @@ class ProductoController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -187,24 +179,24 @@ class ProductoController extends Controller
     }
 
     /**
-    * Creates a form to create a Producto entity.
-    *
-    * @param Producto $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a Producto entity.
+     *
+     * @param Producto $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(Producto $entity)
     {
         $form = $this->createForm(new ProductoType(), $entity, array(
             'action' => $this->generateUrl('producto_create'),
             'method' => 'POST',
         ));
+
         return $form;
     }
 
     /**
      * Displays a form to create a new Producto entity.
-     *
      */
     public function newAction()
     {
@@ -224,7 +216,6 @@ class ProductoController extends Controller
 
     /**
      * Finds and displays a Producto entity.
-     *
      */
     public function showAction($id)
     {
@@ -245,7 +236,6 @@ class ProductoController extends Controller
 
     /**
      * Displays a form to edit an existing Producto entity.
-     *
      */
     public function editAction($id)
     {
@@ -271,12 +261,12 @@ class ProductoController extends Controller
     }
 
     /**
-    * Creates a form to edit a Producto entity.
-    *
-    * @param Producto $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Producto entity.
+     *
+     * @param Producto $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Producto $entity)
     {
         $form = $this->createForm(new ProductoType(), $entity, array(
@@ -291,7 +281,6 @@ class ProductoController extends Controller
 
     /**
      * Edits an existing Producto entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -322,7 +311,6 @@ class ProductoController extends Controller
 
     /**
      * Deletes a Producto entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {
@@ -333,7 +321,7 @@ class ProductoController extends Controller
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('BusetaBodegaBundle:Producto')->find($id);
 
-           if (!$entity) {
+            if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Producto entity.');
             }
 

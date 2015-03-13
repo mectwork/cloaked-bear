@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Color
+ * Color.
  *
  * @ORM\Table(name="n_tipo_compra")
  * @ORM\Entity
@@ -36,5 +36,4 @@ class TipoCompra extends BaseNomenclador
     {
         return $this->id;
     }
-
 }

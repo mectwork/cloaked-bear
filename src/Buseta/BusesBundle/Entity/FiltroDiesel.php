@@ -3,10 +3,9 @@
 namespace Buseta\BusesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * FiltroDiesel
+ * FiltroDiesel.
  *
  * @ORM\Table(name="d_filtro_diesel")
  * @ORM\Entity
@@ -152,7 +151,7 @@ class FiltroDiesel
     }
 
     /**
-     * Comprueba si contiene datos el filtro
+     * Comprueba si contiene datos el filtro.
      *
      * @return bool
      */
@@ -160,5 +159,4 @@ class FiltroDiesel
     {
         return $this->filtro_diesel_1 && $this->filtro_diesel_2 && $this->filtro_diesel_3 && $this->filtro_diesel_4;
     }
-
 }

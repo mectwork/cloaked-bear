@@ -5,9 +5,8 @@ namespace Buseta\BodegaBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
- * Tercero
+ * Tercero.
  *
  * @ORM\Table(name="d_tercero")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\TerceroRepository")
@@ -68,7 +67,6 @@ class Tercero
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Direccion", inversedBy="terceros")
-     *
      */
     private $direccion;
 
@@ -263,17 +261,18 @@ class Tercero
     }
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         $this->mecanismoscontacto = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
-     * Add mecanismoscontacto
+     * Add mecanismoscontacto.
      *
      * @param \Buseta\BodegaBundle\Entity\MecanismoContacto $mecanismoscontacto
+     *
      * @return Tercero
      */
     public function addMecanismoscontacto(\Buseta\BodegaBundle\Entity\MecanismoContacto $mecanismoscontacto)
@@ -281,12 +280,12 @@ class Tercero
         $mecanismoscontacto->setTerceros($this);
 
         $this->mecanismoscontacto[] = $mecanismoscontacto;
-    
+
         return $this;
     }
 
     /**
-     * Remove mecanismoscontacto
+     * Remove mecanismoscontacto.
      *
      * @param \Buseta\BodegaBundle\Entity\MecanismoContacto $mecanismoscontacto
      */
@@ -298,39 +297,36 @@ class Tercero
     }
 
     /**
-     * Get mecanismoscontacto
+     * Get mecanismoscontacto.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMecanismoscontacto()
     {
         return $this->mecanismoscontacto;
     }
 
-
-
     public function __toString()
     {
         return $this->nombres.' '.$this->apellidos;
     }
 
-
-
     /**
-     * Add pedidoCompra
+     * Add pedidoCompra.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra
+     *
      * @return Tercero
      */
     public function addPedidoCompra(\Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra)
     {
         $this->pedidoCompra[] = $pedidoCompra;
-    
+
         return $this;
     }
 
     /**
-     * Remove pedidoCompra
+     * Remove pedidoCompra.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra
      */
@@ -340,9 +336,9 @@ class Tercero
     }
 
     /**
-     * Get pedidoCompra
+     * Get pedidoCompra.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPedidoCompra()
     {
@@ -350,20 +346,21 @@ class Tercero
     }
 
     /**
-     * Add albaran
+     * Add albaran.
      *
      * @param \Buseta\BodegaBundle\Entity\Albaran $albaran
+     *
      * @return Tercero
      */
     public function addAlbaran(\Buseta\BodegaBundle\Entity\Albaran $albaran)
     {
         $this->albaran[] = $albaran;
-    
+
         return $this;
     }
 
     /**
-     * Remove albaran
+     * Remove albaran.
      *
      * @param \Buseta\BodegaBundle\Entity\Albaran $albaran
      */
@@ -373,9 +370,9 @@ class Tercero
     }
 
     /**
-     * Get albaran
+     * Get albaran.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAlbaran()
     {
@@ -383,22 +380,23 @@ class Tercero
     }
 
     /**
-     * Set persona
+     * Set persona.
      *
      * @param boolean $persona
+     *
      * @return Tercero
      */
     public function setPersona($persona)
     {
         $this->persona = $persona;
-    
+
         return $this;
     }
 
     /**
-     * Get persona
+     * Get persona.
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPersona()
     {

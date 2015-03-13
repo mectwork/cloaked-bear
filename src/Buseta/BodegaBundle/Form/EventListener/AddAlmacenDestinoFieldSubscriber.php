@@ -22,14 +22,14 @@ class AddAlmacenDestinoFieldSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_SUBMIT     => 'preBind'
+            FormEvents::PRE_SUBMIT     => 'preBind',
         );
     }
 
     private function addAlmacenDestinoForm($form, $almacenDestino = null, $almacenOrigen = null)
     {
-        if($almacenOrigen === null) {
-            $form->add('almacenDestino','choice',array(
+        if ($almacenOrigen === null) {
+            $form->add('almacenDestino', 'choice', array(
                 'choices' => array(),
                 'empty_value'   => '---Seleccione almacén destino---',
                 'attr' => array(
@@ -37,7 +37,7 @@ class AddAlmacenDestinoFieldSubscriber implements EventSubscriberInterface
                 ),
             ));
         } else {
-            $form->add('almacenDestino','entity', array(
+            $form->add('almacenDestino', 'entity', array(
                 'class'         => 'BusetaBodegaBundle:Bodega',
                 'empty_value'   => '---Seleccione almacén destino---',
                 'auto_initialize' => false,
@@ -65,7 +65,7 @@ class AddAlmacenDestinoFieldSubscriber implements EventSubscriberInterface
                     $qb = $repository->createQueryBuilder('almacenDestino');
 
                     return $qb;
-                }
+                },
             ));
         }
     }
@@ -78,8 +78,8 @@ class AddAlmacenDestinoFieldSubscriber implements EventSubscriberInterface
         if (null == $data) {
             $this->addAlmacenDestinoForm($form);
         } else {
-            $almacenDestino = ($data->getAlmacenDestino()) ? $data->getAlmacenDestino() : null ;
-            $almacenOrigen = ($almacenDestino) ? $almacenDestino->getAlmacenOrigen() : null ;
+            $almacenDestino = ($data->getAlmacenDestino()) ? $data->getAlmacenDestino() : null;
+            $almacenOrigen = ($almacenDestino) ? $almacenDestino->getAlmacenOrigen() : null;
             $this->addAlmacenDestinoForm($form, $almacenDestino, $almacenOrigen);
         }
     }

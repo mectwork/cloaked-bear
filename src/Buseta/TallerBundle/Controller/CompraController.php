@@ -8,24 +8,23 @@ use Buseta\TallerBundle\Entity\Linea;
 use Buseta\TallerBundle\Form\Type\LineaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\TallerBundle\Entity\Compra;
-use Buseta\TallerBundle\Form\Type\CompraType;
 
 /**
  * Compra controller.
- *
  */
 class CompraController extends Controller
 {
-
-    public function guardarPedidoAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function guardarPedidoAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
 
         $request = $this->getRequest();
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $datos = $request->query->get('numero');
@@ -39,7 +38,6 @@ class CompraController extends Controller
 
     /**
      * Lists all Compra entities.
-     *
      */
     public function indexAction()
     {
@@ -61,7 +59,6 @@ class CompraController extends Controller
     }
     /**
      * Creates a new Compra entity.
-     *
      */
 //    public function createAction(Request $request)
 //    {
@@ -164,7 +161,6 @@ class CompraController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         if ($form->isValid()) {
-
             $request = $this->get('request');
 
             $em->persist($entity);
@@ -178,8 +174,7 @@ class CompraController extends Controller
 
         $json = array();
 
-        foreach($productos as $p){
-
+        foreach ($productos as $p) {
             $json[$p->getId()] = array(
                 'nombre' => $p->getNombre(),
                 'precio_salida' => $p->getPrecioSalida(),
@@ -195,12 +190,12 @@ class CompraController extends Controller
     }
 
     /**
-    * Creates a form to create a Compra entity.
-    *
-    * @param Compra $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a Compra entity.
+     *
+     * @param Compra $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(Compra $entity)
     {
         $form = $this->createForm('taller_compra', $entity, array(
@@ -215,7 +210,6 @@ class CompraController extends Controller
 
     /**
      * Displays a form to create a new Compra entity.
-     *
      */
     public function newAction()
     {
@@ -228,8 +222,7 @@ class CompraController extends Controller
 
         $json = array();
 
-        foreach($productos as $p){
-
+        foreach ($productos as $p) {
             $json[$p->getId()] = array(
                 'nombre' => $p->getNombre(),
                 'precio_salida' => $p->getPrecioSalida(),
@@ -249,7 +242,6 @@ class CompraController extends Controller
 
     /**
      * Finds and displays a Compra entity.
-     *
      */
     public function showAction($id)
     {
@@ -270,7 +262,6 @@ class CompraController extends Controller
 
     /**
      * Displays a form to edit an existing Compra entity.
-     *
      */
     public function editAction($id)
     {
@@ -292,8 +283,7 @@ class CompraController extends Controller
 
         $json = array();
 
-        foreach($productos as $p){
-
+        foreach ($productos as $p) {
             $json[$p->getId()] = array(
                 'nombre' => $p->getNombre(),
                 'precio_salida' => $p->getPrecioSalida(),
@@ -310,15 +300,15 @@ class CompraController extends Controller
     }
 
     /**
-    * Creates a form to edit a Compra entity.
-    *
-    * @param Compra $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Compra entity.
+     *
+     * @param Compra $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Compra $entity)
     {
-        $form = $this->createForm('taller_compra',$entity, array(
+        $form = $this->createForm('taller_compra', $entity, array(
             'action' => $this->generateUrl('compra_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
@@ -329,7 +319,6 @@ class CompraController extends Controller
     }
     /**
      * Edits an existing Compra entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -356,8 +345,7 @@ class CompraController extends Controller
 
         $json = array();
 
-        foreach($productos as $p){
-
+        foreach ($productos as $p) {
             $json[$p->getId()] = array(
                 'nombre' => $p->getNombre(),
                 'precio_salida' => $p->getPrecioSalida(),
@@ -373,7 +361,6 @@ class CompraController extends Controller
     }
     /**
      * Deletes a Compra entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {

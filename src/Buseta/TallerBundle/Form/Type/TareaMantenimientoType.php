@@ -12,7 +12,7 @@ class TareaMantenimientoType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -28,25 +28,25 @@ class TareaMantenimientoType extends AbstractType
                 'label'  => 'Valor',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('kilometros', 'number', array(
                 'required' => false,
                 'label'  => 'Kilómetros',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('horas', 'number', array(
                 'required' => false,
                 'label'  => 'Horas',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
@@ -54,7 +54,7 @@ class TareaMantenimientoType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Buseta\NomencladorBundle\Entity\Tarea',
-            'action' => 'POST'
+            'action' => 'POST',
         ));
     }
 
@@ -65,6 +65,4 @@ class TareaMantenimientoType extends AbstractType
     {
         return 'buseta_tallerbundle_tareamantenimiento';
     }
-
-
 }

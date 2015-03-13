@@ -3,10 +3,9 @@
 namespace Buseta\BodegaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * CategoriaProducto
+ * CategoriaProducto.
  *
  * @ORM\Table(name="n_categoria_producto")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\CategoriaProductoRepository")
@@ -53,7 +52,7 @@ class CategoriaProducto
     }
 
     /**
-     * Get id
+     * Get id.
      *
      * @return integer
      */
@@ -63,9 +62,10 @@ class CategoriaProducto
     }
 
     /**
-     * Set descripcion
+     * Set descripcion.
      *
      * @param string $descripcion
+     *
      * @return Estilo
      */
     public function setDescripcion($descripcion)
@@ -76,7 +76,7 @@ class CategoriaProducto
     }
 
     /**
-     * Get descripcion
+     * Get descripcion.
      *
      * @return string
      */
@@ -89,6 +89,4 @@ class CategoriaProducto
     {
         return $this->valor;
     }
-
-
 }

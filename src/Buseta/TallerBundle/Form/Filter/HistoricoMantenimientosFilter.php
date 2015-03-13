@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: luis
  * Date: 13/03/15
- * Time: 1:21
+ * Time: 1:21.
  */
 
 namespace Buseta\TallerBundle\Form\Filter;
-
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,28 +22,28 @@ class HistoricoMantenimientosFilter extends AbstractType
                 'trim' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('grupo', 'text', array(
                 'required' => false,
                 'trim' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('subgrupo', 'text', array(
                 'required' => false,
                 'trim' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('tarea', 'text', array(
                 'required' => false,
                 'trim' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ));
     }
 
@@ -68,4 +67,4 @@ class HistoricoMantenimientosFilter extends AbstractType
     {
         return 'historicomantenimientos';
     }
-} 
+}

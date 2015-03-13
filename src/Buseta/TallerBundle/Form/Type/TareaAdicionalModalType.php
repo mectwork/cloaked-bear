@@ -12,17 +12,15 @@ class TareaAdicionalModalType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $objeto = $builder->getFormFactory();
         $subgrupos = new AddSubgrupoFieldSubscriber($objeto);
         $builder->addEventSubscriber($subgrupos);
         $grupos = new AddGrupoFieldSubscriber($objeto);
         $builder->addEventSubscriber($grupos);
-
 
         $builder
             ->add('tarea', 'text', array(
@@ -31,7 +29,7 @@ class TareaAdicionalModalType extends AbstractType
                 'attr'   => array(
                     'class' => 'form-control',
                     'width' => '40px',
-                )
+                ),
             ))
             /*
             ->add('grupos','entity',array(
@@ -52,12 +50,12 @@ class TareaAdicionalModalType extends AbstractType
             ))
             */
 
-            ->add('fecha_estimada','date',array(
+            ->add('fecha_estimada', 'date', array(
                 'widget' => 'single_text',
                 'format'  => 'dd/MM/yyyy',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ));
     }
 
@@ -67,7 +65,7 @@ class TareaAdicionalModalType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\TallerBundle\Entity\TareaAdicional'
+            'data_class' => 'Buseta\TallerBundle\Entity\TareaAdicional',
         ));
     }
 

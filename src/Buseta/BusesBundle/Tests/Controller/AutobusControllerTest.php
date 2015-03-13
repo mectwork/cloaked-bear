@@ -3,7 +3,6 @@
 namespace Buseta\BusesBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
 
 class AutobusControllerTest extends WebTestCase
 {
@@ -16,6 +15,4 @@ class AutobusControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/autobus/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /autobus/");
     }
-
-
 }

@@ -4,22 +4,19 @@ namespace Buseta\TallerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\TallerBundle\Entity\TareaAdicional;
 use Buseta\TallerBundle\Form\Type\TareaAdicionalType;
 
 /**
  * TareaAdicional controller.
- *
  */
 class TareaAdicionalController extends Controller
 {
-
     public function newModalAction(Request $request)
     {
         $form = $this->createForm(new TareaAdicionalType(), null, array(
             'method' => 'POST',
-            'action' => $this->generateUrl('tareaadicional_new_modal')
+            'action' => $this->generateUrl('tareaadicional_new_modal'),
         ));
 
         return $this->render('@BusetaTaller/OrdenTrabajo/modal/modal_tarea_adicional.html.twig', array(
@@ -29,7 +26,6 @@ class TareaAdicionalController extends Controller
 
     /**
      * Lists all TareaAdicional entities.
-     *
      */
     public function indexAction()
     {
@@ -44,7 +40,6 @@ class TareaAdicionalController extends Controller
 
     /**
      * Creates a new TareaAdicional entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -67,12 +62,12 @@ class TareaAdicionalController extends Controller
     }
 
     /**
-    * Creates a form to create a TareaAdicional entity.
-    *
-    * @param TareaAdicional $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a TareaAdicional entity.
+     *
+     * @param TareaAdicional $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(TareaAdicional $entity)
     {
         $form = $this->createForm(new TareaAdicionalType(), $entity, array(
@@ -87,7 +82,6 @@ class TareaAdicionalController extends Controller
 
     /**
      * Displays a form to create a new TareaAdicional entity.
-     *
      */
     public function newAction()
     {
@@ -102,7 +96,6 @@ class TareaAdicionalController extends Controller
 
     /**
      * Finds and displays a TareaAdicional entity.
-     *
      */
     public function showAction($id)
     {
@@ -123,7 +116,6 @@ class TareaAdicionalController extends Controller
 
     /**
      * Displays a form to edit an existing TareaAdicional entity.
-     *
      */
     public function editAction($id)
     {
@@ -146,12 +138,12 @@ class TareaAdicionalController extends Controller
     }
 
     /**
-    * Creates a form to edit a TareaAdicional entity.
-    *
-    * @param TareaAdicional $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a TareaAdicional entity.
+     *
+     * @param TareaAdicional $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(TareaAdicional $entity)
     {
         $form = $this->createForm(new TareaAdicionalType(), $entity, array(
@@ -165,7 +157,6 @@ class TareaAdicionalController extends Controller
     }
     /**
      * Edits an existing TareaAdicional entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -195,7 +186,6 @@ class TareaAdicionalController extends Controller
     }
     /**
      * Deletes a TareaAdicional entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {
@@ -256,7 +246,6 @@ class TareaAdicionalController extends Controller
         $entity = new TareaAdicional();
         $form = $this->createCreateCompraForm($entity);
         $form->handleRequest($request);
-
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();

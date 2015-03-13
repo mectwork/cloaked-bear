@@ -4,20 +4,16 @@ namespace Buseta\TallerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\TallerBundle\Entity\Linea;
 use Buseta\TallerBundle\Form\Type\LineaType;
 
 /**
  * Linea controller.
- *
  */
 class LineaController extends Controller
 {
-
     /**
      * Lists all Linea entities.
-     *
      */
     public function indexAction()
     {
@@ -31,7 +27,6 @@ class LineaController extends Controller
     }
     /**
      * Creates a new Linea entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -67,12 +62,12 @@ class LineaController extends Controller
     }
 
     /**
-    * Creates a form to create a Linea entity.
-    *
-    * @param Linea $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a Linea entity.
+     *
+     * @param Linea $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(Linea $entity)
     {
         $form = $this->createForm(new LineaType(), $entity, array(
@@ -106,7 +101,6 @@ class LineaController extends Controller
 
     /**
      * Displays a form to create a new Linea entity.
-     *
      */
     public function newAction()
     {
@@ -121,7 +115,6 @@ class LineaController extends Controller
 
     /**
      * Finds and displays a Linea entity.
-     *
      */
     public function showAction($id)
     {
@@ -142,7 +135,6 @@ class LineaController extends Controller
 
     /**
      * Displays a form to edit an existing Linea entity.
-     *
      */
     public function editAction($id)
     {
@@ -165,12 +157,12 @@ class LineaController extends Controller
     }
 
     /**
-    * Creates a form to edit a Linea entity.
-    *
-    * @param Linea $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Linea entity.
+     *
+     * @param Linea $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Linea $entity)
     {
         $form = $this->createForm(new LineaType(), $entity, array(
@@ -184,7 +176,6 @@ class LineaController extends Controller
     }
     /**
      * Edits an existing Linea entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -214,7 +205,6 @@ class LineaController extends Controller
     }
     /**
      * Deletes a Linea entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {

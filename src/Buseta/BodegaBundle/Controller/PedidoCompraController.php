@@ -4,24 +4,20 @@ namespace Buseta\BodegaBundle\Controller;
 
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
-use Buseta\BodegaBundle\Entity\InformeProductosBodega;
-use Buseta\BodegaBundle\Entity\InformeStock;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\BodegaBundle\Entity\PedidoCompra;
-use Buseta\BodegaBundle\Form\Type\PedidoCompraType;
 use Buseta\BodegaBundle\Form\Filtro\BusquedaPedidoCompraType;
 
 /**
  * PedidoCompra controller.
- *
  */
 class PedidoCompraController extends Controller
 {
-    public function busquedaAvanzadaAction($page,$cantResult){
+    public function busquedaAvanzadaAction($page, $cantResult)
+    {
         $em = $this->get('doctrine.orm.entity_manager');
         $request = $this->getRequest();
 
@@ -31,11 +27,11 @@ class PedidoCompraController extends Controller
         $filter = $filter;
 
         $busqueda = $em->getRepository('BusetaBodegaBundle:PedidoCompra')
-            ->busquedaAvanzada($page,$cantResult,$filter,$orderBy);
+            ->busquedaAvanzada($page, $cantResult, $filter, $orderBy);
         $paginacion = $busqueda['paginacion'];
         $results    = $busqueda['results'];
 
-        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-pedidos-compras.html.twig',array(
+        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-pedidos-compras.html.twig', array(
             'pedidosCompras'   => $results,
             'page'       => $page,
             'cantResult' => $cantResult,
@@ -44,13 +40,16 @@ class PedidoCompraController extends Controller
         ));
     }
 
-    public function comprobarPedidoAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function comprobarPedidoAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
 
         $request = $this->getRequest();
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
 
         $em = $this->getDoctrine()->getManager();
 
@@ -60,57 +59,56 @@ class PedidoCompraController extends Controller
         $importe_total_lineas = $request->query->get('importe_total_lineas');
         $importe_total = $request->query->get('importe_total');
 
-        if($request->query->get('numero_documento'))
-        {
+        if ($request->query->get('numero_documento')) {
             $numero_documento = $request->query->get('numero_documento');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('fecha_pedido'))
-        {
+        if ($request->query->get('fecha_pedido')) {
             $fecha_pedido = $request->query->get('fecha_pedido');
 
             //$fecha = new \DateTime('now');
-            $date='%s-%s-%s GMT-0';
+            $date = '%s-%s-%s GMT-0';
             $fecha = explode("/", $fecha_pedido);
-            $d = $fecha[0]; $m = $fecha[1];
+            $d = $fecha[0];
+            $m = $fecha[1];
             $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
             $y = $fecha[0];
-            $fecha_pedido =  new \DateTime(sprintf($date,$y,$m,$d));
+            $fecha_pedido =  new \DateTime(sprintf($date, $y, $m, $d));
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-
-        if($request->query->get('tercero'))
-        {
+        if ($request->query->get('tercero')) {
             $tercero = $request->query->get('tercero');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('almacen'))
-        {
+        if ($request->query->get('almacen')) {
             $almacen = $request->query->get('almacen');
-
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('forma_pago'))
-        {
+        if ($request->query->get('forma_pago')) {
             $forma_pago = $request->query->get('forma_pago');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('condiciones_pago'))
-        {
+        if ($request->query->get('condiciones_pago')) {
             $condiciones_pago = $request->query->get('condiciones_pago');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('moneda'))
-        {
+        if ($request->query->get('moneda')) {
             $moneda = $request->query->get('moneda');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
         /*if($error != 'error')
         {
@@ -146,7 +144,6 @@ class PedidoCompraController extends Controller
 
     /**
      * Lists all PedidoCompra entities.
-     *
      */
     public function indexAction()
     {
@@ -186,8 +183,7 @@ class PedidoCompraController extends Controller
         $em->flush();
 
         //registro los datos de las líneas del albarán
-        foreach($pedidoCompra->getPedidoCompraLineas() as $linea){
-
+        foreach ($pedidoCompra->getPedidoCompraLineas() as $linea) {
             $albaranLinea = new AlbaranLinea();
             $albaranLinea->setAlbaran($albaran);
             $albaranLinea->setLinea($linea->getLinea());
@@ -236,12 +232,12 @@ class PedidoCompraController extends Controller
     }
 
     /**
-    * Creates a form to create a PedidoCompra entity.
-    *
-    * @param PedidoCompra $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a PedidoCompra entity.
+     *
+     * @param PedidoCompra $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(PedidoCompra $entity)
     {
         $form = $this->createForm('bodega_pedido_compra', $entity, array(
@@ -256,7 +252,6 @@ class PedidoCompraController extends Controller
 
     /**
      * Displays a form to create a new PedidoCompra entity.
-     *
      */
     public function newAction()
     {
@@ -270,13 +265,9 @@ class PedidoCompraController extends Controller
         $json = array();
         $precioSalida = 0;
 
-        foreach($productos as $p){
-
-
-            foreach($p->getPrecioProducto() as $precios)
-            {
-                if($precios->getActivo())
-                {
+        foreach ($productos as $p) {
+            foreach ($p->getPrecioProducto() as $precios) {
+                if ($precios->getActivo()) {
                     $precioSalida = ($precios->getPrecio());
                 }
             }
@@ -301,7 +292,6 @@ class PedidoCompraController extends Controller
 
     /**
      * Finds and displays a PedidoCompra entity.
-     *
      */
     public function showAction($id)
     {
@@ -322,7 +312,6 @@ class PedidoCompraController extends Controller
 
     /**
      * Displays a form to edit an existing PedidoCompra entity.
-     *
      */
     public function editAction($id)
     {
@@ -344,12 +333,9 @@ class PedidoCompraController extends Controller
 
         $json = array();
 
-        foreach($productos as $p){
-
-            foreach($p->getPrecioProducto() as $precios)
-            {
-                if($precios->getActivo())
-                {
+        foreach ($productos as $p) {
+            foreach ($p->getPrecioProducto() as $precios) {
+                if ($precios->getActivo()) {
                     $precioSalida = ($precios->getPrecio());
                 }
             }
@@ -370,15 +356,15 @@ class PedidoCompraController extends Controller
     }
 
     /**
-    * Creates a form to edit a PedidoCompra entity.
-    *
-    * @param PedidoCompra $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a PedidoCompra entity.
+     *
+     * @param PedidoCompra $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(PedidoCompra $entity)
     {
-        $form = $this->createForm('bodega_pedido_compra',$entity, array(
+        $form = $this->createForm('bodega_pedido_compra', $entity, array(
             'action' => $this->generateUrl('pedidocompra_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
@@ -390,7 +376,6 @@ class PedidoCompraController extends Controller
 
     /**
      * Edits an existing PedidoCompra entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -419,8 +404,7 @@ class PedidoCompraController extends Controller
 
         $json = array();
 
-        foreach($productos as $p){
-
+        foreach ($productos as $p) {
             $json[$p->getId()] = array(
                 'nombre' => $p->getNombre(),
                 'precio_salida' => $p->getPrecioSalida(),
@@ -437,7 +421,6 @@ class PedidoCompraController extends Controller
 
     /**
      * Deletes a PedidoCompra entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {
@@ -464,6 +447,7 @@ class PedidoCompraController extends Controller
      *
      * @param mixed $id The entity id
      *º
+     *
      * @return \Symfony\Component\Form\Form The form
      */
     private function createDeleteForm($id)

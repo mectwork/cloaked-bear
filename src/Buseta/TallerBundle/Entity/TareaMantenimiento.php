@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * TareaMantenimiento
+ * TareaMantenimiento.
  *
  * @ORM\Table(name="d_tarea_mantenimiento")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\TareaMantimientoRepository")
@@ -60,11 +60,10 @@ class TareaMantenimiento
      */
     private $horas;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -72,22 +71,23 @@ class TareaMantenimiento
     }
 
     /**
-     * Set kilometros
+     * Set kilometros.
      *
      * @param float $kilometros
+     *
      * @return TareaMantenimiento
      */
     public function setKilometros($kilometros)
     {
         $this->kilometros = $kilometros;
-    
+
         return $this;
     }
 
     /**
-     * Get kilometros
+     * Get kilometros.
      *
-     * @return float 
+     * @return float
      */
     public function getKilometros()
     {
@@ -95,22 +95,23 @@ class TareaMantenimiento
     }
 
     /**
-     * Set horas
+     * Set horas.
      *
      * @param string $horas
+     *
      * @return TareaMantenimiento
      */
     public function setHoras($horas)
     {
         $this->horas = $horas;
-    
+
         return $this;
     }
 
     /**
-     * Get horas
+     * Get horas.
      *
-     * @return string 
+     * @return string
      */
     public function getHoras()
     {
@@ -118,22 +119,23 @@ class TareaMantenimiento
     }
 
     /**
-     * Set grupo
+     * Set grupo.
      *
      * @param \Buseta\NomencladorBundle\Entity\Grupo $grupo
+     *
      * @return TareaMantenimiento
      */
     public function setGrupo(\Buseta\NomencladorBundle\Entity\Grupo $grupo = null)
     {
         $this->grupo = $grupo;
-    
+
         return $this;
     }
 
     /**
-     * Get grupo
+     * Get grupo.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Grupo 
+     * @return \Buseta\NomencladorBundle\Entity\Grupo
      */
     public function getGrupo()
     {
@@ -141,47 +143,47 @@ class TareaMantenimiento
     }
 
     /**
-     * Set subgrupo
+     * Set subgrupo.
      *
      * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupo
+     *
      * @return TareaMantenimiento
      */
     public function setSubgrupo(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupo = null)
     {
         $this->subgrupo = $subgrupo;
-    
+
         return $this;
     }
 
     /**
-     * Get subgrupo
+     * Get subgrupo.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Subgrupo 
+     * @return \Buseta\NomencladorBundle\Entity\Subgrupo
      */
     public function getSubgrupo()
     {
         return $this->subgrupo;
     }
 
-    
-
     /**
-     * Set valor
+     * Set valor.
      *
      * @param string $valor
+     *
      * @return TareaMantenimiento
      */
     public function setValor($valor)
     {
         $this->valor = $valor;
-    
+
         return $this;
     }
 
     /**
-     * Get valor
+     * Get valor.
      *
-     * @return string 
+     * @return string
      */
     public function getValor()
     {
@@ -192,6 +194,4 @@ class TareaMantenimiento
     {
         return $this->getValor();
     }
-
-
 }

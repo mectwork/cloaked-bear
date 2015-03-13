@@ -21,7 +21,7 @@ class AddGrupoFieldSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA    => 'preSetData',
-            FormEvents::PRE_SUBMIT      => 'preBind'
+            FormEvents::PRE_SUBMIT      => 'preBind',
         );
     }
 
@@ -39,7 +39,7 @@ class AddGrupoFieldSubscriber implements EventSubscriberInterface
                     $qb = $repository->createQueryBuilder('grupos');
 
                     return $qb;
-                }
+                },
         ));
     }
 
@@ -52,7 +52,7 @@ class AddGrupoFieldSubscriber implements EventSubscriberInterface
             $this->addGrupoForm($form);
         } else {
             //$grupo = ($data->city) ? $data->city->getSubgrupo()->getGrupo() : null ;
-            $grupo = ($data->getGrupos()) ? $data->getGrupos() : null ;
+            $grupo = ($data->getGrupos()) ? $data->getGrupos() : null;
             $this->addGrupoForm($form, $grupo);
         }
     }

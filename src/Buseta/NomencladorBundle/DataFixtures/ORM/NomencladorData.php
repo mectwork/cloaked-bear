@@ -23,13 +23,13 @@ use Doctrine\Common\Persistence\ObjectManager;
 class NomencladorData extends AbstractFixture
 {
     /**
-     * Load data fixtures with the passed EntityManager
+     * Load data fixtures with the passed EntityManager.
      *
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
-        for ($i=0; $i < 3; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             $aceite_caja_cambios = new AceiteCajaCambios();
 
             $codigo = uniqid();
@@ -303,4 +303,4 @@ class NomencladorData extends AbstractFixture
         'Mauris et ipsum vehicula, dapibus purus at, vehicula diam.',
         'Maecenas vitae lacus eget enim dapibus dapibus at et nisl.',
     );
-} 
+}

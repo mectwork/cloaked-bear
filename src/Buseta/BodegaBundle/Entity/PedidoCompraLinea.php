@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * PedidoCompraLinea
+ * PedidoCompraLinea.
  *
  * @ORM\Table(name="d_pedido_compra_linea")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\PedidoCompraLineaRepository")
@@ -90,11 +90,10 @@ class PedidoCompraLinea
         $this->precio_unitario = 0;
     }
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -102,22 +101,23 @@ class PedidoCompraLinea
     }
 
     /**
-     * Set linea
+     * Set linea.
      *
      * @param string $linea
+     *
      * @return PedidoCompraLinea
      */
     public function setLinea($linea)
     {
         $this->linea = $linea;
-    
+
         return $this;
     }
 
     /**
-     * Get linea
+     * Get linea.
      *
-     * @return string 
+     * @return string
      */
     public function getLinea()
     {
@@ -125,22 +125,23 @@ class PedidoCompraLinea
     }
 
     /**
-     * Set cantidad_pedido
+     * Set cantidad_pedido.
      *
      * @param integer $cantidadPedido
+     *
      * @return PedidoCompraLinea
      */
     public function setCantidadPedido($cantidadPedido)
     {
         $this->cantidad_pedido = $cantidadPedido;
-    
+
         return $this;
     }
 
     /**
-     * Get cantidad_pedido
+     * Get cantidad_pedido.
      *
-     * @return integer 
+     * @return integer
      */
     public function getCantidadPedido()
     {
@@ -148,22 +149,23 @@ class PedidoCompraLinea
     }
 
     /**
-     * Set precio_unitario
+     * Set precio_unitario.
      *
      * @param string $precioUnitario
+     *
      * @return PedidoCompraLinea
      */
     public function setPrecioUnitario($precioUnitario)
     {
         $this->precio_unitario = $precioUnitario;
-    
+
         return $this;
     }
 
     /**
-     * Get precio_unitario
+     * Get precio_unitario.
      *
-     * @return string 
+     * @return string
      */
     public function getPrecioUnitario()
     {
@@ -171,22 +173,23 @@ class PedidoCompraLinea
     }
 
     /**
-     * Set porciento_descuento
+     * Set porciento_descuento.
      *
      * @param string $porcientoDescuento
+     *
      * @return PedidoCompraLinea
      */
     public function setPorcientoDescuento($porcientoDescuento)
     {
         $this->porciento_descuento = $porcientoDescuento;
-    
+
         return $this;
     }
 
     /**
-     * Get porciento_descuento
+     * Get porciento_descuento.
      *
-     * @return string 
+     * @return string
      */
     public function getPorcientoDescuento()
     {
@@ -194,22 +197,23 @@ class PedidoCompraLinea
     }
 
     /**
-     * Set importe_linea
+     * Set importe_linea.
      *
      * @param string $importeLinea
+     *
      * @return PedidoCompraLinea
      */
     public function setImporteLinea($importeLinea)
     {
         $this->importe_linea = $importeLinea;
-    
+
         return $this;
     }
 
     /**
-     * Get importe_linea
+     * Get importe_linea.
      *
-     * @return string 
+     * @return string
      */
     public function getImporteLinea()
     {
@@ -217,22 +221,23 @@ class PedidoCompraLinea
     }
 
     /**
-     * Set pedidoCompra
+     * Set pedidoCompra.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra
+     *
      * @return PedidoCompraLinea
      */
     public function setPedidoCompra(\Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra = null)
     {
         $this->pedidoCompra = $pedidoCompra;
-    
+
         return $this;
     }
 
     /**
-     * Get pedidoCompra
+     * Get pedidoCompra.
      *
-     * @return \Buseta\BodegaBundle\Entity\PedidoCompra 
+     * @return \Buseta\BodegaBundle\Entity\PedidoCompra
      */
     public function getPedidoCompra()
     {
@@ -240,22 +245,23 @@ class PedidoCompraLinea
     }
 
     /**
-     * Set producto
+     * Set producto.
      *
      * @param \Buseta\BodegaBundle\Entity\Producto $producto
+     *
      * @return PedidoCompraLinea
      */
     public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
     {
         $this->producto = $producto;
-    
+
         return $this;
     }
 
     /**
-     * Get producto
+     * Get producto.
      *
-     * @return \Buseta\BodegaBundle\Entity\Producto 
+     * @return \Buseta\BodegaBundle\Entity\Producto
      */
     public function getProducto()
     {
@@ -263,22 +269,23 @@ class PedidoCompraLinea
     }
 
     /**
-     * Set uom
+     * Set uom.
      *
      * @param \Buseta\NomencladorBundle\Entity\UOM $uom
+     *
      * @return PedidoCompraLinea
      */
     public function setUom(\Buseta\NomencladorBundle\Entity\UOM $uom = null)
     {
         $this->uom = $uom;
-    
+
         return $this;
     }
 
     /**
-     * Get uom
+     * Get uom.
      *
-     * @return \Buseta\NomencladorBundle\Entity\UOM 
+     * @return \Buseta\NomencladorBundle\Entity\UOM
      */
     public function getUom()
     {
@@ -286,22 +293,23 @@ class PedidoCompraLinea
     }
 
     /**
-     * Set impuesto
+     * Set impuesto.
      *
      * @param \Buseta\TallerBundle\Entity\Impuesto $impuesto
+     *
      * @return PedidoCompraLinea
      */
     public function setImpuesto(\Buseta\TallerBundle\Entity\Impuesto $impuesto = null)
     {
         $this->impuesto = $impuesto;
-    
+
         return $this;
     }
 
     /**
-     * Get impuesto
+     * Get impuesto.
      *
-     * @return \Buseta\TallerBundle\Entity\Impuesto 
+     * @return \Buseta\TallerBundle\Entity\Impuesto
      */
     public function getImpuesto()
     {
@@ -309,22 +317,23 @@ class PedidoCompraLinea
     }
 
     /**
-     * Set moneda
+     * Set moneda.
      *
      * @param \Buseta\NomencladorBundle\Entity\Moneda $moneda
+     *
      * @return PedidoCompraLinea
      */
     public function setMoneda(\Buseta\NomencladorBundle\Entity\Moneda $moneda = null)
     {
         $this->moneda = $moneda;
-    
+
         return $this;
     }
 
     /**
-     * Get moneda
+     * Get moneda.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Moneda 
+     * @return \Buseta\NomencladorBundle\Entity\Moneda
      */
     public function getMoneda()
     {

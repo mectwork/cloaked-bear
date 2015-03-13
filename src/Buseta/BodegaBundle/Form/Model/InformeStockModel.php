@@ -2,11 +2,8 @@
 
 namespace Buseta\BodegaBundle\Form\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 /**
- * InformeStockModel
+ * InformeStockModel.
  */
 class InformeStockModel
 {
@@ -26,7 +23,7 @@ class InformeStockModel
     private $categoria;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -96,7 +93,4 @@ class InformeStockModel
     {
         return $this->producto;
     }
-
-
-
 }

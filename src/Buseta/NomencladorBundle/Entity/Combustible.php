@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Combustible
+ * Combustible.
  *
  * @ORM\Table(name="n_combustible")
  * @ORM\Entity
@@ -22,7 +22,7 @@ class Combustible extends BaseNomenclador
     protected $id;
 
     /**
-     * Get id
+     * Get id.
      *
      * @return integer
      */

@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Subgrupo
+ * Subgrupo.
  *
  * @ORM\Table(name="n_subgrupo")
  * @ORM\Entity

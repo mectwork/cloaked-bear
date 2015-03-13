@@ -13,7 +13,7 @@ class TareaAdicionalType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -27,10 +27,6 @@ class TareaAdicionalType extends AbstractType
 
         $tarea = new AddTareaMantenimientoFieldSubscriber($objeto);
         $builder->addEventSubscriber($tarea);
-
-
-
-
 
         $builder
 //            ->add('tarea', 'entity', array(
@@ -46,15 +42,15 @@ class TareaAdicionalType extends AbstractType
                 'attr'   => array(
                     'class' => 'form-control',
                     'style' => 'height: 120px',
-                )
+                ),
             ))
-            ->add('garantiaTarea','entity',array(
+            ->add('garantiaTarea', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:GarantiaTarea',
                 'label'  => 'Garantía de tarea',
                 'empty_value' => '---Seleccione una garantía---',
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             /*
             ->add('grupos','entity',array(
@@ -75,33 +71,33 @@ class TareaAdicionalType extends AbstractType
             ))
             */
 
-            ->add('fechaEstimada','date',array(
+            ->add('fechaEstimada', 'date', array(
                 'widget' => 'single_text',
                 'format'  => 'dd/MM/yyyy',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('horaInicio', 'text', array(
                 'required' => true,
                 'label'  => 'Hora inicio',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('horaFinal', 'text', array(
                 'required' => true,
                 'label'  => 'Hora final',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('horasLaboradas', 'hidden', array(
                 'required' => false,
                 'mapped' => false,
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ));
     }
 
@@ -111,7 +107,7 @@ class TareaAdicionalType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\TallerBundle\Entity\TareaAdicional'
+            'data_class' => 'Buseta\TallerBundle\Entity\TareaAdicional',
         ));
     }
 

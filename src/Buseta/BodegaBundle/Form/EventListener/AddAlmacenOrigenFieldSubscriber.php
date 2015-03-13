@@ -21,7 +21,7 @@ class AddAlmacenOrigenFieldSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA    => 'preSetData',
-            FormEvents::PRE_SUBMIT      => 'preBind'
+            FormEvents::PRE_SUBMIT      => 'preBind',
         );
     }
 
@@ -39,7 +39,7 @@ class AddAlmacenOrigenFieldSubscriber implements EventSubscriberInterface
                     $qb = $repository->createQueryBuilder('almacenOrigen');
 
                     return $qb;
-                }
+                },
         ));
     }
 
@@ -51,7 +51,7 @@ class AddAlmacenOrigenFieldSubscriber implements EventSubscriberInterface
         if (null === $data) {
             $this->addAlmacenOrigenForm($form);
         } else {
-            $almacenOrigen = ($data->getAlmacenOrigen()) ? $data->getAlmacenOrigen() : null ;
+            $almacenOrigen = ($data->getAlmacenOrigen()) ? $data->getAlmacenOrigen() : null;
             $this->addAlmacenOrigenForm($form, $almacenOrigen);
         }
     }

@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CajaChica
+ * CajaChica.
  *
  * @ORM\Table(name="n_cajachica")
  * @ORM\Entity
@@ -29,9 +29,9 @@ class CajaChica extends BaseNomenclador
     private $forma_pago;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -39,22 +39,23 @@ class CajaChica extends BaseNomenclador
     }
 
     /**
-     * Set valor
+     * Set valor.
      *
      * @param string $valor
+     *
      * @return CajaChica
      */
     public function setValor($valor)
     {
         $this->valor = $valor;
-    
+
         return $this;
     }
 
     /**
-     * Get valor
+     * Get valor.
      *
-     * @return string 
+     * @return string
      */
     public function getValor()
     {

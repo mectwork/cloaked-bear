@@ -22,14 +22,14 @@ class AddPrecioProductoFieldSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_SUBMIT     => 'preBind'
+            FormEvents::PRE_SUBMIT     => 'preBind',
         );
     }
 
     private function addPrecioProductoForm($form, $precio = null, $producto = null)
     {
-        if($producto === null) {
-            $form->add('precio_producto','choice',array(
+        if ($producto === null) {
+            $form->add('precio_producto', 'choice', array(
                 'choices' => array(),
                 'empty_value'   => '---Seleccione un precio---',
                 'attr' => array(
@@ -50,7 +50,7 @@ class AddPrecioProductoFieldSubscriber implements EventSubscriberInterface
                 )
             ))*/
 
-            $form->add('productos','entity', array(
+            $form->add('productos', 'entity', array(
                 'class'         => 'BusetaBodegaBundle:Producto',
                 'empty_value'   => '---Seleccione un producto---',
                 'auto_initialize' => false,
@@ -61,19 +61,19 @@ class AddPrecioProductoFieldSubscriber implements EventSubscriberInterface
                 'query_builder' => function (EntityRepository $repository) use ($subgrupo) {
                         $qb = $repository->createQueryBuilder('productos')
                             ->innerJoin('productos.subgrupo', 'subgrupos');
-                        if($subgrupo instanceof Subgrupo){
+                        if ($subgrupo instanceof Subgrupo) {
                             $qb->where('subgrupos = :subgrupos')
                                 ->setParameter('subgrupos', $subgrupo);
-                        }elseif(is_numeric($subgrupo)){
+                        } elseif (is_numeric($subgrupo)) {
                             $qb->where('subgrupos.id = :subgrupos')
                                 ->setParameter('subgrupos', $subgrupo);
-                        }else{
+                        } else {
                             $qb->where('subgrupos.valor = :subgrupos')
                                 ->setParameter('subgrupos', null);
                         }
 
                         return $qb;
-                    }
+                    },
             ));
         }
     }
@@ -87,8 +87,8 @@ class AddPrecioProductoFieldSubscriber implements EventSubscriberInterface
             $this->addProductoForm($form);
         } else {
             //$province = ($data->city) ? $data->city->getProducto() : null ;
-            $producto = ($data->getProductos()) ? $data->getProductos() : null ;
-            $subgrupo = ($producto) ? $producto->getSubgrupo() : null ;
+            $producto = ($data->getProductos()) ? $data->getProductos() : null;
+            $subgrupo = ($producto) ? $producto->getSubgrupo() : null;
             $this->addProductoForm($form, $producto, $subgrupo);
         }
     }

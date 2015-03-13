@@ -16,28 +16,28 @@ class MantenimientoPreventivoFilter extends AbstractType
                 'trim' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('subgrupo', null, array(
                 'required' => false,
                 'trim' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('tarea', null, array(
                 'required' => false,
                 'trim' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('autobus', null, array(
                 'required' => false,
                 'trim' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ));
     }
 

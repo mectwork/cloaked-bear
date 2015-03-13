@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Producto
+ * Producto.
  *
  * @ORM\Table(name="d_producto")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\ProductoRepository")
@@ -223,7 +223,7 @@ class Producto
     }
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -231,22 +231,23 @@ class Producto
     }
 
     /**
-     * Set bodega
+     * Set bodega.
      *
      * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
+     *
      * @return Producto
      */
     public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega = null)
     {
         $this->bodega = $bodega;
-    
+
         return $this;
     }
 
     /**
-     * Get bodega
+     * Get bodega.
      *
-     * @return \Buseta\BodegaBundle\Entity\Bodega 
+     * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getBodega()
     {
@@ -254,9 +255,10 @@ class Producto
     }
 
     /**
-     * Add movimientos
+     * Add movimientos.
      *
      * @param \Buseta\BodegaBundle\Entity\Movimiento $movimientos
+     *
      * @return Producto
      */
     public function addMovimiento(\Buseta\BodegaBundle\Entity\Movimiento $movimientos)
@@ -269,7 +271,7 @@ class Producto
     }
 
     /**
-     * Remove movimientos
+     * Remove movimientos.
      *
      * @param \Buseta\BodegaBundle\Entity\Movimiento $movimientos
      */
@@ -279,7 +281,7 @@ class Producto
     }
 
     /**
-     * Get movimientos
+     * Get movimientos.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -289,22 +291,23 @@ class Producto
     }
 
     /**
-     * Set minimo_bodega
+     * Set minimo_bodega.
      *
      * @param integer $minimoBodega
+     *
      * @return Producto
      */
     public function setMinimoBodega($minimoBodega)
     {
         $this->minimo_bodega = $minimoBodega;
-    
+
         return $this;
     }
 
     /**
-     * Get minimo_bodega
+     * Get minimo_bodega.
      *
-     * @return integer 
+     * @return integer
      */
     public function getMinimoBodega()
     {
@@ -312,22 +315,23 @@ class Producto
     }
 
     /**
-     * Set maximo_bodega
+     * Set maximo_bodega.
      *
      * @param integer $maximoBodega
+     *
      * @return Producto
      */
     public function setMaximoBodega($maximoBodega)
     {
         $this->maximo_bodega = $maximoBodega;
-    
+
         return $this;
     }
 
     /**
-     * Get maximo_bodega
+     * Get maximo_bodega.
      *
-     * @return integer 
+     * @return integer
      */
     public function getMaximoBodega()
     {
@@ -335,22 +339,23 @@ class Producto
     }
 
     /**
-     * Set grupos
+     * Set grupos.
      *
      * @param \Buseta\NomencladorBundle\Entity\Grupo $grupos
+     *
      * @return Producto
      */
     public function setGrupos(\Buseta\NomencladorBundle\Entity\Grupo $grupos = null)
     {
         $this->grupos = $grupos;
-    
+
         return $this;
     }
 
     /**
-     * Get grupos
+     * Get grupos.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Grupo 
+     * @return \Buseta\NomencladorBundle\Entity\Grupo
      */
     public function getGrupos()
     {
@@ -358,22 +363,23 @@ class Producto
     }
 
     /**
-     * Set subgrupos
+     * Set subgrupos.
      *
      * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos
+     *
      * @return Producto
      */
     public function setSubgrupos(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos = null)
     {
         $this->subgrupos = $subgrupos;
-    
+
         return $this;
     }
 
     /**
-     * Get subgrupos
+     * Get subgrupos.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Subgrupo 
+     * @return \Buseta\NomencladorBundle\Entity\Subgrupo
      */
     public function getSubgrupos()
     {
@@ -381,20 +387,21 @@ class Producto
     }
 
     /**
-     * Add pedido_compra_lineas
+     * Add pedido_compra_lineas.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas
+     *
      * @return Producto
      */
     public function addPedidoCompraLinea(\Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas)
     {
         $this->pedido_compra_lineas[] = $pedidoCompraLineas;
-    
+
         return $this;
     }
 
     /**
-     * Remove pedido_compra_lineas
+     * Remove pedido_compra_lineas.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas
      */
@@ -404,9 +411,9 @@ class Producto
     }
 
     /**
-     * Get pedido_compra_lineas
+     * Get pedido_compra_lineas.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPedidoCompraLineas()
     {
@@ -414,20 +421,21 @@ class Producto
     }
 
     /**
-     * Add albaranLinea
+     * Add albaranLinea.
      *
      * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
+     *
      * @return Producto
      */
     public function addAlbaranLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
     {
         $this->albaranLinea[] = $albaranLinea;
-    
+
         return $this;
     }
 
     /**
-     * Remove albaranLinea
+     * Remove albaranLinea.
      *
      * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
      */
@@ -437,9 +445,9 @@ class Producto
     }
 
     /**
-     * Get albaranLinea
+     * Get albaranLinea.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAlbaranLinea()
     {
@@ -447,9 +455,10 @@ class Producto
     }
 
     /**
-     * Add precioProducto
+     * Add precioProducto.
      *
      * @param \Buseta\BodegaBundle\Entity\PrecioProducto $precioProducto
+     *
      * @return Producto
      */
     public function addPrecioProducto(\Buseta\BodegaBundle\Entity\PrecioProducto $precioProducto)
@@ -457,12 +466,12 @@ class Producto
         $precioProducto->setProducto($this);
 
         $this->precioProducto[] = $precioProducto;
-    
+
         return $this;
     }
 
     /**
-     * Remove precioProducto
+     * Remove precioProducto.
      *
      * @param \Buseta\BodegaBundle\Entity\PrecioProducto $precioProducto
      */
@@ -472,9 +481,9 @@ class Producto
     }
 
     /**
-     * Get precioProducto
+     * Get precioProducto.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPrecioProducto()
     {
@@ -482,22 +491,23 @@ class Producto
     }
 
     /**
-     * Set categoriaProducto
+     * Set categoriaProducto.
      *
      * @param \Buseta\BodegaBundle\Entity\CategoriaProducto $categoriaProducto
+     *
      * @return Producto
      */
     public function setCategoriaProducto(\Buseta\BodegaBundle\Entity\CategoriaProducto $categoriaProducto = null)
     {
         $this->categoriaProducto = $categoriaProducto;
-    
+
         return $this;
     }
 
     /**
-     * Get categoriaProducto
+     * Get categoriaProducto.
      *
-     * @return \Buseta\BodegaBundle\Entity\CategoriaProducto 
+     * @return \Buseta\BodegaBundle\Entity\CategoriaProducto
      */
     public function getCategoriaProducto()
     {

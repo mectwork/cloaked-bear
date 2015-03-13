@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * AlbaranLinea
+ * AlbaranLinea.
  *
  * @ORM\Table(name="d_albaran_linea")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\AlbaranLineaRepository")
@@ -64,12 +64,10 @@ class AlbaranLinea
      */
     private $albaran;
 
-
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -77,22 +75,23 @@ class AlbaranLinea
     }
 
     /**
-     * Set linea
+     * Set linea.
      *
      * @param string $linea
+     *
      * @return AlbaranLinea
      */
     public function setLinea($linea)
     {
         $this->linea = $linea;
-    
+
         return $this;
     }
 
     /**
-     * Get linea
+     * Get linea.
      *
-     * @return string 
+     * @return string
      */
     public function getLinea()
     {
@@ -100,22 +99,23 @@ class AlbaranLinea
     }
 
     /**
-     * Set valorAtributos
+     * Set valorAtributos.
      *
      * @param string $valorAtributos
+     *
      * @return AlbaranLinea
      */
     public function setValorAtributos($valorAtributos)
     {
         $this->valorAtributos = $valorAtributos;
-    
+
         return $this;
     }
 
     /**
-     * Get valorAtributos
+     * Get valorAtributos.
      *
-     * @return string 
+     * @return string
      */
     public function getValorAtributos()
     {
@@ -123,22 +123,23 @@ class AlbaranLinea
     }
 
     /**
-     * Set cantidadMovida
+     * Set cantidadMovida.
      *
      * @param integer $cantidadMovida
+     *
      * @return AlbaranLinea
      */
     public function setCantidadMovida($cantidadMovida)
     {
         $this->cantidadMovida = $cantidadMovida;
-    
+
         return $this;
     }
 
     /**
-     * Get cantidadMovida
+     * Get cantidadMovida.
      *
-     * @return integer 
+     * @return integer
      */
     public function getCantidadMovida()
     {
@@ -146,22 +147,23 @@ class AlbaranLinea
     }
 
     /**
-     * Set producto
+     * Set producto.
      *
      * @param \Buseta\BodegaBundle\Entity\Producto $producto
+     *
      * @return AlbaranLinea
      */
     public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
     {
         $this->producto = $producto;
-    
+
         return $this;
     }
 
     /**
-     * Get producto
+     * Get producto.
      *
-     * @return \Buseta\BodegaBundle\Entity\Producto 
+     * @return \Buseta\BodegaBundle\Entity\Producto
      */
     public function getProducto()
     {
@@ -169,22 +171,23 @@ class AlbaranLinea
     }
 
     /**
-     * Set almacen
+     * Set almacen.
      *
      * @param \Buseta\BodegaBundle\Entity\Bodega $almacen
+     *
      * @return AlbaranLinea
      */
     public function setAlmacen(\Buseta\BodegaBundle\Entity\Bodega $almacen = null)
     {
         $this->almacen = $almacen;
-    
+
         return $this;
     }
 
     /**
-     * Get almacen
+     * Get almacen.
      *
-     * @return \Buseta\BodegaBundle\Entity\Bodega 
+     * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getAlmacen()
     {
@@ -192,22 +195,23 @@ class AlbaranLinea
     }
 
     /**
-     * Set uom
+     * Set uom.
      *
      * @param \Buseta\NomencladorBundle\Entity\UOM $uom
+     *
      * @return AlbaranLinea
      */
     public function setUom(\Buseta\NomencladorBundle\Entity\UOM $uom = null)
     {
         $this->uom = $uom;
-    
+
         return $this;
     }
 
     /**
-     * Get uom
+     * Get uom.
      *
-     * @return \Buseta\NomencladorBundle\Entity\UOM 
+     * @return \Buseta\NomencladorBundle\Entity\UOM
      */
     public function getUom()
     {
@@ -215,22 +219,23 @@ class AlbaranLinea
     }
 
     /**
-     * Set albaran
+     * Set albaran.
      *
      * @param \Buseta\BodegaBundle\Entity\Albaran $albaran
+     *
      * @return AlbaranLinea
      */
     public function setAlbaran(\Buseta\BodegaBundle\Entity\Albaran $albaran = null)
     {
         $this->albaran = $albaran;
-    
+
         return $this;
     }
 
     /**
-     * Get albaran
+     * Get albaran.
      *
-     * @return \Buseta\BodegaBundle\Entity\Albaran 
+     * @return \Buseta\BodegaBundle\Entity\Albaran
      */
     public function getAlbaran()
     {

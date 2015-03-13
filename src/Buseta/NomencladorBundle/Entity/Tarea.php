@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Tarea
+ * Tarea.
  *
  * @ORM\Table(name="n_tarea")
  * @ORM\Entity
@@ -53,9 +53,9 @@ class Tarea extends BaseNomenclador
     private $horas;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -125,6 +125,4 @@ class Tarea extends BaseNomenclador
     {
         $this->subgrupo = $subgrupo;
     }
-
-
 }

@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Color
+ * Color.
  *
  * @ORM\Table(name="n_aceite_hidraulico")
  * @ORM\Entity
@@ -22,13 +22,12 @@ class AceiteHidraulico extends BaseNomenclador
     protected $id;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
-
 }

@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Impuesto
+ * Impuesto.
  *
  * @ORM\Table(name="d_impuesto")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\ImpuestoRepository")
@@ -61,20 +61,18 @@ class Impuesto
      */
     private $tarifa;
 
-
-
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         $this->pedido_compra_lineas = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -82,22 +80,23 @@ class Impuesto
     }
 
     /**
-     * Set numero
+     * Set numero.
      *
      * @param string $numero
+     *
      * @return Impuesto
      */
     public function setNumero($numero)
     {
         $this->numero = $numero;
-    
+
         return $this;
     }
 
     /**
-     * Get numero
+     * Get numero.
      *
-     * @return string 
+     * @return string
      */
     public function getNumero()
     {
@@ -105,22 +104,23 @@ class Impuesto
     }
 
     /**
-     * Set tipo
+     * Set tipo.
      *
      * @param string $tipo
+     *
      * @return Impuesto
      */
     public function setTipo($tipo)
     {
         $this->tipo = $tipo;
-    
+
         return $this;
     }
 
     /**
-     * Get tipo
+     * Get tipo.
      *
-     * @return string 
+     * @return string
      */
     public function getTipo()
     {
@@ -128,22 +128,23 @@ class Impuesto
     }
 
     /**
-     * Set tarifa
+     * Set tarifa.
      *
      * @param float $tarifa
+     *
      * @return Impuesto
      */
     public function setTarifa($tarifa)
     {
         $this->tarifa = $tarifa;
-    
+
         return $this;
     }
 
     /**
-     * Get tarifa
+     * Get tarifa.
      *
-     * @return float 
+     * @return float
      */
     public function getTarifa()
     {
@@ -156,45 +157,45 @@ class Impuesto
     }
 
     /**
-     * Set nombre
+     * Set nombre.
      *
      * @param string $nombre
+     *
      * @return Impuesto
      */
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-    
+
         return $this;
     }
 
     /**
-     * Get nombre
+     * Get nombre.
      *
-     * @return string 
+     * @return string
      */
     public function getNombre()
     {
         return $this->nombre;
     }
 
-
-
     /**
-     * Add pedido_compra_lineas
+     * Add pedido_compra_lineas.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas
+     *
      * @return Impuesto
      */
     public function addPedidoCompraLinea(\Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas)
     {
         $this->pedido_compra_lineas[] = $pedidoCompraLineas;
-    
+
         return $this;
     }
 
     /**
-     * Remove pedido_compra_lineas
+     * Remove pedido_compra_lineas.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas
      */
@@ -204,9 +205,9 @@ class Impuesto
     }
 
     /**
-     * Get pedido_compra_lineas
+     * Get pedido_compra_lineas.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPedidoCompraLineas()
     {

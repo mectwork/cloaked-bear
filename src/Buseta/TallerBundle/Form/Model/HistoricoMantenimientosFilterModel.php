@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: luis
  * Date: 13/03/15
- * Time: 1:20
+ * Time: 1:20.
  */
 
 namespace Buseta\TallerBundle\Form\Model;
-
 
 class HistoricoMantenimientosFilterModel
 {
@@ -47,7 +46,7 @@ class HistoricoMantenimientosFilterModel
     private $fechaFinal;
 
     /**
-     * Set grupo
+     * Set grupo.
      *
      * @param string $grupo
      */
@@ -57,7 +56,7 @@ class HistoricoMantenimientosFilterModel
     }
 
     /**
-     * Get grupo
+     * Get grupo.
      *
      * @return string
      */
@@ -67,7 +66,7 @@ class HistoricoMantenimientosFilterModel
     }
 
     /**
-     * Set subgrupo
+     * Set subgrupo.
      *
      * @param string $subgrupo
      */
@@ -77,7 +76,7 @@ class HistoricoMantenimientosFilterModel
     }
 
     /**
-     * Get subgrupo
+     * Get subgrupo.
      *
      * @return string
      */
@@ -87,7 +86,7 @@ class HistoricoMantenimientosFilterModel
     }
 
     /**
-     * Set tarea
+     * Set tarea.
      *
      * @param string $tarea
      */
@@ -97,7 +96,7 @@ class HistoricoMantenimientosFilterModel
     }
 
     /**
-     * Get tarea
+     * Get tarea.
      *
      * @return string
      */
@@ -107,7 +106,7 @@ class HistoricoMantenimientosFilterModel
     }
 
     /**
-     * Set autobus
+     * Set autobus.
      *
      * @param string $autobus
      */
@@ -117,7 +116,7 @@ class HistoricoMantenimientosFilterModel
     }
 
     /**
-     * Get autobus
+     * Get autobus.
      *
      * @return string
      */
@@ -127,7 +126,7 @@ class HistoricoMantenimientosFilterModel
     }
 
     /**
-     * Get kilometraje
+     * Get kilometraje.
      *
      * @return string
      */
@@ -137,7 +136,7 @@ class HistoricoMantenimientosFilterModel
     }
 
     /**
-     * Set kilometraje
+     * Set kilometraje.
      *
      * @param string $kilometraje
      */
@@ -147,7 +146,7 @@ class HistoricoMantenimientosFilterModel
     }
 
     /**
-     * Get fechaFinal
+     * Get fechaFinal.
      *
      * @return string
      */
@@ -157,7 +156,7 @@ class HistoricoMantenimientosFilterModel
     }
 
     /**
-     * Set fechaFinal
+     * Set fechaFinal.
      *
      * @param string $fechaFinal
      */
@@ -167,7 +166,7 @@ class HistoricoMantenimientosFilterModel
     }
 
     /**
-     * Get fechaInicio
+     * Get fechaInicio.
      *
      * @return string
      */
@@ -177,7 +176,7 @@ class HistoricoMantenimientosFilterModel
     }
 
     /**
-     * Set fechaInicio
+     * Set fechaInicio.
      *
      * @param string $fechaInicio
      */

@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * AutobusModel
+ * AutobusModel.
  */
 class AutobusModel
 {
@@ -17,25 +17,29 @@ class AutobusModel
 
     /**
      * @Assert\File(maxSize="6000000")
-     * @var UploadedFile $file
+     *
+     * @var UploadedFile
      */
     private $imagen_frontal;
 
     /**
      * @Assert\File(maxSize="6000000")
-     * @var UploadedFile $file
+     *
+     * @var UploadedFile
      */
     private $imagen_lateral_d;
 
     /**
      * @Assert\File(maxSize="6000000")
-     * @var UploadedFile $file
+     *
+     * @var UploadedFile
      */
     private $imagen_lateral_i;
 
     /**
      * @Assert\File(maxSize="6000000")
-     * @var UploadedFile $file
+     *
+     * @var UploadedFile
      */
     private $imagen_trasera;
 
@@ -202,7 +206,6 @@ class AutobusModel
      */
     private $aceitemotor;
 
-
     /**
      * @var integer
      * @Assert\Type("integer")
@@ -291,7 +294,6 @@ class AutobusModel
      * @Assert\NotBlank()
      */
     private $horas;
-
 
     /**
      * @param \Buseta\NomencladorBundle\Entity\AceiteCajaCambios $aceitecajacambios
@@ -1102,9 +1104,10 @@ class AutobusModel
     }
 
     /**
-     * Add archivo_adjunto
+     * Add archivo_adjunto.
      *
      * @param \Buseta\BusesBundle\Entity\ArchivoAdjunto $archivoAdjunto
+     *
      * @return AutobusModel
      */
     public function addArchivoAdjunto(\Symfony\Component\HttpFoundation\File\UploadedFile $archivoAdjunto)
@@ -1115,7 +1118,7 @@ class AutobusModel
     }
 
     /**
-     * Remove archivo_adjunto
+     * Remove archivo_adjunto.
      *
      * @param \Buseta\BusesBundle\Entity\ArchivoAdjunto $archivoAdjunto
      */
@@ -1125,7 +1128,7 @@ class AutobusModel
     }
 
     /**
-     * Get archivo_adjunto
+     * Get archivo_adjunto.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

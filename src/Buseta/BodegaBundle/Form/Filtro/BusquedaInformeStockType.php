@@ -2,43 +2,41 @@
 
 namespace Buseta\BodegaBundle\Form\Filtro;
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
 
-class BusquedaInformeStockType extends AbstractType{
-
+class BusquedaInformeStockType extends AbstractType
+{
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
 
-            ->add('almacen','entity',array(
+            ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'empty_value' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('categoriaProducto','entity',array(
+            ->add('categoriaProducto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:CategoriaProducto',
                 'empty_value' => '---Seleccione categoría de producto---',
                 'label' => 'Categoría de Producto',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('fecha','date',array(
+            ->add('fecha', 'date', array(
                 'widget' => 'single_text',
                 'empty_value' => '---Seleccione fecha máxima---',
                 'required' => false,
                 'format'  => 'dd/MM/yyyy',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
         ;
     }

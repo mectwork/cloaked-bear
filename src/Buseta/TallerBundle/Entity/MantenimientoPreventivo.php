@@ -5,7 +5,7 @@ namespace Buseta\TallerBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * MantenimientoPreventivo
+ * MantenimientoPreventivo.
  *
  * @ORM\Table(name="d_mantenimiento_preventivo")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\MantenimientoPreventivoRepository")
@@ -77,11 +77,10 @@ class MantenimientoPreventivo
      */
     private $fechaFinal;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -89,22 +88,23 @@ class MantenimientoPreventivo
     }
 
     /**
-     * Set kilometraje
+     * Set kilometraje.
      *
      * @param integer $kilometraje
+     *
      * @return MantenimientoPreventivo
      */
     public function setKilometraje($kilometraje)
     {
         $this->kilometraje = $kilometraje;
-    
+
         return $this;
     }
 
     /**
-     * Get kilometraje
+     * Get kilometraje.
      *
-     * @return integer 
+     * @return integer
      */
     public function getKilometraje()
     {
@@ -112,22 +112,23 @@ class MantenimientoPreventivo
     }
 
     /**
-     * Set fechaInicio
+     * Set fechaInicio.
      *
      * @param \DateTime $fechaInicio
+     *
      * @return MantenimientoPreventivo
      */
     public function setFechaInicio($fechaInicio)
     {
         $this->fechaInicio = $fechaInicio;
-    
+
         return $this;
     }
 
     /**
-     * Get fechaInicio
+     * Get fechaInicio.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaInicio()
     {
@@ -135,22 +136,23 @@ class MantenimientoPreventivo
     }
 
     /**
-     * Set fechaFinal
+     * Set fechaFinal.
      *
      * @param \DateTime $fechaFinal
+     *
      * @return MantenimientoPreventivo
      */
     public function setFechaFinal($fechaFinal)
     {
         $this->fechaFinal = $fechaFinal;
-    
+
         return $this;
     }
 
     /**
-     * Get fechaFinal
+     * Get fechaFinal.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaFinal()
     {
@@ -158,22 +160,23 @@ class MantenimientoPreventivo
     }
 
     /**
-     * Set grupo
+     * Set grupo.
      *
      * @param \Buseta\NomencladorBundle\Entity\Grupo $grupo
+     *
      * @return MantenimientoPreventivo
      */
     public function setGrupo(\Buseta\NomencladorBundle\Entity\Grupo $grupo = null)
     {
         $this->grupo = $grupo;
-    
+
         return $this;
     }
 
     /**
-     * Get grupo
+     * Get grupo.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Grupo 
+     * @return \Buseta\NomencladorBundle\Entity\Grupo
      */
     public function getGrupo()
     {
@@ -181,22 +184,23 @@ class MantenimientoPreventivo
     }
 
     /**
-     * Set subgrupo
+     * Set subgrupo.
      *
      * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupo
+     *
      * @return MantenimientoPreventivo
      */
     public function setSubgrupo(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupo = null)
     {
         $this->subgrupo = $subgrupo;
-    
+
         return $this;
     }
 
     /**
-     * Get subgrupo
+     * Get subgrupo.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Subgrupo 
+     * @return \Buseta\NomencladorBundle\Entity\Subgrupo
      */
     public function getSubgrupo()
     {
@@ -204,20 +208,21 @@ class MantenimientoPreventivo
     }
 
     /**
-     * Set tarea
+     * Set tarea.
      *
      * @param \Buseta\NomencladorBundle\Entity\Tarea $tarea
+     *
      * @return MantenimientoPreventivo
      */
     public function setTarea(\Buseta\NomencladorBundle\Entity\Tarea $tarea = null)
     {
         $this->tarea = $tarea;
-    
+
         return $this;
     }
 
     /**
-     * Get tarea
+     * Get tarea.
      *
      * @return \Buseta\NomencladorBundle\Entity\Tarea
      */
@@ -227,22 +232,23 @@ class MantenimientoPreventivo
     }
 
     /**
-     * Set autobus
+     * Set autobus.
      *
      * @param \Buseta\BusesBundle\Entity\Autobus $autobus
+     *
      * @return MantenimientoPreventivo
      */
     public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
     {
         $this->autobus = $autobus;
-    
+
         return $this;
     }
 
     /**
-     * Get autobus
+     * Get autobus.
      *
-     * @return \Buseta\BusesBundle\Entity\Autobus 
+     * @return \Buseta\BusesBundle\Entity\Autobus
      */
     public function getAutobus()
     {

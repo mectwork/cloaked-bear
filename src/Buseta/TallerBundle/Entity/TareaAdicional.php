@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Linea
+ * Linea.
  *
  * @ORM\Table(name="d_tarea_adicional")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\TareaAdicionalRepository")
@@ -87,12 +87,11 @@ class TareaAdicional
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\GarantiaTarea")
      */
     private $garantiaTarea;
-    
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -100,22 +99,23 @@ class TareaAdicional
     }
 
     /**
-     * Set horaInicio
+     * Set horaInicio.
      *
      * @param string $horaInicio
+     *
      * @return TareaAdicional
      */
     public function setHoraInicio($horaInicio)
     {
         $this->horaInicio = $horaInicio;
-    
+
         return $this;
     }
 
     /**
-     * Get horaInicio
+     * Get horaInicio.
      *
-     * @return string 
+     * @return string
      */
     public function getHoraInicio()
     {
@@ -123,22 +123,23 @@ class TareaAdicional
     }
 
     /**
-     * Set horaFinal
+     * Set horaFinal.
      *
      * @param string $horaFinal
+     *
      * @return TareaAdicional
      */
     public function setHoraFinal($horaFinal)
     {
         $this->horaFinal = $horaFinal;
-    
+
         return $this;
     }
 
     /**
-     * Get horaFinal
+     * Get horaFinal.
      *
-     * @return string 
+     * @return string
      */
     public function getHoraFinal()
     {
@@ -146,22 +147,23 @@ class TareaAdicional
     }
 
     /**
-     * Set fechaEstimada
+     * Set fechaEstimada.
      *
      * @param \DateTime $fechaEstimada
+     *
      * @return TareaAdicional
      */
     public function setFechaEstimada($fechaEstimada)
     {
         $this->fechaEstimada = $fechaEstimada;
-    
+
         return $this;
     }
 
     /**
-     * Get fechaEstimada
+     * Get fechaEstimada.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaEstimada()
     {
@@ -169,22 +171,23 @@ class TareaAdicional
     }
 
     /**
-     * Set descripcion
+     * Set descripcion.
      *
      * @param string $descripcion
+     *
      * @return TareaAdicional
      */
     public function setDescripcion($descripcion)
     {
         $this->descripcion = $descripcion;
-    
+
         return $this;
     }
 
     /**
-     * Get descripcion
+     * Get descripcion.
      *
-     * @return string 
+     * @return string
      */
     public function getDescripcion()
     {
@@ -192,22 +195,23 @@ class TareaAdicional
     }
 
     /**
-     * Set grupo
+     * Set grupo.
      *
      * @param \Buseta\NomencladorBundle\Entity\Grupo $grupo
+     *
      * @return TareaAdicional
      */
     public function setGrupo(\Buseta\NomencladorBundle\Entity\Grupo $grupo = null)
     {
         $this->grupo = $grupo;
-    
+
         return $this;
     }
 
     /**
-     * Get grupo
+     * Get grupo.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Grupo 
+     * @return \Buseta\NomencladorBundle\Entity\Grupo
      */
     public function getGrupo()
     {
@@ -215,22 +219,23 @@ class TareaAdicional
     }
 
     /**
-     * Set subgrupo
+     * Set subgrupo.
      *
      * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupo
+     *
      * @return TareaAdicional
      */
     public function setSubgrupo(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupo = null)
     {
         $this->subgrupo = $subgrupo;
-    
+
         return $this;
     }
 
     /**
-     * Get subgrupo
+     * Get subgrupo.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Subgrupo 
+     * @return \Buseta\NomencladorBundle\Entity\Subgrupo
      */
     public function getSubgrupo()
     {
@@ -238,22 +243,23 @@ class TareaAdicional
     }
 
     /**
-     * Set ordenTrabajo
+     * Set ordenTrabajo.
      *
      * @param \Buseta\TallerBundle\Entity\OrdenTrabajo $ordenTrabajo
+     *
      * @return TareaAdicional
      */
     public function setOrdenTrabajo(\Buseta\TallerBundle\Entity\OrdenTrabajo $ordenTrabajo = null)
     {
         $this->ordenTrabajo = $ordenTrabajo;
-    
+
         return $this;
     }
 
     /**
-     * Get ordenTrabajo
+     * Get ordenTrabajo.
      *
-     * @return \Buseta\TallerBundle\Entity\OrdenTrabajo 
+     * @return \Buseta\TallerBundle\Entity\OrdenTrabajo
      */
     public function getOrdenTrabajo()
     {
@@ -261,22 +267,23 @@ class TareaAdicional
     }
 
     /**
-     * Set tarea
+     * Set tarea.
      *
      * @param \Buseta\NomencladorBundle\Entity\Tarea $tarea
+     *
      * @return TareaAdicional
      */
     public function setTarea(\Buseta\NomencladorBundle\Entity\Tarea $tarea = null)
     {
         $this->tarea = $tarea;
-    
+
         return $this;
     }
 
     /**
-     * Get tarea
+     * Get tarea.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Tarea 
+     * @return \Buseta\NomencladorBundle\Entity\Tarea
      */
     public function getTarea()
     {
@@ -284,22 +291,23 @@ class TareaAdicional
     }
 
     /**
-     * Set garantiaTarea
+     * Set garantiaTarea.
      *
      * @param \Buseta\NomencladorBundle\Entity\GarantiaTarea $garantiaTarea
+     *
      * @return TareaAdicional
      */
     public function setGarantiaTarea(\Buseta\NomencladorBundle\Entity\GarantiaTarea $garantiaTarea = null)
     {
         $this->garantiaTarea = $garantiaTarea;
-    
+
         return $this;
     }
 
     /**
-     * Get garantiaTarea
+     * Get garantiaTarea.
      *
-     * @return \Buseta\NomencladorBundle\Entity\GarantiaTarea 
+     * @return \Buseta\NomencladorBundle\Entity\GarantiaTarea
      */
     public function getGarantiaTarea()
     {

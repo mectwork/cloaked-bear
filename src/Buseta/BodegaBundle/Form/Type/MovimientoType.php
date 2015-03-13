@@ -10,35 +10,35 @@ use Buseta\BodegaBundle\Form\EventListener\AddAlmacenOrigenFieldSubscriber;
 
 class MovimientoType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-//        $objeto = $builder->getFormFactory();
+        //        $objeto = $builder->getFormFactory();
 //        $almacenDestino = new AddAlmacenDestinoFieldSubscriber($objeto);
 //        $builder->addEventSubscriber($almacenDestino);
 //        $almacenOrigen = new AddAlmacenOrigenFieldSubscriber($objeto);
 //        $builder->addEventSubscriber($almacenOrigen);
 
         $builder
-            ->add('almacenOrigen','entity',array(
+            ->add('almacenOrigen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'empty_value' => '---Seleccione almacén origen---',
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('almacenDestino','entity',array(
+            ->add('almacenDestino', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'empty_value' => '---Seleccione almacén destino---',
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
 
-            ->add('movimientos_productos','collection',array(
+            ->add('movimientos_productos', 'collection', array(
                 'type' => new MovimientosProductosType(),
                 'label'  => false,
                 'required' => false,
@@ -48,14 +48,14 @@ class MovimientoType extends AbstractType
             ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Entity\Movimiento'
+            'data_class' => 'Buseta\BodegaBundle\Entity\Movimiento',
         ));
     }
 

@@ -9,9 +9,9 @@ use Buseta\BodegaBundle\Form\Model\TerceroModel;
 
 class TerceroType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -22,28 +22,28 @@ class TerceroType extends AbstractType
                     'attr'   => array(
                         'class' => 'form-control',
                         'style' => 'width: 300px',
-                    )
+                    ),
                 ))
             ->add('nombres', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
                         'style' => 'width: 300px',
-                    )
+                    ),
                 ))
             ->add('apellidos', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
                         'style' => 'width: 300px',
-                    )
+                    ),
                 ))
             ->add('alias', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
                         'style' => 'width: 250px',
-                    )
+                    ),
                 ))
             ->add('cliente', 'checkbox', array(
                     'required' => false,
@@ -66,7 +66,7 @@ class TerceroType extends AbstractType
                 'required' => false,
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('direccionId', 'hidden', array(
                 'required' => false,
@@ -78,7 +78,7 @@ class TerceroType extends AbstractType
                         'style' => 'width: 300px',
                     )
                 ))*/
-            ->add('mecanismoscontacto','collection',array(
+            ->add('mecanismoscontacto', 'collection', array(
                     'type' => new MecanismoContactoType(),
                     'label' => ' ',
                     'allow_add' => true,
@@ -94,10 +94,9 @@ class TerceroType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Form\Model\TerceroModel'
+            'data_class' => 'Buseta\BodegaBundle\Form\Model\TerceroModel',
         ));
     }
-
 
     /**
      * @return string

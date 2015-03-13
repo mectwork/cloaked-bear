@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Color
+ * Color.
  *
  * @ORM\Table(name="n_moneda")
  * @ORM\Entity(repositoryClass="Buseta\NomencladorBundle\Entity\MonedaRepository")
@@ -36,5 +36,4 @@ class Moneda extends BaseNomenclador
     {
         return $this->id;
     }
-
 }

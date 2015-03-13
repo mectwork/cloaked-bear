@@ -4,7 +4,6 @@ namespace Buseta\TallerBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NoResultException;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,7 +23,7 @@ class CompraType extends AbstractType
      */
     private $serviceContainer;
 
-    function __construct(ObjectManager $em, Container $serviceContainer)
+    public function __construct(ObjectManager $em, Container $serviceContainer)
     {
         $this->em = $em;
         $this->serviceContainer = $serviceContainer;
@@ -32,77 +31,77 @@ class CompraType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA,array($this,'preSetData'));
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'preSetData'));
         $builder
             ->add('numero', 'text', array(
                     'required' => true,
                     'label'  => 'Número',
                     'attr'   => array(
                         'class' => 'form-control',
-                    )
+                    ),
                 ))
             ->add('numero_factura_proveedor', 'text', array(
                 'required' => true,
                 'label'  => 'Número factura de proveedor',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('orden_prioridad', 'choice', array(
                 'required' => true,
-                'translation_domain'=> 'BusetaTallerBundle',
+                'translation_domain' => 'BusetaTallerBundle',
                 'empty_value' => '---Seleccione prioridad---',
                 'choices' => array(
-                    'High'=>'prioridad.High',
+                    'High' => 'prioridad.High',
                     'Medium' => 'prioridad.Medium',
                     'Low' => 'prioridad.Low',
                 ),
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('descripcion', 'textarea', array(
                     'required' => false,
                     'label'  => 'Descripción',
                     'attr'   => array(
                         'class' => 'form-control',
-                    )
+                    ),
                 ))
-            ->add('fecha_pedido','date',array(
+            ->add('fecha_pedido', 'date', array(
                 'widget' => 'single_text',
                 'format'  => 'dd/MM/yyyy',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('forma_pago','entity',array(
+            ->add('forma_pago', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:FormaPago',
                 'label' => 'Forma de Pago',
                 'empty_value' => '---Seleccione forma de pago---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('moneda','entity',array(
+            ->add('moneda', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Moneda',
                 'empty_value' => '---Seleccione tipo de moneda---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('condiciones_pago','entity',array(
+            ->add('condiciones_pago', 'entity', array(
                 'class' => 'BusetaTallerBundle:CondicionesPago',
                 'empty_value' => '---Seleccione condiciones de pago---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('importe_libre_impuesto', 'text', array(
                     'required' => true,
@@ -110,14 +109,14 @@ class CompraType extends AbstractType
                     'label'  => 'Importe libre de impuesto',
                     'attr'   => array(
                         'class' => 'form-control',
-                    )
+                    ),
                 ))
             ->add('importe_con_impuesto', 'text', array(
                     'required' => true,
                     'read_only' => true,
                     'attr'   => array(
                         'class' => 'form-control',
-                    )
+                    ),
                 ))
             ->add('importe_general', 'text', array(
                     'required' => true,
@@ -125,14 +124,14 @@ class CompraType extends AbstractType
                     'label'  => 'Importe general',
                     'attr'   => array(
                         'class' => 'form-control',
-                    )
+                    ),
                 ))
             ->add('estado', 'choice', array(
                     'required' => true,
                     'empty_value' => '---Seleccione estado---',
-                    'translation_domain'=> 'BusetaTallerBundle',
+                    'translation_domain' => 'BusetaTallerBundle',
                     'choices' => array(
-                        '??'=>'estado.??',
+                        '??' => 'estado.??',
                         'AP' => 'estado.AP',
                         'CH' => 'estado.CH',
                         'CL' => 'estado.CL',
@@ -153,11 +152,11 @@ class CompraType extends AbstractType
                     ),
                     'attr'   => array(
                         'class' => 'form-control',
-                    )
+                    ),
                 ))
-            ->add('tercero','entity',array(
+            ->add('tercero', 'entity', array(
                     'class' => 'BusetaBodegaBundle:Tercero',
-                    'query_builder' => function(EntityRepository $er){
+                    'query_builder' => function (EntityRepository $er) {
                             return $er->createQueryBuilder('t')
                                 ->where('t.proveedor = true');
                         },
@@ -165,9 +164,9 @@ class CompraType extends AbstractType
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
-                    )
+                    ),
                 ))
-            ->add('lineas','collection',array(
+            ->add('lineas', 'collection', array(
                 'type' => new LineaType(),
                 'label'  => false,
                 'required' => false,
@@ -180,16 +179,16 @@ class CompraType extends AbstractType
                 'label'  => 'Mecánico que solicita',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('centro_costo','entity',array(
+            ->add('centro_costo', 'entity', array(
                 'class' => 'BusetaBusesBundle:Autobus',
                 'label' => 'Centro de costo',
                 'empty_value' => '---Seleccione centro de costo---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('precio_general', 'text', array(
                 'required' => true,
@@ -201,14 +200,14 @@ class CompraType extends AbstractType
             ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\TallerBundle\Entity\Compra'
+            'data_class' => 'Buseta\TallerBundle\Entity\Compra',
         ));
     }
 

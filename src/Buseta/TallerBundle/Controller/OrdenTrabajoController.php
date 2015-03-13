@@ -4,22 +4,18 @@ namespace Buseta\TallerBundle\Controller;
 
 use Buseta\TallerBundle\Entity\TareaAdicional;
 use Buseta\TallerBundle\Form\Type\TareaAdicionalType;
-use Buseta\TallerBundle\Form\Type\TareaAdicionalModalType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\TallerBundle\Entity\OrdenTrabajo;
 use Buseta\TallerBundle\Form\Type\OrdenTrabajoType;
+
 /**
  * OrdenTrabajo controller.
- *
  */
 class OrdenTrabajoController extends Controller
 {
-
     /**
      * Lists all OrdenTrabajo entities.
-     *
      */
     public function indexAction()
     {
@@ -41,7 +37,6 @@ class OrdenTrabajoController extends Controller
     }
     /**
      * Creates a new OrdenTrabajo entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -60,7 +55,7 @@ class OrdenTrabajoController extends Controller
                     ->add('success', 'Se ha creado la Orden de Trabajo de forma satisfactoria.');
 
                 return $this->redirect($this->generateUrl('ordentrabajo_show', array('id' => $entity->getId())));
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $this->get('logger')
                     ->addCritical(sprintf('Ha ocurrido un error creando la Orden de Trabajo. Detalles: %s', $e->getMessage()));
 
@@ -76,12 +71,12 @@ class OrdenTrabajoController extends Controller
     }
 
     /**
-    * Creates a form to create a OrdenTrabajo entity.
-    *
-    * @param OrdenTrabajo $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a OrdenTrabajo entity.
+     *
+     * @param OrdenTrabajo $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(OrdenTrabajo $entity)
     {
         $form = $this->createForm(new OrdenTrabajoType(), $entity, array(
@@ -96,7 +91,6 @@ class OrdenTrabajoController extends Controller
 
     /**
      * Displays a form to create a new OrdenTrabajo entity.
-     *
      */
     public function newAction()
     {
@@ -117,7 +111,6 @@ class OrdenTrabajoController extends Controller
 
     /**
      * Finds and displays a OrdenTrabajo entity.
-     *
      */
     public function showAction($id)
     {
@@ -138,7 +131,6 @@ class OrdenTrabajoController extends Controller
 
     /**
      * Displays a form to edit an existing OrdenTrabajo entity.
-     *
      */
     public function editAction($id)
     {
@@ -164,12 +156,12 @@ class OrdenTrabajoController extends Controller
     }
 
     /**
-    * Creates a form to edit a OrdenTrabajo entity.
-    *
-    * @param OrdenTrabajo $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a OrdenTrabajo entity.
+     *
+     * @param OrdenTrabajo $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(OrdenTrabajo $entity)
     {
         $form = $this->createForm(new OrdenTrabajoType(), $entity, array(
@@ -183,7 +175,6 @@ class OrdenTrabajoController extends Controller
     }
     /**
      * Edits an existing OrdenTrabajo entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -213,7 +204,6 @@ class OrdenTrabajoController extends Controller
     }
     /**
      * Deletes a OrdenTrabajo entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {

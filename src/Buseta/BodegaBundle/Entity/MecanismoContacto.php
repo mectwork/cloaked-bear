@@ -3,10 +3,9 @@
 namespace Buseta\BodegaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * MecanismoContacto
+ * MecanismoContacto.
  *
  * @ORM\Table(name="d_mecanismocontacto")
  * @ORM\Entity
@@ -87,24 +86,24 @@ class MecanismoContacto
         return $this->valor;
     }
 
-
     /**
-     * Set terceros
+     * Set terceros.
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $terceros
+     *
      * @return MecanismoContacto
      */
     public function setTerceros(\Buseta\BodegaBundle\Entity\Tercero $terceros = null)
     {
         $this->terceros = $terceros;
-    
+
         return $this;
     }
 
     /**
-     * Get terceros
+     * Get terceros.
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getTerceros()
     {

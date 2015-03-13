@@ -2,17 +2,14 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
-
-use Buseta\BodegaBundle\Entity\InformeStock;
-use Symfony\Component\HttpFoundation\Request;
 use Buseta\BodegaBundle\Form\Model\InformeStockModel;
 use Buseta\BodegaBundle\Form\Type\InformeStockType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
     /**
-     *
      * @param InformeStockModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
@@ -29,7 +26,6 @@ class DefaultController extends Controller
 
     /**
      * Creates a new InformeStockModel entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -40,7 +36,7 @@ class DefaultController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $entities = $em->getRepository('BusetaBodegaBundle:Producto')->informeStock($form,$em);
+            $entities = $em->getRepository('BusetaBodegaBundle:Producto')->informeStock($form, $em);
 
             $em->persist($entity);
             $em->flush();
@@ -56,7 +52,6 @@ class DefaultController extends Controller
 
     /**
      * Finds and displays a InformeStockModel entity.
-     *
      */
     public function showAction($id)
     {
@@ -74,6 +69,4 @@ class DefaultController extends Controller
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),        ));
     }
-
-
 }

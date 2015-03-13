@@ -22,14 +22,14 @@ class AddSubgrupoFieldSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_SUBMIT     => 'preBind'
+            FormEvents::PRE_SUBMIT     => 'preBind',
         );
     }
 
     private function addSubgrupoForm($form, $subgrupo = null, $grupo = null)
     {
-        if($grupo === null) {
-            $form->add('subgrupos','choice',array(
+        if ($grupo === null) {
+            $form->add('subgrupos', 'choice', array(
                 'choices' => array(),
                 'empty_value'   => '---Seleccione un subgrupo---',
                 'attr' => array(
@@ -37,7 +37,7 @@ class AddSubgrupoFieldSubscriber implements EventSubscriberInterface
                 ),
             ));
         } else {
-            $form->add('subgrupos','entity', array(
+            $form->add('subgrupos', 'entity', array(
                 'class'         => 'BusetaNomencladorBundle:Subgrupo',
                 'empty_value'   => '---Seleccione un subgrupo---',
                 'auto_initialize' => false,
@@ -48,19 +48,19 @@ class AddSubgrupoFieldSubscriber implements EventSubscriberInterface
                 'query_builder' => function (EntityRepository $repository) use ($grupo) {
                         $qb = $repository->createQueryBuilder('subgrupos')
                             ->innerJoin('subgrupos.grupo', 'grupos');
-                        if($grupo instanceof Grupo){
+                        if ($grupo instanceof Grupo) {
                             $qb->where('grupos = :grupos')
                                 ->setParameter('grupos', $grupo);
-                        }elseif(is_numeric($grupo)){
+                        } elseif (is_numeric($grupo)) {
                             $qb->where('grupos.id = :grupos')
                                 ->setParameter('grupos', $grupo);
-                        }else{
+                        } else {
                             $qb->where('grupos.valor = :grupos')
                                 ->setParameter('grupos', null);
                         }
 
                         return $qb;
-                    }
+                    },
             ));
         }
     }
@@ -74,8 +74,8 @@ class AddSubgrupoFieldSubscriber implements EventSubscriberInterface
             $this->addSubgrupoForm($form);
         } else {
             //$province = ($data->city) ? $data->city->getSubgrupo() : null ;
-            $subgrupo = ($data->getSubgrupos()) ? $data->getSubgrupos() : null ;
-            $grupo = ($subgrupo) ? $subgrupo->getGrupo() : null ;
+            $subgrupo = ($data->getSubgrupos()) ? $data->getSubgrupos() : null;
+            $grupo = ($subgrupo) ? $subgrupo->getGrupo() : null;
             $this->addSubgrupoForm($form, $subgrupo, $grupo);
         }
     }

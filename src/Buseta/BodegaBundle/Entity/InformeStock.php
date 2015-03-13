@@ -3,10 +3,9 @@
 namespace Buseta\BodegaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * InformeStock
+ * InformeStock.
  *
  * @ORM\Table(name="d_informeStock")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\InformeStockRepository")
@@ -39,18 +38,15 @@ class InformeStock
      */
     private $cantidadProductos;
 
-
-    function __construct()
+    public function __construct()
     {
         $this->cantidadProductos = 0;
     }
-    
-
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -58,22 +54,23 @@ class InformeStock
     }
 
     /**
-     * Set cantidadProductos
+     * Set cantidadProductos.
      *
      * @param integer $cantidadProductos
+     *
      * @return InformeStock
      */
     public function setCantidadProductos($cantidadProductos)
     {
         $this->cantidadProductos = $cantidadProductos;
-    
+
         return $this;
     }
 
     /**
-     * Get cantidadProductos
+     * Get cantidadProductos.
      *
-     * @return integer 
+     * @return integer
      */
     public function getCantidadProductos()
     {
@@ -81,22 +78,23 @@ class InformeStock
     }
 
     /**
-     * Set producto
+     * Set producto.
      *
      * @param \Buseta\BodegaBundle\Entity\Producto $producto
+     *
      * @return InformeStock
      */
     public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
     {
         $this->producto = $producto;
-    
+
         return $this;
     }
 
     /**
-     * Get producto
+     * Get producto.
      *
-     * @return \Buseta\BodegaBundle\Entity\Producto 
+     * @return \Buseta\BodegaBundle\Entity\Producto
      */
     public function getProducto()
     {
@@ -104,22 +102,23 @@ class InformeStock
     }
 
     /**
-     * Set almacen
+     * Set almacen.
      *
      * @param \Buseta\BodegaBundle\Entity\Bodega $almacen
+     *
      * @return InformeStock
      */
     public function setAlmacen(\Buseta\BodegaBundle\Entity\Bodega $almacen = null)
     {
         $this->almacen = $almacen;
-    
+
         return $this;
     }
 
     /**
-     * Get almacen
+     * Get almacen.
      *
-     * @return \Buseta\BodegaBundle\Entity\Bodega 
+     * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getAlmacen()
     {

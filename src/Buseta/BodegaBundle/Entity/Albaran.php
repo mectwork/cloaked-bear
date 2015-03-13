@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Albaran
+ * Albaran.
  *
  * @ORM\Table(name="d_albaran")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\AlbaranRepository")
@@ -91,7 +91,6 @@ class Albaran
     private $created;
 
     /**
-     *
      * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
      */
     private $createdby;
@@ -104,7 +103,6 @@ class Albaran
     private $updated;
 
     /**
-     *
      * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
      */
     private $updatedby;
@@ -115,9 +113,9 @@ class Albaran
      * @ORM\Column(name="deleted", type="boolean", nullable=true)
      */
     private $deleted;
-    
+
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -125,11 +123,11 @@ class Albaran
         $this->updated = new \DateTime();
         $this->deleted = false;
     }
-    
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -137,22 +135,23 @@ class Albaran
     }
 
     /**
-     * Set numeroReferencia
+     * Set numeroReferencia.
      *
      * @param string $numeroReferencia
+     *
      * @return Albaran
      */
     public function setNumeroReferencia($numeroReferencia)
     {
         $this->numeroReferencia = $numeroReferencia;
-    
+
         return $this;
     }
 
     /**
-     * Get numeroReferencia
+     * Get numeroReferencia.
      *
-     * @return string 
+     * @return string
      */
     public function getNumeroReferencia()
     {
@@ -160,22 +159,23 @@ class Albaran
     }
 
     /**
-     * Set consecutivoCompra
+     * Set consecutivoCompra.
      *
      * @param string $consecutivoCompra
+     *
      * @return Albaran
      */
     public function setConsecutivoCompra($consecutivoCompra)
     {
         $this->consecutivoCompra = $consecutivoCompra;
-    
+
         return $this;
     }
 
     /**
-     * Get consecutivoCompra
+     * Get consecutivoCompra.
      *
-     * @return string 
+     * @return string
      */
     public function getConsecutivoCompra()
     {
@@ -183,22 +183,23 @@ class Albaran
     }
 
     /**
-     * Set fechaMovimiento
+     * Set fechaMovimiento.
      *
      * @param \DateTime $fechaMovimiento
+     *
      * @return Albaran
      */
     public function setFechaMovimiento($fechaMovimiento)
     {
         $this->fechaMovimiento = $fechaMovimiento;
-    
+
         return $this;
     }
 
     /**
-     * Get fechaMovimiento
+     * Get fechaMovimiento.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaMovimiento()
     {
@@ -206,22 +207,23 @@ class Albaran
     }
 
     /**
-     * Set fechaContable
+     * Set fechaContable.
      *
      * @param \DateTime $fechaContable
+     *
      * @return Albaran
      */
     public function setFechaContable($fechaContable)
     {
         $this->fechaContable = $fechaContable;
-    
+
         return $this;
     }
 
     /**
-     * Get fechaContable
+     * Get fechaContable.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaContable()
     {
@@ -229,22 +231,23 @@ class Albaran
     }
 
     /**
-     * Set estadoDocumento
+     * Set estadoDocumento.
      *
      * @param string $estadoDocumento
+     *
      * @return Albaran
      */
     public function setEstadoDocumento($estadoDocumento)
     {
         $this->estadoDocumento = $estadoDocumento;
-    
+
         return $this;
     }
 
     /**
-     * Get estadoDocumento
+     * Get estadoDocumento.
      *
-     * @return string 
+     * @return string
      */
     public function getEstadoDocumento()
     {
@@ -252,22 +255,23 @@ class Albaran
     }
 
     /**
-     * Set tercero
+     * Set tercero.
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $tercero
+     *
      * @return Albaran
      */
     public function setTercero(\Buseta\BodegaBundle\Entity\Tercero $tercero = null)
     {
         $this->tercero = $tercero;
-    
+
         return $this;
     }
 
     /**
-     * Get tercero
+     * Get tercero.
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getTercero()
     {
@@ -275,22 +279,23 @@ class Albaran
     }
 
     /**
-     * Set almacen
+     * Set almacen.
      *
      * @param \Buseta\BodegaBundle\Entity\Bodega $almacen
+     *
      * @return Albaran
      */
     public function setAlmacen(\Buseta\BodegaBundle\Entity\Bodega $almacen = null)
     {
         $this->almacen = $almacen;
-    
+
         return $this;
     }
 
     /**
-     * Get almacen
+     * Get almacen.
      *
-     * @return \Buseta\BodegaBundle\Entity\Bodega 
+     * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getAlmacen()
     {
@@ -298,22 +303,23 @@ class Albaran
     }
 
     /**
-     * Set pedidoCompra
+     * Set pedidoCompra.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra
+     *
      * @return Albaran
      */
     public function setPedidoCompra(\Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra = null)
     {
         $this->pedidoCompra = $pedidoCompra;
-    
+
         return $this;
     }
 
     /**
-     * Get pedidoCompra
+     * Get pedidoCompra.
      *
-     * @return \Buseta\BodegaBundle\Entity\PedidoCompra 
+     * @return \Buseta\BodegaBundle\Entity\PedidoCompra
      */
     public function getPedidoCompra()
     {
@@ -321,9 +327,10 @@ class Albaran
     }
 
     /**
-     * Add albaranLinea
+     * Add albaranLinea.
      *
      * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
+     *
      * @return Albaran
      */
     public function addAlbaranLineon(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
@@ -331,12 +338,12 @@ class Albaran
         $albaranLinea->setAlbaran($this);
 
         $this->albaranLinea[] = $albaranLinea;
-    
+
         return $this;
     }
 
     /**
-     * Remove albaranLinea
+     * Remove albaranLinea.
      *
      * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
      */
@@ -346,9 +353,9 @@ class Albaran
     }
 
     /**
-     * Get albaranLinea
+     * Get albaranLinea.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAlbaranLineon()
     {
@@ -356,9 +363,10 @@ class Albaran
     }
 
     /**
-     * Add albaranLinea
+     * Add albaranLinea.
      *
      * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
+     *
      * @return Albaran
      */
     public function addAlbaranLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
@@ -371,7 +379,7 @@ class Albaran
     }
 
     /**
-     * Remove albaranLinea
+     * Remove albaranLinea.
      *
      * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
      */
@@ -381,7 +389,7 @@ class Albaran
     }
 
     /**
-     * Get albaranLinea
+     * Get albaranLinea.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -391,22 +399,23 @@ class Albaran
     }
 
     /**
-     * Set created
+     * Set created.
      *
      * @param \DateTime $created
+     *
      * @return Albaran
      */
     public function setCreated($created)
     {
         $this->created = $created;
-    
+
         return $this;
     }
 
     /**
-     * Get created
+     * Get created.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -414,22 +423,23 @@ class Albaran
     }
 
     /**
-     * Set updated
+     * Set updated.
      *
      * @param \DateTime $updated
+     *
      * @return Albaran
      */
     public function setUpdated($updated)
     {
         $this->updated = $updated;
-    
+
         return $this;
     }
 
     /**
-     * Get updated
+     * Get updated.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdated()
     {
@@ -437,22 +447,23 @@ class Albaran
     }
 
     /**
-     * Set deleted
+     * Set deleted.
      *
      * @param boolean $deleted
+     *
      * @return Albaran
      */
     public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
-    
+
         return $this;
     }
 
     /**
-     * Get deleted
+     * Get deleted.
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDeleted()
     {
@@ -460,22 +471,23 @@ class Albaran
     }
 
     /**
-     * Set createdby
+     * Set createdby.
      *
      * @param \Buseta\SecurityBundle\Entity\User $createdby
+     *
      * @return Albaran
      */
     public function setCreatedby(\Buseta\SecurityBundle\Entity\User $createdby = null)
     {
         $this->createdby = $createdby;
-    
+
         return $this;
     }
 
     /**
-     * Get createdby
+     * Get createdby.
      *
-     * @return \Buseta\SecurityBundle\Entity\User 
+     * @return \Buseta\SecurityBundle\Entity\User
      */
     public function getCreatedby()
     {
@@ -483,22 +495,23 @@ class Albaran
     }
 
     /**
-     * Set updatedby
+     * Set updatedby.
      *
      * @param \Buseta\SecurityBundle\Entity\User $updatedby
+     *
      * @return Albaran
      */
     public function setUpdatedby(\Buseta\SecurityBundle\Entity\User $updatedby = null)
     {
         $this->updatedby = $updatedby;
-    
+
         return $this;
     }
 
     /**
-     * Get updatedby
+     * Get updatedby.
      *
-     * @return \Buseta\SecurityBundle\Entity\User 
+     * @return \Buseta\SecurityBundle\Entity\User
      */
     public function getUpdatedby()
     {

@@ -4,20 +4,16 @@ namespace Buseta\BodegaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
 
 /**
  * PedidoCompraLinea controller.
- *
  */
 class PedidoCompraLineaController extends Controller
 {
-
     /**
      * Lists all PedidoCompraLinea entities.
-     *
      */
     public function indexAction()
     {
@@ -31,7 +27,6 @@ class PedidoCompraLineaController extends Controller
     }
     /**
      * Creates a new PedidoCompraLinea entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -67,12 +62,12 @@ class PedidoCompraLineaController extends Controller
     }
 
     /**
-    * Creates a form to create a PedidoCompraLinea entity.
-    *
-    * @param PedidoCompraLinea $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a PedidoCompraLinea entity.
+     *
+     * @param PedidoCompraLinea $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(PedidoCompraLinea $entity)
     {
         $form = $this->createForm(new PedidoCompraLineaType(), $entity, array(
@@ -106,7 +101,6 @@ class PedidoCompraLineaController extends Controller
 
     /**
      * Displays a form to create a new PedidoCompraLinea entity.
-     *
      */
     public function newAction()
     {
@@ -121,7 +115,6 @@ class PedidoCompraLineaController extends Controller
 
     /**
      * Finds and displays a PedidoCompraLinea entity.
-     *
      */
     public function showAction($id)
     {
@@ -142,7 +135,6 @@ class PedidoCompraLineaController extends Controller
 
     /**
      * Displays a form to edit an existing PedidoCompraLinea entity.
-     *
      */
     public function editAction($id)
     {
@@ -165,12 +157,12 @@ class PedidoCompraLineaController extends Controller
     }
 
     /**
-    * Creates a form to edit a PedidoCompraLinea entity.
-    *
-    * @param PedidoCompraLinea $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a PedidoCompraLinea entity.
+     *
+     * @param PedidoCompraLinea $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(PedidoCompraLinea $entity)
     {
         $form = $this->createForm(new PedidoCompraLineaType(), $entity, array(
@@ -184,7 +176,6 @@ class PedidoCompraLineaController extends Controller
     }
     /**
      * Edits an existing PedidoCompraLinea entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -214,7 +205,6 @@ class PedidoCompraLineaController extends Controller
     }
     /**
      * Deletes a PedidoCompraLinea entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {

@@ -2,17 +2,14 @@
 
 namespace Buseta\BodegaBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NoResultException;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class PedidoCompraType extends AbstractType
 {
@@ -26,7 +23,7 @@ class PedidoCompraType extends AbstractType
      */
     private $serviceContainer;
 
-    function __construct(ObjectManager $em, Container $serviceContainer)
+    public function __construct(ObjectManager $em, Container $serviceContainer)
     {
         $this->em = $em;
         $this->serviceContainer = $serviceContainer;
@@ -34,22 +31,22 @@ class PedidoCompraType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA,array($this,'preSetData'));
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'preSetData'));
         $builder
             ->add('numero_documento', 'text', array(
                     'required' => false,
                     'label'  => 'Nro.Documento',
                     'attr'   => array(
                         'class' => 'form-control',
-                    )
+                    ),
                 ))//
-            ->add('tercero','entity',array(
+            ->add('tercero', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
-                'query_builder' => function(EntityRepository $er){
+                'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('t')
                         ->where('t.proveedor = true');
                 },
@@ -57,56 +54,56 @@ class PedidoCompraType extends AbstractType
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('fecha_pedido','date',array(
+            ->add('fecha_pedido', 'date', array(
                 'widget' => 'single_text',
                 'required' => false,
                 'format'  => 'dd/MM/yyyy',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('almacen','entity',array(
+            ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'label' => 'Almacén',
                 'empty_value' => '---Seleccione almacén---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('moneda','entity',array(
+            ->add('moneda', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Moneda',
                 'empty_value' => '---Seleccione tipo de moneda---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('forma_pago','entity',array(
+            ->add('forma_pago', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:FormaPago',
                 'label' => 'Forma de Pago',
                 'empty_value' => '---Seleccione forma de pago---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('condiciones_pago','entity',array(
+            ->add('condiciones_pago', 'entity', array(
                 'class' => 'BusetaTallerBundle:CondicionesPago',
                 'label' => 'Condiciones de Pago',
                 'empty_value' => '---Seleccione condiciones de pago---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('estado_documento', 'choice', array(
                 'required' => false,
                 'read_only' => true,
                 'empty_value' => '---Seleccione estado documento---',
-                'translation_domain'=> 'BusetaTallerBundle',
+                'translation_domain' => 'BusetaTallerBundle',
                 'choices' => array(
                     'CO' => 'estado.CO',
                     'BO' => 'estado.BO',
@@ -114,7 +111,7 @@ class PedidoCompraType extends AbstractType
                 ),
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('importe_total_lineas', 'text', array(
                 'required' => false,
@@ -122,7 +119,7 @@ class PedidoCompraType extends AbstractType
                 'read_only' => true,
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('importe_total', 'text', array(
                 'required' => false,
@@ -130,9 +127,9 @@ class PedidoCompraType extends AbstractType
                 'label'  => 'Importe total',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
-            ->add('pedido_compra_lineas','collection',array(
+            ->add('pedido_compra_lineas', 'collection', array(
                 'type' => new PedidoCompraLineaType(),
                 'label'  => false,
                 'required' => true,
@@ -142,14 +139,14 @@ class PedidoCompraType extends AbstractType
             ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Entity\PedidoCompra'
+            'data_class' => 'Buseta\BodegaBundle\Entity\PedidoCompra',
         ));
     }
 

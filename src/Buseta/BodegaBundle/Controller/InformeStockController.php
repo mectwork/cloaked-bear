@@ -6,13 +6,10 @@ use Buseta\BodegaBundle\Entity\InformeStock;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Buseta\BodegaBundle\Form\Filtro\BusquedaInformeStockType;
 use Symfony\Component\HttpFoundation\Request;
-use Buseta\BodegaBundle\Form\Model\InformeStockModel;
-use Buseta\BodegaBundle\Form\Type\InformeStockType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class InformeStockController extends Controller
 {
-
     public function indexAction(Request $request)
     {
         $em = $this->get('doctrine.orm.entity_manager');
@@ -47,8 +44,6 @@ class InformeStockController extends Controller
                 'almacenes' => $almacenesFinal,
                 'informeStock' => $informeStock->createView(),
             ));
-
-
         } else {
             return $this->render('BusetaBodegaBundle:InformeStock:index.html.twig', array(
                 'entities' => null,

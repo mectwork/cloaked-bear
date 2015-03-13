@@ -4,19 +4,16 @@ namespace Buseta\BodegaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\BodegaBundle\Entity\CategoriaProducto;
 use Buseta\BodegaBundle\Form\Type\CategoriaProductoType;
 
 /**
  * CategoriaProducto controller.
- *
  */
 class CategoriaProductoController extends Controller
-{    
+{
     /**
      * Lists all CategoriaProducto entities.
-     *
      */
     public function indexAction()
     {
@@ -38,7 +35,6 @@ class CategoriaProductoController extends Controller
     }
     /**
      * Creates a new CategoriaProducto entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -61,12 +57,12 @@ class CategoriaProductoController extends Controller
     }
 
     /**
-    * Creates a form to create a CategoriaProducto entity.
-    *
-    * @param CategoriaProducto $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a CategoriaProducto entity.
+     *
+     * @param CategoriaProducto $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(CategoriaProducto $entity)
     {
         $form = $this->createForm(new CategoriaProductoType(), $entity, array(
@@ -81,7 +77,6 @@ class CategoriaProductoController extends Controller
 
     /**
      * Displays a form to create a new CategoriaProducto entity.
-     *
      */
     public function newAction()
     {
@@ -96,7 +91,6 @@ class CategoriaProductoController extends Controller
 
     /**
      * Finds and displays a CategoriaProducto entity.
-     *
      */
     public function showAction($id)
     {
@@ -117,7 +111,6 @@ class CategoriaProductoController extends Controller
 
     /**
      * Displays a form to edit an existing CategoriaProducto entity.
-     *
      */
     public function editAction($id)
     {
@@ -140,12 +133,12 @@ class CategoriaProductoController extends Controller
     }
 
     /**
-    * Creates a form to edit a CategoriaProducto entity.
-    *
-    * @param CategoriaProducto $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a CategoriaProducto entity.
+     *
+     * @param CategoriaProducto $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(CategoriaProducto $entity)
     {
         $form = $this->createForm(new CategoriaProductoType(), $entity, array(
@@ -159,7 +152,6 @@ class CategoriaProductoController extends Controller
     }
     /**
      * Edits an existing CategoriaProducto entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -189,7 +181,6 @@ class CategoriaProductoController extends Controller
     }
     /**
      * Deletes a CategoriaProducto entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {

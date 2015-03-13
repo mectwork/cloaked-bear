@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * MarcaMotor
+ * MarcaMotor.
  *
  * @ORM\Table(name="n_marca_motor")
  * @ORM\Entity
@@ -22,7 +22,7 @@ class MarcaMotor extends BaseNomenclador
     protected $id;
 
     /**
-     * Get id
+     * Get id.
      *
      * @return integer
      */

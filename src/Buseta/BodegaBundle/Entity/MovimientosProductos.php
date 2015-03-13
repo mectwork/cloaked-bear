@@ -3,10 +3,9 @@
 namespace Buseta\BodegaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * MovimientosProductos
+ * MovimientosProductos.
  *
  * @ORM\Table(name="d_movimientosProductos")
  * @ORM\Entity
@@ -40,9 +39,9 @@ class MovimientosProductos
     private $movimiento;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -50,22 +49,23 @@ class MovimientosProductos
     }
 
     /**
-     * Set cantidad
+     * Set cantidad.
      *
      * @param integer $cantidad
+     *
      * @return MovimientosProductos
      */
     public function setCantidad($cantidad)
     {
         $this->cantidad = $cantidad;
-    
+
         return $this;
     }
 
     /**
-     * Get cantidad
+     * Get cantidad.
      *
-     * @return integer 
+     * @return integer
      */
     public function getCantidad()
     {
@@ -73,22 +73,23 @@ class MovimientosProductos
     }
 
     /**
-     * Set producto
+     * Set producto.
      *
      * @param \Buseta\BodegaBundle\Entity\Producto $producto
+     *
      * @return MovimientosProductos
      */
     public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
     {
         $this->producto = $producto;
-    
+
         return $this;
     }
 
     /**
-     * Get producto
+     * Get producto.
      *
-     * @return \Buseta\BodegaBundle\Entity\Producto 
+     * @return \Buseta\BodegaBundle\Entity\Producto
      */
     public function getProducto()
     {
@@ -96,22 +97,23 @@ class MovimientosProductos
     }
 
     /**
-     * Set movimiento
+     * Set movimiento.
      *
      * @param \Buseta\BodegaBundle\Entity\Movimiento $movimiento
+     *
      * @return MovimientosProductos
      */
     public function setMovimiento(\Buseta\BodegaBundle\Entity\Movimiento $movimiento = null)
     {
         $this->movimiento = $movimiento;
-    
+
         return $this;
     }
 
     /**
-     * Get movimiento
+     * Get movimiento.
      *
-     * @return \Buseta\BodegaBundle\Entity\Movimiento 
+     * @return \Buseta\BodegaBundle\Entity\Movimiento
      */
     public function getMovimiento()
     {

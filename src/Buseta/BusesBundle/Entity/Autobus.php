@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Autobus
+ * Autobus.
  *
  * @ORM\Table(name="d_autobus")
  * @ORM\Entity(repositoryClass="Buseta\BusesBundle\Entity\AutobusRepository")
@@ -376,9 +376,8 @@ class Autobus
      */
     private $horas;
 
-
     /**
-     * Get id
+     * Get id.
      *
      * @return integer
      */
@@ -388,9 +387,10 @@ class Autobus
     }
 
     /**
-     * Set imagen_frontal
+     * Set imagen_frontal.
      *
      * @param string $imagenFrontal
+     *
      * @return Autobus
      */
     public function setImagenFrontal($imagenFrontal)
@@ -401,7 +401,7 @@ class Autobus
     }
 
     /**
-     * Get imagen_frontal
+     * Get imagen_frontal.
      *
      * @return string
      */
@@ -411,9 +411,10 @@ class Autobus
     }
 
     /**
-     * Set imagen_lateral_d
+     * Set imagen_lateral_d.
      *
      * @param string $imagenLateralD
+     *
      * @return Autobus
      */
     public function setImagenLateralD($imagenLateralD)
@@ -424,7 +425,7 @@ class Autobus
     }
 
     /**
-     * Get imagen_lateral_d
+     * Get imagen_lateral_d.
      *
      * @return string
      */
@@ -434,9 +435,10 @@ class Autobus
     }
 
     /**
-     * Set imagen_lateral_i
+     * Set imagen_lateral_i.
      *
      * @param string $imagenLateralI
+     *
      * @return Autobus
      */
     public function setImagenLateralI($imagenLateralI)
@@ -447,7 +449,7 @@ class Autobus
     }
 
     /**
-     * Get imagen_lateral_i
+     * Get imagen_lateral_i.
      *
      * @return string
      */
@@ -457,9 +459,10 @@ class Autobus
     }
 
     /**
-     * Set imagen_trasera
+     * Set imagen_trasera.
      *
      * @param string $imagenTrasera
+     *
      * @return Autobus
      */
     public function setImagenTrasera($imagenTrasera)
@@ -470,7 +473,7 @@ class Autobus
     }
 
     /**
-     * Get imagen_trasera
+     * Get imagen_trasera.
      *
      * @return string
      */
@@ -480,9 +483,10 @@ class Autobus
     }
 
     /**
-     * Set matricula
+     * Set matricula.
      *
      * @param string $matricula
+     *
      * @return Autobus
      */
     public function setMatricula($matricula)
@@ -493,7 +497,7 @@ class Autobus
     }
 
     /**
-     * Get matricula
+     * Get matricula.
      *
      * @return string
      */
@@ -503,9 +507,10 @@ class Autobus
     }
 
     /**
-     * Set marca_cajacambio
+     * Set marca_cajacambio.
      *
      * @param string $marcaCajacambio
+     *
      * @return Autobus
      */
     public function setMarcaCajacambio($marcaCajacambio)
@@ -516,7 +521,7 @@ class Autobus
     }
 
     /**
-     * Get marca_cajacambio
+     * Get marca_cajacambio.
      *
      * @return string
      */
@@ -526,9 +531,10 @@ class Autobus
     }
 
     /**
-     * Set tipo_cajacambio
+     * Set tipo_cajacambio.
      *
      * @param string $tipoCajacambio
+     *
      * @return Autobus
      */
     public function setTipoCajacambio($tipoCajacambio)
@@ -539,7 +545,7 @@ class Autobus
     }
 
     /**
-     * Get tipo_cajacambio
+     * Get tipo_cajacambio.
      *
      * @return string
      */
@@ -549,9 +555,10 @@ class Autobus
     }
 
     /**
-     * Set bateria_1
+     * Set bateria_1.
      *
      * @param string $bateria1
+     *
      * @return Autobus
      */
     public function setBateria1($bateria1)
@@ -562,7 +569,7 @@ class Autobus
     }
 
     /**
-     * Get bateria_1
+     * Get bateria_1.
      *
      * @return string
      */
@@ -572,9 +579,10 @@ class Autobus
     }
 
     /**
-     * Set bateria_2
+     * Set bateria_2.
      *
      * @param string $bateria2
+     *
      * @return Autobus
      */
     public function setBateria2($bateria2)
@@ -585,7 +593,7 @@ class Autobus
     }
 
     /**
-     * Get bateria_2
+     * Get bateria_2.
      *
      * @return string
      */
@@ -595,9 +603,10 @@ class Autobus
     }
 
     /**
-     * Set numero_chasis
+     * Set numero_chasis.
      *
      * @param string $numeroChasis
+     *
      * @return Autobus
      */
     public function setNumeroChasis($numeroChasis)
@@ -608,7 +617,7 @@ class Autobus
     }
 
     /**
-     * Get numero_chasis
+     * Get numero_chasis.
      *
      * @return string
      */
@@ -618,9 +627,10 @@ class Autobus
     }
 
     /**
-     * Set numero_motor
+     * Set numero_motor.
      *
      * @param string $numeroMotor
+     *
      * @return Autobus
      */
     public function setNumeroMotor($numeroMotor)
@@ -631,7 +641,7 @@ class Autobus
     }
 
     /**
-     * Get numero_motor
+     * Get numero_motor.
      *
      * @return string
      */
@@ -641,9 +651,10 @@ class Autobus
     }
 
     /**
-     * Set carter_capacidadlitros
+     * Set carter_capacidadlitros.
      *
      * @param string $carterCapacidadlitros
+     *
      * @return Autobus
      */
     public function setCarterCapacidadlitros($carterCapacidadlitros)
@@ -654,7 +665,7 @@ class Autobus
     }
 
     /**
-     * Get carter_capacidadlitros
+     * Get carter_capacidadlitros.
      *
      * @return string
      */
@@ -664,9 +675,10 @@ class Autobus
     }
 
     /**
-     * Set peso_tara
+     * Set peso_tara.
      *
      * @param integer $pesoTara
+     *
      * @return Autobus
      */
     public function setPesoTara($pesoTara)
@@ -677,7 +689,7 @@ class Autobus
     }
 
     /**
-     * Get peso_tara
+     * Get peso_tara.
      *
      * @return integer
      */
@@ -687,9 +699,10 @@ class Autobus
     }
 
     /**
-     * Set peso_bruto
+     * Set peso_bruto.
      *
      * @param integer $pesoBruto
+     *
      * @return Autobus
      */
     public function setPesoBruto($pesoBruto)
@@ -700,7 +713,7 @@ class Autobus
     }
 
     /**
-     * Get peso_bruto
+     * Get peso_bruto.
      *
      * @return integer
      */
@@ -710,9 +723,10 @@ class Autobus
     }
 
     /**
-     * Set numero_plazas
+     * Set numero_plazas.
      *
      * @param integer $numeroPlazas
+     *
      * @return Autobus
      */
     public function setNumeroPlazas($numeroPlazas)
@@ -723,7 +737,7 @@ class Autobus
     }
 
     /**
-     * Get numero_plazas
+     * Get numero_plazas.
      *
      * @return integer
      */
@@ -733,9 +747,10 @@ class Autobus
     }
 
     /**
-     * Set anno
+     * Set anno.
      *
      * @param integer $anno
+     *
      * @return Autobus
      */
     public function setAnno($anno)
@@ -746,7 +761,7 @@ class Autobus
     }
 
     /**
-     * Get anno
+     * Get anno.
      *
      * @return integer
      */
@@ -756,9 +771,10 @@ class Autobus
     }
 
     /**
-     * Set valor_unidad
+     * Set valor_unidad.
      *
      * @param integer $valorUnidad
+     *
      * @return Autobus
      */
     public function setValorUnidad($valorUnidad)
@@ -769,7 +785,7 @@ class Autobus
     }
 
     /**
-     * Get valor_unidad
+     * Get valor_unidad.
      *
      * @return integer
      */
@@ -779,9 +795,10 @@ class Autobus
     }
 
     /**
-     * Set capacidad_tanque
+     * Set capacidad_tanque.
      *
      * @param integer $capacidadTanque
+     *
      * @return Autobus
      */
     public function setCapacidadTanque($capacidadTanque)
@@ -792,7 +809,7 @@ class Autobus
     }
 
     /**
-     * Get capacidad_tanque
+     * Get capacidad_tanque.
      *
      * @return integer
      */
@@ -802,9 +819,10 @@ class Autobus
     }
 
     /**
-     * Set numero_unidad
+     * Set numero_unidad.
      *
      * @param integer $numeroUnidad
+     *
      * @return Autobus
      */
     public function setNumeroUnidad($numeroUnidad)
@@ -815,7 +833,7 @@ class Autobus
     }
 
     /**
-     * Get numero_unidad
+     * Get numero_unidad.
      *
      * @return integer
      */
@@ -825,9 +843,10 @@ class Autobus
     }
 
     /**
-     * Set numero_cilindros
+     * Set numero_cilindros.
      *
      * @param integer $numeroCilindros
+     *
      * @return Autobus
      */
     public function setNumeroCilindros($numeroCilindros)
@@ -838,7 +857,7 @@ class Autobus
     }
 
     /**
-     * Get numero_cilindros
+     * Get numero_cilindros.
      *
      * @return integer
      */
@@ -848,9 +867,10 @@ class Autobus
     }
 
     /**
-     * Set cilindrada
+     * Set cilindrada.
      *
      * @param integer $cilindrada
+     *
      * @return Autobus
      */
     public function setCilindrada($cilindrada)
@@ -861,7 +881,7 @@ class Autobus
     }
 
     /**
-     * Get cilindrada
+     * Get cilindrada.
      *
      * @return integer
      */
@@ -871,9 +891,10 @@ class Autobus
     }
 
     /**
-     * Set potencia
+     * Set potencia.
      *
      * @param integer $potencia
+     *
      * @return Autobus
      */
     public function setPotencia($potencia)
@@ -884,7 +905,7 @@ class Autobus
     }
 
     /**
-     * Get potencia
+     * Get potencia.
      *
      * @return integer
      */
@@ -894,9 +915,10 @@ class Autobus
     }
 
     /**
-     * Set valido_hasta
+     * Set valido_hasta.
      *
      * @param \DateTime $validoHasta
+     *
      * @return Autobus
      */
     public function setValidoHasta($validoHasta)
@@ -907,7 +929,7 @@ class Autobus
     }
 
     /**
-     * Get valido_hasta
+     * Get valido_hasta.
      *
      * @return \DateTime
      */
@@ -917,9 +939,10 @@ class Autobus
     }
 
     /**
-     * Set fecha_rtv_1
+     * Set fecha_rtv_1.
      *
      * @param string $fechaRtv1
+     *
      * @return Autobus
      */
     public function setFechaRtv1($fechaRtv1)
@@ -930,7 +953,7 @@ class Autobus
     }
 
     /**
-     * Get fecha_rtv_1
+     * Get fecha_rtv_1.
      *
      * @return string
      */
@@ -940,9 +963,10 @@ class Autobus
     }
 
     /**
-     * Set fecha_rtv_2
+     * Set fecha_rtv_2.
      *
      * @param string $fechaRtv2
+     *
      * @return Autobus
      */
     public function setFechaRtv2($fechaRtv2)
@@ -953,7 +977,7 @@ class Autobus
     }
 
     /**
-     * Get fecha_rtv_2
+     * Get fecha_rtv_2.
      *
      * @return string
      */
@@ -963,9 +987,10 @@ class Autobus
     }
 
     /**
-     * Set fecha_ingreso
+     * Set fecha_ingreso.
      *
      * @param \DateTime $fechaIngreso
+     *
      * @return Autobus
      */
     public function setFechaIngreso($fechaIngreso)
@@ -976,7 +1001,7 @@ class Autobus
     }
 
     /**
-     * Get fecha_ingreso
+     * Get fecha_ingreso.
      *
      * @return \DateTime
      */
@@ -986,9 +1011,10 @@ class Autobus
     }
 
     /**
-     * Set rampas
+     * Set rampas.
      *
      * @param string $rampas
+     *
      * @return Autobus
      */
     public function setRampas($rampas)
@@ -999,7 +1025,7 @@ class Autobus
     }
 
     /**
-     * Get rampas
+     * Get rampas.
      *
      * @return string
      */
@@ -1009,9 +1035,10 @@ class Autobus
     }
 
     /**
-     * Set barras
+     * Set barras.
      *
      * @param string $barras
+     *
      * @return Autobus
      */
     public function setBarras($barras)
@@ -1022,7 +1049,7 @@ class Autobus
     }
 
     /**
-     * Get barras
+     * Get barras.
      *
      * @return string
      */
@@ -1032,9 +1059,10 @@ class Autobus
     }
 
     /**
-     * Set camaras
+     * Set camaras.
      *
      * @param string $camaras
+     *
      * @return Autobus
      */
     public function setCamaras($camaras)
@@ -1045,7 +1073,7 @@ class Autobus
     }
 
     /**
-     * Get camaras
+     * Get camaras.
      *
      * @return string
      */
@@ -1055,9 +1083,10 @@ class Autobus
     }
 
     /**
-     * Set lector_cedulas
+     * Set lector_cedulas.
      *
      * @param string $lectorCedulas
+     *
      * @return Autobus
      */
     public function setLectorCedulas($lectorCedulas)
@@ -1068,7 +1097,7 @@ class Autobus
     }
 
     /**
-     * Get lector_cedulas
+     * Get lector_cedulas.
      *
      * @return string
      */
@@ -1078,9 +1107,10 @@ class Autobus
     }
 
     /**
-     * Set publicidad
+     * Set publicidad.
      *
      * @param string $publicidad
+     *
      * @return Autobus
      */
     public function setPublicidad($publicidad)
@@ -1091,7 +1121,7 @@ class Autobus
     }
 
     /**
-     * Get publicidad
+     * Get publicidad.
      *
      * @return string
      */
@@ -1101,9 +1131,10 @@ class Autobus
     }
 
     /**
-     * Set gps
+     * Set gps.
      *
      * @param string $gps
+     *
      * @return Autobus
      */
     public function setGps($gps)
@@ -1114,7 +1145,7 @@ class Autobus
     }
 
     /**
-     * Get gps
+     * Get gps.
      *
      * @return string
      */
@@ -1124,9 +1155,10 @@ class Autobus
     }
 
     /**
-     * Set wifi
+     * Set wifi.
      *
      * @param string $wifi
+     *
      * @return Autobus
      */
     public function setWifi($wifi)
@@ -1137,7 +1169,7 @@ class Autobus
     }
 
     /**
-     * Get wifi
+     * Get wifi.
      *
      * @return string
      */
@@ -1147,9 +1179,10 @@ class Autobus
     }
 
     /**
-     * Set filtro_aceite
+     * Set filtro_aceite.
      *
      * @param \Buseta\BusesBundle\Entity\FiltroAceite $filtroAceite
+     *
      * @return Autobus
      */
     public function setFiltroAceite(\Buseta\BusesBundle\Entity\FiltroAceite $filtroAceite = null)
@@ -1161,7 +1194,7 @@ class Autobus
     }
 
     /**
-     * Get filtro_aceite
+     * Get filtro_aceite.
      *
      * @return \Buseta\BusesBundle\Entity\FiltroAceite
      */
@@ -1171,9 +1204,10 @@ class Autobus
     }
 
     /**
-     * Set filtro_agua
+     * Set filtro_agua.
      *
      * @param \Buseta\BusesBundle\Entity\FiltroAgua $filtroAgua
+     *
      * @return Autobus
      */
     public function setFiltroAgua(\Buseta\BusesBundle\Entity\FiltroAgua $filtroAgua = null)
@@ -1185,7 +1219,7 @@ class Autobus
     }
 
     /**
-     * Get filtro_agua
+     * Get filtro_agua.
      *
      * @return \Buseta\BusesBundle\Entity\FiltroAgua
      */
@@ -1195,9 +1229,10 @@ class Autobus
     }
 
     /**
-     * Set filtro_diesel
+     * Set filtro_diesel.
      *
      * @param \Buseta\BusesBundle\Entity\FiltroDiesel $filtroDiesel
+     *
      * @return Autobus
      */
     public function setFiltroDiesel(\Buseta\BusesBundle\Entity\FiltroDiesel $filtroDiesel = null)
@@ -1209,7 +1244,7 @@ class Autobus
     }
 
     /**
-     * Get filtro_diesel
+     * Get filtro_diesel.
      *
      * @return \Buseta\BusesBundle\Entity\FiltroDiesel
      */
@@ -1219,9 +1254,10 @@ class Autobus
     }
 
     /**
-     * Set filtro_hidraulico
+     * Set filtro_hidraulico.
      *
      * @param \Buseta\BusesBundle\Entity\FiltroHidraulico $filtroHidraulico
+     *
      * @return Autobus
      */
     public function setFiltroHidraulico(\Buseta\BusesBundle\Entity\FiltroHidraulico $filtroHidraulico = null)
@@ -1233,7 +1269,7 @@ class Autobus
     }
 
     /**
-     * Get filtro_hidraulico
+     * Get filtro_hidraulico.
      *
      * @return \Buseta\BusesBundle\Entity\FiltroHidraulico
      */
@@ -1243,9 +1279,10 @@ class Autobus
     }
 
     /**
-     * Set filtro_transmision
+     * Set filtro_transmision.
      *
      * @param \Buseta\BusesBundle\Entity\FiltroTransmision $filtroTransmision
+     *
      * @return Autobus
      */
     public function setFiltroTransmision(\Buseta\BusesBundle\Entity\FiltroTransmision $filtroTransmision = null)
@@ -1257,7 +1294,7 @@ class Autobus
     }
 
     /**
-     * Get filtro_transmision
+     * Get filtro_transmision.
      *
      * @return \Buseta\BusesBundle\Entity\FiltroTransmision
      */
@@ -1267,9 +1304,10 @@ class Autobus
     }
 
     /**
-     * Set filtro_caja
+     * Set filtro_caja.
      *
      * @param \Buseta\BusesBundle\Entity\FiltroCaja $filtroCaja
+     *
      * @return Autobus
      */
     public function setFiltroCaja(\Buseta\BusesBundle\Entity\FiltroCaja $filtroCaja = null)
@@ -1281,7 +1319,7 @@ class Autobus
     }
 
     /**
-     * Get filtro_caja
+     * Get filtro_caja.
      *
      * @return \Buseta\BusesBundle\Entity\FiltroCaja
      */
@@ -1289,8 +1327,6 @@ class Autobus
     {
         return $this->filtro_caja;
     }
-
-
 
     /**
      * @return mixed
@@ -1324,8 +1360,6 @@ class Autobus
         $this->aceitehidraulico = $aceitehidraulico;
     }
 
-
-
     /**
      * @param mixed $archivo_adjunto
      */
@@ -1335,7 +1369,7 @@ class Autobus
     }
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -1345,9 +1379,10 @@ class Autobus
     }
 
     /**
-     * Add archivo_adjunto
+     * Add archivo_adjunto.
      *
      * @param \Buseta\BusesBundle\Entity\ArchivoAdjunto $archivoAdjunto
+     *
      * @return Autobus
      */
     public function addArchivoAdjunto(\Buseta\BusesBundle\Entity\ArchivoAdjunto $archivoAdjunto)
@@ -1360,7 +1395,7 @@ class Autobus
     }
 
     /**
-     * Remove archivo_adjunto
+     * Remove archivo_adjunto.
      *
      * @param \Buseta\BusesBundle\Entity\ArchivoAdjunto $archivoAdjunto
      */
@@ -1369,9 +1404,8 @@ class Autobus
         $this->archivo_adjunto->removeElement($archivoAdjunto);
     }
 
-
     /**
-     * Get archivo_adjunto
+     * Get archivo_adjunto.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1386,9 +1420,10 @@ class Autobus
     }
 
     /**
-     * Add compras
+     * Add compras.
      *
      * @param \Buseta\TallerBundle\Entity\Compra $compras
+     *
      * @return Autobus
      */
     public function addCompra(\Buseta\TallerBundle\Entity\Compra $compras)
@@ -1401,7 +1436,7 @@ class Autobus
     }
 
     /**
-     * Remove compras
+     * Remove compras.
      *
      * @param \Buseta\TallerBundle\Entity\Compra $compras
      */
@@ -1411,7 +1446,7 @@ class Autobus
     }
 
     /**
-     * Get compras
+     * Get compras.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1549,22 +1584,23 @@ class Autobus
     }
 
     /**
-     * Set kilometraje
+     * Set kilometraje.
      *
      * @param integer $kilometraje
+     *
      * @return Autobus
      */
     public function setKilometraje($kilometraje)
     {
         $this->kilometraje = $kilometraje;
-    
+
         return $this;
     }
 
     /**
-     * Get kilometraje
+     * Get kilometraje.
      *
-     * @return integer 
+     * @return integer
      */
     public function getKilometraje()
     {
@@ -1572,22 +1608,23 @@ class Autobus
     }
 
     /**
-     * Set horas
+     * Set horas.
      *
      * @param integer $horas
+     *
      * @return Autobus
      */
     public function setHoras($horas)
     {
         $this->horas = $horas;
-    
+
         return $this;
     }
 
     /**
-     * Get horas
+     * Get horas.
      *
-     * @return integer 
+     * @return integer
      */
     public function getHoras()
     {

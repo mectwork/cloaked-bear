@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * PedidoCompra
+ * PedidoCompra.
  *
  * @ORM\Table(name="d_pedido_compra")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\PedidoCompraRepository")
@@ -58,19 +58,16 @@ class PedidoCompra
     private $almacen;
 
     /**
-     *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Moneda")
      */
     private $moneda;
 
     /**
-     *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\FormaPago")
      */
     private $forma_pago;
 
     /**
-     *
      * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\CondicionesPago")
      */
     private $condiciones_pago;
@@ -114,7 +111,6 @@ class PedidoCompra
     private $created;
 
     /**
-     *
      * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
      */
     private $createdby;
@@ -127,7 +123,6 @@ class PedidoCompra
     private $updated;
 
     /**
-     *
      * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
      */
     private $updatedby;
@@ -140,13 +135,12 @@ class PedidoCompra
     private $deleted;
 
     /**
-     *
      * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
      */
     private $deletedby;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -156,11 +150,11 @@ class PedidoCompra
         $this->updated = new \DateTime();
         $this->deleted = false;
     }
-    
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -168,22 +162,23 @@ class PedidoCompra
     }
 
     /**
-     * Set numero_documento
+     * Set numero_documento.
      *
      * @param string $numeroDocumento
+     *
      * @return PedidoCompra
      */
     public function setNumeroDocumento($numeroDocumento)
     {
         $this->numero_documento = $numeroDocumento;
-    
+
         return $this;
     }
 
     /**
-     * Get numero_documento
+     * Get numero_documento.
      *
-     * @return string 
+     * @return string
      */
     public function getNumeroDocumento()
     {
@@ -191,22 +186,23 @@ class PedidoCompra
     }
 
     /**
-     * Set consecutivo_compra
+     * Set consecutivo_compra.
      *
      * @param string $consecutivoCompra
+     *
      * @return PedidoCompra
      */
     public function setConsecutivoCompra($consecutivoCompra)
     {
         $this->consecutivo_compra = $consecutivoCompra;
-    
+
         return $this;
     }
 
     /**
-     * Get consecutivo_compra
+     * Get consecutivo_compra.
      *
-     * @return string 
+     * @return string
      */
     public function getConsecutivoCompra()
     {
@@ -214,22 +210,23 @@ class PedidoCompra
     }
 
     /**
-     * Set fecha_pedido
+     * Set fecha_pedido.
      *
      * @param \DateTime $fechaPedido
+     *
      * @return PedidoCompra
      */
     public function setFechaPedido($fechaPedido)
     {
         $this->fecha_pedido = $fechaPedido;
-    
+
         return $this;
     }
 
     /**
-     * Get fecha_pedido
+     * Get fecha_pedido.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaPedido()
     {
@@ -237,22 +234,23 @@ class PedidoCompra
     }
 
     /**
-     * Set estado_documento
+     * Set estado_documento.
      *
      * @param string $estadoDocumento
+     *
      * @return PedidoCompra
      */
     public function setEstadoDocumento($estadoDocumento)
     {
         $this->estado_documento = $estadoDocumento;
-    
+
         return $this;
     }
 
     /**
-     * Get estado_documento
+     * Get estado_documento.
      *
-     * @return string 
+     * @return string
      */
     public function getEstadoDocumento()
     {
@@ -260,22 +258,23 @@ class PedidoCompra
     }
 
     /**
-     * Set importe_total_lineas
+     * Set importe_total_lineas.
      *
      * @param string $importeTotalLineas
+     *
      * @return PedidoCompra
      */
     public function setImporteTotalLineas($importeTotalLineas)
     {
         $this->importe_total_lineas = $importeTotalLineas;
-    
+
         return $this;
     }
 
     /**
-     * Get importe_total_lineas
+     * Get importe_total_lineas.
      *
-     * @return string 
+     * @return string
      */
     public function getImporteTotalLineas()
     {
@@ -283,22 +282,23 @@ class PedidoCompra
     }
 
     /**
-     * Set importe_total
+     * Set importe_total.
      *
      * @param string $importeTotal
+     *
      * @return PedidoCompra
      */
     public function setImporteTotal($importeTotal)
     {
         $this->importe_total = $importeTotal;
-    
+
         return $this;
     }
 
     /**
-     * Get importe_total
+     * Get importe_total.
      *
-     * @return string 
+     * @return string
      */
     public function getImporteTotal()
     {
@@ -306,22 +306,23 @@ class PedidoCompra
     }
 
     /**
-     * Set tercero
+     * Set tercero.
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $tercero
+     *
      * @return PedidoCompra
      */
     public function setTercero(\Buseta\BodegaBundle\Entity\Tercero $tercero = null)
     {
         $this->tercero = $tercero;
-    
+
         return $this;
     }
 
     /**
-     * Get tercero
+     * Get tercero.
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getTercero()
     {
@@ -329,22 +330,23 @@ class PedidoCompra
     }
 
     /**
-     * Set almacen
+     * Set almacen.
      *
      * @param \Buseta\BodegaBundle\Entity\Bodega $almacen
+     *
      * @return PedidoCompra
      */
     public function setAlmacen(\Buseta\BodegaBundle\Entity\Bodega $almacen = null)
     {
         $this->almacen = $almacen;
-    
+
         return $this;
     }
 
     /**
-     * Get almacen
+     * Get almacen.
      *
-     * @return \Buseta\BodegaBundle\Entity\Bodega 
+     * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getAlmacen()
     {
@@ -352,22 +354,23 @@ class PedidoCompra
     }
 
     /**
-     * Set forma_pago
+     * Set forma_pago.
      *
      * @param \Buseta\NomencladorBundle\Entity\FormaPago $formaPago
+     *
      * @return PedidoCompra
      */
     public function setFormaPago(\Buseta\NomencladorBundle\Entity\FormaPago $formaPago = null)
     {
         $this->forma_pago = $formaPago;
-    
+
         return $this;
     }
 
     /**
-     * Get forma_pago
+     * Get forma_pago.
      *
-     * @return \Buseta\NomencladorBundle\Entity\FormaPago 
+     * @return \Buseta\NomencladorBundle\Entity\FormaPago
      */
     public function getFormaPago()
     {
@@ -375,9 +378,10 @@ class PedidoCompra
     }
 
     /**
-     * Add pedido_compra_lineas
+     * Add pedido_compra_lineas.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas
+     *
      * @return PedidoCompra
      */
     public function addPedidoCompraLinea(\Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas)
@@ -385,12 +389,12 @@ class PedidoCompra
         $pedidoCompraLineas->setPedidoCompra($this);
 
         $this->pedido_compra_lineas[] = $pedidoCompraLineas;
-    
+
         return $this;
     }
 
     /**
-     * Remove pedido_compra_lineas
+     * Remove pedido_compra_lineas.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas
      */
@@ -400,9 +404,9 @@ class PedidoCompra
     }
 
     /**
-     * Get pedido_compra_lineas
+     * Get pedido_compra_lineas.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPedidoCompraLineas()
     {
@@ -410,22 +414,23 @@ class PedidoCompra
     }
 
     /**
-     * Set condiciones_pago
+     * Set condiciones_pago.
      *
      * @param \Buseta\TallerBundle\Entity\CondicionesPago $condicionesPago
+     *
      * @return PedidoCompra
      */
     public function setCondicionesPago(\Buseta\TallerBundle\Entity\CondicionesPago $condicionesPago = null)
     {
         $this->condiciones_pago = $condicionesPago;
-    
+
         return $this;
     }
 
     /**
-     * Get condiciones_pago
+     * Get condiciones_pago.
      *
-     * @return \Buseta\TallerBundle\Entity\CondicionesPago 
+     * @return \Buseta\TallerBundle\Entity\CondicionesPago
      */
     public function getCondicionesPago()
     {
@@ -433,22 +438,23 @@ class PedidoCompra
     }
 
     /**
-     * Set moneda
+     * Set moneda.
      *
      * @param \Buseta\NomencladorBundle\Entity\Moneda $moneda
+     *
      * @return PedidoCompra
      */
     public function setMoneda(\Buseta\NomencladorBundle\Entity\Moneda $moneda = null)
     {
         $this->moneda = $moneda;
-    
+
         return $this;
     }
 
     /**
-     * Get moneda
+     * Get moneda.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Moneda 
+     * @return \Buseta\NomencladorBundle\Entity\Moneda
      */
     public function getMoneda()
     {
@@ -456,22 +462,23 @@ class PedidoCompra
     }
 
     /**
-     * Set created
+     * Set created.
      *
      * @param \DateTime $created
+     *
      * @return PedidoCompra
      */
     public function setCreated($created)
     {
         $this->created = $created;
-    
+
         return $this;
     }
 
     /**
-     * Get created
+     * Get created.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -479,22 +486,23 @@ class PedidoCompra
     }
 
     /**
-     * Set updated
+     * Set updated.
      *
      * @param \DateTime $updated
+     *
      * @return PedidoCompra
      */
     public function setUpdated($updated)
     {
         $this->updated = $updated;
-    
+
         return $this;
     }
 
     /**
-     * Get updated
+     * Get updated.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdated()
     {
@@ -502,22 +510,23 @@ class PedidoCompra
     }
 
     /**
-     * Set deleted
+     * Set deleted.
      *
      * @param \DateTime $deleted
+     *
      * @return PedidoCompra
      */
     public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
-    
+
         return $this;
     }
 
     /**
-     * Get deleted
+     * Get deleted.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeleted()
     {
@@ -525,22 +534,23 @@ class PedidoCompra
     }
 
     /**
-     * Set createdby
+     * Set createdby.
      *
      * @param \Buseta\SecurityBundle\Entity\User $createdby
+     *
      * @return PedidoCompra
      */
     public function setCreatedby(\Buseta\SecurityBundle\Entity\User $createdby = null)
     {
         $this->createdby = $createdby;
-    
+
         return $this;
     }
 
     /**
-     * Get createdby
+     * Get createdby.
      *
-     * @return \Buseta\SecurityBundle\Entity\User 
+     * @return \Buseta\SecurityBundle\Entity\User
      */
     public function getCreatedby()
     {
@@ -548,22 +558,23 @@ class PedidoCompra
     }
 
     /**
-     * Set updatedby
+     * Set updatedby.
      *
      * @param \Buseta\SecurityBundle\Entity\User $updatedby
+     *
      * @return PedidoCompra
      */
     public function setUpdatedby(\Buseta\SecurityBundle\Entity\User $updatedby = null)
     {
         $this->updatedby = $updatedby;
-    
+
         return $this;
     }
 
     /**
-     * Get updatedby
+     * Get updatedby.
      *
-     * @return \Buseta\SecurityBundle\Entity\User 
+     * @return \Buseta\SecurityBundle\Entity\User
      */
     public function getUpdatedby()
     {
@@ -571,22 +582,23 @@ class PedidoCompra
     }
 
     /**
-     * Set deletedby
+     * Set deletedby.
      *
      * @param \Buseta\SecurityBundle\Entity\User $deletedby
+     *
      * @return PedidoCompra
      */
     public function setDeletedby(\Buseta\SecurityBundle\Entity\User $deletedby = null)
     {
         $this->deletedby = $deletedby;
-    
+
         return $this;
     }
 
     /**
-     * Get deletedby
+     * Get deletedby.
      *
-     * @return \Buseta\SecurityBundle\Entity\User 
+     * @return \Buseta\SecurityBundle\Entity\User
      */
     public function getDeletedby()
     {

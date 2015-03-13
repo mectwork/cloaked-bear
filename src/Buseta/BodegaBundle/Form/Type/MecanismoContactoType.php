@@ -2,29 +2,28 @@
 
 namespace Buseta\BodegaBundle\Form\Type;
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class MecanismoContactoType extends AbstractType{
-
+class MecanismoContactoType extends AbstractType
+{
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('tipocontacto','entity',array(
+            ->add('tipocontacto', 'entity', array(
                     'class' => 'BusetaNomencladorBundle:TipoContacto',
                     'attr' => array(
                         'class' => 'form-control',
                         'style' => 'width: 250px',
-                    )
+                    ),
                 ))
-            ->add('valor','text',array(
+            ->add('valor', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
                         'style' => 'width: 250px',
-                    )
+                    ),
                 ))
         ;
     }

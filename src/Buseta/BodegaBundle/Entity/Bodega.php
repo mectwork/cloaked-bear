@@ -3,10 +3,9 @@
 namespace Buseta\BodegaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Bodega
+ * Bodega.
  *
  * @ORM\Table(name="d_bodega")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\BodegaRepository")
@@ -93,7 +92,7 @@ class Bodega
     private $albaran;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -214,11 +213,11 @@ class Bodega
         return $this->nombre;
     }
 
-    
     /**
-     * Add productos
+     * Add productos.
      *
      * @param \Buseta\BodegaBundle\Entity\Producto $productos
+     *
      * @return Bodega
      */
     public function addProducto(\Buseta\BodegaBundle\Entity\Producto $productos)
@@ -226,12 +225,12 @@ class Bodega
         $productos->setBodega($this);
 
         $this->productos[] = $productos;
-    
+
         return $this;
     }
 
     /**
-     * Remove productos
+     * Remove productos.
      *
      * @param \Buseta\BodegaBundle\Entity\Producto $productos
      */
@@ -241,9 +240,9 @@ class Bodega
     }
 
     /**
-     * Get productos
+     * Get productos.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProductos()
     {
@@ -254,7 +253,6 @@ class Bodega
     {
         return $this->getNombre();
     }
-
 
 //    /**
 //     * Add movimientos
@@ -290,20 +288,21 @@ class Bodega
 //    }
 
     /**
-     * Add pedidoCompra
+     * Add pedidoCompra.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra
+     *
      * @return Bodega
      */
     public function addPedidoCompra(\Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra)
     {
         $this->pedidoCompra[] = $pedidoCompra;
-    
+
         return $this;
     }
 
     /**
-     * Remove pedidoCompra
+     * Remove pedidoCompra.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra
      */
@@ -313,9 +312,9 @@ class Bodega
     }
 
     /**
-     * Get pedidoCompra
+     * Get pedidoCompra.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPedidoCompra()
     {
@@ -323,20 +322,21 @@ class Bodega
     }
 
     /**
-     * Add albaran
+     * Add albaran.
      *
      * @param \Buseta\BodegaBundle\Entity\Albaran $albaran
+     *
      * @return Bodega
      */
     public function addAlbaran(\Buseta\BodegaBundle\Entity\Albaran $albaran)
     {
         $this->albaran[] = $albaran;
-    
+
         return $this;
     }
 
     /**
-     * Remove albaran
+     * Remove albaran.
      *
      * @param \Buseta\BodegaBundle\Entity\Albaran $albaran
      */
@@ -346,9 +346,9 @@ class Bodega
     }
 
     /**
-     * Get albaran
+     * Get albaran.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAlbaran()
     {
@@ -356,20 +356,21 @@ class Bodega
     }
 
     /**
-     * Add albaranLinea
+     * Add albaranLinea.
      *
      * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
+     *
      * @return Bodega
      */
     public function addAlbaranLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
     {
         $this->albaranLinea[] = $albaranLinea;
-    
+
         return $this;
     }
 
     /**
-     * Remove albaranLinea
+     * Remove albaranLinea.
      *
      * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
      */
@@ -379,9 +380,9 @@ class Bodega
     }
 
     /**
-     * Get albaranLinea
+     * Get albaranLinea.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAlbaranLinea()
     {

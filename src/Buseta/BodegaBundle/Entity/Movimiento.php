@@ -3,10 +3,9 @@
 namespace Buseta\BodegaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Movimiento
+ * Movimiento.
  *
  * @ORM\Table(name="d_movimiento")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\MovimientoRepository")
@@ -98,17 +97,16 @@ class Movimiento
      */
     private $updatedBy;
 
-    function __construct()
+    public function __construct()
     {
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
     }
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -116,22 +114,23 @@ class Movimiento
     }
 
     /**
-     * Set cantidadMovida
+     * Set cantidadMovida.
      *
      * @param integer $cantidadMovida
+     *
      * @return Movimiento
      */
     public function setCantidadMovida($cantidadMovida)
     {
         $this->cantidadMovida = $cantidadMovida;
-    
+
         return $this;
     }
 
     /**
-     * Get cantidadMovida
+     * Get cantidadMovida.
      *
-     * @return integer 
+     * @return integer
      */
     public function getCantidadMovida()
     {
@@ -139,22 +138,23 @@ class Movimiento
     }
 
     /**
-     * Set fechaMovimiento
+     * Set fechaMovimiento.
      *
      * @param \DateTime $fechaMovimiento
+     *
      * @return Movimiento
      */
     public function setFechaMovimiento($fechaMovimiento)
     {
         $this->fechaMovimiento = $fechaMovimiento;
-    
+
         return $this;
     }
 
     /**
-     * Get fechaMovimiento
+     * Get fechaMovimiento.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaMovimiento()
     {
@@ -162,22 +162,23 @@ class Movimiento
     }
 
     /**
-     * Set movidoBy
+     * Set movidoBy.
      *
      * @param string $movidoBy
+     *
      * @return Movimiento
      */
     public function setMovidoBy($movidoBy)
     {
         $this->movidoBy = $movidoBy;
-    
+
         return $this;
     }
 
     /**
-     * Get movidoBy
+     * Get movidoBy.
      *
-     * @return string 
+     * @return string
      */
     public function getMovidoBy()
     {
@@ -185,22 +186,23 @@ class Movimiento
     }
 
     /**
-     * Set created
+     * Set created.
      *
      * @param \DateTime $created
+     *
      * @return Movimiento
      */
     public function setCreated($created)
     {
         $this->created = $created;
-    
+
         return $this;
     }
 
     /**
-     * Get created
+     * Get created.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -208,22 +210,23 @@ class Movimiento
     }
 
     /**
-     * Set createdBy
+     * Set createdBy.
      *
      * @param string $createdBy
+     *
      * @return Movimiento
      */
     public function setCreatedBy($createdBy)
     {
         $this->createdBy = $createdBy;
-    
+
         return $this;
     }
 
     /**
-     * Get createdBy
+     * Get createdBy.
      *
-     * @return string 
+     * @return string
      */
     public function getCreatedBy()
     {
@@ -231,22 +234,23 @@ class Movimiento
     }
 
     /**
-     * Set updated
+     * Set updated.
      *
      * @param \DateTime $updated
+     *
      * @return Movimiento
      */
     public function setUpdated($updated)
     {
         $this->updated = $updated;
-    
+
         return $this;
     }
 
     /**
-     * Get updated
+     * Get updated.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdated()
     {
@@ -254,22 +258,23 @@ class Movimiento
     }
 
     /**
-     * Set updatedBy
+     * Set updatedBy.
      *
      * @param string $updatedBy
+     *
      * @return Movimiento
      */
     public function setUpdatedBy($updatedBy)
     {
         $this->updatedBy = $updatedBy;
-    
+
         return $this;
     }
 
     /**
-     * Get updatedBy
+     * Get updatedBy.
      *
-     * @return string 
+     * @return string
      */
     public function getUpdatedBy()
     {
@@ -277,22 +282,23 @@ class Movimiento
     }
 
     /**
-     * Set almacenOrigen
+     * Set almacenOrigen.
      *
      * @param \Buseta\BodegaBundle\Entity\Bodega $almacenOrigen
+     *
      * @return Movimiento
      */
     public function setAlmacenOrigen(\Buseta\BodegaBundle\Entity\Bodega $almacenOrigen = null)
     {
         $this->almacenOrigen = $almacenOrigen;
-    
+
         return $this;
     }
 
     /**
-     * Get almacenOrigen
+     * Get almacenOrigen.
      *
-     * @return \Buseta\BodegaBundle\Entity\Bodega 
+     * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getAlmacenOrigen()
     {
@@ -300,22 +306,23 @@ class Movimiento
     }
 
     /**
-     * Set almacenDestino
+     * Set almacenDestino.
      *
      * @param \Buseta\BodegaBundle\Entity\Bodega $almacenDestino
+     *
      * @return Movimiento
      */
     public function setAlmacenDestino(\Buseta\BodegaBundle\Entity\Bodega $almacenDestino = null)
     {
         $this->almacenDestino = $almacenDestino;
-    
+
         return $this;
     }
 
     /**
-     * Get almacenDestino
+     * Get almacenDestino.
      *
-     * @return \Buseta\BodegaBundle\Entity\Bodega 
+     * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getAlmacenDestino()
     {
@@ -323,22 +330,23 @@ class Movimiento
     }
 
     /**
-     * Set producto
+     * Set producto.
      *
      * @param \Buseta\BodegaBundle\Entity\Producto $producto
+     *
      * @return Movimiento
      */
     public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
     {
         $this->producto = $producto;
-    
+
         return $this;
     }
 
     /**
-     * Get producto
+     * Get producto.
      *
-     * @return \Buseta\BodegaBundle\Entity\Producto 
+     * @return \Buseta\BodegaBundle\Entity\Producto
      */
     public function getProducto()
     {
@@ -346,9 +354,10 @@ class Movimiento
     }
 
     /**
-     * Add movimientos_productos
+     * Add movimientos_productos.
      *
      * @param \Buseta\BodegaBundle\Entity\MovimientosProductos $movimientosProductos
+     *
      * @return Movimiento
      */
     public function addMovimientosProducto(\Buseta\BodegaBundle\Entity\MovimientosProductos $movimientosProductos)
@@ -356,12 +365,12 @@ class Movimiento
         $movimientosProductos->setMovimiento($this);
 
         $this->movimientos_productos[] = $movimientosProductos;
-    
+
         return $this;
     }
 
     /**
-     * Remove movimientos_productos
+     * Remove movimientos_productos.
      *
      * @param \Buseta\BodegaBundle\Entity\MovimientosProductos $movimientosProductos
      */
@@ -371,9 +380,9 @@ class Movimiento
     }
 
     /**
-     * Get movimientos_productos
+     * Get movimientos_productos.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMovimientosProductos()
     {
@@ -395,5 +404,4 @@ class Movimiento
     {
         $this->categoriaProducto = $categoriaProducto;
     }
-
 }

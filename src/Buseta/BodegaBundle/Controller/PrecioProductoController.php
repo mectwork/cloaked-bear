@@ -4,23 +4,24 @@ namespace Buseta\BodegaBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\BodegaBundle\Entity\PrecioProducto;
 use Buseta\BodegaBundle\Form\Type\PrecioProductoType;
 
 /**
  * PrecioProducto controller.
- *
  */
 class PrecioProductoController extends Controller
 {
-    public function select_precio_productos_allAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function select_precio_productos_allAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
 
         $request = $this->getRequest();
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
 
         $json = array(
             'ok' => 'ok',
@@ -29,77 +30,80 @@ class PrecioProductoController extends Controller
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
 
-    public function comprobarPrecioAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function comprobarPrecioAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
 
         $request = $this->getRequest();
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
 
         $em = $this->getDoctrine()->getManager();
 
         $error = "Sin errores";
 
-        if($request->query->get('nombre'))
-        {
+        if ($request->query->get('nombre')) {
             $nombre = $request->query->get('nombre');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('codigo'))
-        {
+        if ($request->query->get('codigo')) {
             $codigo = $request->query->get('codigo');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('uom'))
-        {
+        if ($request->query->get('uom')) {
             $uom = $request->query->get('uom');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('bodega'))
-        {
+        if ($request->query->get('bodega')) {
             $bodega = $request->query->get('bodega');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('minimo_bodega') != null)
-        {
+        if ($request->query->get('minimo_bodega') != null) {
             $minimo_bodega = $request->query->get('minimo_bodega');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('maximo_bodega') != null)
-        {
+        if ($request->query->get('maximo_bodega') != null) {
             $maximo_bodega = $request->query->get('maximo_bodega');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('grupos'))
-        {
+        if ($request->query->get('grupos')) {
             $grupos = $request->query->get('grupos');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('subgrupos'))
-        {
+        if ($request->query->get('subgrupos')) {
             $subgrupos = $request->query->get('subgrupos');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('condicion'))
-        {
+        if ($request->query->get('condicion')) {
             $condicion = $request->query->get('condicion');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('activo'))
-        {
+        if ($request->query->get('activo')) {
             $activo = $request->query->get('activo');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
         $json = array(
             'error' => $error,
@@ -110,7 +114,6 @@ class PrecioProductoController extends Controller
 
     /**
      * Lists all PrecioProducto entities.
-     *
      */
     public function indexAction()
     {
@@ -125,7 +128,6 @@ class PrecioProductoController extends Controller
 
     /**
      * Creates a new PrecioProducto entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -162,12 +164,12 @@ class PrecioProductoController extends Controller
     }
 
     /**
-    * Creates a form to create a PrecioProducto entity.
-    *
-    * @param PrecioProducto $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a PrecioProducto entity.
+     *
+     * @param PrecioProducto $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(PrecioProducto $entity)
     {
         $form = $this->createForm(new PrecioProductoType(), $entity, array(
@@ -201,7 +203,6 @@ class PrecioProductoController extends Controller
 
     /**
      * Displays a form to create a new PrecioProducto entity.
-     *
      */
     public function newAction()
     {
@@ -216,7 +217,6 @@ class PrecioProductoController extends Controller
 
     /**
      * Finds and displays a PrecioProducto entity.
-     *
      */
     public function showAction($id)
     {
@@ -237,7 +237,6 @@ class PrecioProductoController extends Controller
 
     /**
      * Displays a form to edit an existing PrecioProducto entity.
-     *
      */
     public function editAction($id)
     {
@@ -260,12 +259,12 @@ class PrecioProductoController extends Controller
     }
 
     /**
-    * Creates a form to edit a PrecioProducto entity.
-    *
-    * @param PrecioProducto $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a PrecioProducto entity.
+     *
+     * @param PrecioProducto $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(PrecioProducto $entity)
     {
         $form = $this->createForm(new PrecioProductoType(), $entity, array(
@@ -280,7 +279,6 @@ class PrecioProductoController extends Controller
 
     /**
      * Edits an existing PrecioProducto entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -311,7 +309,6 @@ class PrecioProductoController extends Controller
 
     /**
      * Deletes a PrecioProducto entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {

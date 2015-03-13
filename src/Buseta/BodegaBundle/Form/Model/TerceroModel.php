@@ -2,12 +2,12 @@
 
 namespace Buseta\BodegaBundle\Form\Model;
 
+use Buseta\BodegaBundle\Entity\Tercero;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-use Buseta\BodegaBundle\Entity\Tercero;
 
 /**
- * TerceroModel
+ * TerceroModel.
  */
 class TerceroModel
 {
@@ -60,7 +60,7 @@ class TerceroModel
      */
     private $activo;
 
-    function __construct(Tercero $tercero = null)
+    public function __construct(Tercero $tercero = null)
     {
         $this->mecanismoscontacto = new ArrayCollection();
 
@@ -85,7 +85,6 @@ class TerceroModel
             $this->activo = $tercero->getActivo();
         }
     }
-
 
     /**
      * @return boolean

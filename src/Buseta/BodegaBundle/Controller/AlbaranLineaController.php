@@ -2,17 +2,12 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
-use Buseta\BodegaBundle\Entity\InformeProductosBodega;
-use Buseta\BodegaBundle\Entity\InformeStock;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
-use Buseta\BodegaBundle\Form\Type\AlbaranLineaType;
 
 /**
  * AlbaranLinea controller.
- *
  */
 class AlbaranLineaController extends Controller
 {
@@ -31,7 +26,6 @@ class AlbaranLineaController extends Controller
 
     /**
      * Finds and displays a AlbaranLinea entity.
-     *
      */
     public function showAction($id)
     {
@@ -50,7 +44,6 @@ class AlbaranLineaController extends Controller
 
     /**
      * Lists all AlbaranLinea entities.
-     *
      */
     public function indexAction()
     {
@@ -73,7 +66,6 @@ class AlbaranLineaController extends Controller
 
     /**
      * Displays a form to edit an existing AlbaranLinea entity.
-     *
      */
     public function editAction($id)
     {
@@ -107,7 +99,7 @@ class AlbaranLineaController extends Controller
      */
     private function createEditForm(AlbaranLinea $entity)
     {
-        $form = $this->createForm('bodega_albaran_type',$entity, array(
+        $form = $this->createForm('bodega_albaran_type', $entity, array(
             'action' => $this->generateUrl('albaran_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
@@ -116,7 +108,6 @@ class AlbaranLineaController extends Controller
     }
     /**
      * Edits an existing AlbaranLinea entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -143,8 +134,7 @@ class AlbaranLineaController extends Controller
 
         $json = array();
 
-        foreach($productos as $p){
-
+        foreach ($productos as $p) {
             $json[$p->getId()] = array(
                 'nombre' => $p->getNombre(),
                 'precio_salida' => $p->getPrecioSalida(),
@@ -158,5 +148,4 @@ class AlbaranLineaController extends Controller
             'json'   => json_encode($json),
         ));
     }
-
 }

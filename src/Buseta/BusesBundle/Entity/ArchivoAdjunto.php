@@ -3,10 +3,9 @@
 namespace Buseta\BusesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * ArchivoAdjunto
+ * ArchivoAdjunto.
  *
  * @ORM\Table(name="d_autobus_archivo_adjunto")
  * @ORM\Entity
@@ -81,6 +80,4 @@ class ArchivoAdjunto
     {
         return $this->valor;
     }
-
-
 }

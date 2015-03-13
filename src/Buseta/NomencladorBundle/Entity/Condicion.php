@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Condicion
+ * Condicion.
  *
  * @ORM\Table(name="n_condicion")
  * @ORM\Entity(repositoryClass="Buseta\NomencladorBundle\Entity\CondicionRepository")

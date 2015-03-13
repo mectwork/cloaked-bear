@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * FormaPago
+ * FormaPago.
  *
  * @ORM\Table(name="n_formapago")
  * @ORM\Entity
@@ -29,9 +29,9 @@ class FormaPago extends BaseNomenclador
     protected $valor;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -46,9 +46,10 @@ class FormaPago extends BaseNomenclador
     }
 
     /**
-     * Set valor
+     * Set valor.
      *
      * @param string $valor
+     *
      * @return FormaPago
      */
     public function setValor($valor)
@@ -59,7 +60,7 @@ class FormaPago extends BaseNomenclador
     }
 
     /**
-     * Get valor
+     * Get valor.
      *
      * @return string
      */
@@ -72,5 +73,4 @@ class FormaPago extends BaseNomenclador
     {
         return $this->valor;
     }
-
 }

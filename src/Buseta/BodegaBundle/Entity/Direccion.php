@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Direccion
+ * Direccion.
  *
  * @ORM\Table(name="n_direccion")
  * @ORM\Entity
@@ -226,32 +226,30 @@ class Direccion
         return $this->calle.', '.$this->numero.'. '.$this->entre_calles.'. '.$this->pais.'. '.$this->subdivision.', '.$this->ciudad.'.';
     }
 
-
-
-
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         $this->terceros = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
-     * Add terceros
+     * Add terceros.
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $terceros
+     *
      * @return Direccion
      */
     public function addTercero(\Buseta\BodegaBundle\Entity\Tercero $terceros)
     {
         $this->terceros[] = $terceros;
-    
+
         return $this;
     }
 
     /**
-     * Remove terceros
+     * Remove terceros.
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $terceros
      */

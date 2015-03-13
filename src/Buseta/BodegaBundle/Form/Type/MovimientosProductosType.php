@@ -8,36 +8,36 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MovimientosProductosType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('producto','entity',array(
+            ->add('producto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Producto',
                 'empty_value' => '---Seleccione un producto---',
                 'attr' => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('cantidad', 'integer', array(
                 'required' => true,
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Entity\MovimientosProductos'
+            'data_class' => 'Buseta\BodegaBundle\Entity\MovimientosProductos',
         ));
     }
 

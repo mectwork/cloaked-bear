@@ -69,7 +69,7 @@
                     <h3 class="modal-title" id="myModalLabel">Datos de nueva línea</h3>
                 </div>
                 <div class="modal-body" style="width: 800px;">
-                <form action="{{ path('movimientos_productos_create') }}" method="post" {{ form_enctype(movimientosProductos) }}>
+                    <form action="{{ path('movimientos_productos_create') }}" method="post" {{ form_enctype(movimientosProductos) }}>
                         <div class="row show-grid">
                             <div class="col-md-4">
                                 {{ form_row(movimientosProductos.producto) }}
@@ -79,14 +79,17 @@
                                 {{ form_row(movimientosProductos.cantidad) }}
                             </div>
                         </div>
-                </div>
-                <div class="modal-footer">
-                    <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
-                    <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</i></a></span>
 
+                        <div class="modal-footer">
+                            <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
+                            <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0 0 20px 20px;" href="#">
+                                <span class="fa fa-plus-circle"> Adicionar</span>
+                            </a>
+                        </div>
+
+                    {{ form_rest(movimientosProductos) }}
+                    </form>
                 </div>
-                {{ form_rest(movimientosProductos) }}
-                </form>
             </div>
             <!-- /.modal-content -->
         </div>
@@ -193,7 +196,7 @@
     });
 
     //Actualiza los almacenes de destino a partir de los almacenes de origen seleccionados con peticiones AJAX
-    $('#{{ form.almacenOrigen.vars.id }}').change(function(){
+    $({{ form.almacenOrigen.vars.id }}).change(function(){
         var data = {
             almacenOrigen_id: $(this).val()
         };
@@ -204,7 +207,7 @@
             data: data,
             success: function(data) {
                 var values = $.parseJSON(data);
-                var $almacenDestino_selector = $('#{{ form.almacenDestino.vars.id }}');
+                var $almacenDestino_selector = $({{ form.almacenDestino.vars.id }});
 
                 $almacenDestino_selector.html('<option>---Seleccione almacén destino---</option>');
 

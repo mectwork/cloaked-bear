@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Linea
+ * Linea.
  *
  * @ORM\Table(name="d_linea")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\LineaRepository")
@@ -100,9 +100,9 @@ class Linea
     private $monto;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -110,22 +110,23 @@ class Linea
     }
 
     /**
-     * Set numero
+     * Set numero.
      *
      * @param string $numero
+     *
      * @return Linea
      */
     public function setNumero($numero)
     {
         $this->numero = $numero;
-    
+
         return $this;
     }
 
     /**
-     * Get numero
+     * Get numero.
      *
-     * @return string 
+     * @return string
      */
     public function getNumero()
     {
@@ -133,22 +134,23 @@ class Linea
     }
 
     /**
-     * Set tipo
+     * Set tipo.
      *
      * @param string $tipo
+     *
      * @return Linea
      */
     public function setTipo($tipo)
     {
         $this->tipo = $tipo;
-    
+
         return $this;
     }
 
     /**
-     * Get tipo
+     * Get tipo.
      *
-     * @return string 
+     * @return string
      */
     public function getTipo()
     {
@@ -156,22 +158,23 @@ class Linea
     }
 
     /**
-     * Set cantidad_pedido
+     * Set cantidad_pedido.
      *
      * @param integer $cantidadPedido
+     *
      * @return Linea
      */
     public function setCantidadPedido($cantidadPedido)
     {
         $this->cantidad_pedido = $cantidadPedido;
-    
+
         return $this;
     }
 
     /**
-     * Get cantidad_pedido
+     * Get cantidad_pedido.
      *
-     * @return integer 
+     * @return integer
      */
     public function getCantidadPedido()
     {
@@ -179,22 +182,23 @@ class Linea
     }
 
     /**
-     * Set monto
+     * Set monto.
      *
      * @param float $monto
+     *
      * @return Linea
      */
     public function setMonto($monto)
     {
         $this->monto = $monto;
-    
+
         return $this;
     }
 
     /**
-     * Get monto
+     * Get monto.
      *
-     * @return float 
+     * @return float
      */
     public function getMonto()
     {
@@ -202,9 +206,10 @@ class Linea
     }
 
     /**
-     * Set productos
+     * Set productos.
      *
      * @param \Buseta\BodegaBundle\Entity\Producto $productos
+     *
      * @return Linea
      */
     public function setProductos(\Buseta\BodegaBundle\Entity\Producto $productos = null)
@@ -215,7 +220,7 @@ class Linea
     }
 
     /**
-     * Get productos
+     * Get productos.
      *
      * @return \Buseta\BodegaBundle\Entity\Producto
      */
@@ -225,22 +230,23 @@ class Linea
     }
 
     /**
-     * Set impuesto
+     * Set impuesto.
      *
      * @param \Buseta\TallerBundle\Entity\Impuesto $impuesto
+     *
      * @return Linea
      */
     public function setImpuesto(\Buseta\TallerBundle\Entity\Impuesto $impuesto = null)
     {
         $this->impuesto = $impuesto;
-    
+
         return $this;
     }
 
     /**
-     * Get impuesto
+     * Get impuesto.
      *
-     * @return \Buseta\TallerBundle\Entity\Impuesto 
+     * @return \Buseta\TallerBundle\Entity\Impuesto
      */
     public function getImpuesto()
     {
@@ -248,22 +254,23 @@ class Linea
     }
 
     /**
-     * Set condicion
+     * Set condicion.
      *
      * @param string $condicion
+     *
      * @return Linea
      */
     public function setCondicion($condicion)
     {
         $this->condicion = $condicion;
-    
+
         return $this;
     }
 
     /**
-     * Get condicion
+     * Get condicion.
      *
-     * @return string 
+     * @return string
      */
     public function getCondicion()
     {
@@ -271,22 +278,23 @@ class Linea
     }
 
     /**
-     * Set grupos
+     * Set grupos.
      *
      * @param \Buseta\NomencladorBundle\Entity\Grupo $grupos
+     *
      * @return Linea
      */
     public function setGrupos(\Buseta\NomencladorBundle\Entity\Grupo $grupos = null)
     {
         $this->grupos = $grupos;
-    
+
         return $this;
     }
 
     /**
-     * Get grupos
+     * Get grupos.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Grupo 
+     * @return \Buseta\NomencladorBundle\Entity\Grupo
      */
     public function getGrupos()
     {
@@ -294,22 +302,23 @@ class Linea
     }
 
     /**
-     * Set subgrupos
+     * Set subgrupos.
      *
      * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos
+     *
      * @return Linea
      */
     public function setSubgrupos(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos = null)
     {
         $this->subgrupos = $subgrupos;
-    
+
         return $this;
     }
 
     /**
-     * Get subgrupos
+     * Get subgrupos.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Subgrupo 
+     * @return \Buseta\NomencladorBundle\Entity\Subgrupo
      */
     public function getSubgrupos()
     {
@@ -317,22 +326,23 @@ class Linea
     }
 
     /**
-     * Set precio_producto
+     * Set precio_producto.
      *
      * @param float $precioProducto
+     *
      * @return Linea
      */
     public function setPrecioProducto($precioProducto)
     {
         $this->precio_producto = $precioProducto;
-    
+
         return $this;
     }
 
     /**
-     * Get precio_producto
+     * Get precio_producto.
      *
-     * @return float 
+     * @return float
      */
     public function getPrecioProducto()
     {
@@ -363,22 +373,23 @@ class Linea
 //    }
 
     /**
-     * Set pedidoCompra
+     * Set pedidoCompra.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra
+     *
      * @return Linea
      */
     public function setPedidoCompra(\Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra = null)
     {
         $this->pedidoCompra = $pedidoCompra;
-    
+
         return $this;
     }
 
     /**
-     * Get pedidoCompra
+     * Get pedidoCompra.
      *
-     * @return \Buseta\BodegaBundle\Entity\PedidoCompra 
+     * @return \Buseta\BodegaBundle\Entity\PedidoCompra
      */
     public function getPedidoCompra()
     {

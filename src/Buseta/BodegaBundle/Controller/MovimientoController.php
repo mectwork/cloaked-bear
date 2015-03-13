@@ -6,32 +6,30 @@ use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\BodegaBundle\Entity\MovimientosProductos;
 use Buseta\BodegaBundle\Form\Type\MovimientosProductosType;
 use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Form\Type\MovimientoType;
-use Buseta\BodegaBundle\Entity\InformeStock;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 
 /**
  * Movimiento controller.
- *
  */
 class MovimientoController extends Controller
 {
-
     /**
-     * Updated automatically select AlmacenDestino when change select AlmacenOrigen
-     *
+     * Updated automatically select AlmacenDestino when change select AlmacenOrigen.
      */
-    public function select_almacenOrigen_almacenDestinoAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function select_almacenOrigen_almacenDestinoAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
 
         $request = $this->getRequest();
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
 
         $em = $this->getDoctrine()->getManager();
 //        $almacenDestino = $em->getRepository('BusetaBodegaBundle:Bodega')->findBy(array(
@@ -41,10 +39,8 @@ class MovimientoController extends Controller
         $almacenDestino = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
 
         $json = array();
-        foreach ($almacenDestino as $almacenDestino)
-        {
-            if($almacenDestino->getId() != $request->query->get('almacenOrigen_id'))
-            {
+        foreach ($almacenDestino as $almacenDestino) {
+            if ($almacenDestino->getId() != $request->query->get('almacenOrigen_id')) {
                 $json[] = array(
                     'id' => $almacenDestino->getId(),
                     'valor' => $almacenDestino->getNombre(),
@@ -70,7 +66,6 @@ class MovimientoController extends Controller
 
     /**
      * Lists all Movimiento entities.
-     *
      */
     public function indexAction()
     {
@@ -93,7 +88,6 @@ class MovimientoController extends Controller
 
     /**
      * Creates a new Movimiento entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -104,7 +98,6 @@ class MovimientoController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         if ($form->isValid()) {
-
             $fechaMovimiento = new \DateTime();
 
             $request = $this->get('request');
@@ -120,7 +113,7 @@ class MovimientoController extends Controller
 
             $cantidadDisponible = 0;
 
-            foreach($movimientos as $movimiento) {
+            foreach ($movimientos as $movimiento) {
                 $idProducto = $movimiento['producto'];
 
                 $producto           = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
@@ -131,8 +124,7 @@ class MovimientoController extends Controller
                 $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $almacen, $cantidadProducto, $em);
 
                 //Comprobar la existencia del producto en el almacén seleccionado
-                if($cantidadDisponible == 'No existe')
-                {
+                if ($cantidadDisponible == 'No existe') {
                     //Volver al menu de de crear nuevo Movimiento
                     $movimientosProductos = $this->createForm(new MovimientosProductosType());
 
@@ -149,15 +141,13 @@ class MovimientoController extends Controller
                     ));
                 }
                 //Si no existe la cantidad solicitada en el almacen del producto seleccionado
-                elseif($cantidadDisponible < 0)
-                {
+                elseif ($cantidadDisponible < 0) {
                     //Volver al menu de de crear nuevo Movimiento
                     $movimientosProductos = $this->createForm(new MovimientosProductosType());
 
                     $form   = $this->createCreateForm($entity);
                     $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
                     $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
-
 
                     $form->addError(new FormError("No existe en el almacén '".$bodega->getNombre()."' la cantidad de productos solicitados para el producto: ".$producto->getNombre()));
 
@@ -168,8 +158,7 @@ class MovimientoController extends Controller
                     ));
                 }
                 //Si sí existe la cantidad del producto en el almacén seleccionado
-                else
-                {
+                else {
                     //Actualizar Bitácora - AlmacenOrigen
                     $bitacora = new BitacoraAlmacen();
                     $bitacora->setProducto($producto);
@@ -209,7 +198,6 @@ class MovimientoController extends Controller
                 }
             }
 
-
             return $this->redirect($this->generateUrl('movimiento_show', array('id' => $entity->getId())));
         }
 
@@ -240,7 +228,6 @@ class MovimientoController extends Controller
 
     /**
      * Displays a form to create a new Movimiento entity.
-     *
      */
     public function newAction()
     {
@@ -260,7 +247,6 @@ class MovimientoController extends Controller
 
     /**
      * Finds and displays a Movimiento entity.
-     *
      */
     public function showAction($id)
     {
@@ -282,7 +268,6 @@ class MovimientoController extends Controller
 
     /**
      * Displays a form to edit an existing Movimiento entity.
-     *
      */
     public function editAction($id)
     {
@@ -328,7 +313,6 @@ class MovimientoController extends Controller
 
     /**
      * Edits an existing Movimiento entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -359,7 +343,6 @@ class MovimientoController extends Controller
 
     /**
      * Deletes a Movimiento entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {

@@ -22,14 +22,14 @@ class AddTareaMantenimientoFieldSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_SUBMIT     => 'preBind'
+            FormEvents::PRE_SUBMIT     => 'preBind',
         );
     }
 
     private function addTareaMantenimientoForm($form, $tarea = null, $subgrupo = null)
     {
-        if($subgrupo === null) {
-            $form->add('tarea','choice',array(
+        if ($subgrupo === null) {
+            $form->add('tarea', 'choice', array(
                 'choices' => array(),
                 'empty_value'   => '---Seleccione tarea---',
                 'attr' => array(
@@ -37,7 +37,7 @@ class AddTareaMantenimientoFieldSubscriber implements EventSubscriberInterface
                 ),
             ));
         } else {
-            $form->add('tarea','entity', array(
+            $form->add('tarea', 'entity', array(
                 'class'         => 'BusetaNomencladorBundle:Tarea',
                 'empty_value'   => '---Seleccione tarea---',
                 'auto_initialize' => false,
@@ -48,19 +48,19 @@ class AddTareaMantenimientoFieldSubscriber implements EventSubscriberInterface
                 'query_builder' => function (EntityRepository $repository) use ($subgrupo) {
                         $qb = $repository->createQueryBuilder('tarea')
                             ->innerJoin('tarea.subgrupo', 'subgrupo');
-                        if($subgrupo instanceof Subgrupo){
+                        if ($subgrupo instanceof Subgrupo) {
                             $qb->where('subgrupo = :subgrupo')
                                 ->setParameter('subgrupo', $subgrupo);
-                        }elseif(is_numeric($subgrupo)){
+                        } elseif (is_numeric($subgrupo)) {
                             $qb->where('subgrupo.id = :subgrupo')
                                 ->setParameter('subgrupo', $subgrupo);
-                        }else{
+                        } else {
                             $qb->where('subgrupo.valor = :subgrupo')
                                 ->setParameter('subgrupo', null);
                         }
 
                         return $qb;
-                    }
+                    },
             ));
         }
     }
@@ -73,8 +73,8 @@ class AddTareaMantenimientoFieldSubscriber implements EventSubscriberInterface
         if (null == $data) {
             $this->addTareaMantenimientoForm($form);
         } else {
-            $tarea = ($data->getTarea()) ? $data->getTarea() : null ;
-            $subgrupo = ($tarea) ? $tarea->getSubgrupo() : null ;
+            $tarea = ($data->getTarea()) ? $data->getTarea() : null;
+            $subgrupo = ($tarea) ? $tarea->getSubgrupo() : null;
             $this->addTareaMantenimientoForm($form, $tarea, $subgrupo);
         }
     }

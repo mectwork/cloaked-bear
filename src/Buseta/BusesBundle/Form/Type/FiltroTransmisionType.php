@@ -8,9 +8,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class FiltroTransmisionType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -20,18 +20,18 @@ class FiltroTransmisionType extends AbstractType
                     'attr'   => array(
                         'class' => 'form-control',
                         'style' => 'width: 150px',
-                    )
+                    ),
                 ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Buseta\BusesBundle\Entity\FiltroTransmision'
+                'data_class' => 'Buseta\BusesBundle\Entity\FiltroTransmision',
         ));
     }
 

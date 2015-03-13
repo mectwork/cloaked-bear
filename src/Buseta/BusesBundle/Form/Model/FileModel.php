@@ -6,14 +6,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * FileModel
+ * FileModel.
  */
 class FileModel
 {
-
     /**
      * @Assert\File(maxSize="6000000")
-     * @var UploadedFile $file
+     *
+     * @var UploadedFile
      */
     private $valor;
 
@@ -32,9 +32,4 @@ class FileModel
     {
         return $this->valor;
     }
-
-
-
-
-
 }

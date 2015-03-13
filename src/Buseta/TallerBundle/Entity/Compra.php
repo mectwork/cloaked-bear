@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Compra
+ * Compra.
  *
  * @ORM\Table(name="d_compra")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\CompraRepository")
@@ -146,7 +146,7 @@ class Compra
     private $mecanico_solicita;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -174,9 +174,9 @@ class Compra
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -184,45 +184,47 @@ class Compra
     }
 
     /**
-     * Set numero
+     * Set numero.
      *
      * @param string $numero
+     *
      * @return Compra
      */
     public function setNumero($numero)
     {
         $this->numero = $numero;
-    
+
         return $this;
     }
 
     /**
-     * Get numero
+     * Get numero.
      *
-     * @return string 
+     * @return string
      */
     public function getNumero()
     {
         return $this->numero;
     }
-    
+
     /**
-     * Set descripcion
+     * Set descripcion.
      *
      * @param string $descripcion
+     *
      * @return Compra
      */
     public function setDescripcion($descripcion)
     {
         $this->descripcion = $descripcion;
-    
+
         return $this;
     }
 
     /**
-     * Get descripcion
+     * Get descripcion.
      *
-     * @return string 
+     * @return string
      */
     public function getDescripcion()
     {
@@ -230,22 +232,23 @@ class Compra
     }
 
     /**
-     * Set fecha_pedido
+     * Set fecha_pedido.
      *
      * @param \DateTime $fechaPedido
+     *
      * @return Compra
      */
     public function setFechaPedido($fechaPedido)
     {
         $this->fecha_pedido = $fechaPedido;
-    
+
         return $this;
     }
 
     /**
-     * Get fecha_pedido
+     * Get fecha_pedido.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaPedido()
     {
@@ -253,22 +256,23 @@ class Compra
     }
 
     /**
-     * Set moneda
+     * Set moneda.
      *
      * @param string $moneda
+     *
      * @return Compra
      */
     public function setMoneda($moneda)
     {
         $this->moneda = $moneda;
-    
+
         return $this;
     }
 
     /**
-     * Get moneda
+     * Get moneda.
      *
-     * @return string 
+     * @return string
      */
     public function getMoneda()
     {
@@ -276,22 +280,23 @@ class Compra
     }
 
     /**
-     * Set condiciones_pago
+     * Set condiciones_pago.
      *
      * @param string $condicionesPago
+     *
      * @return Compra
      */
     public function setCondicionesPago($condicionesPago)
     {
         $this->condiciones_pago = $condicionesPago;
-    
+
         return $this;
     }
 
     /**
-     * Get condiciones_pago
+     * Get condiciones_pago.
      *
-     * @return string 
+     * @return string
      */
     public function getCondicionesPago()
     {
@@ -299,22 +304,23 @@ class Compra
     }
 
     /**
-     * Set importe_libre_impuesto
+     * Set importe_libre_impuesto.
      *
      * @param float $importeLibreImpuesto
+     *
      * @return Compra
      */
     public function setImporteLibreImpuesto($importeLibreImpuesto)
     {
         $this->importe_libre_impuesto = $importeLibreImpuesto;
-    
+
         return $this;
     }
 
     /**
-     * Get importe_libre_impuesto
+     * Get importe_libre_impuesto.
      *
-     * @return float 
+     * @return float
      */
     public function getImporteLibreImpuesto()
     {
@@ -322,22 +328,23 @@ class Compra
     }
 
     /**
-     * Set importe_con_impuesto
+     * Set importe_con_impuesto.
      *
      * @param float $importeConImpuesto
+     *
      * @return Compra
      */
     public function setImporteConImpuesto($importeConImpuesto)
     {
         $this->importe_con_impuesto = $importeConImpuesto;
-    
+
         return $this;
     }
 
     /**
-     * Get importe_con_impuesto
+     * Get importe_con_impuesto.
      *
-     * @return float 
+     * @return float
      */
     public function getImporteConImpuesto()
     {
@@ -345,22 +352,23 @@ class Compra
     }
 
     /**
-     * Set importe_general
+     * Set importe_general.
      *
      * @param float $importeGeneral
+     *
      * @return Compra
      */
     public function setImporteGeneral($importeGeneral)
     {
         $this->importe_general = $importeGeneral;
-    
+
         return $this;
     }
 
     /**
-     * Get importe_general
+     * Get importe_general.
      *
-     * @return float 
+     * @return float
      */
     public function getImporteGeneral()
     {
@@ -368,22 +376,23 @@ class Compra
     }
 
     /**
-     * Set estado
+     * Set estado.
      *
      * @param string $estado
+     *
      * @return Compra
      */
     public function setEstado($estado)
     {
         $this->estado = $estado;
-    
+
         return $this;
     }
 
     /**
-     * Get estado
+     * Get estado.
      *
-     * @return string 
+     * @return string
      */
     public function getEstado()
     {
@@ -391,22 +400,23 @@ class Compra
     }
 
     /**
-     * Set tercero
+     * Set tercero.
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $tercero
+     *
      * @return Compra
      */
     public function setTercero(\Buseta\BodegaBundle\Entity\Tercero $tercero = null)
     {
         $this->tercero = $tercero;
-    
+
         return $this;
     }
 
     /**
-     * Get tercero
+     * Get tercero.
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getTercero()
     {
@@ -449,22 +459,23 @@ class Compra
 //    }
 
     /**
-     * Set numero_factura_proveedor
+     * Set numero_factura_proveedor.
      *
      * @param string $numeroFacturaProveedor
+     *
      * @return Compra
      */
     public function setNumeroFacturaProveedor($numeroFacturaProveedor)
     {
         $this->numero_factura_proveedor = $numeroFacturaProveedor;
-    
+
         return $this;
     }
 
     /**
-     * Get numero_factura_proveedor
+     * Get numero_factura_proveedor.
      *
-     * @return string 
+     * @return string
      */
     public function getNumeroFacturaProveedor()
     {
@@ -472,22 +483,23 @@ class Compra
     }
 
     /**
-     * Set mecanico_solicita
+     * Set mecanico_solicita.
      *
      * @param string $mecanicoSolicita
+     *
      * @return Compra
      */
     public function setMecanicoSolicita($mecanicoSolicita)
     {
         $this->mecanico_solicita = $mecanicoSolicita;
-    
+
         return $this;
     }
 
     /**
-     * Get mecanico_solicita
+     * Get mecanico_solicita.
      *
-     * @return string 
+     * @return string
      */
     public function getMecanicoSolicita()
     {
@@ -495,22 +507,23 @@ class Compra
     }
 
     /**
-     * Set centro_costo
+     * Set centro_costo.
      *
      * @param \Buseta\BusesBundle\Entity\Autobus $centroCosto
+     *
      * @return Compra
      */
     public function setCentroCosto(\Buseta\BusesBundle\Entity\Autobus $centroCosto = null)
     {
         $this->centro_costo = $centroCosto;
-    
+
         return $this;
     }
 
     /**
-     * Get centro_costo
+     * Get centro_costo.
      *
-     * @return \Buseta\BusesBundle\Entity\Autobus 
+     * @return \Buseta\BusesBundle\Entity\Autobus
      */
     public function getCentroCosto()
     {
@@ -518,22 +531,23 @@ class Compra
     }
 
     /**
-     * Set forma_pago
+     * Set forma_pago.
      *
      * @param \Buseta\NomencladorBundle\Entity\FormaPago $formaPago
+     *
      * @return Compra
      */
     public function setFormaPago(\Buseta\NomencladorBundle\Entity\FormaPago $formaPago = null)
     {
         $this->forma_pago = $formaPago;
-    
+
         return $this;
     }
 
     /**
-     * Get forma_pago
+     * Get forma_pago.
      *
-     * @return \Buseta\NomencladorBundle\Entity\FormaPago 
+     * @return \Buseta\NomencladorBundle\Entity\FormaPago
      */
     public function getFormaPago()
     {
@@ -541,22 +555,23 @@ class Compra
     }
 
     /**
-     * Set precio_general
+     * Set precio_general.
      *
      * @param float $precioGeneral
+     *
      * @return Compra
      */
     public function setPrecioGeneral($precioGeneral)
     {
         $this->precio_general = $precioGeneral;
-    
+
         return $this;
     }
 
     /**
-     * Get precio_general
+     * Get precio_general.
      *
-     * @return float 
+     * @return float
      */
     public function getPrecioGeneral()
     {
@@ -564,22 +579,23 @@ class Compra
     }
 
     /**
-     * Set consecutivo_compra
+     * Set consecutivo_compra.
      *
      * @param string $consecutivoCompra
+     *
      * @return Compra
      */
     public function setConsecutivoCompra($consecutivoCompra)
     {
         $this->consecutivo_compra = $consecutivoCompra;
-    
+
         return $this;
     }
 
     /**
-     * Get consecutivo_compra
+     * Get consecutivo_compra.
      *
-     * @return string 
+     * @return string
      */
     public function getConsecutivoCompra()
     {

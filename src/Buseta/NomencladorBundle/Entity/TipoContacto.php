@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * TipoContacto
+ * TipoContacto.
  *
  * @ORM\Table(name="n_tipocontacto")
  * @ORM\Entity

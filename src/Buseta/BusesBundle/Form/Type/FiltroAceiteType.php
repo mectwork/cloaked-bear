@@ -8,9 +8,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class FiltroAceiteType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -20,25 +20,25 @@ class FiltroAceiteType extends AbstractType
                     'attr'   => array(
                         'class' => 'form-control',
                         'style' => 'width: 150px',
-                    )
+                    ),
                 ))
             ->add('filtro_aceite_2', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
                         'style' => 'width: 150px',
-                    )
+                    ),
                 ))
             ->add('filtro_aceite_3', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
                         'style' => 'width: 150px',
-                    )
+                    ),
                 ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
@@ -48,7 +48,7 @@ class FiltroAceiteType extends AbstractType
             'data_class' => 'Buseta\BusesBundle\Entity\FiltroAceite'
         ));*/
         $resolver->setDefaults(array(
-                'data_class' => 'Buseta\BusesBundle\Entity\FiltroAceite'
+                'data_class' => 'Buseta\BusesBundle\Entity\FiltroAceite',
         ));
     }
 

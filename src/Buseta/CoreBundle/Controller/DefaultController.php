@@ -13,7 +13,6 @@ class DefaultController extends Controller
 
     /**
      * Module Configuration System.
-     *
      */
     public function principalAction()
     {

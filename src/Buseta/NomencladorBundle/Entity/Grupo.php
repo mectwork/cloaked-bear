@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Grupo
+ * Grupo.
  *
  * @ORM\Table(name="n_grupo")
  * @ORM\Entity
@@ -41,17 +41,17 @@ class Grupo extends BaseNomenclador
     }
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         $this->subgrupos = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -59,22 +59,23 @@ class Grupo extends BaseNomenclador
     }
 
     /**
-     * Set valor
+     * Set valor.
      *
      * @param string $valor
+     *
      * @return Grupo
      */
     public function setValor($valor)
     {
         $this->valor = $valor;
-    
+
         return $this;
     }
 
     /**
-     * Get valor
+     * Get valor.
      *
-     * @return string 
+     * @return string
      */
     public function getValor()
     {
@@ -82,9 +83,10 @@ class Grupo extends BaseNomenclador
     }
 
     /**
-     * Add subgrupos
+     * Add subgrupos.
      *
      * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos
+     *
      * @return Grupo
      */
     public function addSubgrupo(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos)
@@ -92,12 +94,12 @@ class Grupo extends BaseNomenclador
         $subgrupos->setGrupo($this);
 
         $this->subgrupos[] = $subgrupos;
-    
+
         return $this;
     }
 
     /**
-     * Remove subgrupos
+     * Remove subgrupos.
      *
      * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos
      */
@@ -107,9 +109,9 @@ class Grupo extends BaseNomenclador
     }
 
     /**
-     * Get subgrupos
+     * Get subgrupos.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getSubgrupos()
     {

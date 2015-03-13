@@ -3,27 +3,21 @@
 namespace Buseta\BodegaBundle\Controller;
 
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
-use Buseta\BodegaBundle\Entity\InformeProductosBodega;
-use Buseta\BodegaBundle\Entity\InformeStock;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Form\Type\AlbaranLineaType;
-use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
-use Buseta\BodegaBundle\Form\Type\PedidoCompraType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\BodegaBundle\Entity\Albaran;
-use Buseta\BodegaBundle\Form\Type\AlbaranType;
 use Buseta\BodegaBundle\Form\Filtro\BusquedaAlbaranType;
 
 /**
  * Albaran controller.
- *
  */
 class AlbaranController extends Controller
 {
-    public function busquedaAvanzadaAction($page,$cantResult){
+    public function busquedaAvanzadaAction($page, $cantResult)
+    {
         $em = $this->get('doctrine.orm.entity_manager');
         $request = $this->getRequest();
 
@@ -33,11 +27,11 @@ class AlbaranController extends Controller
         $filter = $filter;
 
         $busqueda = $em->getRepository('BusetaBodegaBundle:Albaran')
-            ->busquedaAvanzada($page,$cantResult,$filter,$orderBy);
+            ->busquedaAvanzada($page, $cantResult, $filter, $orderBy);
         $paginacion = $busqueda['paginacion'];
         $results    = $busqueda['results'];
 
-        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-albaran.html.twig',array(
+        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-albaran.html.twig', array(
             'albaranes'   => $results,
             'page'       => $page,
             'cantResult' => $cantResult,
@@ -53,10 +47,10 @@ class AlbaranController extends Controller
         $albaran = $em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
 
         $albaranLineas = $em->getRepository('BusetaBodegaBundle:AlbaranLinea')->findBy(array(
-            'albaran' => $albaran
+            'albaran' => $albaran,
         ));
 
-        foreach($albaranLineas as $linea){
+        foreach ($albaranLineas as $linea) {
 
             //Actualizar Bitácora
             $bitacora = new BitacoraAlmacen();
@@ -73,80 +67,83 @@ class AlbaranController extends Controller
             $em->flush();
         }
 
-
-
         return $this->redirect($this->generateUrl('albaran'));
     }
 
-    public function guardarAlbaranAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function guardarAlbaranAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
 
         $request = $this->getRequest();
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
 
         $em = $this->getDoctrine()->getManager();
 
         $error = "Sin errores";
 
-        if($request->query->get('estadoDocumento'))
-        {
+        if ($request->query->get('estadoDocumento')) {
             $estadoDocumento = $request->query->get('estadoDocumento');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('fechaMovimiento'))
-        {
+        if ($request->query->get('fechaMovimiento')) {
             $fechaMovimiento = $request->query->get('fechaMovimiento');
 
             //$fecha = new \DateTime('now');
-            $date='%s-%s-%s GMT-0';
+            $date = '%s-%s-%s GMT-0';
             $fecha = explode("/", $fechaMovimiento);
-            $d = $fecha[0]; $m = $fecha[1];
+            $d = $fecha[0];
+            $m = $fecha[1];
             $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
             $y = $fecha[0];
-            $fechaMovimiento =  new \DateTime(sprintf($date,$y,$m,$d));
+            $fechaMovimiento =  new \DateTime(sprintf($date, $y, $m, $d));
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('fechaContable'))
-        {
+        if ($request->query->get('fechaContable')) {
             $fechaContable = $request->query->get('fechaContable');
 
             //$fecha = new \DateTime('now');
-            $date='%s-%s-%s GMT-0';
+            $date = '%s-%s-%s GMT-0';
             $fecha = explode("/", $fechaContable);
-            $d = $fecha[0]; $m = $fecha[1];
+            $d = $fecha[0];
+            $m = $fecha[1];
             $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
             $y = $fecha[0];
-            $fechaContable =  new \DateTime(sprintf($date,$y,$m,$d));
+            $fechaContable =  new \DateTime(sprintf($date, $y, $m, $d));
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('tercero'))
-        {
+        if ($request->query->get('tercero')) {
             $tercero = $request->query->get('tercero');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('almacen'))
-        {
+        if ($request->query->get('almacen')) {
             $almacen = $request->query->get('almacen');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('numeroReferencia'))
-        {
+        if ($request->query->get('numeroReferencia')) {
             $numeroReferencia = $request->query->get('numeroReferencia');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
-        if($request->query->get('consecutivoCompra'))
-        {
+        if ($request->query->get('consecutivoCompra')) {
             $consecutivoCompra = $request->query->get('consecutivoCompra');
+        } else {
+            $error = "error";
         }
-        else { $error = "error"; }
 
         $json = array(
             'error' => $error,
@@ -155,13 +152,16 @@ class AlbaranController extends Controller
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
 
-    public function select_albaran_ajaxAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function select_albaran_ajaxAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
 
         $request = $this->getRequest();
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
 
         $em = $this->getDoctrine()->getManager();
 
@@ -176,7 +176,6 @@ class AlbaranController extends Controller
 
     /**
      * Finds and displays a Albaran entity.
-     *
      */
     public function showAction($id)
     {
@@ -195,7 +194,6 @@ class AlbaranController extends Controller
 
     /**
      * Lists all Albaran entities.
-     *
      */
     public function indexAction()
     {
@@ -210,7 +208,6 @@ class AlbaranController extends Controller
 
     /**
      * Displays a form to edit an existing Albaran entity.
-     *
      */
     public function editAction($id)
     {
@@ -244,7 +241,7 @@ class AlbaranController extends Controller
      */
     private function createEditForm(Albaran $entity)
     {
-        $form = $this->createForm('bodega_albaran_type',$entity, array(
+        $form = $this->createForm('bodega_albaran_type', $entity, array(
             'action' => $this->generateUrl('albaran_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
@@ -254,7 +251,6 @@ class AlbaranController extends Controller
 
     /**
      * Edits an existing Albaran entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -277,23 +273,25 @@ class AlbaranController extends Controller
         $albaran->setCreated($albaran->getCreated());
         $albaran->setUpdated(new \DateTime());
 
-        if($datos['fechaContable']){
-            $date='%s-%s-%s GMT-0';
+        if ($datos['fechaContable']) {
+            $date = '%s-%s-%s GMT-0';
             $fecha = explode("/", $datos['fechaContable']);
-            $d = $fecha[0]; $m = $fecha[1];
+            $d = $fecha[0];
+            $m = $fecha[1];
             $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
             $y = $fecha[0];
-            $fechaContable =  new \DateTime(sprintf($date,$y,$m,$d));
+            $fechaContable =  new \DateTime(sprintf($date, $y, $m, $d));
             $albaran->setFechaContable($fechaContable);
         }
 
-        if($datos['fechaMovimiento']){
-            $date='%s-%s-%s GMT-0';
+        if ($datos['fechaMovimiento']) {
+            $date = '%s-%s-%s GMT-0';
             $fecha = explode("/", $datos['fechaMovimiento']);
-            $d = $fecha[0]; $m = $fecha[1];
+            $d = $fecha[0];
+            $m = $fecha[1];
             $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
             $y = $fecha[0];
-            $fechaMovimiento =  new \DateTime(sprintf($date,$y,$m,$d));
+            $fechaMovimiento =  new \DateTime(sprintf($date, $y, $m, $d));
             $albaran->setFechaMovimiento($fechaMovimiento);
         }
 
@@ -301,9 +299,9 @@ class AlbaranController extends Controller
 
         //Actualizar Lineas del Albaran
         //registro los datos de las líneas del albarán
-        foreach($datos['albaranLinea'] as $linea){
+        foreach ($datos['albaranLinea'] as $linea) {
             $albaranLinea = $em->getRepository('BusetaBodegaBundle:AlbaranLinea')->findOneBy(array(
-                'albaran' => $albaran
+                'albaran' => $albaran,
             ));
 
             $albaranLinea->setLinea($linea['linea']);
@@ -322,7 +320,6 @@ class AlbaranController extends Controller
 
             $em->persist($albaranLinea);
             $em->flush();
-
         }
 
         return $this->redirect($this->generateUrl('albaran_show', array('id' => $id)));
@@ -330,7 +327,6 @@ class AlbaranController extends Controller
 
     /**
      * Creates a new Albaran entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -348,16 +344,16 @@ class AlbaranController extends Controller
         $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($datos['tercero']);
         $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($datos['almacen']);
 
-        $date='%s-%s-%s GMT-0';
+        $date = '%s-%s-%s GMT-0';
         $fecha = explode("/", $datos['fechaMovimiento']);
-        $d = $fecha[0]; $m = $fecha[1];
+        $d = $fecha[0];
+        $m = $fecha[1];
         $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
         $y = $fecha[0];
-        $fechaMovimiento =  new \DateTime(sprintf($date,$y,$m,$d));
+        $fechaMovimiento =  new \DateTime(sprintf($date, $y, $m, $d));
 
         //Actualizar Movimiento de productos
-        foreach($albaranLineas as $albaranLineas)
-        {
+        foreach ($albaranLineas as $albaranLineas) {
             $movimiento = new Movimiento();
             $movimiento->setAlmacenOrigen($almacen);
             $movimiento->setAlmacenDestino($almacen);
@@ -404,7 +400,6 @@ class AlbaranController extends Controller
 
     /**
      * Displays a form to create a new Albaran entity.
-     *
      */
     public function newAction()
     {
@@ -421,5 +416,4 @@ class AlbaranController extends Controller
             'albaran_linea'  => $albaran_linea->createView(),
         ));
     }
-
 }

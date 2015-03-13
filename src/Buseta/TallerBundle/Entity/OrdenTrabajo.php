@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Linea
+ * Linea.
  *
  * @ORM\Table(name="d_orden_trabajo")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\OrdenTrabajoRepository")
@@ -140,16 +140,14 @@ class OrdenTrabajo
      */
     private $aprobadoPor;
 
-
     /**
      * @var integer
      * @ORM\Column(name="kilometraje", type="integer")
      */
     private $kilometraje;
 
-
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -162,9 +160,9 @@ class OrdenTrabajo
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -172,22 +170,23 @@ class OrdenTrabajo
     }
 
     /**
-     * Set numero
+     * Set numero.
      *
      * @param string $numero
+     *
      * @return OrdenTrabajo
      */
     public function setNumero($numero)
     {
         $this->numero = $numero;
-    
+
         return $this;
     }
 
     /**
-     * Get numero
+     * Get numero.
      *
-     * @return string 
+     * @return string
      */
     public function getNumero()
     {
@@ -195,22 +194,23 @@ class OrdenTrabajo
     }
 
     /**
-     * Set diagnostico
+     * Set diagnostico.
      *
      * @param string $diagnostico
+     *
      * @return OrdenTrabajo
      */
     public function setDiagnostico($diagnostico)
     {
         $this->diagnostico = $diagnostico;
-    
+
         return $this;
     }
 
     /**
-     * Get diagnostico
+     * Get diagnostico.
      *
-     * @return string 
+     * @return string
      */
     public function getDiagnostico()
     {
@@ -218,22 +218,23 @@ class OrdenTrabajo
     }
 
     /**
-     * Set prioridad
+     * Set prioridad.
      *
      * @param string $prioridad
+     *
      * @return OrdenTrabajo
      */
     public function setPrioridad($prioridad)
     {
         $this->prioridad = $prioridad;
-    
+
         return $this;
     }
 
     /**
-     * Get prioridad
+     * Get prioridad.
      *
-     * @return string 
+     * @return string
      */
     public function getPrioridad()
     {
@@ -241,22 +242,23 @@ class OrdenTrabajo
     }
 
     /**
-     * Set observaciones
+     * Set observaciones.
      *
      * @param string $observaciones
+     *
      * @return OrdenTrabajo
      */
     public function setObservaciones($observaciones)
     {
         $this->observaciones = $observaciones;
-    
+
         return $this;
     }
 
     /**
-     * Get observaciones
+     * Get observaciones.
      *
-     * @return string 
+     * @return string
      */
     public function getObservaciones()
     {
@@ -264,22 +266,23 @@ class OrdenTrabajo
     }
 
     /**
-     * Set estado
+     * Set estado.
      *
      * @param boolean $estado
+     *
      * @return OrdenTrabajo
      */
     public function setEstado($estado)
     {
         $this->estado = $estado;
-    
+
         return $this;
     }
 
     /**
-     * Get estado
+     * Get estado.
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEstado()
     {
@@ -287,22 +290,23 @@ class OrdenTrabajo
     }
 
     /**
-     * Set fechaInicio
+     * Set fechaInicio.
      *
      * @param \DateTime $fechaInicio
+     *
      * @return OrdenTrabajo
      */
     public function setFechaInicio($fechaInicio)
     {
         $this->fechaInicio = $fechaInicio;
-    
+
         return $this;
     }
 
     /**
-     * Get fechaInicio
+     * Get fechaInicio.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaInicio()
     {
@@ -310,22 +314,23 @@ class OrdenTrabajo
     }
 
     /**
-     * Set fechaFinal
+     * Set fechaFinal.
      *
      * @param \DateTime $fechaFinal
+     *
      * @return OrdenTrabajo
      */
     public function setFechaFinal($fechaFinal)
     {
         $this->fechaFinal = $fechaFinal;
-    
+
         return $this;
     }
 
     /**
-     * Get fechaFinal
+     * Get fechaFinal.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaFinal()
     {
@@ -333,22 +338,23 @@ class OrdenTrabajo
     }
 
     /**
-     * Set duracionDias
+     * Set duracionDias.
      *
      * @param string $duracionDias
+     *
      * @return OrdenTrabajo
      */
     public function setDuracionDias($duracionDias)
     {
         $this->duracionDias = $duracionDias;
-    
+
         return $this;
     }
 
     /**
-     * Get duracionDias
+     * Get duracionDias.
      *
-     * @return string 
+     * @return string
      */
     public function getDuracionDias()
     {
@@ -356,22 +362,23 @@ class OrdenTrabajo
     }
 
     /**
-     * Set duracionHorasLaboradas
+     * Set duracionHorasLaboradas.
      *
      * @param string $duracionHorasLaboradas
+     *
      * @return OrdenTrabajo
      */
     public function setDuracionHorasLaboradas($duracionHorasLaboradas)
     {
         $this->duracionHorasLaboradas = $duracionHorasLaboradas;
-    
+
         return $this;
     }
 
     /**
-     * Get duracionHorasLaboradas
+     * Get duracionHorasLaboradas.
      *
-     * @return string 
+     * @return string
      */
     public function getDuracionHorasLaboradas()
     {
@@ -379,22 +386,23 @@ class OrdenTrabajo
     }
 
     /**
-     * Set realizadaPor
+     * Set realizadaPor.
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $realizadaPor
+     *
      * @return OrdenTrabajo
      */
     public function setRealizadaPor(\Buseta\BodegaBundle\Entity\Tercero $realizadaPor = null)
     {
         $this->realizadaPor = $realizadaPor;
-    
+
         return $this;
     }
 
     /**
-     * Get realizadaPor
+     * Get realizadaPor.
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getRealizadaPor()
     {
@@ -402,9 +410,10 @@ class OrdenTrabajo
     }
 
     /**
-     * Set autobus
+     * Set autobus.
      *
      * @param \Buseta\BusesBundle\Entity\Autobus $autobus
+     *
      * @return OrdenTrabajo
      */
     public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
@@ -412,14 +421,14 @@ class OrdenTrabajo
         $this->autobus = $autobus;
 
         $this->setKilometraje($autobus->getKilometraje());
-    
+
         return $this;
     }
 
     /**
-     * Get autobus
+     * Get autobus.
      *
-     * @return \Buseta\BusesBundle\Entity\Autobus 
+     * @return \Buseta\BusesBundle\Entity\Autobus
      */
     public function getAutobus()
     {
@@ -427,22 +436,23 @@ class OrdenTrabajo
     }
 
     /**
-     * Set ayudante
+     * Set ayudante.
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $ayudante
+     *
      * @return OrdenTrabajo
      */
     public function setAyudante(\Buseta\BodegaBundle\Entity\Tercero $ayudante = null)
     {
         $this->ayudante = $ayudante;
-    
+
         return $this;
     }
 
     /**
-     * Get ayudante
+     * Get ayudante.
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getAyudante()
     {
@@ -450,22 +460,23 @@ class OrdenTrabajo
     }
 
     /**
-     * Set requisionMateriales
+     * Set requisionMateriales.
      *
      * @param string $requisionMateriales
+     *
      * @return OrdenTrabajo
      */
     public function setRequisionMateriales($requisionMateriales)
     {
         $this->requisionMateriales = $requisionMateriales;
-    
+
         return $this;
     }
 
     /**
-     * Get requisionMateriales
+     * Get requisionMateriales.
      *
-     * @return \Buseta\BusesBundle\Entity\Autobus 
+     * @return \Buseta\BusesBundle\Entity\Autobus
      */
     public function getRequisionMateriales()
     {
@@ -473,9 +484,10 @@ class OrdenTrabajo
     }
 
     /**
-     * Add tareasAdicionales
+     * Add tareasAdicionales.
      *
      * @param \Buseta\TallerBundle\Entity\TareaAdicional $tareasAdicionales
+     *
      * @return OrdenTrabajo
      */
     public function addTareasAdicionale(\Buseta\TallerBundle\Entity\TareaAdicional $tareasAdicionales)
@@ -483,12 +495,12 @@ class OrdenTrabajo
         $tareasAdicionales->setOrdenTrabajo($this);
 
         $this->tareasAdicionales[] = $tareasAdicionales;
-    
+
         return $this;
     }
 
     /**
-     * Remove tareasAdicionales
+     * Remove tareasAdicionales.
      *
      * @param \Buseta\TallerBundle\Entity\TareaAdicional $tareasAdicionales
      */
@@ -500,9 +512,9 @@ class OrdenTrabajo
     }
 
     /**
-     * Get tareasAdicionales
+     * Get tareasAdicionales.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTareasAdicionales()
     {
@@ -510,22 +522,23 @@ class OrdenTrabajo
     }
 
     /**
-     * Set revisadoPor
+     * Set revisadoPor.
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $revisadoPor
+     *
      * @return OrdenTrabajo
      */
     public function setRevisadoPor(\Buseta\BodegaBundle\Entity\Tercero $revisadoPor = null)
     {
         $this->revisadoPor = $revisadoPor;
-    
+
         return $this;
     }
 
     /**
-     * Get revisadoPor
+     * Get revisadoPor.
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getRevisadoPor()
     {
@@ -533,22 +546,23 @@ class OrdenTrabajo
     }
 
     /**
-     * Set aprobadoPor
+     * Set aprobadoPor.
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $aprobadoPor
+     *
      * @return OrdenTrabajo
      */
     public function setAprobadoPor(\Buseta\BodegaBundle\Entity\Tercero $aprobadoPor = null)
     {
         $this->aprobadoPor = $aprobadoPor;
-    
+
         return $this;
     }
 
     /**
-     * Get aprobadoPor
+     * Get aprobadoPor.
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getAprobadoPor()
     {
@@ -556,7 +570,7 @@ class OrdenTrabajo
     }
 
     /**
-     * Get kilometraje
+     * Get kilometraje.
      *
      * @return int
      */
@@ -566,7 +580,7 @@ class OrdenTrabajo
     }
 
     /**
-     * Set kilometraje
+     * Set kilometraje.
      *
      * @param int $kilometraje
      */

@@ -2,13 +2,12 @@
 
 namespace Buseta\BodegaBundle\Form\Filtro;
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class BusquedaTerceroType extends AbstractType{
-
+class BusquedaTerceroType extends AbstractType
+{
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -17,27 +16,27 @@ class BusquedaTerceroType extends AbstractType{
                 'label' => 'Código',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('nombres', 'text', array(
                 'required' => false,
                 'label' => 'Nombres',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('apellidos', 'text', array(
                 'required' => false,
                 'label' => 'Apellidos',
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('alias', 'text', array(
                 'required' => false,
                 'attr'   => array(
                     'class' => 'form-control',
-                )
+                ),
             ))
             ->add('cliente', 'checkbox', array(
                 'required' => false,

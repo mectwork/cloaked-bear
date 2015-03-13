@@ -5,7 +5,7 @@ namespace Buseta\NomencladorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Modelo
+ * Modelo.
  *
  * @ORM\Table(name="n_modelo")
  * @ORM\Entity
@@ -29,9 +29,9 @@ class Modelo extends BaseNomenclador
     private $marca;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -39,22 +39,23 @@ class Modelo extends BaseNomenclador
     }
 
     /**
-     * Set marca
+     * Set marca.
      *
      * @param \Buseta\NomencladorBundle\Entity\Marca $marca
+     *
      * @return Modelo
      */
     public function setMarca(\Buseta\NomencladorBundle\Entity\Marca $marca = null)
     {
         $this->marca = $marca;
-    
+
         return $this;
     }
 
     /**
-     * Get marca
+     * Get marca.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Marca 
+     * @return \Buseta\NomencladorBundle\Entity\Marca
      */
     public function getMarca()
     {
@@ -65,5 +66,4 @@ class Modelo extends BaseNomenclador
     {
         return $this->valor;
     }
-
 }

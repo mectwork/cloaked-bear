@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * PrecioProducto
+ * PrecioProducto.
  *
  * @ORM\Table(name="d_precio_producto")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\PrecioProductoRepository")
@@ -62,11 +62,10 @@ class PrecioProducto
      */
     private $activo;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -74,22 +73,23 @@ class PrecioProducto
     }
 
     /**
-     * Set costo
+     * Set costo.
      *
      * @param string $costo
+     *
      * @return PrecioProducto
      */
     public function setCosto($costo)
     {
         $this->costo = $costo;
-    
+
         return $this;
     }
 
     /**
-     * Get costo
+     * Get costo.
      *
-     * @return string 
+     * @return string
      */
     public function getCosto()
     {
@@ -97,22 +97,23 @@ class PrecioProducto
     }
 
     /**
-     * Set precio
+     * Set precio.
      *
      * @param string $precio
+     *
      * @return PrecioProducto
      */
     public function setPrecio($precio)
     {
         $this->precio = $precio;
-    
+
         return $this;
     }
 
     /**
-     * Get precio
+     * Get precio.
      *
-     * @return string 
+     * @return string
      */
     public function getPrecio()
     {
@@ -120,22 +121,23 @@ class PrecioProducto
     }
 
     /**
-     * Set fechaInicio
+     * Set fechaInicio.
      *
      * @param \DateTime $fechaInicio
+     *
      * @return PrecioProducto
      */
     public function setFechaInicio($fechaInicio)
     {
         $this->fechaInicio = $fechaInicio;
-    
+
         return $this;
     }
 
     /**
-     * Get fechaInicio
+     * Get fechaInicio.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaInicio()
     {
@@ -143,22 +145,23 @@ class PrecioProducto
     }
 
     /**
-     * Set fechaFin
+     * Set fechaFin.
      *
      * @param \DateTime $fechaFin
+     *
      * @return PrecioProducto
      */
     public function setFechaFin($fechaFin)
     {
         $this->fechaFin = $fechaFin;
-    
+
         return $this;
     }
 
     /**
-     * Get fechaFin
+     * Get fechaFin.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaFin()
     {
@@ -182,22 +185,23 @@ class PrecioProducto
     }
 
     /**
-     * Set producto
+     * Set producto.
      *
      * @param \Buseta\BodegaBundle\Entity\Producto $producto
+     *
      * @return PrecioProducto
      */
     public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
     {
         $this->producto = $producto;
-    
+
         return $this;
     }
 
     /**
-     * Get producto
+     * Get producto.
      *
-     * @return \Buseta\BodegaBundle\Entity\Producto 
+     * @return \Buseta\BodegaBundle\Entity\Producto
      */
     public function getProducto()
     {

@@ -4,33 +4,33 @@ namespace Buseta\TallerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Buseta\TallerBundle\Entity\Impuesto;
 use Buseta\TallerBundle\Form\Type\ImpuestoType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 
 /**
  * Impuesto controller.
- *
  */
 class ImpuestoController extends Controller
 {
     /**
-     * Updated automatically select All when change select Impuesto
-     *
+     * Updated automatically select All when change select Impuesto.
      */
-    public function select_impuesto_productos_allAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function select_impuesto_productos_allAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
 
         $request = $this->getRequest();
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
 
         $em = $this->getDoctrine()->getManager();
 
         $impuesto = $em->getRepository('BusetaTallerBundle:Impuesto')->findOneBy(array(
-            'id' => $request->query->get('impuesto_id')
+            'id' => $request->query->get('impuesto_id'),
         ));
 
         $cantidad_pedido     = $request->query->get('cantidad_pedido');
@@ -49,7 +49,6 @@ class ImpuestoController extends Controller
 
     /**
      * Lists all Impuesto entities.
-     *
      */
     public function indexAction()
     {
@@ -71,7 +70,6 @@ class ImpuestoController extends Controller
     }
     /**
      * Creates a new Impuesto entity.
-     *
      */
     public function createAction(Request $request)
     {
@@ -94,12 +92,12 @@ class ImpuestoController extends Controller
     }
 
     /**
-    * Creates a form to create a Impuesto entity.
-    *
-    * @param Impuesto $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a Impuesto entity.
+     *
+     * @param Impuesto $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(Impuesto $entity)
     {
         $form = $this->createForm(new ImpuestoType(), $entity, array(
@@ -114,7 +112,6 @@ class ImpuestoController extends Controller
 
     /**
      * Displays a form to create a new Impuesto entity.
-     *
      */
     public function newAction()
     {
@@ -129,7 +126,6 @@ class ImpuestoController extends Controller
 
     /**
      * Finds and displays a Impuesto entity.
-     *
      */
     public function showAction($id)
     {
@@ -150,7 +146,6 @@ class ImpuestoController extends Controller
 
     /**
      * Displays a form to edit an existing Impuesto entity.
-     *
      */
     public function editAction($id)
     {
@@ -173,12 +168,12 @@ class ImpuestoController extends Controller
     }
 
     /**
-    * Creates a form to edit a Impuesto entity.
-    *
-    * @param Impuesto $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Impuesto entity.
+     *
+     * @param Impuesto $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Impuesto $entity)
     {
         $form = $this->createForm(new ImpuestoType(), $entity, array(
@@ -192,7 +187,6 @@ class ImpuestoController extends Controller
     }
     /**
      * Edits an existing Impuesto entity.
-     *
      */
     public function updateAction(Request $request, $id)
     {
@@ -222,7 +216,6 @@ class ImpuestoController extends Controller
     }
     /**
      * Deletes a Impuesto entity.
-     *
      */
     public function deleteAction(Request $request, $id)
     {
