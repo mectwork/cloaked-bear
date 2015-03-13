@@ -47,6 +47,10 @@
             <td>{{ entity.autobus }}</td>
         </tr>
         <tr>
+            <th>Kilometraje</th>
+            <td>{{ entity.kilometraje }}</td>
+        </tr>
+        <tr>
             <th>Fecha Inicio</th>
             <td>{{ entity.fechaInicio ? entity.fechaInicio | date('d/m/Y') : '-' }}</td>
         </tr>
@@ -72,14 +76,16 @@
 
                             <table class="table table-striped" style="font-size: 16px;">
                                 <thead>
-                                    <th>Grupo</th>
-                                    <th>Subgrupo</th>
-                                    <th>Tarea</th>
-                                    <th>Observaciones</th>
-                                    <th>Fecha estimada</th>
-                                    <th>Hora Inicio</th>
-                                    <th>Hora Final</th>
-                                    <th>Garantía Tarea</th>
+                                    <tr>
+                                        <th>Grupo</th>
+                                        <th>Subgrupo</th>
+                                        <th>Tarea</th>
+                                        <th>Observaciones</th>
+                                        <th>Fecha estimada</th>
+                                        <th>Hora Inicio</th>
+                                        <th>Hora Final</th>
+                                        <th>Garantía Tarea</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 {% for tarea in entity.tareasAdicionales %}

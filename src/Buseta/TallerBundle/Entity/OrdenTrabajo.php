@@ -142,6 +142,13 @@ class OrdenTrabajo
 
 
     /**
+     * @var integer
+     * @ORM\Column(name="kilometraje", type="integer")
+     */
+    private $kilometraje;
+
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -403,6 +410,8 @@ class OrdenTrabajo
     public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
     {
         $this->autobus = $autobus;
+
+        $this->setKilometraje($autobus->getKilometraje());
     
         return $this;
     }
@@ -544,5 +553,27 @@ class OrdenTrabajo
     public function getAprobadoPor()
     {
         return $this->aprobadoPor;
+    }
+
+    /**
+     * Get kilometraje
+     *
+     * @return int
+     */
+    public function getKilometraje()
+    {
+        return $this->kilometraje;
+    }
+
+    /**
+     * Set kilometraje
+     *
+     * @param int $kilometraje
+     */
+    public function setKilometraje($kilometraje)
+    {
+        $this->kilometraje = $kilometraje;
+
+        return $this;
     }
 }

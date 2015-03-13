@@ -3,7 +3,6 @@
 namespace Buseta\TallerBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NoResultException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -106,6 +105,14 @@ class OrdenTrabajoType extends AbstractType
                 'by_reference' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
+            ))
+            ->add('kilometraje', 'number', array(
+                'required' => false,
+                'read_only' => true,
+                'label' => 'Kilometraje',
+                'attr' => array(
+                    'class' => 'form-control',
+                )
             ))
             ->add('fechaInicio', 'date', array(
                 'required' => false,
