@@ -2,39 +2,37 @@
 
 namespace Buseta\TallerBundle\Controller;
 
-use Buseta\TallerBundle\Entity\Reporte;
-use Buseta\TallerBundle\Form\Filter\DiagnosticoFilter;
-use Buseta\TallerBundle\Form\Model\DiagnosticoFilterModel;
+use Buseta\TallerBundle\Entity\Diagnostico;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Buseta\TallerBundle\Entity\Observacion;
-use Buseta\TallerBundle\Form\Type\ObservacionType;
+use Buseta\TallerBundle\Entity\ObservacionDiagnostico;
+use Buseta\TallerBundle\Form\Type\ObservacionDiagnosticoType;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
- * Class ObservacionController
+ * Class ObservacionDiagnosticoController
  * @package Buseta\TallerBundle\Controller
  *
- * @Route("/observacion")
+ * @Route("/observaciondiagnostico")
  */
-class ObservacionController extends Controller
+class ObservacionDiagnosticoController extends Controller
 {
     /**
-     * @param Reporte $reporte
+     * @param Diagnostico $diagnostico
      * @return Response
      *
-     * @Route("/list/{reporte}", name="reportes_observacion_list", methods={"GET"}, options={"expose":true})
-     * @ParamConverter("reporte", options={"mapping":{"reporte":"id"}})
+     * @Route("/list/{diagnostico}", name="diagnosticos_observacion_list", methods={"GET"}, options={"expose":true})
+     * @ParamConverter("diagnostico", options={"mapping":{"diagnostico":"id"}})
      */
-    public function listAction(Reporte $reporte, Request $request)
+    public function listAction(Diagnostico $diagnostico, Request $request)
     {
         $entities = $this->get('doctrine.orm.entity_manager')
-            ->getRepository('BusetaTallerBundle:Observacion')
-            ->findAllByReporteId($reporte->getId());
+            ->getRepository('BusetaTallerBundle:ObservacionDiagnostico')
+            ->findAllByDiagnosticoId($diagnostico->getId());
 
         $entities = $this->get('knp_paginator')
             ->paginate(
@@ -43,19 +41,19 @@ class ObservacionController extends Controller
                 10
             );
 
-        return $this->render('@BusetaTaller/Reporte/Observacion/list_template.html.twig', array(
+        return $this->render('@BusetaTaller/Diagnostico/ObservacionDiagnostico/list_template.html.twig', array(
             'entities' => $entities,
         ));
     }
 
-    public function newModalObservacionAction(Request $request)
+    public function newModalObservacionDiagnosticoAction(Request $request)
     {
-        $form = $this->createForm(new ObservacionType(), null, array(
+        $form = $this->createForm(new ObservacionDiagnosticoType(), null, array(
             'method' => 'POST',
             'action' => $this->generateUrl('observacion_new_modal')
         ));
 
-        return $this->render('@BusetaTaller/Reporte/modal/modal_observacion.html.twig', array(
+        return $this->render('@BusetaTaller/Diagnostico/modal/modal_observacion.html.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -64,19 +62,18 @@ class ObservacionController extends Controller
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/new/modal/{reporte}", name="reportes_observacion_new_modal", methods={"GET","POST"}, options={"expose":true})
-     * @ParamConverter("reporte", options={"mapping":{"reporte":"id"}})
+     * @Route("/new/modal/{diagnostico}", name="diagnosticos_observacion_new_modal", methods={"GET","POST"}, options={"expose":true})
+     * @ParamConverter("diagnostico", options={"mapping":{"diagnostico":"id"}})
      */
-    public function newModalAction(Reporte $reporte, Request $request)
+    public function newModalAction(Diagnostico $diagnostico, Request $request)
     {
-
         $trans = $this->get('translator');
-        $handler = $this->get('buseta_reporte.observacion.handler');
-        $handler->bindData($reporte);
+        $handler = $this->get('buseta_diagnostico.observacion.handler');
+        $handler->bindData($diagnostico);
 
         $handler->setRequest($request);
         if($handler->handle()) {
-            $renderView = $this->renderView('@BusetaTaller/Reporte/Observacion/modal_form.html.twig', array(
+            $renderView = $this->renderView('@BusetaTaller/Diagnostico/ObservacionDiagnostico/modal_form.html.twig', array(
                 'form' => $handler->getForm()->createView(),
             ));
 
@@ -87,17 +84,17 @@ class ObservacionController extends Controller
         }
 
         if($handler->getError()) {
-            $renderView = $this->renderView('@BusetaTaller/Reporte/Observacion/modal_form.html.twig', array(
+            $renderView = $this->renderView('@BusetaTaller/Diagnostico/ObservacionDiagnostico/modal_form.html.twig', array(
                 'form' => $handler->getForm()->createView(),
             ));
 
             return new JsonResponse(array(
                 'view' => $renderView,
-                'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Observacion'), 'BusetaTallerBundle')
+                'message' => $trans->trans('messages.create.error.%key%', array('key' => 'ObservacionDiagnostico'), 'BusetaTallerBundle')
             ), 500);
         }
 
-        $renderView = $this->renderView('@BusetaTaller/Reporte/Observacion/modal_form.html.twig', array(
+        $renderView = $this->renderView('@BusetaTaller/Diagnostico/ObservacionDiagnostico/modal_form.html.twig', array(
             'form' => $handler->getForm()->createView(),
         ));
 
@@ -105,7 +102,7 @@ class ObservacionController extends Controller
     }
 
     /**
-     * Lists all Observacion entities.
+     * Lists all ObservacionDiagnostico entities.
      *
      */
     public function indexAction(Request $request)
@@ -140,12 +137,12 @@ class ObservacionController extends Controller
     }
 
     /**
-     * Creates a new Observacion entity.
+     * Creates a new ObservacionDiagnostico entity.
      *
      */
     public function createAction(Request $request)
     {
-        $entity = new Observacion();
+        $entity = new ObservacionDiagnostico();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -157,22 +154,22 @@ class ObservacionController extends Controller
             return $this->redirect($this->generateUrl('tareaadicional_show', array('id' => $entity->getId())));
         }
 
-        return $this->render('BusetaTallerBundle:Observacion:new.html.twig', array(
+        return $this->render('BusetaTallerBundle:ObservacionDiagnostico:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
 
     /**
-    * Creates a form to create a Observacion entity.
+    * Creates a form to create a ObservacionDiagnostico entity.
     *
-    * @param Observacion $entity The entity
+    * @param ObservacionDiagnostico $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(Observacion $entity)
+    private function createCreateForm(ObservacionDiagnostico $entity)
     {
-        $form = $this->createForm(new ObservacionType(), $entity, array(
+        $form = $this->createForm(new ObservacionDiagnosticoType(), $entity, array(
             'action' => $this->generateUrl('tareaadicional_create'),
             'method' => 'POST',
         ));
@@ -183,59 +180,59 @@ class ObservacionController extends Controller
     }
 
     /**
-     * Displays a form to create a new Observacion entity.
+     * Displays a form to create a new ObservacionDiagnostico entity.
      *
      */
     public function newAction()
     {
-        $entity = new Observacion();
+        $entity = new ObservacionDiagnostico();
         $form   = $this->createCreateForm($entity);
 
-        return $this->render('BusetaTallerBundle:Observacion:new.html.twig', array(
+        return $this->render('BusetaTallerBundle:ObservacionDiagnostico:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
 
     /**
-     * Finds and displays a Observacion entity.
+     * Finds and displays a ObservacionDiagnostico entity.
      *
      */
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaTallerBundle:Observacion')->find($id);
+        $entity = $em->getRepository('BusetaTallerBundle:ObservacionDiagnostico')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Observacion entity.');
+            throw $this->createNotFoundException('Unable to find ObservacionDiagnostico entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('BusetaTallerBundle:Observacion:show.html.twig', array(
+        return $this->render('BusetaTallerBundle:ObservacionDiagnostico:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),        ));
     }
 
     /**
-     * Displays a form to edit an existing Observacion entity.
+     * Displays a form to edit an existing ObservacionDiagnostico entity.
      *
      */
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaTallerBundle:Observacion')->find($id);
+        $entity = $em->getRepository('BusetaTallerBundle:ObservacionDiagnostico')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Observacion entity.');
+            throw $this->createNotFoundException('Unable to find ObservacionDiagnostico entity.');
         }
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('BusetaTallerBundle:Observacion:edit.html.twig', array(
+        return $this->render('BusetaTallerBundle:ObservacionDiagnostico:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -243,15 +240,15 @@ class ObservacionController extends Controller
     }
 
     /**
-    * Creates a form to edit a Observacion entity.
+    * Creates a form to edit a ObservacionDiagnostico entity.
     *
-    * @param Observacion $entity The entity
+    * @param ObservacionDiagnostico $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Observacion $entity)
+    private function createEditForm(ObservacionDiagnostico $entity)
     {
-        $form = $this->createForm(new ObservacionType(), $entity, array(
+        $form = $this->createForm(new ObservacionDiagnosticoType(), $entity, array(
             'action' => $this->generateUrl('tareaadicional_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
@@ -262,17 +259,17 @@ class ObservacionController extends Controller
     }
 
     /**
-     * Edits an existing Observacion entity.
+     * Edits an existing ObservacionDiagnostico entity.
      *
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaTallerBundle:Observacion')->find($id);
+        $entity = $em->getRepository('BusetaTallerBundle:ObservacionDiagnostico')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Observacion entity.');
+            throw $this->createNotFoundException('Unable to find ObservacionDiagnostico entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -285,7 +282,7 @@ class ObservacionController extends Controller
             return $this->redirect($this->generateUrl('tareaadicional_edit', array('id' => $id)));
         }
 
-        return $this->render('BusetaTallerBundle:Observacion:edit.html.twig', array(
+        return $this->render('BusetaTallerBundle:ObservacionDiagnostico:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -293,7 +290,7 @@ class ObservacionController extends Controller
     }
 
     /**
-     * Deletes a Observacion entity.
+     * Deletes a ObservacionDiagnostico entity.
      *
      */
     public function deleteAction(Request $request, $id)
@@ -303,10 +300,10 @@ class ObservacionController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaTallerBundle:Observacion')->find($id);
+            $entity = $em->getRepository('BusetaTallerBundle:ObservacionDiagnostico')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Observacion entity.');
+                throw $this->createNotFoundException('Unable to find ObservacionDiagnostico entity.');
             }
 
             $em->remove($entity);
@@ -317,7 +314,7 @@ class ObservacionController extends Controller
     }
 
     /**
-     * Creates a form to delete a Observacion entity by id.
+     * Creates a form to delete a ObservacionDiagnostico entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -340,9 +337,9 @@ class ObservacionController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateReporteForm(Observacion $entity)
+    private function createCreateDiagnosticoForm(ObservacionDiagnostico $entity)
     {
-        $form = $this->createForm(new ObservacionType(), $entity, array(
+        $form = $this->createForm(new ObservacionDiagnosticoType(), $entity, array(
             'action' => $this->generateUrl('observacion_orden_trabajo_create'),
             'method' => 'POST',
         ));
@@ -350,10 +347,10 @@ class ObservacionController extends Controller
         return $form;
     }
 
-    public function create_reporteAction(Request $request)
+    public function create_diagnosticoAction(Request $request)
     {
-        $entity = new Observacion();
-        $form = $this->createCreateReporteForm($entity);
+        $entity = new ObservacionDiagnostico();
+        $form = $this->createCreateDiagnosticoForm($entity);
         $form->handleRequest($request);
 
 

@@ -10,7 +10,6 @@ services:
         tags:
             - { name: form.type, alias: hidden_entity }
 
-
     hatueyerp.direccion_ajax_type.form:
         class: HatueyERP\TercerosBundle\Form\Type\DireccionAjaxType
         arguments:
@@ -28,6 +27,10 @@ services:
     # HANDLERS
     buseta_reporte.observacion.handler:
         class: Buseta\TallerBundle\Form\Handler\ObservacionHandler
+        arguments:
+            - @service_container
+    buseta_diagnostico.observacion.handler:
+        class: Buseta\TallerBundle\Form\Handler\ObservacionDiagnosticoHandler
         arguments:
             - @service_container
     hatueyerp_terceros.persona.handler:

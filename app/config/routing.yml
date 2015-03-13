@@ -24,6 +24,10 @@ BusetaTallerBundle_observacion:
         resource: "@BusetaTallerBundle/Resources/config/routing/observacion.yml"
         prefix:   /observacion
 
+BusetaTallerBundle_observaciondiagnostico:
+        resource: "@BusetaTallerBundle/Resources/config/routing/observaciondiagnostico.yml"
+        prefix:   /observaciondiagnostico
+
 BusetaTallerBundle_tareamantenimiento:
         resource: "@BusetaTallerBundle/Resources/config/routing/tareamantenimiento.yml"
         prefix:   /tareamantenimiento

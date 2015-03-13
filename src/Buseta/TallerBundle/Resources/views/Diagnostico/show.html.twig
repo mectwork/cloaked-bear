@@ -43,7 +43,7 @@
             <a class="btn btn-primary" href="{{ path('diagnostico') }}">
                 <span class="glyphicon glyphicon-save"></span> Generar Orden de Trabajo</a>
 
-            <a class="btn btn-default" id="btn_reporte_cancel" href="{{ path('diagnostico') }}"><span
+            <a class="btn btn-default" id="btn_diagnostico_cancel" href="{{ path('diagnostico') }}"><span
                         class="glyphicon glyphicon-chevron-left"></span>
                 {{ 'actions.list' | trans({}, 'BusetaTallerBundle') }}</a>
         </div>
@@ -51,7 +51,7 @@
 
     {# modal panel #}
     <!-- Modal -->
-    <div id="form_observacion_modal"></div>
+    <div id="form_observacion_diagnostico_modal"></div>
 
 {% endblock %}
 
@@ -64,13 +64,13 @@
     <script type="text/javascript">
         $(function () {
 
-            // first read: set reporte event.
-            $('a#btn_reporte_save').on('click', reporte._save);
+            // first read: set diagnostico event.
+            $('a#btn_diagnostico_save').on('click', diagnostico._save);
 
             $('a#adicionarNuevaObservacion').on('click', observaciones._new);
 
-            //Obtenemos el id del reporte actualmente mostrado en el show
-            reporte.id = $('#reporte_id').val();
+            //Obtenemos el id del diagnostico actualmente mostrado en el show
+            diagnostico.id = $('#diagnostico_id').val();
 
             // on show tab events
             $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
@@ -120,7 +120,7 @@
                 if (jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
                     addGlobalMessage('danger', jqXHR.responseText.message);
                 } else {
-                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'HatueyERPTercerosBundle') }}');
+                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaTallerBundle') }}');
                 }
             }
         };
@@ -149,18 +149,18 @@
         };
     </script>
 
-    <!-- Tercero script -->
+    <!-- Diagnostico script -->
     <script type="text/javascript">
-        var reporte = {
+        var diagnostico = {
             /*form_id: $('div#basicos').find('form').attr('id'),
              form_name: $('div#basicos').find('form').attr('name'),*/
-            form_id: 'buseta_tallerbundle_reporte',
-            form_name: 'buseta_tallerbundle_reporte',
+            form_id: 'buseta_tallerbundle_diagnostico',
+            form_name: 'buseta_tallerbundle_diagnostico',
             id: '',
             _load: function () {
-                reporte.id = $('input[id="' + reporte.form_id + '_id"]').val()
+                diagnostico.id = $('input[id="' + diagnostico.form_id + '_id"]').val()
 
-                /*if (reporte.id != '' && reporte.id != undefined) {
+                /*if (diagnostico.id != '' && diagnostico.id != undefined) {
                  persona._load();
                  }*/
             },
@@ -175,29 +175,29 @@
                 progressBar._add_progressBar('basicos');
 
                 // Tercero Id
-                reporte.id = $('input[id="' + reporte.form_id + '_id"]').val();
+                diagnostico.id = $('input[id="' + diagnostico.form_id + '_id"]').val();
 
-                var reportesForm = $('form#' + reporte.form_id),
-                        url = Routing.generate('reportes_reporte_create', {});
-                if (reporte.id !== '' && reporte.id !== undefined) {
-                    url = Routing.generate('reportes_reporte_update', {'id': reporte.id});
+                var diagnosticosForm = $('form#' + diagnostico.form_id),
+                        url = Routing.generate('diagnosticos_diagnostico_create', {});
+                if (diagnostico.id !== '' && diagnostico.id !== undefined) {
+                    url = Routing.generate('diagnosticos_diagnostico_update', {'id': diagnostico.id});
                 }
 
-                var jqXHR = reportesForm.ajaxSubmit({
-                    success: reporte._done,
+                var jqXHR = diagnosticosForm.ajaxSubmit({
+                    success: diagnostico._done,
                     error: utils._fail,
-                    complete: reporte._always,
-                    uploadProgress: reporte._upload,
+                    complete: diagnostico._always,
+                    uploadProgress: diagnostico._upload,
                     url: url,
                     dataType: 'json'
                 });
             },
             _done: function (response, textStatus, jqXHR) {
-                $('form#' + reporte.form_id).replaceWith(response.view);
+                $('form#' + diagnostico.form_id).replaceWith(response.view);
                 if (jqXHR.status == 201) {
                     addGlobalMessage('success', response.message);
                     // Tercero Id
-                    reporte.id = $('input[id="' + reporte.form_id + '_id"]').val();
+                    diagnostico.id = $('input[id="' + diagnostico.form_id + '_id"]').val();
                     // activate all tabs
                     tabs._show_all_tabs();
                     // loading observaciones
@@ -205,7 +205,7 @@
                 } else if (jqXHR.status == 202) {
                     addGlobalMessage('success', response.message);
                 }
-                $('a#btn_reporte_save').on('click', reporte._save);
+                $('a#btn_diagnostico_save').on('click', diagnostico._save);
             },
             _always: function () {
                 // remove spinning
@@ -230,7 +230,7 @@
             form_id: '',
             id: '',
             _start_events: function () {
-                $('a[href="#form_observacion_modal"]').on('click', observaciones._load_modal);
+                $('a[href="#form_observacion_diagnostico_modal"]').on('click', observaciones._load_modal);
                 $('table.observacion_records_list').find('a.sortable, a.asc, a.desc').on('click', observaciones._load);
                 $('table.observacion_records_list').find('a[href="#edit"]').on('click', observaciones._load_modal);
                 ;
@@ -240,17 +240,17 @@
                     event.preventDefault();
                 }
 
-                //Obtenemos el id del reporte actualmente mostrado en el show
-                reporte.id = $('#reporte_id').val();
+                //Obtenemos el id del diagnostico actualmente mostrado en el show
+                diagnostico.id = $('#diagnostico_id').val();
 
-                if (reporte.id == '') {
+                if (diagnostico.id == '') {
                     return;
                 }
 
                 // add spinning to show loading process
                 tabs._add_loadding('observaciones');
 
-                var url = Routing.generate('reportes_observacion_list', {'reporte': reporte.id});
+                var url = Routing.generate('diagnosticos_observacion_list', {'diagnostico': diagnostico.id});
                 if ($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc')) {
                     url = $(this).attr('href');
                 }
@@ -266,31 +266,31 @@
                     event.preventDefault();
                 }
 
-                if (reporte.id === '' || reporte.id === undefined) {
+                if (diagnostico.id === '' || diagnostico.id === undefined) {
                     return;
                 }
 
-                var url = Routing.generate('reportes_observacion_new_modal', {'reporte': reporte.id});
+                var url = Routing.generate('diagnosticos_observacion_new_modal', {'diagnostico': diagnostico.id});
                 if ($(this).attr('href') !== undefined && $(this).attr('href') === '#edit') {
-                    url = Routing.generate('reportes_observacion_edit_modal', {
-                        'reporte': reporte.id,
+                    url = Routing.generate('diagnosticos_observacion_edit_modal', {
+                        'diagnostico': diagnostico.id,
                         id: $(this).data('content')
                     });
                 }
 
                 $.get(url)
                         .done(function (response, textStatus, jqXHR) {
-                            $('div#form_observacion_modal').replaceWith($(response.view));
+                            $('div#form_observacion_diagnostico_modal').replaceWith($(response.view));
 
-                            observaciones.form_id = $('div#form_observacion_modal').find('form').attr('id');
-                            observaciones.form_name = $('div#form_observacion_modal').find('form').attr('name');
+                            observaciones.form_id = $('div#form_observacion_diagnostico_modal').find('form').attr('id');
+                            observaciones.form_name = $('div#form_observacion_diagnostico_modal').find('form').attr('name');
 
-                            $('a#btn_observacion_save').on('click', observaciones._save_modal);
-                            $('a#btn_observacion_cancel').on('click', function () {
-                                $('div#form_observacion_modal').modal('hide');
+                            $('a#btn_observacion_diagnostico_save').on('click', observaciones._save_modal);
+                            $('a#btn_observacion_diagnostico_cancel').on('click', function () {
+                                $('div#form_observacion_diagnostico_modal').modal('hide');
                             });
 
-                            $('div#form_observacion_modal').modal('show');
+                            $('div#form_observacion_diagnostico_modal').modal('show');
                         }).fail(utils._fail).always(function () {
                         });
             },
@@ -299,27 +299,25 @@
                     event.preventDefault();
                 }
 
-                $('#btn_observacion_save').find('span')
+                $('#btn_observacion_diagnostico_save').find('span')
                         .removeClass('glyphicon')
                         .removeClass('glyphicon-save')
                         .addClass('fa')
                         .addClass('fa-gear')
                         .addClass('fa-spin');
 
-                var url = Routing.generate('reportes_observacion_new_modal', {'reporte': reporte.id}),
+                var url = Routing.generate('diagnosticos_observacion_new_modal', {'diagnostico': diagnostico.id}),
                         id = $('#' + observaciones.form_id + '_id').val();
                 if (id !== '' && id !== undefined) {
-                    url = Routing.generate('reportes_observacion_edit_modal', {'reporte': reporte.id, id: id});
+                    url = Routing.generate('diagnosticos_observacion_edit_modal', {'diagnostico': diagnostico.id, id: id});
                 }
-                var data = $('form#' + observaciones.form_id).serializeArray();
-                data[0].value = $('#' + observaciones.form_id + '_valor').text();
-                console.log(data);
+
+                
                 $('form#' + observaciones.form_id).ajaxSubmit({
                     success: observaciones._done,
                     error: utils._fail,
                     complete: observaciones._always,
                     url: url,
-                    data: data,
                     dataType: 'json'
                 });
             },
@@ -328,14 +326,14 @@
                 if (jqXHR.status == 201 || jqXHR.status == 202) {
                     addGlobalMessage('success', response.message);
 
-                    $('div#form_observacion_modal').modal('hide');
+                    $('div#form_observacion_diagnostico_modal').modal('hide');
                     observaciones._load();
                 }
             },
             _always: function (jqXHR, textStatus) {
                 // remove spinning
                 tabs._remove_loadding('observaciones');
-                $('#btn_observacion_save').find('span')
+                $('#btn_observacion_diagnostico_save').find('span')
                         .addClass('glyphicon')
                         .addClass('glyphicon-save')
                         .removeClass('fa')

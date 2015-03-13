@@ -13,3 +13,7 @@ mantenimientopreventivo:
 buseta_taller_observacion:
     resource: "@BusetaTallerBundle/Controller/ObservacionController.php"
     type: annotation
+
+buseta_taller_observaciondiagnostico:
+    resource: "@BusetaTallerBundle/Controller/ObservacionDiagnosticoController.php"
+    type: annotation

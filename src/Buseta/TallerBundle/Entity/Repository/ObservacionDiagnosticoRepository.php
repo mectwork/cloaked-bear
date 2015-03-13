@@ -12,4 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class ObservacionDiagnosticoRepository extends EntityRepository
 {
+    public function findAllByDiagnosticoId($id)
+    {
+        $qb = $this->createQueryBuilder('d');
+        $query = $qb
+            ->join('d.diagnostico', 't')
+            ->where($qb->expr()->eq(':id', 't.id'))
+            ->setParameter('id', $id);
+
+        $query->orderBy('d.id', 'DESC');
+        $query->getQuery();
+
+        try {
+            return $query->getQuery();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
 }
