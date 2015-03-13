@@ -12,7 +12,6 @@ namespace Buseta\TallerBundle\Twig;
 use Buseta\TallerBundle\Entity\MantenimientoPreventivo;
 use Buseta\TallerBundle\Manager\MantenimientoPreventivoManager;
 use Doctrine\ORM\EntityManager;
-use Symfony\Bundle\TwigBundle\Debug\TimedTwigEngine;
 
 class ProgressBarRenderExtension extends \Twig_Extension
 {
@@ -45,7 +44,7 @@ class ProgressBarRenderExtension extends \Twig_Extension
 
     public function renderProgressBar(\Twig_Environment $twig, MantenimientoPreventivo $entity)
     {
-        $percentage = $this->mpem->getPorciento($entity);
+        $percentage = $this->mpem->getPorciento($this->em, $entity);
 
         $query = $this->em->createQuery(
             'SELECT t.color
@@ -58,7 +57,7 @@ class ProgressBarRenderExtension extends \Twig_Extension
         $color = $query->getOneOrNullResult();
 
         if ($color === null) {
-            $color = '#5bc0de';
+            $color = array('color' => '#5bc0de');
         }
 
         return $twig->render('::progressbar.html.twig', array(
