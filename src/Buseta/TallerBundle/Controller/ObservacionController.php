@@ -48,6 +48,54 @@ class ObservacionController extends Controller
         ));
     }
 
+    /**
+     * @param Observacion $observacion
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @Route("/{id}/delete", name="reportes_observacion_delete", methods={"GET", "POST", "DELETE"}, options={"expose":true})
+     */
+    public function deleteAction(Observacion $observacion, Request $request)
+    {
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($observacion->getId());
+
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+            try {
+                $em = $this->get('doctrine.orm.entity_manager');
+                $em->remove($observacion);
+                $em->flush();
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $trans->trans('messages.delete.success', array(), 'HatueyERPTercerosBundle'),
+                    ), 202);
+                }
+                // faltaría forma tradicional
+            } catch (\Exception $e) {
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Mecanismo de Contacto'), 'HatueyERPTercerosBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
+            }
+        }
+
+        $renderView =  $this->renderView('@BusetaTaller/Reporte/Observacion/modal_delete.html.twig', array(
+            'entity' => $observacion,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
+        return new Response($renderView);
+    }
+
     public function newModalObservacionAction(Request $request)
     {
         $form = $this->createForm(new ObservacionType(), null, array(
@@ -305,30 +353,6 @@ class ObservacionController extends Controller
     }
 
     /**
-     * Deletes a Observacion entity.
-     *
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaTallerBundle:Observacion')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Observacion entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('tareaadicional'));
-    }
-
-    /**
      * Creates a form to delete a Observacion entity by id.
      *
      * @param mixed $id The entity id
@@ -338,9 +362,9 @@ class ObservacionController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('tareaadicional_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('observacion_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            //->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
     }

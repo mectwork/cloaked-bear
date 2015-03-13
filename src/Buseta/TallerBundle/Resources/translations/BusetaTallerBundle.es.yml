@@ -28,6 +28,8 @@ observacion:
     adicionar: Adicionar Observación
   modal:
     title: Crear Nueva Observación
+    delete: Eliminar Observación
+    title: Crear Nueva Observación
 
 messages:
   no_results: No existen elementos que mostrar.

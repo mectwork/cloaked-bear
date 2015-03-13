@@ -2,6 +2,10 @@
     <a class="btn btn-primary" href="#form_observacion_diagnostico_modal"><span class="glyphicon glyphicon-plus-sign"></span> {{ 'observacion.btn.adicionar'|trans({}, 'BusetaTallerBundle') }}</a>
 </div>
 
+<div class="paginator row">
+    <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+</div>
+
 <table class="observacion_records_list table table-striped table-bordered table-condensed table-hover">
     <thead>
     <tr>
@@ -27,7 +31,8 @@
 </table>
 
 <div class="paginator row">
-    <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
 </div>
 
 <div class="modal" id="form_observaciondi_modal"></div>
