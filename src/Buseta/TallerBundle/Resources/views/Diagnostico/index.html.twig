@@ -51,6 +51,11 @@
         </a>
     </div>
 
+    <div class="paginator row">
+        <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+        <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
+    </div>
+
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
         <tr>
@@ -85,11 +90,6 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <div class="paginator row">
-        <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
-        <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
-    </div>
 
 {% endblock area_trabajo %}
 

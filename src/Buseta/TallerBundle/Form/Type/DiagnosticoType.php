@@ -35,13 +35,6 @@ class DiagnosticoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('detalleReporte', 'textarea', array(
-                'required' => false,
-                'label'  => 'Detalle Reporte',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
-            ))
             ->add('observaciones','collection',array(
                 'type' => new ObservacionDiagnosticoType(),
                 'label'  => false,

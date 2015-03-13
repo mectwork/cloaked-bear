@@ -29,6 +29,6 @@ diagnostico_delete:
     defaults: { _controller: "BusetaTallerBundle:Diagnostico:delete" }
     requirements: { _method: post|delete }
 
-diagnostico_generar_diagnostico:
-    pattern:  /{id}/generar_diagnostico
-    defaults: { _controller: "BusetaTallerBundle:Diagnostico:generarDiagnostico" }
+diagnostico_generar_ordentrabajo:
+    pattern:  /{id}/generar_ordentrabajo
+    defaults: { _controller: "BusetaTallerBundle:Diagnostico:generarOrdenTrabajo" }

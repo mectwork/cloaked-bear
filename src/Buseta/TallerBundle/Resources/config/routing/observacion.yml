@@ -40,3 +40,10 @@ observacion_new_modal:
     requirements: { _method: get }
     options:
       expose: true
+
+observacion_diagnostico_new_modal:
+    pattern: /modal_observacion/new
+    defaults: { _controller: "BusetaTallerBundle:Observacion:newModalObservacionDiagnostico" }
+    requirements: { _method: get }
+    options:
+      expose: true

@@ -39,7 +39,7 @@ class ReporteController extends Controller
         $em->flush();
 
        //registro los datos de las Observaciones del Reporte
-        foreach($reporte->getObservaciones() as $observacion){
+        /*foreach($reporte->getObservaciones() as $observacion){
 
             $diagnosticoObservacion = new ObservacionDiagnostico();
             $diagnosticoObservacion->setDiagnostico($diagnostico);
@@ -47,7 +47,7 @@ class ReporteController extends Controller
 
             $em->persist($diagnosticoObservacion);
             $em->flush();
-        }
+        }*/
 
         //Si se creó satisfactoriamente el Diagnostico
         //entonces deshabilitamos la opción "Adicionar Observaciones en reporte_show"
@@ -80,7 +80,7 @@ class ReporteController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            10
+            5
         );
 
 

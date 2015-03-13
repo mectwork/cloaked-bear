@@ -16,7 +16,7 @@
         <div class="col-lg-12">
             {# Nav tabs #}
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos de Diagnóstico</a></li>
+                <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos</a></li>
                 <li><a href="#observaciones" data-toggle="tab">Observaciones</a></li>
             </ul>
 
@@ -40,7 +40,7 @@
     {# buttons group #}
     <div class="row">
         <div class="col-md-4">
-            <a class="btn btn-primary" href="{{ path('diagnostico') }}">
+            <a class="btn btn-primary" href="{{ path('diagnostico_generar_ordentrabajo', { 'id': entity.id }) }}">
                 <span class="glyphicon glyphicon-save"></span> Generar Orden de Trabajo</a>
 
             <a class="btn btn-default" id="btn_diagnostico_cancel" href="{{ path('diagnostico') }}"><span

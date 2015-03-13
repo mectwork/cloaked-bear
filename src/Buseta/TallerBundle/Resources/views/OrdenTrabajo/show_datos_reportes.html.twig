@@ -1,4 +1,3 @@
-
 <div class="panel panel-default">
     <!-- Default panel contents -->
     <div class="panel-heading">
@@ -18,24 +17,20 @@
             {% else %}
                 <li class="list-group-item"><b>¿Es Usuario?:</b> No</li>
         {% endif %}
-        <li class="list-group-item">
-            <div class="panel panel-default" style="margin: 10px">
-                <!-- Default panel contents -->
-                <div class="panel-heading">
-                    <h3 class="panel-title">Observaciones del Reporte</h3>
-                </div>
 
-                <!-- Observaciones del Reporte -->
-                <ul class="list-group">
-                    {% for reporte in reportes.observaciones %}
-                        <li class="list-group-item"><b>Obs#{{ loop.index }}:</b> {{ reporte.valor }}</li>
-                    {% else %}
-                        <li class="list-group-item">No existen observaciones de reportes disponibles</li>
-                    {% endfor %}
-                </ul>
+    </ul>
 
-            </div>
-        </li>
+    <div class="panel-heading">
+        <h3 class="panel-title">Observaciones del Reporte</h3>
+    </div>
+
+    <!-- Observaciones del Reporte -->
+    <ul class="list-group">
+        {% for reporte in reportes.observaciones %}
+            <li class="list-group-item"><b>Obs#{{ loop.index }}:</b> {{ reporte.valor }}</li>
+        {% else %}
+            <li class="list-group-item">No existen observaciones de reportes disponibles</li>
+        {% endfor %}
     </ul>
 
 </div>

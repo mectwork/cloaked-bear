@@ -1,0 +1,146 @@
+{% extends "BusetaTallerBundle::layout.html.twig" %}
+
+{% form_theme form.observaciones 'BusetaTallerBundle:Reporte/widget:collection_observaciones.html.twig' %}
+
+{% block nombre_menu_superior %}
+    {% block stylesheets %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}
+
+{% block title %}
+    Adicionar Diagnóstico
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Adicionar Diagnóstico
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <form action="{{ path('diagnostico_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_errors(form) }}
+
+        <div class="row">
+            <div class="col-md-4">
+                {{ form_row(form.reporte) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.autobus) }}
+            </div>
+        </div>
+
+        <br/>
+        <div class="row">
+            <div class="col-md-12">
+                {{ form_row(form.observaciones) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="btn-group" style="padding-bottom: 8px;">
+                    <a id="adicionarNuevaObservacion" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar Observación</a>
+                </div>
+            </div>
+        </div>
+
+        <br/>
+        <div class="row">
+            <div class="col-md-4">
+                <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="{{ path('diagnostico') }}"> Cancelar</a>
+                </div>
+            </div>
+        </div>
+
+        {{ form_rest(form) }}
+    </form>
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/busetataller/js/checkClick.js') }}"></script>
+
+    <script type="text/javascript">
+        function addTagForm(collectionHolder) {
+            // Get the data-prototype explained earlier
+            var prototype = collectionHolder.data('prototype');
+
+            // get the new index
+            var index = collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormDiv = $('<div></div>').append(newForm);
+            collectionHolder.find('#observaciones-collection').append($newFormDiv);
+            updateDeleteLink();
+            updateView();
+        }
+        function updateDeleteLink(){
+            $('a.delete_tag_link').on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $(this).parent().parent().parent().parent().remove();
+
+                updateView();
+            });
+        }
+        function updateView(){
+            counter = collectionHolder.find('a.delete_tag_link').length;
+            if(counter == 0){
+                $('div#no-elements-tr').show();
+            }else{
+                $('div#no-elements-tr').hide();
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        var observacion = {
+            _insert_new: function (event) {
+                // prevent the link from creating a "#" on the URL
+                event.preventDefault();
+
+
+                var index = collectionHolder.data('index');
+                addTagForm(collectionHolder);
+
+                $('#buseta_tallerbundle_reporte_observaciones_' + index + '_valor').val();
+
+            },
+
+        };
+
+    </script>
+    <script type="text/javascript">
+        var collectionHolder = $('div#buseta_tallerbundle_reporte_observaciones');
+        var $addTagLink = '';
+
+        jQuery(document).ready(function() {
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
+            updateDeleteLink();
+            updateView();
+
+            $('a#adicionarNuevaObservacion').on('click', observacion._insert_new);
+
+        });
+    </script>
+
+{% endblock javascripts %}

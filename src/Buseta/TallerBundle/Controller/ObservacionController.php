@@ -60,6 +60,18 @@ class ObservacionController extends Controller
         ));
     }
 
+    public function newModalObservacionDiagnosticoAction(Request $request)
+    {
+        $form = $this->createForm(new ObservacionType(), null, array(
+            'method' => 'POST',
+            'action' => $this->generateUrl('observacion_diagnostico_new_modal')
+        ));
+
+        return $this->render('@BusetaTaller/Diagnostico/modal/modal_observacion.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
     /**
      * @param Request $request
      *
