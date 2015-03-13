@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listado de mantenimientos preventivos
+    Histórico de Mantenimientos
 {% endblock %}
 
 {% block area_trabajo %}
@@ -13,9 +13,12 @@
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.grupo is null or filter_form.vars.value.grupo is empty)
-    and (filter_form.vars.value.subgrupo is null or filter_form.vars.value.subgrupo is empty)
-    and (filter_form.vars.value.tarea is null or filter_form.vars.value.tarea is empty)
-    and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)%}
+        and (filter_form.vars.value.subgrupo is null or filter_form.vars.value.subgrupo is empty)
+        and (filter_form.vars.value.tarea is null or filter_form.vars.value.tarea is empty)
+        and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
+        and (filter_form.vars.value.fechaInicio is null or filter_form.vars.value.fechaInicio is empty)
+        and (filter_form.vars.value.fechaFinal is null or filter_form.vars.value.fechaFinal is empty)
+    %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
     {% endif %}
@@ -37,10 +40,6 @@
         </form>
     </div>
 
-    <div class="btn-group" style="padding-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('mantenimientopreventivo_new') }}"><i class="fa fa-plus-circle"></i> Adicionar mantenimiento preventivo</a>
-    </div>
-
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
         <tr>
@@ -49,40 +48,24 @@
             <th>Subgrupo</th>
             <th>Tarea</th>
             <th>Kilometraje</th>
-            <th>Horas</th>
             <th>Fecha Inicio</th>
             <th>Fecha Final</th>
-            <th>Cumplimiento</th>
-            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.autobus }}</td>
+                <td>{{ entity.ordenTrabajo.autobus }}</td>
                 <td>{{ entity.grupo }}</td>
                 <td>{{ entity.subgrupo }}</td>
                 <td>{{ entity.tarea }}</td>
-                <td>{{ entity.kilometraje }}</td>
-                <td>{{ entity.horas }}</td>
-                <td>{%  if entity.fechaInicio %}{{ entity.fechaInicio | date('d/m/Y') }}{% endif %}</td>
-                <td>{%  if entity.fechaFinal %}{{ entity.fechaFinal | date('d/m/Y') }}{% endif %}</td>
-                <td>
-                    {{ entity | progress_bar_render }}
-                </td>
-                <td  style="width: 18% !important; text-align: center;">
-                    <div class="btn-group">
-                        <a class="btn btn-success btn-xs" href="{{ path('mantenimientopreventivo_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
-                    </div>
-
-                    <div class="btn-group">
-                        <a class="btn btn-danger btn-xs" href="{{ path('mantenimientopreventivo_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
-                    </div>
-                </td>
+                <td>{{ entity.ordenTrabajo.kilometraje }}</td>
+                <td>{%  if entity.ordenTrabajo.fechaInicio %}{{ entity.ordenTrabajo.fechaInicio | date('d/m/Y') }}{% endif %}</td>
+                <td>{%  if entity.ordenTrabajo.fechaFinal %}{{ entity.ordenTrabajo.fechaFinal | date('d/m/Y') }}{% endif %}</td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="12">No se encontraron registros de mantenimientos preventivos en el sistema.</td>
+                <td colspan="12">No se encontraron registros de mantenimientos en el sistema.</td>
             </tr>
         {% endfor %}
 
@@ -116,7 +99,7 @@
                 $('div#filter_form_component').slideToggle(500);
             });
 
-            $('form#filter_form input[id^=\'mantenimientopreventivo\']').keyup(function(e) {
+            $('form#filter_form input[id^=\'historicomantenimientos\']').keyup(function(e) {
                 if (e.keyCode == 13) {
                     $('form#filter_form').submit();
                 }

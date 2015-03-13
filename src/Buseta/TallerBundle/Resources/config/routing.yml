@@ -9,3 +9,7 @@ taller_principal:
 mantenimientopreventivo:
     resource: @BusetaTallerBundle/Controller/MantenimientoPreventivoController.php
     type: annotation
+
+historicomantenimientos:
+    resource: @BusetaTallerBundle/Controller/HistoricoMantenimientosController.php
+    type: annotation
