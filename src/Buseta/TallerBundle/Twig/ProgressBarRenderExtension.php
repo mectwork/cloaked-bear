@@ -40,28 +40,15 @@ class ProgressBarRenderExtension extends \Twig_Extension
         );
     }
 
-    public function renderProgressBar(\Twig_Environment $twig, MantenimientoPreventivo $entity)
+    public function renderProgressBar(\Twig_Environment $twig, $mpreventivo_id)
     {
-        $percentage = $this->mpem->getPorciento($this->em, $entity);
-
-        $query = $this->em->createQuery(
-            'SELECT t.color
-            FROM BusetaNomencladorBundle:MantenimientoPorcientoCumplido t
-            WHERE t.porciento >= :porciento
-            ORDER BY t.porciento ASC')
-            ->setMaxResults(1)
-            ->setParameter('porciento', $percentage);
-
-        $color = $query->getOneOrNullResult();
-
-        if ($color === null) {
-            $color = array('color' => '#5bc0de');
-        }
+        $entity = $this->em->getRepository('BusetaTallerBundle:MantenimientoPreventivo')->find($mpreventivo_id);
+        $result = $this->mpem->getPorciento($this->em, $entity);
 
         return $twig->render('::progressbar.html.twig', array(
-                'percentage' => $percentage,
-                'color' => $color['color'],
-            ));
+            'percentage' => $result['porcentage'],
+            'color' => $result['color'],
+        ));
     }
 
     public function getName()

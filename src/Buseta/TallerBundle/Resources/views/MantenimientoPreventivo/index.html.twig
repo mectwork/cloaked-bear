@@ -68,7 +68,7 @@
                 <td>{%  if entity.fechaInicio %}{{ entity.fechaInicio | date('d/m/Y') }}{% endif %}</td>
                 <td>{%  if entity.fechaFinal %}{{ entity.fechaFinal | date('d/m/Y') }}{% endif %}</td>
                 <td>
-                    {{ entity | progress_bar_render }}
+                    {{ entity.id | progress_bar_render }}
                 </td>
                 <td  style="width: 18% !important; text-align: center;">
                     <div class="btn-group">

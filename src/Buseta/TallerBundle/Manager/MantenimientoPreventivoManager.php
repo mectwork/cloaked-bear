@@ -50,8 +50,25 @@ class MantenimientoPreventivoManager
             $busKilometraje = $busKilometraje - $result['kilometraje'];
         }
 
-        $porcientoKilometraje = 100.0 * $busKilometraje / $mantenimientoKilometraje;
+        $porciento = round(100.0 * $busKilometraje / $mantenimientoKilometraje);
 
-        return $porcientoKilometraje;
+        $query = $em->createQuery(
+            'SELECT t.color
+            FROM BusetaNomencladorBundle:MantenimientoPorcientoCumplido t
+            WHERE t.porciento >= :porciento
+            ORDER BY t.porciento ASC')
+            ->setMaxResults(1)
+            ->setParameter('porciento', $porciento);
+
+        $color = $query->getOneOrNullResult()['color'];
+
+        if ($color === null) {
+            $color = '#5bc0de';
+        }
+
+        return array(
+            'porcentage' => $porciento,
+            'color' => $color,
+        );
     }
 }

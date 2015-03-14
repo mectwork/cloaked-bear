@@ -2,13 +2,13 @@
 
 namespace Buseta\TallerBundle\Controller;
 
+use Buseta\TallerBundle\Entity\MantenimientoPreventivo;
 use Buseta\TallerBundle\Form\Filter\MantenimientoPreventivoFilter;
 use Buseta\TallerBundle\Form\Model\MantenimientoPreventivoFilterModel;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Buseta\TallerBundle\Entity\MantenimientoPreventivo;
 use Buseta\TallerBundle\Form\Type\MantenimientoPreventivoType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * MantenimientoPreventivo controller.
@@ -293,7 +293,7 @@ class MantenimientoPreventivoController extends Controller
     }
 
     /**
-     * Modifica los campos 'kilometraje' y 'horas' del MantPreventivo asociados a la Tarea seleccionada.
+     * Modifica los campos 'kilometraje' y 'horas' del MantenimientoPreventivo asociados a la Tarea seleccionada.
      *
      * @param Request $request
      * @Route("/select_mpreventivo_tarea", name="ajax_select_mpreventivo_tarea", methods={"GET"})

@@ -7,6 +7,11 @@ class MantenimientoPreventivoFilterModel
     /**
      * @var string
      */
+    private $id;
+
+    /**
+     * @var string
+     */
     private $grupo;
 
     /**
@@ -23,6 +28,16 @@ class MantenimientoPreventivoFilterModel
      * @var string
      */
     private $autobus;
+
+    /**
+     * Get grupo.
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set grupo.

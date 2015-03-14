@@ -181,14 +181,17 @@
                                 {{ form_row(linea.monto) }}
                             </div>
                         </div>
-                </div>
-                <div class="modal-footer">
-                    <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
-                    <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</i></a>
 
+                        <div class="modal-footer">
+                            <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
+                            <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#">
+                                <span class="fa fa-plus-circle"> Adicionar</span>
+                            </a>
+
+                        </div>
+                        {{ form_rest(linea) }}
+                    </form>
                 </div>
-                {{ form_rest(linea) }}
-                </form>
             </div>
             <!-- /.modal-content -->
         </div>
