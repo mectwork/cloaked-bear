@@ -30,14 +30,14 @@ class AutobusType extends AbstractType
 
             // este es un autobus nuevo
             if (!$autobus || null === $autobus->getId()) {
-                $form->add('kilometraje', 'integer', array(
+                $form->add('kilometraje', 'number', array(
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
                     )
                 ));
             } else {
-                $form->add('kilometraje', 'integer', array(
+                $form->add('kilometraje', 'number', array(
                     'required' => false,
                     'read_only' => true,
                     'attr' => array(
@@ -173,7 +173,7 @@ class AutobusType extends AbstractType
                         'class' => 'form-control',
                     )
                 ))
-            ->add('capacidad_tanque', 'integer', array(
+            ->add('capacidad_tanque', 'number', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
@@ -191,43 +191,43 @@ class AutobusType extends AbstractType
                         'class' => 'form-control',
                     )
                 ))
-            ->add('anno', 'integer', array(
+            ->add('anno', 'number', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
                     )
                 ))
-            ->add('peso_tara', 'integer', array(
+            ->add('peso_tara', 'number', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
                     )
                 ))
-            ->add('peso_bruto', 'integer', array(
+            ->add('peso_bruto', 'number', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
                     )
                 ))
-            ->add('numero_plazas', 'integer', array(
+            ->add('numero_plazas', 'number', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
                     )
                 ))
-            ->add('numero_cilindros', 'integer', array(
+            ->add('numero_cilindros', 'number', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
                     )
                 ))
-            ->add('cilindrada', 'integer', array(
+            ->add('cilindrada', 'number', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
                     )
                 ))
-            ->add('potencia', 'integer', array(
+            ->add('potencia', 'number', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
