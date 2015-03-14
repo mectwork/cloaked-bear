@@ -4,6 +4,7 @@ namespace Buseta\TallerBundle\Controller;
 
 use Buseta\TallerBundle\Entity\TareaAdicional;
 use Buseta\TallerBundle\Form\Type\TareaAdicionalType;
+use Buseta\TallerBundle\Manager\MantenimientoPreventivoManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\TallerBundle\Entity\OrdenTrabajo;
@@ -240,5 +241,81 @@ class OrdenTrabajoController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+
+    /**
+     * Updated automatically table Mantenimientos Preventivos when change select Autobus.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function selectAutobusMantenimientoPreventivoAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
+
+        if (!$request->isXmlHttpRequest()) {
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $autobus_id = $request->query->get('autobus_id');
+
+        $mpreventivos = $em->getRepository('BusetaTallerBundle:MantenimientoPreventivo')->findBy(array(
+            'autobus' => $autobus_id,
+        ));
+
+        $mpme = new MantenimientoPreventivoManager();
+
+        $json = array();
+        foreach ($mpreventivos as $mpreventivo) {
+            $porcentaje = $mpme->getPorciento($em, $mpreventivo);
+
+            $json[] = array(
+                'id' => $mpreventivo->getId(),
+                'grupo' => $mpreventivo->getGrupo()->getValor(),
+                'subgrupo' => $mpreventivo->getSubgrupo()->getValor(),
+                'tarea' => $mpreventivo->getTarea()->getValor(),
+                'kilometraje' => $mpreventivo->getKilometraje(),
+                'fecha_inicio' => $mpreventivo->getFechaInicio()->format('d/m/Y'),
+                'fecha_final' => $mpreventivo->getFechaFinal()->format('d/m/Y'),
+                'porcentage' => $porcentaje['porcentage'],
+                'color' => $porcentaje['color'],
+            );
+        }
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
+
+    /**
+     * Updated automatically Kilometraja when change select Autobus.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function selectAutobusKilometrajeAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
+
+        if (!$request->isXmlHttpRequest()) {
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
+
+        $id = $request->query->get('autobus_id');
+
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        $autobus = $em->getRepository('BusetaBusesBundle:Autobus')->find($id);
+
+        $json = array(
+            'kilometraje' => $autobus->getKilometraje(),
+        );
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
 }

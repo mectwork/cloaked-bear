@@ -28,3 +28,17 @@ ordentrabajo_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:delete" }
     requirements: { _method: post|delete }
+
+ajax_select_autobus_mpreventivo:
+    pattern: /select_autobus_mpreventivo
+    defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:selectAutobusMantenimientoPreventivo" }
+    requirements: { _method: "GET" }
+    options:
+        expose: true
+
+ajax_select_autobus_kilometraje:
+    pattern: /select_autobus_kilometraje
+    defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:selectAutobusKilometraje" }
+    requirements: { _method: "GET" }
+    options:
+        expose: true

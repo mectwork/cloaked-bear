@@ -83,6 +83,31 @@
             </div>
         </div>
 
+        <div class="panel panel-default"  id="buseta_tallerbundle_ordentrabajo_mpreventivos"  style="display: none;">
+            <div class="panel-heading">
+                <h3 class="panel-title">Mantenimientos Preventivos</h3>
+            </div>
+            <div class="panel-body">
+                <table class="records_list table table-striped table-bordered table-condensed table-hover">
+                    <thead>
+                    <tr>
+                        <th>Grupo</th>
+                        <th>Subgrupo</th>
+                        <th>Tarea</th>
+                        <th>Kilometraje</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Final</th>
+                        <th>Cumplimiento</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody id="autobus_mpreventivos">
+                        {# filled with ajax #}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <br/>
         <fieldset>
             <legend>Resumen de Orden de Trabajo</legend>
@@ -189,7 +214,80 @@
             $('#buseta_tallerbundle_ordentrabajo_duracion_horas_laboradas').val(horastotal);
         }
 
+        $('#selectall').click(function(event) {
+            if (this.checked) {
+                $('.mpreventivo_check').each(function() {
+                    this.checked = true;
+                });
+            } else {
+                $('.mpreventivo_check').each(function() {
+                    this.checked = false;
+                });
+            }
+        });
+
         function dinamicSelects(){
+            $('#buseta_tallerbundle_ordentrabajo_autobus').change(function() {
+
+                var $data = {
+                    autobus_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_autobus_kilometraje') }}',
+                    data: $data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+
+                        $('#buseta_tallerbundle_ordentrabajo_kilometraje').val(values.kilometraje);
+                    }
+                });
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_autobus_mpreventivo') }}',
+                    data: $data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+                        var $tbody_selector = $('#autobus_mpreventivos');
+
+                        $tbody_selector.empty();
+
+                        for (var i=0, total = values.length; i < total; i++) {
+                            var $row = '<tr>' +
+                            '<td>' + values[i].grupo + '</td>' +
+                            '<td>' + values[i].subgrupo + '</td>' +
+                            '<td>' + values[i].tarea + '</td>' +
+                            '<td>' + values[i].kilometraje + '</td>' +
+                            '<td>' + values[i].fecha_inicio + '</td>' +
+                            '<td>' + values[i].fecha_final + '</td>' +
+                            '<td>' +
+                                '<div class="progress" style="margin-bottom: 0;">' +
+                                    '<div class="progress-bar" role="progressbar" aria-valuenow="' + values[i].porcentage + '" aria-valuemin="0" aria-valuemax="100" style="display_text: fill; width: ' + values[i].porcentage + '%; background-color: ' + values[i].color + ';"> ' +
+                                        values[i].porcentage + '%' +
+                                    '</div>' +
+                                '</div>' +
+                                '</td>' +
+                            '<td style="text-align: center; padding: 0;"><button type="button" class="btn btn-success btn-xs" id="mpreventivo_add_' + values[i].id + '" value="' + values[i].id + '"><i class="fa fa-plus"> Adicionar</i></button></td>' +
+                            '</tr>';
+                            $tbody_selector.append($row);
+                        }
+
+                        var $panel = $('#buseta_tallerbundle_ordentrabajo_mpreventivos');
+                        if (values.length > 0) {
+                            $panel.show(200);
+
+                            $('button[id^="mpreventivo_add_"]').on('click', function (event) {
+                                tareaAdicional._new(event, $(this).val());
+                            });
+                        } else {
+                            $panel.hide(200);
+                        }
+                    }
+                });
+            });
+
             $('select[id^="buseta_tallerbundle_ordentrabajo_tareasAdicionales_"][id$="_grupo"]').change(function(){
                 var $selectGroup = $(this);
                 var data = {
@@ -240,12 +338,15 @@
     </script>
     <script type="text/javascript">
         var tareaAdicional = {
-            _new: function (event) {
+            _new: function (event, mpreventivo) {
                 event.preventDefault();
 
                 $.ajax({
+                    type: 'GET',
                     url: Routing.generate('tareaadicional_new_modal'),
-                    type: 'GET'
+                    data: {
+                        mpreventivo_id: mpreventivo
+                    }
                 }).done(function (response) {
                     $('div.modal#nuevaTarea').replaceWith(response);
                     tareaAdicional._load();
@@ -403,6 +504,10 @@
                 var t2 = new Date();
 
                 //HORA-A
+                if ($(valA).val() == '') {
+                    $(valA).val(t1.getHours() + ':' + t1.getMinutes() + " AM")
+                }
+                console.log($(valA).val());
                 valA = $(valA).val().split(":");
                 horaA = valA[0];
                 valA = valA[1].split(" ");
@@ -410,6 +515,10 @@
                 horarioA = valA[1];
 
                 //HORA-B
+                if ($(valB).val() == '') {
+                    $(valB).val(t2.getHours() + ':' + t2.getMinutes() + " AM")
+                }
+
                 valB = $(valB).val().split(":");
                 horaB = valB[0];
                 valB = valB[1].split(" ");
@@ -489,9 +598,11 @@
             //Actualiza los subgrupos a partir de los grupos seleccionados con peticiones AJAX
             {#$('#{{ tarea_adicional.grupo.vars.id }}').change(tareaAdicional._update_subgrupo);#}
 
+
             $('a#adicionarNuevaTarea').on('click', tareaAdicional._new);
 
             ordenTrabajo._load();
+
         });
     </script>
 

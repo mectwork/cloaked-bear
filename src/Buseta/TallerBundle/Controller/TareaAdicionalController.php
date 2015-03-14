@@ -2,10 +2,10 @@
 
 namespace Buseta\TallerBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\TallerBundle\Entity\TareaAdicional;
 use Buseta\TallerBundle\Form\Type\TareaAdicionalType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * TareaAdicional controller.
@@ -14,7 +14,35 @@ class TareaAdicionalController extends Controller
 {
     public function newModalAction(Request $request)
     {
-        $form = $this->createForm(new TareaAdicionalType(), null, array(
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
+
+        if (!$request->isXmlHttpRequest()) {
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
+
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        $entity = new TareaAdicional();
+
+        $mpreventivo_id = $request->query->get('mpreventivo_id');
+
+        if ($mpreventivo_id !== null) {
+            $mpreventivo = $em->getRepository('BusetaTallerBundle:MantenimientoPreventivo')->find($mpreventivo_id);
+
+            if ($mpreventivo !== null) {
+                $grupo = $em->getRepository('BusetaNomencladorBundle:Grupo')->find($mpreventivo->getGrupo());
+                $subgrupo = $em->getRepository('BusetaNomencladorBundle:Subgrupo')->find($mpreventivo->getSubgrupo());
+                $tarea = $em->getRepository('BusetaNomencladorBundle:Tarea')->find($mpreventivo->getTarea());
+
+                $entity->setGrupo($grupo);
+                $entity->setSubgrupo($subgrupo);
+                $entity->setTarea($tarea);
+            }
+        }
+
+        $form = $this->createForm(new TareaAdicionalType(), $entity, array(
             'method' => 'POST',
             'action' => $this->generateUrl('tareaadicional_new_modal'),
         ));
@@ -227,7 +255,7 @@ class TareaAdicionalController extends Controller
     /**
      * Creates a form to create a Tarea Adicional entity.
      *
-     * @param Linea $entity The entity
+     * @param TareaAdicional $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
