@@ -2,6 +2,8 @@
 
 namespace Buseta\BusesBundle\Form\Type;
 
+use Buseta\BusesBundle\Form\EventListener\AddMarcaFieldSubscriber;
+use Buseta\BusesBundle\Form\EventListener\AddModeloFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -16,6 +18,12 @@ class AutobusType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $objeto = $builder->getFormFactory();
+        $modelo = new AddModeloFieldSubscriber($objeto);
+        $builder->addEventSubscriber($modelo);
+        $marca = new AddMarcaFieldSubscriber($objeto);
+        $builder->addEventSubscriber($marca);
+
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $autobus = $event->getData();
             $form = $event->getForm();
@@ -93,7 +101,7 @@ class AutobusType extends AbstractType
                 ))
             ->add('aceitecajacambios','entity',array(
                     'class' => 'BusetaNomencladorBundle:AceiteCajaCambios',
-                    'empty_value' => '---Seleccione aceite caja cambios---',
+                    'empty_value' => '---Seleccione---',
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
@@ -101,7 +109,7 @@ class AutobusType extends AbstractType
                 ))
             ->add('aceitehidraulico','entity',array(
                     'class' => 'BusetaNomencladorBundle:AceiteHidraulico',
-                    'empty_value' => '---Seleccione aceite hidráulico---',
+                    'empty_value' => '---Seleccione---',
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
@@ -109,7 +117,7 @@ class AutobusType extends AbstractType
                 ))
             ->add('aceitemotor','entity',array(
                     'class' => 'BusetaNomencladorBundle:AceiteMotor',
-                    'empty_value' => '---Seleccione aceite motor---',
+                    'empty_value' => '---Seleccione---',
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
@@ -117,7 +125,7 @@ class AutobusType extends AbstractType
                 ))
             ->add('aceitetransmision','entity',array(
                     'class' => 'BusetaNomencladorBundle:AceiteTransmision',
-                    'empty_value' => '---Seleccione aceite transmisión---',
+                    'empty_value' => '---Seleccione---',
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
@@ -236,7 +244,7 @@ class AutobusType extends AbstractType
                     'attr'   => array(
                         'class' => 'form-control',
                     ),
-                    'empty_value' => '---Seleccione un mes---',
+                    'empty_value' => '---Seleccione---',
                     'choices' => array('Enero'=>'Enero',
                                        'Febrero' => 'Febrero',
                                        'Marzo' => 'Marzo',
@@ -255,7 +263,7 @@ class AutobusType extends AbstractType
                     'attr'   => array(
                         'class' => 'form-control',
                     ),
-                    'empty_value' => '---Seleccione un mes---',
+                    'empty_value' => '---Seleccione---',
                     'choices' => array('Enero'=>'Enero',
                                        'Febrero' => 'Febrero',
                                        'Marzo' => 'Marzo',
@@ -277,45 +285,45 @@ class AutobusType extends AbstractType
                         'class' => 'form-control date',
                     )
                 ))
-            ->add('marca','entity',array(
+            /*->add('marca','entity',array(
                     'class' => 'BusetaNomencladorBundle:Marca',
-                    'empty_value' => '---Seleccione una marca---',
+                    'empty_value' => '---Seleccione---',
                     'attr' => array(
                         'class' => 'form-control',
-                        'empty_value' => '---Seleccione una marca---',
+                        'empty_value' => '---Seleccione---',
                     )
                 ))
             ->add('modelo','entity',array(
                     'class' => 'BusetaNomencladorBundle:Modelo',
-                    'empty_value' => '---Seleccione un modelo---',
+                    'empty_value' => '---Seleccione---',
                     'attr' => array(
                         'class' => 'form-control',
                     )
-                ))
+                ))*/
             ->add('estilo','entity',array(
                     'class' => 'BusetaNomencladorBundle:Estilo',
-                    'empty_value' => '---Seleccione un estilo---',
+                    'empty_value' => '---Seleccione---',
                     'attr' => array(
                         'class' => 'form-control',
                     )
                 ))
             ->add('color','entity',array(
                     'class' => 'BusetaNomencladorBundle:Color',
-                    'empty_value' => '---Seleccione un color---',
+                    'empty_value' => '---Seleccione---',
                     'attr' => array(
                         'class' => 'form-control',
                     )
                 ))
             ->add('marca_motor','entity',array(
                     'class' => 'BusetaNomencladorBundle:MarcaMotor',
-                    'empty_value' => '---Seleccione marca de motor---',
+                    'empty_value' => '---Seleccione---',
                     'attr' => array(
                         'class' => 'form-control',
                     )
                 ))
             ->add('combustible','entity',array(
                     'class' => 'BusetaNomencladorBundle:Combustible',
-                    'empty_value' => '---Seleccione un combustible---',
+                    'empty_value' => '---Seleccione---',
                     'attr' => array(
                         'class' => 'form-control',
                     )

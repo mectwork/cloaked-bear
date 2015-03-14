@@ -495,7 +495,11 @@
 
     </script>
 
+{#
     <script src="{{ asset('vendors/selectDinamico.js') }}"></script>
+#}
+    <script src="{{ asset('bundles/busetabuses/js/checkClick.js') }}"></script>
+
 
     <script type="text/javascript">
         var collectionHolder = $('table#buseta_databundle_autobus_archivo_adjunto');
@@ -557,6 +561,29 @@
                     $('tr#no-elements-tr').hide();
                 }
             }
+        });
+
+        //Actualiza los Modelos a partir de las Marcas seleccionados con peticiones AJAX
+        $('#{{ form.marca.vars.id }}').change(function(){
+            var data = {
+                marca_id: $(this).val()
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("autobus_ajax_marca_modelo") }}',
+                data: data,
+                success: function(data) {
+                    var values = $.parseJSON(data);
+                    var $modelo_selector = $('#{{ form.modelo.vars.id }}');
+
+                    $modelo_selector.html('<option>---Seleccione---</option>');
+
+                    for (var i=0, total = values.length; i < total; i++) {
+                        $modelo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                    }
+                }
+            });
         });
 
     </script>

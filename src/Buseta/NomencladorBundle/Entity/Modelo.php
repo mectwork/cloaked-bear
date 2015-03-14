@@ -24,7 +24,7 @@ class Modelo extends BaseNomenclador
     /**
      * @var \Buseta\NomencladorBundle\Entity\Marca
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Marca", inversedBy="modelos")
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Marca")
      */
     private $marca;
 
@@ -39,27 +39,21 @@ class Modelo extends BaseNomenclador
     }
 
     /**
-     * Set marca
-     *
-     * @param \Buseta\NomencladorBundle\Entity\Marca $marca
-     * @return Modelo
-     */
-    public function setMarca(\Buseta\NomencladorBundle\Entity\Marca $marca = null)
-    {
-        $this->marca = $marca;
-    
-        return $this;
-    }
-
-    /**
-     * Get marca
-     *
-     * @return \Buseta\NomencladorBundle\Entity\Marca 
+     * @return Marca
      */
     public function getMarca()
     {
         return $this->marca;
     }
+
+    /**
+     * @param Marca $marca
+     */
+    public function setMarca($marca)
+    {
+        $this->marca = $marca;
+    }
+
 
     public function __toString()
     {

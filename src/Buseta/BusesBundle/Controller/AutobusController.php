@@ -25,6 +25,41 @@ use Buseta\BusesBundle\Entity\Autobus;
  */
 class AutobusController extends Controller
 {
+
+    /**
+     * Updated automatically select Modelo when change select Marca
+     *
+     */
+    public function select_marca_modeloAction(Request $request) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+
+        $request = $this->getRequest();
+        if (!$request->isXmlHttpRequest())
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $em = $this->getDoctrine()->getManager();
+        $modelos = $em->getRepository('BusetaNomencladorBundle:Modelo')->findBy(array(
+            'marca' => $request->query->get('marca_id')
+        ));
+
+        $json = array();
+        foreach ($modelos as $modelo)
+        {
+            if($modelo->getId() != $request->query->get('marca_id'))
+            {
+                $json[] = array(
+                    'id' => $modelo->getId(),
+                    'valor' => $modelo->getValor(),
+                );
+            }
+        }
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
+
     /**
      * Module Autobus entiy.
      *
@@ -59,7 +94,7 @@ class AutobusController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            1
+            5
         );
 
         return $this->render('BusetaBusesBundle:Autobus:index.html.twig', array(
