@@ -362,12 +362,12 @@ class AutobusType extends AbstractType
                         'class' => 'form-control',
                     )
                 ))
-            ->add('activo', 'checkbox', array(
+            /*->add('activo', 'checkbox', array(
                 'required' => false,
                 'attr'   => array(
                     'class' => 'js-switch',
                 )
-            ))
+            ))*/
             /*->add('archivo_adjunto','collection',array(
                     'type' => 'file',
                     'allow_add' => true,
