@@ -233,7 +233,7 @@
                 $('a[href="#form_observacion_diagnostico_modal"]').on('click', observaciones._load_modal);
                 $('table.observacion_records_list').find('a.sortable, a.asc, a.desc').on('click', observaciones._load);
                 $('table.observacion_records_list').find('a[href="#edit"]').on('click', observaciones._load_modal);
-                ;
+                $('table.observacion_records_list').find('a[href="#delete"]').on('click', observaciones._load_delete_modal);
             },
             _load: function (event) {
                 if (event !== undefined) {
@@ -294,6 +294,29 @@
                         }).fail(utils._fail).always(function () {
                         });
             },
+            _load_delete_modal: function(event) {
+                if(event !== undefined) {
+                    event.preventDefault();
+                }
+
+                if(diagnostico.id === '' || diagnostico.id === undefined) {
+                    return;
+                }
+
+                var id = $(this).data('content'),
+                        url = Routing.generate('diagnosticos_observacion_delete', {id: id});
+                $.get(url)
+                        .done(function(response, textStatus, jqXHR){
+                            $('div#form_observacion_delete_modal').replaceWith($(response.view));
+
+                            $('div#form_observacion_delete_modal a#btn_observacion_delete').on('click', observaciones._save_delete_modal);
+                            $('div#form_observacion_delete_modal a#btn_observacion_cancel').on('click', function(){
+                                $('div#form_observacion_delete_modal').modal('hide');
+                            });
+
+                            $('div#form_observacion_delete_modal').modal('show');
+                        }).fail(utils._fail).always(function(){});
+            },
             _save_modal: function (event) {
                 if (event != undefined) {
                     event.preventDefault();
@@ -315,6 +338,35 @@
                 
                 $('form#' + observaciones.form_id).ajaxSubmit({
                     success: observaciones._done,
+                    error: utils._fail,
+                    complete: observaciones._always,
+                    url: url,
+                    dataType: 'json'
+                });
+            },
+            _save_delete_modal: function (event) {
+                if(event != undefined) {
+                    event.preventDefault();
+                }
+
+                $('#btn_observacion_delete').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-save')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
+
+                var deleteForm = $('div#form_observacion_delete_modal').find('form'),
+                        url = $(deleteForm).attr('action');
+
+                deleteForm.ajaxSubmit({
+                    success: function (response, textStatus, jqXHR) {
+                        if(jqXHR.status == 202) {
+                            addGlobalMessage('success', response.message);
+                        }
+                        $('div#form_observacion_delete_modal').modal('hide');
+                        observaciones._load();
+                    },
                     error: utils._fail,
                     complete: observaciones._always,
                     url: url,

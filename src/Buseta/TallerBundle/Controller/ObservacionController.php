@@ -74,7 +74,7 @@ class ObservacionController extends Controller
                 }
                 // faltaría forma tradicional
             } catch (\Exception $e) {
-                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Mecanismo de Contacto'), 'HatueyERPTercerosBundle');
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Observacion'), 'BusetaTallerBundle');
                 $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
 
                 if($request->isXmlHttpRequest()) {

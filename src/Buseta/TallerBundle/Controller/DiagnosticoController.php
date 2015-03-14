@@ -42,7 +42,7 @@ class DiagnosticoController extends Controller
         //entonces deshabilitamos la opción "Adicionar Observaciones en reporte_show"
         //----PENDIENTE---
 
-        return $this->redirect($this->generateUrl('ordentrabajo'));
+        return $this->redirect($this->generateUrl('diagnostico'));
     }
 
     /**
