@@ -23,10 +23,9 @@
             <div class="col-md-4">
                 {{ form_row(form.subgrupo) }}
             </div>
-        </div>
-
-        <br/>
-        <div class="row">
+            <div class="col-md-4">
+                {{ form_row(form.garantia) }}
+            </div>
             <div class="col-md-4">
                 {{ form_row(form.kilometros) }}
             </div>
@@ -34,17 +33,12 @@
                 {{ form_row(form.horas) }}
             </div>
         </div>
-        <br/>
 
         <br/>
         <div class="row">
             <div class="col-md-4">
-
                 <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
-
-                <div class="btn-group">
-                    <a class="btn btn-primary" href="{{ path('tareamantenimiento') }}"> Cancelar</a>
-                </div>
+                <a class="btn btn-primary" href="{{ path('tareamantenimiento') }}"> Cancelar</a>
             </div>
         </div>
 
