@@ -37,6 +37,13 @@ class Tarea extends BaseNomenclador
     private $subgrupo;
 
     /**
+     * @var \Buseta\NomencladorBundle\Entity\GarantiaTarea
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\GarantiaTarea")
+     */
+    private $garantia;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="kilometros", type="float", nullable=true)
@@ -79,19 +86,35 @@ class Tarea extends BaseNomenclador
     }
 
     /**
-     * @return string
+     * @return Subgrupo
      */
-    public function getHoras()
+    public function getSubgrupo()
     {
-        return $this->horas;
+        return $this->subgrupo;
     }
 
     /**
-     * @param string $horas
+     * @param Subgrupo $subgrupo
      */
-    public function setHoras($horas)
+    public function setSubgrupo($subgrupo)
     {
-        $this->horas = $horas;
+        $this->subgrupo = $subgrupo;
+    }
+
+    /**
+     * @return GarantiaTarea
+     */
+    public function getGarantia()
+    {
+        return $this->garantia;
+    }
+
+    /**
+     * @param GarantiaTarea $garantia
+     */
+    public function setGarantia($garantia)
+    {
+        $this->garantia = $garantia;
     }
 
     /**
@@ -111,18 +134,18 @@ class Tarea extends BaseNomenclador
     }
 
     /**
-     * @return Subgrupo
+     * @return string
      */
-    public function getSubgrupo()
+    public function getHoras()
     {
-        return $this->subgrupo;
+        return $this->horas;
     }
 
     /**
-     * @param Subgrupo $subgrupo
+     * @param string $horas
      */
-    public function setSubgrupo($subgrupo)
+    public function setHoras($horas)
     {
-        $this->subgrupo = $subgrupo;
+        $this->horas = $horas;
     }
 }
