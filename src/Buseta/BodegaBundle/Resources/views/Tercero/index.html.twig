@@ -1,80 +1,156 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% block nombre_menu_superior %}
-
-{% endblock %}
-
-{% block titulo %}
-    Listado de terceros
+{% block title %}
+    Listado de Terceros
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listados de terceros
+    Listados de Terceros
 {% endblock %}
 
 {% block area_trabajo %}
 
-    <h4><a id="busqueda_tercero" style="cursor: pointer; "><i class="icon-chevron-down"></i> Búsqueda de Terceros</a></h4>
-    <div id="busqueda_tercero_div" class="panel panel-default" style="display: none;">
-        <div class="panel-body">
-            <fieldset>
-                {{ form_start(tercero) }}
-                <div class="row show-grid" style="padding-top: 0px">
-                    <div class="col-md-6">
-                        {{ form_row(tercero.nombres) }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form_row(tercero.apellidos) }}
-                    </div>
-                </div>
-                <div class="row show-grid" style="padding-top: 0px">
-                    <div class="col-md-2">
-                        {{ form_row(tercero.codigo) }}
-                    </div>
-                    <div class="col-md-2">
-                        {{ form_row(tercero.alias) }}
-                    </div>
-                    <div class="col-md-2">
-                        {{ form_row(tercero.cliente) }}
-                    </div>
-                    <div class="col-md-2">
-                        {{ form_row(tercero.proveedor) }}
-                    </div>
-                    <div class="col-md-2">
-                        {{ form_row(tercero.institucion) }}
-                    </div>
-                    <div class="col-md-2">
-                        {{ form_row(tercero.persona) }}
-                    </div>
-                </div>
-                
-                {{ form_end(tercero) }}
+    {% set display = '' %}
+    {% set headericon = 'glyphicon-chevron-down' %}
+    {% if (filter_form.vars.value.codigo is null or filter_form.vars.value.codigo is empty)
+    and (filter_form.vars.value.nombres is null or filter_form.vars.value.nombres is empty)
+    and (filter_form.vars.value.apellidos is null or filter_form.vars.value.apellidos is empty)
+    and (filter_form.vars.value.alias is null or filter_form.vars.value.alias is empty)
+    and (filter_form.vars.value.cliente is null or filter_form.vars.value.cliente is empty)
+    and (filter_form.vars.value.institucion is null or filter_form.vars.value.institucion is empty)
+    and (filter_form.vars.value.proveedor is null or filter_form.vars.value.proveedor is empty)
+    and (filter_form.vars.value.persona is null or filter_form.vars.value.persona is empty)
+    %}
+        {% set display = 'display: none;' %}
+        {% set headericon = 'glyphicon-chevron-right' %}
+    {% endif %}
 
-                <div class="row show-grid">
-                    <div class="col-md-6">
-                        <input class="btn btn-primary btn-bg" style="width: 100px;" value="Buscar" name="buscar" onclick="setFilters()">
+    <h4>
+        <a id="filter_form_header" style="cursor: pointer;">
+            <span class="glyphicon {{ headericon }}"></span>
+            Búsqueda
+        </a>
+    </h4>
+    <div id="filter_form_component" style="{{ display }}">
+        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+            <div class="row">
+                <div class="col-lg-4">{{ form_row(filter_form.codigo) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.nombres) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.apellidos) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.alias) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.cliente) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.institucion) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.proveedor) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.persona) }}</div>
+            </div>
+            {{ form_widget(filter_form._token) }}
 
-                        <div class="btn-group">
-                            <a class="btn btn-success btn-bg" href="{{ path('tercero') }}"><i class="fa fa-search"> Reiniciar Búsqueda</i></a>
-                        </div>
-                    </div>
-                </div>
-
-
-            </fieldset>
-        </div>
+            <div class="filter-actions" style="margin-top: 8px;">
+                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                    <span class="glyphicon glyphicon-filter"></span> Filtrar
+                </a>
+                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                </a>
+            </div>
+        </form>
     </div>
 
-    <div class="btn-group" style="padding-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('tercero_new') }}"><i class="fa fa-plus-circle"></i> Adicionar Tercero</a>
+    <hr/>
+    <div class="btn-group" style="margin-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('tercero_new') }}">
+            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'tercero.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}
+        </a>
     </div>
-    <div class="terceros-result-table" style="text-align: center;"> </div>
 
-{% endblock %}
+    <div class="paginator row">
+        <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+    </div>
+
+    <table class="records_list table table-striped table-bordered table-condensed table-hover">
+        <thead>
+        <tr>
+            <th>Código{{ knp_pagination_sortable(entities, 'Código', 't.codigo') }}</th>
+            <th>Nombres{{ knp_pagination_sortable(entities, 'Nombres', 't.nombres') }}</th>
+            <th>Apellidos{{ knp_pagination_sortable(entities, 'Apellidos', 't.apellidos') }}</th>
+            <th>Alias{{ knp_pagination_sortable(entities, 'Alias', 't.alias') }}</th>
+            <th>Cliente{{ knp_pagination_sortable(entities, 'Cliente', 't.cliente') }}</th>
+            <th>Institución{{ knp_pagination_sortable(entities, 'Institución', 't.institución') }}</th>
+            <th>Proveedor{{ knp_pagination_sortable(entities, 'Proveedor', 't.proveedor') }}</th>
+            <th>Persona{{ knp_pagination_sortable(entities, 'Persona', 't.persona') }}</th>
+            <th style="text-align: center">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.codigo }}</td>
+                <td>{{ entity.nombres }}</td>
+                <td>{{ entity.apellidos }}</td>
+                <td>{{ entity.alias }}</td>
+                <td>{{ entity.cliente }}</td>
+                <td>{{ entity.institucion }}</td>
+                <td>{{ entity.proveedor }}</td>
+                <td>{{ entity.persona }}</td>
+
+                <td style="width: 18% !important; text-align: center;">
+                    <div class="btn-group">
+                        <a class="btn btn-success btn-xs"
+                           href="{{ path('reporte_show', { 'id': entity.id }) }}"><span
+                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
+                    </div>
+
+                    {#<div class="btn-group">
+                        <a class="btn btn-danger btn-xs"
+                           href="{{ path('reporte_edit', { 'id': entity.id }) }}"><span
+                                    class="glyphicon glyphicon-edit"> Editar</span></a>
+                    </div>#}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="paginator row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
+    </div>
+
+{% endblock area_trabajo %}
 
 {% block javascripts %}
-    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a#filter_form_header').click(function () {
+                if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-right')
+                            .addClass('glyphicon-chevron-down');
+                } else {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-down')
+                            .addClass('glyphicon-chevron-right');
+                }
 
-    <script src="{{asset('vendors/busquedaTercero.js')}}" type="text/javascript"></script>
+                $('div#filter_form_component').slideToggle(500);
+            });
 
-{% endblock %}
+            $('a#filter_form_submit_btn').click(function () {
+                $('form#filter_form').submit();
+            });
+
+            $('a#filter_form_reset_btn').click(function () {
+                $('form#filter_form').find('input').each(function () {
+                    $(this).val(null);
+                });
+                $('form#filter_form').find('select').each(function () {
+                    $(this).val(null);
+                })
+            });
+        });
+    </script>
+{% endblock javascripts %}
