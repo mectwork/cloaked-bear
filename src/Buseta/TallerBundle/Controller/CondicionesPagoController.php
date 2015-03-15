@@ -2,6 +2,8 @@
 
 namespace Buseta\TallerBundle\Controller;
 
+use Buseta\TallerBundle\Form\Filter\CondicionesPagoFilter;
+use Buseta\TallerBundle\Form\Model\CondicionesPagoFilterModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -17,24 +19,35 @@ class CondicionesPagoController extends Controller
 
     /**
      * Lists all CondicionesPago entities.
-     *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $filter = new CondicionesPagoFilterModel();
 
-        $entities = $em->getRepository('BusetaTallerBundle:CondicionesPago')->findAll();
+        $form = $this->createForm(new CondicionesPagoFilter(), $filter, array(
+            'action' => $this->generateUrl('condicionespago'),
+        ));
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaTallerBundle:CondicionesPago')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaTallerBundle:CondicionesPago')->filter();
+        }
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
             $entities,
-            $this->get('request')->query->get('page', 1),
-            10,
-            array('pageParameterName' => 'page')
+            $request->query->get('page', 1),
+            5
         );
 
+
         return $this->render('BusetaTallerBundle:CondicionesPago:index.html.twig', array(
-            'entities' => $entities,
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
         ));
     }
     /**

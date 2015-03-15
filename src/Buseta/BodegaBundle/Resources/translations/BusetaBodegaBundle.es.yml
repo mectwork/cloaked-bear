@@ -30,3 +30,7 @@ categoria_producto:
 pedidocompra:
   btn:
     adicionar: Adicionar Registro de Compra
+
+albaran:
+  btn:
+    adicionar: Adicionar Albarán

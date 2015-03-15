@@ -62,3 +62,7 @@ reporte:
 impuesto:
   btn:
     adicionar: Adicionar Impuesto
+
+condicionespago:
+  btn:
+    adicionar: Adicionar Condición de Pago
