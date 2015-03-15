@@ -58,3 +58,7 @@ diagnostico:
 reporte:
   btn:
     adicionar: Adicionar Reporte
+
+impuesto:
+  btn:
+    adicionar: Adicionar Impuesto
