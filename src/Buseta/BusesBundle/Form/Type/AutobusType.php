@@ -2,6 +2,8 @@
 
 namespace Buseta\BusesBundle\Form\Type;
 
+use Buseta\BusesBundle\Form\EventListener\AddMarcaFieldSubscriber;
+use Buseta\BusesBundle\Form\EventListener\AddModeloFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -16,6 +18,12 @@ class AutobusType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $objeto = $builder->getFormFactory();
+        $modelo = new AddModeloFieldSubscriber($objeto);
+        $builder->addEventSubscriber($modelo);
+        $marca = new AddMarcaFieldSubscriber($objeto);
+        $builder->addEventSubscriber($marca);
+
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $autobus = $event->getData();
             $form = $event->getForm();
@@ -59,6 +67,9 @@ class AutobusType extends AbstractType
         });
 
         $builder
+            ->add('id', 'hidden', array(
+                'required' => false,
+            ))
             ->add('imagen_frontal', 'file', array(
                     'required' => false,
                     'attr'   => array(
@@ -67,103 +78,96 @@ class AutobusType extends AbstractType
                     ),
                 ))
             ->add('imagen_lateral_d', 'file', array(
-                'required' => false,
-                'attr'   => array(
-                    'class' => 'form-control',
-                    'style' => 'width: 250px',
-                ),
-            ))
+                    'required' => false,
+                    'attr'   => array(
+                        'class' => 'form-control',
+                    ),
+                ))
             ->add('imagen_lateral_i', 'file', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('imagen_trasera', 'file', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('matricula', 'text', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
+            ->add('numero', 'text', array(
+                'required' => true,
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->add('marca_cajacambio', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('tipo_cajacambio', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('aceitecajacambios', 'entity', array(
                     'class' => 'BusetaNomencladorBundle:AceiteCajaCambios',
-                    'empty_value' => '---Seleccione aceite caja cambios---',
+                    'empty_value' => '---Seleccione---',
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('aceitehidraulico', 'entity', array(
                     'class' => 'BusetaNomencladorBundle:AceiteHidraulico',
-                    'empty_value' => '---Seleccione aceite hidráulico---',
+                    'empty_value' => '---Seleccione---',
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('aceitemotor', 'entity', array(
                     'class' => 'BusetaNomencladorBundle:AceiteMotor',
-                    'empty_value' => '---Seleccione aceite motor---',
+                    'empty_value' => '---Seleccione---',
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
             ->add('aceitetransmision', 'entity', array(
                     'class' => 'BusetaNomencladorBundle:AceiteTransmision',
-                    'empty_value' => '---Seleccione aceite transmisión---',
+                    'empty_value' => '---Seleccione---',
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
             ->add('carter_capacidadlitros', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
             ->add('bateria_1', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
             ->add('bateria_2', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
             ->add('filtro_aceite', new FiltroAceiteType())
 
@@ -181,101 +185,87 @@ class AutobusType extends AbstractType
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
             ->add('numero_motor', 'text', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
-            ->add('capacidad_tanque', 'integer', array(
+            ->add('capacidad_tanque', 'number', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
             ->add('valor_unidad', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
             ->add('numero_unidad', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
-            ->add('anno', 'integer', array(
+            ->add('anno', 'number', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
-            ->add('peso_tara', 'integer', array(
+            ->add('peso_tara', 'number', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
-            ->add('peso_bruto', 'integer', array(
+            ->add('peso_bruto', 'number', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
-            ->add('numero_plazas', 'integer', array(
+            ->add('numero_plazas', 'number', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
-            ->add('numero_cilindros', 'integer', array(
+            ->add('numero_cilindros', 'number', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
-            ->add('cilindrada', 'integer', array(
+            ->add('cilindrada', 'number', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
-            ->add('potencia', 'integer', array(
+            ->add('potencia', 'number', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
             ->add('valido_hasta', 'date', array(
                     'widget' => 'single_text',
                     'format'  => 'dd/MM/yyyy',
                     'attr'   => array(
                         'class' => 'form-control date',
-                        'style' => 'width: 250px',
-                    ),
+                    )
                 ))
             ->add('fecha_rtv_1', 'choice', array(
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
-                    'empty_value' => '---Seleccione un mes---',
-                    'choices' => array('Enero' => 'Enero',
+                    'empty_value' => '---Seleccione---',
+                    'choices' => array('Enero'=>'Enero',
                                        'Febrero' => 'Febrero',
                                        'Marzo' => 'Marzo',
                                        'Abril' => 'Abril',
@@ -292,10 +282,9 @@ class AutobusType extends AbstractType
             ->add('fecha_rtv_2', 'choice', array(
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
-                    'empty_value' => '---Seleccione un mes---',
-                    'choices' => array('Enero' => 'Enero',
+                    'empty_value' => '---Seleccione---',
+                    'choices' => array('Enero'=>'Enero',
                                        'Febrero' => 'Febrero',
                                        'Marzo' => 'Marzo',
                                        'Abril' => 'Abril',
@@ -314,105 +303,76 @@ class AutobusType extends AbstractType
                     'format'  => 'dd/MM/yyyy',
                     'attr'   => array(
                         'class' => 'form-control date',
-                        'style' => 'width: 250px',
                     ),
                 ))
-            ->add('marca', 'entity', array(
-                    'class' => 'BusetaNomencladorBundle:Marca',
-                    'empty_value' => '---Seleccione una marca---',
-                    'attr' => array(
-                        'class' => 'form-control',
-                        'empty_value' => '---Seleccione una marca---',
-                        'style' => 'width: 250px',
-                    ),
-                ))
-            ->add('modelo', 'entity', array(
-                    'class' => 'BusetaNomencladorBundle:Modelo',
-                    'empty_value' => '---Seleccione un modelo---',
-                    'attr' => array(
-                        'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
-                ))
-            ->add('estilo', 'entity', array(
+            ->add('estilo','entity',array(
                     'class' => 'BusetaNomencladorBundle:Estilo',
-                    'empty_value' => '---Seleccione un estilo---',
+                    'empty_value' => '---Seleccione---',
                     'attr' => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('color', 'entity', array(
                     'class' => 'BusetaNomencladorBundle:Color',
-                    'empty_value' => '---Seleccione un color---',
+                    'empty_value' => '---Seleccione---',
                     'attr' => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('marca_motor', 'entity', array(
                     'class' => 'BusetaNomencladorBundle:MarcaMotor',
-                    'empty_value' => '---Seleccione marca de motor---',
+                    'empty_value' => '---Seleccione---',
                     'attr' => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('combustible', 'entity', array(
                     'class' => 'BusetaNomencladorBundle:Combustible',
-                    'empty_value' => '---Seleccione un combustible---',
+                    'empty_value' => '---Seleccione---',
                     'attr' => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('rampas', 'textarea', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('barras', 'textarea', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('camaras', 'textarea', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('lector_cedulas', 'textarea', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('publicidad', 'textarea', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('gps', 'textarea', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('wifi', 'textarea', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             /*->add('archivo_adjunto','collection',array(
@@ -429,9 +389,6 @@ class AutobusType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        /*$resolver->setDefaults(array(
-            'data_class' => 'Buseta\BusesBundle\Form\Model\Autobus'
-        ));*/
         $resolver->setDefaults(array(
                 'data_class' => 'Buseta\BusesBundle\Form\Model\AutobusModel',
                 'method' => 'POST',

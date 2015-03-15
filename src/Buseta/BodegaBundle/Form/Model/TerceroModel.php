@@ -24,6 +24,11 @@ class TerceroModel
 
     private $apellidos;
 
+    /**
+     * @var \Buseta\SecurityBundle\Entity\User
+     */
+    private $usuario;
+
     private $alias;
 
     private $direccion;
@@ -68,6 +73,7 @@ class TerceroModel
             $this->id = $tercero->getId();
             $this->compras = $tercero->getPedidoCompra();
             $this->codigo = $tercero->getCodigo();
+            $this->usuario = $tercero->getUsuario();
             $this->nombres = $tercero->getNombres();
             $this->apellidos = $tercero->getApellidos();
             $this->alias = $tercero->getAlias();
@@ -84,6 +90,22 @@ class TerceroModel
             $this->persona = $tercero->getPersona();
             $this->activo = $tercero->getActivo();
         }
+    }
+
+    /**
+     * @return \Buseta\SecurityBundle\Entity\User
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * @param \Buseta\SecurityBundle\Entity\User $usuario
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
     }
 
     /**

@@ -1,0 +1,34 @@
+diagnostico:
+    pattern:  /
+    defaults: { _controller: "BusetaTallerBundle:Diagnostico:index" }
+
+diagnostico_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaTallerBundle:Diagnostico:show" }
+
+diagnostico_new:
+    pattern:  /new
+    defaults: { _controller: "BusetaTallerBundle:Diagnostico:new" }
+
+diagnostico_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaTallerBundle:Diagnostico:create" }
+    requirements: { _method: post }
+
+diagnostico_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BusetaTallerBundle:Diagnostico:edit" }
+
+diagnostico_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BusetaTallerBundle:Diagnostico:update" }
+    requirements: { _method: post|put }
+
+diagnostico_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BusetaTallerBundle:Diagnostico:delete" }
+    requirements: { _method: post|delete }
+
+diagnostico_generar_ordentrabajo:
+    pattern:  /{id}/generar_ordentrabajo
+    defaults: { _controller: "BusetaTallerBundle:Diagnostico:generarOrdenTrabajo" }

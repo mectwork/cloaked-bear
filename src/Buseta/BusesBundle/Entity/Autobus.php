@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Autobus.
  *
  * @ORM\Table(name="d_autobus")
- * @ORM\Entity(repositoryClass="Buseta\BusesBundle\Entity\AutobusRepository")
+ * @ORM\Entity(repositoryClass="Buseta\BusesBundle\Entity\Repository\AutobusRepository")
  */
 class Autobus
 {
@@ -66,6 +66,13 @@ class Autobus
      * @ORM\Column(name="matricula", type="string", length=32)
      */
     private $matricula;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numero", type="string", length=32)
+     */
+    private $numero;
 
     /**
      * @var string
@@ -366,9 +373,15 @@ class Autobus
      * @var integer
      *
      * @ORM\Column(name="kilometraje", type="integer", columnDefinition="INT( 11 ) NOT NULL DEFAULT '0'")
+     * @Assert\Type("integer")
      */
     private $kilometraje;
 
+    /**
+     * @ORM\Column(name="activo", type="boolean", nullable=true)
+     */
+    private $activo;
+    
     /**
      * @var integer
      *
@@ -376,6 +389,7 @@ class Autobus
      */
     private $horas;
 
+    
     /**
      * Get id.
      *
@@ -504,6 +518,22 @@ class Autobus
     public function getMatricula()
     {
         return $this->matricula;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * @param string $numero
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
     }
 
     /**
@@ -1416,7 +1446,7 @@ class Autobus
 
     public function __toString()
     {
-        return $this->matricula;
+        return sprintf('%d (%s)', $this->numero, $this->matricula);
     }
 
     /**
@@ -1580,7 +1610,7 @@ class Autobus
      */
     public function setModelo($modelo)
     {
-        return $this->compras;
+        $this->modelo = $modelo;
     }
 
     /**
@@ -1593,7 +1623,7 @@ class Autobus
     public function setKilometraje($kilometraje)
     {
         $this->kilometraje = $kilometraje;
-
+    
         return $this;
     }
 
@@ -1605,6 +1635,22 @@ class Autobus
     public function getKilometraje()
     {
         return $this->kilometraje;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActivo()
+    {
+        return $this->activo;
+    }
+    
+    /**
+     * @param mixed $activo
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
     }
 
     /**

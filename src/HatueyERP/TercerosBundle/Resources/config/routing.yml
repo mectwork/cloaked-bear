@@ -1,0 +1,21 @@
+HatueyERPTercerosBundle_tercero:
+    resource: "@HatueyERPTercerosBundle/Controller/TerceroController.php"
+    type: annotation
+HatueyERPTercerosBundle_direccion:
+    resource: "@HatueyERPTercerosBundle/Controller/DireccionController.php"
+    type: annotation
+HatueyERPTercerosBundle_personaapi:
+    resource: "@HatueyERPTercerosBundle/Resources/config/routing/personaapi.yml"
+    prefix:   /persona/api
+HatueyERPTercerosBundle_persona:
+    resource: "@HatueyERPTercerosBundle/Controller/PersonaController.php"
+    type: annotation
+HatueyERPTercerosBundle_cliente:
+    resource: "@HatueyERPTercerosBundle/Controller/ClienteController.php"
+    type: annotation
+HatueyERPTercerosBundle_proveedor:
+    resource: "@HatueyERPTercerosBundle/Controller/ProveedorController.php"
+    type: annotation
+HatueyERPTercerosBundle_institucion:
+    resource: "@HatueyERPTercerosBundle/Controller/InstitucionController.php"
+    type: annotation

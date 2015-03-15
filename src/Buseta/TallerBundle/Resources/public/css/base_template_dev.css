@@ -1,0 +1,51 @@
+/* affect bootstrap template */
+@font-face {
+    font-family: 'Glyphicons Halflings';
+
+    src: url('../../../fonts/glyphicons-halflings-regular.eot');
+    src: url('../../../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../../../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../../../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../../../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+/*
+ * affect dateapicker component
+ * detalles: modificación que permite mostrar el calendario picker cerca del medio de la pantalla
+ */
+
+.picker__frame {
+    margin-bottom: 5%;
+}
+
+/* template footer */
+footer {
+    bottom: 0;
+    height: 35px;
+    left: 0;
+    margin: 0;
+    padding: 5px;
+    right: 0;
+    position: fixed;
+    display: block;
+    top: auto;
+    visibility: visible;
+    width: auto;
+    background-image: -moz-linear-gradient(center top , #E4E4E4, #FFFFFF);
+    background-color: #F7F7F7;
+    border-top: 1px solid #BBBBBB;
+    overflow: hidden;
+    z-index: 1000000 !important;
+}
+
+footer p {
+    font: 11px Verdana,Arial,sans-serif;
+}
+
+footer img, footer a, footer p {
+    vertical-align: middle;
+    color: #2F2F2F;
+    display: inline-block;
+}
+
+.page-header {
+    margin: 0 0 10px;
+    padding-bottom: 16px;
+}

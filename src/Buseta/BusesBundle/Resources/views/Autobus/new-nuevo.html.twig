@@ -1,0 +1,336 @@
+{% extends "BusetaBusesBundle::layout.html.twig" %}
+
+{% form_theme form 'BusetaTemplateBundle:Widgets:collection_widget_archivo_adjunto.html.twig' %}
+
+{% block title %}
+    Adicionar Nuevo Autobús
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Adicionar Nuevo Autobús
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            {# Nav tabs #}
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos de Autobús</a></li>
+                <li><a href="#kilometraje" data-toggle="tab">Kilometraje</a></li>
+            </ul>
+
+            {# Tab panes #}
+            <div class="tab-content" style="padding-top: 20px;">
+                <!-- TAB BASICOS-->
+                <div class="tab-pane fade in active" id="basicos">
+                    {% include '@BusetaBuses/Autobus/form_template.html.twig' with {'form': form} %}
+                </div>
+
+                <!-- TAB INFORMACION EXTRA-->
+                <div class="tab-pane fade in active" id="kilometraje">
+                    {% render(controller('BusetaBusesBundle:Autobus:renderKilometrajeForm')) %}
+                </div>
+
+            </div>
+
+            <br/>
+            {# buttons group #}
+            <div class="row show-grid">
+                <div class="col-md-4 form-group">
+                    <a class="btn btn-primary" href="#" id="btn_submit">Aceptar</a>
+                    <a class="btn btn-primary" href="{{ path('autobus_new') }}">Crear Nuevo</a>
+                    <a class="btn btn-default" href="{{ path('autobus') }}"> Listado</a>
+                </div>
+            </div>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <!-- Initialize script -->
+    <script type="text/javascript">
+        $(function (){
+            // init autobus
+            autobus._load();
+        });
+    </script>
+
+    <script type="text/javascript">
+        var button = {
+            _disable: function (selector) {
+                $(selector).addClass('disabled');
+            },
+            _enable: function (selector) {
+                $(selector).removeClass('disabled');
+            }
+        };
+        var tabs = {
+            loadding_image: '<i class="fa fa-spinner fa-spin"></i>',
+            _show_all_tabs: function() {
+                tabs._show_tab('kilometraje');
+            },
+            _show_tab: function (tabname) {
+                $('li a[href="#' + tabname + '"]').parent().show();
+            },
+            _hide_tab: function () {
+                $('li a[href="#' + tabname + '"]').parent().hide();
+            },
+            _add_loadding: function (tabname) {
+                var linktab = $('li a[href="#' + tabname + '"]');
+                linktab.prepend($(tabs.loadding_image));
+            },
+            _remove_loadding: function (tabname) {
+                var spinning = $('li a[href="#' + tabname + '"]').find('i.fa.fa-spinner.fa-spin');
+                spinning.remove();
+            },
+            _active: function (href) {
+                $('li a[href="' + href + '"]').parent().addClass('active');
+                $('div' + href).addClass('active').addClass('in');
+            },
+            _desactive: function (href) {
+                $('li a[href="' + href + '"]').parent().removeClass('active');
+                $('div' + href).removeClass('active').removeClass('in');
+            }
+        };
+        var utils = {
+            _fail: function (jqXHR, textStatus, errorThrown) {
+                if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                    addGlobalMessage('danger', jqXHR.responseText.message);
+                } else {
+                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaBusesBundle') }}');
+                }
+            }
+        };
+        var progressBar = {
+            _add_progressBar: function (name) {
+                var progressBar = $('<div class="progress" id="' + name + '_progress_bar"></div>'),
+                        bar = $('<div>')
+                                .addClass('progress-bar')
+                                .attr('role', 'progressbar')
+                                .attr('aria-valuenow', 2)
+                                .attr('aria-valuemin', 0)
+                                .attr('aria-valuemax', 100)
+                                .css('width', '2%')
+                                .append($('<span class="sr-only"></span>'));
+
+                progressBar.append(bar);
+
+                $('#' + name).hide().parent().prepend(progressBar);
+            },
+            _remove_progressBar: function(name) {
+                var progressBar = $('div#' + name + '_progress_bar');
+                progressBar.slideUp(400, function () {
+                    progressBar.remove();
+                });
+                $('#' + name).show();
+            }
+        };
+    </script>
+
+    <!-- Autobus script -->
+    <script type="text/javascript">
+        var autobus = {
+            form_id: $('div#basicos').find('form').attr('id'),
+            form_name: $('div#basicos').find('form').attr('name'),
+            id: '',
+            _load: function () {
+                $('a#btn_autobus_save').on('click', autobus._save);
+                autobus.id = $('input[id="' + autobus.form_id + '_id"]').val();
+                if (autobus.id === '' || autobus.id === undefined) {
+                    // hide all tabs on page load
+                    $('a[data-toggle="tab"]').each(function(key, item) {
+                        if($(item).attr('href') != '#basicos') {
+                            $(item).parent().hide();
+                        }
+                    });
+                }
+
+                // on show tab events
+                $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+                    var href = $(e.target).attr('href');
+                    var relhref = $(e.relatedTarget).attr('href');
+
+                    if (href === '#kilometraje') {
+                        kilometraje._load();
+                    }
+                });
+            },
+            _save: function (event) {
+                if (event != undefined) {
+                    event.preventDefault();
+                }
+
+                // disable btn
+                button._disable('a#btn_autobus_save');
+
+                // add progress bar
+                var fileInput = $('input[id="' + autobus.form_id + '_foto_file"]');
+                if(fileInput[0].files.length > 0) {
+                    progressBar._add_progressBar($(fileInput).attr('id'));
+                }
+
+                // add spinning to show loading process
+                tabs._add_loadding('basicos');
+
+                // Tercero Id
+                autobus.id = $('input[id="' + autobus.form_id + '_id"]').val();
+
+                var autobusesForm    = $('form#' + autobus.form_id),
+                        url             = Routing.generate('autobus_create',{});
+                if(autobus.id !== '' && autobus.id !== undefined) {
+                    url = Routing.generate('autobus_update', {'id': autobus.id});
+                }
+
+                autobusesForm.ajaxSubmit({
+                    success: autobus._done,
+                    error: utils._fail,
+                    complete: autobus._always,
+                    uploadProgress: autobus._upload,
+                    url: url,
+                    dataType: 'json'
+                });
+            },
+            _done: function (response, textStatus, jqXHR) {
+                $('form#' + autobus.form_id).replaceWith(response.view);
+                if(jqXHR.status == 201) {
+                    addGlobalMessage('success', response.message);
+                    // Autobus Id
+                    autobus.id = $('input[id="' + autobus.form_id + '_id"]').val();
+                    // activate all tabs
+                    tabs._show_all_tabs();
+                } else if(jqXHR.status == 202) {
+                    addGlobalMessage('success', response.message);
+                }
+                $('a#btn_autobus_save').on('click', autobus._save);
+            },
+            _always: function() {
+                // remove spinning
+                tabs._remove_loadding('basicos');
+                // remove progress bar
+                progressBar._remove_progressBar($('input[id="' + autobus.form_id + '_foto_file"]').attr('id'));
+
+                button._enable('a#btn_autobus_save');
+            },
+            _upload: function (event, position, total, percentComplete) {
+                var progressBarr = $('div#basicos').find('.progress-bar')[0];
+                if (progressBarr !== undefined) {
+                    $(progressBarr).css('width', percentComplete + '%');
+                    $(progressBarr).find('span').html(percentComplete + '% Completado');
+                }
+            }
+        };
+    </script>
+
+    <!-- Informacion Extra script -->
+    <script type="text/javascript">
+        var kilometraje = {
+            form_name: '',
+            form_id: '',
+            id: '',
+            date_config: {
+                format: 'DD/MM/YYYY',
+                pickTime: false
+            },
+            _start_events: function () {
+                //tabs._show_tab('kilometraje');
+                $('input#' + kilometraje.form_id + '_fechaNacimiento').datetimepicker(kilometraje.date_config);
+                $('input#' + kilometraje.form_id + '_fechaNacimiento').on('dp.change', kilometraje.getEdad);
+                $('a#btn_kilometraje_save').on('click', kilometraje._save);
+            },
+            _load: function () {
+                if (autobus.id == '') {
+                    //$('li a[href="#kilometraje"]').parent().hide();
+                    //$('li a[href="#basicos"]').parent().tab('show');
+
+                    return;
+                }
+
+                // add spinning to show loading process
+                tabs._add_loadding('kilometraje');
+
+                // Persona Id
+                kilometraje.id = $('input[id="' + kilometraje.form_id + '_id"]').val();
+
+                var url = Routing.generate('autobuses_kilometraje_new',{'autobus': autobus.id});
+                if(kilometraje.id !== '' && kilometraje.id !== undefined) {
+                    url = Routing.generate('autobuses_kilometraje_edit',{'autobus': autobus.id, 'id': kilometraje.id});
+                }
+
+                $.get(url).done(function (response, textStatus, jqXHR) {
+                    $('div#kilometraje').html(response);
+
+                    // initialize
+                    kilometraje.form_id    = $('div.tab-pane#kilometraje').find('form').attr('id');
+                    kilometraje.form_name  = $('div.tab-pane#kilometraje').find('form').attr('name');
+
+                    kilometraje._start_events();
+                }).fail(utils._fail).always(kilometraje._always);
+            },
+            _save: function (event) {
+                if(event != undefined) {
+                    event.preventDefault();
+                }
+
+                // add spinning to show loading process
+                tabs._add_loadding('kilometraje');
+
+                button._disable('a#btn_kilometraje_save');
+
+                // Persona Id
+                kilometraje.id = $('input[id="' + kilometraje.form_id + '_id"]').val();
+
+                var kilometrajeForm = $('form#' + kilometraje.form_id),
+                        url = Routing.generate('autobuses_kilometraje_create',{'autobus': autobus.id});
+                if (kilometraje.id !== '' && kilometraje.id !== undefined) {
+                    url = Routing.generate('autobuses_kilometraje_update',{'autobus': autobus.id, 'id': kilometraje.id});
+                }
+
+                kilometrajeForm.ajaxSubmit({
+                    success: kilometraje.done,
+                    error: utils._fail,
+                    complete: kilometraje._always,
+                    url: url,
+                    dataType: 'json'
+                });
+            },
+            _done: function (response, textStatus, jqXHR) {
+                $('form#' + kilometraje.form_id).replaceWith($(response.view).find('form'));
+                if(jqXHR.status == 201) {
+                    addGlobalMessage('success', response.message);
+                    // Persona Id
+                    kilometraje.id = $('input[id="' + kilometraje.form_id + '_id"]').val();
+                } else if(jqXHR.status == 202){
+                    addGlobalMessage('success', response.message);
+                }
+
+                kilometraje._start_events();
+            },
+            _always: function (jqXHR, textStatus){
+                // remove spinning
+                tabs._remove_loadding('kilometraje');
+                button._enable('a#btn_kilometraje_save');
+            }
+        };
+    </script>
+
+    <!-- Disable F5 refresh -->
+    <script type="text/javascript">
+        function disableF5(e) { if ((e.which || e.keyCode) == 116) e.preventDefault(); };
+        $(document).on("keydown", disableF5);
+    </script>
+    <!-- Disable go back navigation -->
+    <script type="text/javascript">
+        history.pushState(null, null, location.href);
+        function disableGoBack(e) { history.go(1); };
+        $(window).on("beforeunload", disableGoBack);
+        $(window).on("popstate", disableGoBack);
+    </script>
+{% endblock javascripts %}

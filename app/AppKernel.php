@@ -35,6 +35,10 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
 
+            new HatueySoft\SecurityBundle\HatueySoftSecurityBundle(),
+            new HatueySoft\UploadBundle\HatueySoftUploadBundle(),
+            new HatueyERP\TercerosBundle\HatueyERPTercerosBundle(),
+
 //            new Liip\ImagineBundle\LiipImagineBundle(),
             new Buseta\TemplateBundle\BusetaTemplateBundle(),
         );

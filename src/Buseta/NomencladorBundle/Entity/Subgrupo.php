@@ -24,7 +24,7 @@ class Subgrupo extends BaseNomenclador
     /**
      * @var \Buseta\NomencladorBundle\Entity\Grupo
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo", inversedBy="subgrupos")
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo")
      */
     private $grupo;
 

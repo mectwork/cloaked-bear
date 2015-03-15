@@ -35,3 +35,10 @@ autobus_ajax_modelos:
   requirements: { _method: "GET" }
   options:
       expose: true
+
+autobus_ajax_marca_modelo:
+  pattern: /select_marca_modelo
+  defaults: { _controller: "BusetaBusesBundle:Autobus:select_marca_modelo" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true

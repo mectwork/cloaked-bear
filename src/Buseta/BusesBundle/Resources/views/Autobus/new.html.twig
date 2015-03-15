@@ -50,17 +50,22 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label>Número de Chasis:</label>
-                                        {{ form_widget(form.numero_chasis) }}
+                                        <label>Número:</label>
+                                        {{ form_widget(form.numero) }}
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label>N&uacute;mero de Motor:</label>
-                                        {{ form_widget(form.numero_motor) }}
+                                        <label>Número de Chasis:</label>
+                                        {{ form_widget(form.numero_chasis) }}
                                     </div>
                                 </div>
 
                                 <div class="row show-grid">
+                                    <div class="col-md-4">
+                                        <label>N&uacute;mero de Motor:</label>
+                                        {{ form_widget(form.numero_motor) }}
+                                    </div>
+
                                     <div class="col-md-4">
                                         <label>Peso Tara:</label>
                                         {{ form_widget(form.peso_tara) }}
@@ -70,16 +75,16 @@
                                         <label>Peso Bruto:</label>
                                         {{ form_widget(form.peso_bruto) }}
                                     </div>
-
-                                    <div class="col-md-4">
-                                        <label>N&uacute;mero de Plazas:</label>
-                                        {{ form_widget(form.numero_plazas) }}
-                                    </div>
                                 </div>
 
                                 <div class="row show-grid">
+
                                     <div class="col-md-4">
-                                        <label>N&uacute;mero de Cilindros:</label>
+                                        <label>Número de Plazas:</label>
+                                        {{ form_widget(form.numero_plazas) }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Número de Cilindros:</label>
                                         {{ form_widget(form.numero_cilindros) }}
                                     </div>
 
@@ -88,13 +93,14 @@
                                         {{ form_widget(form.cilindrada) }}
                                     </div>
 
+                                </div>
+
+                                <div class="row show-grid">
+
                                     <div class="col-md-4">
                                         <label>Potencia:</label>
                                         {{ form_widget(form.potencia) }}
                                     </div>
-                                </div>
-
-                                <div class="row show-grid">
                                     <div class="col-md-4">
                                         <label>Fecha de Ingreso:</label>
                                         {{ form_widget(form.fecha_ingreso) }}
@@ -105,13 +111,14 @@
                                         {{ form_widget(form.valido_hasta) }}
                                     </div>
 
+                                </div>
+
+                                <div class="row show-grid">
+
                                     <div class="col-md-4">
                                         <label>Estilo:</label>
                                         {{ form_widget(form.estilo) }}
                                     </div>
-                                </div>
-
-                                <div class="row show-grid">
                                     <div class="col-md-4">
                                         <label>Fecha RTV 1:</label>
                                         {{ form_widget(form.fecha_rtv_1) }}
@@ -122,14 +129,14 @@
                                         {{ form_widget(form.fecha_rtv_2) }}
                                     </div>
 
+                                </div>
+
+                                <div class="row show-grid">
+
                                     <div class="col-md-4">
                                         <label>Combustible:</label>
                                         {{ form_widget(form.combustible) }}
                                     </div>
-
-                                </div>
-
-                                <div class="row show-grid">
                                     <div class="col-md-4">
                                         <label>Marca:</label>
                                         {{ form_widget(form.marca) }}
@@ -140,13 +147,15 @@
                                         {{ form_widget(form.modelo) }}
                                     </div>
 
+                                </div>
+
+                                <div class="row show-grid">
+
                                     <div class="col-md-4">
                                         <label>Color:</label>
                                         {{ form_widget(form.color) }}
                                     </div>
-                                </div>
 
-                                <div class="row show-grid">
                                     <div class="col-md-4">
                                         <label>Marca de Motor:</label>
                                         {{ form_widget(form.marca_motor) }}
@@ -465,11 +474,17 @@
 
     <script type="text/javascript">
         $('.date').datetimepicker({
-            format: 'DD/MM/YYYY'
+            format: 'DD/MM/YYYY',
+            pickTime: false
         });
+
     </script>
 
+{#
     <script src="{{ asset('vendors/selectDinamico.js') }}"></script>
+#}
+    <script src="{{ asset('bundles/busetabuses/js/checkClick.js') }}"></script>
+
 
     <script type="text/javascript">
         var collectionHolder = $('table#buseta_databundle_autobus_archivo_adjunto');
@@ -531,6 +546,29 @@
                     $('tr#no-elements-tr').hide();
                 }
             }
+        });
+
+        //Actualiza los Modelos a partir de las Marcas seleccionados con peticiones AJAX
+        $('#{{ form.marca.vars.id }}').change(function(){
+            var data = {
+                marca_id: $(this).val()
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("autobus_ajax_marca_modelo") }}',
+                data: data,
+                success: function(data) {
+                    var values = $.parseJSON(data);
+                    var $modelo_selector = $('#{{ form.modelo.vars.id }}');
+
+                    $modelo_selector.html('<option>---Seleccione---</option>');
+
+                    for (var i=0, total = values.length; i < total; i++) {
+                        $modelo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                    }
+                }
+            });
         });
 
     </script>

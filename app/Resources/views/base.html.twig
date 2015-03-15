@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}  {% endblock %} | Sistema de Gestión de Autobuses</title>
+        <title>{% block title %}  {% endblock %} | Sistema de Gestión Estación de Servicios</title>
 
         {% include "::stylesheets.html.twig" %}
         {% block stylesheets %}{% endblock %}
@@ -14,7 +14,49 @@
         {% block body %}{% endblock %}
 
         {% include "::javascripts.html.twig" %}
-        {% block javascripts %}{% endblock %}
+        {% block foot_script %}
+            {# To only use a subset or add more js overwrite and copy paste this block
+            To speed up page loads save a copy of jQuery in your project and override this block to include the correct path
+            Otherwise the regeneration is done on every load in dev more with use_controller: true
+             #}
+            {% block foot_script_assetic %}
+                {% javascripts filter="yui_js" output='js/main.js'
+                '@BusetaTemplateBundle/Resources/bootstrap/dist/js/bootstrap.min.js'
+                '@BusetaTemplateBundle/Resources/public/vendor/pickadate/picker.js'
+                '@BusetaTemplateBundle/Resources/public/vendor/pickadate/picker.date.js'
+                '@BusetaTemplateBundle/Resources/public/vendor/pickadate/picker.time.js'
+                '@BusetaTemplateBundle/Resources/public/vendor/pickadate/legacy.js'
+                '@BusetaTemplateBundle/Resources/public/vendor/pickadate/translations/es_ES.js'
+
+                '@BusetaTemplateBundle/Resources/public/vendor/blockUI/jquery.blockUI.js'
+
+                '@BusetaTemplateBundle/Resources/public/vendor/gritter/js/jquery.gritter.min.js'
+
+                '@BusetaTemplateBundle/Resources/public/vendor/bootstrap-switch/js/bootstrap-switch.min.js'
+
+                '@BusetaTemplateBundle/Resources/public/vendor/chosen/chosen.jquery.min.js'
+
+                '@BusetaTemplateBundle/Resources/public/vendor/datetimepicker-bootstrap/moment-2.9.0/moment.js'
+                '@BusetaTemplateBundle/Resources/public/vendor/datetimepicker-bootstrap/moment-2.9.0/locale/es.js'
+
+                '@BusetaTemplateBundle/Resources/public/vendor/jquery-form/jquery.form.min.js'
+
+                '@BusetaTemplateBundle/Resources/public/js/*'
+                %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+                {% endjavascripts %}
+                <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}" type="text/javascript"></script>
+                <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}" type="text/javascript"></script>
+            {% endblock foot_script_assetic %}
+
+            {#<script type="text/javascript">
+                $(document).ready(function () {
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $('[data-toggle="popover"]').popover();
+                });
+            </script>#}
+            {% block javascripts %}{% endblock javascripts %}
+        {% endblock foot_script %}
     </body>
 </html>
 

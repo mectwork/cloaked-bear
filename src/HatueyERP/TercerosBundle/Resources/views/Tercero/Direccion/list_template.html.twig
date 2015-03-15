@@ -1,0 +1,39 @@
+<div class="btn-group" style="margin-bottom: 8px;">
+    <a class="btn btn-primary" href="#form_address_modal"><i class="glyphicon glyphicon-plus-sign"></i> {{ 'direccion.btn.adicionar'|trans({}, 'HatueyERPTercerosBundle') }}</a>
+</div>
+
+<table class="direccion_records_list table table-striped table-bordered table-condensed table-hover">
+    <thead>
+    <tr>
+        <th>{{ knp_pagination_sortable(entities, 'direccion.nombre' | trans({}, 'HatueyERPTercerosBundle'), 'd.nombre') }}</th>
+        <th>{{ knp_pagination_sortable(entities, 'direccion.codigoPostal' | trans({}, 'HatueyERPTercerosBundle'), 'd.codigoPostal') }}</th>
+        <th>{{ knp_pagination_sortable(entities, 'direccion.localidad' | trans({}, 'HatueyERPTercerosBundle'), 'd.localidad') }}</th>
+        <th>{{ knp_pagination_sortable(entities, 'direccion.region' | trans({}, 'HatueyERPTercerosBundle'), 'd.region') }}</th>
+        <th style="text-align: center">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td>{{ entity.nombre }}</td>
+            <td>{{ entity.codigoPostal }}</td>
+            <td>{{ entity.localidad }}</td>
+            <td>{{ entity.region }}</td>
+            <td>
+                <a class="btn btn-danger btn-xs" href="#" ><span class="glyphicon glyphicon-edit"> Editar</span></a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">{{ 'messages.no_results' | trans({}, 'HatueyERPTercerosBundle') }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="paginator row">
+    <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+    <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
+</div>
+
+<div class="modal" id="form_address_modal"></div>

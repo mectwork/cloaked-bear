@@ -22,13 +22,6 @@ class Condicion extends BaseNomenclador
     protected $id;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Producto", mappedBy="condicion", cascade={"all"})
-     */
-    private $productos;
-
-    /**
      * @param int $id
      */
     public function setId($id)
@@ -42,21 +35,5 @@ class Condicion extends BaseNomenclador
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param \Doctrine\Common\Collections\ArrayCollection $productos
-     */
-    public function setProductos($productos)
-    {
-        $this->productos = $productos;
-    }
-
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getProductos()
-    {
-        return $this->productos;
     }
 }

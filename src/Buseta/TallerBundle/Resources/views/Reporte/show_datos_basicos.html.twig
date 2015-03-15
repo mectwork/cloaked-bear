@@ -1,0 +1,37 @@
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <h3 class="panel-title">Datos del Reporte</h3>
+    </div>
+
+    <ul class="list-group">
+        <li class="list-group-item"><b>Número:</b>    {{ entity.numero }}</li>
+        <li class="list-group-item"><b>Autobús:</b>   {{ entity.autobus }}</li>
+        <li class="list-group-item"><b>Medio:</b>     {{ entity.medioReporte }}</li>
+        <li class="list-group-item"><b>Reporta:</b>   {{ entity.reporta }}</li>
+
+        {% if entity.esUsuario %}
+                <li class="list-group-item"><b>¿Es Usuario de la Empresa?:</b> Sí </li>
+                <li class="list-group-item">
+                    <div class="panel panel-default" style="margin: 10px">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Datos de Persona</h3>
+                        </div>
+
+                        <!-- Datos de Persona -->
+                        <ul class="list-group">
+                            <li class="list-group-item"><b>Nombre:</b>   {{ entity.nombrePersona }}</li>
+                            <li class="list-group-item"><b>Email:</b>    {{ entity.emailPersona }}</li>
+                            <li class="list-group-item"><b>Teléfono:</b> {{ entity.telefonoPersona }}</li>
+                        </ul>
+
+                    </div>
+                </li>
+            {% else %}
+                <li class="list-group-item"><b>¿Es Usuario de la Empresa?:</b> No </li>
+        {% endif %}
+
+
+    </ul>
+</div>

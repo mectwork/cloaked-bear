@@ -115,6 +115,7 @@ knp_paginator:
 
 easy_admin:
     site_name: 'Nomencladores'
+    list_actions: ['show', 'edit', 'delete']
     assets:
         css:
             - '/bundles/busetanomenclador/css/admin.css'
@@ -133,7 +134,7 @@ easy_admin:
         - Buseta\NomencladorBundle\Entity\Grupo
         - Buseta\NomencladorBundle\Entity\MantenimientoPorcientoCumplido
         - Buseta\NomencladorBundle\Entity\Subgrupo
-#        - Buseta\NomencladorBundle\Entity\Tarea
+        #- Buseta\NomencladorBundle\Entity\Tarea
         - Buseta\NomencladorBundle\Entity\Marca
         - Buseta\NomencladorBundle\Entity\MarcaMotor
         - Buseta\NomencladorBundle\Entity\Modelo
@@ -141,3 +142,20 @@ easy_admin:
         - Buseta\NomencladorBundle\Entity\TipoCompra
         - Buseta\NomencladorBundle\Entity\TipoContacto
         - Buseta\NomencladorBundle\Entity\UOM
+        - Buseta\NomencladorBundle\Entity\NAlergia
+        - Buseta\NomencladorBundle\Entity\NDeporte
+        - Buseta\NomencladorBundle\Entity\NDiscapacidad
+        - Buseta\NomencladorBundle\Entity\NEnfermedad
+        - Buseta\NomencladorBundle\Entity\NEstadoCapacitacion
+        - Buseta\NomencladorBundle\Entity\NEstadoCivil
+        - Buseta\NomencladorBundle\Entity\NEvento
+        - Buseta\NomencladorBundle\Entity\NIdioma
+        - Buseta\NomencladorBundle\Entity\NInstitucion
+        - Buseta\NomencladorBundle\Entity\NNacionalidad
+        - Buseta\NomencladorBundle\Entity\NParentesco
+        - Buseta\NomencladorBundle\Entity\NPasatiempoHabilidad
+        - Buseta\NomencladorBundle\Entity\NProfesion
+        - Buseta\NomencladorBundle\Entity\NRegion
+        - Buseta\NomencladorBundle\Entity\NTipoLente
+        - Buseta\NomencladorBundle\Entity\NTipoSangre
+        - Buseta\NomencladorBundle\Entity\NMedioReporte

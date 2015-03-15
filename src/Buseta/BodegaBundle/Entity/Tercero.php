@@ -52,6 +52,12 @@ class Tercero
     private $nombres;
 
     /**
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     */
+    private $usuario;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="apellidos", type="string")
@@ -99,6 +105,22 @@ class Tercero
      * @ORM\Column(name="activo", type="boolean", nullable=true)
      */
     private $activo;
+
+    /**
+     * @return mixed
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * @param mixed $usuario
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
+    }
 
     /**
      * @param mixed $activo

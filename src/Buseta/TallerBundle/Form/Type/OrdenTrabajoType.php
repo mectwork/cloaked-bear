@@ -53,7 +53,7 @@ class OrdenTrabajoType extends AbstractType
                 ),
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('responsable');
-                    $qb->andWhere($qb->expr()->eq('responsable.persona', true));
+                    $qb->andWhere($qb->expr()->eq('responsable.usuario', true));
 
                     return $qb;
                 },

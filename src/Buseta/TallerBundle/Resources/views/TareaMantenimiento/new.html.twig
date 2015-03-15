@@ -14,30 +14,27 @@
 
         {{ form_errors(form) }}
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-4">
                 {{ form_row(form.valor) }}
             </div>
-        </div>
-
-        <br/>
-        <div class="row">
             <div class="col-md-4">
                 {{ form_row(form.grupo) }}
             </div>
             <div class="col-md-4">
                 {{ form_row(form.subgrupo) }}
             </div>
-            <div class="col-md-4">
-                {{ form_row(form.kilometros) }}
-            </div>
         </div>
 
         <br/>
         <div class="row">
             <div class="col-md-4">
+                {{ form_row(form.kilometros) }}
+            </div>
+            <div class="col-md-4">
                 {{ form_row(form.horas) }}
             </div>
         </div>
+        <br/>
 
         <br/>
         <div class="row">

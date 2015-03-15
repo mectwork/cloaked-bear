@@ -69,7 +69,7 @@ class OrdenTrabajo
     /**
      * @var string
      *
-     * @ORM\Column(name="prioridad", type="string", nullable=false)
+     * @ORM\Column(name="prioridad", type="string", nullable=true)
      * @Assert\Choice(choices={"rapida", "normal"})
      * @Assert\NotNull
      * @Assert\NotBlank
@@ -98,7 +98,7 @@ class OrdenTrabajo
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_inicio", type="date")
+     * @ORM\Column(name="fecha_inicio", type="date", nullable=true)
      * @Assert\Date()
      * @Assert\NotNull()
      */

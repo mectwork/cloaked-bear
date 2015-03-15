@@ -1,0 +1,139 @@
+{% extends "BusetaTallerBundle::layout.html.twig" %}
+
+{% block title %}
+    Listado de Reportes
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Listados de Reportes
+{% endblock %}
+
+{% block area_trabajo %}
+
+    {% set display = '' %}
+    {% set headericon = 'glyphicon-chevron-down' %}
+    {% if (filter_form.vars.value.numero is null or filter_form.vars.value.numero is empty)
+        and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
+    %}
+        {% set display = 'display: none;' %}
+        {% set headericon = 'glyphicon-chevron-right' %}
+    {% endif %}
+
+    <h4>
+        <a id="filter_form_header" style="cursor: pointer;">
+            <span class="glyphicon {{ headericon }}"></span>
+            Búsqueda
+        </a>
+    </h4>
+    <div id="filter_form_component" style="{{ display }}">
+        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+            <div class="row">
+                <div class="col-lg-4">{{ form_row(filter_form.numero) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.autobus) }}</div>
+            </div>
+            {{ form_widget(filter_form._token) }}
+
+            <div class="filter-actions" style="margin-top: 8px;">
+                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                    <span class="glyphicon glyphicon-filter"></span> Filtrar
+                </a>
+                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <hr/>
+    <div class="btn-group" style="margin-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('reporte_new') }}">
+            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'reporte.btn.adicionar'|trans({}, 'BusetaTallerBundle') }}
+        </a>
+    </div>
+
+    <div class="paginator row">
+        <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+    </div>
+
+    <table class="records_list table table-striped table-bordered table-condensed table-hover">
+        <thead>
+        <tr>
+            <th>{{ knp_pagination_sortable(entities, 'Número', 't.numero') }}</th>
+            <th>{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}</th>
+            <th style="text-align: center">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.numero }}</td>
+                <td>{{ entity.autobus }}</td>
+                {#<td>
+                    {% if entity.ispersona %}
+                        <span class="glyphicon glyphicon-ok"></span>
+                    {% else %}
+                        <span class="glyphicon glyphicon-remove"></span>
+                    {% endif %}
+                </td>#}
+                <td style="width: 18% !important; text-align: center;">
+                    <div class="btn-group">
+                        <a class="btn btn-success btn-xs"
+                           href="{{ path('reporte_show', { 'id': entity.id }) }}"><span
+                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
+                    </div>
+
+                    {#<div class="btn-group">
+                        <a class="btn btn-danger btn-xs"
+                           href="{{ path('reporte_edit', { 'id': entity.id }) }}"><span
+                                    class="glyphicon glyphicon-edit"> Editar</span></a>
+                    </div>#}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaTallerBundle') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="paginator row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
+    </div>
+
+{% endblock area_trabajo %}
+
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a#filter_form_header').click(function () {
+                if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-right')
+                            .addClass('glyphicon-chevron-down');
+                } else {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-down')
+                            .addClass('glyphicon-chevron-right');
+                }
+
+                $('div#filter_form_component').slideToggle(500);
+            });
+
+            $('a#filter_form_submit_btn').click(function () {
+                $('form#filter_form').submit();
+            });
+
+            $('a#filter_form_reset_btn').click(function () {
+                $('form#filter_form').find('input').each(function () {
+                    $(this).val(null);
+                });
+                $('form#filter_form').find('select').each(function () {
+                    $(this).val(null);
+                })
+            });
+        });
+    </script>
+{% endblock javascripts %}

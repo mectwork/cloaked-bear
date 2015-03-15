@@ -71,14 +71,14 @@ class TerceroType extends AbstractType
             ->add('direccionId', 'hidden', array(
                 'required' => false,
             ))
-            /*->add('direccion','entity',array(
-                    'class' => 'BusetaBodegaBundle:Direccion',
-                    'attr' => array(
-                        'class' => 'form-control',
-                        'style' => 'width: 300px',
-                    )
-                ))*/
-            ->add('mecanismoscontacto', 'collection', array(
+            ->add('usuario','entity',array(
+                'class' => 'BusetaSecurityBundle:User',
+                'attr' => array(
+                    'class' => 'form-control',
+                    'style' => 'width: 300px',
+                )
+            ))
+            ->add('mecanismoscontacto','collection',array(
                     'type' => new MecanismoContactoType(),
                     'label' => ' ',
                     'allow_add' => true,

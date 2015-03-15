@@ -101,6 +101,10 @@ class AutobusModel
     /**
      * @var string
      */
+    private $numero;
+    /**
+     * @var string
+     */
     private $numero_chasis;
 
     /**
@@ -287,6 +291,11 @@ class AutobusModel
      * @Assert\NotBlank()
      */
     private $kilometraje;
+    
+    /**
+     * @var boolean
+     */
+    private $activo = true;
 
     /**
      * @var integer
@@ -294,6 +303,23 @@ class AutobusModel
      * @Assert\NotBlank()
      */
     private $horas;
+
+    
+    /**
+     * @return boolean
+     */
+    public function isActivo()
+    {
+        return $this->activo;
+    }
+
+    /**
+     * @param boolean $activo
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+    }
 
     /**
      * @param \Buseta\NomencladorBundle\Entity\AceiteCajaCambios $aceitecajacambios
@@ -613,6 +639,22 @@ class AutobusModel
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * @param string $numero
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
     }
 
     /**

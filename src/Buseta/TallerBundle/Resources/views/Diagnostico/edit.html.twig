@@ -1,0 +1,29 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% form_theme edit_form 'BusetaBodegaBundle:Widgets:collection_albaran_linea_insertadas.html.twig' %}
+
+{% block nombre_menu_superior %}
+    Crear Diagnóstico
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Crear Diagnóstico
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <form action="{{ path('diagnostico_update',{'id':entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
+
+        {{ form_errors(edit_form) }}
+
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock javascripts %}

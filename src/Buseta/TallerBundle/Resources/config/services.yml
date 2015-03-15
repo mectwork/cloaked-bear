@@ -11,3 +11,51 @@ services:
             - @buseta.manager.mantenimiento_preventivo
         tags:
             - { name: twig.extension }
+
+    # hidden_entity Form Type
+    form.type.hidden_entity:
+        class: HatueyERP\TercerosBundle\Form\Type\HiddenEntityType
+        arguments:
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: form.type, alias: hidden_entity }
+
+    hatueyerp.direccion_ajax_type.form:
+        class: HatueyERP\TercerosBundle\Form\Type\DireccionAjaxType
+        arguments:
+            - @router
+        tags:
+            - { name: form.type, alias: hatueyerp_terceros_direccion_type }
+
+    # MANAGER
+    hatueyerp.tercero.manager:
+        class: HatueyERP\TercerosBundle\Manager\TerceroManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @logger
+
+    # HANDLERS
+    buseta_reporte.observacion.handler:
+        class: Buseta\TallerBundle\Form\Handler\ObservacionHandler
+        arguments:
+            - @service_container
+    buseta_diagnostico.observacion.handler:
+        class: Buseta\TallerBundle\Form\Handler\ObservacionDiagnosticoHandler
+        arguments:
+            - @service_container
+    hatueyerp_terceros.persona.handler:
+        class: HatueyERP\TercerosBundle\Form\Handler\PersonaHandler
+        arguments:
+            - @service_container
+    hatueyerp_terceros.cliente.handler:
+        class: HatueyERP\TercerosBundle\Form\Handler\ClienteHandler
+        arguments:
+            - @service_container
+    hatueyerp_terceros.proveedor.handler:
+        class: HatueyERP\TercerosBundle\Form\Handler\ProveedorHandler
+        arguments:
+            - @service_container
+    hatueyerp_terceros.institucion.handler:
+        class: HatueyERP\TercerosBundle\Form\Handler\InstitucionHandler
+        arguments:
+            - @service_container

@@ -1,0 +1,28 @@
+{% form_theme form '@HatueyERPTerceros/Form/fields.twig' %}
+
+<form action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data" name="{{ form.vars.full_name }}" id="{{ form.vars.id }}">
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+
+    {{ form_errors(form) }}
+    {{ form_row(form.id) }}
+    {{ form_row(form.tercero) }}
+    {{ form_row(form._token) }}
+
+    <div class="row">
+        <div class="col-lg-12 form-group">
+            {{ form_row(form.isInstitucion) }}
+        </div>
+    </div>
+
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <a class="btn btn-primary" id="btn_institucion_save" href="#"><span class="glyphicon glyphicon-save"></span>
+                {{ 'actions.save' | trans({}, 'HatueyERPTercerosBundle') }}</a>
+            <a class="btn btn-default" id="btn_institucion_cancel" href="{{ path('terceros_tercero') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+                {{ 'actions.cancel' | trans({}, 'HatueyERPTercerosBundle') }}</a>
+        </div>
+    </div>
+</form>

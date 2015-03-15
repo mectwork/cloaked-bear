@@ -1,0 +1,39 @@
+<div class="btn-group" style="margin-bottom: 8px;">
+    <a class="btn btn-primary" href="#form_observacion_modal"><span class="glyphicon glyphicon-plus-sign"></span> {{ 'observacion.btn.adicionar'|trans({}, 'BusetaTallerBundle') }}</a>
+</div>
+
+<div class="paginator row">
+    <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+</div>
+
+<table class="observacion_records_list table table-striped table-bordered table-condensed table-hover">
+    <thead>
+    <tr>
+        {#<th>{{ knp_pagination_sortable(entities, 'observacion.valor' | trans({}, 'BusetaTallerBundle'), 'd.valor') }}</th>#}
+        <th style="text-align: left">Valor</th>
+        <th style="text-align: center">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td>{{ entity.valor }}</td>
+            <td style="width: 10%; text-align: center;">
+                <a class="btn btn-danger btn-xs" href="#delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">{{ 'messages.no_results' | trans({}, 'BusetaTallerBundle') }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="paginator row">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
+</div>
+
+<div class="modal" id="form_observacion_modal"></div>
+<div class="modal" id="form_observacion_delete_modal"></div>

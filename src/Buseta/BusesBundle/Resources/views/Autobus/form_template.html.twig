@@ -1,0 +1,192 @@
+{% form_theme form '@HatueyERPTerceros/Form/fields.twig' %}
+
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data">
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+    {{ form_errors(form) }}
+    {{ form_row(form.id) }}
+    {{ form_row(form._token) }}
+
+    <div class="row">
+        <div class="col-lg-12">
+            {{ form_row(form.activo) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            {{ form_row(form.matricula) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.numero) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.numero_chasis) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            {{ form_row(form.numero_motor) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.peso_tara) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.peso_bruto) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            {{ form_row(form.numero_plazas) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.numero_cilindros) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.cilindrada) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            {{ form_row(form.potencia) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.fecha_ingreso) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.valido_hasta) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            {{ form_row(form.estilo) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.fecha_rtv_1) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.fecha_rtv_2) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            {{ form_row(form.combustible) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.marca) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.modelo) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            {{ form_row(form.color) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.marca_motor) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.capacidad_tanque) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="checkbox">
+                <label>
+                    <input id="rampas" type="checkbox" value=""><strong>Tiene Rampas</strong>
+                </label>
+            </div>
+            {{ form_row(form.rampas) }}
+        </div>
+
+        <div class="col-lg-4">
+            <div class="checkbox">
+                <label>
+                    <input id="barras" type="checkbox" value=""><strong>Tiene Barras</strong>
+                </label>
+            </div>
+            {{ form_row(form.barras) }}
+        </div>
+
+        <div class="col-lg-4">
+            <div class="checkbox">
+                <label>
+                    <input id="camaras" type="checkbox" value=""><strong>Tiene Cámaras</strong>
+                </label>
+            </div>
+            {{ form_row(form.camaras) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="checkbox">
+                <label>
+                    <input id="lector" type="checkbox" value=""><strong>Tiene Lector de Cédulas</strong>
+                </label>
+            </div>
+            {{ form_row(form.lector_cedulas) }}
+        </div>
+
+        <div class="col-lg-4">
+            <div class="checkbox">
+                <label>
+                    <input id="publicidad" type="checkbox" value=""><strong>Tiene Publicidad</strong>
+                </label>
+            </div>
+            {{ form_row(form.publicidad) }}
+        </div>
+
+        <div class="col-lg-4">
+            <div class="checkbox">
+                <label>
+                    <input id="gps" type="checkbox" value=""><strong>Tiene GPS</strong>
+                </label>
+            </div>
+            {{ form_row(form.gps) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="checkbox">
+                <label>
+                    <input id="wifi" type="checkbox" value=""><strong>Tiene Wifi</strong>
+                </label>
+            </div>
+            {{ form_row(form.wifi) }}
+        </div>
+    </div>
+
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <a class="btn btn-primary" id="btn_autobus_save" href="#"><span class="glyphicon glyphicon-save"></span>
+                {{ 'actions.save' | trans({}, 'BusetaBusesBundle') }}</a>
+            <a class="btn btn-default" id="btn_autobus_cancel" href="{{ path('autobus') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+                {{ 'actions.cancel' | trans({}, 'BusetaBusesBundle') }}</a>
+        </div>
+    </div>
+</form>

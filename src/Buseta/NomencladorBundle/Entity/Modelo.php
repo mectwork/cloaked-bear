@@ -53,9 +53,9 @@ class Modelo extends BaseNomenclador
     }
 
     /**
-     * Get marca.
+     * Get marca
      *
-     * @return \Buseta\NomencladorBundle\Entity\Marca
+     * @return \Buseta\NomencladorBundle\Entity\Marca 
      */
     public function getMarca()
     {

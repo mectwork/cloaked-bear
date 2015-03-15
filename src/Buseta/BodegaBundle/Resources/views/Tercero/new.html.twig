@@ -48,23 +48,31 @@
         </div>
 
         <div class="row show-grid">
-            <div class="col-md-2">
+            <div class="col-md-4">
+                {{ form_row(form.usuario) }}
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-md-3">
                 {{ form_row(form.cliente) }}
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-3">
                 {{ form_row(form.institucion) }}
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-3">
                 {{ form_row(form.proveedor) }}
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-3">
                 {{ form_row(form.persona) }}
             </div>
+        </div>
 
-            <div class="col-md-2">
+        <div class="row show-grid">
+            <div class="col-md-4">
                 {{ form_row(form.activo) }}
             </div>
         </div>

@@ -1,20 +1,119 @@
 {% extends "BusetaBusesBundle::layout.html.twig" %}
 
-{% block nombre_menu_superior %}
-
-{% endblock %}
-
-{% block titulo %}
-    Listado de autobuses
+{% block title %}
+    Listado de Autobuses
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listados de autobuses
+    Listado de Autobuses
 {% endblock %}
 
 {% block area_trabajo %}
 
+    {% set display = '' %}
+    {% set headericon = 'glyphicon-chevron-down' %}
+    {% if (filter_form.vars.value.matricula is null or filter_form.vars.value.matricula is empty)
+    and (filter_form.vars.value.numero is null or filter_form.vars.value.numero is empty)
+    and (filter_form.vars.value.marca is null or filter_form.vars.value.marca is empty)
+    and (filter_form.vars.value.estilo is null or filter_form.vars.value.estilo is empty)
+    and (filter_form.vars.value.color is null or filter_form.vars.value.color is empty)
+    and (filter_form.vars.value.marcaMotor is null or filter_form.vars.value.marcaMotor is empty)
+    %}
+        {% set display = 'display: none;' %}
+        {% set headericon = 'glyphicon-chevron-right' %}
+    {% endif %}
 
+    <h4>
+        <a id="filter_form_header" style="cursor: pointer;">
+            <span class="glyphicon {{ headericon }}"></span>
+            Búsqueda
+        </a>
+    </h4>
+    <div id="filter_form_component" style="{{ display }}">
+        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+            <div class="row">
+                <div class="col-lg-4">{{ form_row(filter_form.matricula) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.numero) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.marca) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.estilo) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.color) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.marca_motor) }}</div>
+            </div>
+            {{ form_widget(filter_form._token) }}
+
+            <div class="filter-actions" style="margin-top: 8px;">
+                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                    <span class="glyphicon glyphicon-filter"></span> Filtrar
+                </a>
+                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <hr/>
+    <div class="btn-group" style="margin-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('autobus_new') }}">
+            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'autobus.btn.adicionar'|trans({}, 'BusetaBusesBundle') }}
+        </a>
+    </div>
+
+    <div id="autobuses_results_container">
+        <div class="row"><div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div></div>
+        <table class="autobuses_records_list table table-striped table-bordered table-condensed table-hover">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(entities, 'Matrícula', 'a.matricula') }}</th>
+                <th>Número</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Color</th>
+                <th>Potencia</th>
+                <th>Fecha Ingreso</th>
+                <th>Válido Hasta</th>
+                <th>Kilometraje</th>
+                <th style="text-align: center">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.matricula }}</td>
+                    <td>{{ entity.numero }}</td>
+                    <td>{{ entity.marca }}</td>
+                    <td>{{ entity.modelo }}</td>
+                    <td>{{ entity.color }}</td>
+                    <td>{{ entity.potencia }}</td>
+                    <td>{{ entity.fechaIngreso|date('d/m/y') }}</td>
+                    <td>{{ entity.validoHasta|date('d/m/y') }}</td>
+                    <td>{{ entity.kilometraje }}</td>
+
+                    <td  style="width: 18% !important; text-align: center;">
+                        <div class="btn-group">
+                            <a class="btn btn-success btn-xs" href="{{ path('autobus_show', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-search"> Mostrar</span></a>
+                        </div>
+
+                        <div class="btn-group">
+                            <a class="btn btn-danger btn-xs" href="{{ path('autobus_edit', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-edit"> Editar</span></a>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaBusesBundle') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="autobuses-paginator row">
+            <div class="col-lg-12 text-center">{{ knp_pagination_render(entities) }}</div>
+        </div>
+    </div>
+
+
+{#
 <div class="panel panel-default">
 <div class="panel-body">
     <fieldset>
@@ -26,34 +125,39 @@
             <div class="row show-grid" style="padding-top: 0px">
                 <div class="col-md-4">
                     <label>Matrícula:</label>
-                    {{ form_widget(busqueda.matricula) }}
+                    {{ form_row(busqueda.matricula) }}
+                </div>
+
+                <div class="col-md-4">
+                    <label>Número:</label>
+                    {{ form_row(busqueda.numero) }}
                 </div>
 
                 <div class="col-md-4">
                     <label>Marca de Autobús:</label>
-                    {{ form_widget(busqueda.marca) }}
+                    {{ form_row(busqueda.marca) }}
                 </div>
 
                 <div class="col-md-4">
                     <label>Color:</label>
-                    {{ form_widget(busqueda.color) }}
+                    {{ form_row(busqueda.color) }}
                 </div>
             </div>
 
             <div class="row show-grid">
                 <div class="col-md-4">
                     <label>Estilo:</label>
-                    {{ form_widget(busqueda.estilo) }}
+                    {{ form_row(busqueda.estilo) }}
                 </div>
 
                 <div class="col-md-4">
                     <label>Combustible:</label>
-                    {{ form_widget(busqueda.combustible) }}
+                    {{ form_row(busqueda.combustible) }}
                 </div>
 
                 <div class="col-md-4">
                     <label>Marca de Motor:</label>
-                    {{ form_widget(busqueda.marca_motor) }}
+                    {{ form_row(busqueda.marca_motor) }}
                 </div>
             </div>
 
@@ -81,13 +185,13 @@
     <table class="table table-striped table-bordered table-condensed table-hover">
         <thead>
             <tr>
-                <th>Matricula</th>
+                <th>Matrícula</th>
                 <th>Marca</th>
                 <th>Modelo</th>
                 <th>Color</th>
                 <th>Potencia</th>
                 <th>Fecha Ingreso</th>
-                <th>Valido Hasta</th>
+                <th>Válido Hasta</th>
                 <th>Fecha RTV 1</th>
                 <th>Fecha RTV 2</th>
                 <th>Acciones</th>
@@ -131,6 +235,89 @@
                 {{ knp_pagination_render(entities) }}
             </div>
         </div>
-    </div>
+    </div>#}
 
-    {% endblock %}
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a#filter_form_header').click(function () {
+                if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-right')
+                            .addClass('glyphicon-chevron-down');
+                } else {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-down')
+                            .addClass('glyphicon-chevron-right');
+                }
+
+                $('div#filter_form_component').slideToggle(500);
+            });
+
+            $('a#filter_form_submit_btn').click(function () {
+                $('form#filter_form').submit();
+            });
+
+            $('a#filter_form_reset_btn').click(function () {
+                $('form#filter_form').find('input').each(function () {
+                    $(this).val(null);
+                });
+                $('form#filter_form').find('select').each(function () {
+                    $(this).val(null);
+                })
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        var autobuses = {
+            activeblock: false,
+            _start_events: function (){
+                // Paginator sort
+                $('table.autobuses_records_list').find('a.sortable, a.asc, a.desc').on('click', autobuses._load);
+                // Paginator navigation
+                $('div.autobuses-paginator.row ul.pagination').find('a.paginator-link').on('click', autobuses._load);
+            },
+            _load: function(event) {
+                if(event !== undefined) {
+                    event.preventDefault();
+                }
+
+                autobuses.toggle();
+
+                url = $(this).attr('href');
+
+                $.get(url).done(function (response, textStatus, jqXHR) {
+                    autobuses.toggle();
+                    $('div#autobuses_results_container').replaceWith($(response).find('div#autobuses_results_container'));
+
+                    autobuses._start_events();
+                }).fail(utils._fail).always(function(){
+                    //on complete function
+                });
+            },
+            toggle: function() {
+                if(autobuses.activeblock) {
+                    $('div#autobuses_results_container').unblock();
+                    autobuses.activeblock = false;
+                } else {
+                    $('div#autobuses_results_container').block();
+                    autobuses.activeblock = true;
+                }
+            }
+        };
+
+        var utils = {
+            _fail: function (jqXHR, textStatus, errorThrown) {
+                if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                    addGlobalMessage('danger', jqXHR.responseText.message);
+                } else {
+                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaBusesBundle') }}');
+                }
+            }
+        };
+    </script>
+
+{% endblock javascripts %}
