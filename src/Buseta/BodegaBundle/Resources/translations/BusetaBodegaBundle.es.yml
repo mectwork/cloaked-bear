@@ -26,3 +26,7 @@ producto:
 categoria_producto:
   btn:
     adicionar: Adicionar Categoría de Producto
+
+pedidocompra:
+  btn:
+    adicionar: Adicionar Registro de Compra

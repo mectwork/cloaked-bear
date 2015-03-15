@@ -25,8 +25,8 @@ class ProductoRepository extends EntityRepository
                     ->setParameter('codigo', '%' . $filter->getCodigo() . '%');
             }
             if ($filter->getNombre() !== null && $filter->getNombre() !== '') {
-                $query->andWhere($query->expr()->eq('p.nombre', ':nombre'))
-                    ->setParameter('nombre', $filter->getNombre());
+                $query->andWhere($qb->expr()->like('p.nombre',':nombre'))
+                    ->setParameter('nombre', '%' . $filter->getNombre() . '%');
             }
             if ($filter->getUOM() !== null && $filter->getUOM() !== '') {
                 $query->andWhere($query->expr()->eq('p.uom', ':uom'))

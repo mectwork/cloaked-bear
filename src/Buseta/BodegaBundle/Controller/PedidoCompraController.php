@@ -7,6 +7,8 @@ use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\InformeProductosBodega;
 use Buseta\BodegaBundle\Entity\InformeStock;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
+use Buseta\BodegaBundle\Form\Filter\PedidoCompraFilter;
+use Buseta\BodegaBundle\Form\Model\PedidoCompraFilterModel;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,28 +23,6 @@ use Buseta\BodegaBundle\Form\Filtro\BusquedaPedidoCompraType;
  */
 class PedidoCompraController extends Controller
 {
-    public function busquedaAvanzadaAction($page,$cantResult){
-        $em = $this->get('doctrine.orm.entity_manager');
-        $request = $this->getRequest();
-
-        $orderBy = $request->query->get('orderBy');
-        $filter  = $request->query->get('filter');
-
-        $filter = $filter;
-
-        $busqueda = $em->getRepository('BusetaBodegaBundle:PedidoCompra')
-            ->busquedaAvanzada($page,$cantResult,$filter,$orderBy);
-        $paginacion = $busqueda['paginacion'];
-        $results    = $busqueda['results'];
-
-        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-pedidos-compras.html.twig',array(
-            'pedidosCompras'   => $results,
-            'page'       => $page,
-            'cantResult' => $cantResult,
-            'orderBy'    => $orderBy,
-            'paginacion' => $paginacion,
-        ));
-    }
 
     public function comprobarPedidoAction(Request $request) {
         if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
@@ -146,16 +126,34 @@ class PedidoCompraController extends Controller
 
     /**
      * Lists all PedidoCompra entities.
-     *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
+        $filter = new PedidoCompraFilterModel();
 
-        $pedidoCompra = $this->createForm(new BusquedaPedidoCompraType());
+        $form = $this->createForm(new PedidoCompraFilter(), $filter, array(
+            'action' => $this->generateUrl('pedidocompra'),
+        ));
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:PedidoCompra')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:PedidoCompra')->filter();
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $request->query->get('page', 1),
+            5
+        );
 
         return $this->render('BusetaBodegaBundle:PedidoCompra:index.html.twig', array(
-            'pedidoCompra' => $pedidoCompra->createView(),
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
         ));
     }
 

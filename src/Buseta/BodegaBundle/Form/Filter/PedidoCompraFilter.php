@@ -1,16 +1,17 @@
 <?php
-
-namespace Buseta\BodegaBundle\Form\Filtro;
-
+namespace Buseta\BodegaBundle\Form\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 
-
-class BusquedaPedidoCompraType extends AbstractType{
-
+class PedidoCompraFilter extends AbstractType
+{
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -27,7 +28,7 @@ class BusquedaPedidoCompraType extends AbstractType{
                     return $er->createQueryBuilder('t')
                         ->where('t.proveedor = true');
                 },
-                'empty_value' => '---Seleccione proveedor---',
+                'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -36,7 +37,7 @@ class BusquedaPedidoCompraType extends AbstractType{
             ->add('almacen','entity',array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'label' => 'Almacén',
-                'empty_value' => '---Seleccione almacén---',
+                'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -44,7 +45,7 @@ class BusquedaPedidoCompraType extends AbstractType{
             ))
             ->add('moneda','entity',array(
                 'class' => 'BusetaNomencladorBundle:Moneda',
-                'empty_value' => '---Seleccione tipo de moneda---',
+                'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -53,7 +54,7 @@ class BusquedaPedidoCompraType extends AbstractType{
             ->add('forma_pago','entity',array(
                 'class' => 'BusetaNomencladorBundle:FormaPago',
                 'label' => 'Forma de Pago',
-                'empty_value' => '---Seleccione forma de pago---',
+                'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -62,7 +63,7 @@ class BusquedaPedidoCompraType extends AbstractType{
             ->add('condiciones_pago','entity',array(
                 'class' => 'BusetaTallerBundle:CondicionesPago',
                 'label' => 'Condiciones de Pago',
-                'empty_value' => '---Seleccione condiciones de pago---',
+                'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -85,15 +86,22 @@ class BusquedaPedidoCompraType extends AbstractType{
         ;
     }
 
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'csrf_protection' => false,
-            ));
+            'data_class' => 'Buseta\BodegaBundle\Form\Model\PedidoCompraFilterModel',
+            'method' => 'GET',
+        ));
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
-        return 'data_busqueda_pedido_compra_type';
+        return 'buseta_registro_compra_filter';
     }
-}
+} 
