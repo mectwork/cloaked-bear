@@ -22,3 +22,7 @@ tercero:
 producto:
   btn:
     adicionar: Adicionar Producto
+
+categoria_producto:
+  btn:
+    adicionar: Adicionar Categoría de Producto

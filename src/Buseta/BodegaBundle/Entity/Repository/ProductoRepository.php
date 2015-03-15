@@ -14,7 +14,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductoRepository extends EntityRepository
 {
-
     public function filter(ProductoFilterModel $filter = null)
     {
         $qb = $this->createQueryBuilder('p');
@@ -264,5 +263,4 @@ class ProductoRepository extends EntityRepository
 
         return $q;
     }*/
-
 }
