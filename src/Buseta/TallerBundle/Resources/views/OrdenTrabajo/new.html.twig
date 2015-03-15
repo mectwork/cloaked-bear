@@ -227,7 +227,7 @@
         });
 
         function dinamicSelects(){
-            $('#buseta_tallerbundle_ordentrabajo_autobus').change(function() {
+            $('#{{ form.autobus.vars.id }}').change(function() {
 
                 var $data = {
                     autobus_id: $(this).val()
@@ -235,18 +235,18 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ path('ajax_select_autobus_kilometraje') }}',
+                    url: Routing.generate('ajax_select_autobus_kilometraje'),
                     data: $data,
                     success: function (data) {
                         var values = $.parseJSON(data);
 
-                        $('#buseta_tallerbundle_ordentrabajo_kilometraje').val(values.kilometraje);
+                        $('#{{ form.kilometraje.vars.id }}').val(values.kilometraje);
                     }
                 });
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ path('ajax_select_autobus_mpreventivo') }}',
+                    url:   Routing.generate('ajax_select_autobus_mpreventivo'),
                     data: $data,
                     success: function(data) {
                         var values = $.parseJSON(data);
@@ -274,7 +274,7 @@
                             $tbody_selector.append($row);
                         }
 
-                        var $panel = $('#buseta_tallerbundle_ordentrabajo_mpreventivos');
+                        var $panel = $('#{{ form.mpreventivos.vars.id }}');
                         if (values.length > 0) {
                             $panel.show(200);
 
@@ -296,7 +296,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
+                    url: Routing.generate("tareamantenimiento_ajax_grupos_subgrupos"),
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
@@ -319,7 +319,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ path("ajax_select_tarea_subgrupo") }}',
+                    url: Routing.generate("ajax_select_tarea_subgrupo"),
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
@@ -396,7 +396,7 @@
                 //Actualiza los subgrupos a partir de los grupos en el listado de Tareas Adicionales
                 $.ajax({
                     type: 'GET',
-                    url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
+                    url: Routing.generate("tareamantenimiento_ajax_grupos_subgrupos"),
                     data: {
                         grupo_id: $(tareaadicional_grupo).val()
                     },
@@ -418,7 +418,7 @@
                 //Actualiza las tareas a partir de los subgrupos en el listado de Tareas Adicionales
                 $.ajax({
                     type: 'GET',
-                    url: '{{ path('ajax_select_tarea_subgrupo') }}',
+                    url: Routing.generate('ajax_select_tarea_subgrupo'),
                     data: {
                         subgrupo_id: $(tareaadicional_subgrupo).val()
                     },
@@ -466,7 +466,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ path('ajax_select_subgrupo_grupo') }}',
+                    url: Routing.generate('ajax_select_subgrupo_grupo'),
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
@@ -486,7 +486,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ path('ajax_select_tarea_subgrupo') }}',
+                    url: Routing.generate('ajax_select_tarea_subgrupo'),
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
