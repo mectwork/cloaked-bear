@@ -18,3 +18,7 @@ actions:
 tercero:
   btn:
     adicionar: Adicionar Tercero
+
+producto:
+  btn:
+    adicionar: Adicionar Producto

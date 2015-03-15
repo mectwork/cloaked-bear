@@ -50,8 +50,6 @@ class TerceroRepository extends EntityRepository
                 $query->andWhere($query->expr()->eq('t.persona', ':persona'))
                     ->setParameter('persona', $filter->getPersona());
             }
-
-
         }
 
         $query->orderBy('t.id', 'ASC');

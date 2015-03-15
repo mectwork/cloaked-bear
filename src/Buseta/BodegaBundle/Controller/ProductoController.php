@@ -6,6 +6,8 @@ use Buseta\BodegaBundle\Entity\InformeProductosBodega;
 use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Entity\MovimientosProductos;
 use Buseta\BodegaBundle\Entity\PrecioProducto;
+use Buseta\BodegaBundle\Form\Filter\ProductoFilter;
+use Buseta\BodegaBundle\Form\Model\ProductoFilterModel;
 use Buseta\BodegaBundle\Form\Type\PrecioProductoType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -48,29 +50,6 @@ class ProductoController extends Controller
         ));
 
 
-    }
-
-    public function busquedaAvanzadaAction($page,$cantResult){
-        $em = $this->get('doctrine.orm.entity_manager');
-        $request = $this->getRequest();
-
-        $orderBy = $request->query->get('orderBy');
-        $filter  = $request->query->get('filter');
-
-        $filter = $filter;
-
-        $busqueda = $em->getRepository('BusetaBodegaBundle:Producto')
-            ->busquedaAvanzada($page,$cantResult,$filter,$orderBy);
-        $paginacion = $busqueda['paginacion'];
-        $results    = $busqueda['results'];
-
-        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-productos.html.twig',array(
-            'productos'   => $results,
-            'page'       => $page,
-            'cantResult' => $cantResult,
-            'orderBy'    => $orderBy,
-            'paginacion' => $paginacion,
-        ));
     }
 
     /**
@@ -148,16 +127,34 @@ class ProductoController extends Controller
 
     /**
      * Lists all Producto entities.
-     *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
+        $filter = new ProductoFilterModel();
 
-        $producto = $this->createForm(new BusquedaProductoType());
+        $form = $this->createForm(new ProductoFilter(), $filter, array(
+            'action' => $this->generateUrl('producto'),
+        ));
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Producto')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Producto')->filter();
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $request->query->get('page', 1),
+            5
+        );
 
         return $this->render('BusetaBodegaBundle:Producto:index.html.twig', array(
-            'producto' => $producto->createView(),
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
         ));
     }
 

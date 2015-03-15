@@ -1,7 +1,8 @@
 <?php
 
-namespace Buseta\BodegaBundle\Entity;
+namespace Buseta\BodegaBundle\Entity\Repository;
 
+use Buseta\BodegaBundle\Form\Model\ProductoFilterModel;
 use Buseta\NomencladorBundle\Entity\Categoria;
 use Doctrine\ORM\EntityRepository;
 
@@ -13,6 +14,48 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductoRepository extends EntityRepository
 {
+
+    public function filter(ProductoFilterModel $filter = null)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $query = $qb->where($qb->expr()->eq(true,true));
+
+        if($filter) {
+            if ($filter->getCodigo() !== null && $filter->getCodigo() !== '') {
+                $query->andWhere($qb->expr()->like('p.codigo',':codigo'))
+                    ->setParameter('codigo', '%' . $filter->getCodigo() . '%');
+            }
+            if ($filter->getNombre() !== null && $filter->getNombre() !== '') {
+                $query->andWhere($query->expr()->eq('p.nombre', ':nombre'))
+                    ->setParameter('nombre', $filter->getNombre());
+            }
+            if ($filter->getUOM() !== null && $filter->getUOM() !== '') {
+                $query->andWhere($query->expr()->eq('p.uom', ':uom'))
+                    ->setParameter('uom', $filter->getUOM());
+            }
+            if ($filter->getCondicion() !== null && $filter->getCondicion() !== '') {
+                $query->andWhere($query->expr()->eq('p.condicion', ':condicion'))
+                    ->setParameter('condicion', $filter->getCondicion());
+            }
+            if ($filter->getBodega() !== null && $filter->getBodega() !== '') {
+                $query->andWhere($query->expr()->eq('p.bodega', ':bodega'))
+                    ->setParameter('bodega', $filter->getBodega());
+            }
+            if ($filter->getCategoriaProducto() !== null && $filter->getCategoriaProducto() !== '') {
+                $query->andWhere($query->expr()->eq('p.categoriaProducto', ':categoriaProducto'))
+                    ->setParameter('categoriaProducto', $filter->getCategoriaProducto());
+            }
+        }
+
+        $query->orderBy('p.id', 'ASC');
+
+        try {
+            return $query->getQuery();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
+
     public function searchByValor($valores) {
         $q = "SELECT r FROM BusetaBodegaBundle:Producto r WHERE r.id = :valores";
 
@@ -93,7 +136,7 @@ class ProductoRepository extends EntityRepository
         return $entities;
     }
 
-    public function busquedaAvanzada($page, $cantResult, $filter = array(), $orderBy = null) {
+    /*public function busquedaAvanzada($page, $cantResult, $filter = array(), $orderBy = null) {
         $q = 'SELECT p FROM BusetaBodegaBundle:Producto p WHERE p.id != 0';
 
         //Obteniendo resto de la consulta dql
@@ -220,6 +263,6 @@ class ProductoRepository extends EntityRepository
 
 
         return $q;
-    }
+    }*/
 
 }

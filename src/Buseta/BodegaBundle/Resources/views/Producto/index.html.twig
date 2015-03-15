@@ -1,75 +1,148 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% block nombre_menu_superior %}
-
-{% endblock %}
-
-{% block titulo %}
-    Listado de productos
+{% block title %}
+    Listado de Productos
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listados de productos
+    Listados de Productos
 {% endblock %}
 
 {% block area_trabajo %}
 
-    <h4><a id="busqueda_producto" style="cursor: pointer; "><i class="icon-chevron-down"></i> Búsqueda de Productos</a></h4>
-    <div id="busqueda_producto_div" class="panel panel-default" style="display: none;">
-        <div class="panel-body">
-            <fieldset>
-                {{ form_start(producto) }}
-                <div class="row show-grid" style="padding-top: 0px">
-                    <div class="col-md-4">
-                        {{ form_row(producto.codigo) }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ form_row(producto.nombre) }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ form_row(producto.categoriaProducto) }}
-                    </div>
-                </div>
-                <div class="row show-grid" style="padding-top: 0px">
-                    <div class="col-md-4">
-                        {{ form_row(producto.uom) }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ form_row(producto.bodega) }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ form_row(producto.condicion) }}
-                    </div>
-                </div>
+    {% set display = '' %}
+    {% set headericon = 'glyphicon-chevron-down' %}
+    {% if (filter_form.vars.value.codigo is null or filter_form.vars.value.codigo is empty)
+    and (filter_form.vars.value.nombre is null or filter_form.vars.value.nombre is empty)
+    and (filter_form.vars.value.categoriaProducto is null or filter_form.vars.value.categoriaProducto is empty)
+    and (filter_form.vars.value.uom is null or filter_form.vars.value.uom is empty)
+    and (filter_form.vars.value.bodega is null or filter_form.vars.value.bodega is empty)
+    and (filter_form.vars.value.condicion is null or filter_form.vars.value.condicion is empty)
+    %}
+        {% set display = 'display: none;' %}
+        {% set headericon = 'glyphicon-chevron-right' %}
+    {% endif %}
 
-                {{ form_end(producto) }}
+    <h4>
+        <a id="filter_form_header" style="cursor: pointer;">
+            <span class="glyphicon {{ headericon }}"></span>
+            Búsqueda
+        </a>
+    </h4>
+    <div id="filter_form_component" style="{{ display }}">
+        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+            <div class="row">
+                <div class="col-lg-4">{{ form_row(filter_form.codigo) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.nombre) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.categoriaProducto) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.uom) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.bodega) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.condicion) }}</div>
+            </div>
+            {{ form_widget(filter_form._token) }}
 
-                <div class="row show-grid">
-                    <div class="col-md-6">
-                        <input class="btn btn-primary btn-bg" style="width: 100px;" value="Buscar" name="buscar" onclick="setFilters()">
-
-                        <div class="btn-group">
-                            <a class="btn btn-success btn-bg" href="{{ path('producto') }}"><i class="fa fa-search"> Reiniciar Búsqueda</i></a>
-                        </div>
-                    </div>
-                </div>
-
-
-            </fieldset>
-        </div>
+            <div class="filter-actions" style="margin-top: 8px;">
+                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                    <span class="glyphicon glyphicon-filter"></span> Filtrar
+                </a>
+                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                </a>
+            </div>
+        </form>
     </div>
 
-    <div class="btn-group" style="padding-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('producto_new') }}"><i class="fa fa-plus-circle"></i> Adicionar Producto</a>
+    <hr/>
+    <div class="btn-group" style="margin-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('producto_new') }}">
+            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'producto.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}
+        </a>
     </div>
-    <div class="productos-result-table" style="text-align: center;"> </div>
 
-{% endblock %}
+    <div class="paginator row">
+        <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+    </div>
+
+    <table class="records_list table table-striped table-bordered table-condensed table-hover">
+        <thead>
+        <tr>
+            <th>Código{{ knp_pagination_sortable(entities, 'Código', 't.codigo') }}</th>
+            <th>Nombre{{ knp_pagination_sortable(entities, 'Nombre', 't.nombre') }}</th>
+            <th>Categoría Producto{{ knp_pagination_sortable(entities, 'categoriaProducto', 't.categoriaProducto') }}</th>
+            <th>UOM{{ knp_pagination_sortable(entities, 'UOM', 't.uom') }}</th>
+            <th>Bodega{{ knp_pagination_sortable(entities, 'Bodega', 't.bodega') }}</th>
+            <th>Condición{{ knp_pagination_sortable(entities, 'Condición', 't.condicion') }}</th>
+            <th style="text-align: center">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.codigo }}</td>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.categoriaProducto }}</td>
+                <td>{{ entity.uom }}</td>
+                <td>{{ entity.bodega }}</td>
+                <td>{{ entity.condicion }}</td>
+
+                <td style="width: 18% !important; text-align: center;">
+                    <div class="btn-group">
+                        <a class="btn btn-success btn-xs"
+                           href="{{ path('reporte_show', { 'id': entity.id }) }}"><span
+                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
+                    </div>
+
+                    {#<div class="btn-group">
+                        <a class="btn btn-danger btn-xs"
+                           href="{{ path('reporte_edit', { 'id': entity.id }) }}"><span
+                                    class="glyphicon glyphicon-edit"> Editar</span></a>
+                    </div>#}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="paginator row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
+    </div>
+
+{% endblock area_trabajo %}
 
 {% block javascripts %}
-    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a#filter_form_header').click(function () {
+                if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-right')
+                            .addClass('glyphicon-chevron-down');
+                } else {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-down')
+                            .addClass('glyphicon-chevron-right');
+                }
 
-    <script src="{{asset('vendors/busquedaProducto.js')}}" type="text/javascript"></script>
+                $('div#filter_form_component').slideToggle(500);
+            });
 
-{% endblock %}
+            $('a#filter_form_submit_btn').click(function () {
+                $('form#filter_form').submit();
+            });
 
+            $('a#filter_form_reset_btn').click(function () {
+                $('form#filter_form').find('input').each(function () {
+                    $(this).val(null);
+                });
+                $('form#filter_form').find('select').each(function () {
+                    $(this).val(null);
+                })
+            });
+        });
+    </script>
+{% endblock javascripts %}
