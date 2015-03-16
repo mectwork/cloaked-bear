@@ -24,8 +24,8 @@
             {# Nav tabs #}
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos</a></li>
-                <li><a href="#reportes" data-toggle="tab">Reportes</a></li>
-                <li><a href="#diagnosticos" data-toggle="tab">Diagnósticos</a></li>
+                {#<li><a href="#reportes" data-toggle="tab">Reportes</a></li>
+                <li><a href="#diagnosticos" data-toggle="tab">Diagnósticos</a></li>#}
             </ul>
 
             {# Tab panes #}
@@ -35,13 +35,13 @@
                     {% include '@BusetaTaller/OrdenTrabajo/show_datos_basicos.html.twig' with {'entity': entity} %}
                 </div>
 
-                <div class="tab-pane" id="reportes">
-                    {# Reportes #}
+                {#<div class="tab-pane" id="reportes">
+                    &#123;&#35; Reportes &#35;&#125;
                 </div>
 
                 <div class="tab-pane" id="diagnosticos">
-                    {# Diagnosticos #}
-                </div>
+                    &#123;&#35; Diagnosticos &#35;&#125;
+                </div>#}
             </div>
         </div>
         <!-- /.panel-body -->
@@ -59,10 +59,8 @@
 {% block javascripts %}
     {{ parent() }}
 
-    {#<script src="{{ asset('vendors/datetime/js/bootstrap-datepicker.js') }}"></script>#}
-    {#<script src="{{ asset('vendors/datetime/js/locales/bootstrap-datepicker.es.js') }}"></script>#}
-
     <script src="{{ asset('vendors/funciones_datetime_new.js') }}"></script>
+
     <script type="text/javascript">
         function addTagForm(collectionHolder) {
             // Get the data-prototype explained earlier
@@ -167,6 +165,7 @@
             });
         }
     </script>
+
     <script type="text/javascript">
         var tareaAdicional = {
             _new: function (event) {
@@ -400,6 +399,7 @@
             }
         };
     </script>
+
     <script type="text/javascript">
         var collectionHolder = $('div#buseta_tallerbundle_ordentrabajo_tareasAdicionales');
         var $addTagLink = '';
@@ -421,6 +421,32 @@
             $('a#adicionarNuevaTarea').on('click', tareaAdicional._new);
 
             ordenTrabajo._load();
+        });
+
+        //Al seleccionar el Diagnostico de la OT, automaticamente selecciona el Autobus y Diagnosticado Por
+        // correspondiente y muestra los datos del Diagnostico y Reporte en los tabs correspondientes
+        $('#{{ form.diagnostico.vars.id }}').change(function(){
+            var autobus_text = $('#{{ form.autobus.vars.id }}');
+            var diagnosticadoPor_text = $('#{{ form.diagnosticadoPor.vars.id }}');
+
+            var data = {
+                diagnostico_id: $(this).val()
+            };
+
+            $.get('{{ path("diagnostico_ajax_ordentrabajo_autobus") }}', data, function(data){
+                //Selecciona automática el Autobus segun el Diagnostico seleccionado
+                autobus_text.val(data['autobus']);
+                autobus_text.css('display','none');
+                var text = autobus_text.find('option[value="'+autobus_text.val()+'"]').html();
+                autobus_text.parent().find('input').remove();
+                autobus_text
+                        .parent()
+                        .append($('<input class="form-control" type="text" disabled> ').val(text));
+
+            }, 'json').fail(function(error){
+                autobus_text.parent().find('input').remove();
+                autobus_text.css('display','block');
+            });
         });
     </script>
 

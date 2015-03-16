@@ -237,4 +237,24 @@ class DiagnosticoController extends Controller
             'telefonoPersona' => $telefonoPersona,
         ), 200);
     }
+
+    /**
+     * Updated automatically select Autobus y DiagnosticadoPor when change select Diagnostico
+     *
+     */
+    public function select_diagnostico_ordentrabajoAction(Request $request) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new Response('Acceso Denegado', 403);
+
+        if (!$request->isXmlHttpRequest())
+            return new Response('No es una petición Ajax', 500);
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $diagnostico = $em->find('BusetaTallerBundle:Diagnostico', $request->query->get('diagnostico_id'));
+
+        return new JsonResponse(array(
+            'autobus' => $diagnostico->getReporte()->getAutobus()->getId(),
+        ), 200);
+    }
+
 }
