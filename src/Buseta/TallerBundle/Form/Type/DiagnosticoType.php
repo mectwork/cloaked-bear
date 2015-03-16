@@ -29,7 +29,7 @@ class DiagnosticoType extends AbstractType
                 },
                 'empty_value' => '---Seleccione---',
                 'label' => 'Reporte',
-                'required' => true,
+                'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 )

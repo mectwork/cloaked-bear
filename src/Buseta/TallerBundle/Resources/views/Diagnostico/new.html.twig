@@ -110,6 +110,7 @@
             }
         }
     </script>
+
     <script type="text/javascript">
         var observacion = {
             _insert_new: function (event) {
@@ -122,11 +123,11 @@
 
                 $('#buseta_tallerbundle_reporte_observaciones_' + index + '_valor').val();
 
-            },
+            }
 
         };
-
     </script>
+
     <script type="text/javascript">
         var collectionHolder = $('div#buseta_tallerbundle_reporte_observaciones');
         var $addTagLink = '';
@@ -141,6 +142,31 @@
             $('a#adicionarNuevaObservacion').on('click', observacion._insert_new);
 
         });
+
+        $('#{{ form.reporte.vars.id }}').change(function(){
+            var autobus_text = $('#{{ form.autobus.vars.id }}');
+
+            var data = {
+                reporte_id: $(this).val()
+            };
+
+            $.get('{{ path("diagnostico_ajax_reporte_autobus") }}', data, function(data){
+                //Selecciona automática el Autobus segun el Reporte seleccionado
+                autobus_text.val(data['autobus']);
+                autobus_text.css('display','none');
+                var text = autobus_text.find('option[value="'+autobus_text.val()+'"]').html();
+                autobus_text.parent().find('input').remove();
+                autobus_text
+                        .parent()
+                        .append($('<input class="form-control" type="text" disabled> ').val(text));
+
+            }, 'json').fail(function(error){
+                autobus_text.parent().find('input').remove();
+                autobus_text.css('display','block');
+            });
+        });
     </script>
+
+
 
 {% endblock javascripts %}
