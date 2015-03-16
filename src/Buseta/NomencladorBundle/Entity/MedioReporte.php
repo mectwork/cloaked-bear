@@ -3,15 +3,14 @@
 namespace Buseta\NomencladorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Buseta\NomencladorBundle\Models\NomencladorAbstractClass;
 
 /**
- * NProfesion
+ * Estilo
  *
- * @ORM\Table(name="n_profesion")
+ * @ORM\Table(name="n_medio_reporte")
  * @ORM\Entity
  */
-class NProfesion extends NomencladorAbstractClass
+class MedioReporte extends BaseNomenclador
 {
     /**
      * @var integer
@@ -20,11 +19,12 @@ class NProfesion extends NomencladorAbstractClass
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
-
+    protected $id;
 
     /**
-     * @return int
+     * Get id
+     *
+     * @return integer
      */
     public function getId()
     {

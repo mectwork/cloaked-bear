@@ -16,31 +16,22 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-
-            // buseta
+            // Buses Taller
+            new Buseta\CoreBundle\CoreBundle(),
             new Buseta\DataBundle\DataBundle(),
             new Buseta\NomencladorBundle\BusetaNomencladorBundle(),
-            new Buseta\CoreBundle\CoreBundle(),
             new Buseta\SecurityBundle\BusetaSecurityBundle(),
-
+            new Buseta\BusesBundle\BusetaBusesBundle(),
+            new Buseta\TallerBundle\BusetaTallerBundle(),
+            new Buseta\BodegaBundle\BusetaBodegaBundle(),
+            new Buseta\TemplateBundle\BusetaTemplateBundle(),
             // extra bundles
-            //new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new Buseta\BusesBundle\BusetaBusesBundle(),
-            new Buseta\TallerBundle\BusetaTallerBundle(),
-            new Buseta\BodegaBundle\BusetaBodegaBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
-
-            new HatueySoft\SecurityBundle\HatueySoftSecurityBundle(),
-            new HatueySoft\UploadBundle\HatueySoftUploadBundle(),
-            new HatueyERP\TercerosBundle\HatueyERPTercerosBundle(),
-
-//            new Liip\ImagineBundle\LiipImagineBundle(),
-            new Buseta\TemplateBundle\BusetaTemplateBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {            

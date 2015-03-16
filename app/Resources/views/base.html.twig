@@ -20,28 +20,27 @@
             Otherwise the regeneration is done on every load in dev more with use_controller: true
              #}
             {% block foot_script_assetic %}
+                {#'@BusetaTemplateBundle/Resources/bootstrap/dist/js/bootstrap.min.js'#}
+                {#'@BusetaTemplateBundle/Resources/public/vendor/pickadate/picker.js'#}
+                {#'@BusetaTemplateBundle/Resources/public/vendor/pickadate/picker.date.js'#}
+                {#'@BusetaTemplateBundle/Resources/public/vendor/pickadate/picker.time.js'#}
+                {#'@BusetaTemplateBundle/Resources/public/vendor/pickadate/legacy.js'#}
+                {#'@BusetaTemplateBundle/Resources/public/vendor/pickadate/translations/es_ES.js'#}
+
+                {#'@BusetaTemplateBundle/Resources/public/vendor/blockUI/jquery.blockUI.js'#}
+
+                {#'@BusetaTemplateBundle/Resources/public/vendor/gritter/js/jquery.gritter.min.js'#}
+
+                {#'@BusetaTemplateBundle/Resources/public/vendor/bootstrap-switch/js/bootstrap-switch.min.js'#}
+
+                {#'@BusetaTemplateBundle/Resources/public/vendor/chosen/chosen.jquery.min.js'#}
+
+                {#'@BusetaTemplateBundle/Resources/public/vendor/datetimepicker-bootstrap/moment-2.9.0/moment.js'#}
+                {#'@BusetaTemplateBundle/Resources/public/vendor/datetimepicker-bootstrap/moment-2.9.0/locale/es.js'#}
+
+                {#'@BusetaTemplateBundle/Resources/public/vendor/jquery-form/jquery.form.min.js'#}
                 {% javascripts filter="yui_js" output='js/main.js'
-                '@BusetaTemplateBundle/Resources/bootstrap/dist/js/bootstrap.min.js'
-                '@BusetaTemplateBundle/Resources/public/vendor/pickadate/picker.js'
-                '@BusetaTemplateBundle/Resources/public/vendor/pickadate/picker.date.js'
-                '@BusetaTemplateBundle/Resources/public/vendor/pickadate/picker.time.js'
-                '@BusetaTemplateBundle/Resources/public/vendor/pickadate/legacy.js'
-                '@BusetaTemplateBundle/Resources/public/vendor/pickadate/translations/es_ES.js'
-
-                '@BusetaTemplateBundle/Resources/public/vendor/blockUI/jquery.blockUI.js'
-
-                '@BusetaTemplateBundle/Resources/public/vendor/gritter/js/jquery.gritter.min.js'
-
-                '@BusetaTemplateBundle/Resources/public/vendor/bootstrap-switch/js/bootstrap-switch.min.js'
-
-                '@BusetaTemplateBundle/Resources/public/vendor/chosen/chosen.jquery.min.js'
-
-                '@BusetaTemplateBundle/Resources/public/vendor/datetimepicker-bootstrap/moment-2.9.0/moment.js'
-                '@BusetaTemplateBundle/Resources/public/vendor/datetimepicker-bootstrap/moment-2.9.0/locale/es.js'
-
-                '@BusetaTemplateBundle/Resources/public/vendor/jquery-form/jquery.form.min.js'
-
-                '@BusetaTemplateBundle/Resources/public/js/*'
+                    '@BusetaTemplateBundle/Resources/public/js/*'
                 %}
                 <script type="text/javascript" src="{{ asset_url }}"></script>
                 {% endjavascripts %}

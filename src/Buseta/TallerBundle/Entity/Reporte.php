@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: julio
- * Date: 3/03/15
- * Time: 20:38
- */
 
 namespace Buseta\TallerBundle\Entity;
 
@@ -52,7 +46,7 @@ class Reporte
 
     /**
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\NMedioReporte")
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\MedioReporte")
      * @Assert\NotNull
      */
     private $medioReporte;
@@ -249,10 +243,10 @@ class Reporte
     /**
      * Set medioReporte
      *
-     * @param \Buseta\NomencladorBundle\Entity\NMedioReporte $medioReporte
+     * @param \Buseta\NomencladorBundle\Entity\MedioReporte $medioReporte
      * @return Reporte
      */
-    public function setMedioReporte(\Buseta\NomencladorBundle\Entity\NMedioReporte $medioReporte = null)
+    public function setMedioReporte(\Buseta\NomencladorBundle\Entity\MedioReporte $medioReporte = null)
     {
         $this->medioReporte = $medioReporte;
     
@@ -262,7 +256,7 @@ class Reporte
     /**
      * Get medioReporte
      *
-     * @return \Buseta\NomencladorBundle\Entity\NMedioReporte 
+     * @return \Buseta\NomencladorBundle\Entity\MedioReporte
      */
     public function getMedioReporte()
     {

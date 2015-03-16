@@ -25,7 +25,7 @@ function plegarFormulario(){
 }
 
 function updateReportesView(){
-    cargando = $('<img src="/Taller/web/images/loading.gif" />');
+    cargando = $('<img src="/images/loading.gif" />');
 
     $('div.almacens-result-table').html(cargando);
 

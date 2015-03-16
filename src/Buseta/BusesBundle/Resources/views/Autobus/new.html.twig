@@ -16,6 +16,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <form action="{{ path('autobus_create') }}" method="post" {{ form_enctype(form) }}>
+                {{ form_errors(form) }}
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <!-- Nav tabs -->
@@ -47,33 +48,39 @@
                                     <div class="col-md-4">
                                         <label>Matrícula:</label>
                                         {{ form_widget(form.matricula) }}
+                                        {{ form_errors(form.matricula) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Número:</label>
                                         {{ form_widget(form.numero) }}
+                                        {{ form_errors(form.numero) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Número de Chasis:</label>
                                         {{ form_widget(form.numero_chasis) }}
+                                        {{ form_errors(form.numero_chasis) }}
                                     </div>
                                 </div>
 
                                 <div class="row show-grid">
                                     <div class="col-md-4">
-                                        <label>N&uacute;mero de Motor:</label>
+                                        <label>Número de Motor:</label>
                                         {{ form_widget(form.numero_motor) }}
+                                        {{ form_errors(form.numero_motor) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Peso Tara:</label>
                                         {{ form_widget(form.peso_tara) }}
+                                        {{ form_errors(form.peso_tara) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Peso Bruto:</label>
                                         {{ form_widget(form.peso_bruto) }}
+                                        {{ form_errors(form.peso_bruto) }}
                                     </div>
                                 </div>
 
@@ -82,15 +89,18 @@
                                     <div class="col-md-4">
                                         <label>Número de Plazas:</label>
                                         {{ form_widget(form.numero_plazas) }}
+                                        {{ form_errors(form.numero_plazas) }}
                                     </div>
                                     <div class="col-md-4">
                                         <label>Número de Cilindros:</label>
                                         {{ form_widget(form.numero_cilindros) }}
+                                        {{ form_errors(form.numero_cilindros) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Cilindrada:</label>
                                         {{ form_widget(form.cilindrada) }}
+                                        {{ form_errors(form.cilindrada) }}
                                     </div>
 
                                 </div>
@@ -100,15 +110,18 @@
                                     <div class="col-md-4">
                                         <label>Potencia:</label>
                                         {{ form_widget(form.potencia) }}
+                                        {{ form_errors(form.potencia) }}
                                     </div>
                                     <div class="col-md-4">
                                         <label>Fecha de Ingreso:</label>
                                         {{ form_widget(form.fecha_ingreso) }}
+                                        {{ form_errors(form.fecha_ingreso) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Válido Hasta:</label>
                                         {{ form_widget(form.valido_hasta) }}
+                                        {{ form_errors(form.valido_hasta) }}
                                     </div>
 
                                 </div>
@@ -118,15 +131,18 @@
                                     <div class="col-md-4">
                                         <label>Estilo:</label>
                                         {{ form_widget(form.estilo) }}
+                                        {{ form_errors(form.estilo) }}
                                     </div>
                                     <div class="col-md-4">
                                         <label>Fecha RTV 1:</label>
                                         {{ form_widget(form.fecha_rtv_1) }}
+                                        {{ form_errors(form.fecha_rtv_1) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Fecha RTV 2:</label>
                                         {{ form_widget(form.fecha_rtv_2) }}
+                                        {{ form_errors(form.fecha_rtv_2) }}
                                     </div>
 
                                 </div>
@@ -136,15 +152,18 @@
                                     <div class="col-md-4">
                                         <label>Combustible:</label>
                                         {{ form_widget(form.combustible) }}
+                                        {{ form_errors(form.combustible) }}
                                     </div>
                                     <div class="col-md-4">
                                         <label>Marca:</label>
                                         {{ form_widget(form.marca) }}
+                                        {{ form_errors(form.marca) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Modelo:</label>
                                         {{ form_widget(form.modelo) }}
+                                        {{ form_errors(form.modelo) }}
                                     </div>
 
                                 </div>
@@ -154,16 +173,19 @@
                                     <div class="col-md-4">
                                         <label>Color:</label>
                                         {{ form_widget(form.color) }}
+                                        {{ form_errors(form.color) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Marca de Motor:</label>
                                         {{ form_widget(form.marca_motor) }}
+                                        {{ form_errors(form.marca_motor) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Capacidad del Tanque en Litros:</label>
                                         {{ form_widget(form.capacidad_tanque) }}
+                                        {{ form_errors(form.capacidad_tanque) }}
                                     </div>
 
                                 </div>
@@ -177,6 +199,7 @@
                                         </div>
                                         <label id="rampas">Descripción de las Rampas:</label>
                                         {{ form_widget(form.rampas) }}
+                                        {{ form_errors(form.rampas) }}
                                     </div>
 
                                     <div class="col-md-4">
@@ -187,6 +210,7 @@
                                         </div>
                                         <label id="barras">Descripción de Barras:</label>
                                         {{ form_widget(form.barras) }}
+                                        {{ form_errors(form.barras) }}
                                     </div>
 
                                     <div class="col-md-4">
@@ -197,6 +221,7 @@
                                         </div>
                                         <label id="camaras">Descripción de Cámaras:</label>
                                         {{ form_widget(form.camaras) }}
+                                        {{ form_errors(form.camaras) }}
                                     </div>
                                 </div>
 
@@ -209,6 +234,7 @@
                                         </div>
                                         <label id="lector">Descripción del Lector de Cédulas:</label>
                                         {{ form_widget(form.lector_cedulas) }}
+                                        {{ form_errors(form.lector_cedulas) }}
                                     </div>
 
                                     <div class="col-md-4">
@@ -219,6 +245,7 @@
                                         </div>
                                         <label id="publicidad">Descripción de la Publicidad:</label>
                                         {{ form_widget(form.publicidad) }}
+                                        {{ form_errors(form.publicidad) }}
                                     </div>
 
                                     <div class="col-md-4">
@@ -229,6 +256,7 @@
                                         </div>
                                         <label id="gps" >Descripción de GPS:</label>
                                         {{ form_widget(form.gps) }}
+                                        {{ form_errors(form.gps) }}
                                     </div>
                                 </div>
 
@@ -241,6 +269,7 @@
                                         </div>
                                         <label id="wifi">Descripción de Wifi:</label>
                                         {{ form_widget(form.wifi) }}
+                                        {{ form_errors(form.wifi) }}
                                     </div>
                                 </div>
 
@@ -253,16 +282,19 @@
                                     <div class="col-md-4">
                                         <label>N&uacute;mero de Unidad:</label>
                                         {{ form_widget(form.numero_unidad) }}
+                                        {{ form_errors(form.numero_unidad) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Valor Unidad:</label>
                                         {{ form_widget(form.valor_unidad) }}
+                                        {{ form_errors(form.valor_unidad) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Año:</label>
                                         {{ form_widget(form.anno) }}
+                                        {{ form_errors(form.anno) }}
                                     </div>
 
                                 </div>
@@ -271,16 +303,19 @@
                                     <div class="col-md-4">
                                         <label>Marca Caja de Cambio:</label>
                                         {{ form_widget(form.marca_cajacambio) }}
+                                        {{ form_errors(form.marca_cajacambio) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Tipo Caja de Cambio:</label>
                                         {{ form_widget(form.tipo_cajacambio) }}
+                                        {{ form_errors(form.tipo_cajacambio) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Carter Capacidad en Litros:</label>
                                         {{ form_widget(form.carter_capacidadlitros) }}
+                                        {{ form_errors(form.carter_capacidadlitros) }}
                                     </div>
                                 </div>
 
@@ -288,6 +323,7 @@
                                     <div class="col-md-4">
                                         <label>Aceite Caja de Cambios:</label>
                                         {{ form_widget(form.aceitecajacambios) }}
+                                        {{ form_errors(form.aceitecajacambios) }}
                                     </div>
 
                                     <div class="col-md-4">
@@ -298,6 +334,7 @@
                                     <div class="col-md-4">
                                         <label>Aceite de Motor:</label>
                                         {{ form_widget(form.aceitemotor) }}
+                                        {{ form_errors(form.aceitemotor) }}
                                     </div>
 
                                 </div>
@@ -306,16 +343,19 @@
                                     <div class="col-md-4">
                                         <label>Aceite de Transmisión:</label>
                                         {{ form_widget(form.aceitetransmision) }}
+                                        {{ form_errors(form.aceitetransmision) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Batería 1:</label>
                                         {{ form_widget(form.bateria_1) }}
+                                        {{ form_errors(form.bateria_1) }}
                                     </div>
 
                                     <div class="col-md-4">
                                         <label>Batería 2:</label>
                                         {{ form_widget(form.bateria_2) }}
+                                        {{ form_errors(form.bateria_2) }}
                                     </div>
                                 </div>
 
@@ -327,15 +367,18 @@
                                     <div class="col-md-3">
                                         <label>Filtro de Caja:</label>
                                         {{ form_widget(form.filtro_caja.filtro_caja_1) }}
+                                        {{ form_errors(form.filtro_caja.filtro_caja_1) }}
                                     </div>
                                     <div class="col-md-3">
                                         <label>&nbsp;</label>
                                         {{ form_widget(form.filtro_caja.filtro_caja_2) }}
+                                        {{ form_errors(form.filtro_caja.filtro_caja_2) }}
                                     </div>
 
                                     <div class="col-md-3">
                                         <label>Filtro de Transmisión</label>
                                         {{ form_widget(form.filtro_transmision.filtro_transmision) }}
+                                        {{ form_errors(form.filtro_transmision.filtro_transmision) }}
                                     </div>
                                 </div>
 
@@ -343,19 +386,23 @@
                                     <div class="col-md-3">
                                         <label>Filtro de Agua:</label>
                                         {{ form_widget(form.filtro_agua.filtro_agua_1) }}
+                                        {{ form_errors(form.filtro_agua.filtro_agua_1) }}
                                     </div>
                                     <div class="col-md-3">
                                         <label>&nbsp;</label>
                                         {{ form_widget(form.filtro_agua.filtro_agua_2) }}
+                                        {{ form_errors(form.filtro_agua.filtro_agua_2) }}
                                     </div>
 
                                     <div class="col-md-3">
                                         <label>Filtro de Hidráulico:</label>
                                         {{ form_widget(form.filtro_hidraulico.filtro_hidraulico_1) }}
+                                        {{ form_errors(form.filtro_hidraulico.filtro_hidraulico_1) }}
                                     </div>
                                     <div class="col-md-3">
                                         <label>&nbsp;</label>
                                         {{ form_widget(form.filtro_hidraulico.filtro_hidraulico_2) }}
+                                        {{ form_errors(form.filtro_hidraulico.filtro_hidraulico_2) }}
                                     </div>
                                 </div>
 
@@ -363,18 +410,22 @@
                                     <div class="col-md-3">
                                         <label>Filtro de Diesel:</label>
                                         {{ form_widget(form.filtro_diesel.filtro_diesel_1) }}
+                                        {{ form_errors(form.filtro_diesel.filtro_diesel_1) }}
                                     </div>
                                     <div class="col-md-3">
                                         <label>&nbsp;</label>
                                         {{ form_widget(form.filtro_diesel.filtro_diesel_2) }}
+                                        {{ form_errors(form.filtro_diesel.filtro_diesel_2) }}
                                     </div>
                                     <div class="col-md-3">
                                         <label>&nbsp;</label>
                                         {{ form_widget(form.filtro_diesel.filtro_diesel_3) }}
+                                        {{ form_errors(form.filtro_diesel.filtro_diesel_3) }}
                                     </div>
                                     <div class="col-md-3">
                                         <label>&nbsp;</label>
                                         {{ form_widget(form.filtro_diesel.filtro_diesel_4) }}
+                                        {{ form_errors(form.filtro_diesel.filtro_diesel_4) }}
                                     </div>
                                 </div>
 
@@ -382,14 +433,17 @@
                                     <div class="col-md-3">
                                         <label>Filtro de Aceite:</label>
                                         {{ form_widget(form.filtro_aceite.filtro_aceite_1) }}
+                                        {{ form_errors(form.filtro_aceite.filtro_aceite_1) }}
                                     </div>
                                     <div class="col-md-3">
                                         <label>&nbsp;</label>
                                         {{ form_widget(form.filtro_aceite.filtro_aceite_2) }}
+                                        {{ form_errors(form.filtro_aceite.filtro_aceite_2) }}
                                     </div>
                                     <div class="col-md-3">
                                         <label>&nbsp;</label>
                                         {{ form_widget(form.filtro_aceite.filtro_aceite_3) }}
+                                        {{ form_errors(form.filtro_aceite.filtro_aceite_3) }}
                                     </div>
                                 </div>
                             </div>
@@ -401,11 +455,13 @@
                                     <div class="col-md-6">
                                         <label>Vista Frontal:</label>
                                         {{ form_widget(form.imagen_frontal) }}
+                                        {{ form_errors(form.imagen_frontal) }}
                                     </div>
 
                                     <div class="col-md-6">
                                         <label>Vista Trasera:</label>
                                         {{ form_widget(form.imagen_trasera) }}
+                                        {{ form_errors(form.imagen_trasera) }}
                                     </div>
                                 </div>
 
@@ -413,11 +469,13 @@
                                     <div class="col-md-6">
                                         <label>Vista Lateral Izquierda:</label>
                                         {{ form_widget(form.imagen_lateral_i) }}
+                                        {{ form_errors(form.imagen_lateral_i) }}
                                     </div>
 
                                     <div class="col-md-6">
                                         <label>Vista Lateral Derecha:</label>
                                         {{ form_widget(form.imagen_lateral_d) }}
+                                        {{ form_errors(form.imagen_lateral_d) }}
                                     </div>
                                 </div>
 
@@ -431,11 +489,13 @@
                                     <div class="col-md-6">
                                         <label>Kilometraje:</label>
                                         {{ form_widget(form.kilometraje) }}
+                                        {{ form_errors(form.kilometraje) }}
                                     </div>
 
                                     <div class="col-md-6">
                                         <label>Horas:</label>
                                         {{ form_widget(form.horas) }}
+                                        {{ form_errors(form.horas) }}
                                     </div>
                                 </div>
                             </div>

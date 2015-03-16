@@ -1,9 +1,3 @@
-hatuey_erp_terceros:
-    resource: "@HatueyERPTercerosBundle/Resources/config/routing.yml"
-
-hatuey_soft_security:
-    resource: "@HatueySoftSecurityBundle/Resources/config/routing.yml"
-
 BusetaTallerBundle_tareaadicional:
         resource: "@BusetaTallerBundle/Resources/config/routing/tareaadicional.yml"
         prefix:   /tareaadicional

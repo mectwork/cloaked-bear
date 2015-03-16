@@ -217,37 +217,37 @@ class AutobusType extends AbstractType
                         'class' => 'form-control',
                     )
                 ))
-            ->add('peso_tara', 'number', array(
+            ->add('peso_tara', 'integer', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
                     )
                 ))
-            ->add('peso_bruto', 'number', array(
+            ->add('peso_bruto', 'integer', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
                     )
                 ))
-            ->add('numero_plazas', 'number', array(
+            ->add('numero_plazas', 'integer', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
                     )
                 ))
-            ->add('numero_cilindros', 'number', array(
+            ->add('numero_cilindros', 'integer', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
                     )
                 ))
-            ->add('cilindrada', 'number', array(
+            ->add('cilindrada', 'integer', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',
                     )
                 ))
-            ->add('potencia', 'number', array(
+            ->add('potencia', 'integer', array(
                     'required' => true,
                     'attr'   => array(
                         'class' => 'form-control',

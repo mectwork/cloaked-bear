@@ -1,6 +1,0 @@
-hatueyerp_persona_api_getdata:
-    pattern: /{id}.{_format}
-    defaults: { _controller: "HatueyERPTercerosBundle:PersonaAPI:getPersonaData" }
-    requirements: { _method: get, _format: json }
-    options:
-        expose: true

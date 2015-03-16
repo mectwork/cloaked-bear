@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: julio
- * Date: 3/03/15
- * Time: 20:38
- */
 
 namespace Buseta\TallerBundle\Entity;
 

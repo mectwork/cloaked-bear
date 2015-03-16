@@ -41,7 +41,7 @@ class ReporteType extends AbstractType
                 'allow_delete' => true,
             ))
             ->add('medioReporte','entity',array(
-                'class' => 'BusetaNomencladorBundle:NMedioReporte',
+                'class' => 'BusetaNomencladorBundle:MedioReporte',
                 'empty_value' => '---Seleccione medio reporte---',
                 'required' => true,
                 'attr' => array(

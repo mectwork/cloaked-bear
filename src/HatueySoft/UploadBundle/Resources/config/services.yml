@@ -1,7 +1,0 @@
-parameters:
-#    hatuey_soft_upload.example.class: HatueySoft\UploadBundle\Example
-
-services:
-#    hatuey_soft_upload.example:
-#        class: %hatuey_soft_upload.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]

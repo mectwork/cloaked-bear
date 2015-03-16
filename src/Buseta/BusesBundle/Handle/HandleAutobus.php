@@ -180,6 +180,7 @@ class HandleAutobus
         }
 
         $entity->setMatricula($entityModel->getMatricula());
+        $entity->setNumero($entityModel->getNumero());
         $entity->setNumeroChasis($entityModel->getNumeroChasis());
         $entity->setNumeroMotor($entityModel->getNumeroMotor());
 
