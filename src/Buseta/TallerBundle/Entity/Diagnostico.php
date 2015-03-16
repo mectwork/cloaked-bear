@@ -29,10 +29,9 @@ class Diagnostico
     private $id;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \Buseta\TallerBundle\Entity\Reporte
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Reporte")
-     * @Assert\NotNull
+     * @ORM\OneToOne(targetEntity="Buseta\TallerBundle\Entity\Reporte", inversedBy="diagnostico")
      */
     private $reporte;
 
@@ -67,29 +66,6 @@ class Diagnostico
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set reporte
-     *
-     * @param \Buseta\TallerBundle\Entity\Reporte $reporte
-     * @return Diagnostico
-     */
-    public function setReporte(\Buseta\TallerBundle\Entity\Reporte $reporte = null)
-    {
-        $this->reporte = $reporte;
-    
-        return $this;
-    }
-
-    /**
-     * Get reporte
-     *
-     * @return \Buseta\TallerBundle\Entity\Reporte 
-     */
-    public function getReporte()
-    {
-        return $this->reporte;
     }
 
     /**
@@ -151,6 +127,29 @@ class Diagnostico
 
     public function __toString()
     {
-        return "sdad";
+        return "Diagnostico";
+    }
+
+    /**
+     * Set reporte
+     *
+     * @param \Buseta\TallerBundle\Entity\Reporte $reporte
+     * @return Diagnostico
+     */
+    public function setReporte(\Buseta\TallerBundle\Entity\Reporte $reporte = null)
+    {
+        $this->reporte = $reporte;
+    
+        return $this;
+    }
+
+    /**
+     * Get reporte
+     *
+     * @return \Buseta\TallerBundle\Entity\Reporte 
+     */
+    public function getReporte()
+    {
+        return $this->reporte;
     }
 }

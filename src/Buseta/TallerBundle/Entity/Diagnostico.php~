@@ -29,9 +29,9 @@ class Diagnostico
     private $id;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \Buseta\TallerBundle\Entity\Reporte
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Reporte")
+     * @ORM\OneToOne(targetEntity="Buseta\TallerBundle\Entity\Reporte", inversedBy="diagnostico")
      * @Assert\NotNull
      */
     private $reporte;
@@ -43,13 +43,6 @@ class Diagnostico
      * @Assert\NotNull
      */
     private $autobus;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="detalle_reporte", type="string", nullable=true)
-     */
-    private $detalleReporte;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -74,52 +67,6 @@ class Diagnostico
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set detalleReporte
-     *
-     * @param string $detalleReporte
-     * @return Diagnostico
-     */
-    public function setDetalleReporte($detalleReporte)
-    {
-        $this->detalleReporte = $detalleReporte;
-    
-        return $this;
-    }
-
-    /**
-     * Get detalleReporte
-     *
-     * @return string 
-     */
-    public function getDetalleReporte()
-    {
-        return $this->detalleReporte;
-    }
-
-    /**
-     * Set reporte
-     *
-     * @param \Buseta\TallerBundle\Entity\Reporte $reporte
-     * @return Diagnostico
-     */
-    public function setReporte(\Buseta\TallerBundle\Entity\Reporte $reporte = null)
-    {
-        $this->reporte = $reporte;
-    
-        return $this;
-    }
-
-    /**
-     * Get reporte
-     *
-     * @return \Buseta\TallerBundle\Entity\Reporte 
-     */
-    public function getReporte()
-    {
-        return $this->reporte;
     }
 
     /**
@@ -151,7 +98,7 @@ class Diagnostico
      * @param \Buseta\TallerBundle\Entity\ObservacionDiagnostico $observaciones
      * @return Diagnostico
      */
-    public function addObservacion(\Buseta\TallerBundle\Entity\ObservacionDiagnostico $observaciones)
+    public function addObservacione(\Buseta\TallerBundle\Entity\ObservacionDiagnostico $observaciones)
     {
         $observaciones->setDiagnostico($this);
         $this->observaciones[] = $observaciones;
@@ -164,7 +111,7 @@ class Diagnostico
      *
      * @param \Buseta\TallerBundle\Entity\ObservacionDiagnostico $observaciones
      */
-    public function removeObservacion(\Buseta\TallerBundle\Entity\ObservacionDiagnostico $observaciones)
+    public function removeObservacione(\Buseta\TallerBundle\Entity\ObservacionDiagnostico $observaciones)
     {
         $this->observaciones->removeElement($observaciones);
     }
@@ -177,5 +124,10 @@ class Diagnostico
     public function getObservaciones()
     {
         return $this->observaciones;
+    }
+
+    public function __toString()
+    {
+        return "Diagnostico";
     }
 }

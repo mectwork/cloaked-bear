@@ -1,20 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: julio
- * Date: 3/03/15
- * Time: 20:38
- */
 
-namespace Buseta\TallerBundle\Entity;
+namespace Buseta\TallerBundle\Form\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Reporte
+ * ReporteModel
  *
  */
-class Reporte
+class ReporteModel
 {
     /**
      * @var integer
