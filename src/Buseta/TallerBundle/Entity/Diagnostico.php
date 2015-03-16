@@ -29,6 +29,14 @@ class Diagnostico
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="numero", type="string")
+     * @Assert\NotBlank()
+     */
+    private $numero;
+
+    /**
      * @var \Buseta\TallerBundle\Entity\Reporte
      *
      * @ORM\OneToOne(targetEntity="Buseta\TallerBundle\Entity\Reporte", inversedBy="diagnostico")
@@ -106,6 +114,22 @@ class Diagnostico
     }
 
     /**
+     * @return string
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * @param string $numero
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+    }
+
+    /**
      * Remove observaciones
      *
      * @param \Buseta\TallerBundle\Entity\ObservacionDiagnostico $observaciones
@@ -127,7 +151,7 @@ class Diagnostico
 
     public function __toString()
     {
-        return "Diagnostico";
+        return $this->numero;
     }
 
     /**

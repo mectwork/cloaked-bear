@@ -4,6 +4,11 @@ namespace Buseta\TallerBundle\Form\Model;
 class DiagnosticoFilterModel
 {
     /**
+     * @var string
+     */
+    private $numero;
+
+    /**
      * @var \Buseta\TallerBundle\Entity\Reporte
      */
     private $reporte;
@@ -45,4 +50,19 @@ class DiagnosticoFilterModel
         $this->reporte = $reporte;
     }
 
+    /**
+     * @return string
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * @param string $numero
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+    }
 } 

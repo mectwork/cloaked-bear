@@ -17,6 +17,13 @@ class DiagnosticoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('numero', 'text', array(
+                'required' => false,
+                'label'  => 'Número',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('reporte','entity',array(
                 'class' => 'BusetaTallerBundle:Reporte',
 

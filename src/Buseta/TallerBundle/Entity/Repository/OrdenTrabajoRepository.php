@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\TallerBundle\Entity;
+namespace Buseta\TallerBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
