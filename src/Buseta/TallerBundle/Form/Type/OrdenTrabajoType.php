@@ -104,7 +104,7 @@ class OrdenTrabajoType extends AbstractType
                 'class' => 'BusetaTallerBundle:Diagnostico',
                 'empty_value' => '---Seleccione---',
                 'label' => 'Diagnóstico',
-                'required' => true,
+                'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 )
