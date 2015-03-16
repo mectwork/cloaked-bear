@@ -146,6 +146,8 @@
 
         });
 
+        //Al seleccionar el Reporte del Diagnostico, automaticamente selecciona el Autobus correspondiente
+        //y muestra los datos del Reporte Seleccionado
         $('#{{ form.reporte.vars.id }}').change(function(){
             var autobus_text = $('#{{ form.autobus.vars.id }}');
             var reporte_text = $('#{{ form.reporte.vars.id }}');
@@ -205,6 +207,7 @@
 
             }, 'json').fail(function(error){
                 autobus_text.parent().find('input').remove();
+                reporte_text.parent().find('#datosreportes').remove();
                 autobus_text.css('display','block');
             });
         });
