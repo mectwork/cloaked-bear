@@ -37,29 +37,31 @@
                         <div class="col-md-4">
                             {{ form_row(form.numero) }}
                         </div>
+
                         <div class="col-md-4">
                             {{ form_row(form.requisionMateriales) }}
                         </div>
-                    </div>
 
-                    <br/>
-                    <div class="row">
                         <div class="col-md-4">
                             {{ form_row(form.realizadaPor) }}
                         </div>
+
                         <div class="col-md-4">
                             {{ form_row(form.ayudante) }}
                         </div>
+
                         <div class="col-md-4">
                             {{ form_row(form.diagnostico) }}
                         </div>
-                    </div>
 
-                    <br/>
-                    <div class="row">
+                        <div class="col-md-4">
+                            {{ form_row(form.diagnosticadoPor) }}
+                        </div>
+
                         <div class="col-md-4">
                             {{ form_row(form.autobus) }}
                         </div>
+
                         <div class="col-md-4">
                             {{ form_row(form.fechaInicio) }}
                         </div>
@@ -577,11 +579,13 @@
             },
             _load: function () {
                 $('#buseta_tallerbundle_ordentrabajo_fechaInicio').datetimepicker({
-                    'format': 'DD/MM/YYYY'
+                    'format': 'DD/MM/YYYY',
+                    pickTime: false
                 });
 
                 $('#buseta_tallerbundle_ordentrabajo_fechaFinal').datetimepicker({
-                    'format': 'DD/MM/YYYY'
+                    'format': 'DD/MM/YYYY',
+                    pickTime: false
                 });
 
                 $("#buseta_tallerbundle_ordentrabajo_fechaInicio").on("dp.change",function (e) {
@@ -651,10 +655,11 @@
                 autobus_text
                         .parent()
                         .append($('<input class="form-control" type="text" disabled> ').val(text));
-
-            }, 'json').fail(function(error){
+            }, 'json').fail(function(error) {
                 autobus_text.parent().find('input').remove();
                 autobus_text.css('display','block');
+            }).always(function(){
+                autobus_text.trigger('change');
             });
         });
     </script>
