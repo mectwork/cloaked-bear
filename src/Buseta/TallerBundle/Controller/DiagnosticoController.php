@@ -197,8 +197,44 @@ class DiagnosticoController extends Controller
         $em = $this->get('doctrine.orm.entity_manager');
         $reportes = $em->find('BusetaTallerBundle:Reporte', $request->query->get('reporte_id'));
 
+        $numero = $reportes->getNumero();
+        $medio = $reportes->getMedioReporte()->getValor();
+        //$bus = $reportes->getAutobus()->getMatricula().'-'.$reportes->getAutobus()->getNumero();
+
+        if($reportes->getReporta())
+        {
+            $reporta = $reportes->getReporta();
+        }
+        else
+        {
+            $reporta = '-';
+        }
+
+        if($reportes->getEsUsuario())
+        {
+            $esUsuario = 'Sí';
+            $nombrePersona   = $reportes->getNombrePersona();
+            $emailPersona    = $reportes->getEmailPersona();
+            $telefonoPersona = $reportes->getTelefonoPersona();
+        }
+        else
+        {
+            $esUsuario = 'No';
+            $nombrePersona   = '-';
+            $emailPersona    = '-';
+            $telefonoPersona = '-';
+        }
+
         return new JsonResponse(array(
             'autobus' => $reportes->getAutobus()->getId(),
+            //'bus' => $bus,
+            'reporta' => $reporta,
+            'numero' => $numero,
+            'medio' => $medio,
+            'esUsuario' => $esUsuario,
+            'nombrePersona' => $nombrePersona,
+            'emailPersona' => $emailPersona,
+            'telefonoPersona' => $telefonoPersona,
         ), 200);
     }
 }

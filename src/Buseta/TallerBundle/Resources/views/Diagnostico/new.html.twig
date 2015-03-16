@@ -145,6 +145,7 @@
 
         $('#{{ form.reporte.vars.id }}').change(function(){
             var autobus_text = $('#{{ form.autobus.vars.id }}');
+            var reporte_text = $('#{{ form.reporte.vars.id }}');
 
             var data = {
                 reporte_id: $(this).val()
@@ -159,6 +160,45 @@
                 autobus_text
                         .parent()
                         .append($('<input class="form-control" type="text" disabled> ').val(text));
+
+
+                reporte_text.parent().find('#datosreportes').remove();
+                reporte_text
+                        .parent()
+                        .append($(
+                                '<div id="datosreportes" class="panel panel-default">' +
+                                '<ul class="list-group">' +
+                                '<li class="list-group-item"> <b>Número: </b> ' + data['numero']  +'</li>' +
+                                '<li class="list-group-item"> <b>Reporta: </b>' + data['reporta'] +'</li>' +
+                                '<li class="list-group-item"> <b>Medio: </b>  ' + data['medio']   +'</li>' +
+                                '<ul class="list-group"> </ul></div>')
+                );
+
+//                reporte_text
+//                        .parent()
+//                        .append($(
+//                                    '<div id="datosreportes" class="panel panel-default">' +
+//                                    '<ul class="list-group">' +
+//                                    '<li class="list-group-item"> <b>Número: </b> ' + data['numero']  +'</li>' +
+//                                    '<li class="list-group-item"> <b>Reporta: </b>' + data['reporta'] +'</li>' +
+//                                    '<li class="list-group-item"> <b>Medio: </b>  ' + data['medio']   +'</li>' +
+//                                    '<li class="list-group-item"> <b>¿Es Usuario de la Empresa?: </b>'+data['esUsuario']+'</li>' +
+//                                        '<li class="list-group-item">' +
+//                                        '<div class="panel panel-default" style="margin: 10px">' +
+//                                        <!-- Default panel contents -->
+//                                        '<div class="panel-heading">' +
+//                                        '<h3 class="panel-title">Datos de Persona</h3>' +
+//                                        '</div>' +
+//                                        <!-- Datos de Persona -->
+//                                            '<ul class="list-group">' +
+//                                            '<li class="list-group-item"> <b>Nombre:</b>   '+ data['nombrePersona'] +'</li> '+
+//                                            '<li class="list-group-item"> <b>Email:</b>    '+ data['emailPersona']   +'</li>' +
+//                                            '<li class="list-group-item"> <b>Teléfono:</b> '+ data['telefonoPersona'] +'</li>' +
+//                                            '</ul>' +
+//                                        '</div>' +
+//                                        '</li>' +
+//                                        '<ul class="list-group"> </ul></div>')
+//                                );
 
             }, 'json').fail(function(error){
                 autobus_text.parent().find('input').remove();
