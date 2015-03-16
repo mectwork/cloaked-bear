@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * CondicionesPago.
  *
  * @ORM\Table(name="d_condiciones_pago")
- * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\CondicionesPagoRepository")
+ * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\CondicionesPagoRepository")
  */
 class CondicionesPago
 {

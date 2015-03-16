@@ -5,6 +5,8 @@ namespace Buseta\BodegaBundle\Controller;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\Movimiento;
+use Buseta\BodegaBundle\Form\Filter\AlbaranFilter;
+use Buseta\BodegaBundle\Form\Model\AlbaranFilterModel;
 use Buseta\BodegaBundle\Form\Type\AlbaranLineaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -195,14 +197,33 @@ class AlbaranController extends Controller
     /**
      * Lists all Albaran entities.
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
+        $filter = new AlbaranFilterModel();
 
-        $albaran = $this->createForm(new BusquedaAlbaranType());
+        $form = $this->createForm(new AlbaranFilter(), $filter, array(
+            'action' => $this->generateUrl('albaran'),
+        ));
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Albaran')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Albaran')->filter();
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $request->query->get('page', 1),
+            5
+        );
 
         return $this->render('BusetaBodegaBundle:Albaran:index.html.twig', array(
-            'albaran' => $albaran->createView(),
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
         ));
     }
 

@@ -4,66 +4,143 @@
 
 {% endblock %}
 
-{% block titulo %}
-    Listado de condiciones de pago
+{% block title %}
+    Listado de Condiciones de Pago
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listado de condiciones de pago
+    Listado de Condiciones de Pago
 {% endblock %}
 
 {% block area_trabajo %}
 
-    <div class="btn-group" style="padding-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('condicionespago_new') }}"><i class="fa fa-plus-circle"></i> Adicionar condición de pago</a>
+    {% set display = '' %}
+    {% set headericon = 'glyphicon-chevron-down' %}
+    {% if (filter_form.vars.value.nombre is null or filter_form.vars.value.nombre is empty)
+    and (filter_form.vars.value.mesesplazo is null or filter_form.vars.value.mesesplazo is empty)
+    and (filter_form.vars.value.diasplazo is null or filter_form.vars.value.diasplazo is empty)
+    %}
+        {% set display = 'display: none;' %}
+        {% set headericon = 'glyphicon-chevron-right' %}
+    {% endif %}
+
+    <h4>
+        <a id="filter_form_header" style="cursor: pointer;">
+            <span class="glyphicon {{ headericon }}"></span>
+            Búsqueda
+        </a>
+    </h4>
+    <div id="filter_form_component" style="{{ display }}">
+        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+            <div class="row">
+                <div class="col-lg-4">{{ form_row(filter_form.nombre) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.meses_plazo) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.dias_plazo) }}</div>
+            </div>
+            {{ form_widget(filter_form._token) }}
+
+            <div class="filter-actions" style="margin-top: 8px;">
+                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                    <span class="glyphicon glyphicon-filter"></span> Filtrar
+                </a>
+                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <hr/>
+    <div class="btn-group" style="margin-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('condicionespago_new') }}">
+            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'condicionespago.btn.adicionar'|trans({}, 'BusetaTallerBundle') }}
+        </a>
+    </div>
+
+    <div class="paginator row">
+        <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
     </div>
 
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
         <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Meses de plazo</th>
-            <th>Días de plazo</th>
-            <th>Nota</th>
-            <th>Acciones</th>
+            <th>Nombre{{ knp_pagination_sortable(entities, 'Nombre', 't.nombre') }}</th>
+            <th>Meses de Plazo{{ knp_pagination_sortable(entities, 'Meses de Plazo', 't.meses_plazo') }}</th>
+            <th>Días de Plazo{{ knp_pagination_sortable(entities, 'Días de Plazo', 't.dias_plazo') }}</th>
+            <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
                 <td>{{ entity.nombre }}</td>
-                <td>{{ entity.descripcion }}</td>
-                <td>{{ entity.mesesplazo }}</td>
-                <td>{{ entity.diasplazo }}</td>
-                <td>{{ entity.nota }}</td>
-
-                <td  style="width: 18% !important; text-align: center;">
+                <td>{{ entity.meses_plazo }}</td>
+                <td>{{ entity.dias_plazo }}</td>
+                {#<td>
+                    {% if entity.ispersona %}
+                        <span class="glyphicon glyphicon-ok"></span>
+                    {% else %}
+                        <span class="glyphicon glyphicon-remove"></span>
+                    {% endif %}
+                </td>#}
+                <td style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
-                        <a class="btn btn-success btn-xs" href="{{ path('condicionespago_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
+                        <a class="btn btn-success btn-xs"
+                           href="{{ path('condicionespago_show', { 'id': entity.id }) }}"><span
+                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </div>
 
-                    <div class="btn-group">
-                        <a class="btn btn-danger btn-xs" href="{{ path('condicionespago_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
-                    </div>
-
+                    {#<div class="btn-group">
+                        <a class="btn btn-danger btn-xs"
+                           href="{{ path('reporte_edit', { 'id': entity.id }) }}"><span
+                                    class="glyphicon glyphicon-edit"> Editar</span></a>
+                    </div>#}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="12">No se encontraron registros de condiciones de pago en el sistema.</td>
+                <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaTallerBundle') }}</td>
             </tr>
         {% endfor %}
-
         </tbody>
     </table>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                {{ knp_pagination_render(entities) }}
-            </div>
-        </div>
+    <div class="paginator row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
     </div>
 
-{% endblock %}
+{% endblock area_trabajo %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a#filter_form_header').click(function () {
+                if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-right')
+                            .addClass('glyphicon-chevron-down');
+                } else {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-down')
+                            .addClass('glyphicon-chevron-right');
+                }
+
+                $('div#filter_form_component').slideToggle(500);
+            });
+
+            $('a#filter_form_submit_btn').click(function () {
+                $('form#filter_form').submit();
+            });
+
+            $('a#filter_form_reset_btn').click(function () {
+                $('form#filter_form').find('input').each(function () {
+                    $(this).val(null);
+                });
+                $('form#filter_form').find('select').each(function () {
+                    $(this).val(null);
+                })
+            });
+        });
+    </script>
+{% endblock javascripts %}

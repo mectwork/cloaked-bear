@@ -5,11 +5,12 @@ namespace Buseta\BodegaBundle\Controller;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
+use Buseta\BodegaBundle\Form\Filter\PedidoCompraFilter;
+use Buseta\BodegaBundle\Form\Model\PedidoCompraFilterModel;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\PedidoCompra;
-use Buseta\BodegaBundle\Form\Filtro\BusquedaPedidoCompraType;
 
 /**
  * PedidoCompra controller.
@@ -45,7 +46,7 @@ class PedidoCompraController extends Controller
         if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
-
+    
         $request = $this->getRequest();
         if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
@@ -109,31 +110,7 @@ class PedidoCompraController extends Controller
         } else {
             $error = "error";
         }
-
-        /*if($error != 'error')
-        {
-            $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($tercero);
-            $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($almacen);
-            $forma_pago = $em->getRepository('BusetaNomencladorBundle:FormaPago')->find($forma_pago);
-            $condiciones_pago = $em->getRepository('BusetaTallerBundle:CondicionesPago')->find($condiciones_pago);
-            $moneda = $em->getRepository('BusetaNomencladorBundle:Moneda')->find($moneda);
-
-            $pedidoCompra = new PedidoCompra();
-            $pedidoCompra->setNumeroDocumento($numero_documento);
-            $pedidoCompra->setConsecutivoCompra($consecutivo_compra);
-            $pedidoCompra->setTercero($tercero);
-            $pedidoCompra->setAlmacen($almacen);
-            $pedidoCompra->setFechaPedido($fecha_pedido);
-            $pedidoCompra->setFormaPago($forma_pago);
-            $pedidoCompra->setCondicionesPago($condiciones_pago);
-            $pedidoCompra->setMoneda($moneda);
-            $pedidoCompra->setImporteTotalLineas($importe_total_lineas);
-            $pedidoCompra->setImporteTotal($importe_total);
-
-            $em->persist($pedidoCompra);
-            $em->flush();
-        }*/
-
+        
         $json = array(
             //'id' => $numero_documento,
             'error' => $error,
@@ -145,14 +122,33 @@ class PedidoCompraController extends Controller
     /**
      * Lists all PedidoCompra entities.
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
+        $filter = new PedidoCompraFilterModel();
 
-        $pedidoCompra = $this->createForm(new BusquedaPedidoCompraType());
+        $form = $this->createForm(new PedidoCompraFilter(), $filter, array(
+            'action' => $this->generateUrl('pedidocompra'),
+        ));
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:PedidoCompra')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:PedidoCompra')->filter();
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $request->query->get('page', 1),
+            5
+        );
 
         return $this->render('BusetaBodegaBundle:PedidoCompra:index.html.twig', array(
-            'pedidoCompra' => $pedidoCompra->createView(),
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
         ));
     }
 

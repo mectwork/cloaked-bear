@@ -17,18 +17,33 @@ class DiagnosticoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('numero', 'text', array(
+                'required' => false,
+                'label'  => 'Número',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('reporte','entity',array(
                 'class' => 'BusetaTallerBundle:Reporte',
-                'empty_value' => '---seleccione---',
+
+                'query_builder' => function(EntityRepository $repository) {
+                    $qb = $repository->createQueryBuilder('r');
+                    $qb
+                        ->leftJoin('r.diagnostico', 'd')
+                        ->andWhere($qb->expr()->isNull('d'));
+                    return $qb;
+                },
+                'empty_value' => '---Seleccione---',
                 'label' => 'Reporte',
-                'required' => true,
+                'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---seleccione---',
+                'empty_value' => '---Seleccione---',
                 'label' => 'Autobús',
                 'required' => true,
                 'attr' => array(

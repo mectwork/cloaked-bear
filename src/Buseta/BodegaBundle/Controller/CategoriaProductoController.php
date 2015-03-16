@@ -2,6 +2,8 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\Form\Filter\CategoriaProductoFilter;
+use Buseta\BodegaBundle\Form\Model\CategoriaProductoFilterModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\CategoriaProducto;
@@ -15,23 +17,34 @@ class CategoriaProductoController extends Controller
     /**
      * Lists all CategoriaProducto entities.
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $filter = new CategoriaProductoFilterModel();
 
-        $entities = $em->getRepository('BusetaBodegaBundle:CategoriaProducto')->findAll();
+        $form = $this->createForm(new CategoriaProductoFilter(), $filter, array(
+            'action' => $this->generateUrl('categoria_producto'),
+        ));
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:CategoriaProducto')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:CategoriaProducto')->filter();
+        }
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
             $entities,
-            $this->get('request')->query->get('page', 1),
-            10,
-            array('pageParameterName' => 'page')
+            $request->query->get('page', 1),
+            5
         );
 
         return $this->render('BusetaBodegaBundle:CategoriaProducto:index.html.twig', array(
-                'entities' => $entities,
-            ));
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
+        ));
     }
     /**
      * Creates a new CategoriaProducto entity.

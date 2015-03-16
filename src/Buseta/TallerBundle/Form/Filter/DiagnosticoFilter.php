@@ -14,6 +14,14 @@ class DiagnosticoFilter extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('numero', null, array(
+                'required'  => false,
+                'label' => 'Número',
+                'trim'      => true,
+                'attr'      => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('reporte','entity',array(
                 'class' => 'BusetaTallerBundle:Reporte',
                 'empty_value' => '---Seleccione---',

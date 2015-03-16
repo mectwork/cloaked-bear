@@ -4,83 +4,153 @@
 
 {% endblock %}
 
-{% block titulo %}
-    Listado de pedidos de compras pendientes
+{% block title %}
+    Listado de Registros de Compras
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listado de pedidos de compras pendientes
+    Listado de Registros de Compras
 {% endblock %}
 
 {% block area_trabajo %}
 
-    <h4><a id="busqueda_pedidoCompra" style="cursor: pointer; "><i class="icon-chevron-down"></i> Búsqueda de Pedidos de Compras</a></h4>
-    <div id="busqueda_pedidoCompra_div" class="panel panel-default" style="display: none;">
-        <div class="panel-body">
-            <fieldset>
-                {{ form_start(pedidoCompra) }}
-                <div class="row show-grid" style="padding-top: 0px">
-                    <div class="col-md-4">
-                        {{ form_row(pedidoCompra.numero_documento) }}
+    {% set display = '' %}
+    {% set headericon = 'glyphicon-chevron-down' %}
+    {% if (filter_form.vars.value.numerodocumento is null or filter_form.vars.value.numerodocumento is empty)
+    and (filter_form.vars.value.tercero is null or filter_form.vars.value.tercero is empty)
+    and (filter_form.vars.value.almacen is null or filter_form.vars.value.almacen is empty)
+    and (filter_form.vars.value.moneda is null or filter_form.vars.value.moneda is empty)
+    and (filter_form.vars.value.formapago is null or filter_form.vars.value.formapago is empty)
+    and (filter_form.vars.value.condicionespago is null or filter_form.vars.value.condicionespago is empty)
+    and (filter_form.vars.value.importetotallineas is null or filter_form.vars.value.importetotallineas is empty)
+    and (filter_form.vars.value.importetotal is null or filter_form.vars.value.importetotal is empty)
+    %}
+        {% set display = 'display: none;' %}
+        {% set headericon = 'glyphicon-chevron-right' %}
+    {% endif %}
+
+    <h4>
+        <a id="filter_form_header" style="cursor: pointer;">
+            <span class="glyphicon {{ headericon }}"></span>
+            Búsqueda
+        </a>
+    </h4>
+    <div id="filter_form_component" style="{{ display }}">
+        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+            <div class="row">
+                <div class="col-lg-4">{{ form_row(filter_form.numero_documento) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.tercero) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.almacen) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.moneda) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.forma_pago) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.condiciones_pago) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.importe_total_lineas) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.importe_total) }}</div>
+            </div>
+            {{ form_widget(filter_form._token) }}
+
+            <div class="filter-actions" style="margin-top: 8px;">
+                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                    <span class="glyphicon glyphicon-filter"></span> Filtrar
+                </a>
+                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <hr/>
+    <div class="btn-group" style="margin-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('pedidocompra_new') }}">
+            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'pedidocompra.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}
+        </a>
+    </div>
+
+    <div class="paginator row">
+        <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+    </div>
+
+    <table class="records_list table table-striped table-bordered table-condensed table-hover">
+        <thead>
+        <tr>
+            <th>No.Documento{{ knp_pagination_sortable(entities, 'No.Documento', 't.numero_documento') }}</th>
+            <th>Tercero{{ knp_pagination_sortable(entities, 'Tercero', 't.tercero') }}</th>
+            <th>Almacén{{ knp_pagination_sortable(entities, 'Almacén', 't.almacen') }}</th>
+            <th>Moneda{{ knp_pagination_sortable(entities, 'Moneda', 't.moneda') }}</th>
+            <th>Forma de Pago{{ knp_pagination_sortable(entities, 'Forma de Pago', 't.forma_pago') }}</th>
+            <th>Importe Total{{ knp_pagination_sortable(entities, 'Importe Total', 't.importe_total') }}</th>
+            <th style="text-align: center">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.numero_documento }}</td>
+                <td>{{ entity.tercero }}</td>
+                <td>{{ entity.almacen }}</td>
+                <td>{{ entity.moneda }}</td>
+                <td>{{ entity.forma_pago }}</td>
+                <td>{{ entity.importe_total }}</td>
+
+                <td style="width: 18% !important; text-align: center;">
+                    <div class="btn-group">
+                        <a class="btn btn-success btn-xs"
+                           href="{{ path('reporte_show', { 'id': entity.id }) }}"><span
+                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </div>
-                    <div class="col-md-4">
-                        {{ form_row(pedidoCompra.tercero) }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ form_row(pedidoCompra.almacen) }}
-                    </div>
-                </div>
-                <div class="row show-grid" style="padding-top: 0px">
-                    <div class="col-md-4">
-                        {{ form_row(pedidoCompra.moneda) }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ form_row(pedidoCompra.forma_pago) }}
-                    </div>
-                    {#<div class="col-md-4">
-                        {{ form_row(pedidoCompra.estado_documento) }}
+
+                    {#<div class="btn-group">
+                        <a class="btn btn-danger btn-xs"
+                           href="{{ path('reporte_edit', { 'id': entity.id }) }}"><span
+                                    class="glyphicon glyphicon-edit"> Editar</span></a>
                     </div>#}
-                </div>
-                <div class="row show-grid" style="padding-top: 0px">
-                    <div class="col-md-4">
-                        {{ form_row(pedidoCompra.condiciones_pago) }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ form_row(pedidoCompra.importe_total_lineas) }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ form_row(pedidoCompra.importe_total) }}
-                    </div>
-                </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-                {{ form_end(pedidoCompra) }}
-
-                <div class="row show-grid">
-                    <div class="col-md-6">
-                        <input class="btn btn-primary btn-bg" style="width: 100px;" value="Buscar" name="buscar" onclick="setFilters()">
-
-                        <div class="btn-group">
-                            <a class="btn btn-success btn-bg" href="{{ path('pedidocompra') }}"><i class="fa fa-search"> Reiniciar Búsqueda</i></a>
-                        </div>
-                    </div>
-                </div>
-
-
-            </fieldset>
-        </div>
+    <div class="paginator row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
     </div>
 
-    <div class="btn-group" style="padding-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('pedidocompra_new') }}"><i class="fa fa-plus-circle"></i> Adicionar Pedido de Compra</a>
-    </div>
-    <div class="pedidoCompras-result-table" style="text-align: center;"> </div>
-
-{% endblock %}
-
+{% endblock area_trabajo %}
 
 {% block javascripts %}
-    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a#filter_form_header').click(function () {
+                if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-right')
+                            .addClass('glyphicon-chevron-down');
+                } else {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-down')
+                            .addClass('glyphicon-chevron-right');
+                }
 
-    <script src="{{asset('vendors/busquedaPedidoCompra.js')}}" type="text/javascript"></script>
+                $('div#filter_form_component').slideToggle(500);
+            });
 
-{% endblock %}
+            $('a#filter_form_submit_btn').click(function () {
+                $('form#filter_form').submit();
+            });
+
+            $('a#filter_form_reset_btn').click(function () {
+                $('form#filter_form').find('input').each(function () {
+                    $(this).val(null);
+                });
+                $('form#filter_form').find('select').each(function () {
+                    $(this).val(null);
+                })
+            });
+        });
+    </script>
+{% endblock javascripts %}

@@ -12,7 +12,8 @@
 
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
-    {% if (filter_form.vars.value.reporte is null or filter_form.vars.value.reporte is empty)
+    {% if (filter_form.vars.value.numero is null or filter_form.vars.value.numero is empty)
+        and (filter_form.vars.value.reporte is null or filter_form.vars.value.reporte is empty)
         and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
     %}
         {% set display = 'display: none;' %}
@@ -28,6 +29,7 @@
     <div id="filter_form_component" style="{{ display }}">
         <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
             <div class="row">
+                <div class="col-lg-4">{{ form_row(filter_form.numero) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.reporte) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.autobus) }}</div>
             </div>
@@ -58,6 +60,7 @@
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
         <tr>
+            <th>Número {{ knp_pagination_sortable(entities, 'Número', 'd.numero') }}</th>
             <th>Reporte {{ knp_pagination_sortable(entities, 'Reporte', 'd.diagnostico') }}</th>
             <th>Autobús {{ knp_pagination_sortable(entities, 'Autobús', 'd.autobus') }}</th>
             <th style="text-align: center">Acciones</th>
@@ -66,7 +69,20 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.reporte }}</td>
+                <td>
+                    {% if entity.numero %}
+                            {{ entity.numero }}
+                        {% else %}
+                            -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if entity.reporte %}
+                            {{ entity.reporte }}
+                        {% else %}
+                            -
+                    {% endif %}
+                </td>
                 <td>{{ entity.autobus }}</td>
                 <td style="width: 18% !important; text-align: center;">
                     <div class="btn-group">

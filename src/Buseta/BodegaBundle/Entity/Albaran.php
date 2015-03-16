@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Albaran.
  *
  * @ORM\Table(name="d_albaran")
- * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\AlbaranRepository")
+ * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\AlbaranRepository")
  */
 class Albaran
 {

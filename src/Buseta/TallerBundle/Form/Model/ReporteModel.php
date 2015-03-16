@@ -1,14 +1,14 @@
 <?php
 
-namespace Buseta\TallerBundle\Entity;
+namespace Buseta\TallerBundle\Form\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Reporte
+ * ReporteModel
  *
  */
-class Reporte
+class ReporteModel
 {
     /**
      * @var integer

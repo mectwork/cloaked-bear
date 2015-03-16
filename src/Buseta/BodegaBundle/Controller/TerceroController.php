@@ -3,15 +3,14 @@
 namespace Buseta\BodegaBundle\Controller;
 
 use Buseta\BodegaBundle\Entity\Direccion;
-use Buseta\BodegaBundle\Entity\MecanismoContacto;
 use Buseta\BodegaBundle\Form\Model\TerceroModel;
 use Buseta\BodegaBundle\Form\Type\DireccionType;
+use Buseta\BodegaBundle\Form\Filter\TerceroFilter;
+use Buseta\BodegaBundle\Form\Model\TerceroFilterModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\Tercero;
 use Buseta\BodegaBundle\Form\Type\TerceroType;
-use Buseta\BodegaBundle\Form\Type\MecanismoContactoType;
-use Buseta\BodegaBundle\Form\Filtro\BusquedaTerceroType;
 
 /**
  * Tercero controller.
@@ -44,14 +43,33 @@ class TerceroController extends Controller
     /**
      * Lists all Tercero entities.
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
+        $filter = new TerceroFilterModel();
 
-        $tercero = $this->createForm(new BusquedaTerceroType());
+        $form = $this->createForm(new TerceroFilter(), $filter, array(
+            'action' => $this->generateUrl('tercero'),
+        ));
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Tercero')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Tercero')->filter();
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $request->query->get('page', 1),
+            5
+        );
 
         return $this->render('BusetaBodegaBundle:Tercero:index.html.twig', array(
-            'tercero' => $tercero->createView(),
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
         ));
     }
 

@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Linea.
  *
  * @ORM\Table(name="d_orden_trabajo")
- * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\OrdenTrabajoRepository")
+ * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\OrdenTrabajoRepository")
  */
 class OrdenTrabajo
 {
@@ -21,6 +21,13 @@ class OrdenTrabajo
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var \Buseta\TallerBundle\Entity\Diagnostico
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Diagnostico")
+     */
+    private $diagnostico;
 
     /**
      * @var \Buseta\BodegaBundle\Entity\Tercero
@@ -64,7 +71,7 @@ class OrdenTrabajo
      *
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero")
      */
-    private $diagnostico;
+    private $diagnosticadoPor;
 
     /**
      * @var string
@@ -194,27 +201,51 @@ class OrdenTrabajo
     }
 
     /**
-     * Set diagnostico.
-     *
-     * @param string $diagnostico
-     *
+     * Get diangnostico
+     * 
+     * @return Diagnostico
+     */
+    public function getDiagnostico()
+    {
+        return $this->diagnostico;
+    }
+
+    /**
+     * Set diagnostico
+     * 
+     * @param Diagnostico $diagnostico
+     * 
      * @return OrdenTrabajo
      */
     public function setDiagnostico($diagnostico)
     {
         $this->diagnostico = $diagnostico;
+        
+        return $this;
+    }
+
+    /**
+     * Set diagnosticadoPor.
+     *
+     * @param string $diagnosticadoPor
+     * 
+     * @return OrdenTrabajo
+     */
+    public function setDiagnosticadoPor($diagnosticadoPor)
+    {
+        $this->diagnosticadoPor = $diagnosticadoPor;
 
         return $this;
     }
 
     /**
-     * Get diagnostico.
+     * Get diagnosticadoPor
      *
      * @return string
      */
-    public function getDiagnostico()
+    public function getDiagnosticadoPor()
     {
-        return $this->diagnostico;
+        return $this->diagnosticadoPor;
     }
 
     /**

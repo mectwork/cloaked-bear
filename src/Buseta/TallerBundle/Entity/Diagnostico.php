@@ -29,10 +29,17 @@ class Diagnostico
     private $id;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Reporte")
-     * @Assert\NotNull
+     * @ORM\Column(name="numero", type="string")
+     * @Assert\NotBlank()
+     */
+    private $numero;
+
+    /**
+     * @var \Buseta\TallerBundle\Entity\Reporte
+     *
+     * @ORM\OneToOne(targetEntity="Buseta\TallerBundle\Entity\Reporte", inversedBy="diagnostico")
      */
     private $reporte;
 
@@ -67,29 +74,6 @@ class Diagnostico
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set reporte
-     *
-     * @param \Buseta\TallerBundle\Entity\Reporte $reporte
-     * @return Diagnostico
-     */
-    public function setReporte(\Buseta\TallerBundle\Entity\Reporte $reporte = null)
-    {
-        $this->reporte = $reporte;
-    
-        return $this;
-    }
-
-    /**
-     * Get reporte
-     *
-     * @return \Buseta\TallerBundle\Entity\Reporte 
-     */
-    public function getReporte()
-    {
-        return $this->reporte;
     }
 
     /**
@@ -130,6 +114,22 @@ class Diagnostico
     }
 
     /**
+     * @return string
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * @param string $numero
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+    }
+
+    /**
      * Remove observaciones
      *
      * @param \Buseta\TallerBundle\Entity\ObservacionDiagnostico $observaciones
@@ -151,6 +151,29 @@ class Diagnostico
 
     public function __toString()
     {
-        return "sdad";
+        return $this->numero;
+    }
+
+    /**
+     * Set reporte
+     *
+     * @param \Buseta\TallerBundle\Entity\Reporte $reporte
+     * @return Diagnostico
+     */
+    public function setReporte(\Buseta\TallerBundle\Entity\Reporte $reporte = null)
+    {
+        $this->reporte = $reporte;
+    
+        return $this;
+    }
+
+    /**
+     * Get reporte
+     *
+     * @return \Buseta\TallerBundle\Entity\Reporte 
+     */
+    public function getReporte()
+    {
+        return $this->reporte;
     }
 }

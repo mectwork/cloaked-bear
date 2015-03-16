@@ -44,10 +44,10 @@ class OrdenTrabajoType extends AbstractType
                     return $qb;
                 },
             ))
-            ->add('diagnostico', 'entity', array(
+            ->add('diagnosticadoPor', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'required' => false,
-                'label'  => 'Diagnóstico',
+                'label'  => 'Diagnosticado por',
                 'attr'   => array(
                     'class' => 'form-control',
                 ),
@@ -92,8 +92,18 @@ class OrdenTrabajoType extends AbstractType
             ))
             ->add('autobus', 'entity', array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione un autobus---',
+                'empty_value' => '---Seleccione---',
+                'label' => 'Autobús',
                 'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('diagnostico','entity',array(
+                'class' => 'BusetaTallerBundle:Diagnostico',
+                'empty_value' => '---Seleccione---',
+                'label' => 'Diagnóstico',
+                'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 ),

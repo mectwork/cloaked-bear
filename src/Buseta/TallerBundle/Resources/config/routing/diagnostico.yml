@@ -32,3 +32,17 @@ diagnostico_delete:
 diagnostico_generar_ordentrabajo:
     pattern:  /{id}/generar_ordentrabajo
     defaults: { _controller: "BusetaTallerBundle:Diagnostico:generarOrdenTrabajo" }
+
+diagnostico_ajax_reporte_autobus:
+  pattern: /select_reporte_autobus
+  defaults: { _controller: "BusetaTallerBundle:Diagnostico:select_reporte_autobus" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true
+
+diagnostico_ajax_ordentrabajo_autobus:
+  pattern: /select_diagnostico_ordentrabajo
+  defaults: { _controller: "BusetaTallerBundle:Diagnostico:select_diagnostico_ordentrabajo" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true

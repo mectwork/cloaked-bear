@@ -23,12 +23,17 @@
 
         <div class="row">
             <div class="col-md-4">
+                {{ form_row(form.numero) }}
+            </div>
+            <div class="col-md-4">
                 {{ form_row(form.reporte) }}
             </div>
             <div class="col-md-4">
                 {{ form_row(form.autobus) }}
             </div>
         </div>
+
+        <div id="detalles_reportes"> </div>
 
         <br/>
         <div class="row">
@@ -110,6 +115,7 @@
             }
         }
     </script>
+
     <script type="text/javascript">
         var observacion = {
             _insert_new: function (event) {
@@ -122,11 +128,11 @@
 
                 $('#buseta_tallerbundle_reporte_observaciones_' + index + '_valor').val();
 
-            },
+            }
 
         };
-
     </script>
+
     <script type="text/javascript">
         var collectionHolder = $('div#buseta_tallerbundle_reporte_observaciones');
         var $addTagLink = '';
@@ -141,6 +147,65 @@
             $('a#adicionarNuevaObservacion').on('click', observacion._insert_new);
 
         });
+
+        //Al seleccionar el Reporte del Diagnostico, automaticamente selecciona el Autobus correspondiente
+        //y muestra los datos del Reporte Seleccionado
+        $('#{{ form.reporte.vars.id }}').change(function(){
+            var autobus_text = $('#{{ form.autobus.vars.id }}');
+            var reporte_text = $('#{{ form.reporte.vars.id }}');
+            var detalles_reportes = $('#detalles_reportes');
+
+            var data = {
+                reporte_id: $(this).val()
+            };
+
+            $.get('{{ path("diagnostico_ajax_reporte_autobus") }}', data, function(data){
+                //Selecciona automática el Autobus segun el Reporte seleccionado
+                autobus_text.val(data['autobus']);
+                autobus_text.css('display','none');
+                var text = autobus_text.find('option[value="'+autobus_text.val()+'"]').html();
+                autobus_text.parent().find('input').remove();
+                autobus_text
+                        .parent()
+                        .append($('<input class="form-control" type="text" disabled> ').val(text));
+
+                detalles_reportes.html('');
+                detalles_reportes
+                        .append($(
+                                    '<div style="margin-top: 30px" id="datosreportes" class="panel panel-default">' +
+                                    '<div class="panel-heading">' +
+                                    '<h3 class="panel-title">Detalles del Reporte</h3>' +
+                                    '</div>' +
+                                    '<ul class="list-group">' +
+                                    '<li class="list-group-item"> <b>Número: </b> ' + data['numero']  +'</li>' +
+                                    '<li class="list-group-item"> <b>Reporta: </b>' + data['reporta'] +'</li>' +
+                                    '<li class="list-group-item"> <b>Medio: </b>  ' + data['medio']   +'</li>' +
+                                    '<li class="list-group-item"> <b>¿Es Usuario de la Empresa?: </b>'+data['esUsuario']+'</li>' +
+                                        '<li class="list-group-item">' +
+                                        '<div class="panel panel-default" style="margin: 10px">' +
+                                        <!-- Default panel contents -->
+                                        '<div class="panel-heading">' +
+                                        '<h3 class="panel-title">Datos de Persona</h3>' +
+                                        '</div>' +
+                                        <!-- Datos de Persona -->
+                                            '<ul class="list-group">' +
+                                            '<li class="list-group-item"> <b>Nombre:</b>   '+ data['nombrePersona'] +'</li> '+
+                                            '<li class="list-group-item"> <b>Email:</b>    '+ data['emailPersona']   +'</li>' +
+                                            '<li class="list-group-item"> <b>Teléfono:</b> '+ data['telefonoPersona'] +'</li>' +
+                                            '</ul>' +
+                                        '</div>' +
+                                        '</li>' +
+                                        '<ul class="list-group"> </ul></div>')
+                                );
+
+            }, 'json').fail(function(error){
+                autobus_text.parent().find('input').remove();
+                detalles_reportes.html('');
+                autobus_text.css('display','block');
+            });
+        });
     </script>
+
+
 
 {% endblock javascripts %}

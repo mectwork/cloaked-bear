@@ -91,6 +91,14 @@ class Reporte
     private $telefonoPersona;
 
     /**
+     * @var \Buseta\TallerBundle\Entity\Diagnostico
+     *
+     * @ORM\OneToOne(targetEntity="Buseta\TallerBundle\Entity\Diagnostico", mappedBy="reporte")
+     * @Assert\NotNull
+     */
+    private $diagnostico;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -305,8 +313,9 @@ class Reporte
      */
     public function addObservacione(\Buseta\TallerBundle\Entity\Observacion $observaciones)
     {
+        $observaciones->setReporte($this);
         $this->observaciones[] = $observaciones;
-    
+
         return $this;
     }
 
@@ -318,5 +327,15 @@ class Reporte
     public function removeObservacione(\Buseta\TallerBundle\Entity\Observacion $observaciones)
     {
         $this->observaciones->removeElement($observaciones);
+    }
+
+    /**
+     * Get observaciones
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
     }
 }

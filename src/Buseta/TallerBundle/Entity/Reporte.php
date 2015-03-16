@@ -25,7 +25,7 @@ class Reporte
     /**
      * @var string
      *
-     * @ORM\Column(name="numero", type="string", nullable=false)
+     * @ORM\Column(name="numero", type="string")
      */
     private $numero;
 
@@ -83,6 +83,13 @@ class Reporte
      * @ORM\Column(name="telefono_persona", type="string", nullable=true)
      */
     private $telefonoPersona;
+
+    /**
+     * @var \Buseta\TallerBundle\Entity\Diagnostico
+     *
+     * @ORM\OneToOne(targetEntity="Buseta\TallerBundle\Entity\Diagnostico", mappedBy="reporte")
+     */
+    private $diagnostico;
 
     /**
      * Constructor
@@ -323,5 +330,28 @@ class Reporte
     public function getObservaciones()
     {
         return $this->observaciones;
+    }
+
+    /**
+     * Set diagnostico
+     *
+     * @param \Buseta\TallerBundle\Entity\Diagnostico $diagnostico
+     * @return Reporte
+     */
+    public function setDiagnostico(\Buseta\TallerBundle\Entity\Diagnostico $diagnostico = null)
+    {
+        $this->diagnostico = $diagnostico;
+    
+        return $this;
+    }
+
+    /**
+     * Get diagnostico
+     *
+     * @return \Buseta\TallerBundle\Entity\Diagnostico 
+     */
+    public function getDiagnostico()
+    {
+        return $this->diagnostico;
     }
 }

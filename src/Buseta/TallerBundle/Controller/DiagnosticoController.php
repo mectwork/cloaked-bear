@@ -8,12 +8,14 @@ use Buseta\TallerBundle\Entity\ObservacionDiagnostico;
 use Buseta\TallerBundle\Entity\OrdenTrabajo;
 use Buseta\TallerBundle\Form\Type\ObservacionDiagnosticoType;
 use Buseta\TallerBundle\Form\Type\ObservacionType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Buseta\TallerBundle\Form\Type\DiagnosticoType;
 use Buseta\TallerBundle\Form\Model\DiagnosticoFilterModel;
 use Buseta\TallerBundle\Form\Filter\DiagnosticoFilter;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Diagnostico controller.
@@ -89,7 +91,14 @@ class DiagnosticoController extends Controller
 
         $entity = $em->getRepository('BusetaTallerBundle:Diagnostico')->find($id);
 
-        $reportes = $em->getRepository('BusetaTallerBundle:Reporte')->find($entity->getReporte()->getId());
+        if($entity->getReporte())
+        {
+            $reportes = $em->getRepository('BusetaTallerBundle:Reporte')->find($entity->getReporte()->getId());
+        }
+        else
+        {
+            $reportes = null;
+        }
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Diagnostico entity.');
@@ -173,4 +182,79 @@ class DiagnosticoController extends Controller
             'form'   => $form->createView(),
         ));
     }
+
+    /**
+     * Updated automatically select Autobus when change select Reporte
+     *
+     */
+    public function select_reporte_autobusAction(Request $request) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new Response('Acceso Denegado', 403);
+
+        if (!$request->isXmlHttpRequest())
+            return new Response('No es una petición Ajax', 500);
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $reportes = $em->find('BusetaTallerBundle:Reporte', $request->query->get('reporte_id'));
+
+        $numero = $reportes->getNumero();
+        $medio = $reportes->getMedioReporte()->getValor();
+        //$bus = $reportes->getAutobus()->getMatricula().'-'.$reportes->getAutobus()->getNumero();
+
+        if($reportes->getReporta())
+        {
+            $reporta = $reportes->getReporta();
+        }
+        else
+        {
+            $reporta = '-';
+        }
+
+        if($reportes->getEsUsuario())
+        {
+            $esUsuario = 'Sí';
+            $nombrePersona   = $reportes->getNombrePersona();
+            $emailPersona    = $reportes->getEmailPersona();
+            $telefonoPersona = $reportes->getTelefonoPersona();
+        }
+        else
+        {
+            $esUsuario = 'No';
+            $nombrePersona   = '-';
+            $emailPersona    = '-';
+            $telefonoPersona = '-';
+        }
+
+        return new JsonResponse(array(
+            'autobus' => $reportes->getAutobus()->getId(),
+            //'bus' => $bus,
+            'reporta' => $reporta,
+            'numero' => $numero,
+            'medio' => $medio,
+            'esUsuario' => $esUsuario,
+            'nombrePersona' => $nombrePersona,
+            'emailPersona' => $emailPersona,
+            'telefonoPersona' => $telefonoPersona,
+        ), 200);
+    }
+
+    /**
+     * Updated automatically select Autobus y DiagnosticadoPor when change select Diagnostico
+     *
+     */
+    public function select_diagnostico_ordentrabajoAction(Request $request) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new Response('Acceso Denegado', 403);
+
+        if (!$request->isXmlHttpRequest())
+            return new Response('No es una petición Ajax', 500);
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $diagnostico = $em->find('BusetaTallerBundle:Diagnostico', $request->query->get('diagnostico_id'));
+
+        return new JsonResponse(array(
+            'autobus' => $diagnostico->getReporte()->getAutobus()->getId(),
+        ), 200);
+    }
+
 }
