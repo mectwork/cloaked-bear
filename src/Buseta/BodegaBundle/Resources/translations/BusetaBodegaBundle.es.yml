@@ -34,3 +34,7 @@ pedidocompra:
 albaran:
   btn:
     adicionar: Adicionar Albarán
+
+bodega:
+  btn:
+    adicionar: Adicionar Almacén

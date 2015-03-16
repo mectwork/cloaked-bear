@@ -2,6 +2,8 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\Form\Filter\BodegaFilter;
+use Buseta\BodegaBundle\Form\Model\BodegaFilterModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -15,29 +17,6 @@ use Buseta\BodegaBundle\Form\Filtro\BusquedaAlmacenType;
  */
 class BodegaController extends Controller
 {
-    public function busquedaAvanzadaAction($page,$cantResult){
-        $em = $this->get('doctrine.orm.entity_manager');
-        $request = $this->getRequest();
-
-        $orderBy = $request->query->get('orderBy');
-        $filter  = $request->query->get('filter');
-
-        $filter = $filter;
-
-        $busqueda = $em->getRepository('BusetaBodegaBundle:Bodega')
-            ->busquedaAvanzada($page,$cantResult,$filter,$orderBy);
-        $paginacion = $busqueda['paginacion'];
-        $results    = $busqueda['results'];
-
-        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-almacen.html.twig',array(
-            'almacenes'   => $results,
-            'page'       => $page,
-            'cantResult' => $cantResult,
-            'orderBy'    => $orderBy,
-            'paginacion' => $paginacion,
-        ));
-    }
-
     /**
      * Module Bodega entiy.
      *
@@ -48,17 +27,35 @@ class BodegaController extends Controller
     }
 
     /**
-     * Lists all Bodega entities.
-     *
+     * Lists all Almacen entities.
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
+        $filter = new BodegaFilterModel();
 
-        $almacen = $this->createForm(new BusquedaAlmacenType());
+        $form = $this->createForm(new BodegaFilter(), $filter, array(
+            'action' => $this->generateUrl('bodega'),
+        ));
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Bodega')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Bodega')->filter();
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $request->query->get('page', 1),
+            5
+        );
 
         return $this->render('BusetaBodegaBundle:Bodega:index.html.twig', array(
-            'almacen' => $almacen->createView(),
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
         ));
     }
 
