@@ -33,27 +33,13 @@ class ReporteController extends Controller
 
         //Crear nuevo Diagnostico a partir del Reporte seleccionado
         $diagnostico = new Diagnostico();
+        $diagnostico->setNumero($reporte->getNumero());
         $diagnostico->setReporte($reporte);
         $diagnostico->setAutobus($reporte->getAutobus());
         $em->persist($diagnostico);
         $em->flush();
 
-       //registro los datos de las Observaciones del Reporte
-        /*foreach($reporte->getObservaciones() as $observacion){
-
-            $diagnosticoObservacion = new ObservacionDiagnostico();
-            $diagnosticoObservacion->setDiagnostico($diagnostico);
-            $diagnosticoObservacion->setValor($observacion->getValor());
-
-            $em->persist($diagnosticoObservacion);
-            $em->flush();
-        }*/
-
-        //Si se creó satisfactoriamente el Diagnostico
-        //entonces deshabilitamos la opción "Adicionar Observaciones en reporte_show"
-        //----PENDIENTE---
-
-        return $this->redirect($this->generateUrl('diagnostico'));
+        return $this->redirect($this->generateUrl('reporte'));
     }
 
     /**
@@ -100,8 +86,6 @@ class ReporteController extends Controller
         $form = $this->createCreateForm($entity);
 
         $form->handleRequest($request);
-
-        //$observacionesTemp = $request->request->get('buseta_tallerbundle_reporte');
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');

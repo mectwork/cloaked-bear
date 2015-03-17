@@ -40,8 +40,13 @@
     {# buttons group #}
     <div class="row">
         <div class="col-md-4">
-            <a class="btn btn-primary" href="{{ path('diagnostico_generar_ordentrabajo', { 'id': entity.id }) }}">
-                <span class="glyphicon glyphicon-save"></span> Generar Orden de Trabajo</a>
+            {% if entity.ordenTrabajo == null %}
+                    <a class="btn btn-primary" href="{{ path('diagnostico_generar_ordentrabajo', { 'id': entity.id }) }}">
+                        <span class="glyphicon glyphicon-save"></span> Generar Orden de Trabajo</a>
+                {% else %}
+                    <a class="btn btn-primary disabled" href="{{ path('diagnostico_generar_ordentrabajo', { 'id': entity.id }) }}">
+                        <span class="glyphicon glyphicon-save"></span> Generar Orden de Trabajo</a>
+            {% endif %}
 
             <a class="btn btn-default" id="btn_diagnostico_cancel" href="{{ path('diagnostico') }}"><span
                         class="glyphicon glyphicon-chevron-left"></span>
@@ -117,6 +122,7 @@
         };
         var utils = {
             _fail: function (jqXHR, textStatus, errorThrown) {
+                $('div.modal').modal('hide').html('');
                 if (jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
                     addGlobalMessage('danger', jqXHR.responseText.message);
                 } else {
@@ -152,17 +158,11 @@
     <!-- Diagnostico script -->
     <script type="text/javascript">
         var diagnostico = {
-            /*form_id: $('div#basicos').find('form').attr('id'),
-             form_name: $('div#basicos').find('form').attr('name'),*/
             form_id: 'buseta_tallerbundle_diagnostico',
             form_name: 'buseta_tallerbundle_diagnostico',
             id: '',
             _load: function () {
-                diagnostico.id = $('input[id="' + diagnostico.form_id + '_id"]').val()
-
-                /*if (diagnostico.id != '' && diagnostico.id != undefined) {
-                 persona._load();
-                 }*/
+                diagnostico.id = $('input[id="' + diagnostico.form_id + '_id"]').val();
             },
             _save: function (event) {
                 if (event != undefined) {

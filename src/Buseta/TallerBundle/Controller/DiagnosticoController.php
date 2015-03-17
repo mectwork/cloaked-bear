@@ -36,14 +36,11 @@ class DiagnosticoController extends Controller
 
         //Crear nueva Orden de Trabajo a partir del Diagnóstico seleccionado
         $ordenTrabajo = new OrdenTrabajo();
+        $ordenTrabajo->setNumero($diagnostico->getNumero());
+        $ordenTrabajo->setDiagnostico($diagnostico);
         $ordenTrabajo->setAutobus($diagnostico->getAutobus());
         $em->persist($ordenTrabajo);
         $em->flush();
-
-        //Si se creó satisfactoriamente el Diagnostico
-        //entonces deshabilitamos la opción "Adicionar Observaciones en reporte_show"
-        //----PENDIENTE---
-
         return $this->redirect($this->generateUrl('diagnostico'));
     }
 

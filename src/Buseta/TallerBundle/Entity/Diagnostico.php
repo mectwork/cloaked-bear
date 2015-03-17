@@ -37,6 +37,13 @@ class Diagnostico
     private $numero;
 
     /**
+     * @var \Buseta\TallerBundle\Entity\OrdenTrabajo
+     *
+     * @ORM\OneToOne(targetEntity="Buseta\TallerBundle\Entity\OrdenTrabajo", mappedBy="diagnostico")
+     */
+    private $ordenTrabajo;
+
+    /**
      * @var \Buseta\TallerBundle\Entity\Reporte
      *
      * @ORM\OneToOne(targetEntity="Buseta\TallerBundle\Entity\Reporte", inversedBy="diagnostico")
@@ -175,5 +182,30 @@ class Diagnostico
     public function getReporte()
     {
         return $this->reporte;
+    }
+
+
+
+    /**
+     * Set ordenTrabajo
+     *
+     * @param \Buseta\TallerBundle\Entity\OrdenTrabajo $ordenTrabajo
+     * @return Diagnostico
+     */
+    public function setOrdenTrabajo(\Buseta\TallerBundle\Entity\OrdenTrabajo $ordenTrabajo = null)
+    {
+        $this->ordenTrabajo = $ordenTrabajo;
+    
+        return $this;
+    }
+
+    /**
+     * Get ordenTrabajo
+     *
+     * @return \Buseta\TallerBundle\Entity\OrdenTrabajo 
+     */
+    public function getOrdenTrabajo()
+    {
+        return $this->ordenTrabajo;
     }
 }

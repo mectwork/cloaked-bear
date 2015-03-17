@@ -597,27 +597,4 @@ class OrdenTrabajo
 
         return $this;
     }
-
-    /**
-     * Set diagnostico
-     *
-     * @param \Buseta\TallerBundle\Entity\Diagnostico $diagnostico
-     * @return OrdenTrabajo
-     */
-    public function setDiagnostico(\Buseta\TallerBundle\Entity\Diagnostico $diagnostico = null)
-    {
-        $this->diagnostico = $diagnostico;
-    
-        return $this;
-    }
-
-    /**
-     * Get diagnostico
-     *
-     * @return \Buseta\TallerBundle\Entity\Diagnostico 
-     */
-    public function getDiagnostico()
-    {
-        return $this->diagnostico;
-    }
 }

@@ -33,7 +33,7 @@
         {% block flashes %}
             {% if app.session.flashbag.peekAll|length > 0 %}
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-12 global-messages">
                         {{ session_flash() }}
                     </div>
                 </div>

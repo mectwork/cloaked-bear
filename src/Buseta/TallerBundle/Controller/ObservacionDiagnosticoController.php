@@ -43,6 +43,7 @@ class ObservacionDiagnosticoController extends Controller
 
         return $this->render('@BusetaTaller/Diagnostico/ObservacionDiagnostico/list_template.html.twig', array(
             'entities' => $entities,
+            'diagnostico' => $diagnostico,
         ));
     }
 
@@ -74,6 +75,13 @@ class ObservacionDiagnosticoController extends Controller
         if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             try {
                 $em = $this->get('doctrine.orm.entity_manager');
+                if($observacion->getDiagnostico() && $observacion->getDiagnostico()->getOrdenTrabajo()) {
+                    if($request->isXmlHttpRequest()) {
+                        return new JsonResponse(array(
+                            'message' => 'No se puede eliminar una observación de diagnóstico asociada a una orden de trabajo',
+                        ), 500);
+                    }
+                }
                 $em->remove($observacion);
                 $em->flush();
 

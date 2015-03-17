@@ -40,10 +40,17 @@
     {# buttons group #}
     <div class="row">
         <div class="col-md-4">
-            <a class="btn btn-primary" href="{{ path('reporte_generar_diagnostico', { 'id': entity.id }) }}">
-                <span class="glyphicon glyphicon-save"></span>
-                 Generar Diagnóstico
-            </a>
+            {% if entity.diagnostico == null %}
+                    <a class="btn btn-primary" href="{{ path('reporte_generar_diagnostico', { 'id': entity.id }) }}">
+                        <span class="glyphicon glyphicon-save"></span>
+                         Generar Diagnóstico
+                    </a>
+                {% else %}
+                    <a class="btn btn-primary disabled" href="{{ path('reporte_generar_diagnostico', { 'id': entity.id }) }}">
+                        <span class="glyphicon glyphicon-save"></span>
+                        Generar Diagnóstico
+                    </a>
+            {% endif %}
 
             <a class="btn btn-default" id="btn_reporte_cancel" href="{{ path('reporte') }}"><span
                         class="glyphicon glyphicon-chevron-left"></span>
@@ -120,6 +127,7 @@
         };
         var utils = {
             _fail: function (jqXHR, textStatus, errorThrown) {
+                $('div.modal').modal('hide').html('');
                 if (jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
                     addGlobalMessage('danger', jqXHR.responseText.message);
                 } else {

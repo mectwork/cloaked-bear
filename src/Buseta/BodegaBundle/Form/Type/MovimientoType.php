@@ -16,28 +16,13 @@ class MovimientoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //        $objeto = $builder->getFormFactory();
-//        $almacenDestino = new AddAlmacenDestinoFieldSubscriber($objeto);
-//        $builder->addEventSubscriber($almacenDestino);
-//        $almacenOrigen = new AddAlmacenOrigenFieldSubscriber($objeto);
-//        $builder->addEventSubscriber($almacenOrigen);
+        $objeto = $builder->getFormFactory();
+        $almacenDestino = new AddAlmacenDestinoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($almacenDestino);
+        $almacenOrigen = new AddAlmacenOrigenFieldSubscriber($objeto);
+        $builder->addEventSubscriber($almacenOrigen);
 
         $builder
-            ->add('almacenOrigen', 'entity', array(
-                'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione almacén origen---',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('almacenDestino', 'entity', array(
-                'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione almacén destino---',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
-
             ->add('movimientos_productos', 'collection', array(
                 'type' => new MovimientosProductosType(),
                 'label'  => false,

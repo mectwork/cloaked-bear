@@ -45,6 +45,7 @@ class ObservacionController extends Controller
 
         return $this->render('@BusetaTaller/Reporte/Observacion/list_template.html.twig', array(
             'entities' => $entities,
+            'reporte' => $reporte,
         ));
     }
 
@@ -64,12 +65,20 @@ class ObservacionController extends Controller
         if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             try {
                 $em = $this->get('doctrine.orm.entity_manager');
+                if($observacion->getReporte() && $observacion->getReporte()->getDiagnostico()) {
+                    if($request->isXmlHttpRequest()) {
+                        return new JsonResponse(array(
+                            'message' => 'No se puede eliminar una observación de reporte asociada a un diagnóstico',
+                        ), 500);
+                    }
+                }
+
                 $em->remove($observacion);
                 $em->flush();
 
                 if($request->isXmlHttpRequest()) {
                     return new JsonResponse(array(
-                        'message' => $trans->trans('messages.delete.success', array(), 'HatueyERPTercerosBundle'),
+                        'message' => $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle'),
                     ), 202);
                 }
                 // faltaría forma tradicional

@@ -1,6 +1,8 @@
-<div class="btn-group" style="margin-bottom: 8px;">
-    <a class="btn btn-primary" href="#form_observacion_modal"><span class="glyphicon glyphicon-plus-sign"></span> {{ 'observacion.btn.adicionar'|trans({}, 'BusetaTallerBundle') }}</a>
-</div>
+{% if reporte.diagnostico == null %}
+        <div class="btn-group" style="margin-bottom: 8px;">
+            <a class="btn btn-primary" href="#form_observacion_modal"><span class="glyphicon glyphicon-plus-sign"></span> {{ 'observacion.btn.adicionar'|trans({}, 'BusetaTallerBundle') }}</a>
+        </div>
+{% endif %}
 
 <div class="paginator row">
     <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
@@ -19,7 +21,11 @@
         <tr>
             <td>{{ entity.valor }}</td>
             <td style="width: 10%; text-align: center;">
-                <a class="btn btn-danger btn-xs" href="#delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
+                {% if reporte.diagnostico == null %}
+                        <a class="btn btn-danger btn-xs" href="#delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
+                    {% else %}
+                        <a class="btn btn-danger btn-xs disabled" href="#delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
+                {% endif %}
             </td>
         </tr>
     {% else %}
