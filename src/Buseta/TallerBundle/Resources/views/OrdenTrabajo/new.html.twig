@@ -214,18 +214,6 @@
             $('#buseta_tallerbundle_ordentrabajo_duracion_horas_laboradas').val(horastotal);
         }
 
-        $('#selectall').click(function(event) {
-            if (this.checked) {
-                $('.mpreventivo_check').each(function() {
-                    this.checked = true;
-                });
-            } else {
-                $('.mpreventivo_check').each(function() {
-                    this.checked = false;
-                });
-            }
-        });
-
         function dinamicSelects(){
             $('#{{ form.autobus.vars.id }}').change(function() {
 
@@ -235,7 +223,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: Routing.generate('ajax_select_autobus_kilometraje'),
+                    url: '{{ path('ajax_select_autobus_kilometraje') }}',
                     data: $data,
                     success: function (data) {
                         var values = $.parseJSON(data);
@@ -246,7 +234,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url:   Routing.generate('ajax_select_autobus_mpreventivo'),
+                    url:   '{{ path('ajax_select_autobus_mpreventivo') }}',
                     data: $data,
                     success: function(data) {
                         var values = $.parseJSON(data);
@@ -274,7 +262,7 @@
                             $tbody_selector.append($row);
                         }
 
-                        var $panel = $('#{{ form.mpreventivos.vars.id }}');
+                        var $panel = $('#buseta_tallerbundle_ordentrabajo_mpreventivos');
                         if (values.length > 0) {
                             $panel.show(200);
 
@@ -296,7 +284,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: Routing.generate("tareamantenimiento_ajax_grupos_subgrupos"),
+                    url: '{{ path('tareamantenimiento_ajax_grupos_subgrupos') }}',
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
@@ -311,6 +299,7 @@
                     }
                 });
             });
+
             $('select[id^="buseta_tallerbundle_ordentrabajo_tareasAdicionales_"][id$="_subgrupo"]').change(function(){
                 var $selectGroup = $(this);
                 var data = {
@@ -319,7 +308,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: Routing.generate("ajax_select_tarea_subgrupo"),
+                    url: '{{ path('ajax_select_tarea_subgrupo') }}',
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
@@ -334,6 +323,31 @@
                     }
                 });
             });
+
+            $('select[id^="buseta_tallerbundle_ordentrabajo_tareasAdicionales_"][id$="_tarea"]').change(function () {
+                var $tareaSelector = $(this);
+                var data = {
+                    tarea_id: $(this).val()
+                }
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_garantia_tarea') }}',
+                    data: data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+
+                        var $garantia_selector = $tareaSelector.parent().parent().parent().parent().find('select[id^="buseta_tallerbundle_ordentrabajo_tareasAdicionales_"][id$="_garantiaTarea"]');
+
+                        $garantia_selector.html('<option>---Seleccione garantía---</option>');
+
+                        for (var i=0, total = values.length; i < total; i++) {
+                            $garantia_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                        }
+
+                    }
+                });
+            });
         }
     </script>
     <script type="text/javascript">
@@ -343,7 +357,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: Routing.generate('tareaadicional_new_modal'),
+                    url: '{{ path('tareaadicional_new_modal') }}',
                     data: {
                         mpreventivo_id: mpreventivo
                     }
@@ -396,7 +410,7 @@
                 //Actualiza los subgrupos a partir de los grupos en el listado de Tareas Adicionales
                 $.ajax({
                     type: 'GET',
-                    url: Routing.generate("tareamantenimiento_ajax_grupos_subgrupos"),
+                    url: '{{ path('tareamantenimiento_ajax_grupos_subgrupos') }}',
                     data: {
                         grupo_id: $(tareaadicional_grupo).val()
                     },
@@ -418,7 +432,7 @@
                 //Actualiza las tareas a partir de los subgrupos en el listado de Tareas Adicionales
                 $.ajax({
                     type: 'GET',
-                    url: Routing.generate('ajax_select_tarea_subgrupo'),
+                    url: '{{ path('ajax_select_tarea_subgrupo') }}',
                     data: {
                         subgrupo_id: $(tareaadicional_subgrupo).val()
                     },
@@ -433,6 +447,26 @@
                     }
 
                     $(tarea_selector).val(tareaadicional_tarea.val());
+                });
+
+                //Actualiza las garantias a partir de la Tarea en el listado de Tareas Adicionales
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_garantia_tarea') }}',
+                    data: {
+                        tarea_id: $(tareaadicional_tarea).val()
+                    },
+                    async: false
+                }).done(function(data) {
+                    var values = $.parseJSON(data);
+                    var garantia_selector = $('#buseta_tallerbundle_ordentrabajo_tareasAdicionales_' + index + '_garantiaTarea');
+
+                    garantia_selector.html('<option>---Seleccione garantía---</option>');
+                    for (var i = 0, len = values.length; i < len; i++) {
+                        garantia_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>')
+                    }
+
+                    $(garantia_selector).val(tareaadicional_garantias_tareas.val());
                 });
             },
             _load: function () {
@@ -458,6 +492,7 @@
                 $('a.add_tarea_link').on('click', tareaAdicional._insert_new);
                 $('#buseta_tallerbundle_tarea_adicional_grupo').on('change', tareaAdicional._update_subgrupos);
                 $('#buseta_tallerbundle_tarea_adicional_subgrupo').on('change', tareaAdicional._update_tareas);
+                $('#buseta_tallerbundle_tarea_adicional_tarea').on('change', tareaAdicional._update_garantia);
             },
             _update_subgrupos: function () {
                 var data = {
@@ -466,7 +501,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: Routing.generate('ajax_select_subgrupo_grupo'),
+                    url: '{{ path('ajax_select_subgrupo_grupo') }}',
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
@@ -486,7 +521,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: Routing.generate('ajax_select_tarea_subgrupo'),
+                    url: '{{ path('ajax_select_tarea_subgrupo') }}',
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
@@ -499,6 +534,26 @@
                     }
                 });
             },
+            _update_garantia: function () {
+                var data = {
+                    tarea_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_garantia_tarea') }}',
+                    data: data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+                        var garantia_selector = $('#buseta_tallerbundle_tarea_adicional_garantiaTarea');
+
+                        garantia_selector.html('<option>---Seleccione garantia---</option>');
+                        for (var i = 0, len = values.length; i < len; i++) {
+                            garantia_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>')
+                        }
+                    }
+                });
+            },
             _calculate_horasLaboradas: function (valA, valB) {
                 var t1 = new Date();
                 var t2 = new Date();
@@ -507,7 +562,7 @@
                 if ($(valA).val() == '') {
                     $(valA).val(t1.getHours() + ':' + t1.getMinutes() + " AM")
                 }
-                console.log($(valA).val());
+
                 valA = $(valA).val().split(":");
                 horaA = valA[0];
                 valA = valA[1].split(" ");
