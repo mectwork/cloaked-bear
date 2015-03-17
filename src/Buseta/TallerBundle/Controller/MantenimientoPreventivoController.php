@@ -293,6 +293,42 @@ class MantenimientoPreventivoController extends Controller
     }
 
     /**
+     * Selecciona las Garantias asociadas a la Tarea seleccionada.
+     *
+     * @param Request $request
+     * @Route("/select_garantia_tarea", name="ajax_select_garantia_tarea", methods={"GET"})
+     */
+    public function selectGarantiaBelongTareaAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
+
+        if (!$request->isXmlHttpRequest()) {
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $tarea_id = $request->query->get('tarea_id');
+
+        if (!is_numeric($tarea_id)) {
+            return new \Symfony\Component\HttpFoundation\Response(json_encode(array()), 200);
+        }
+
+        $tarea = $em->getRepository('BusetaNomencladorBundle:Tarea')->find($tarea_id);
+
+        $garantia = $em->getRepository('BusetaNomencladorBundle:GarantiaTarea')->find($tarea->getGarantia());
+
+        $json = array();
+        $json[] = array(
+            'id' => $garantia->getId(),
+            'valor' => $garantia->getValor(),
+        );
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
+
+    /**
      * Modifica los campos 'kilometraje' y 'horas' del MantenimientoPreventivo asociados a la Tarea seleccionada.
      *
      * @param Request $request

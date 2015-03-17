@@ -2,12 +2,13 @@
 
 namespace Buseta\TallerBundle\Form\Type;
 
+use Buseta\TallerBundle\Form\EventListener\AddGarantiaTareaAdicionalFieldSubscriber;
+use Buseta\TallerBundle\Form\EventListener\AddGrupoFieldSubscriber;
+use Buseta\TallerBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
 use Buseta\TallerBundle\Form\EventListener\AddTareaMantenimientoFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Buseta\TallerBundle\Form\EventListener\AddGrupoFieldSubscriber;
-use Buseta\TallerBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
 
 class TareaAdicionalType extends AbstractType
 {
@@ -28,14 +29,10 @@ class TareaAdicionalType extends AbstractType
         $tarea = new AddTareaMantenimientoFieldSubscriber($objeto);
         $builder->addEventSubscriber($tarea);
 
+        $garantia = new AddGarantiaTareaAdicionalFieldSubscriber();
+        $builder->addEventSubscriber($garantia);
+
         $builder
-//            ->add('tarea', 'entity', array(
-//                'class' => 'BusetaNomencladorBundle:Tarea',
-//                'label' => 'Tarea',
-//                'attr'   => array(
-//                    'class' => 'form-control',
-//                )
-//            ))
             ->add('descripcion', 'textarea', array(
                 'required' => true,
                 'label'  => 'Observación de tarea',
@@ -44,33 +41,6 @@ class TareaAdicionalType extends AbstractType
                     'style' => 'height: 120px',
                 ),
             ))
-            ->add('garantiaTarea', 'entity', array(
-                'class' => 'BusetaNomencladorBundle:GarantiaTarea',
-                'label'  => 'Garantía de tarea',
-                'empty_value' => '---Seleccione una garantía---',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            /*
-            ->add('grupos','entity',array(
-                'class' => 'BusetaNomencladorBundle:Grupo',
-                'empty_value' => '---Seleccione un grupo---',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
-            ->add('subgrupos','entity',array(
-                'class' => 'BusetaNomencladorBundle:Subgrupo',
-                'empty_value' => '---Seleccione un subgrupo---',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
-            */
-
             ->add('fechaEstimada', 'date', array(
                 'widget' => 'single_text',
                 'format'  => 'dd/MM/yyyy',
