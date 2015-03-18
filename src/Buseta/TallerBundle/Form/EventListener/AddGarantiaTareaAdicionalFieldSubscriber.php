@@ -9,7 +9,6 @@
 namespace Buseta\TallerBundle\Form\EventListener;
 
 
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -22,7 +21,7 @@ class AddGarantiaTareaAdicionalFieldSubscriber implements EventSubscriberInterfa
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::SUBMIT => 'bind',
+            FormEvents::PRE_SUBMIT => 'bind',
         );
     }
 
@@ -35,8 +34,7 @@ class AddGarantiaTareaAdicionalFieldSubscriber implements EventSubscriberInterfa
             $this->addGarantiaTareaAdicionalForm($form);
         } else {
             $tarea = ($data->getTarea()) ? $data->getTarea() : null;
-            $garantiaTarea = ($tarea) ? $tarea->getGarantia() : null;
-            $this->addGarantiaTareaAdicionalForm($form, $tarea, $garantiaTarea);
+            $this->addGarantiaTareaAdicionalForm($form, $tarea);
         }
     }
 
@@ -50,46 +48,30 @@ class AddGarantiaTareaAdicionalFieldSubscriber implements EventSubscriberInterfa
         }
 
         $tarea = array_key_exists('tarea', $data) ? $data['tarea'] : null;
-        $garantiaTarea = array_key_exists('$garantiaTarea', $data) ? $data['$garantiaTarea'] : null;
-        $this->addGarantiaTareaAdicionalForm($form, $tarea, $garantiaTarea);
+        $this->addGarantiaTareaAdicionalForm($form, $tarea);
 
     }
 
-    private function addGarantiaTareaAdicionalForm(FormInterface $form, $tarea = null, $garantia = null)
+    private function addGarantiaTareaAdicionalForm(FormInterface $form, $tarea = null)
     {
         if (null === $tarea) {
-            $form->add('garantiaTarea', 'choice', array(
-                'choices' => array(),
-                'empty_value'   => '---Seleccione garantía---',
+            $form->add('garantiaTarea', 'number', array(
+                'required' => true,
+                'read_only' => true,
+                'label' => 'Garantía tarea',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
             ));
         } else {
-            $form->add('garantiaTarea', 'entity', array(
-                'class' => 'BusetaNomencladorBundle:GarantiaTarea',
-                'empty_value'   => '---Seleccione garantía---',
-                'auto_initialize' => true,
-                'data'          => $garantia,
+            $form->add('garantiaTarea', 'number', array(
+                'required' => true,
+                'label' => 'Garantía tarea',
+                'read_only' => true,
+                'data' => $tarea->getGarantia()->getDias(),
                 'attr' => array(
                     'class' => 'form-control',
                 ),
-                'query_builder' => function (EntityRepository $repository) use ($tarea) {
-                    $qb = $repository->createQueryBuilder('garantia')
-                        ->innerJoin('BusetaNomencladorBundle:Tarea', 'tarea');
-                    if ($tarea instanceof Tarea) {
-                        $qb->where('tarea = :tarea')
-                            ->setParameter('tarea', $tarea);
-                    } elseif (is_numeric($tarea)){
-                        $qb->where('tarea.id = :id')
-                            ->setParameter('id', $tarea);
-                    } else {
-                        $qb->where('tarea.valor = :valor')
-                            ->setParameter('valor', $tarea);
-                    }
-
-                    return $qb;
-                },
             ));
         }
     }

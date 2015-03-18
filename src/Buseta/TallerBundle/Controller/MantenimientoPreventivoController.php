@@ -317,15 +317,9 @@ class MantenimientoPreventivoController extends Controller
 
         $tarea = $em->getRepository('BusetaNomencladorBundle:Tarea')->find($tarea_id);
 
-        $garantia = $em->getRepository('BusetaNomencladorBundle:GarantiaTarea')->find($tarea->getGarantia());
+        $garantia = $tarea->getGarantia()->getDias();
 
-        $json = array();
-        $json[] = array(
-            'id' => $garantia->getId(),
-            'valor' => $garantia->getValor(),
-        );
-
-        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+        return new \Symfony\Component\HttpFoundation\Response(json_encode(array('dias' => $garantia)), 200);
     }
 
     /**

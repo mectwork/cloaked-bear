@@ -307,6 +307,9 @@ class OrdenTrabajoController extends Controller
         }
 
         $id = $request->query->get('autobus_id');
+        if (!is_numeric($id)) {
+            return new \Symfony\Component\HttpFoundation\Response(json_encode(array()), 200);
+        }
 
         $em = $this->get('doctrine.orm.entity_manager');
 
