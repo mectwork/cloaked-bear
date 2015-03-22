@@ -8,8 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Buseta\BodegaBundle\Entity\Direccion;
-use Buseta\BodegaBundle\Form\Type\DireccionType;
-use Symfony\Component\HttpFoundation\Response;
+use Buseta\BodegaBundle\Form\DireccionType;
 
 /**
  * Direccion controller.
@@ -18,11 +17,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DireccionController extends Controller
 {
+
     /**
      * Lists all Direccion entities.
      *
      * @Route("/", name="direccion")
-     *
      * @Method("GET")
      * @Template()
      */
@@ -32,20 +31,16 @@ class DireccionController extends Controller
 
         $entities = $em->getRepository('BusetaBodegaBundle:Direccion')->findAll();
 
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-            $entities,
-            $this->get('request')->query->get('page', 1),
-            5,
-            array('pageParameterName' => 'page')
+        return array(
+            'entities' => $entities,
         );
-
-        return $this->render('BusetaBodegaBundle:Direccion:index.html.twig', array(
-                'entities' => $entities,
-            ));
     }
     /**
      * Creates a new Direccion entity.
+     *
+     * @Route("/", name="direccion_create")
+     * @Method("POST")
+     * @Template("BusetaBodegaBundle:Direccion:new.html.twig")
      */
     public function createAction(Request $request)
     {
@@ -58,32 +53,13 @@ class DireccionController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            $json = array(
-                'id' => $entity->getId(),
-            );
-
-            if ($request->isXmlHttpRequest()) {
-                $response = $this->renderView('@BusetaBodega/Extras/modal_direccion.html.twig', array(
-                    'direccion' => $form->createView(),
-                ));
-
-                //return new Response($response, 200);
-                return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
-                //return new \Symfony\Component\HttpFoundation\Response($response, 200);
-            } else {
-                return $this->redirect($this->generateUrl('direccion_show', array('id' => $entity->getId())));
-            }
-        }
-
-        if ($request->isXmlHttpRequest()) {
-            $response = $this->renderView('@BusetaBodega/Extras/modal_direccion.html.twig', array(
-                'direccion' => $form->createView(),
-            ));
-
-            return new Response($response, 500);
-        } else {
             return $this->redirect($this->generateUrl('direccion_show', array('id' => $entity->getId())));
         }
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        );
     }
 
     /**
@@ -100,7 +76,7 @@ class DireccionController extends Controller
             'method' => 'POST',
         ));
 
-        //$form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -109,7 +85,6 @@ class DireccionController extends Controller
      * Displays a form to create a new Direccion entity.
      *
      * @Route("/new", name="direccion_new")
-     *
      * @Method("GET")
      * @Template()
      */
@@ -128,7 +103,6 @@ class DireccionController extends Controller
      * Finds and displays a Direccion entity.
      *
      * @Route("/{id}", name="direccion_show")
-     *
      * @Method("GET")
      * @Template()
      */
@@ -154,7 +128,6 @@ class DireccionController extends Controller
      * Displays a form to edit an existing Direccion entity.
      *
      * @Route("/{id}/edit", name="direccion_edit")
-     *
      * @Method("GET")
      * @Template()
      */
@@ -179,12 +152,12 @@ class DireccionController extends Controller
     }
 
     /**
-     * Creates a form to edit a Direccion entity.
-     *
-     * @param Direccion $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
+    * Creates a form to edit a Direccion entity.
+    *
+    * @param Direccion $entity The entity
+    *
+    * @return \Symfony\Component\Form\Form The form
+    */
     private function createEditForm(Direccion $entity)
     {
         $form = $this->createForm(new DireccionType(), $entity, array(
@@ -192,7 +165,7 @@ class DireccionController extends Controller
             'method' => 'PUT',
         ));
 
-        //$form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -200,7 +173,6 @@ class DireccionController extends Controller
      * Edits an existing Direccion entity.
      *
      * @Route("/{id}", name="direccion_update")
-     *
      * @Method("PUT")
      * @Template("BusetaBodegaBundle:Direccion:edit.html.twig")
      */
@@ -216,12 +188,12 @@ class DireccionController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
-        $editForm->submit($request);
+        $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('direccion_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('direccion_edit', array('id' => $id)));
         }
 
         return array(
@@ -234,7 +206,6 @@ class DireccionController extends Controller
      * Deletes a Direccion entity.
      *
      * @Route("/{id}", name="direccion_delete")
-     *
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -250,17 +221,8 @@ class DireccionController extends Controller
                 throw $this->createNotFoundException('Unable to find Direccion entity.');
             }
 
-            try {
-                $em->remove($entity);
-                $em->flush();
-
-                $this->get('session')->getFlashBag()->add('success', 'Ha sido eliminado satisfactoriamente.');
-            } catch (\Exception $e) {
-                $this->get('logger')->addCritical(
-                    sprintf('Ha ocurrido un error eliminando una Dirección. Detalles: %s',
-                        $e->getMessage()
-                    ));
-            }
+            $em->remove($entity);
+            $em->flush();
         }
 
         return $this->redirect($this->generateUrl('direccion'));
@@ -278,6 +240,7 @@ class DireccionController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('direccion_delete', array('id' => $id)))
             ->setMethod('DELETE')
+            ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
     }

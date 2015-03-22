@@ -3,12 +3,11 @@
 namespace Buseta\BodegaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Direccion.
  *
- * @ORM\Table(name="n_direccion")
+ * @ORM\Table(name="d_direccion")
  * @ORM\Entity
  */
 class Direccion
@@ -20,88 +19,108 @@ class Direccion
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \stdClass
      *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Tercero", mappedBy="direccion", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="direccines")
      */
-    private $terceros;
+    private $tercero;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="calle", type="string")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="nombre", type="string", length=255)
+     */
+    private $nombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="calle", type="string", length=255)
      */
     private $calle;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="numero", type="string")
+     * @ORM\Column(name="codigoPostal", type="string", length=255)
      */
-    private $numero;
+    private $codigoPostal;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="entre_calles", type="string")
+     * @ORM\Column(name="localidad", type="string", length=255)
      */
-    private $entre_calles;
+    private $localidad;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="pais", type="string")
+     * @ORM\Column(name="pais", type="string", length=255)
      */
     private $pais;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="subdivision", type="string")
+     * @ORM\Column(name="region", type="string", length=255)
      */
-    private $subdivision;
+    private $region;
 
     /**
-     * @var string
+     * Get id.
      *
-     * @ORM\Column(name="ciudad", type="string")
+     * @return integer
      */
-    private $ciudad;
-
-    /**
-     * @ORM\Column(name="activo", type="boolean", nullable=true)
-     */
-    private $activo;
-
-    /**
-     * @param mixed $activo
-     */
-    public function setActivo($activo)
+    public function getId()
     {
-        $this->activo = $activo;
+        return $this->id;
     }
 
     /**
-     * @return mixed
+     * Set nombre.
+     *
+     * @param string $nombre
+     *
+     * @return Direccion
      */
-    public function getActivo()
+    public function setNombre($nombre)
     {
-        return $this->activo;
+        $this->nombre = $nombre;
+
+        return $this;
     }
 
     /**
+     * Get nombre.
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set calle.
+     *
      * @param string $calle
+     *
+     * @return Direccion
      */
     public function setCalle($calle)
     {
         $this->calle = $calle;
+
+        return $this;
     }
 
     /**
+     * Get calle.
+     *
      * @return string
      */
     public function getCalle()
@@ -110,78 +129,70 @@ class Direccion
     }
 
     /**
-     * @param string $ciudad
+     * Set codigoPostal.
+     *
+     * @param string $codigoPostal
+     *
+     * @return Direccion
      */
-    public function setCiudad($ciudad)
+    public function setCodigoPostal($codigoPostal)
     {
-        $this->ciudad = $ciudad;
+        $this->codigoPostal = $codigoPostal;
+
+        return $this;
     }
 
     /**
+     * Get codigoPostal.
+     *
      * @return string
      */
-    public function getCiudad()
+    public function getCodigoPostal()
     {
-        return $this->ciudad;
+        return $this->codigoPostal;
     }
 
     /**
-     * @param string $entre_calles
+     * Set localidad.
+     *
+     * @param string $localidad
+     *
+     * @return Direccion
      */
-    public function setEntreCalles($entre_calles)
+    public function setLocalidad($localidad)
     {
-        $this->entre_calles = $entre_calles;
+        $this->localidad = $localidad;
+
+        return $this;
     }
 
     /**
+     * Get localidad.
+     *
      * @return string
      */
-    public function getEntreCalles()
+    public function getLocalidad()
     {
-        return $this->entre_calles;
+        return $this->localidad;
     }
 
     /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param string $numero
-     */
-    public function setNumero($numero)
-    {
-        $this->numero = $numero;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNumero()
-    {
-        return $this->numero;
-    }
-
-    /**
+     * Set pais.
+     *
      * @param string $pais
+     *
+     * @return Direccion
      */
     public function setPais($pais)
     {
         $this->pais = $pais;
+
+        return $this;
     }
 
     /**
+     * Get pais.
+     *
      * @return string
      */
     public function getPais()
@@ -190,71 +201,50 @@ class Direccion
     }
 
     /**
-     * @param string $subdivision
-     */
-    public function setSubdivision($subdivision)
-    {
-        $this->subdivision = $subdivision;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSubdivision()
-    {
-        return $this->subdivision;
-    }
-
-    /**
-     * @param \Doctrine\Common\Collections\ArrayCollection $terceros
-     */
-    public function setTerceros($terceros)
-    {
-        $this->terceros = $terceros;
-    }
-
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getTerceros()
-    {
-        return $this->terceros;
-    }
-
-    public function __toString()
-    {
-        return $this->calle.', '.$this->numero.'. '.$this->entre_calles.'. '.$this->pais.'. '.$this->subdivision.', '.$this->ciudad.'.';
-    }
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->terceros = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add terceros.
+     * Set region.
      *
-     * @param \Buseta\BodegaBundle\Entity\Tercero $terceros
+     * @param string $region
      *
      * @return Direccion
      */
-    public function addTercero(\Buseta\BodegaBundle\Entity\Tercero $terceros)
+    public function setRegion($region)
     {
-        $this->terceros[] = $terceros;
+        $this->region = $region;
 
         return $this;
     }
 
     /**
-     * Remove terceros.
+     * Get region.
      *
-     * @param \Buseta\BodegaBundle\Entity\Tercero $terceros
+     * @return string
      */
-    public function removeTercero(\Buseta\BodegaBundle\Entity\Tercero $terceros)
+    public function getRegion()
     {
-        $this->terceros->removeElement($terceros);
+        return $this->region;
+    }
+
+    /**
+     * Set tercero.
+     *
+     * @param \Buseta\BodegaBundle\Entity\Tercero $tercero
+     *
+     * @return Direccion
+     */
+    public function setTercero(\Buseta\BodegaBundle\Entity\Tercero $tercero = null)
+    {
+        $this->tercero = $tercero;
+
+        return $this;
+    }
+
+    /**
+     * Get tercero.
+     *
+     * @return \Buseta\BodegaBundle\Entity\Tercero
+     */
+    public function getTercero()
+    {
+        return $this->tercero;
     }
 }
