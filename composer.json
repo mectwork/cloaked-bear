@@ -1,13 +1,4 @@
 {
-    "repositories": [
-        {
-          "packagist": false
-        },
-        {
-            "type": "composer",
-            "url": "http://composer.prod.uci.cu:8080"
-        }
-    ],
     "name": "dundivet/buses-taller-manager",
     "license": "MIT",
     "type": "project",
