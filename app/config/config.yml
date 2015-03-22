@@ -120,25 +120,25 @@ easy_admin:
         css:
             - '/bundles/busetanomenclador/css/admin.css'
     entities:
-        - Buseta\NomencladorBundle\Entity\AceiteCajaCambios
-        - Buseta\NomencladorBundle\Entity\AceiteHidraulico
-        - Buseta\NomencladorBundle\Entity\AceiteMotor
-        - Buseta\NomencladorBundle\Entity\AceiteTransmision
-        - Buseta\NomencladorBundle\Entity\CajaChica
-        - Buseta\NomencladorBundle\Entity\Color
-        - Buseta\NomencladorBundle\Entity\Combustible
-        - Buseta\NomencladorBundle\Entity\Condicion
-        - Buseta\NomencladorBundle\Entity\Estilo
-        - Buseta\NomencladorBundle\Entity\FormaPago
-        - Buseta\NomencladorBundle\Entity\GarantiaTarea
-        - Buseta\NomencladorBundle\Entity\Grupo
-        - Buseta\NomencladorBundle\Entity\MantenimientoPorcientoCumplido
-        - Buseta\NomencladorBundle\Entity\Subgrupo
-        - Buseta\NomencladorBundle\Entity\Marca
-        - Buseta\NomencladorBundle\Entity\MarcaMotor
-        - Buseta\NomencladorBundle\Entity\Modelo
-        - Buseta\NomencladorBundle\Entity\Moneda
-        - Buseta\NomencladorBundle\Entity\TipoCompra
-        - Buseta\NomencladorBundle\Entity\TipoContacto
-        - Buseta\NomencladorBundle\Entity\UOM
-        - Buseta\NomencladorBundle\Entity\MedioReporte
+        'Aceite Caja Cambios': Buseta\NomencladorBundle\Entity\AceiteCajaCambios
+        'Aceite Hidráulico': Buseta\NomencladorBundle\Entity\AceiteHidraulico
+        'Acite Motor': Buseta\NomencladorBundle\Entity\AceiteMotor
+        'Aceite Transmisión': Buseta\NomencladorBundle\Entity\AceiteTransmision
+        'Caja Chica': Buseta\NomencladorBundle\Entity\CajaChica
+        'Color': Buseta\NomencladorBundle\Entity\Color
+        'Combustible': Buseta\NomencladorBundle\Entity\Combustible
+        'Condición': Buseta\NomencladorBundle\Entity\Condicion
+        'Estilo': Buseta\NomencladorBundle\Entity\Estilo
+        'Forma Pago': Buseta\NomencladorBundle\Entity\FormaPago
+        'Garantía Tarea': Buseta\NomencladorBundle\Entity\GarantiaTarea
+        'Grupo': Buseta\NomencladorBundle\Entity\Grupo
+        'Subgrupo': Buseta\NomencladorBundle\Entity\Subgrupo
+        'Mantenimiento % Cumplido': Buseta\NomencladorBundle\Entity\MantenimientoPorcientoCumplido
+        'Marca': Buseta\NomencladorBundle\Entity\Marca
+        'Modelo': Buseta\NomencladorBundle\Entity\Modelo
+        'Marca Motor': Buseta\NomencladorBundle\Entity\MarcaMotor
+        'Moneda': Buseta\NomencladorBundle\Entity\Moneda
+        'Tipo Compra': Buseta\NomencladorBundle\Entity\TipoCompra
+        'Tipo Contacto': Buseta\NomencladorBundle\Entity\TipoContacto
+        'Unidad de Medida': Buseta\NomencladorBundle\Entity\UOM
+        'Medio Reporte': Buseta\NomencladorBundle\Entity\MedioReporte
