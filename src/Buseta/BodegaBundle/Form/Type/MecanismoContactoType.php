@@ -8,36 +8,34 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MecanismoContactoType extends AbstractType
 {
+        /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('tipocontacto', 'entity', array(
-                    'class' => 'BusetaNomencladorBundle:TipoContacto',
-                    'attr' => array(
-                        'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
-                ))
-            ->add('valor', 'text', array(
-                    'required' => false,
-                    'attr'   => array(
-                        'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
-                ))
+            ->add('valor')
+            ->add('tipocontacto')
+            ->add('terceros')
         ;
     }
-
+    
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Entity\MecanismoContacto',
-            'csrf_protection' => false,
+            'data_class' => 'Buseta\BodegaBundle\Entity\MecanismoContacto'
         ));
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
-        return 'data_mecanismo_contacto_type';
+        return 'buseta_bodegabundle_mecanismocontacto';
     }
 }

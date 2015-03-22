@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * MecanismoContacto.
  *
- * @ORM\Table(name="d_mecanismocontacto")
+ * @ORM\Table(name="d_mecanismo_contacto")
  * @ORM\Entity
  */
 class MecanismoContacto
@@ -27,7 +27,7 @@ class MecanismoContacto
     private $tipocontacto;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="mecanismoscontacto")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="me")
      */
     private $terceros;
 
@@ -39,15 +39,9 @@ class MecanismoContacto
     private $valor;
 
     /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return int
+     * Get id.
+     *
+     * @return integer
      */
     public function getId()
     {
@@ -55,35 +49,51 @@ class MecanismoContacto
     }
 
     /**
-     * @return mixed
-     */
-    public function getTipocontacto()
-    {
-        return $this->tipocontacto;
-    }
-
-    /**
-     * @param mixed $tipocontacto
-     */
-    public function setTipocontacto($tipocontacto)
-    {
-        $this->tipocontacto = $tipocontacto;
-    }
-
-    /**
+     * Set valor.
+     *
      * @param string $valor
+     *
+     * @return MecanismoContacto
      */
     public function setValor($valor)
     {
         $this->valor = $valor;
+
+        return $this;
     }
 
     /**
+     * Get valor.
+     *
      * @return string
      */
     public function getValor()
     {
         return $this->valor;
+    }
+
+    /**
+     * Set tipocontacto.
+     *
+     * @param \Buseta\NomencladorBundle\Entity\TipoContacto $tipocontacto
+     *
+     * @return MecanismoContacto
+     */
+    public function setTipocontacto(\Buseta\NomencladorBundle\Entity\TipoContacto $tipocontacto = null)
+    {
+        $this->tipocontacto = $tipocontacto;
+
+        return $this;
+    }
+
+    /**
+     * Get tipocontacto.
+     *
+     * @return \Buseta\NomencladorBundle\Entity\TipoContacto
+     */
+    public function getTipocontacto()
+    {
+        return $this->tipocontacto;
     }
 
     /**
