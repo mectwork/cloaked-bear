@@ -122,7 +122,7 @@ easy_admin:
     entities:
         - Buseta\NomencladorBundle\Entity\AceiteCajaCambios
         - Buseta\NomencladorBundle\Entity\AceiteHidraulico
-        - Buseta\NomencladorBundle\Entity\AceiteMotor2.4 crea
+        - Buseta\NomencladorBundle\Entity\AceiteMotor
         - Buseta\NomencladorBundle\Entity\AceiteTransmision
         - Buseta\NomencladorBundle\Entity\CajaChica
         - Buseta\NomencladorBundle\Entity\Color
@@ -134,7 +134,6 @@ easy_admin:
         - Buseta\NomencladorBundle\Entity\Grupo
         - Buseta\NomencladorBundle\Entity\MantenimientoPorcientoCumplido
         - Buseta\NomencladorBundle\Entity\Subgrupo
-        #- Buseta\NomencladorBundle\Entity\Tarea
         - Buseta\NomencladorBundle\Entity\Marca
         - Buseta\NomencladorBundle\Entity\MarcaMotor
         - Buseta\NomencladorBundle\Entity\Modelo
