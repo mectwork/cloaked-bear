@@ -1,0 +1,7 @@
+parameters:
+#    buseta_upload.example.class: Buseta\UploadBundle\Example
+
+services:
+#    buseta_upload.example:
+#        class: %buseta_upload.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

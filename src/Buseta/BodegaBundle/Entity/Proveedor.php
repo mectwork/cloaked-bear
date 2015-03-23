@@ -49,11 +49,11 @@ class Proveedor
      */
     private $observaciones;
 
-
     /**
-     * Set id
+     * Set id.
      *
      * @param integer $id
+     *
      * @return Proveedor
      */
     public function setId($id)
@@ -64,9 +64,9 @@ class Proveedor
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -74,22 +74,23 @@ class Proveedor
     }
 
     /**
-     * Set creditoLimite
+     * Set creditoLimite.
      *
      * @param string $creditoLimite
+     *
      * @return Proveedor
      */
     public function setCreditoLimite($creditoLimite)
     {
         $this->creditoLimite = $creditoLimite;
-    
+
         return $this;
     }
 
     /**
-     * Get creditoLimite
+     * Get creditoLimite.
      *
-     * @return string 
+     * @return string
      */
     public function getCreditoLimite()
     {
@@ -97,22 +98,23 @@ class Proveedor
     }
 
     /**
-     * Set observaciones
+     * Set observaciones.
      *
      * @param string $observaciones
+     *
      * @return Proveedor
      */
     public function setObservaciones($observaciones)
     {
         $this->observaciones = $observaciones;
-    
+
         return $this;
     }
 
     /**
-     * Get observaciones
+     * Get observaciones.
      *
-     * @return string 
+     * @return string
      */
     public function getObservaciones()
     {
@@ -120,22 +122,23 @@ class Proveedor
     }
 
     /**
-     * Set tercero
+     * Set tercero.
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $tercero
+     *
      * @return Proveedor
      */
     public function setTercero(\Buseta\BodegaBundle\Entity\Tercero $tercero = null)
     {
         $this->tercero = $tercero;
-    
+
         return $this;
     }
 
     /**
-     * Get tercero
+     * Get tercero.
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getTercero()
     {
@@ -143,22 +146,23 @@ class Proveedor
     }
 
     /**
-     * Set moneda
+     * Set moneda.
      *
      * @param \Buseta\NomencladorBundle\Entity\Moneda $moneda
+     *
      * @return Proveedor
      */
     public function setMoneda(\Buseta\NomencladorBundle\Entity\Moneda $moneda = null)
     {
         $this->moneda = $moneda;
-    
+
         return $this;
     }
 
     /**
-     * Get moneda
+     * Get moneda.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Moneda 
+     * @return \Buseta\NomencladorBundle\Entity\Moneda
      */
     public function getMoneda()
     {

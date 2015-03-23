@@ -2,13 +2,16 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Buseta\BodegaBundle\Entity\MecanismoContacto;
+use Buseta\BodegaBundle\Entity\Tercero;
+use Buseta\BodegaBundle\Form\Type\MecanismoContactoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Buseta\BodegaBundle\Entity\MecanismoContacto;
-use Buseta\BodegaBundle\Form\MecanismoContactoType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * MecanismoContacto controller.
@@ -17,49 +20,64 @@ use Buseta\BodegaBundle\Form\MecanismoContactoType;
  */
 class MecanismoContactoController extends Controller
 {
-
     /**
      * Lists all MecanismoContacto entities.
      *
-     * @Route("/", name="mecanismocontacto")
+     * @Route("/{tercero}", name="mecanismocontacto", options={"expose":true})
+     *
      * @Method("GET")
-     * @Template()
      */
-    public function indexAction()
+    public function indexAction($tercero, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
-        $entities = $em->getRepository('BusetaBodegaBundle:MecanismoContacto')->findAll();
+        $entities = $em->getRepository('BusetaBodegaBundle:MecanismoContacto')->findByTercero($tercero);
 
-        return array(
-            'entities' => $entities,
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $request->query->get('page', 1),
+            10
         );
+
+        return $this->render('BusetaBodegaBundle:MecanismoContacto:index.html.twig', array(
+            'entities' => $entities,
+        ));
     }
     /**
      * Creates a new MecanismoContacto entity.
      *
-     * @Route("/", name="mecanismocontacto_create")
+     * @Route("/create/{tercero}", name="mecanismocontacto_create")
+     * @ParamConverter("tercero", options={"mapping":{"tercero":"id"}})
+     *
      * @Method("POST")
-     * @Template("BusetaBodegaBundle:MecanismoContacto:new.html.twig")
      */
-    public function createAction(Request $request)
+    public function createAction(Tercero $tercero, Request $request)
     {
         $entity = new MecanismoContacto();
+        $entity->setTercero($tercero);
+
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->get('doctrine.orm.entity_manager');
+            $trans = $this->get('translator');
+
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('mecanismocontacto_show', array('id' => $entity->getId())));
+            return new JsonResponse(array(
+                'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle'),
+            ), 201);
         }
 
-        return array(
+        $renderView = $this->renderView('BusetaBodegaBundle:MecanismoContacto:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
-        );
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
     }
 
     /**
@@ -72,11 +90,9 @@ class MecanismoContactoController extends Controller
     private function createCreateForm(MecanismoContacto $entity)
     {
         $form = $this->createForm(new MecanismoContactoType(), $entity, array(
-            'action' => $this->generateUrl('mecanismocontacto_create'),
+            'action' => $this->generateUrl('mecanismocontacto_create', array('tercero' => $entity->getTercero()->getId())),
             'method' => 'POST',
         ));
-
-        $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -84,25 +100,29 @@ class MecanismoContactoController extends Controller
     /**
      * Displays a form to create a new MecanismoContacto entity.
      *
-     * @Route("/new", name="mecanismocontacto_new")
-     * @Method("GET")
-     * @Template()
+     * @Route("/new/{tercero}", name="mecanismocontacto_new", methods={"GET", "POST"}, options={"expose":true})
+     * @ParamConverter("tercero", options={"mapping":{"tercero":"id"}})
      */
-    public function newAction()
+    public function newAction(Tercero $tercero)
     {
         $entity = new MecanismoContacto();
+        $entity->setTercero($tercero);
+
         $form   = $this->createCreateForm($entity);
 
-        return array(
+        $renderView = $this->renderView('BusetaBodegaBundle:MecanismoContacto:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
-        );
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
     }
 
     /**
      * Finds and displays a MecanismoContacto entity.
      *
      * @Route("/{id}", name="mecanismocontacto_show")
+     *
      * @Method("GET")
      * @Template()
      */
@@ -127,9 +147,9 @@ class MecanismoContactoController extends Controller
     /**
      * Displays a form to edit an existing MecanismoContacto entity.
      *
-     * @Route("/{id}/edit", name="mecanismocontacto_edit")
+     * @Route("/{id}/edit", name="mecanismocontacto_edit", options={"expose":true})
+     *
      * @Method("GET")
-     * @Template()
      */
     public function editAction($id)
     {
@@ -144,20 +164,22 @@ class MecanismoContactoController extends Controller
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return array(
+        $renderView = $this->renderView('BusetaBodegaBundle:MecanismoContacto:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        );
+        ));
+
+        return new JsonResponse(array('view' => $renderView), 202);
     }
 
     /**
-    * Creates a form to edit a MecanismoContacto entity.
-    *
-    * @param MecanismoContacto $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a MecanismoContacto entity.
+     *
+     * @param MecanismoContacto $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(MecanismoContacto $entity)
     {
         $form = $this->createForm(new MecanismoContactoType(), $entity, array(
@@ -165,14 +187,13 @@ class MecanismoContactoController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
-
         return $form;
     }
     /**
      * Edits an existing MecanismoContacto entity.
      *
      * @Route("/{id}", name="mecanismocontacto_update")
+     *
      * @Method("PUT")
      * @Template("BusetaBodegaBundle:MecanismoContacto:edit.html.twig")
      */
@@ -206,6 +227,7 @@ class MecanismoContactoController extends Controller
      * Deletes a MecanismoContacto entity.
      *
      * @Route("/{id}", name="mecanismocontacto_delete")
+     *
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -240,8 +262,7 @@ class MecanismoContactoController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('mecanismocontacto_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
-        ;
+            ;
     }
 }

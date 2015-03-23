@@ -1,51 +1,45 @@
-{% extends '::base.html.twig' %}
+<div class="btn-group" style="margin-bottom: 8px;">
+    <a class="btn btn-primary" href="#form_direccion_modal" ><span class="glyphicon glyphicon-plus-sign"></span> {{ 'direccion.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
+</div>
 
-{% block body -%}
-    <h1>Direccion list</h1>
+<div class="row">
+    <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+</div>
 
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>Calle</th>
-                <th>Codigopostal</th>
-                <th>Localidad</th>
-                <th>Pais</th>
-                <th>Region</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('direccion_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.nombre }}</td>
-                <td>{{ entity.calle }}</td>
-                <td>{{ entity.codigoPostal }}</td>
-                <td>{{ entity.localidad }}</td>
-                <td>{{ entity.pais }}</td>
-                <td>{{ entity.region }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('direccion_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('direccion_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<table class="records_list table table-striped table-bordered table-condensed table-hover">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Calle</th>
+            <th>Codigo Postal</th>
+            <th>Localidad</th>
+            <th>País</th>
+            <th>Región</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td>{{ entity.nombre }}</td>
+            <td>{{ entity.calle }}</td>
+            <td>{{ entity.codigoPostal }}</td>
+            <td>{{ entity.localidad }}</td>
+            <td>{{ entity.pais }}</td>
+            <td>{{ entity.region }}</td>
+            <td  style="text-align: center;">
+                <div class="btn-group">
+                    <a class="btn btn-danger btn-xs" href="#btn_direccion_edit" data-content="{{ entity.id }}"><i class="fa fa-edit"> Editar</i></a>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
-        <ul>
-        <li>
-            <a href="{{ path('direccion_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+<div class="direccion-paginator row">
+    <div class="col-lg-12 text-center">{{ knp_pagination_render(entities) }}</div>
+</div>
+
+
+<div class="modal" id="form_direccion_modal"></div>

@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: luis
  * Date: 20/03/15
- * Time: 20:58
+ * Time: 20:58.
  */
 
 namespace Buseta\NomencladorBundle\Entity;
@@ -41,15 +41,14 @@ class PosicionGeografica extends BaseNomenclador
      */
     private $latitud;
 
-
     public function __toString()
     {
         return sprintf('%s [%f,%f]', $this->valor, $this->longitud, $this->latitud);
     }
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -57,22 +56,23 @@ class PosicionGeografica extends BaseNomenclador
     }
 
     /**
-     * Set longitud
+     * Set longitud.
      *
      * @param string $longitud
+     *
      * @return PosicionGeografica
      */
     public function setLongitud($longitud)
     {
         $this->longitud = $longitud;
-    
+
         return $this;
     }
 
     /**
-     * Get longitud
+     * Get longitud.
      *
-     * @return string 
+     * @return string
      */
     public function getLongitud()
     {
@@ -80,22 +80,23 @@ class PosicionGeografica extends BaseNomenclador
     }
 
     /**
-     * Set latitud
+     * Set latitud.
      *
      * @param string $latitud
+     *
      * @return PosicionGeografica
      */
     public function setLatitud($latitud)
     {
         $this->latitud = $latitud;
-    
+
         return $this;
     }
 
     /**
-     * Get latitud
+     * Get latitud.
      *
-     * @return string 
+     * @return string
      */
     public function getLatitud()
     {
