@@ -13,3 +13,11 @@ bodega_informe_stock:
 bodega_informe_costos:
     pattern:  /modulo/bodega/informe_costos
     defaults: { _controller: "BusetaBodegaBundle:Informe:informeCostos" }
+
+buseta_bodega_pedidocompra:
+    resource: "@BusetaBodegaBundle/Controller/PedidoCompraController.php"
+    type: annotation
+
+buseta_bodega_pedidocompralinea:
+    resource: "@BusetaBodegaBundle/Controller/PedidoCompraLineaController.php"
+    type: annotation

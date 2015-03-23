@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -83,16 +84,14 @@ class PedidoCompra
     /**
      * @var float
      *
-     * @ORM\Column(name="importe_total_lineas", type="decimal", scale=2)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="importe_total_lineas", type="decimal", scale=2, nullable=true)
      */
     private $importe_total_lineas;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="importe_total", type="decimal", scale=2)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="importe_total", type="decimal", scale=2, nullable=true)
      */
     private $importe_total;
 
@@ -149,6 +148,50 @@ class PedidoCompra
         $this->importe_total = 0;
         $this->updated = new \DateTime();
         $this->deleted = false;
+    }
+
+    /**
+     * @param PedidoCompraModel $model
+     * @return PedidoCompra
+     */
+    public function setModelData(PedidoCompraModel $model)
+    {
+        $this->id = $model->getId();
+        $this->created = $model->getCreated();
+        $this->createdby = $model->getCreatedby();
+        $this->consecutivo_compra = $model->getConsecutivoCompra();
+        $this->deleted = $model->getDeleted();
+        $this->deletedby = $model->getDeletedby();
+        $this->updated = $model->getUpdated();
+        $this->updatedby = $model->getUpdatedby();
+        $this->estado_documento = $model->getEstadoDocumento();
+        $this->fecha_pedido = $model->getFechaPedido();
+        $this->importe_total = $model->getImporteTotal();
+        $this->importe_total_lineas = $model->getImporteTotalLineas();
+        $this->numero_documento = $model->getNumeroDocumento();
+
+        if ($model->getTercero()) {
+            $this->tercero  = $model->getTercero();
+        }
+        if ($model->getAlmacen()) {
+            $this->almacen  = $model->getAlmacen();
+        }
+        if ($model->getMoneda()) {
+            $this->moneda  = $model->getMoneda();
+        }
+        if ($model->getFormaPago()) {
+            $this->forma_pago  = $model->getFormaPago();
+        }
+        if ($model->getCondicionesPago()) {
+            $this->condiciones_pago  = $model->getCondicionesPago();
+        }
+        if (!$model->getPedidoCompraLineas()->isEmpty()) {
+            $this->pedido_compra_lineas = $model->getPedidoCompraLineas();
+        } else {
+            $this->pedido_compra_lineas = new ArrayCollection();
+        }
+
+        return $this;
     }
 
     /**

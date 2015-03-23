@@ -12,7 +12,7 @@ actions:
   create: Crear
   edit: Editar
   delete: Eliminar
-  cancel: Cancelar
+  cancel: Listado
   list: Listar
 
 tercero:
@@ -27,6 +27,12 @@ categoria_producto:
   btn:
     adicionar: Adicionar Categoría de Producto
 
+linea:
+  btn:
+    adicionar: Adicionar Línea
+  modal:
+    title: Adicionar Nueva Línea
+
 pedidocompra:
   btn:
     adicionar: Adicionar Registro de Compra
@@ -38,3 +44,7 @@ albaran:
 bodega:
   btn:
     adicionar: Adicionar Almacén
+
+necesidadmaterial:
+  btn:
+    adicionar: Adicionar Necesidad de Material

@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * PedidoCompraLinea.
  *
  * @ORM\Table(name="d_pedido_compra_linea")
- * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\PedidoCompraLineaRepository")
+ * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\PedidoCompraLineaRepository")
  */
 class PedidoCompraLinea
 {
@@ -31,11 +31,13 @@ class PedidoCompraLinea
      * @var string
      *
      * @ORM\Column(name="linea", type="string", nullable=false)
+     * @Assert\NotBlank()
      */
     private $linea;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto", inversedBy="pedido_compra_lineas")
+     * @Assert\NotBlank()
      */
     private $producto;
 
@@ -43,12 +45,14 @@ class PedidoCompraLinea
      * @var integer
      *
      * @ORM\Column(name="cantidad_pedido", type="integer")
+     * @Assert\NotBlank()
      * @Assert\Type("integer")
      */
     private $cantidad_pedido;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\UOM")
+     * @Assert\NotBlank()
      */
     private $uom;
 
@@ -56,16 +60,19 @@ class PedidoCompraLinea
      * @var float
      *
      * @ORM\Column(name="precio_unitario", type="decimal", scale=2)
+     * @Assert\NotBlank()
      */
     private $precio_unitario;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Impuesto", inversedBy="pedido_compra_lineas")
+     * @Assert\NotBlank()
      */
     private $impuesto;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Moneda")
+     * @Assert\NotBlank()
      */
     private $moneda;
 
@@ -73,6 +80,7 @@ class PedidoCompraLinea
      * @var float
      *
      * @ORM\Column(name="porciento_descuento", type="decimal", scale=2)
+     * @Assert\NotBlank()
      */
     private $porciento_descuento;
 

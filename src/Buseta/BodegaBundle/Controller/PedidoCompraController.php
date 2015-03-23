@@ -7,13 +7,18 @@ use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
 use Buseta\BodegaBundle\Form\Filter\PedidoCompraFilter;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraFilterModel;
+use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\PedidoCompra;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * PedidoCompra controller.
+ *
+ * @Route("/pedidocompra")
  */
 class PedidoCompraController extends Controller
 {
@@ -204,52 +209,112 @@ class PedidoCompraController extends Controller
         return $this->redirect($this->generateUrl('pedidocompra'));
     }
 
+    /**
+     * Creates a new PedidoCompra entity.
+     *
+     * @Route("/create", name="pedidocompras_pedidocompra_create", methods={"POST"}, options={"expose":true})
+     */
     public function createAction(Request $request)
     {
-        $entity = new PedidoCompra();
-        $form = $this->createCreateForm($entity);
+        $pedidocompraModel = new PedidoCompraModel();
+        $form = $this->createCreateForm($pedidocompraModel);
+
         $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em     = $this->get('doctrine.orm.entity_manager');
+            $trans  = $this->get('translator');
+            $logger = $this->get('logger');
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            try {
+                $entity = $pedidocompraModel->getEntityData();
 
-            $entity->setCreated(new \DateTime());
+                $em->persist($entity);
+                $em->flush();
 
-            $em->persist($entity);
-            $em->flush();
+                // Creando nuevamente el formulario con los datos actualizados de la entidad
+                $form = $this->createEditForm(new PedidoCompraModel($entity));
+                $renderView = $this->renderView('@BusetaBodega/PedidoCompra/form_template.html.twig', array(
+                    'form'   => $form->createView(),
+                ));
 
-            return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $entity->getId())));
+                return new JsonResponse(array(
+                    'view' => $renderView,
+                    'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
+                ), 201);
+            } catch (\Exception $e) {
+                $logger->addCritical(sprintf(
+                    $trans->trans('', array(), 'BusetaBodegaBundle') . '. Detalles: %s',
+                    $e->getMessage()
+                ));
+
+                return new JsonResponse(array(
+                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Registro de Compra'), 'BusetaBodegaBundle')
+                ), 500);
+            }
         }
 
-        return $this->render('BusetaBodegaBundle:PedidoCompra:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+        $renderView = $this->renderView('@BusetaBodega/PedidoCompra/form_template.html.twig', array(
+            'form'     => $form->createView(),
         ));
+
+        return new JsonResponse(array('view' => $renderView));
     }
 
     /**
      * Creates a form to create a PedidoCompra entity.
      *
-     * @param PedidoCompra $entity The entity
+     * @param PedidoCompraModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(PedidoCompra $entity)
+    private function createCreateForm(PedidoCompraModel $entity)
     {
         $form = $this->createForm('bodega_pedido_compra', $entity, array(
-            'action' => $this->generateUrl('pedidocompra_create'),
+            'action' => $this->generateUrl('pedidocompras_pedidocompra_create'),
             'method' => 'POST',
         ));
-
-        //$form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
 
     /**
      * Displays a form to create a new PedidoCompra entity.
+     *
+     * @Route("/new", name="pedidocompras_pedidocompra_new", methods={"GET"}, options={"expose":true})
      */
     public function newAction()
+    {
+        $form   = $this->createCreateForm(new PedidoCompraModel());
+
+        $em = $this->getDoctrine()->getManager();
+        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
+
+        $json = array();
+        $precioSalida = 0;
+
+        foreach ($productos as $p) {
+            foreach ($p->getPrecioProducto() as $precios) {
+                if ($precios->getActivo()) {
+                    $precioSalida = ($precios->getPrecio());
+                }
+            }
+
+            $json[$p->getId()] = array(
+                'nombre' => $p->getNombre(),
+                'precio_salida' => $precioSalida,
+            );
+        }
+
+        return $this->render('@BusetaBodega/PedidoCompra/new.html.twig', array(
+            'form'   => $form->createView(),
+            'json'   => json_encode($json),
+        ));
+    }
+
+    /**
+     * Displays a form to create a new PedidoCompra entity.
+     */
+    /*public function newAction()
     {
         $entity = new PedidoCompra();
 
@@ -284,7 +349,7 @@ class PedidoCompraController extends Controller
             'pedido_compra_linea'  => $pedido_compra_linea->createView(),
             'json'   => json_encode($json),
         ));
-    }
+    }*/
 
     /**
      * Finds and displays a PedidoCompra entity.
@@ -354,26 +419,71 @@ class PedidoCompraController extends Controller
     /**
      * Creates a form to edit a PedidoCompra entity.
      *
-     * @param PedidoCompra $entity The entity
+     * @param PedidoCompraModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(PedidoCompra $entity)
+    private function createEditForm(PedidoCompraModel $entity)
     {
         $form = $this->createForm('bodega_pedido_compra', $entity, array(
-            'action' => $this->generateUrl('pedidocompra_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('pedidocompras_pedidocompra_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
-
-        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
 
     /**
      * Edits an existing PedidoCompra entity.
+     *
+     * @Route("/{id}/update", name="pedidocompras_pedidocompra_update", methods={"POST","PUT"}, options={"expose":true})
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, PedidoCompra $pedidocompra)
+    {
+        $pedidocompraModel = new PedidoCompraModel($pedidocompra);
+        $editForm = $this->createEditForm($pedidocompraModel);
+
+        $editForm->handleRequest($request);
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em     = $this->get('doctrine.orm.entity_manager');
+            $trans  = $this->get('translator');
+            $logger = $this->get('logger');
+
+            try {
+                $pedidocompra->setModelData($pedidocompraModel);
+                $em->flush();
+
+                $renderView = $this->renderView('@BusetaBodega/PedidoCompra/form_template.html.twig', array(
+                    'form'     => $editForm->createView(),
+                ));
+
+                return new JsonResponse(array(
+                    'view' => $renderView,
+                    'message' => $trans->trans('messages.update.success', array(), 'BusetaBodegaBundle')
+                ), 202);
+            } catch (\Exception $e) {
+                $logger->addCritical(sprintf(
+                    $trans->trans('messages.update.success', array(), 'BusetaBodegaBundle'). '. Detalles: %s',
+                    $e->getMessage()
+                ));
+
+                new JsonResponse(array(
+                    'message' => $trans->trans('messages.update.error.%entidad%', array('entidad' => 'Registro de Compra'), 'BusetaBodegaBundle')
+                ), 500);
+            }
+        }
+
+        $renderView = $this->renderView('@BusetaBodega/PedidoCompra/form_template.html.twig', array(
+            'form'     => $editForm->createView(),
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
+    }
+
+    /**
+     * Edits an existing PedidoCompra entity.
+     */
+    /*public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -413,7 +523,7 @@ class PedidoCompraController extends Controller
             'delete_form' => $deleteForm->createView(),
             'json'   => json_encode($json),
         ));
-    }
+    }*/
 
     /**
      * Deletes a PedidoCompra entity.

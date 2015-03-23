@@ -2,16 +2,97 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\Entity\PedidoCompra;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
 
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 /**
- * PedidoCompraLinea controller.
+ * Class PedidoCompraLineaController
+ * @package Buseta\BodegaBundle\Controller
+ *
+ * @Route("/pedidocompra_linea")
  */
 class PedidoCompraLineaController extends Controller
 {
+    /**
+     * @param PedidoCompra $pedidocompra
+     * @return Response
+     *
+     * @Route("/list/{pedidocompra}", name="pedidocompra_lineas_list", methods={"GET"}, options={"expose":true})
+     * @ParamConverter("pedidocompra", options={"mapping":{"pedidocompra":"id"}})
+     */
+    public function listAction(PedidoCompra $pedidocompra, Request $request)
+    {
+        $entities = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('BusetaBodegaBundle:PedidoCompraLinea')
+            ->findAllByPedidoCompraId($pedidocompra->getId());
+
+        $entities = $this->get('knp_paginator')
+            ->paginate(
+                $entities,
+                $request->query->get('page', 1),
+                5
+            );
+
+        return $this->render('@BusetaBodega/PedidoCompra/Linea/list_template.html.twig', array(
+            'entities' => $entities,
+            'pedidocompra' => $pedidocompra,
+        ));
+    }
+
+    /**
+     * @param PedidoCompra $pedidocompra
+     * @param Request $request
+     *
+     * @throws \Exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/new/modal/{pedidocompra}", name="pedidocompra_lineas_new_modal", methods={"GET","POST"}, options={"expose":true})
+     * @ParamConverter("tercero", options={"mapping":{"tercero":"id"}})
+     */
+    public function newModalAction(PedidoCompra $pedidocompra, Request $request)
+    {
+        $trans = $this->get('translator');
+        $handler = $this->get('buseta_pedidocompra.linea.handler');
+        $handler->bindData($pedidocompra);
+
+        $handler->setRequest($request);
+
+        if($handler->handle()) {
+            $renderView = $this->renderView('@BusetaBodega/PedidoCompra/Linea/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
+            ), 201);
+        }
+
+        if($handler->getError()) {
+            $renderView = $this->renderView('@BusetaBodega/PedidoCompra/Linea/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Línea'), 'BusetaBodegaBundle')
+            ), 500);
+        }
+
+        $renderView = $this->renderView('@BusetaBodega/PedidoCompra/Linea/modal_form.html.twig', array(
+            'form' => $handler->getForm()->createView(),
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
+    }
+
     /**
      * Lists all PedidoCompraLinea entities.
      */
