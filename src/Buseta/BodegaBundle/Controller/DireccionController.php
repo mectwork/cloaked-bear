@@ -2,13 +2,16 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Buseta\BodegaBundle\Entity\Direccion;
+use Buseta\BodegaBundle\Entity\Tercero;
+use Buseta\BodegaBundle\Form\Type\DireccionType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Buseta\BodegaBundle\Entity\Direccion;
-use Buseta\BodegaBundle\Form\DireccionType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Direccion controller.
@@ -17,49 +20,65 @@ use Buseta\BodegaBundle\Form\DireccionType;
  */
 class DireccionController extends Controller
 {
-
     /**
      * Lists all Direccion entities.
      *
-     * @Route("/", name="direccion")
+     * @Route("/{tercero}", name="direccion", options={"expose":true})
+     *
      * @Method("GET")
-     * @Template()
      */
-    public function indexAction()
+    public function indexAction($tercero, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
-        $entities = $em->getRepository('BusetaBodegaBundle:Direccion')->findAll();
+        $entities = $em->getRepository('BusetaBodegaBundle:Direccion')->findByTercero($tercero);
 
-        return array(
-            'entities' => $entities,
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $request->query->get('page', 1),
+            10
         );
+
+        return $this->render('BusetaBodegaBundle:Direccion:index.html.twig', array(
+            'entities' => $entities,
+        ));
     }
     /**
      * Creates a new Direccion entity.
      *
-     * @Route("/", name="direccion_create")
+     * @Route("/create/{tercero}", name="direccion_create")
+     * @ParamConverter("tercero", options={"mapping":{"tercero":"id"}})
+     *
      * @Method("POST")
-     * @Template("BusetaBodegaBundle:Direccion:new.html.twig")
      */
-    public function createAction(Request $request)
+    public function createAction(Tercero $tercero, Request $request)
     {
         $entity = new Direccion();
+        $entity->setTercero($tercero);
+
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
+        $trans = $this->get('translator');
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('direccion_show', array('id' => $entity->getId())));
+            return new JsonResponse(array(
+                'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle'),
+            ), 201);
         }
 
-        return array(
+        $renderView = $this->renderView('BusetaBodegaBundle:Direccion:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
-        );
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
     }
 
     /**
@@ -72,11 +91,9 @@ class DireccionController extends Controller
     private function createCreateForm(Direccion $entity)
     {
         $form = $this->createForm(new DireccionType(), $entity, array(
-            'action' => $this->generateUrl('direccion_create'),
+            'action' => $this->generateUrl('direccion_create', array('tercero' => $entity->getTercero()->getId())),
             'method' => 'POST',
         ));
-
-        $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -84,25 +101,29 @@ class DireccionController extends Controller
     /**
      * Displays a form to create a new Direccion entity.
      *
-     * @Route("/new", name="direccion_new")
-     * @Method("GET")
-     * @Template()
+     * @Route("/new/{tercero}", name="direccion_new", methods={"GET", "POST"}, options={"expose":true})
+     * @ParamConverter("tercero", options={"mapping":{"tercero":"id"}})
      */
-    public function newAction()
+    public function newAction(Tercero $tercero)
     {
         $entity = new Direccion();
+        $entity->setTercero($tercero);
+
         $form   = $this->createCreateForm($entity);
 
-        return array(
+        $renderView =  $this->renderView('BusetaBodegaBundle:Direccion:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
-        );
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
     }
 
     /**
      * Finds and displays a Direccion entity.
      *
      * @Route("/{id}", name="direccion_show")
+     *
      * @Method("GET")
      * @Template()
      */
@@ -127,9 +148,9 @@ class DireccionController extends Controller
     /**
      * Displays a form to edit an existing Direccion entity.
      *
-     * @Route("/{id}/edit", name="direccion_edit")
+     * @Route("/{id}/edit", name="direccion_edit", options={"expose":true})
+     *
      * @Method("GET")
-     * @Template()
      */
     public function editAction($id)
     {
@@ -144,20 +165,22 @@ class DireccionController extends Controller
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return array(
+        $renderView = $this->renderView('BusetaBodegaBundle:Direccion:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        );
+        ));
+
+        return new JsonResponse(array('view' => $renderView), 202);
     }
 
     /**
-    * Creates a form to edit a Direccion entity.
-    *
-    * @param Direccion $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Direccion entity.
+     *
+     * @param Direccion $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Direccion $entity)
     {
         $form = $this->createForm(new DireccionType(), $entity, array(
@@ -165,14 +188,13 @@ class DireccionController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
-
         return $form;
     }
     /**
      * Edits an existing Direccion entity.
      *
      * @Route("/{id}", name="direccion_update")
+     *
      * @Method("PUT")
      * @Template("BusetaBodegaBundle:Direccion:edit.html.twig")
      */
@@ -186,7 +208,6 @@ class DireccionController extends Controller
             throw $this->createNotFoundException('Unable to find Direccion entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
@@ -199,13 +220,13 @@ class DireccionController extends Controller
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         );
     }
     /**
      * Deletes a Direccion entity.
      *
      * @Route("/{id}", name="direccion_delete")
+     *
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -240,8 +261,7 @@ class DireccionController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('direccion_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
-        ;
+            ;
     }
 }

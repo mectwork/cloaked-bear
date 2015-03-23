@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: luis
  * Date: 22/03/15
- * Time: 4:35
+ * Time: 4:35.
  */
 
 namespace Buseta\BodegaBundle\Form\Model;
@@ -78,7 +78,6 @@ class ProveedorModel
      * @var string
      */
     private $observaciones;
-
 
     public function __construct(Proveedor $proveedor = null)
     {
@@ -234,6 +233,30 @@ class ProveedorModel
     }
 
     /**
+     * @param int $proveedorId
+     */
+    public function setProveedorId($proveedorId)
+    {
+        $this->proveedorId = $proveedorId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTerceroId()
+    {
+        return $this->terceroId;
+    }
+
+    /**
+     * @param int $terceroId
+     */
+    public function setTerceroId($terceroId)
+    {
+        $this->terceroId = $terceroId;
+    }
+
+    /**
      * @return Moneda
      */
     public function getMoneda()
@@ -280,4 +303,4 @@ class ProveedorModel
     {
         $this->observaciones = $observaciones;
     }
-} 
+}

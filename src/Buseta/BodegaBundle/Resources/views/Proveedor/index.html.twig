@@ -1,10 +1,18 @@
 {% extends 'BusetaBodegaBundle::layout.html.twig' %}
 
+{% block titulo_encabezado %}
+    Listado de Proveedores
+{% endblock %}
+
 {% block area_trabajo -%}
     <h4><a id="busqueda_proveedor" style="cursor: pointer; "><i class="icon-chevron-down"></i> Búsqueda de Proveedores</a></h4>
 
     <div class="btn-group" style="padding-bottom: 8px;">
         <a class="btn btn-primary" href="{{ path('proveedor_new') }}"><i class="fa fa-plus-circle"></i> Adicionar proveedor</a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
     </div>
 
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
@@ -39,4 +47,8 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <div class="direccion-paginator row">
+        <div class="col-lg-12 text-center">{{ knp_pagination_render(entities) }}</div>
+    </div>
 {% endblock %}

@@ -1,9 +1,9 @@
-{% extends '::base.html.twig' %}
+{% extends 'BusetaBodegaBundle::layout.html.twig' %}
 
-{% block body -%}
-    <h1>Direccion</h1>
+{% block area_trabajo -%}
+    <h1>Dirección</h1>
 
-    <table class="record_properties">
+    <table class="table table-striped" style="font-size: 16px;">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -36,17 +36,11 @@
         </tbody>
     </table>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('direccion') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('direccion_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <div class="form-actions">
+        <form action="{{ path('direccion_delete', {'id': entity.id}) }}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="_method" value="DELETE"/>
+            <a class="btn btn-primary" href="{{ path('direccion') }}"> Listado</a>
+            <button type="submit" class="btn btn-primary"> Eliminar</button>
+        </form>
+    </div>
 {% endblock %}

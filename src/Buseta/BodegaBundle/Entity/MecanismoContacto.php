@@ -22,14 +22,16 @@ class MecanismoContacto
     private $id;
 
     /**
+     * @var \Buseta\NomencladorBundle\Entity\TipoContacto
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\TipoContacto")
      */
     private $tipocontacto;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="me")
+     * @var \Buseta\BodegaBundle\Entity\Tercero
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="mecanismosContacto")
      */
-    private $terceros;
+    private $tercero;
 
     /**
      * @var string
@@ -97,26 +99,26 @@ class MecanismoContacto
     }
 
     /**
-     * Set terceros.
+     * Set tercero.
      *
-     * @param \Buseta\BodegaBundle\Entity\Tercero $terceros
+     * @param \Buseta\BodegaBundle\Entity\Tercero $tercero
      *
      * @return MecanismoContacto
      */
-    public function setTerceros(\Buseta\BodegaBundle\Entity\Tercero $terceros = null)
+    public function setTercero(\Buseta\BodegaBundle\Entity\Tercero $tercero = null)
     {
-        $this->terceros = $terceros;
+        $this->tercero = $tercero;
 
         return $this;
     }
 
     /**
-     * Get terceros.
+     * Get tercero.
      *
      * @return \Buseta\BodegaBundle\Entity\Tercero
      */
-    public function getTerceros()
+    public function getTercero()
     {
-        return $this->terceros;
+        return $this->tercero;
     }
 }

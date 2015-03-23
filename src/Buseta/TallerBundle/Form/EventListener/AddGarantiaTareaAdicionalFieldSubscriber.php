@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: luis
  * Date: 16/03/15
- * Time: 3:51
+ * Time: 3:51.
  */
 
 namespace Buseta\TallerBundle\Form\EventListener;
-
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -16,7 +15,6 @@ use Symfony\Component\Form\FormInterface;
 
 class AddGarantiaTareaAdicionalFieldSubscriber implements EventSubscriberInterface
 {
-
     public static function getSubscribedEvents()
     {
         return array(
@@ -43,13 +41,12 @@ class AddGarantiaTareaAdicionalFieldSubscriber implements EventSubscriberInterfa
         $data = $event->getData();
         $form = $event->getForm();
 
-        if (null === data) {
+        if (null === $data) {
             return;
         }
 
         $tarea = array_key_exists('tarea', $data) ? $data['tarea'] : null;
         $this->addGarantiaTareaAdicionalForm($form, $tarea);
-
     }
 
     private function addGarantiaTareaAdicionalForm(FormInterface $form, $tarea = null)

@@ -1,0 +1,62 @@
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="post" enctype="multipart/form-data">
+    {{ form_errors(form) }}
+
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+
+    <div class="row show-grid">
+        <div class="col-md-2">
+            <a href="#" class="thumbnail">
+                <img src="{{ asset('bundles/busetabodega/images/default.png') }}" alt="Imagen por defecto"/>
+            </a>
+        </div>
+
+        <div class="col-md-10">
+            <div class="row show-grid">
+                <div class="col-md-6">
+                    {{ form_row(form.codigo) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.alias) }}
+                </div>
+            </div>
+
+            <div class="row show-grid">
+                <div class="col-md-6">
+                    {{ form_row(form.nombres) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.apellidos) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.moneda) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.creditoLimite) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.activo) }}
+        </div>
+        <div class="col-md-12">
+            {{ form_row(form.observaciones) }}
+        </div>
+    </div>
+
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <a class="btn btn-primary" id="btn_proveedor_save" href="#"><span class="glyphicon glyphicon-save"></span>
+                {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
+            <a class="btn btn-default" id="btn_proveedor_cancel" href="{{ path('proveedor') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+                {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+</form>
