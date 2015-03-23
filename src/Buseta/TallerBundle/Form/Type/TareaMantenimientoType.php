@@ -2,11 +2,11 @@
 
 namespace Buseta\TallerBundle\Form\Type;
 
+use Buseta\TallerBundle\Form\EventListener\AddGrupoFieldSubscriber;
+use Buseta\TallerBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Buseta\TallerBundle\Form\EventListener\AddGrupoFieldSubscriber;
-use Buseta\TallerBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
 
 class TareaMantenimientoType extends AbstractType
 {
@@ -23,6 +23,14 @@ class TareaMantenimientoType extends AbstractType
         $builder->addEventSubscriber($grupoSubscriber);
 
         $builder
+            ->add('garantia', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:GarantiaTarea',
+                'required' => false,
+                'label'  => 'Garantía',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->add('valor', 'text', array(
                 'required' => false,
                 'label'  => 'Valor',
@@ -43,8 +51,7 @@ class TareaMantenimientoType extends AbstractType
                 'attr'   => array(
                     'class' => 'form-control',
                 ),
-            ))
-        ;
+            ));
     }
 
     /**

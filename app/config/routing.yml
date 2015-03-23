@@ -38,7 +38,6 @@ BusetaTallerBundle_pedidocompra:
         resource: "@BusetaBodegaBundle/Resources/config/routing/pedidocompra.yml"
         prefix:   /pedidocompra
 
-
 BusetaTallerBundle_precioproducto:
         resource: "@BusetaBodegaBundle/Resources/config/routing/precio_producto.yml"
         prefix:   /precioproducto
@@ -61,11 +60,11 @@ buseta_template:
 
 BusetaBodegaBundle_producto:
         resource: "@BusetaBodegaBundle/Resources/config/routing/producto.yml"
-        prefix:   /modulo/bodega/producto
+        prefix:   /bodega/producto
 
 BusetaBodegaBundle_movimiento:
         resource: "@BusetaBodegaBundle/Resources/config/routing/movimiento.yml"
-        prefix:   /modulo/bodega/movimiento
+        prefix:   /bodega/movimiento
 
 BusetaBodegaBundle_bodega:
     resource: "@BusetaBodegaBundle/Resources/config/routing/bodega.yml"
@@ -73,15 +72,15 @@ BusetaBodegaBundle_bodega:
 
 BusetaBodegaBundle_categoria_producto:
     resource: "@BusetaBodegaBundle/Resources/config/routing/categoria_producto.yml"
-    prefix:   /modulo/bodega/categoria_producto
+    prefix:   /bodega/categoria_producto
 
 BusetaBodegaBundle_direccion:
     resource: "@BusetaBodegaBundle/Resources/config/routing/direccion.yml"
-    prefix:   /modulo/bodega/direccion
+    prefix:   /bodega/direccion
 
 BusetaBodegaBundle_tercero:
     resource: "@BusetaBodegaBundle/Resources/config/routing/tercero.yml"
-    prefix:   /modulo/bodega/tercero
+    prefix:   /bodega/tercero
 
 BusetaTallerBundle_informestock:
         resource: "@BusetaBodegaBundle/Resources/config/routing/informe_stock.yml"

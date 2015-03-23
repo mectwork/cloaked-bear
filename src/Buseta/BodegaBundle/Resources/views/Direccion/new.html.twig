@@ -1,75 +1,55 @@
-{% extends "BusetaBodegaBundle::layout.html.twig" %}
-
-{% block nombre_menu_superior %}
-
-{% endblock %}
-
-{% block titulo_encabezado %}
-    Adicionar nueva dirección
-{% endblock %}
-
-{% block area_trabajo %}
-
-    <form action="{{ path('direccion_create') }}" method="post" {{ form_enctype(form) }}>
-        <div class="row show-grid">
-            <div class="col-md-4">
-                <label>Calle:</label>
-                {{ form_widget(form.calle) }}
+<div class="modal" id="form_direccion_modal" tabindex="-1" role="dialog" aria-labelledby="createAddress" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="createAddress">{{ 'direccion.modal.title'|trans({},'BusetaBodegaBundle') }}</h4>
             </div>
+            <div class="modal-body">
+                <form name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" action="{{ form.vars.action }}"
+                      method="post" enctype="multipart/form-data">
+                    {% if form.vars.method == 'PUT' %}
+                        <input type="hidden" name="_method" value="PUT"/>
+                    {% endif %}
+                    {{ form_errors(form) }}
 
-            <div class="col-md-4">
-                <label>Número:</label>
-                {{ form_widget(form.numero) }}
+                    <div class="row show-grid">
+                        <div class="col-md-12">
+                            {{ form_row(form.nombre) }}
+                        </div>
+
+                        <div class="col-md-8">
+                            {{ form_row(form.calle) }}
+                        </div>
+
+                        <div class="col-md-4">
+                            {{ form_row(form.codigoPostal) }}
+                        </div>
+                    </div>
+
+                    <div class="row show-grid">
+                        <div class="col-md-4">
+                            {{ form_row(form.localidad) }}
+                        </div>
+
+                        <div class="col-md-4">
+                            {{ form_row(form.region) }}
+                        </div>
+
+                        <div class="col-md-4">
+                            {{ form_row(form.pais) }}
+                        </div>
+                    </div>
+
+                    {{ form_rest(form) }}
+                </form>
             </div>
-
-            <div class="col-md-4">
-                <label>Entre Calles:</label>
-                {{ form_widget(form.entre_calles) }}
-            </div>
-        </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                <label>País:</label>
-                {{ form_widget(form.pais) }}
-            </div>
-
-            <div class="col-md-4">
-                <label>Subdivisión (Estado):</label>
-                {{ form_widget(form.subdivision) }}
-            </div>
-
-            <div class="col-md-4">
-                <label>Ciudad:</label>
-                {{ form_widget(form.ciudad) }}
-            </div>
-        </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                <label>Activo:</label>
-                {{ form_widget(form.activo) }}
-            </div>
-        </div>
-
-
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-
-                <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
-                <div class="btn-group">
-                    <a class="btn btn-primary" href="{{ path('direccion') }}"> Cancelar</a>
-                </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" id="btn_direccion_cancel" data-dismiss="modal"><span class="glyphicon glyphicon-chevron-left"></span>
+                    {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+                <a href="#" class="btn btn-primary" id="btn_direccion_save"><span class="glyphicon glyphicon-save"></span>
+                    {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
             </div>
         </div>
-
-        {{ form_rest(form) }}
-    </form>
-
-{% endblock %}
-
-
-{% block contenido %}
-
-{% endblock %}
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="btn-group" style="margin-bottom: 8px;">
+    <a class="btn btn-primary" href="#form_contacto_modal" ><span class="glyphicon glyphicon-plus-sign"></span> {{ 'contacto.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
+</div>
+
+<div class="row">
+    <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+</div>
+
+<table class="records_list table table-striped table-bordered table-condensed table-hover">
+    <thead>
+    <tr>
+        <th>Tipo de Contacto</th>
+        <th style="width: 50%;">Valor</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td>{{ entity.tipocontacto }}</td>
+            <td>{{ entity.valor }}</td>
+            <td  style="text-align: center;">
+                <div class="btn-group">
+                    <a class="btn btn-primary btn-xs" href="#btn_contacto_edit" data-content="{{ entity.id }}"><i class="fa fa-edit"> Editar</i></a>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="contacto-paginator row">
+    <div class="col-lg-12 text-center">{{ knp_pagination_render(entities) }}</div>
+</div>
+
+<div class="modal" id="form_contacto_modal"></div>

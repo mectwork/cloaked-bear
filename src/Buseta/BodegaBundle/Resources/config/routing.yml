@@ -21,3 +21,15 @@ buseta_bodega_pedidocompra:
 buseta_bodega_pedidocompralinea:
     resource: "@BusetaBodegaBundle/Controller/PedidoCompraLineaController.php"
     type: annotation
+
+bodega_proveedor:
+    resource: @BusetaBodegaBundle/Controller/ProveedorController.php
+    type:     annotation
+
+bodega_direccion:
+    resource: @BusetaBodegaBundle/Controller/DireccionController.php
+    type:     annotation
+
+bodega_mecanismo_contacto:
+    resource: @BusetaBodegaBundle/Controller/MecanismoContactoController.php
+    type:     annotation

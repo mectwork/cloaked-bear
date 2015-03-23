@@ -15,50 +15,55 @@ class DireccionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('nombre', 'text', array(
+                'required' => false,
+                'read_only' => true,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'direccion.nombre',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->add('calle', 'text', array(
-                    'required' => false,
-                    'attr'   => array(
-                        'class' => 'form-control',
-//                        'style' => 'width: 250px',
-                    ),
-                ))
-            ->add('numero', 'text', array(
-                    'required' => false,
-                    'label'  => 'Número',
-                    'attr'   => array(
-                        'class' => 'form-control',
-                    ),
-                ))
-            ->add('entre_calles', 'text', array(
-                    'required' => false,
-                    'label'  => 'Entre calles',
-                    'attr'   => array(
-                        'class' => 'form-control',
-                    ),
-                ))
-            ->add('pais', 'country', array(
-                    'required' => false,
-                    'label'  => 'País',
-                    'attr'   => array(
-                        'class' => 'form-control',
-                    ),
-                ))
-            ->add('subdivision', 'text', array(
-                    'required' => false,
-                    'label'  => 'Subdivisión (Estado)',
-                    'attr'   => array(
-                        'class' => 'form-control',
-                    ),
-                ))
-            ->add('ciudad', 'text', array(
-                    'required' => false,
-                    'attr'   => array(
-                        'class' => 'form-control',
-                    ),
-                ))
-            ->add('activo', null, array(
-                    'required' => false,
-                ))
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'direccion.calle',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('codigoPostal', 'text', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'direccion.codigoPostal',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('localidad', 'text', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'direccion.localidad',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('pais', 'text', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'direccion.pais',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('region', 'text', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'direccion.region',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
         ;
     }
 

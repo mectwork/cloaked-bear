@@ -24,9 +24,9 @@
             <div class="col-md-4">
                 {{ form_row(edit_form.subgrupo) }}
             </div>
-        </div>
-
-        <div class="row show-grid">
+            <div class="col-md-4">
+                {{ form_row(edit_form.garantia) }}
+            </div>
             <div class="col-md-4">
                 {{ form_row(edit_form.kilometros) }}
             </div>
@@ -37,7 +37,6 @@
 
         <div class="row show-grid">
             <div class="col-md-4">
-
                 <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
 
                 <div class="btn-group">
@@ -82,8 +81,6 @@
                     }
                 });
             });
-
-
         });
     </script>
 {% endblock %}

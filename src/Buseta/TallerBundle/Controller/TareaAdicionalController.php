@@ -35,10 +35,12 @@ class TareaAdicionalController extends Controller
                 $grupo = $em->getRepository('BusetaNomencladorBundle:Grupo')->find($mpreventivo->getGrupo());
                 $subgrupo = $em->getRepository('BusetaNomencladorBundle:Subgrupo')->find($mpreventivo->getSubgrupo());
                 $tarea = $em->getRepository('BusetaNomencladorBundle:Tarea')->find($mpreventivo->getTarea());
+                $garantia = $tarea->getGarantia();
 
                 $entity->setGrupo($grupo);
                 $entity->setSubgrupo($subgrupo);
                 $entity->setTarea($tarea);
+                $entity->setGarantiaTarea($garantia);
             }
         }
 

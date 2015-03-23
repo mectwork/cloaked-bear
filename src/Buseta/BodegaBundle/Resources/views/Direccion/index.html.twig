@@ -1,78 +1,45 @@
-{% extends "BusetaBodegaBundle::layout.html.twig" %}
+<div class="btn-group" style="margin-bottom: 8px;">
+    <a class="btn btn-primary" href="#form_direccion_modal" ><span class="glyphicon glyphicon-plus-sign"></span> {{ 'direccion.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
+</div>
 
-{% block nombre_menu_superior %}
+<div class="row">
+    <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+</div>
 
-{% endblock %}
-
-{% block titulo %}
-    Listado de direcciones
-{% endblock %}
-
-{% block titulo_encabezado %}
-    Listados de direcciones
-{% endblock %}
-
-{% block area_trabajo %}
-
-    <div class="btn-group" style="padding-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('direccion_new') }}"><i class="fa fa-plus-circle"></i> Adicionar dirección</a>
-    </div>
-
-    <table class="records_list table table-striped table-bordered table-condensed table-hover">
-        <thead>
+<table class="records_list table table-striped table-bordered table-condensed table-hover">
+    <thead>
         <tr>
+            <th>Nombre</th>
             <th>Calle</th>
-            <th>Número</th>
-            <th>Entre Calles</th>
+            <th>Codigo Postal</th>
+            <th>Localidad</th>
             <th>País</th>
-            <th>Subdivisión (Estado)</th>
-            <th>Ciudad</th>
-            <th>Activo</th>
-            <th>Acciones</th>
+            <th>Región</th>
+            <th>Acción</th>
         </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td>{{ entity.calle }}</td>
-                <td>{{ entity.numero }}</td>
-                <td>{{ entity.entrecalles }}</td>
-                <td>{{ entity.pais }}</td>
-                <td>{{ entity.subdivision }}</td>
-                <td>{{ entity.ciudad }}</td>
-                <td>
-                    {% if entity.activo == 1 %}
-                        Sí
-                    {% else %}
-                        No
-                    {% endif %}
-                </td>
-                <td  style="width: 18% !important; text-align: center;">
-                    <div class="btn-group">
-                        <a class="btn btn-success btn-xs" href="{{ path('direccion_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
-                    </div>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td>{{ entity.nombre }}</td>
+            <td>{{ entity.calle }}</td>
+            <td>{{ entity.codigoPostal }}</td>
+            <td>{{ entity.localidad }}</td>
+            <td>{{ entity.pais }}</td>
+            <td>{{ entity.region }}</td>
+            <td  style="text-align: center;">
+                <div class="btn-group">
+                    <a class="btn btn-danger btn-xs" href="#btn_direccion_edit" data-content="{{ entity.id }}"><i class="fa fa-edit"> Editar</i></a>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
-                    <div class="btn-group">
-                        <a class="btn btn-danger btn-xs" href="{{ path('direccion_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
-                    </div>
+<div class="direccion-paginator row">
+    <div class="col-lg-12 text-center">{{ knp_pagination_render(entities) }}</div>
+</div>
 
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">No se encontraron registros de direcciones en el sistema.</td>
-            </tr>
-        {% endfor %}
 
-        </tbody>
-    </table>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                {{ knp_pagination_render(entities) }}
-            </div>
-        </div>
-    </div>
-
-{% endblock %}
+<div class="modal" id="form_direccion_modal"></div>

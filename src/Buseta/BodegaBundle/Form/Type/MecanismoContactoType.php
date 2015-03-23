@@ -8,36 +8,48 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MecanismoContactoType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('tipocontacto', 'entity', array(
-                    'class' => 'BusetaNomencladorBundle:TipoContacto',
-                    'attr' => array(
-                        'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
-                ))
+                'class' => 'BusetaNomencladorBundle:TipoContacto',
+                'required' => true,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'contacto.tipo',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->add('valor', 'text', array(
-                    'required' => false,
-                    'attr'   => array(
-                        'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
-                ))
+                'required' => true,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'contacto.valor',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
         ;
     }
 
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Buseta\BodegaBundle\Entity\MecanismoContacto',
-            'csrf_protection' => false,
         ));
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
-        return 'data_mecanismo_contacto_type';
+        return 'buseta_bodegabundle_mecanismocontacto';
     }
 }

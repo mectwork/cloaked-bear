@@ -3,6 +3,7 @@
 namespace Buseta\NomencladorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * GarantiaTarea.
@@ -22,6 +23,14 @@ class GarantiaTarea extends BaseNomenclador
     protected $id;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="dias", type="integer")
+     * @Assert\NotBlank()
+     */
+    protected $dias;
+
+    /**
      * Get id.
      *
      * @return integer
@@ -31,8 +40,23 @@ class GarantiaTarea extends BaseNomenclador
         return $this->id;
     }
 
-    public function setId($id)
+    /**
+     * Get dias.
+     *
+     * @return int
+     */
+    public function getDias()
     {
-        $this->id = $id;
+        return $this->dias;
+    }
+
+    /**
+     * Set dias.
+     *
+     * @param int $dias
+     */
+    public function setDias($dias)
+    {
+        $this->dias = $dias;
     }
 }

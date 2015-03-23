@@ -1,0 +1,54 @@
+{% extends 'BusetaBodegaBundle::layout.html.twig' %}
+
+{% block titulo_encabezado %}
+    Listado de Proveedores
+{% endblock %}
+
+{% block area_trabajo -%}
+    <h4><a id="busqueda_proveedor" style="cursor: pointer; "><i class="icon-chevron-down"></i> Búsqueda de Proveedores</a></h4>
+
+    <div class="btn-group" style="padding-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('proveedor_new') }}"><i class="fa fa-plus-circle"></i> Adicionar proveedor</a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+    </div>
+
+    <table class="records_list table table-striped table-bordered table-condensed table-hover">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Moneda</th>
+                <th>Crédito límite</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.tercero.codigo }}</td>
+                <td>{{ entity.tercero.nombres }}</td>
+                <td>{{ entity.tercero.apellidos }}</td>
+                <td>{{ entity.moneda }}</td>
+                <td>{{ entity.creditoLimite }}</td>
+                <td  style="width: 18% !important; text-align: center;">
+                    <div class="btn-group">
+                        <a class="btn btn-success btn-xs" href="{{ path('proveedor_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
+                    </div>
+
+                    <div class="btn-group">
+                        <a class="btn btn-danger btn-xs" href="{{ path('proveedor_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="direccion-paginator row">
+        <div class="col-lg-12 text-center">{{ knp_pagination_render(entities) }}</div>
+    </div>
+{% endblock %}
