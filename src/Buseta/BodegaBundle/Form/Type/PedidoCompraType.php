@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
 
 class PedidoCompraType extends AbstractType
 {
@@ -37,6 +38,9 @@ class PedidoCompraType extends AbstractType
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'preSetData'));
         $builder
+            ->add('id', 'hidden', array(
+                'required' => false,
+            ))
             ->add('numero_documento', 'text', array(
                     'required' => false,
                     'label'  => 'Nro.Documento',
@@ -50,7 +54,7 @@ class PedidoCompraType extends AbstractType
                     return $er->createQueryBuilder('t')
                         ->where('t.proveedor = true');
                 },
-                'empty_value' => '---Seleccione un proveedor---',
+                'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -67,7 +71,7 @@ class PedidoCompraType extends AbstractType
             ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'label' => 'Almacén',
-                'empty_value' => '---Seleccione almacén---',
+                'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -75,7 +79,7 @@ class PedidoCompraType extends AbstractType
             ))
             ->add('moneda', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Moneda',
-                'empty_value' => '---Seleccione tipo de moneda---',
+                'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -84,7 +88,7 @@ class PedidoCompraType extends AbstractType
             ->add('forma_pago', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:FormaPago',
                 'label' => 'Forma de Pago',
-                'empty_value' => '---Seleccione forma de pago---',
+                'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -93,7 +97,7 @@ class PedidoCompraType extends AbstractType
             ->add('condiciones_pago', 'entity', array(
                 'class' => 'BusetaTallerBundle:CondicionesPago',
                 'label' => 'Condiciones de Pago',
-                'empty_value' => '---Seleccione condiciones de pago---',
+                'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -102,7 +106,7 @@ class PedidoCompraType extends AbstractType
             ->add('estado_documento', 'choice', array(
                 'required' => false,
                 'read_only' => true,
-                'empty_value' => '---Seleccione estado documento---',
+                'empty_value' => '---Seleccione---',
                 'translation_domain' => 'BusetaTallerBundle',
                 'choices' => array(
                     'CO' => 'estado.CO',
@@ -146,8 +150,9 @@ class PedidoCompraType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Entity\PedidoCompra',
+            'data_class' => 'Buseta\BodegaBundle\Form\Model\PedidoCompraModel',
         ));
+
     }
 
     /**

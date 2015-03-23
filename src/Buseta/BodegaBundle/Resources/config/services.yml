@@ -17,3 +17,7 @@ services:
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'bodega_albaran_type'}
+    buseta_pedidocompra.linea.handler:
+        class: Buseta\BodegaBundle\Form\Handler\PedidoCompraLineaHandler
+        arguments:
+            - @service_container

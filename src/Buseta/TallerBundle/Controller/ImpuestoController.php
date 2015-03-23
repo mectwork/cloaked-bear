@@ -31,12 +31,28 @@ class ImpuestoController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        $producto = $em->getRepository('BusetaBodegaBundle:Producto')->findOneBy(array(
+            'id' => $request->query->get('producto_id'),
+        ));
+
         $impuesto = $em->getRepository('BusetaTallerBundle:Impuesto')->findOneBy(array(
             'id' => $request->query->get('impuesto_id'),
         ));
 
-        $cantidad_pedido     = $request->query->get('cantidad_pedido');
-        $precio_unitario     = $request->query->get('precio_unitario');
+        $cantidad_pedido  = $request->query->get('cantidad_pedido');
+        foreach ($producto->getPrecioProducto() as $precios) {
+            if ($precios->getActivo()) {
+                $precioSalida = ($precios->getPrecio());
+            }
+        }
+
+        if(isset($precioSalida))  {
+            $precio_unitario = $precioSalida;
+        }
+        else{
+            $precio_unitario = 0;
+        }
+
         $porciento_descuento = $request->query->get('porciento_descuento');
 
         $funcionesExtras = new FuncionesExtras();
@@ -44,6 +60,7 @@ class ImpuestoController extends Controller
 
         $json = array(
             'importeLinea' => $importeLinea,
+            'precio' => $precio_unitario,
         );
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);

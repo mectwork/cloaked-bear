@@ -97,7 +97,14 @@ class ProductoController extends Controller
                 $precioSalida = ($precios->getPrecio());
             }
         }
-        $precio_unitario     = $precioSalida;
+
+        if(isset($precioSalida))  {
+            $precio_unitario = $precioSalida;
+        }
+        else{
+            $precio_unitario = 0;
+        }
+
         $porciento_descuento = $request->query->get('porciento_descuento');
 
         $funcionesExtras = new FuncionesExtras();

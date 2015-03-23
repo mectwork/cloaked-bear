@@ -20,16 +20,14 @@ class PedidoCompraLineaType extends AbstractType
                     'label'  => 'Línea',
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'height: 28px; font-size: 10px;',
                     ),
                 ))
             ->add('producto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Producto',
-                'empty_value' => '---Seleccione un producto---',
+                'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                    'style' => 'height: 28px; font-size: 10px;',
                 ),
             ))
             ->add('cantidad_pedido', 'integer', array(
@@ -37,16 +35,14 @@ class PedidoCompraLineaType extends AbstractType
                 'label'  => 'Cantidad de pedido',
                 'attr'   => array(
                     'class' => 'form-control',
-                    'style' => 'height: 28px; font-size: 10px;',
                 ),
             ))
             ->add('uom', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:UOM',
-                'empty_value' => '---Seleccione unidad de medida---',
+                'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                    'style' => 'height: 28px; font-size: 10px;',
                 ),
             ))
             ->add('precio_unitario', 'integer', array(
@@ -54,25 +50,22 @@ class PedidoCompraLineaType extends AbstractType
                 'label'  => 'Precio unitario',
                 'attr'   => array(
                     'class' => 'form-control',
-                    'style' => 'height: 28px; font-size: 10px;',
                 ),
             ))
             ->add('impuesto', 'entity', array(
                     'class' => 'BusetaTallerBundle:Impuesto',
-                    'empty_value' => '---Seleccione impuesto---',
+                    'empty_value' => '---Seleccione---',
                     'required' => true,
                     'attr' => array(
                         'class' => 'form-control',
-                        'style' => 'height: 28px; font-size: 10px;',
                     ),
             ))
             ->add('moneda', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Moneda',
-                'empty_value' => '---Seleccione moneda---',
+                'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                    'style' => 'height: 28px; font-size: 10px;',
                 ),
             ))
             ->add('porciento_descuento', 'text', array(
@@ -80,7 +73,6 @@ class PedidoCompraLineaType extends AbstractType
                 'label'  => '% Descuento',
                 'attr'   => array(
                     'class' => 'form-control',
-                    'style' => 'height: 28px; font-size: 10px;',
                 ),
             ))
             ->add('importe_linea', 'text', array(
@@ -89,7 +81,6 @@ class PedidoCompraLineaType extends AbstractType
                 'label'  => 'Importe línea',
                 'attr'   => array(
                     'class' => 'form-control',
-                    'style' => 'height: 28px; font-size: 10px;',
                 ),
             ))
         ;

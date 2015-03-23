@@ -27,18 +27,22 @@ var fecha_pedido = $('#bodega_pedido_compra_fecha_pedido').pickadate({
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
 });
+
 var autobus_fecha_ingreso = $('#buseta_databundle_autobus_fecha_ingreso').pickadate({
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
 });
+
 var autobus_valido_hasta = $('#buseta_databundle_autobus_valido_hasta').pickadate({
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
 });
+
 var recorrido_inicio = $('#buseta_tallerbundle_tareamantenimiento_recorrido_inicio').pickadate({
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
 });
+
 var ultimo_cumplio = $('#buseta_tallerbundle_tareamantenimiento_ultimo_cumplio').pickadate({
     format: 'dd/mm/yyyy',
     formatSubmit: 'dd/mm/yyyy'
