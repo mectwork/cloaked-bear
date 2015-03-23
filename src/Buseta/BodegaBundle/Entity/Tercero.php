@@ -124,6 +124,16 @@ class Tercero
      */
     private $proveedor2;
 
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->pedidoCompra = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->albaran = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->direcciones = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->mecanismosContacto = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -155,17 +165,6 @@ class Tercero
     public function getActivo()
     {
         return $this->activo;
-    }
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->pedidoCompra = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->albaran = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->direcciones = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->mecanismosContacto = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
