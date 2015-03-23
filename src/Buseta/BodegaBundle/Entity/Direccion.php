@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="d_direccion")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class Direccion
 {
@@ -31,44 +32,44 @@ class Direccion
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=255)
+     * @ORM\Column(name="nombre", type="string", length=255, nullable=true)
      */
     private $nombre;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="calle", type="string", length=255)
+     * @ORM\Column(name="calle", type="string", length=255, nullable=true)
      */
     private $calle;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="codigoPostal", type="string", length=255)
+     * @ORM\Column(name="codigoPostal", type="string", length=255, nullable=true)
      */
     private $codigoPostal;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="localidad", type="string", length=255)
+     * @ORM\Column(name="localidad", type="string", length=255, nullable=true)
      */
     private $localidad;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="pais", type="string", length=255)
+     * @ORM\Column(name="region", type="string", length=255, nullable=true)
      */
-    private $pais;
+    private $region;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="region", type="string", length=255)
+     * @ORM\Column(name="pais", type="string", length=255, nullable=true)
      */
-    private $region;
+    private $pais;
 
     /**
      * Get id.
@@ -87,9 +88,13 @@ class Direccion
      *
      * @return Direccion
      */
-    public function setNombre($nombre)
+    public function setNombre($nombre = null)
     {
-        $this->nombre = $nombre;
+        $this->nombre = sprintf("%s - %s - %s",
+            $this->getCalle(),
+            $this->getLocalidad(),
+            $this->getRegion()
+        );
 
         return $this;
     }
@@ -246,5 +251,14 @@ class Direccion
     public function getTercero()
     {
         return $this->tercero;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function updateName()
+    {
+        $this->setNombre();
     }
 }

@@ -1,0 +1,57 @@
+<form id="{{ edit_form.vars.id }}" name="{{ edit_form.vars.full_name }}" action="{{ path('proveedor_edit', {'id': entity.proveedorId }) }}" method="GET" enctype="multipart/form-data">
+    {{ form_errors(edit_form) }}
+
+    <div class="row show-grid">
+        <div class="col-md-2">
+            <a href="#" class="thumbnail">
+                <img src="{{ asset('bundles/busetabodega/images/default.png') }}" alt="Imagen por defecto"/>
+            </a>
+        </div>
+
+        <div class="col-md-10">
+            <div class="row show-grid">
+                <div class="col-md-6">
+                    {{ form_row(edit_form.codigo) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(edit_form.alias) }}
+                </div>
+            </div>
+
+            <div class="row show-grid">
+                <div class="col-md-6">
+                    {{ form_row(edit_form.nombres) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(edit_form.apellidos) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(edit_form.moneda) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(edit_form.creditoLimite) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(edit_form.activo) }}
+        </div>
+        <div class="col-md-12">
+            {{ form_row(edit_form.observaciones) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+            <div class="btn-group">
+                <a class="btn btn-primary" href="{{ path('proveedor') }}"> Cancelar</a>
+            </div>
+        </div>
+    </div>
+
+    {{ form_rest(edit_form) }}
+</form>

@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Controller;
 
 use Buseta\BodegaBundle\Form\Model\ProveedorModel;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -17,18 +18,25 @@ use Buseta\BodegaBundle\Form\Type\ProveedorType;
  */
 class ProveedorController extends Controller
 {
-
     /**
      * Lists all Proveedor entities.
      *
      * @Route("/", name="proveedor")
+     *
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('BusetaBodegaBundle:Proveedor')->findAll();
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $request->query->get('page', 1),
+            10
+        );
 
         return $this->render('BusetaBodegaBundle:Proveedor:index.html.twig', array(
             'entities' => $entities,
@@ -37,7 +45,8 @@ class ProveedorController extends Controller
     /**
      * Creates a new Proveedor entity.
      *
-     * @Route("/", name="proveedor_create")
+     * @Route("/", name="proveedor_create", options={"expose":true})
+     *
      * @Method("POST")
      */
     public function createAction(Request $request)
@@ -47,29 +56,48 @@ class ProveedorController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->get('doctrine.orm.entity_manager');
+            $trans = $this->get('translator');
+            $logger = $this->get('logger');
 
             $tercero = $entity->getTerceroData();
             $em->persist($tercero);
-            $em->flush();
 
             $proveedor = $entity->getProveedorData();
             $proveedor->setTercero($tercero);
-
             $em->persist($proveedor);
+
             $em->flush();
 
-            $tercero->setProveedor2($proveedor);
-            $em->persist($tercero);
-            $em->flush();
+            try {
+                // Creando nuevamente el formulario con los datos actualizados de la entidad
+                $form = $this->createEditForm(new ProveedorModel($proveedor));
+                $renderView = $this->renderView('BusetaBodegaBundle:Proveedor:proveedor_model.html.twig', array(
+                    'form' => $form->createView(),
+                ));
 
-            return $this->redirect($this->generateUrl('proveedor_show', array('id' => $proveedor->getId())));
+                return new JsonResponse(array(
+                    'view' => $renderView,
+                    'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle'),
+                ), 201);
+            } catch (\Exception $e) {
+                $logger->addCritical(sprintf(
+                    $trans->trans('', array(), 'BusetaBodegaBundle').'. Detalles: %s',
+                    $e->getMessage()
+                ));
+
+                return new JsonResponse(array(
+                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Proveedor'), 'BusetaBodegaBundle'),
+                ), 500);
+            }
         }
 
-        return $this->render('BusetaBodegaBundle:Proveedor:new.html.twig', array(
+        $renderView = $this->renderView('@BusetaBodega/Proveedor/proveedor_model.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
+
+        return new JsonResponse(array('view' => $renderView));
     }
 
     /**
@@ -93,6 +121,7 @@ class ProveedorController extends Controller
      * Displays a form to create a new Proveedor entity.
      *
      * @Route("/new", name="proveedor_new")
+     *
      * @Method("GET")
      */
     public function newAction()
@@ -110,6 +139,7 @@ class ProveedorController extends Controller
      * Finds and displays a Proveedor entity.
      *
      * @Route("/{id}", name="proveedor_show")
+     *
      * @Method("GET")
      */
     public function showAction($id)
@@ -133,6 +163,7 @@ class ProveedorController extends Controller
      * Displays a form to edit an existing Proveedor entity.
      *
      * @Route("/{id}/edit", name="proveedor_edit")
+     *
      * @Method("GET")
      */
     public function editAction($id)
@@ -145,12 +176,14 @@ class ProveedorController extends Controller
             throw $this->createNotFoundException('Unable to find Proveedor entity.');
         }
 
+        $tercero = $entity->getTercero();
         $entity = new ProveedorModel($entity);
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('BusetaBodegaBundle:Proveedor:edit.html.twig', array(
             'entity'      => $entity,
+            'tercero'     => $tercero,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -175,7 +208,8 @@ class ProveedorController extends Controller
     /**
      * Edits an existing Proveedor entity.
      *
-     * @Route("/{id}", name="proveedor_update")
+     * @Route("/{id}", name="proveedor_update", options={"expose":true})
+     *
      * @Method("PUT")
      */
     public function updateAction(Request $request, $id)
@@ -189,33 +223,41 @@ class ProveedorController extends Controller
         }
 
         $entity = new ProveedorModel($entity);
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $tercero = $entity->getTerceroData();
-            $Proveedor = $entity->getProveedorData();
+            $trans  = $this->get('translator');
 
-            $em->refresh($tercero);
-            $em->flush($tercero);
+//            $tercero = $entity->getTerceroData();
+//            $proveedor = $entity->getProveedorData();
 
-            $em->refresh($Proveedor);
-            $em->flush($Proveedor);
+            $em->flush();
 
-            return $this->redirect($this->generateUrl('proveedor_show', array('id' => $id)));
+            $editForm = $this->createEditForm($entity);
+            $renderView = $this->renderView('BusetaBodegaBundle:Proveedor:proveedor_model.html.twig', array(
+                'entity'      => $entity,
+                'form'   => $editForm->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle'),
+            ), 201);
         }
 
-        return $this->render('BusetaBodegaBundle:Proveedor:edit.html.twig', array(
+        $renderView = $this->renderView('BusetaBodegaBundle:Proveedor:proveedor_model.html.twig', array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form'   => $editForm->createView(),
         ));
+
+        return new JsonResponse(array('view' => $renderView));
     }
     /**
      * Deletes a Proveedor entity.
      *
      * @Route("/{id}", name="proveedor_delete")
+     *
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -224,8 +266,8 @@ class ProveedorController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaBodegaBundle:Proveedor')->find($id);
+            $em = $this->get('doctrine.orm.entity_manager');
+            $entity = $em->getRepository('BusetaBodegaBundle:Tercero')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Proveedor entity.');

@@ -1,66 +1,415 @@
 {% extends 'BusetaBodegaBundle::layout.html.twig' %}
 
 {% block area_trabajo %}
-    <form action="{{ path('proveedor_update',{'id': entity.proveedorId}) }}" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="_method" value="PUT"/>
-        {{ form_errors(edit_form) }}
+<div class="row">
+    <div class="col-lg-12">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#basicos" data-toggle="tab">Proveedor</a></li>
+            <li><a href="#direcciones" data-toggle="tab">Direcciones</a></li>
+            <li><a href="#contactos" data-toggle="tab">Mecanismos de contacto</a></li>
+        </ul>
 
-        <div class="row show-grid">
-            <div class="col-md-2">
-                <a href="#" class="thumbnail">
-                    <img src="{{ asset('bundles/busetabodega/images/default.png') }}" alt="Imagen por defecto"/>
-                </a>
+        {# Tab panes #}
+        <div class="tab-content" style="padding-top: 20px;">
+            <!-- TAB BASICOS-->
+            <div class="tab-pane fade in active" id="basicos">
+                <form id="{{ edit_form.vars.id }}" name="{{ edit_form.vars.full_name }}" action="{{ edit_form.vars.action }}"
+                      method="GET" enctype="multipart/form-data">
+                    {{ form_errors(edit_form) }}
+
+                    <div class="row show-grid">
+                        <div class="col-md-2">
+                            <a href="#" class="thumbnail">
+                                <img src="{{ asset('bundles/busetabodega/images/default.png') }}" alt="Imagen por defecto"/>
+                            </a>
+                        </div>
+
+                        <div class="col-md-10">
+                            <div class="row show-grid">
+                                <div class="col-md-6">
+                                    {{ form_row(edit_form.codigo) }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form_row(edit_form.alias) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-6">
+                                    {{ form_row(edit_form.nombres) }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form_row(edit_form.apellidos) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row show-grid">
+                        <div class="col-md-4">
+                            {{ form_row(edit_form.moneda) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_row(edit_form.creditoLimite) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_row(edit_form.activo) }}
+                        </div>
+                        <div class="col-md-12">
+                            {{ form_row(edit_form.observaciones) }}
+                        </div>
+                    </div>
+
+                    {# buttons group #}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a class="btn btn-primary" id="btn_proveedor_save" href="#"><span class="glyphicon glyphicon-save"></span>
+                                {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
+                            <a class="btn btn-default" id="btn_proveedor_cancel" href="{{ path('proveedor') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+                                {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+                        </div>
+                    </div>
+
+                    {{ form_rest(edit_form) }}
+                </form>
             </div>
 
-            <div class="col-md-10">
-                <div class="row show-grid">
-                    <div class="col-md-6">
-                        {{ form_row(edit_form.codigo) }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form_row(edit_form.alias) }}
-                    </div>
-                </div>
+            <!-- TAB DIRECCIONES-->
+            <div class="tab-pane fade" id="direcciones">
 
-                <div class="row show-grid">
-                    <div class="col-md-6">
-                        {{ form_row(edit_form.nombres) }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form_row(edit_form.apellidos) }}
-                    </div>
-                </div>
+            </div>
+
+            <!-- TAB MECANISMOS DE CONTACTO-->
+            <div class="tab-pane fade" id="contactos">
+
             </div>
         </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(edit_form.moneda) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(edit_form.creditoLimite) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(edit_form.activo) }}
-            </div>
-            <div class="col-md-12">
-                {{ form_row(edit_form.observaciones) }}
-            </div>
-        </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
-                <div class="btn-group">
-                    <a class="btn btn-primary" href="{{ path('proveedor') }}"> Cancelar</a>
-                </div>
-            </div>
-        </div>
-
-        {{ form_rest(edit_form) }}
-    </form>
+    </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
+{{ parent() }}
+
+<!-- Initialize script -->
+<script type="text/javascript">
+    $(function (){
+        // init proveedor
+        proveedor._load();
+    });
+</script>
+
+<!-- Proveedor script -->
+<script type="text/javascript">
+    var proveedor = {
+        tabname: 'basicos',
+        form_id: $('div#basicos').find('form').attr('id'),
+        form_name: $('div#basicos').find('form').attr('name'),
+        proveedor_id: '',
+        tercero_id: '',
+
+        _load: function () {
+
+            $('a#btn_proveedor_save').on('click', proveedor._save);
+
+            // on show tab events
+            $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+                var href = $(e.target).attr('href');
+
+                proveedor.proveedor_id = $('input[id="' + proveedor.form_id + '_proveedorId"]').val();
+                proveedor.tercero_id = $('input[id="' + proveedor.form_id + '_terceroId"]').val();
+
+                if (href === '#direcciones') {
+                    direccion._load();
+                } else if(href === '#contactos') {
+                    contacto._load();
+                }
+            });
+        },
+
+        _save: function (e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+
+            // add spinning to show loading process
+            tabs._add_loadding(proveedor.tabname);
+
+            var proveedorForm    = $('form#' + proveedor.form_id);
+            var url = Routing.generate('proveedor_create');
+
+            proveedor.proveedor_id = $('input[id="' + proveedor.form_id + '_proveedorId"]').val();
+            proveedor.tercero_id = $('input[id="' + proveedor.form_id + '_terceroId"]').val();
+
+            if(proveedor.proveedor_id !== '' && proveedor.proveedor_id !== undefined) {
+                url = Routing.generate('proveedor_update', {'id': proveedor.proveedor_id});
+            }
+
+            proveedorForm.ajaxSubmit({
+                success: proveedor._done,
+                error: utils._fail,
+                complete: proveedor._always,
+                url: url,
+                dataType: 'json'
+            });
+        },
+
+        _done: function (response, textStatus, jqXHR) {
+            $('form#' + proveedor.form_id).replaceWith(response.view);
+            if(jqXHR.status == 201) {
+                addGlobalMessage('success', response.message);
+                // Proveedor Id
+                proveedor.proveedor_id = $('input[id="' + proveedor.form_id + '_proveedorId"]').val();
+                proveedor.tercero_id = $('input[id="' + proveedor.form_id + '_terceroId"]').val();
+            } else if(jqXHR.status == 202) {
+                addGlobalMessage('success', response.message);
+            }
+
+            $('a#btn_proveedor_save').on('click', proveedor._save);
+//            $('a#btn_proveedor_cancel').on('click', proveedor._save);
+        },
+
+        _always: function() {
+            // remove spinning
+            tabs._remove_loadding('basicos');
+        }
+    }
+</script>
+
+<!-- Direcciones script -->
+<script type="text/javascript">
+    var direccion = {
+        tabname:'direcciones',
+        form_name: '',
+        form_id: '',
+
+        _start_events: function () {
+            <!-- click en el botón 'Adicionar dirección' -->
+            $('a[href="#form_direccion_modal"]').on('click', direccion._load_modal);
+            $('a[href="#btn_direccion_edit"]').on('click', direccion._load_modal);
+
+            // Paginator sort
+            $('table.direccion_records_list').find('a.sortable, a.asc, a.desc').on('click', direccion._load);
+            // Paginator navigation
+            $('div.direccion-paginator.row ul.pagination').find('a.paginator-link').on('click', direccion._load);
+        },
+
+        _load: function (e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+
+            //tabs._add_loadding(direccion.tabname);
+
+            var url = Routing.generate('direccion', {'tercero': proveedor.tercero_id});
+            if($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
+                url = $(this).attr('href');
+            }
+
+            $.get(url).done(function (response, textStatus, jqXHR) {
+                $('div#direcciones').html(response);
+
+                direccion._start_events();
+            }).fail(utils._fail).always(direccion._always());
+        },
+
+        _load_modal: function (e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+
+            var url = Routing.generate('direccion_new', {'tercero': proveedor.tercero_id});
+            if($(this).attr('href') !== undefined && $(this).attr('href') === '#btn_direccion_edit') {
+                url = Routing.generate('direccion_edit', {'id': $(this).data('content')});
+            }
+
+            $.get(url)
+                    .done(function(response, textStatus, jqXHR){
+
+                        $('div#form_direccion_modal').replaceWith($(response.view));
+
+                        direccion.form_id = $('div#form_direccion_modal').find('form').attr('id');
+                        direccion.form_name = $('div#form_direccion_modal').find('form').attr('name');
+
+                        $('a#btn_direccion_save').on('click', direccion._save_modal);
+                        $('a#btn_direccion_cancel').on('click', function(){
+                            $('div#form_direccion_modal').modal('hide');
+                        });
+
+                        $('div#form_direccion_modal').modal('show');
+                    }).fail(utils._fail).always(function(){});
+        },
+
+        _save_modal: function (e) {
+            if(e !== undefined) {
+                e.preventDefault();
+            }
+
+            $('#btn_direccion_save').find('span')
+                    .removeClass('glyphicon')
+                    .removeClass('glyphicon-save')
+                    .addClass('fa')
+                    .addClass('fa-gear')
+                    .addClass('fa-spin');
+
+            $('form#' + direccion.form_id).ajaxSubmit({
+                success: direccion._done,
+                error: utils._fail,
+                complete: direccion._always,
+                dataType: 'json'
+            });
+        },
+
+        _done: function (response, textStatus, jqXHR) {
+            if(jqXHR.status == 201 || jqXHR.status == 202) {
+                //addGlobalMessage('success', response.message);
+
+                $('div#form_direccion_modal').modal('hide');
+                direccion._load();
+            } else {
+                $('form#' + direccion.form_id).replaceWith($(response.view).find('form'));
+            }
+        },
+
+        _always: function () {
+            tabs._remove_loadding(direccion.tabname)
+        }
+    };
+</script>
+
+<!-- Mecanismos de Contacto script -->
+<script type="text/javascript">
+    var contacto = {
+        tabname: 'contactos',
+        form_name: '',
+        form_id: '',
+
+        _start_events: function () {
+            <!-- click en el botón 'Adicionar mecanismo de contacto' -->
+            $('a[href="#form_contacto_modal"]').on('click', contacto._load_modal);
+
+            $('a[href="#btn_contacto_edit"]').on('click', contacto._load_modal);
+
+            // Paginator sort
+            $('table.records_list').find('a.sortable, a.asc, a.desc').on('click', contacto._load);
+            // Paginator navigation
+            $('div.direccion-paginator.row ul.pagination').find('a.paginator-link').on('click', contacto._load);
+        },
+
+        _load: function (e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+
+            tabs._add_loadding(contacto.tabname);
+
+            var url = Routing.generate('mecanismocontacto', {'tercero': proveedor.tercero_id});
+            if($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
+                url = $(this).attr('href');
+            }
+
+            $.get(url).done(function (response, textStatus, jqXHR) {
+                $('div#contactos').html(response);
+
+                contacto._start_events();
+            }).fail(utils._fail).always(contacto._always());
+        },
+
+        _load_modal: function (e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+
+            console.log($(this).attr('href'));
+
+            var url = Routing.generate('mecanismocontacto_new', {'tercero': proveedor.tercero_id});
+            if($(this).attr('href') !== undefined && $(this).attr('href') === '#btn_contacto_edit') {
+                url = Routing.generate('mecanismocontacto_edit', {'id': $(this).data('content')});
+            }
+
+            $.get(url)
+                    .done(function(response, textStatus, jqXHR){
+                        $('div#form_contacto_modal').replaceWith($(response.view));
+
+                        contacto.form_id = $('div#form_contacto_modal').find('form').attr('id');
+                        contacto.form_name = $('div#form_contacto_modal').find('form').attr('name');
+
+                        console.log(contacto.form_id);
+                        console.log(contacto.form_name);
+
+                        $('a#btn_contacto_save').on('click', contacto._save_modal);
+                        $('a#btn_contacto_cancel').on('click', function(){
+                            $('div#form_contacto_modal').modal('hide');
+                        });
+
+                        $('div#form_contacto_modal').modal('show');
+                    }).fail(utils._fail).always(function(){});
+        },
+
+        _save_modal: function (e) {
+            if(e !== undefined) {
+                e.preventDefault();
+            }
+
+            $('#btn_contacto_save').find('span')
+                    .removeClass('glyphicon')
+                    .removeClass('glyphicon-save')
+                    .addClass('fa')
+                    .addClass('fa-gear')
+                    .addClass('fa-spin');
+
+            $('form#' + contacto.form_id).ajaxSubmit({
+                success: contacto._done,
+                error: utils._fail,
+                complete: contacto._always,
+                dataType: 'json'
+            });
+        },
+
+        _done: function (response, textStatus, jqXHR) {
+            if(jqXHR.status == 201 || jqXHR.status == 202) {
+                addGlobalMessage('success', response.message);
+
+                $('div#form_contacto_modal').modal('hide');
+                contacto._load();
+            } else {
+                $('form#' + contacto.form_id).replaceWith($(response.view).find('form'));
+            }
+        },
+
+        _always: function () {
+            tabs._remove_loadding(contacto.tabname)
+        }
+    }
+</script>
+
+<!-- Extras script -->
+<script type="text/javascript">
+    var tabs = {
+        loadding_image: '<span class="loading"><i class="fa fa-spinner fa-spin"></i> </span>',
+        _add_loadding: function (tabname) {
+            var spinning = $('li a[href="#' + tabname + '"]').find('span.loading');
+
+            if (spinning.length == 0) {
+                var linktab = $('li a[href="#' + tabname + '"]');
+                linktab.prepend($(tabs.loadding_image));
+            }
+        },
+
+        _remove_loadding: function (tabname) {
+            var spinning = $('li a[href="#' + tabname + '"]').find('span.loading');
+            spinning.remove();
+        }
+    };
+
+    var utils = {
+        _fail: function (jqXHR, textStatus, errorThrown) {
+            if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                addGlobalMessage('danger', jqXHR.responseText.message);
+            } else {
+                addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+            }
+        }
+    };
+</script>
 {% endblock %}

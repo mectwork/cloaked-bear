@@ -1,5 +1,8 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
+{% block titulo_encabezado %}
+    Datos del proveedor: {{ entity.nombres ~ ' ' ~ entity.apellidos }}
+{% endblock %}
 
 {% block area_trabajo %}
 
@@ -47,9 +50,8 @@
         </tbody>
     </table>
 
-
     <div class="form-actions">
-        <form action="{{ path('proveedor_delete', {'id': entity.proveedorId}) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ path('proveedor_delete', {'id': entity.terceroId}) }}" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_method" value="DELETE"/>
             <a class="btn btn-primary" href="{{ path('proveedor') }}"> Listado</a>
             <button type="submit" class="btn btn-primary"> Eliminar</button>
