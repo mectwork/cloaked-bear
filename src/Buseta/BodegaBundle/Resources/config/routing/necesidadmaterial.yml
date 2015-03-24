@@ -1,0 +1,46 @@
+necesidadmaterial:
+    pattern:  /
+    defaults: { _controller: "BusetaBodegaBundle:NecesidadMaterial:index" }
+
+necesidadmaterial_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaBodegaBundle:NecesidadMaterial:show" }
+
+necesidadmaterial_new:
+    pattern:  /new
+    defaults: { _controller: "BusetaBodegaBundle:NecesidadMaterial:new" }
+
+necesidadmaterial_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaBodegaBundle:NecesidadMaterial:create" }
+    requirements: { _method: post }
+
+necesidadmaterial_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BusetaBodegaBundle:NecesidadMaterial:edit" }
+
+necesidadmaterial_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BusetaBodegaBundle:NecesidadMaterial:update" }
+    requirements: { _method: post|put }
+
+necesidadmaterial_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BusetaBodegaBundle:NecesidadMaterial:delete" }
+    requirements: { _method: post|delete }
+
+comprobarPedido:
+  pattern: /comprobarPedido
+  defaults: { _controller: "BusetaBodegaBundle:NecesidadMaterial:comprobarPedido" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true
+
+procesarPedido:
+    pattern:  /{id}/procesarPedido
+    defaults: { _controller: "BusetaBodegaBundle:NecesidadMaterial:procesarPedido" }
+
+necesidadMaterial_ajax_busqueda_avanzada:
+  pattern: /busqueda-avanzada/{page}/{cantResult}
+  defaults: { _controller: "BusetaBodegaBundle:NecesidadMaterial:busquedaAvanzada", page: 0, cantResult: 10 }
+  requirements: { _method: "GET" }

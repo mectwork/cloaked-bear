@@ -37,6 +37,10 @@ pedidocompra:
   btn:
     adicionar: Adicionar Registro de Compra
 
+necesidadmaterial:
+  btn:
+    adicionar: Adicionar Necesidad de Material
+
 albaran:
   btn:
     adicionar: Adicionar Albarán
@@ -44,7 +48,3 @@ albaran:
 bodega:
   btn:
     adicionar: Adicionar Almacén
-
-necesidadmaterial:
-  btn:
-    adicionar: Adicionar Necesidad de Material
