@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Form\Type;
 
+use Buseta\UploadBundle\Form\Type\UploadResourcesType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -29,7 +30,7 @@ class ProveedorType extends AbstractType
                     'class' => 'hidden',
                 ),
             ))
-            ->add('foto', 'file', array(
+            ->add('foto', new UploadResourcesType(), array(
                 'required' => false,
                 'label' => false,
                 'attr' => array(

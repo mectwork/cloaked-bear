@@ -5,7 +5,6 @@ namespace Buseta\BodegaBundle\Form\Model;
 use Buseta\BodegaBundle\Entity\Proveedor;
 use Buseta\BodegaBundle\Entity\Tercero;
 use Buseta\NomencladorBundle\Entity\Moneda;
-use Buseta\BodegaBundle\Form\Model\TerceroModelInterface;
 use Buseta\UploadBundle\Entity\UploadResources;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -85,6 +84,7 @@ class ProveedorModel implements TerceroModelInterface
         if ($tercero !== null) {
             $this->terceroId = $tercero->getId();
             $this->codigo = $tercero->getCodigo();
+            $this->foto = $tercero->getFoto();
             $this->alias = $tercero->getAlias();
             $this->nombres = $tercero->getNombres();
             $this->apellidos = $tercero->getApellidos();
@@ -101,12 +101,13 @@ class ProveedorModel implements TerceroModelInterface
     {
         $tercero = new Tercero();
 
-        $tercero->setId($this->terceroId);
-        $tercero->setCodigo($this->codigo);
-        $tercero->setAlias($this->alias);
-        $tercero->setNombres($this->nombres);
-        $tercero->setApellidos($this->apellidos);
-        $tercero->setActivo($this->activo);
+        $tercero->setId($this->getTerceroId());
+        $tercero->setFoto($this->getFoto());
+        $tercero->setCodigo($this->getCodigo());
+        $tercero->setAlias($this->getAlias());
+        $tercero->setNombres($this->getNombres());
+        $tercero->setApellidos($this->getApellidos());
+        $tercero->setActivo($this->getActivo());
 
         return $tercero;
     }
@@ -115,10 +116,10 @@ class ProveedorModel implements TerceroModelInterface
     {
         $proveedor = new Proveedor();
 
-        $proveedor->setId($this->proveedorId);
-        $proveedor->setMoneda($this->moneda);
-        $proveedor->setCreditoLimite($this->creditoLimite);
-        $proveedor->setObservaciones($this->observaciones);
+        $proveedor->setId($this->getProveedorId());
+        $proveedor->setMoneda($this->getMoneda());
+        $proveedor->setCreditoLimite($this->getCreditoLimite());
+        $proveedor->setObservaciones($this->getObservaciones());
 
         return $proveedor;
     }

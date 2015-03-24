@@ -6,49 +6,62 @@
 
 {% block area_trabajo %}
 
-    <table class="table table-striped" style="font-size: 16px;">
-        <tbody>
-
-        <tr>
-            <th>Código</th>
-            <td>{{ entity.codigo }}</td>
-        </tr>
-        <tr>
-            <th>Nombres</th>
-            <td>{{ entity.nombres }}</td>
-        </tr>
-        <tr>
-            <th>Apellidos</th>
-            <td>{{ entity.apellidos }}</td>
-        </tr>
-        <tr>
-            <th>Alias</th>
-            <td>{{ entity.alias }}</td>
-        </tr>
-        <tr>
-            <th>Moneda</th>
-            <td>{{ entity.moneda }}</td>
-        </tr>
-        <tr>
-            <th>Crédito Límite</th>
-            <td>{{ entity.creditoLimite }}</td>
-        </tr>
-        <tr>
-            <th>Observaciones</th>
-            <td>{{ entity.observaciones }}</td>
-        </tr>
-        <tr>
-            <th>Activo</th>
-            <td>
-                {% if entity.activo %}
-                    Sí
+    <div class="row">
+        <div class="col-md-2">
+            <a href="#" class="thumbnail">
+                {%  if entity.foto %}
+                    <img src="{{ asset(entity.foto.webPath)}}" alt="Imagen" width="152" height="120"/>
                 {% else %}
-                    No
+                    <img src="{{ asset('bundles/busetabodega/images/default.png') }}" alt="Imagen por defecto"/>
                 {% endif %}
-            </td>
-        </tr>
-        </tbody>
-    </table>
+            </a>
+        </div>
+        <div class="col-md-10">
+            <table class="table table-striped" style="font-size: 16px;">
+                <tbody>
+
+                <tr>
+                    <th>Código</th>
+                    <td>{{ entity.codigo }}</td>
+                </tr>
+                <tr>
+                    <th>Nombres</th>
+                    <td>{{ entity.nombres }}</td>
+                </tr>
+                <tr>
+                    <th>Apellidos</th>
+                    <td>{{ entity.apellidos }}</td>
+                </tr>
+                <tr>
+                    <th>Alias</th>
+                    <td>{{ entity.alias }}</td>
+                </tr>
+                <tr>
+                    <th>Moneda</th>
+                    <td>{{ entity.moneda }}</td>
+                </tr>
+                <tr>
+                    <th>Crédito Límite</th>
+                    <td>{{ entity.creditoLimite }}</td>
+                </tr>
+                <tr>
+                    <th>Observaciones</th>
+                    <td>{{ entity.observaciones }}</td>
+                </tr>
+                <tr>
+                    <th>Activo</th>
+                    <td>
+                        {% if entity.activo %}
+                            Sí
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <div class="form-actions">
         <form action="{{ path('proveedor_delete', {'id': entity.terceroId}) }}" method="POST" enctype="multipart/form-data">

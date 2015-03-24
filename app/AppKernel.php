@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Buseta\BusesBundle\BusetaBusesBundle(),
             new Buseta\TallerBundle\BusetaTallerBundle(),
             new Buseta\BodegaBundle\BusetaBodegaBundle(),
+            new Buseta\UploadBundle\BusetaUploadBundle(),
             new Buseta\TemplateBundle\BusetaTemplateBundle(),
             // extra bundles
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),

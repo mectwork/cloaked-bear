@@ -7,6 +7,8 @@ interface TerceroModelInterface
 {
     public function getCodigo();
 
+    public function getFoto();
+
     public function getNombres();
 
     public function getApellidos();

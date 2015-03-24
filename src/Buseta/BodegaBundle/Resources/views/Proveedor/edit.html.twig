@@ -23,7 +23,11 @@
                     <div class="row show-grid">
                         <div class="col-md-2">
                             <a href="#" class="thumbnail">
-                                <img src="{{ asset('bundles/busetabodega/images/default.png') }}" alt="Imagen por defecto"/>
+                                {%  if entity.foto %}
+                                    <img src="{{ asset(entity.foto.webPath)}}" alt="Imagen" width="152" height="120"/>
+                                {% else %}
+                                    <img src="{{ asset('bundles/busetabodega/images/default.png') }}" alt="Imagen por defecto"/>
+                                {% endif %}
                             </a>
                         </div>
 
@@ -99,6 +103,12 @@
     $(function (){
         // init proveedor
         proveedor._load();
+
+        $('a.thumbnail').on('click', function (e) {
+            e.preventDefault();
+
+            $('input[id$="_foto_file"]').trigger('click');
+        })
     });
 </script>
 
