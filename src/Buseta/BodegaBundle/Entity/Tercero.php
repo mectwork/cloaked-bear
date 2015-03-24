@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Form\Model\TerceroModelInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -60,7 +61,7 @@ class Tercero
     /**
      * @var string
      *
-     * @ORM\Column(name="apellidos", type="string")
+     * @ORM\Column(name="apellidos", type="string", nullable=true)
      */
     private $apellidos;
 
@@ -117,6 +118,7 @@ class Tercero
      */
     private $proveedor2;
 
+
     /**
      * Constructor.
      */
@@ -128,6 +130,30 @@ class Tercero
         $this->mecanismosContacto = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    /**
+     * Establece los valores desde el modelo en la entidad.
+     *
+     * @param TerceroModelInterface $model
+     *
+     * @return $this
+     */
+    public function setModelData(TerceroModelInterface $model)
+    {
+        $this->setNombres($model->getNombres());
+        $this->setApellidos($model->getApellidos());
+        $this->setAlias($model->getAlias());
+        $this->setCodigo($model->getCodigo());
+        $this->setActivo($model->getActivo());
+
+        return $this;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
     /**
      * @return mixed
      */

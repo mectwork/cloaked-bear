@@ -222,8 +222,8 @@ class ProveedorController extends Controller
             throw $this->createNotFoundException('Unable to find Proveedor entity.');
         }
 
-        $entity = new ProveedorModel($entity);
-        $editForm = $this->createEditForm($entity);
+        $model = new ProveedorModel($entity);
+        $editForm = $this->createEditForm($model);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
@@ -231,10 +231,17 @@ class ProveedorController extends Controller
 
 //            $tercero = $entity->getTerceroData();
 //            $proveedor = $entity->getProveedorData();
+            $tercero = $entity->getTercero();
+
+            $entity->setModelData($model);
+            $tercero->setModelData($model);
+
+            $em->persist($tercero);
+            $em->persist($entity);
 
             $em->flush();
 
-            $editForm = $this->createEditForm($entity);
+            $editForm = $this->createEditForm($model);
             $renderView = $this->renderView('BusetaBodegaBundle:Proveedor:proveedor_model.html.twig', array(
                 'entity'      => $entity,
                 'form'   => $editForm->createView(),
@@ -243,7 +250,7 @@ class ProveedorController extends Controller
             return new JsonResponse(array(
                 'view' => $renderView,
                 'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle'),
-            ), 201);
+            ), 202);
         }
 
         $renderView = $this->renderView('BusetaBodegaBundle:Proveedor:proveedor_model.html.twig', array(
