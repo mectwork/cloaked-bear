@@ -24,6 +24,13 @@ class Tercero
     private $id;
 
     /**
+     * @var \Buseta\UploadBundle\Entity\UploadResources
+     *
+     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"all"})
+     */
+    private $foto;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\PedidoCompra", mappedBy="tercero", cascade={"all"})
@@ -139,6 +146,7 @@ class Tercero
      */
     public function setModelData(TerceroModelInterface $model)
     {
+        $this->setFoto($model->getFoto());
         $this->setNombres($model->getNombres());
         $this->setApellidos($model->getApellidos());
         $this->setAlias($model->getAlias());
@@ -554,5 +562,29 @@ class Tercero
     public function getProveedor2()
     {
         return $this->proveedor2;
+    }
+
+
+    /**
+     * Set foto
+     *
+     * @param \Buseta\UploadBundle\Entity\UploadResources $foto
+     * @return Tercero
+     */
+    public function setFoto(\Buseta\UploadBundle\Entity\UploadResources $foto = null)
+    {
+        $this->foto = $foto;
+
+        return $this;
+    }
+
+    /**
+     * Get foto
+     *
+     * @return \Buseta\UploadBundle\Entity\UploadResources 
+     */
+    public function getFoto()
+    {
+        return $this->foto;
     }
 }

@@ -37,6 +37,12 @@
     $(function (){
         // init proveedor
         proveedor._load();
+
+        $('a.thumbnail').on('click', function (e) {
+            e.preventDefault();
+
+            $('input[id$="_foto_file"]').trigger('click');
+        })
     });
 </script>
 

@@ -60,16 +60,16 @@ class ProveedorController extends Controller
             $trans = $this->get('translator');
             $logger = $this->get('logger');
 
-            $tercero = $entity->getTerceroData();
-            $em->persist($tercero);
-
-            $proveedor = $entity->getProveedorData();
-            $proveedor->setTercero($tercero);
-            $em->persist($proveedor);
-
-            $em->flush();
-
             try {
+                $tercero = $entity->getTerceroData();
+                $em->persist($tercero);
+
+                $proveedor = $entity->getProveedorData();
+                $proveedor->setTercero($tercero);
+                $em->persist($proveedor);
+
+                $em->flush();
+
                 // Creando nuevamente el formulario con los datos actualizados de la entidad
                 $form = $this->createEditForm(new ProveedorModel($proveedor));
                 $renderView = $this->renderView('BusetaBodegaBundle:Proveedor:proveedor_model.html.twig', array(
@@ -227,6 +227,7 @@ class ProveedorController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+
             $trans  = $this->get('translator');
 
 //            $tercero = $entity->getTerceroData();

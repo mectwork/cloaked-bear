@@ -41,7 +41,7 @@ class UploadResources
      * @Assert\File(
      *     maxSize="6000000",
      *     mimeTypes={"image/jpeg", "image/png"},
-     *     mimeTypesMessage="Por favor suba una imagen jpg ó png"
+     *     mimeTypesMessage="Por favor seleccione una imagen jpg ó png"
      * )
      *
      * @Assert\NotNull()
@@ -159,7 +159,7 @@ class UploadResources
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
-    protected function preUpload()
+    public function preUpload()
     {
         if (null !== $this->getFile()) {
             $filename = sha1(uniqid(mt_rand(), true));
@@ -171,7 +171,7 @@ class UploadResources
      * @ORM\PostPersist()
      * @ORM\PostUpdate()
      */
-    protected function upload()
+    public function upload()
     {
         if (null === $this->getFile()) {
             return;
@@ -190,7 +190,7 @@ class UploadResources
     /**
      * @ORM\PostRemove()
      */
-    protected function removeUpload()
+    public function removeUpload()
     {
         if ($file = $this->getAbsolutePath()) {
             unlink($file);

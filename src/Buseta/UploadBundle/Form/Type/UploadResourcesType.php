@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: luis
- * Date: 20/03/15
- * Time: 0:56.
- */
 
 namespace Buseta\UploadBundle\Form\Type;
 
