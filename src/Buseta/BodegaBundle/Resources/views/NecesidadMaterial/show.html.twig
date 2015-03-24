@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Datos del pedido de compra
+    Datos de Necesidad de Material
 {% endblock %}
 
 {% block area_trabajo %}
@@ -15,17 +15,17 @@
 
             <tr>
                 <th>Nro.Documento</th>
-                <td>{{ entity.numerodocumento }}</td>
+                <td>{{ entity.numeroDocumento }}</td>
             </tr>
 
             <tr>
                 <th>Nro.Referencia</th>
-                <td>{{ entity.consecutivocompra }}</td>
+                <td>{{ entity.consecutivoCompra }}</td>
             </tr>
 
             <tr>
                 <th>Fecha Pedido</th>
-                <td>{{ entity.fechapedido | date('d/m/Y') }}</td>
+                <td>{{ entity.fechaPedido | date('d/m/Y') }}</td>
             </tr>
 
             <tr>
@@ -35,12 +35,12 @@
 
             <tr>
                 <th>Forma de Pago</th>
-                <td>{{ entity.formapago }}</td>
+                <td>{{ entity.formaPago }}</td>
             </tr>
 
             <tr>
                 <th>Condiciones de Pago</th>
-                <td>{{ entity.condicionespago }}</td>
+                <td>{{ entity.condicionesPago }}</td>
             </tr>
 
             <tr>
@@ -50,12 +50,12 @@
 
             <tr>
                 <th>Importe Total Líneas</th>
-                <td>{{ entity.importetotallineas }}</td>
+                <td>{{ entity.importeTotalLineas }}</td>
             </tr>
 
             <tr>
                 <th>Importe Total</th>
-                <td>{{ entity.importetotal }}</td>
+                <td>{{ entity.importeTotal }}</td>
             </tr>
 
             <tr>
@@ -81,18 +81,17 @@
                         <th>%Descuento</th>
                         <th>Importe Línea</th>
 
-                        {% for linea in entity.pedidocompralineas %}
-                        <tbody>
-                            <tr>
-                                <td>{{ linea.linea }}</td>
-                                <td>{{ linea.producto.nombre }}</td>
-                                <td>{{ linea.cantidadpedido }}</td>
-                                <td>{{ linea.uom.valor }}</td>
-                                <td>{{ linea.preciounitario }}</td>
-                                <td>{{ linea.impuesto.nombre }}</td>
-                                <td>{{ linea.porcientodescuento }}</td>
-                                <td>{{ linea.importelinea }}</td>
-                            </tr>
+                        {% for linea in entity.necesidadMaterialLineas %}
+                        <tr>
+                            <td>{{ linea.linea }}</td>
+                            <td>{{ linea.producto.nombre }}</td>
+                            <td>{{ linea.cantidadpedido }}</td>
+                            <td>{{ linea.uom.valor }}</td>
+                            <td>{{ linea.preciounitario }}</td>
+                            <td>{{ linea.impuesto.nombre }}</td>
+                            <td>{{ linea.porcientodescuento }}</td>
+                            <td>{{ linea.importelinea }}</td>
+                        </tr>
                         {% else %}
                             <tr>
                                 <td colspan="6">
@@ -107,12 +106,10 @@
     </table>
 
     <div class="form-actions">
-        <a class="btn btn-primary" href="{{ path('pedidocompra_edit', { 'id': entity.id }) }}"> Editar</a>
-        <a class="btn btn-primary" href="{{ path('procesarPedido', { 'id': entity.id }) }}"> Procesar</a>
+        {#<a class="btn btn-primary" href="{{ path('pedidocompra_edit', { 'id': entity.id }) }}"> Editar</a>#}
+        {#<a class="btn btn-primary" href="{{ path('procesarPedido', { 'id': entity.id }) }}"> Procesar</a>#}
         <a class="btn btn-primary" href="{{ path('pedidocompra') }}"> Listado</a>
     </div>
-
-
 {% endblock %}
 
 

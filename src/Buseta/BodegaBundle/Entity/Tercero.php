@@ -587,4 +587,9 @@ class Tercero
     {
         return $this->foto;
     }
+
+    function __toString()
+    {
+        return sprintf('%s (%s)', $this->nombres, $this->alias);
+    }
 }

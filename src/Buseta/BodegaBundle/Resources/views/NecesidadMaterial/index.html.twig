@@ -22,8 +22,6 @@
     and (filter_form.vars.value.moneda is null or filter_form.vars.value.moneda is empty)
     and (filter_form.vars.value.formapago is null or filter_form.vars.value.formapago is empty)
     and (filter_form.vars.value.condicionespago is null or filter_form.vars.value.condicionespago is empty)
-    and (filter_form.vars.value.importetotallineas is null or filter_form.vars.value.importetotallineas is empty)
-    and (filter_form.vars.value.importetotal is null or filter_form.vars.value.importetotal is empty)
     %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
@@ -44,8 +42,7 @@
                 <div class="col-lg-4">{{ form_row(filter_form.moneda) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.forma_pago) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.condiciones_pago) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.importe_total_lineas) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.importe_total) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.estado_documento) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -86,17 +83,17 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.numero_documento }}</td>
+                <td>{{ entity.numeroDocumento }}</td>
                 <td>{{ entity.tercero }}</td>
                 <td>{{ entity.almacen }}</td>
                 <td>{{ entity.moneda }}</td>
-                <td>{{ entity.forma_pago }}</td>
-                <td>{{ entity.importe_total }}</td>
+                <td>{{ entity.formaPago }}</td>
+                <td>{{ entity.importeTotal }}</td>
 
                 <td style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"
-                           href="{{ path('reporte_show', { 'id': entity.id }) }}"><span
+                           href="{{ path('necesidadmaterial_show', { 'id': entity.id }) }}"><span
                                     class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </div>
 

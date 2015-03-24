@@ -18,6 +18,8 @@ class TerceroModel implements TerceroModelInterface
 
     private $codigo;
 
+    private $foto;
+
     /**
      * @Assert\NotBlank()
      */
@@ -78,6 +80,7 @@ class TerceroModel implements TerceroModelInterface
             $this->nombres = $tercero->getNombres();
             $this->apellidos = $tercero->getApellidos();
             $this->alias = $tercero->getAlias();
+            $this->foto = $tercero->getFoto();
 
             if ($tercero->getDireccion() !== null) {
                 $this->direccion = $tercero->getDireccion()->__toString();
@@ -331,5 +334,21 @@ class TerceroModel implements TerceroModelInterface
     public function setPersona($persona)
     {
         $this->persona = $persona;
+    }
+
+    /**
+     * @return \Buseta\UploadBundle\Entity\UploadResources
+     */
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+
+    /**
+     * @param \Buseta\UploadBundle\Entity\UploadResources $foto
+     */
+    public function setFoto($foto)
+    {
+        $this->foto = $foto;
     }
 }
