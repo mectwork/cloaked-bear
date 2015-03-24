@@ -19,10 +19,9 @@
             <li>
                 <a href="#"><i class="fa fa-users fa-fw"></i> Gestión de Terceros<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li>
-                        <a href="{{ path('tercero') }}">Terceros</a>
-                    </li>
-
+                    {#<li>#}
+                        {#<a href="{{ path('tercero') }}">Terceros</a>#}
+                    {#</li>#}
                     <li>
                         <a href="{{ path('proveedor') }}">Proveedores</a>
                     </li>
@@ -36,9 +35,6 @@
                     <li>
                         <a href="{{ path('producto') }}">Productos</a>
                     </li>
-                    <li>
-                        <a href="{{ path('categoria_producto') }}">Categoría de Productos</a>
-                    </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
@@ -47,9 +43,6 @@
                 <a href="#"><i class="fa fa-money fa-fw"></i> Gestión de Compras<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ path('impuesto') }}">Impuesto</a>
-                    </li>
-                    <li>
                         <a href="{{ path('necesidadmaterial') }}">Necesidad de Material</a>
                     </li>
                     <li>
@@ -57,9 +50,6 @@
                     </li>
                     <li>
                         <a href="{{ path('albaran') }}">Albarán</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('condicionespago') }}">Condiciones de Pago</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
@@ -94,6 +84,21 @@
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
+            </li>
+
+            <li>
+                <a href="#"><i class="fa fa-gear fa-fw"></i> Configuración <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ path('categoria_producto') }}">Categoría de Productos</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('condicionespago') }}">Condiciones de Pago</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('impuesto') }}">Impuesto</a>
+                    </li>
+                </ul>
             </li>
 
 

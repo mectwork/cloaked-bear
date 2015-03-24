@@ -163,12 +163,21 @@ class Tercero
         return $this;
     }
 
+
+    /**
+     * Set id.
+     *
+     * @param integer $id
+     *
+     * @return Tercero
+     */
     public function setId($id)
     {
         $this->id = $id;
 
         return $this;
     }
+
     /**
      * @return mixed
      */
@@ -199,20 +208,6 @@ class Tercero
     public function getActivo()
     {
         return $this->activo;
-    }
-
-    /**
-     * Set id.
-     *
-     * @param integer $id
-     *
-     * @return Tercero
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**
@@ -611,12 +606,6 @@ class Tercero
         return $this->proveedor2;
     }
 
-    public function __toString()
-    {
-        return $this->nombres.' '.$this->apellidos;
-    }
-
-
     /**
      * Set foto
      *
@@ -638,5 +627,10 @@ class Tercero
     public function getFoto()
     {
         return $this->foto;
+    }
+
+    function __toString()
+    {
+        return sprintf('%s (%s)', trim($this->nombres . ' ' . $this->apellidos), $this->alias);
     }
 }

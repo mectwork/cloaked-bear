@@ -69,19 +69,18 @@ class NecesidadMaterialFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('importe_total_lineas', 'text', array(
+            ->add('estado_documento', 'choice', array(
                 'required' => false,
-                'label'  => 'Importe total líneas',
+                'empty_value' => '---Seleccione---',
+                'translation_domain' => 'BusetaTallerBundle',
+                'choices' => array(
+                    'CO' => 'estado.CO',
+                    'BO' => 'estado.BO',
+                    'PR' => 'estado.PR',
+                ),
                 'attr'   => array(
                     'class' => 'form-control',
-                )
-            ))
-            ->add('importe_total', 'text', array(
-                'required' => false,
-                'label'  => 'Importe total',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
+                ),
             ))
         ;
     }

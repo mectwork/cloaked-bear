@@ -1,6 +1,15 @@
 <?php
+
 namespace Buseta\BodegaBundle\Form\Model;
 
+use Buseta\BodegaBundle\Entity\NecesidadMaterial;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+
+/**
+ * NecesidadMaterial Model
+ *
+ */
 class NecesidadMaterialFilterModel
 {
     /**
@@ -15,21 +24,25 @@ class NecesidadMaterialFilterModel
 
     /**
      * @var \Buseta\BodegaBundle\Entity\Bodega
+     * @Assert\NotBlank()
      */
     private $almacen;
 
     /**
      * @var \Buseta\NomencladorBundle\Entity\Moneda
+     * @Assert\NotBlank()
      */
     private $moneda;
 
     /**
      * @var \Buseta\NomencladorBundle\Entity\FormaPago
+     * @Assert\NotBlank()
      */
     private $forma_pago;
 
     /**
      * @var \Buseta\TallerBundle\Entity\CondicionesPago
+     * @Assert\NotBlank()
      */
     private $condiciones_pago;
 
@@ -170,5 +183,4 @@ class NecesidadMaterialFilterModel
     {
         $this->tercero = $tercero;
     }
-
-} 
+}
