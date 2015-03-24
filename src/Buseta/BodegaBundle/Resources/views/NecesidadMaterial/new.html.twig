@@ -3,11 +3,11 @@
 {% form_theme form 'BusetaBodegaBundle:Widgets:collection_linea_insertadas.html.twig' %}
 
 {% block title %}
-    Adicionar Nuevo Registro de Compra
+    Adicionar Nueva Necesidad de Material
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Adicionar Nuevo Registro de Compra
+    Adicionar Nueva Necesidad de Material
 {% endblock %}
 
 {% block area_trabajo %}
@@ -24,7 +24,7 @@
             <div class="tab-content" style="padding-top: 20px;">
                 <!-- TAB BASICOS-->
                 <div class="tab-pane fade in active" id="basicos">
-                    {% include '@BusetaBodega/PedidoCompra/form_template.html.twig' with {'form': form} %}
+                    {% include '@BusetaBodega/NecesidadMaterial/form_template.html.twig' with {'form': form} %}
                 </div>
 
                 <!-- TAB LINEAS-->
@@ -45,8 +45,9 @@
     <!-- Initialize script -->
     <script type="text/javascript">
         $(function (){
-            // init pedidocompra
-            pedidocompra._load();
+            // init necesidadmaterial
+            necesidadmaterial._load();
+
         });
     </script>
 
@@ -122,21 +123,20 @@
         };
     </script>
 
-    <!-- PedidoCompra script -->
+    <!-- NecesidadMaterial script -->
     <script type="text/javascript">
-        var pedidocompra = {
+        var necesidadmaterial = {
             form_id: $('div#basicos').find('form').attr('id'),
             form_name: $('div#basicos').find('form').attr('name'),
             id: '',
             _load: function () {
-
-                $('#bodega_pedido_compra_fecha_pedido').datetimepicker({
+                $('#bodega_necesidad_material_fecha_pedido').datetimepicker({
                     'format': 'DD/MM/YYYY'
                 });
 
-                $('a#btn_pedidocompra_save').on('click', pedidocompra._save);
-                pedidocompra.id = $('input[id="' + pedidocompra.form_id + '_id"]').val();
-                if (pedidocompra.id === '' || pedidocompra.id === undefined) {
+                $('a#btn_necesidadmaterial_save').on('click', necesidadmaterial._save);
+                necesidadmaterial.id = $('input[id="' + necesidadmaterial.form_id + '_id"]').val();
+                if (necesidadmaterial.id === '' || necesidadmaterial.id === undefined) {
                     // hide all tabs on page load
                     $('a[data-toggle="tab"]').each(function(key, item) {
                         if($(item).attr('href') != '#basicos') {
@@ -156,55 +156,56 @@
                 });
             },
             _save: function (event) {
+
                 if (event != undefined) {
                     event.preventDefault();
                 }
 
                 // disable btn
-                button._disable('a#btn_pedidocompra_save');
+                button._disable('a#btn_necesidadmaterial_save');
 
                 // add spinning to show loading process
                 tabs._add_loadding('basicos');
 
-                // PedidoCompra Id
-                pedidocompra.id = $('input[id="' + pedidocompra.form_id + '_id"]').val();
+                // NecesidadMaterial Id
+                necesidadmaterial.id = $('input[id="' + necesidadmaterial.form_id + '_id"]').val();
 
-                var pedidocomprasForm    = $('form#' + pedidocompra.form_id),
-                        url             = Routing.generate('pedidocompras_pedidocompra_create',{});
-                if(pedidocompra.id !== '' && pedidocompra.id !== undefined) {
-                    url = Routing.generate('pedidocompras_pedidocompra_update', {'id': pedidocompra.id});
+                var necesidadmaterialesForm    = $('form#' + necesidadmaterial.form_id),
+                        url             = Routing.generate('necesidadmateriales_necesidadmaterial_create',{});
+                if(necesidadmaterial.id !== '' && necesidadmaterial.id !== undefined) {
+                    url = Routing.generate('necesidadmateriales_necesidadmaterial_update', {'id': necesidadmaterial.id});
                 }
 
-                pedidocomprasForm.ajaxSubmit({
-                    success: pedidocompra._done,
+                necesidadmaterialesForm.ajaxSubmit({
+                    success: necesidadmaterial._done,
                     error: utils._fail,
-                    complete: pedidocompra._always,
-                    uploadProgress: pedidocompra._upload,
+                    complete: necesidadmaterial._always,
+                    uploadProgress: necesidadmaterial._upload,
                     url: url,
                     dataType: 'json'
                 });
             },
             _done: function (response, textStatus, jqXHR) {
-                $('form#' + pedidocompra.form_id).replaceWith(response.view);
+                $('form#' + necesidadmaterial.form_id).replaceWith(response.view);
 
                 if(jqXHR.status == 201) {
                     addGlobalMessage('success', response.message);
-                    // PedidoCompra Id
-                    pedidocompra.id = $('input[id="' + pedidocompra.form_id + '_id"]').val();
+                    // NecesidadMaterial Id
+                    necesidadmaterial.id = $('input[id="' + necesidadmaterial.form_id + '_id"]').val();
                     // activate all tabs
                     tabs._show_all_tabs();
                 } else if(jqXHR.status == 202) {
                     addGlobalMessage('success', response.message);
                 }
-                $('a#btn_pedidocompra_save').on('click', pedidocompra._save);
+                $('a#btn_necesidadmaterial_save').on('click', necesidadmaterial._save);
             },
             _always: function() {
                 // remove spinning
                 tabs._remove_loadding('basicos');
                 // remove progress bar
-                progressBar._remove_progressBar($('input[id="' + pedidocompra.form_id + '_foto_file"]').attr('id'));
+                progressBar._remove_progressBar($('input[id="' + necesidadmaterial.form_id + '_foto_file"]').attr('id'));
 
-                button._enable('a#btn_pedidocompra_save');
+                button._enable('a#btn_necesidadmaterial_save');
             },
             _upload: function (event, position, total, percentComplete) {
                 var progressBarr = $('div#basicos').find('.progress-bar')[0];
@@ -229,9 +230,9 @@
             };
 
             /*this.addLinea = function(id, monto) {
-                this.lineas.push({id: id, monto: monto});
-                this.monto += monto;
-            };*/
+             this.lineas.push({id: id, monto: monto});
+             this.monto += monto;
+             };*/
 
             this.removeLinea = function ( id ) {
                 var aux = [];
@@ -261,7 +262,6 @@
             }
         };
         var lineastotales = new Totales();
-
         var lineas = {
             form_name: '',
             form_id: '',
@@ -277,19 +277,18 @@
                 $('div.lineas-paginator.row ul.pagination').find('a.paginator-link').on('click', lineas._load);
             },
             _load: function (event) {
-
                 if(event !== undefined) {
                     event.preventDefault();
                 }
 
-                if (pedidocompra.id == '') {
+                if (necesidadmaterial.id == '') {
                     return;
                 }
 
                 // add spinning to show loading process
                 tabs._add_loadding('lineas');
 
-                var url = Routing.generate('pedidocompra_lineas_list',{'pedidocompra': pedidocompra.id});
+                var url = Routing.generate('necesidadmaterial_lineas_list',{'necesidadmaterial': necesidadmaterial.id});
                 if($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
                     url = $(this).attr('href');
                 }
@@ -305,13 +304,13 @@
                     event.preventDefault();
                 }
 
-                if(pedidocompra.id === '' || pedidocompra.id === undefined) {
+                if(necesidadmaterial.id === '' || necesidadmaterial.id === undefined) {
                     return;
                 }
 
-                var url = Routing.generate('pedidocompra_lineas_new_modal', {'pedidocompra': pedidocompra.id});
+                var url = Routing.generate('necesidadmaterial_lineas_new_modal', {'necesidadmaterial': necesidadmaterial.id});
                 if($(this).attr('href') !== undefined && $(this).attr('href') === '#edit') {
-                    url = Routing.generate('pedidocompra_lineas_edit_modal', {'pedidocompra': pedidocompra.id, id:$(this).data('content')});
+                    url = Routing.generate('necesidadmaterial_lineas_edit_modal', {'necesidadmaterial': necesidadmaterial.id, id:$(this).data('content')});
                 }
 
                 $.get(url)
@@ -321,6 +320,7 @@
                             lineas.form_id = $('div#form_lineas_modal').find('form').attr('id');
                             lineas.form_name = $('div#form_lineas_modal').find('form').attr('name');
 
+                            //$('a#btn_lineas_save').on('click', lineas._save_modal);
                             $('a#btn_lineas_save').on('click',  lineas._save_modal);
 
                             $('a#btn_lineas_cancel').on('click', function(){
@@ -343,12 +343,12 @@
                     event.preventDefault();
                 }
 
-                if(pedidocompra.id === '' || pedidocompra.id === undefined) {
+                if(necesidadmaterial.id === '' || necesidadmaterial.id === undefined) {
                     return;
                 }
 
                 var id  = $(this).data('content'),
-                        url = Routing.generate('pedidocompra_lineas_delete', {id: id});
+                        url = Routing.generate('necesidadmaterial_lineas_delete', {id: id});
                 $.get(url)
                         .done(function(response, textStatus, jqXHR){
                             $('div#form_lineas_delete_modal').replaceWith($(response.view));
@@ -368,8 +368,8 @@
 
                 lineastotales.addLinea(monto);
                 var montototal = lineastotales.getTotal();
-                $('#bodega_pedido_compra_importe_total_lineas').val(montototal);
-                $('#bodega_pedido_compra_importe_total').val(montototal);
+                $('#bodega_necesidad_material_importe_total_lineas').val(montototal);
+                $('#bodega_necesidad_material_importe_total').val(montototal);
                 //--Actualiza los valores de los campos Importes Total y Total por Lineas
 
                 if(event != undefined) {
@@ -383,13 +383,12 @@
                         .addClass('fa-gear')
                         .addClass('fa-spin');
 
-                var url = Routing.generate('pedidocompra_lineas_new_modal',{'pedidocompra': pedidocompra.id}),
+                var url = Routing.generate('necesidadmaterial_lineas_new_modal',{'necesidadmaterial': necesidadmaterial.id}),
                         id  = $('#' + lineas.form_id + '_id').val();
                 if(id !== '' && id !== undefined) {
-                    url = Routing.generate('pedidocompra_lineas_edit_modal',{'pedidocompra': pedidocompra.id, id: id});
+                    url = Routing.generate('necesidadmaterial_lineas_edit_modal',{'necesidadmaterial': necesidadmaterial.id, id: id});
                 }
 
-                //Actualiza las nuevas lineas insertadas
                 $('form#' + lineas.form_id).ajaxSubmit({
                     success: lineas._done,
                     error: utils._fail,
@@ -397,18 +396,6 @@
                     url: url,
                     dataType: 'json'
                 });
-
-                //Actualiza el PedidoCompra con los nuevos valores de los importes de lineas y totales
-                url = Routing.generate('pedidocompras_pedidocompra_update', {'id': pedidocompra.id});
-
-                $('form#' + pedidocompra.form_id).ajaxSubmit({
-                    success: pedidocompra._done,
-                    error: utils._fail,
-                    complete: pedidocompra._always,
-                    url: url,
-                    dataType: 'json'
-                });
-
             },
             _save_delete_modal: function (event) {
                 if(event != undefined) {
@@ -440,7 +427,6 @@
                 });
             },
             _done: function (response, textStatus, jqXHR) {
-
                 $('form#' + lineas.form_id).replaceWith($(response.view).find('form'));
 
                 if(jqXHR.status == 201 || jqXHR.status == 202) {
@@ -481,7 +467,32 @@
                         precio_text.val(values.precio);
                         importe_linea_text.val(values.importeLinea);
 
-                        //$('#' + pedidocompra.form_id + '_importe_total_lineas').val(montototal);
+                        $('#' + necesidadmaterial.form_id + '_importe_total_lineas').val(values.importeLinea);
+                    }
+                });
+            },
+            _actualizar_importe_lineas: function(event) {
+                var data = {
+                    producto_id: $('#' + lineas.form_id + '_producto').val(),
+                    impuesto_id: $('#' + lineas.form_id + '_impuesto').val(),
+                    cantidad_pedido: $('#' + lineas.form_id + '_cantidad_pedido').val(),
+                    precio_unitario: $('#' + lineas.form_id + '_precio_unitario').val(),
+                    porciento_descuento: $('#' + lineas.form_id + '_porciento_descuento').val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("impuesto_ajax_productos_all") }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+                        var importe_linea_text = $('#' + lineas.form_id + '_importe_linea');
+                        var precio_text = $('#' + lineas.form_id + '_precio_unitario');
+
+                        precio_text.val(values.precio);
+                        importe_linea_text.val(values.importeLinea);
+
+                        $('#' + necesidadmaterial.form_id + '_importe_total_lineas').val(values.importeLinea);
                     }
                 });
             }

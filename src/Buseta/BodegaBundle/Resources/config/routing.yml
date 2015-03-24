@@ -22,6 +22,14 @@ buseta_bodega_pedidocompralinea:
     resource: "@BusetaBodegaBundle/Controller/PedidoCompraLineaController.php"
     type: annotation
 
+buseta_bodega_necesidadmaterial:
+    resource: "@BusetaBodegaBundle/Controller/NecesidadMaterialController.php"
+    type: annotation
+
+buseta_bodega_necesidadmateriallinea:
+    resource: "@BusetaBodegaBundle/Controller/NecesidadMaterialLineaController.php"
+    type: annotation
+
 bodega_proveedor:
     resource: @BusetaBodegaBundle/Controller/ProveedorController.php
     type:     annotation

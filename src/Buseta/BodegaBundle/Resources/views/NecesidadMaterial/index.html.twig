@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block title %}
-    Listado de Registros de Compras
+    Listado de Necesidad de Materiales
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listado de Registros de Compras
+    Listado de Necesidad de Materiales
 {% endblock %}
 
 {% block area_trabajo %}
@@ -62,8 +62,8 @@
 
     <hr/>
     <div class="btn-group" style="margin-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('pedidocompra_new') }}">
-            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'pedidocompra.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}
+        <a class="btn btn-primary" href="{{ path('necesidadmaterial_new') }}">
+            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'necesidadmaterial.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}
         </a>
     </div>
 
@@ -86,25 +86,25 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.numerodocumento }}</td>
+                <td>{{ entity.numero_documento }}</td>
                 <td>{{ entity.tercero }}</td>
                 <td>{{ entity.almacen }}</td>
                 <td>{{ entity.moneda }}</td>
-                <td>{{ entity.formapago }}</td>
-                <td>{{ entity.importetotal }}</td>
+                <td>{{ entity.forma_pago }}</td>
+                <td>{{ entity.importe_total }}</td>
 
                 <td style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"
-                           href="{{ path('pedidocompra_show', { 'id': entity.id }) }}"><span
+                           href="{{ path('reporte_show', { 'id': entity.id }) }}"><span
                                     class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </div>
 
-                    <div class="btn-group">
+                    {#<div class="btn-group">
                         <a class="btn btn-danger btn-xs"
-                           href="{{ path('pedidocompra_edit', { 'id': entity.id }) }}"><span
+                           href="{{ path('reporte_edit', { 'id': entity.id }) }}"><span
                                     class="glyphicon glyphicon-edit"> Editar</span></a>
-                    </div>
+                    </div>#}
                 </td>
             </tr>
         {% else %}

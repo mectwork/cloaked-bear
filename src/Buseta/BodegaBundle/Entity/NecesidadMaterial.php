@@ -2,18 +2,19 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
-use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
+use Buseta\BodegaBundle\Form\Model\NecesidadMaterialModel;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
+
 /**
- * PedidoCompra.
+ * NecesidadMaterial.
  *
- * @ORM\Table(name="d_pedido_compra")
- * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\PedidoCompraRepository")
+ * @ORM\Table(name="d_necesidad_material")
+ * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\NecesidadMaterialRepository")
  */
-class PedidoCompra
+class NecesidadMaterial
 {
     /**
      * @var integer
@@ -41,7 +42,7 @@ class PedidoCompra
     private $consecutivo_compra;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="pedidoCompra")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="necesidadMaterial")
      */
     private $tercero;
 
@@ -55,7 +56,7 @@ class PedidoCompra
     private $fecha_pedido;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="pedidoCompra")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="necesidadMaterial")
      */
     private $almacen;
 
@@ -99,9 +100,9 @@ class PedidoCompra
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\PedidoCompraLinea", mappedBy="pedidoCompra", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\NecesidadMaterialLinea", mappedBy="necesidadMaterial", cascade={"all"})
      */
-    private $pedido_compra_lineas;
+    private $necesidad_material_lineas;
 
     /**
      * @var \DateTime
@@ -144,7 +145,7 @@ class PedidoCompra
      */
     public function __construct()
     {
-        $this->pedido_compra_lineas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->necesidad_material_lineas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->importe_total_lineas = 0;
         $this->importe_total = 0;
         $this->updated = new \DateTime();
@@ -152,10 +153,10 @@ class PedidoCompra
     }
 
     /**
-     * @param PedidoCompraModel $model
-     * @return PedidoCompra
+     * @param NecesidadMaterialModel $model
+     * @return NecesidadMaterial
      */
-    public function setModelData(PedidoCompraModel $model)
+    public function setModelData(NecesidadMaterialModel $model)
     {
         $this->id = $model->getId();
         $this->created = $model->getCreated();
@@ -186,10 +187,10 @@ class PedidoCompra
         if ($model->getCondicionesPago()) {
             $this->condiciones_pago  = $model->getCondicionesPago();
         }
-        if (!$model->getPedidoCompraLineas()->isEmpty()) {
-            $this->pedido_compra_lineas = $model->getPedidoCompraLineas();
+        if (!$model->getNecesidadMaterialLineas()->isEmpty()) {
+            $this->necesidad_material_lineas = $model->getNecesidadMaterialLineas();
         } else {
-            $this->pedido_compra_lineas = new ArrayCollection();
+            $this->necesidad_material_lineas = new ArrayCollection();
         }
 
         return $this;
@@ -210,7 +211,7 @@ class PedidoCompra
      *
      * @param string $numeroDocumento
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setNumeroDocumento($numeroDocumento)
     {
@@ -234,7 +235,7 @@ class PedidoCompra
      *
      * @param string $consecutivoCompra
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setConsecutivoCompra($consecutivoCompra)
     {
@@ -258,7 +259,7 @@ class PedidoCompra
      *
      * @param \DateTime $fechaPedido
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setFechaPedido($fechaPedido)
     {
@@ -282,7 +283,7 @@ class PedidoCompra
      *
      * @param string $estadoDocumento
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setEstadoDocumento($estadoDocumento)
     {
@@ -306,7 +307,7 @@ class PedidoCompra
      *
      * @param string $importeTotalLineas
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setImporteTotalLineas($importeTotalLineas)
     {
@@ -330,7 +331,7 @@ class PedidoCompra
      *
      * @param string $importeTotal
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setImporteTotal($importeTotal)
     {
@@ -354,7 +355,7 @@ class PedidoCompra
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $tercero
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setTercero(\Buseta\BodegaBundle\Entity\Tercero $tercero = null)
     {
@@ -378,7 +379,7 @@ class PedidoCompra
      *
      * @param \Buseta\BodegaBundle\Entity\Bodega $almacen
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setAlmacen(\Buseta\BodegaBundle\Entity\Bodega $almacen = null)
     {
@@ -402,7 +403,7 @@ class PedidoCompra
      *
      * @param \Buseta\NomencladorBundle\Entity\FormaPago $formaPago
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setFormaPago(\Buseta\NomencladorBundle\Entity\FormaPago $formaPago = null)
     {
@@ -422,39 +423,39 @@ class PedidoCompra
     }
 
     /**
-     * Add pedido_compra_lineas.
+     * Add necesidad_material_lineas.
      *
-     * @param \Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas
+     * @param \Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
-    public function addPedidoCompraLinea(\Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas)
+    public function addNecesidadMaterialLinea(\Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas)
     {
-        $pedidoCompraLineas->setPedidoCompra($this);
+        $necesidadMaterialLineas->setNecesidadMaterial($this);
 
-        $this->pedido_compra_lineas[] = $pedidoCompraLineas;
+        $this->necesidad_material_lineas[] = $necesidadMaterialLineas;
 
         return $this;
     }
 
     /**
-     * Remove pedido_compra_lineas.
+     * Remove necesidad_material_lineas.
      *
-     * @param \Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas
+     * @param \Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas
      */
-    public function removePedidoCompraLinea(\Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas)
+    public function removeNecesidadMaterialLinea(\Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas)
     {
-        $this->pedido_compra_lineas->removeElement($pedidoCompraLineas);
+        $this->necesidad_material_lineas->removeElement($necesidadMaterialLineas);
     }
 
     /**
-     * Get pedido_compra_lineas.
+     * Get necesidad_material_lineas.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPedidoCompraLineas()
+    public function getNecesidadMaterialLineas()
     {
-        return $this->pedido_compra_lineas;
+        return $this->necesidad_material_lineas;
     }
 
     /**
@@ -462,7 +463,7 @@ class PedidoCompra
      *
      * @param \Buseta\TallerBundle\Entity\CondicionesPago $condicionesPago
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setCondicionesPago(\Buseta\TallerBundle\Entity\CondicionesPago $condicionesPago = null)
     {
@@ -486,7 +487,7 @@ class PedidoCompra
      *
      * @param \Buseta\NomencladorBundle\Entity\Moneda $moneda
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setMoneda(\Buseta\NomencladorBundle\Entity\Moneda $moneda = null)
     {
@@ -510,7 +511,7 @@ class PedidoCompra
      *
      * @param \DateTime $created
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setCreated($created)
     {
@@ -534,7 +535,7 @@ class PedidoCompra
      *
      * @param \DateTime $updated
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setUpdated($updated)
     {
@@ -558,7 +559,7 @@ class PedidoCompra
      *
      * @param \DateTime $deleted
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setDeleted($deleted)
     {
@@ -582,7 +583,7 @@ class PedidoCompra
      *
      * @param \Buseta\SecurityBundle\Entity\User $createdby
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setCreatedby(\Buseta\SecurityBundle\Entity\User $createdby = null)
     {
@@ -606,7 +607,7 @@ class PedidoCompra
      *
      * @param \Buseta\SecurityBundle\Entity\User $updatedby
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setUpdatedby(\Buseta\SecurityBundle\Entity\User $updatedby = null)
     {
@@ -630,7 +631,7 @@ class PedidoCompra
      *
      * @param \Buseta\SecurityBundle\Entity\User $deletedby
      *
-     * @return PedidoCompra
+     * @return NecesidadMaterial
      */
     public function setDeletedby(\Buseta\SecurityBundle\Entity\User $deletedby = null)
     {

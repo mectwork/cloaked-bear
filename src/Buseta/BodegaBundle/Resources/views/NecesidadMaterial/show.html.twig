@@ -1,0 +1,122 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Datos del pedido de compra
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <table class="table table-striped" style="font-size: 16px;">
+        <tbody>
+
+            <tr>
+                <th>Nro.Documento</th>
+                <td>{{ entity.numerodocumento }}</td>
+            </tr>
+
+            <tr>
+                <th>Nro.Referencia</th>
+                <td>{{ entity.consecutivocompra }}</td>
+            </tr>
+
+            <tr>
+                <th>Fecha Pedido</th>
+                <td>{{ entity.fechapedido | date('d/m/Y') }}</td>
+            </tr>
+
+            <tr>
+                <th>Almacén</th>
+                <td>{{ entity.almacen }}</td>
+            </tr>
+
+            <tr>
+                <th>Forma de Pago</th>
+                <td>{{ entity.formapago }}</td>
+            </tr>
+
+            <tr>
+                <th>Condiciones de Pago</th>
+                <td>{{ entity.condicionespago }}</td>
+            </tr>
+
+            <tr>
+                <th>Moneda</th>
+                <td>{{ entity.moneda }}</td>
+            </tr>
+
+            <tr>
+                <th>Importe Total Líneas</th>
+                <td>{{ entity.importetotallineas }}</td>
+            </tr>
+
+            <tr>
+                <th>Importe Total</th>
+                <td>{{ entity.importetotal }}</td>
+            </tr>
+
+            <tr>
+                <th>Tercero (Nombres y apellidos)</th>
+                <td>{{ entity.tercero.nombres }} {{ entity.tercero.apellidos }}</td>
+            </tr>
+
+            <tr>
+                <th>Estado Documento</th>
+                <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
+            </tr>
+
+            <tr>
+                <th>Líneas existentes</th>
+                <td>
+                    <table class="table table-striped" style="font-size: 16px;">
+                        <th>Línea</th>
+                        <th>Producto</th>
+                        <th>Cant. Pedido</th>
+                        <th>UOM</th>
+                        <th>Precio Unitario</th>
+                        <th>Impuesto</th>
+                        <th>%Descuento</th>
+                        <th>Importe Línea</th>
+
+                        {% for linea in entity.pedidocompralineas %}
+                        <tbody>
+                            <tr>
+                                <td>{{ linea.linea }}</td>
+                                <td>{{ linea.producto.nombre }}</td>
+                                <td>{{ linea.cantidadpedido }}</td>
+                                <td>{{ linea.uom.valor }}</td>
+                                <td>{{ linea.preciounitario }}</td>
+                                <td>{{ linea.impuesto.nombre }}</td>
+                                <td>{{ linea.porcientodescuento }}</td>
+                                <td>{{ linea.importelinea }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">
+                                    <span class="label label-danger">No existen líneas de pedidos de compras disponibles</span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="form-actions">
+        <a class="btn btn-primary" href="{{ path('pedidocompra_edit', { 'id': entity.id }) }}"> Editar</a>
+        <a class="btn btn-primary" href="{{ path('procesarPedido', { 'id': entity.id }) }}"> Procesar</a>
+        <a class="btn btn-primary" href="{{ path('pedidocompra') }}"> Listado</a>
+    </div>
+
+
+{% endblock %}
+
+
+{% block contenido %}
+
+
+{% endblock %}

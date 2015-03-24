@@ -38,6 +38,14 @@ BusetaTallerBundle_pedidocompra:
         resource: "@BusetaBodegaBundle/Resources/config/routing/pedidocompra.yml"
         prefix:   /pedidocompra
 
+BusetaTallerBundle_necesidadmateriallinea:
+        resource: "@BusetaBodegaBundle/Resources/config/routing/necesidad_material_linea.yml"
+        prefix:   /necesidadmateriallinea
+
+BusetaTallerBundle_necesidadmaterial:
+        resource: "@BusetaBodegaBundle/Resources/config/routing/necesidadmaterial.yml"
+        prefix:   /necesidadmaterial
+
 BusetaTallerBundle_precioproducto:
         resource: "@BusetaBodegaBundle/Resources/config/routing/precio_producto.yml"
         prefix:   /precioproducto
