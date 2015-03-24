@@ -8,6 +8,8 @@ app/config/parameters.yml
 web/images/*
 web/components/*
 web/files/*
+web/uploads/resources/*
 composer.lock
 app/bootstrap.php.cache
 app/SymfonyRequirements.php
+*.*~
