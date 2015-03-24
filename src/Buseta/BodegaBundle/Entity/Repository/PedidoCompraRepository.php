@@ -2,7 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity\Repository;
 
-use Buseta\BodegaBundle\Form\Model\RegistroCompraFilterModel;
+use Buseta\BodegaBundle\Form\Model\PedidoCompraFilterModel;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 
@@ -15,7 +15,7 @@ use Doctrine\ORM\NoResultException;
  */
 class PedidoCompraRepository extends EntityRepository
 {
-    public function filter(RegistroCompraFilterModel $filter = null)
+    public function filter(PedidoCompraFilterModel $filter = null)
     {
         $qb = $this->createQueryBuilder('r');
         $query = $qb->where($qb->expr()->eq(true,true));

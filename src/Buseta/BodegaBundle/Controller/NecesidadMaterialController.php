@@ -313,46 +313,6 @@ class NecesidadMaterialController extends Controller
     }
 
     /**
-     * Displays a form to create a new NecesidadMaterial entity.
-     */
-    /*public function newAction()
-    {
-        $entity = new NecesidadMaterial();
-
-        $necesidad_material_linea = new NecesidadMaterialLinea();
-
-        $em = $this->getDoctrine()->getManager();
-        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
-
-        $json = array();
-        $precioSalida = 0;
-
-        foreach ($productos as $p) {
-            foreach ($p->getPrecioProducto() as $precios) {
-                if ($precios->getActivo()) {
-                    $precioSalida = ($precios->getPrecio());
-                }
-            }
-
-            $json[$p->getId()] = array(
-                'nombre' => $p->getNombre(),
-                //'precio_salida' => $p->getPrecioSalida(),
-                'precio_salida' => $precioSalida,
-            );
-        }
-
-        $necesidad_material_linea = $this->createForm(new NecesidadMaterialLineaType());
-        $form   = $this->createCreateForm($entity);
-
-        return $this->render('BusetaBodegaBundle:NecesidadMaterial:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-            'necesidad_material_linea'  => $necesidad_material_linea->createView(),
-            'json'   => json_encode($json),
-        ));
-    }*/
-
-    /**
      * Finds and displays a NecesidadMaterial entity.
      */
     public function showAction($id)
@@ -374,46 +334,18 @@ class NecesidadMaterialController extends Controller
 
     /**
      * Displays a form to edit an existing NecesidadMaterial entity.
+     *
+     * @Route("/{id}/edit", name="necesidadmateriales_necesidadmaterial_edit", methods={"GET"}, options={"expose":true})
      */
-    public function editAction($id)
+    public function editAction(NecesidadMaterial $necesidadmaterial)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BusetaBodegaBundle:NecesidadMaterial')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find NecesidadMaterial entity.');
-        }
-
-        $linea = $this->createForm(new NecesidadMaterialLineaType());
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        $em = $this->getDoctrine()->getManager();
-        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
-
-        $json = array();
-
-        foreach ($productos as $p) {
-            foreach ($p->getPrecioProducto() as $precios) {
-                if ($precios->getActivo()) {
-                    $precioSalida = ($precios->getPrecio());
-                }
-            }
-
-            $json[$p->getId()] = array(
-                'nombre' => $p->getNombre(),
-                'precio_salida' => $precioSalida,
-            );
-        }
+        $editForm = $this->createEditForm(new NecesidadMaterialModel($necesidadmaterial));
+        $deleteForm = $this->createDeleteForm($necesidadmaterial->getId());
 
         return $this->render('BusetaBodegaBundle:NecesidadMaterial:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'necesidad_material_linea'       => $linea->createView(),
-            'delete_form' => $deleteForm->createView(),
-            'json'   => json_encode($json),
+            'entity'        => $necesidadmaterial,
+            'edit_form'     => $editForm->createView(),
+            'delete_form'   => $deleteForm->createView(),
         ));
     }
 

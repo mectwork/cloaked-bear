@@ -157,7 +157,7 @@ class PedidoCompraController extends Controller
         ));
     }
 
-    public function procesarPedidoAction($id)
+    public function procesarRegistroAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -312,46 +312,6 @@ class PedidoCompraController extends Controller
     }
 
     /**
-     * Displays a form to create a new PedidoCompra entity.
-     */
-    /*public function newAction()
-    {
-        $entity = new PedidoCompra();
-
-        $pedido_compra_linea = new PedidoCompraLinea();
-
-        $em = $this->getDoctrine()->getManager();
-        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
-
-        $json = array();
-        $precioSalida = 0;
-
-        foreach ($productos as $p) {
-            foreach ($p->getPrecioProducto() as $precios) {
-                if ($precios->getActivo()) {
-                    $precioSalida = ($precios->getPrecio());
-                }
-            }
-
-            $json[$p->getId()] = array(
-                'nombre' => $p->getNombre(),
-                //'precio_salida' => $p->getPrecioSalida(),
-                'precio_salida' => $precioSalida,
-            );
-        }
-
-        $pedido_compra_linea = $this->createForm(new PedidoCompraLineaType());
-        $form   = $this->createCreateForm($entity);
-
-        return $this->render('BusetaBodegaBundle:PedidoCompra:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-            'pedido_compra_linea'  => $pedido_compra_linea->createView(),
-            'json'   => json_encode($json),
-        ));
-    }*/
-
-    /**
      * Finds and displays a PedidoCompra entity.
      */
     public function showAction($id)
@@ -373,46 +333,18 @@ class PedidoCompraController extends Controller
 
     /**
      * Displays a form to edit an existing PedidoCompra entity.
+     *
+     * @Route("/{id}/edit", name="pedidocompras_pedidocompra_edit", methods={"GET"}, options={"expose":true})
      */
-    public function editAction($id)
+    public function editAction(PedidoCompra $pedidocompra)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find PedidoCompra entity.');
-        }
-
-        $linea = $this->createForm(new PedidoCompraLineaType());
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        $em = $this->getDoctrine()->getManager();
-        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
-
-        $json = array();
-
-        foreach ($productos as $p) {
-            foreach ($p->getPrecioProducto() as $precios) {
-                if ($precios->getActivo()) {
-                    $precioSalida = ($precios->getPrecio());
-                }
-            }
-
-            $json[$p->getId()] = array(
-                'nombre' => $p->getNombre(),
-                'precio_salida' => $precioSalida,
-            );
-        }
+        $editForm = $this->createEditForm(new PedidoCompraModel($pedidocompra));
+        $deleteForm = $this->createDeleteForm($pedidocompra->getId());
 
         return $this->render('BusetaBodegaBundle:PedidoCompra:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'pedido_compra_linea'       => $linea->createView(),
-            'delete_form' => $deleteForm->createView(),
-            'json'   => json_encode($json),
+            'entity'        => $pedidocompra,
+            'edit_form'     => $editForm->createView(),
+            'delete_form'   => $deleteForm->createView(),
         ));
     }
 

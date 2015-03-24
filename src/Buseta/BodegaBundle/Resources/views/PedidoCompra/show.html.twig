@@ -4,8 +4,12 @@
 
 {% endblock %}
 
+{% block title %}
+    Datos del Registro de Compra
+{% endblock %}
+
 {% block titulo_encabezado %}
-    Datos del pedido de compra
+    Datos del Registro de Compra
 {% endblock %}
 
 {% block area_trabajo %}
@@ -96,7 +100,7 @@
                         {% else %}
                             <tr>
                                 <td colspan="6">
-                                    <span class="label label-danger">No existen líneas de pedidos de compras disponibles</span>
+                                    <span class="label label-danger">No existen líneas de registros de compras disponibles</span>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -108,7 +112,7 @@
 
     <div class="form-actions">
         <a class="btn btn-primary" href="{{ path('pedidocompra_edit', { 'id': entity.id }) }}"> Editar</a>
-        <a class="btn btn-primary" href="{{ path('procesarPedido', { 'id': entity.id }) }}"> Procesar</a>
+        <a class="btn btn-primary" href="{{ path('procesarRegistro', { 'id': entity.id }) }}"> Procesar</a>
         <a class="btn btn-primary" href="{{ path('pedidocompra') }}"> Listado</a>
     </div>
 

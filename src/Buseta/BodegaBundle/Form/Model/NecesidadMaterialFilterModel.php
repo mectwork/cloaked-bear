@@ -1,7 +1,7 @@
 <?php
 namespace Buseta\BodegaBundle\Form\Model;
 
-class RegistroCompraFilterModel
+class NecesidadMaterialFilterModel
 {
     /**
      * @var string
@@ -170,4 +170,5 @@ class RegistroCompraFilterModel
     {
         $this->tercero = $tercero;
     }
+
 } 

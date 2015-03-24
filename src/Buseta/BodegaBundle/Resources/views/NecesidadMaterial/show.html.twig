@@ -4,8 +4,12 @@
 
 {% endblock %}
 
+{% block title %}
+    Datos de la Necesidad de Material
+{% endblock %}
+
 {% block titulo_encabezado %}
-    Datos del pedido de compra
+    Datos de la Necesidad de Material
 {% endblock %}
 
 {% block area_trabajo %}
@@ -81,7 +85,7 @@
                         <th>%Descuento</th>
                         <th>Importe Línea</th>
 
-                        {% for linea in entity.pedidocompralineas %}
+                        {% for linea in entity.necesidadmateriallineas %}
                         <tbody>
                             <tr>
                                 <td>{{ linea.linea }}</td>
@@ -96,7 +100,7 @@
                         {% else %}
                             <tr>
                                 <td colspan="6">
-                                    <span class="label label-danger">No existen líneas de pedidos de compras disponibles</span>
+                                    <span class="label label-danger">No existen líneas de necesidad de materiales disponibles</span>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -107,9 +111,9 @@
     </table>
 
     <div class="form-actions">
-        <a class="btn btn-primary" href="{{ path('pedidocompra_edit', { 'id': entity.id }) }}"> Editar</a>
-        <a class="btn btn-primary" href="{{ path('procesarPedido', { 'id': entity.id }) }}"> Procesar</a>
-        <a class="btn btn-primary" href="{{ path('pedidocompra') }}"> Listado</a>
+        <a class="btn btn-primary" href="{{ path('necesidadmaterial_edit', { 'id': entity.id }) }}"> Editar</a>
+        <a class="btn btn-primary" href="{{ path('procesarNecesidad', { 'id': entity.id }) }}"> Procesar</a>
+        <a class="btn btn-primary" href="{{ path('necesidadmaterial') }}"> Listado</a>
     </div>
 
 
