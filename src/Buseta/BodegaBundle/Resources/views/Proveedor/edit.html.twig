@@ -14,7 +14,10 @@
             <!-- TAB BASICOS-->
             <div class="tab-pane fade in active" id="basicos">
                 <form id="{{ edit_form.vars.id }}" name="{{ edit_form.vars.full_name }}" action="{{ edit_form.vars.action }}"
-                      method="GET" enctype="multipart/form-data">
+                      method="POST" enctype="multipart/form-data">
+                    {% if edit_form.vars.method == 'PUT' %}
+                        <input type="hidden" name="_method" value="PUT"/>
+                    {% endif %}
                     {{ form_errors(edit_form) }}
 
                     <div class="row show-grid">

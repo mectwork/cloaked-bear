@@ -1,20 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: luis
- * Date: 22/03/15
- * Time: 4:35.
- */
 
 namespace Buseta\BodegaBundle\Form\Model;
 
 use Buseta\BodegaBundle\Entity\Proveedor;
 use Buseta\BodegaBundle\Entity\Tercero;
 use Buseta\NomencladorBundle\Entity\Moneda;
+use Buseta\BodegaBundle\Form\Model\TerceroModelInterface;
 use Buseta\UploadBundle\Entity\UploadResources;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ProveedorModel
+class ProveedorModel implements TerceroModelInterface
 {
     /**
      * @var integer
@@ -65,7 +60,7 @@ class ProveedorModel
     /**
      * @var Moneda
      *
-     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $moneda;
 
@@ -131,7 +126,7 @@ class ProveedorModel
     /**
      * @return boolean
      */
-    public function isActivo()
+    public function getActivo()
     {
         return $this->activo;
     }
@@ -303,4 +298,6 @@ class ProveedorModel
     {
         $this->observaciones = $observaciones;
     }
+
+
 }

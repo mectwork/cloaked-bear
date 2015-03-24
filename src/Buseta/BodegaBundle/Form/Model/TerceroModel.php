@@ -3,13 +3,14 @@
 namespace Buseta\BodegaBundle\Form\Model;
 
 use Buseta\BodegaBundle\Entity\Tercero;
+use Buseta\BodegaBundle\Form\Model\TerceroModelInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TerceroModel.
  */
-class TerceroModel
+class TerceroModel implements TerceroModelInterface
 {
     private $id;
 

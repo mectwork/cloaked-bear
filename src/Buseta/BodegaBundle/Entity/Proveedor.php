@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Form\Model\ProveedorModel;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,6 +49,23 @@ class Proveedor
      * @ORM\Column(name="observaciones", type="string", length=255, nullable=true)
      */
     private $observaciones;
+
+
+    /**
+     * Establece los valores desde el modelo en la entidad.
+     *
+     * @param ProveedorModel $model
+     *
+     * @return $this
+     */
+    public function setModelData(ProveedorModel $model)
+    {
+        $this->setMoneda($model->getMoneda());
+        $this->setCreditoLimite($model->getCreditoLimite());
+        $this->setObservaciones($model->getObservaciones());
+
+        return $this;
+    }
 
     /**
      * Set id.
