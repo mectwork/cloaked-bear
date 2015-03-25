@@ -60,7 +60,6 @@ class PrecioProductoType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Buseta\BodegaBundle\Entity\PrecioProducto',
-            'action' => 'POST',
         ));
     }
 

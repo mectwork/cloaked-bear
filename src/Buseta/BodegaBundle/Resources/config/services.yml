@@ -7,26 +7,36 @@ services:
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'buseta_bodegabundle_movimiento'}
-    bodega.nececidad.type:
-        class: Buseta\BodegaBundle\Form\Type\NecesidadMaterialType
-        arguments: [@doctrine.orm.entity_manager, @service_container]
-        tags:
-            - {name: form.type, alias: 'bodega_necesidad_material'}
-    bodega.compra.type:
-            class: Buseta\BodegaBundle\Form\Type\PedidoCompraType
-            arguments: [@doctrine.orm.entity_manager, @service_container]
-            tags:
-                - {name: form.type, alias: 'bodega_pedido_compra'}
     bodega.albaran.type:
         class: Buseta\BodegaBundle\Form\Type\AlbaranType
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'bodega_albaran_type'}
+    bodega.compra.type:
+        class: Buseta\BodegaBundle\Form\Type\PedidoCompraType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'bodega_pedido_compra'}
     buseta_pedidocompra.linea.handler:
         class: Buseta\BodegaBundle\Form\Handler\PedidoCompraLineaHandler
         arguments:
             - @service_container
+    bodega.nececidad.type:
+        class: Buseta\BodegaBundle\Form\Type\NecesidadMaterialType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'bodega_necesidad_material'}
     buseta_necesidadmaterial.linea.handler:
         class: Buseta\BodegaBundle\Form\Handler\NecesidadMaterialLineaHandler
+        arguments:
+            - @service_container
+    bodega.producto.type:
+        class: Buseta\BodegaBundle\Form\Type\ProductoType
+        tags:
+            - {name: form.type, alias: 'bodega_producto'}
+        arguments:
+            - @service_container
+    buseta_producto.precio.handler:
+        class: Buseta\BodegaBundle\Form\Handler\PrecioProductoHandler
         arguments:
             - @service_container

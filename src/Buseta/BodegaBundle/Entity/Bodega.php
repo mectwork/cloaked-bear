@@ -80,6 +80,13 @@ class Bodega
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\NecesidadMaterial", mappedBy="almacen", cascade={"all"})
+     */
+    private $necesidadMaterial;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\AlbaranLinea", mappedBy="almacen", cascade={"all"})
      */
     private $albaranLinea;
@@ -319,6 +326,40 @@ class Bodega
     public function getPedidoCompra()
     {
         return $this->pedidoCompra;
+    }
+
+    /**
+     * Add necesidadMaterial.
+     *
+     * @param \Buseta\BodegaBundle\Entity\NecesidadMaterial $necesidadMaterial
+     *
+     * @return Bodega
+     */
+    public function addNecesidadMaterial(\Buseta\BodegaBundle\Entity\NecesidadMaterial $necesidadMaterial)
+    {
+        $this->necesidadMaterial[] = $necesidadMaterial;
+
+        return $this;
+    }
+
+    /**
+     * Remove necesidadMaterial.
+     *
+     * @param \Buseta\BodegaBundle\Entity\NecesidadMaterial $necesidadMaterial
+     */
+    public function removeNecesidadMaterial(\Buseta\BodegaBundle\Entity\NecesidadMaterial $necesidadMaterial)
+    {
+        $this->necesidadMaterial->removeElement($necesidadMaterial);
+    }
+
+    /**
+     * Get necesidadMaterial.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNecesidadMaterial()
+    {
+        return $this->necesidadMaterial;
     }
 
     /**

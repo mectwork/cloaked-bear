@@ -44,7 +44,7 @@ class Producto
     private $uom;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Condicion", inversedBy="productos")
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Condicion")
      */
     private $condicion;
 
@@ -76,6 +76,13 @@ class Producto
      * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\PedidoCompraLinea", mappedBy="producto", cascade={"all"})
      */
     private $pedido_compra_lineas;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\NecesidadMaterialLinea", mappedBy="producto", cascade={"all"})
+     */
+    private $necesidad_material_lineas;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -418,6 +425,40 @@ class Producto
     public function getPedidoCompraLineas()
     {
         return $this->pedido_compra_lineas;
+    }
+
+    /**
+     * Add necesidad_material_lineas.
+     *
+     * @param \Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas
+     *
+     * @return Producto
+     */
+    public function addNecesidadMaterialLinea(\Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas)
+    {
+        $this->necesidad_material_lineas[] = $necesidadMaterialLineas;
+
+        return $this;
+    }
+
+    /**
+     * Remove necesidad_material_lineas.
+     *
+     * @param \Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas
+     */
+    public function removeNecesidadMaterialLinea(\Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas)
+    {
+        $this->pedido_compra_lineas->removeElement($necesidadMaterialLineas);
+    }
+
+    /**
+     * Get necesidad_material_lineas.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNecesidadMaterialLineas()
+    {
+        return $this->necesidad_material_lineas;
     }
 
     /**

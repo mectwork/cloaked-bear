@@ -152,7 +152,6 @@ class PedidoCompraType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Buseta\BodegaBundle\Form\Model\PedidoCompraModel',
         ));
-
     }
 
     /**

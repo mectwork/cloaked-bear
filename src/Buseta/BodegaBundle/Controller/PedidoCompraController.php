@@ -413,51 +413,6 @@ class PedidoCompraController extends Controller
     }
 
     /**
-     * Edits an existing PedidoCompra entity.
-     */
-    /*public function updateAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find PedidoCompra entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-            $entity->setCreated($entity->getCreated());
-            $entity->setUpdated(new \DateTime());
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $id)));
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
-
-        $json = array();
-
-        foreach ($productos as $p) {
-            $json[$p->getId()] = array(
-                'nombre' => $p->getNombre(),
-                'precio_salida' => $p->getPrecioSalida(),
-            );
-        }
-
-        return $this->render('BusetaBodegaBundle:PedidoCompra:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-            'json'   => json_encode($json),
-        ));
-    }*/
-
-    /**
      * Deletes a PedidoCompra entity.
      */
     public function deleteAction(Request $request, $id)

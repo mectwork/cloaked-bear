@@ -5,16 +5,18 @@ namespace Buseta\BodegaBundle\Controller;
 use Buseta\BodegaBundle\Entity\PrecioProducto;
 use Buseta\BodegaBundle\Form\Filter\ProductoFilter;
 use Buseta\BodegaBundle\Form\Model\ProductoFilterModel;
+use Buseta\BodegaBundle\Form\Model\ProductoModel;
 use Buseta\BodegaBundle\Form\Type\PrecioProductoType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\Producto;
 use Buseta\BodegaBundle\Form\Type\ProductoType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
-use Buseta\BodegaBundle\Form\Filtro\BusquedaProductoType;
-
+use Symfony\Component\Routing\Annotation\Route;
 /**
  * Producto controller.
+ *
+ * @Route("/producto")
  */
 class ProductoController extends Controller
 {
@@ -185,38 +187,66 @@ class ProductoController extends Controller
 
     /**
      * Creates a new Producto entity.
+     *
+     * @Route("/create", name="productos_producto_create", methods={"POST"}, options={"expose":true})
      */
     public function createAction(Request $request)
     {
-        $entity = new Producto();
-        $form = $this->createCreateForm($entity);
+        $productoModel = new ProductoModel();
+        $form = $this->createCreateForm($productoModel);
+
         $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em     = $this->get('doctrine.orm.entity_manager');
+            $trans  = $this->get('translator');
+            $logger = $this->get('logger');
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+            try {
+                $entity = $productoModel->getEntityData();
 
-            return $this->redirect($this->generateUrl('producto_show', array('id' => $entity->getId())));
+                $em->persist($entity);
+                $em->flush();
+
+                // Creando nuevamente el formulario con los datos actualizados de la entidad
+                $form = $this->createEditForm(new ProductoModel($entity));
+                $renderView = $this->renderView('@BusetaBodega/Producto/form_template.html.twig', array(
+                    'form'   => $form->createView(),
+                ));
+
+                return new JsonResponse(array(
+                    'view' => $renderView,
+                    'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
+                ), 201);
+            } catch (\Exception $e) {
+                $logger->addCritical(sprintf(
+                    $trans->trans('', array(), 'BusetaBodegaBundle') . '. Detalles: %s',
+                    $e->getMessage()
+                ));
+
+                return new JsonResponse(array(
+                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Producto'), 'BusetaBodegaBundle')
+                ), 500);
+            }
         }
 
-        return $this->render('BusetaBodegaBundle:Producto:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+        $renderView = $this->renderView('@BusetaBodega/Producto/form_template.html.twig', array(
+            'form'     => $form->createView(),
         ));
+
+        return new JsonResponse(array('view' => $renderView));
     }
 
     /**
      * Creates a form to create a Producto entity.
      *
-     * @param Producto $entity The entity
+     * @param ProductoModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Producto $entity)
+    private function createCreateForm(ProductoModel $entity)
     {
-        $form = $this->createForm(new ProductoType(), $entity, array(
-            'action' => $this->generateUrl('producto_create'),
+        $form = $this->createForm('bodega_producto', $entity, array(
+            'action' => $this->generateUrl('productos_producto_create'),
             'method' => 'POST',
         ));
 
@@ -225,9 +255,12 @@ class ProductoController extends Controller
 
     /**
      * Displays a form to create a new Producto entity.
+     *
+     * @Route("/new", name="productos_producto_new", methods={"GET"}, options={"expose":true})
      */
     public function newAction()
     {
+        $form   = $this->createCreateForm(new ProductoModel());
         $entity = new Producto();
 
         $precioProducto = new PrecioProducto();

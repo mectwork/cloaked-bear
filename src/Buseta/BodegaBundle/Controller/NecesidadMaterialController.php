@@ -5,6 +5,8 @@ namespace Buseta\BodegaBundle\Controller;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\NecesidadMaterialLinea;
+use Buseta\BodegaBundle\Entity\PedidoCompra;
+use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
 use Buseta\BodegaBundle\Form\Filter\NecesidadMaterialFilter;
 use Buseta\BodegaBundle\Form\Model\NecesidadMaterialFilterModel;
 use Buseta\BodegaBundle\Form\Model\NecesidadMaterialModel;
@@ -158,7 +160,7 @@ class NecesidadMaterialController extends Controller
         ));
     }
 
-    public function procesarPedidoAction($id)
+    public function procesarNecesidadAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -173,33 +175,39 @@ class NecesidadMaterialController extends Controller
         $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($necesidadMaterial->getAlmacen());
         $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($necesidadMaterial->getTercero());
 
-        //registro los datos del nuevo albarán que se crear al procesar el pedido
-        $albaran = new Albaran();
-        $albaran->setEstadoDocumento($necesidadMaterial->getEstadoDocumento());
-        $albaran->setAlmacen($almacen);
-        $albaran->setConsecutivoCompra($necesidadMaterial->getConsecutivoCompra());
-        $albaran->setTercero($tercero);
-        $albaran->setCreated(new \DateTime());
+        //Registro los datos del nuevo PedidoCompra que se crear al procesar la NecesidadMaterial
+        $pedidoCompra = new PedidoCompra();
+        $pedidoCompra->setNumeroDocumento($necesidadMaterial->getNumeroDocumento());
+        $pedidoCompra->setConsecutivoCompra($necesidadMaterial->getConsecutivoCompra());
+        $pedidoCompra->setTercero($tercero);
+        $pedidoCompra->setFechaPedido($necesidadMaterial->getFechaPedido());
+        $pedidoCompra->setAlmacen($almacen);
+        $pedidoCompra->setMoneda($necesidadMaterial->getMoneda());
+        $pedidoCompra->setFormaPago($necesidadMaterial->getFormaPago());
+        $pedidoCompra->setCondicionesPago($necesidadMaterial->getCondicionesPago());
+        $pedidoCompra->setEstadoDocumento($necesidadMaterial->getEstadoDocumento());
+        $pedidoCompra->setImporteTotal($necesidadMaterial->getImporteTotal());
+        $pedidoCompra->setImporteTotalLineas($necesidadMaterial->getImporteTotalLineas());
+        $pedidoCompra->setCreated(new \DateTime());
 
-        $em->persist($albaran);
+        $em->persist($pedidoCompra);
         $em->flush();
 
-        //registro los datos de las líneas del albarán
+        //Registro los datos de las líneas del PedidoCompra
         foreach ($necesidadMaterial->getNecesidadMaterialLineas() as $linea) {
-            $albaranLinea = new AlbaranLinea();
-            $albaranLinea->setAlbaran($albaran);
-            $albaranLinea->setLinea($linea->getLinea());
-            $albaranLinea->setCantidadMovida($linea->getCantidadPedido());
+            $registroCompraLinea = new PedidoCompraLinea();
+            $registroCompraLinea->setPedidoCompra($pedidoCompra);
+            $registroCompraLinea->setLinea($linea->getLinea());
+            $registroCompraLinea->setProducto($linea->getProducto());
+            $registroCompraLinea->setCantidadPedido($linea->getCantidadPedido());
+            $registroCompraLinea->setUom($linea->getUom());
+            $registroCompraLinea->setPrecioUnitario($linea->getPrecioUnitario());
+            $registroCompraLinea->setImpuesto($linea->getImpuesto());
+            $registroCompraLinea->setMoneda($linea->getMoneda());
+            $registroCompraLinea->setPorcientoDescuento($linea->getPorcientoDescuento());
+            $registroCompraLinea->setImporteLinea($linea->getImporteLinea());
 
-            $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($linea->getProducto());
-            $albaranLinea->setProducto($producto);
-
-            $albaranLinea->setAlmacen($almacen);
-
-            $uom = $em->getRepository('BusetaNomencladorBundle:UOM')->find($linea->getUOM());
-            $albaranLinea->setUom($uom);
-
-            $em->persist($albaranLinea);
+            $em->persist($registroCompraLinea);
             $em->flush();
         }
 

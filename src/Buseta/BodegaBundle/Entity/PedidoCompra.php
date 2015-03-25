@@ -97,6 +97,11 @@ class PedidoCompra
     private $importe_total;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\NecesidadMaterial")
+     */
+    private $necesidadMaterial;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\PedidoCompraLinea", mappedBy="pedidoCompra", cascade={"all"})
@@ -203,6 +208,30 @@ class PedidoCompra
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set necesidadMaterial.
+     *
+     * @param \Buseta\BodegaBundle\Entity\NecesidadMaterial $necesidadMaterial
+     *
+     * @return PedidoCompra
+     */
+    public function setNecesidadMaterial(\Buseta\BodegaBundle\Entity\NecesidadMaterial $necesidadMaterial = null)
+    {
+        $this->necesidadMaterial = $necesidadMaterial;
+
+        return $this;
+    }
+
+    /**
+     * Get necesidadMaterial.
+     *
+     * @return \Buseta\BodegaBundle\Entity\NecesidadMaterial
+     */
+    public function getNecesidadMaterial()
+    {
+        return $this->necesidadMaterial;
     }
 
     /**
