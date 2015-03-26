@@ -60,6 +60,18 @@ class NecesidadMaterialType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
+            ->add('tercero', 'entity', array(
+                'class' => 'BusetaBodegaBundle:Tercero',
+                /*'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('t')
+                        ->where('t.proveedor = true');
+                },*/
+                'empty_value' => '---Seleccione---',
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->add('fecha_pedido', 'date', array(
                 'widget' => 'single_text',
                 'required' => false,

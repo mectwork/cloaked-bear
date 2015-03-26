@@ -16,6 +16,7 @@ use Buseta\BodegaBundle\Form\Filtro\BusquedaAlbaranType;
 
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * Albaran controller.
@@ -195,9 +196,13 @@ class AlbaranController extends Controller
             throw $this->createNotFoundException('Unable to find Albaran entity.');
         }
 
+        $deleteForm = $this->createDeleteForm($id);
+
         return $this->render('BusetaBodegaBundle:Albaran:show.html.twig', array(
             'entity'      => $entity,
+            'delete_form' => $deleteForm->createView(),
         ));
+
     }
 
     /**
@@ -414,5 +419,74 @@ class AlbaranController extends Controller
             'form'   => $form->createView(),
             'json'   => json_encode($json),
         ));
+    }
+
+    /**
+     * Deletes a Albaran entity.
+     *
+     * @Route("/{id}/delete", name="albaran_delete")
+     * @Method({"DELETE", "GET"})
+     */
+    public function deleteAction(Albaran $albaran, Request $request)
+    {
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($albaran->getId());
+
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+            try {
+                $em = $this->get('doctrine.orm.entity_manager');
+
+                $em->remove($albaran);
+                $em->flush();
+
+                $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 202);
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('success', $message);
+                }
+            } catch (\Exception $e) {
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Albarán'), 'BusetaTallerBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
+            }
+        }
+
+        $renderView =  $this->renderView('@BusetaBodega/Albaran/delete_modal.html.twig', array(
+            'entity' => $albaran,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
+        return $this->redirect($this->generateUrl('albaran'));
+    }
+
+    /**
+     * Creates a form to delete a Albaran entity by id.
+     *
+     * @param mixed $id The entity id
+     *º
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('albaran_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->getForm()
+            ;
     }
 }
