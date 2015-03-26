@@ -9,14 +9,26 @@ use Buseta\BodegaBundle\Form\Filter\TerceroFilter;
 use Buseta\BodegaBundle\Form\Model\TerceroFilterModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Buseta\BodegaBundle\Entity\Tercero;
 use Buseta\BodegaBundle\Form\Type\TerceroType;
 
 /**
  * Tercero controller.
+ *
+ * @Route("/tercero")
  */
 class TerceroController extends Controller
 {
+    /**
+     * @param $page
+     * @param $cantResult
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/busqueda-avanzada/{page}/{cantResult}", name="tercero_ajax_busqueda_avanzada", defaults={"page": 0, "cantResult": 10})
+     * @Method({"GET"})
+     */
     public function busquedaAvanzadaAction($page, $cantResult)
     {
         $em = $this->get('doctrine.orm.entity_manager');
@@ -42,6 +54,13 @@ class TerceroController extends Controller
 
     /**
      * Lists all Tercero entities.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/", name="tercero")
+     * @Method("GET")
      */
     public function indexAction(Request $request)
     {
@@ -75,6 +94,13 @@ class TerceroController extends Controller
 
     /**
      * Creates a new Tercero entity.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/create", name="tercero_create")
+     * @Method("POST")
      */
     public function createAction(Request $request)
     {
@@ -123,7 +149,7 @@ class TerceroController extends Controller
     /**
      * Creates a form to create a Tercero entity.
      *
-     * @param Tercero $entity The entity
+     * @param TerceroModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
@@ -141,27 +167,29 @@ class TerceroController extends Controller
 
     /**
      * Displays a form to create a new Tercero entity.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/new", name="tercero_new")
+     * @Method("GET")
      */
-    public function newAction(Request $request)
+    public function newAction()
     {
-        //$tipo_contacto = $this->createForm(new MecanismoContactoType());
-
-        //$entity->addMecanismoscontacto(new MecanismoContacto());
-
-        $direccion = $this->createForm(new DireccionType());
-
         $model = new TerceroModel();
         $form  = $this->createCreateForm($model);
 
         return $this->render('BusetaBodegaBundle:Tercero:new.html.twig', array(
             'form'   => $form->createView(),
-            //'tipo_contacto' => $tipo_contacto->createView(),
-            'direccion' => $direccion->createView(),
         ));
     }
 
     /**
      * Finds and displays a Tercero entity.
+     *
+     * @Route("/{id}/show", name="tercero_show")
+     * @Method("GET")
      */
     public function showAction($id)
     {
@@ -183,6 +211,9 @@ class TerceroController extends Controller
 
     /**
      * Displays a form to edit an existing Tercero entity.
+     *
+     * @Route("/{id}/edit", name="tercero_edit")
+     * @Method("GET")
      */
     public function editAction(Tercero $tercero)
     {
@@ -203,7 +234,7 @@ class TerceroController extends Controller
     /**
      * Creates a form to edit a Tercero entity.
      *
-     * @param Tercero $entity The entity
+     * @param TerceroModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
@@ -221,6 +252,9 @@ class TerceroController extends Controller
 
     /**
      * Edits an existing Tercero entity.
+     *
+     * @Route("/{id}/update", name="tercero_update")
+     * @Method({"PUT","POST"})
      */
     public function updateAction(Request $request, $id)
     {
@@ -272,6 +306,9 @@ class TerceroController extends Controller
 
     /**
      * Deletes a Tercero entity.
+     *
+     * @Route("/{id}/delete", name="tercero_delete")
+     * @Method({"DELETE", "POST"})
      */
     public function deleteAction(Request $request, $id)
     {

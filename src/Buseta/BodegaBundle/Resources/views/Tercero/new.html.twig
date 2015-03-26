@@ -1,123 +1,35 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% form_theme form 'BusetaTemplateBundle:Widgets:collection_widget_mecanismos_contacto.html.twig' %}
-
 {% block nombre_menu_superior %}
 
-{% endblock %}
-
 {% block titulo_encabezado %}
-    Adicionar nuevo tercero
+    Adicionar nuevo Tercero
 {% endblock %}
 
 {% block area_trabajo %}
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#basicos" data-toggle="tab">Tercero</a></li>
+        <li><a href="#direcciones" data-toggle="tab">Direcciones</a></li>
+        <li><a href="#contactos" data-toggle="tab">Mecanismos de contacto</a></li>
+    </ul>
 
-    <form action="{{ path('tercero_create') }}" method="post" {{ form_enctype(form) }}>
-
-        {{ form_errors(form) }}
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.nombres) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.apellidos) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.alias) }}
-            </div>
+    {# Tab panes #}
+    <div class="tab-content" style="padding-top: 20px;">
+        <!-- TAB BASICOS-->
+        <div class="tab-pane fade in active" id="basicos">
+            {% include 'BusetaBodegaBundle:Tercero:form_model.html.twig' with {'form': form} %}
         </div>
 
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.codigo) }}
-            </div>
+        <!-- TAB DIRECCIONES-->
+        <div class="tab-pane fade" id="direcciones">
 
-            <div class="col-md-4">
-                {{ form_row(form.direccion) }}
-            </div>
-
-            <div class="col-md-4">
-                <label>&nbsp;</label> <br>
-                <div class="btn-group" style="padding-bottom: 8px;">
-                    <a data-toggle="modal" data-target="#newDireccion" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i></a>
-                </div>
-            </div>
         </div>
 
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.usuario) }}
-            </div>
+        <!-- TAB MECANISMOS DE CONTACTO-->
+        <div class="tab-pane fade" id="contactos">
+
         </div>
-
-        <div class="row show-grid">
-            <div class="col-md-3">
-                {{ form_row(form.cliente) }}
-            </div>
-
-            <div class="col-md-3">
-                {{ form_row(form.institucion) }}
-            </div>
-
-            <div class="col-md-3">
-                {{ form_row(form.proveedor) }}
-            </div>
-
-            <div class="col-md-3">
-                {{ form_row(form.persona) }}
-            </div>
-        </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.activo) }}
-            </div>
-        </div>
-
-        {{ form_row(form.mecanismoscontacto) }}
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-
-                <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
-                <div class="btn-group">
-                    <a class="btn btn-primary" href="{{ path('tercero') }}"> Cancelar</a>
-                </div>
-
-            </div>
-        </div>
-
-        {{ form_rest(form) }}
-    </form>
-
-    <!-- Modal -->
-    <div class="modal fade" id="newDireccion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content" style="width: 850px;">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3 class="modal-title" id="myModalLabel">Datos de nueva dirección</h3>
-                </div>
-                <div class="modal-body" style="width: 800px;">
-                    {% include 'BusetaBodegaBundle:Extras:modal_direccion.html.twig'  %}
-                </div>
-                <div class="modal-footer">
-                    <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
-                    <a class="btn btn-primary add_tag_link_direccion" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</span></a>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
     </div>
-{% endblock %}
-
-
-{% block contenido %}
-
 {% endblock %}
 
 {% block javascripts %}
