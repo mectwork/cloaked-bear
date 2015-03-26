@@ -38,12 +38,20 @@ buseta_bodega_necesidadmaterial:
     resource: "@BusetaBodegaBundle/Controller/NecesidadMaterialController.php"
     type: annotation
 
+buseta_bodega_albaran:
+    resource: "@BusetaBodegaBundle/Controller/AlbaranController.php"
+    type: annotation
+
 buseta_bodega_producto:
     resource: "@BusetaBodegaBundle/Controller/ProductoController.php"
     type: annotation
 
 buseta_bodega_necesidadmateriallinea:
     resource: "@BusetaBodegaBundle/Controller/NecesidadMaterialLineaController.php"
+    type: annotation
+
+buseta_bodega_albaranlinea:
+    resource: "@BusetaBodegaBundle/Controller/AlbaranLineaController.php"
     type: annotation
 
 buseta_bodega_productoprecio:

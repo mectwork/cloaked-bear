@@ -1,0 +1,54 @@
+{% form_theme form '@BusetaBodega/Form/fields.twig' %}
+
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data">
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+    {{ form_errors(form) }}
+    {{ form_row(form.id) }}
+    {{ form_row(form._token) }}
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.numeroReferencia) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.consecutivoCompra) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.tercero) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.almacen) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.fechaMovimiento) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.fechaContable) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.estadoDocumento) }}
+        </div>
+    </div>
+
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <a class="btn btn-primary" id="btn_albaran_save" href="#"><span class="glyphicon glyphicon-save"></span>
+                {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
+            <a class="btn btn-default" id="btn_albaran_cancel" href="{{ path('albaran') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+                {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+        </div>
+    </div>
+</form>

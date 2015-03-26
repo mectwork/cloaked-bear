@@ -82,6 +82,20 @@ class NecesidadMaterialFilter extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
+            ->add('importe_total_lineas', 'text', array(
+                'required' => false,
+                'label'  => 'Importe total líneas',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('importe_total', 'text', array(
+                'required' => false,
+                'label'  => 'Importe total',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
         ;
     }
 

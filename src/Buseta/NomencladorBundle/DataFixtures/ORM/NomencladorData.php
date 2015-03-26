@@ -18,7 +18,7 @@ use Buseta\NomencladorBundle\Entity\Marca;
 use Buseta\NomencladorBundle\Entity\MarcaMotor;
 use Buseta\NomencladorBundle\Entity\Modelo;
 use Buseta\NomencladorBundle\Entity\Moneda;
-use Buseta\NomencladorBundle\Entity\NMedioReporte;
+use Buseta\NomencladorBundle\Entity\MedioReporte;
 use Buseta\NomencladorBundle\Entity\Subgrupo;
 use Buseta\NomencladorBundle\Entity\Tarea;
 use Buseta\NomencladorBundle\Entity\TipoCompra;
@@ -85,7 +85,7 @@ class NomencladorData extends AbstractFixture
             $manager->clear();
             /*******************************/
 
-            $objeto = new NMedioReporte();
+            $objeto = new MedioReporte();
             $codigo = uniqid();
             $objeto->setValor($this->medio_reportes[$i]);
 
@@ -186,6 +186,7 @@ class NomencladorData extends AbstractFixture
             $objeto = new GarantiaTarea();
             $codigo = uniqid();
             $objeto->setValor($this->garantia_compras[$i]);
+            $objeto->setDias(rand(1,20));
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
@@ -269,6 +270,7 @@ class NomencladorData extends AbstractFixture
     );
 
     private $tipo_impuestos = array(
+        'fijo',
         'fijo',
         'porcentaje',
     );

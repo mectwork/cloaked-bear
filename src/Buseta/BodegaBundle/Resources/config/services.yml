@@ -30,6 +30,10 @@ services:
         class: Buseta\BodegaBundle\Form\Handler\NecesidadMaterialLineaHandler
         arguments:
             - @service_container
+    buseta_albaran.linea.handler:
+            class: Buseta\BodegaBundle\Form\Handler\AlbaranLineaHandler
+            arguments:
+                - @service_container
     bodega.producto.type:
             class: Buseta\BodegaBundle\Form\Type\ProductoType
             arguments: [@doctrine.orm.entity_manager, @service_container]

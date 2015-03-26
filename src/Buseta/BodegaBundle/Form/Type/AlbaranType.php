@@ -34,6 +34,9 @@ class AlbaranType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('id', 'hidden', array(
+                'required' => false,
+            ))
             ->add('numeroReferencia', 'text', array(
                     'required' => false,
                     'label'  => 'Nro.Referencia',
@@ -50,6 +53,8 @@ class AlbaranType extends AbstractType
             ))
             ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
+                'empty_value' => '---Seleccione---',
+                'label' => 'Almacén',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -57,11 +62,11 @@ class AlbaranType extends AbstractType
             ))
             ->add('tercero', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
-                'query_builder' => function (EntityRepository $er) {
+                /*'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('t')
                         ->where('t.proveedor = true');
-                },
-                'empty_value' => '---Seleccione un proveedor---',
+                },*/
+                'empty_value' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -88,7 +93,8 @@ class AlbaranType extends AbstractType
             ->add('estadoDocumento', 'choice', array(
                 'required' => false,
                 'read_only' => true,
-                'empty_value' => '---Seleccione estado documento---',
+                'label' => 'Estado del Documento',
+                'empty_value' => '---Seleccione---',
                 'translation_domain' => 'BusetaTallerBundle',
                 'choices' => array(
                     'CO' => 'estado.CO',
@@ -116,7 +122,7 @@ class AlbaranType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Entity\Albaran',
+            'data_class' => 'Buseta\BodegaBundle\Form\Model\AlbaranModel',
         ));
     }
 

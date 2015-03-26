@@ -6,383 +6,499 @@
 
 {% endblock %}
 
+{% block title %}
+    Adicionar Nuevo Albarán
+{% endblock %}
+
 {% block titulo_encabezado %}
-    Adicionar nuevo albarán
+    Adicionar Nuevo Albarán
 {% endblock %}
 
 {% block area_trabajo %}
 
-    <div id="error" class="alert alert-danger" >
-        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-        <strong>!ERROR!</strong> Debe comprobar que todos los campos del formulario sean válidos y no se encuentren vacíos.
-    </div>
-
-    <div id="valido" class="alert alert-success" >
-        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-        <strong>!OK!</strong> Los datos básicos del albarán han sido guardados satisfactoriamente.
-    </div>
-
-    {{ form_start(form) }}
-
     <div class="row">
-    <div class="col-lg-12">
-    <div class="panel panel-default">
-    <!-- /.panel-heading -->
-    <div class="panel-body">
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs">
-        <li class="active">
-            <a id="tab_basicos" href="#basicos" data-toggle="tab">Datos básicos</a>
-        </li>
-        <li>
-            <a id="tab_lineas" href="#lineas" data-toggle="tab">Líneas</a>
-        </li>
+        <div class="col-lg-12">
+            {# Nav tabs #}
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos</a></li>
+                <li><a href="#lineas" data-toggle="tab">Líneas</a></li>
+            </ul>
 
-    </ul>
-
-    <!-- Tab panes -->
-    <div class="tab-content">
-
-    <div class="tab-pane fade in active" id="basicos">
-            <div class="row show-grid">
-                <div class="col-md-4">
-                    {{ form_row(form.numeroReferencia) }}
+            {# Tab panes #}
+            <div class="tab-content" style="padding-top: 20px;">
+                <!-- TAB BASICOS-->
+                <div class="tab-pane fade in active" id="basicos">
+                    {% include '@BusetaBodega/Albaran/form_template.html.twig' with {'form': form} %}
                 </div>
 
-                <div class="col-md-4">
-                    {{ form_row(form.consecutivoCompra) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(form.tercero) }}
-                </div>
-            </div>
-
-            <div class="row show-grid">
-                <div class="col-md-4">
-                    {{ form_row(form.almacen) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(form.fechaMovimiento) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(form.fechaContable) }}
-                </div>
-            </div>
-
-            <div class="row show-grid">
-                <div class="col-md-4">
-                    {{ form_row(form.estadoDocumento) }}
-                </div>
-            </div>
-
-
-    </div>
-
-    <!-- TAB LINEAS-->
-    <div class="tab-pane fade" id="lineas">
-
-        <div class="row show-grid">
-            <div class="col-md-12">
-                {{ form_row(form.albaranLinea) }}
-            </div>
-        </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                <div class="btn-group">
-                    <a id="adicionarLinea" data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar línea</a>
+                <!-- TAB LINEAS-->
+                <div class="tab-pane fade" id="lineas">
+                    {# Líneas #}
                 </div>
             </div>
         </div>
-
-    </div>
-
-    </div>
-
-    </div>
-    <!-- /.panel-body -->
+        <!-- /.panel-body -->
     </div>
     <!-- /.panel -->
 
-
-    </div>
-    <!-- /.col-lg-6 -->
-        <div class="row show-grid">
-            <div class="col-md-4">
-                <input id="guardarAlbaran" class="btn btn-primary" style="height: 34px" type="button" value="Guardar">
-                <input id="guardarLineas" class="btn btn-primary" style="height: 34px" type="submit" value="Procesar">
-                <div class="btn-group">
-                    <a class="btn btn-primary" href="{{ path('pedidocompra') }}"> Cancelar</a>
-                </div>
-            </div>
-        </div>
-
-        {{ form_rest(form) }}
-        {{ form_end(form) }}
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="newLinea" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content" style="width: 850px;">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3 class="modal-title" id="myModalLabel">Datos de nueva línea</h3>
-                </div>
-                <div class="modal-body" style="width: 800px;">
-                    <form action="{{ path('albaran_linea_compra_create') }}" method="post" {{ form_enctype(albaran_linea) }}>
-                        <div class="row show-grid">
-                            <div class="col-md-4">
-                                {{ form_row(albaran_linea.linea) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(albaran_linea.producto) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(albaran_linea.cantidadMovida) }}
-                            </div>
-                        </div>
-
-                        <div class="row show-grid">
-                            <div class="col-md-4">
-                                {{ form_row(albaran_linea.almacen) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(albaran_linea.uom) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(albaran_linea.valorAtributos) }}
-                            </div>
-                        </div>
-                        {{ form_rest(albaran_linea) }}
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
-                    <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</i></a>
-
-                </div>
-
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-
-{% endblock %}
+{% endblock area_trabajo %}
 
 {% block contenido %}
 
 {% endblock %}
 
+
 {% block javascripts %}
     {{ parent() }}
 
-    <script src="{{ asset('vendors/funciones_datetime_new.js') }}"></script>
+    <!-- Initialize script -->
+    <script type="text/javascript">
+        $(function (){
+            // init albaran
+            albaran._load();
+        });
+    </script>
 
     <script type="text/javascript">
+        var button = {
+            _disable: function (selector) {
+                $(selector).addClass('disabled');
+            },
+            _enable: function (selector) {
+                $(selector).removeClass('disabled');
+            }
+        };
+        var tabs = {
+            loadding_image: '<i class="fa fa-spinner fa-spin"></i>',
+            _show_all_tabs: function() {
+                tabs._show_tab('lineas');
+            },
+            _show_tab: function (tabname) {
+                $('li a[href="#' + tabname + '"]').parent().show();
+            },
+            _hide_tab: function () {
+                $('li a[href="#' + tabname + '"]').parent().hide();
+            },
+            _add_loadding: function (tabname) {
+                var linktab = $('li a[href="#' + tabname + '"]');
+                linktab.prepend($(tabs.loadding_image));
+            },
+            _remove_loadding: function (tabname) {
+                var spinning = $('li a[href="#' + tabname + '"]').find('i.fa.fa-spinner.fa-spin');
+                spinning.remove();
+            },
+            _active: function (href) {
+                $('li a[href="' + href + '"]').parent().addClass('active');
+                $('div' + href).addClass('active').addClass('in');
+            },
+            _desactive: function (href) {
+                $('li a[href="' + href + '"]').parent().removeClass('active');
+                $('div' + href).removeClass('active').removeClass('in');
+            }
+        };
+        var utils = {
+            _fail: function (jqXHR, textStatus, errorThrown) {
+                if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                    addGlobalMessage('danger', jqXHR.responseText.message);
+                } else {
+                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+                }
+            }
+        };
+        var progressBar = {
+            _add_progressBar: function (name) {
+                var progressBar = $('<div class="progress" id="' + name + '_progress_bar"></div>'),
+                        bar = $('<div>')
+                                .addClass('progress-bar')
+                                .attr('role', 'progressbar')
+                                .attr('aria-valuenow', 2)
+                                .attr('aria-valuemin', 0)
+                                .attr('aria-valuemax', 100)
+                                .css('width', '2%')
+                                .append($('<span class="sr-only"></span>'));
 
-        $(function(){
-            $('#error').fadeOut(10);
-            $('#valido').fadeOut(10);
-            $('#tab_lineas').fadeOut(10);
-            $('#guardarLineas').hide();
+                progressBar.append(bar);
 
-            $('#tab_basicos').click(function(){
-                $('#tab_lineas').fadeOut(10);
-                $('#guardarAlbaran').show();
-                $('#guardarLineas').hide();
+                $('#' + name).hide().parent().prepend(progressBar);
+            },
+            _remove_progressBar: function(name) {
+                var progressBar = $('div#' + name + '_progress_bar');
+                progressBar.slideUp(400, function () {
+                    progressBar.remove();
+                });
+                $('#' + name).show();
+            }
+        };
+    </script>
 
-                $('#error').hide();
-                $('#valido').hide();
-            });
+    <!-- PedidoCompra script -->
+    <script type="text/javascript">
+        var albaran = {
+            form_id: $('div#basicos').find('form').attr('id'),
+            form_name: $('div#basicos').find('form').attr('name'),
+            id: '',
+            _load: function () {
 
-            //Resetear valores de campos del modal "newLinea"
-            $('#adicionarLinea').on('click', function(){
-                var modal = $('#newLinea');
+                $('#bodega_albaran_type_fechaMovimiento').datetimepicker({
+                    'format': 'DD/MM/YYYY'
+                });
 
-                var linea_linea = modal.find('#buseta_bodegabundle_albaran_linea_linea');
-                var linea_producto = modal.find('#buseta_bodegabundle_albaran_linea_producto');
-                var linea_cantidadMovida = modal.find('#buseta_bodegabundle_albaran_linea_cantidadMovida');
-                var linea_almacen = modal.find('#buseta_bodegabundle_albaran_linea_almacen');
-                var linea_uom = modal.find('#buseta_bodegabundle_albaran_linea_uom');
-                var linea_valorAtributos = modal.find('#buseta_bodegabundle_albaran_linea_valorAtributos');
+                $('#bodega_albaran_type_fechaContable').datetimepicker({
+                    'format': 'DD/MM/YYYY'
+                });
 
-                linea_linea.val('');
-                linea_producto.val('');
-                linea_cantidadMovida.val('');
-                linea_almacen.val('');
-                linea_uom.val('');
-                linea_valorAtributos.val('');
-            });
-
-            $('#guardarAlbaran').click(function(){
-                $('#error').fadeOut(10);
-                $('#tab_lineas').fadeOut(10);
-
-                var data = {
-                    numeroReferencia:   $('#{{ form.numeroReferencia.vars.id }}').val(),
-                    consecutivoCompra:  $('#{{ form.consecutivoCompra.vars.id }}').val(),
-                    almacen:            $('#{{ form.almacen.vars.id }}').val(),
-                    tercero:            $('#{{ form.tercero.vars.id }}').val(),
-                    fechaMovimiento:    $('#{{ form.fechaMovimiento.vars.id }}').val(),
-                    fechaContable:      $('#{{ form.fechaContable.vars.id }}').val(),
-                    estadoDocumento:    $('#{{ form.estadoDocumento.vars.id }}').val()
-                };
-
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ path("guardarAlbaran") }}',
-                    data: data,
-                    success: function(data) {
-                        var values = $.parseJSON(data);
-
-                        console.log(values.error);
-
-                        if(values.error == 'error')
-                        {
-                            //Si existe al menos un campo no correcto en PedidoCompra se lanza un mensaje de error
-                            $('#error').fadeIn(100);
-                            $('#error').fadeOut(20000);
-
-                            jQuery('body,html').animate({
-                                scrollTop: 0
-                            }, 25);
+                $('a#btn_albaran_save').on('click', albaran._save);
+                albaran.id = $('input[id="' + albaran.form_id + '_id"]').val();
+                if (albaran.id === '' || albaran.id === undefined) {
+                    // hide all tabs on page load
+                    $('a[data-toggle="tab"]').each(function(key, item) {
+                        if($(item).attr('href') != '#basicos') {
+                            $(item).parent().hide();
                         }
-                        else
-                        {
-                            $('#guardarLineas').show();
-                            $('#error').hide();
-                            $('#guardarAlbaran').hide();
-                            $('#valido').fadeIn(100);
-                            $('#valido').fadeOut(20000);
+                    });
+                }
 
-                            //Si todos los campos del Albaran son correctos activo el tab de Lineas
-                            $('#basicos').attr('class', 'tab-pane fade');
-                            $('#tab_basicos').parent().removeAttr('class');
+                // on show tab events
+                $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+                    var href = $(e.target).attr('href');
+                    var relhref = $(e.relatedTarget).attr('href');
 
-                            $('#tab_lineas').fadeIn(200);
-                            $('#tab_lineas').parent().attr('class', 'active');
-
-                            $('#lineas').attr('class', 'tab-pane fade in active');
-
-                            jQuery('body,html').animate({
-                                scrollTop: 0
-                            }, 25);
-
-                        }
-
+                    if (href === '#lineas') {
+                        lineas._load();
                     }
                 });
-            });
-        });
+            },
+            _save: function (event) {
+                if (event != undefined) {
+                    event.preventDefault();
+                }
 
-        var collectionHolder = $('div#bodega_albaran_type_albaranLinea');
-        var $addTagLink = $('a.add_tag_link');
+                // disable btn
+                button._disable('a#btn_albaran_save');
 
-        jQuery(document).ready(function() {
-            // count the current form inputs we have (e.g. 2), use that as the new
-            // index when inserting a new item (e.g. 2)
-            collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
+                // add spinning to show loading process
+                tabs._add_loadding('basicos');
 
-            updateDeleteLink();
-            updateView();
+                // PedidoCompra Id
+                albaran.id = $('input[id="' + albaran.form_id + '_id"]').val();
 
-            function addTagForm(collectionHolder) {
-                // Get the data-prototype explained earlier
-                var prototype = collectionHolder.data('prototype');
+                var albaransForm    = $('form#' + albaran.form_id),
+                        url             = Routing.generate('albarans_albaran_create',{});
+                if(albaran.id !== '' && albaran.id !== undefined) {
+                    url = Routing.generate('albarans_albaran_update', {'id': albaran.id});
+                }
 
-                // get the new index
-                var index = collectionHolder.data('index');
-
-                // Replace '__name__' in the prototype's HTML to
-                // instead be a number based on how many items we have
-                var newForm = prototype.replace(/__name__/g, index);
-
-                // increase the index with one for the next item
-                collectionHolder.data('index', index + 1);
-
-                // Display the form in the page in an li, before the "Add a tag" link li
-                var $newFormDiv = $('<tr></tr>').append(newForm);
-                collectionHolder.find('#tbody').append($newFormDiv);
-                updateDeleteLink();
-                updateView();
-            }
-
-            function updateDeleteLink(){
-                $('a.delete_tag_link').on('click', function(e) {
-                    // prevent the link from creating a "#" on the URL
-                    e.preventDefault();
-
-                    // remove the li for the tag form
-                    $(this).parent().parent().remove();
-
-                    updateView();
+                albaransForm.ajaxSubmit({
+                    success: albaran._done,
+                    error: utils._fail,
+                    complete: albaran._always,
+                    uploadProgress: albaran._upload,
+                    url: url,
+                    dataType: 'json'
                 });
-            }
+            },
+            _done: function (response, textStatus, jqXHR) {
+                $('form#' + albaran.form_id).replaceWith(response.view);
 
-            function updateView(){
-                counter = collectionHolder.find('a.delete_tag_link').length;
-                if(counter == 0){
-                    $('div#no-elements-tr').show();
-                }else{
-                    $('div#no-elements-tr').hide();
+                if(jqXHR.status == 201) {
+                    addGlobalMessage('success', response.message);
+                    // PedidoCompra Id
+                    albaran.id = $('input[id="' + albaran.form_id + '_id"]').val();
+                    // activate all tabs
+                    tabs._show_all_tabs();
+                } else if(jqXHR.status == 202) {
+                    addGlobalMessage('success', response.message);
+                }
+                $('a#btn_albaran_save').on('click', albaran._save);
+            },
+            _always: function() {
+                // remove spinning
+                tabs._remove_loadding('basicos');
+                // remove progress bar
+                progressBar._remove_progressBar($('input[id="' + albaran.form_id + '_foto_file"]').attr('id'));
+
+                button._enable('a#btn_albaran_save');
+            },
+            _upload: function (event, position, total, percentComplete) {
+                var progressBarr = $('div#basicos').find('.progress-bar')[0];
+                if (progressBarr !== undefined) {
+                    $(progressBarr).css('width', percentComplete + '%');
+                    $(progressBarr).find('span').html(percentComplete + '% Completado');
+                }
+            }
+        };
+    </script>
+
+    <!-- Lineas script -->
+    <script type="text/javascript">
+    var Totales = function () {
+        this.lineas = [];
+        this.total = 0;
+
+        this.addLinea = function(monto) {
+            monto = parseInt(monto);
+            this.lineas.push({monto: monto});
+            this.total += monto;
+        };
+
+        /*this.addLinea = function(id, monto) {
+         this.lineas.push({id: id, monto: monto});
+         this.monto += monto;
+         };*/
+
+        this.removeLinea = function ( id ) {
+            var aux = [];
+            for ( var i = 0; i < this.lineas.length; i++ ) {
+                if( this.lineas[i].id !== id ) {
+                    aux.push(this.lineas[i]);
+                } else {
+                    this.total -= this.lineas[i].monto;
                 }
             }
 
-            $addTagLink.on('click', function(e) {
-                // prevent the link from creating a "#" on the URL
-                e.preventDefault();
+            this.lineas = aux;
+        };
 
-                var modal = $('#newLinea');
+        this.countTotal = function () {
+            this.total = 0;
+            for ( var i = 0 ; i < this.lineas.length ; i++ ) {
+                var monto = this.lineas[i].monto;
+                this.total += parseInt(monto);
+            }
 
-                // captura de valores del modal
-                var linea_linea = modal.find('#buseta_bodegabundle_albaran_linea_linea');
-                var linea_producto = modal.find('#buseta_bodegabundle_albaran_linea_producto');
-                var linea_cantidadMovida = modal.find('#buseta_bodegabundle_albaran_linea_cantidadMovida');
-                var linea_almacen = modal.find('#buseta_bodegabundle_albaran_linea_almacen');
-                var linea_uom = modal.find('#buseta_bodegabundle_albaran_linea_uom');
-                var linea_valorAtributos = modal.find('#buseta_bodegabundle_albaran_linea_valorAtributos');
+            return this.total;
+        };
 
-                var dataA = {
-                    linea : $('#{{ albaran_linea.linea.vars.id }}').val()
-                };
+        this.getTotal = function () {
+            return this.total;
+        }
+    };
+    var lineastotales = new Totales();
 
-                $.when(
-                        $.ajax({
-                            type: 'GET',
-                            url: '{{ path("albaran_ajax") }}',
-                            data: dataA
-                        })
+    var lineas = {
+        form_name: '',
+        form_id: '',
+        id: '',
+        _start_events: function () {
+            $('a[href="#form_lineas_modal"]').on('click', lineas._load_modal);
+            // Paginator sort
+            $('table.lineas_records_list').find('a.sortable, a.asc, a.desc').on('click', lineas._load);
+            // Table addresses actions
+            $('table.lineas_records_list').find('a[href="#edit"]').on('click', lineas._load_modal);
+            $('table.lineas_records_list').find('a[href="#delete"]').on('click', lineas._load_delete_modal);
+            // Paginator navigation
+            $('div.lineas-paginator.row ul.pagination').find('a.paginator-link').on('click', lineas._load);
+        },
+        _load: function (event) {
 
-                ).done(function(data, textStatus, jqXHR){
+            if(event !== undefined) {
+                event.preventDefault();
+            }
 
-                            var valorA = $.parseJSON(data);
+            if (albaran.id == '') {
+                return;
+            }
 
-                            var index = collectionHolder.data('index');
+            // add spinning to show loading process
+            tabs._add_loadding('lineas');
 
-                            addTagForm(collectionHolder);
+            var url = Routing.generate('albaran_lineas_list',{'albaran': albaran.id});
+            if($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
+                url = $(this).attr('href');
+            }
 
-                            $('#bodega_albaran_type_albaranLinea_' + index + '_linea').val(linea_linea.val());
-                            $('#bodega_albaran_type_albaranLinea_' + index + '_producto ').val(linea_producto.val());
-                            $('#bodega_albaran_type_albaranLinea_' + index + '_cantidadMovida').val(linea_cantidadMovida.val());
-                            $('#bodega_albaran_type_albaranLinea_' + index + '_almacen').val(linea_almacen.val());
-                            $('#bodega_albaran_type_albaranLinea_' + index + '_uom').val(linea_uom.val());
-                            $('#bodega_albaran_type_albaranLinea_' + index + '_valorAtributos').val(linea_valorAtributos.val());
-                        })
+            $.get(url).done(function (response, textStatus, jqXHR) {
+                $('div#lineas').html(response);
 
+                lineas._start_events();
+            }).fail(utils._fail).always(lineas._always);
+        },
+        _load_modal: function(event) {
+            if(event !== undefined) {
+                event.preventDefault();
+            }
+
+            if(albaran.id === '' || albaran.id === undefined) {
+                return;
+            }
+
+            var url = Routing.generate('albaran_lineas_new_modal', {'albaran': albaran.id});
+            if($(this).attr('href') !== undefined && $(this).attr('href') === '#edit') {
+                url = Routing.generate('albaran_lineas_edit_modal', {'albaran': albaran.id, id:$(this).data('content')});
+            }
+
+            $.get(url)
+                    .done(function(response, textStatus, jqXHR){
+                        $('div#form_lineas_modal').replaceWith($(response.view));
+
+                        lineas.form_id = $('div#form_lineas_modal').find('form').attr('id');
+                        lineas.form_name = $('div#form_lineas_modal').find('form').attr('name');
+
+                        $('a#btn_lineas_save').on('click',  lineas._save_modal);
+
+                        $('a#btn_lineas_cancel').on('click', function(){
+                            $('div#form_lineas_modal').modal('hide');
+                        });
+
+                        //Valores iniciales del modal de nueva linea
+                        $('#' + lineas.form_id + '_cantidad_pedido').val(0);
+
+                        $('#' + lineas.form_id + '_cantidad_pedido').change(lineas._generar_importe_linea);
+                        $('#' + lineas.form_id + '_producto').change(lineas._generar_importe_linea);
+                        $('#' + lineas.form_id + '_impuesto').change(lineas._generar_importe_linea);
+                        $('#' + lineas.form_id + '_porciento_descuento').on('blur', lineas._generar_importe_linea);
+
+                        $('div#form_lineas_modal').modal('show');
+                    }).fail(utils._fail).always(function(){});
+        },
+        _load_delete_modal: function(event) {
+            if(event !== undefined) {
+                event.preventDefault();
+            }
+
+            if(albaran.id === '' || albaran.id === undefined) {
+                return;
+            }
+
+            var id  = $(this).data('content'),
+                    url = Routing.generate('albaran_lineas_delete', {id: id});
+            $.get(url)
+                    .done(function(response, textStatus, jqXHR){
+                        $('div#form_lineas_delete_modal').replaceWith($(response.view));
+
+                        $('div#form_lineas_delete_modal a#btn_lineas_delete').on('click', lineas._save_delete_modal);
+                        $('div#form_lineas_delete_modal a#btn_lineas_cancel').on('click', function(){
+                            $('div#form_lineas_delete_modal').modal('hide');
+                        });
+
+                        $('div#form_lineas_delete_modal').modal('show');
+                    }).fail(utils._fail).always(function(){});
+        },
+        _save_modal: function (event) {
+
+            //Actualiza los valores de los campos Importes Total y Total por Lineas
+            var monto = $('#' + lineas.form_id + '_importe_linea').val();
+
+            lineastotales.addLinea(monto);
+            var montototal = lineastotales.getTotal();
+            $('#bodega_pedido_compra_importe_total_lineas').val(montototal);
+            $('#bodega_pedido_compra_importe_total').val(montototal);
+            //--Actualiza los valores de los campos Importes Total y Total por Lineas
+
+            if(event != undefined) {
+                event.preventDefault();
+            }
+
+            $('#btn_lineas_save').find('span')
+                    .removeClass('glyphicon')
+                    .removeClass('glyphicon-save')
+                    .addClass('fa')
+                    .addClass('fa-gear')
+                    .addClass('fa-spin');
+
+            var url = Routing.generate('albaran_lineas_new_modal',{'albaran': albaran.id}),
+                    id  = $('#' + lineas.form_id + '_id').val();
+            if(id !== '' && id !== undefined) {
+                url = Routing.generate('albaran_lineas_edit_modal',{'albaran': albaran.id, id: id});
+            }
+
+            //Actualiza las nuevas lineas insertadas
+            $('form#' + lineas.form_id).ajaxSubmit({
+                success: lineas._done,
+                error: utils._fail,
+                complete: lineas._always,
+                url: url,
+                dataType: 'json'
             });
 
+            //Actualiza el PedidoCompra con los nuevos valores de los importes de lineas y totales
+            url = Routing.generate('albarans_albaran_update', {'id': albaran.id});
 
-        });
+            $('form#' + albaran.form_id).ajaxSubmit({
+                success: albaran._done,
+                error: utils._fail,
+                complete: albaran._always,
+                url: url,
+                dataType: 'json'
+            });
 
+        },
+        _save_delete_modal: function (event) {
+            if(event != undefined) {
+                event.preventDefault();
+            }
+
+            $('#btn_lineas_delete').find('span')
+                    .removeClass('glyphicon')
+                    .removeClass('glyphicon-trash')
+                    .addClass('fa')
+                    .addClass('fa-gear')
+                    .addClass('fa-spin');
+
+            var deleteForm = $('div#form_lineas_delete_modal').find('form'),
+                    url = $(deleteForm).attr('action');
+
+            deleteForm.ajaxSubmit({
+                success: function (response, textStatus, jqXHR) {
+                    if(jqXHR.status == 202) {
+                        addGlobalMessage('success', response.message);
+                    }
+                    $('div#form_lineas_delete_modal').modal('hide');
+                    lineas._load();
+                },
+                error: utils._fail,
+                complete: lineas._always,
+                url: url,
+                dataType: 'json'
+            });
+        },
+        _done: function (response, textStatus, jqXHR) {
+
+            $('form#' + lineas.form_id).replaceWith($(response.view).find('form'));
+
+            if(jqXHR.status == 201 || jqXHR.status == 202) {
+                addGlobalMessage('success', response.message);
+
+                $('div#form_lineas_modal').modal('hide');
+                lineas._load();
+            }
+        },
+        _always: function(jqXHR, textStatus) {
+            // remove spinning
+            tabs._remove_loadding('lineas');
+            $('a[id^="btn_lineas_"]').find('span')
+                    .addClass('glyphicon')
+                    .addClass('glyphicon-save')
+                    .removeClass('fa')
+                    .removeClass('fa-gear')
+                    .removeClass('fa-spin');
+        },
+        _generar_importe_linea: function (event){
+            var data = {
+                producto_id: $('#' + lineas.form_id + '_producto').val(),
+                impuesto_id: $('#' + lineas.form_id + '_impuesto').val(),
+                cantidad_pedido: $('#' + lineas.form_id + '_cantidad_pedido').val(),
+                precio_unitario: $('#' + lineas.form_id + '_precio_unitario').val(),
+                porciento_descuento: $('#' + lineas.form_id + '_porciento_descuento').val()
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("impuesto_ajax_productos_all") }}',
+                data: data,
+                success: function(data) {
+                    var values = $.parseJSON(data);
+                    var importe_linea_text = $('#' + lineas.form_id + '_importe_linea');
+                    var precio_text = $('#' + lineas.form_id + '_precio_unitario');
+
+                    precio_text.val(values.precio);
+                    importe_linea_text.val(values.importeLinea);
+
+                    //$('#' + albaran.form_id + '_importe_total_lineas').val(montototal);
+                }
+            });
+        }
+    };
     </script>
 
 {% endblock javascripts %}

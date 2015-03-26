@@ -50,10 +50,10 @@ class NecesidadMaterialType extends AbstractType
                 ))//
             ->add('tercero', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
-                'query_builder' => function (EntityRepository $er) {
+                /*'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('t')
                         ->where('t.proveedor = true');
-                },
+                },*/
                 'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
