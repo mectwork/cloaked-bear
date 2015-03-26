@@ -16,7 +16,7 @@ class CategoriaProductoFilter extends AbstractType
         $builder
             ->add('valor', 'text', array(
                 'required' => false,
-                'label' => 'Código',
+                'label' => 'Valor',
                 'attr' => array(
                     'class' => 'form-control',
                 )

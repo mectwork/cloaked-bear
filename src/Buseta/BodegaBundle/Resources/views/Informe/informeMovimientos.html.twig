@@ -86,10 +86,10 @@
             $('input:hidden[name^="data_busqueda_movimiento_producto_type[fechaFin]_submit"]').val(fechaFin);
 
             $("#data_busqueda_movimiento_producto_type_fechaInicio").on("dp.change", function (e) {
-                $('#data_busqueda_movimiento_producto_type_fechaFin').data("DateTimePicker").minDate(e.date);
+                $('#data_busqueda_movimiento_producto_type_fechaFin').data("DateTimePicker").setMinDate(e.date);
             });
             $("#data_busqueda_movimiento_producto_type_fechaFin").on("dp.change", function (e) {
-                $('#data_busqueda_movimiento_producto_type_fechaInicio').data("DateTimePicker").maxDate(e.date);
+                $('#data_busqueda_movimiento_producto_type_fechaInicio').data("DateTimePicker").setMaxDate(e.date);
             });
 
         });

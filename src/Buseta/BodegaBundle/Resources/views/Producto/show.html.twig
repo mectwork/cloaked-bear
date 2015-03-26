@@ -109,16 +109,12 @@
     </table>
 
     <div class="form-actions">
-        {{ form_start(delete_form) }}
         <a class="btn btn-primary" href="{{ path('producto_edit', { 'id': entity.id }) }}"> Editar</a>
         <a class="btn btn-primary" href="{{ path('producto') }}"> Listado</a>
-        <button type="submit" class="btn btn-primary">Eliminar</button>
+        <a href="#delete" data-href="{{ path('producto_delete', {'id': entity.id}) }}" class="btn btn-danger">
+            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
         <a class="btn btn-primary" href="{{ path('producto_bitacora', { 'id': entity.id }) }}"> Bitácora</a>
-        {{ form_end(delete_form) }}
     </div>
-
-    <a href="#delete" data-href="{{ path('producto_delete', {'id': entity.id}) }}" class="btn btn-danger">
-        <span class="glyphicon glyphicon-trash"></span> {{ 'action.delete' | trans }}</a>
 
     {% include 'BusetaBodegaBundle:Producto:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
 

@@ -17,6 +17,11 @@ buseta_taller_observacion:
 buseta_taller_observaciondiagnostico:
     resource: "@BusetaTallerBundle/Controller/ObservacionDiagnosticoController.php"
     type: annotation
+
+buseta_taller_impuesto:
+    resource: "@BusetaTallerBundle/Controller/ImpuestoController.php"
+    type: annotation
+
 historicomantenimientos:
     resource: @BusetaTallerBundle/Controller/HistoricoMantenimientosController.php
     type: annotation

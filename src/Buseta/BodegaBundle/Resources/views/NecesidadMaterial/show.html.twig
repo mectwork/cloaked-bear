@@ -114,13 +114,24 @@
         <a class="btn btn-primary" href="{{ path('necesidadmaterial_edit', { 'id': entity.id }) }}"> Editar</a>
         <a class="btn btn-primary" href="{{ path('procesarNecesidad', { 'id': entity.id }) }}"> Procesar</a>
         <a class="btn btn-primary" href="{{ path('necesidadmaterial') }}"> Listado</a>
+        <a href="#delete" data-href="{{ path('necesidadmaterial_delete', {'id': entity.id}) }}" class="btn btn-danger">
+            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
     </div>
 
+    {% include 'BusetaBodegaBundle:NecesidadMaterial:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
 
 {% endblock %}
 
 
 {% block contenido %}
 
+{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var necesidadmaterialdeleteevent = new DeleteEvent('{{ path('necesidadmaterial') }}', 'div#necesidadmaterial_records_list', false);
+        necesidadmaterialdeleteevent.start_events();
+    </script>
 {% endblock %}

@@ -37,17 +37,26 @@
     </table>
 
     <div class="form-actions">
-        {{ form_start(delete_form) }}
         <a class="btn btn-primary" href="{{ path('impuesto_edit', { 'id': entity.id }) }}"> Editar</a>
         <a class="btn btn-primary" href="{{ path('impuesto') }}"> Listado</a>
-        <button type="sumbit" class="btn btn-primary">Eliminar</button>
-        {{ form_end(delete_form) }}
+        <a href="#delete" data-href="{{ path('impuesto_delete', {'id': entity.id}) }}" class="btn btn-danger">
+            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
     </div>
+
+    {% include 'BusetaTallerBundle:Impuesto:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
 
 {% endblock %}
 
 
 {% block contenido %}
 
+{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var impuestodeleteevent = new DeleteEvent('{{ path('impuesto') }}', 'div#impuesto_records_list', false);
+        impuestodeleteevent.start_events();
+    </script>
 {% endblock %}

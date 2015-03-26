@@ -9,8 +9,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\CategoriaProducto;
 use Buseta\BodegaBundle\Form\Type\CategoriaProductoType;
 
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
 /**
  * CategoriaProducto controller.
+ *
+ * @Route("/categoriaproducto")
  */
 class CategoriaProductoController extends Controller
 {
@@ -194,33 +200,53 @@ class CategoriaProductoController extends Controller
     }
     /**
      * Deletes a CategoriaProducto entity.
+     *
+     * @Route("/{id}/delete", name="categoria_producto_delete")
+     * @Method({"DELETE", "GET"})
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(CategoriaProducto $categoriaproducto, Request $request)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($categoriaproducto->getId());
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaBodegaBundle:CategoriaProducto')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find CategoriaProducto entity.');
-            }
-
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             try {
-                $em->remove($entity);
+                $em = $this->get('doctrine.orm.entity_manager');
+
+                $em->remove($categoriaproducto);
                 $em->flush();
 
-                $this->get('session')->getFlashBag()->add('success', 'Ha sido eliminado satisfactoriamente.');
+                $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 202);
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('success', $message);
+                }
             } catch (\Exception $e) {
-                $this->get('logger')->addCritical(
-                    sprintf('Ha ocurrido un error eliminando un CategoriaProducto. Detalles: %s',
-                        $e->getMessage()
-                    ));
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Categoría de Producto'), 'BusetaTallerBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
             }
         }
 
+        $renderView =  $this->renderView('@BusetaBodega/CategoriaProducto/delete_modal.html.twig', array(
+            'entity' => $categoriaproducto,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
         return $this->redirect($this->generateUrl('categoria_producto'));
     }
 

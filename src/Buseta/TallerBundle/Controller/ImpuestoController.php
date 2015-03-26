@@ -10,8 +10,14 @@ use Buseta\TallerBundle\Entity\Impuesto;
 use Buseta\TallerBundle\Form\Type\ImpuestoType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
 /**
  * Impuesto controller.
+ *
+ * @Route("/impuesto")
  */
 class ImpuestoController extends Controller
 {
@@ -247,33 +253,53 @@ class ImpuestoController extends Controller
     }
     /**
      * Deletes a Impuesto entity.
+     *
+     * @Route("/{id}/delete", name="impuesto_delete")
+     * @Method({"DELETE", "GET"})
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Impuesto $impuesto, Request $request)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($impuesto->getId());
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaTallerBundle:Impuesto')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Impuesto entity.');
-            }
-
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             try {
-                $em->remove($entity);
+                $em = $this->get('doctrine.orm.entity_manager');
+
+                $em->remove($impuesto);
                 $em->flush();
 
-                $this->get('session')->getFlashBag()->add('success', 'Ha sido eliminado satisfactoriamente.');
+                $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 202);
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('success', $message);
+                }
             } catch (\Exception $e) {
-                $this->get('logger')->addCritical(
-                    sprintf('Ha ocurrido un error eliminando un Impuesto. Detalles: %s',
-                        $e->getMessage()
-                    ));
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Impuesto'), 'BusetaTallerBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
             }
         }
 
+        $renderView =  $this->renderView('@BusetaTaller/Impuesto/delete_modal.html.twig', array(
+            'entity' => $impuesto,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
         return $this->redirect($this->generateUrl('impuesto'));
     }
 

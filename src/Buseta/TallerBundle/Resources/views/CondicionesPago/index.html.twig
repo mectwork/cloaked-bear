@@ -64,9 +64,9 @@
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
         <tr>
-            <th>Nombre{{ knp_pagination_sortable(entities, 'Nombre', 't.nombre') }}</th>
-            <th>Meses de Plazo{{ knp_pagination_sortable(entities, 'Meses de Plazo', 't.meses_plazo') }}</th>
-            <th>Días de Plazo{{ knp_pagination_sortable(entities, 'Días de Plazo', 't.dias_plazo') }}</th>
+            <th>Nombre{#{{ knp_pagination_sortable(entities, 'Nombre', 't.nombre') }}#}</th>
+            <th>Meses de Plazo{#{{ knp_pagination_sortable(entities, 'Meses de Plazo', 't.meses_plazo') }}#}</th>
+            <th>Días de Plazo{#{{ knp_pagination_sortable(entities, 'Días de Plazo', 't.dias_plazo') }}#}</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
@@ -74,8 +74,8 @@
         {% for entity in entities %}
             <tr>
                 <td>{{ entity.nombre }}</td>
-                <td>{{ entity.meses_plazo }}</td>
-                <td>{{ entity.dias_plazo }}</td>
+                <td>{{ entity.mesesplazo }}</td>
+                <td>{{ entity.diasplazo }}</td>
                 {#<td>
                     {% if entity.ispersona %}
                         <span class="glyphicon glyphicon-ok"></span>

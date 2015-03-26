@@ -64,10 +64,10 @@
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
         <tr>
-            <th>Nombre {{ knp_pagination_sortable(entities, 'Nombre', 't.nombre') }}</th>
-            <th>Número {{ knp_pagination_sortable(entities, 'Número', 't.numero') }}</th>
-            <th>Tipo {{ knp_pagination_sortable(entities, 'Tipo', 't.tipo') }}</th>
-            <th>Tarifa {{ knp_pagination_sortable(entities, 'Tarifa', 't.tarifa') }}</th>
+            <th>Nombre {#{{ knp_pagination_sortable(entities, 'Nombre', 't.nombre') }}#}</th>
+            <th>Número {#{{ knp_pagination_sortable(entities, 'Número', 't.numero') }}#}</th>
+            <th>Tipo {#{{ knp_pagination_sortable(entities, 'Tipo', 't.tipo') }}#}</th>
+            <th>Tarifa {#{{ knp_pagination_sortable(entities, 'Tarifa', 't.tarifa') }}#}</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
@@ -92,11 +92,11 @@
                                     class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </div>
 
-                    {#<div class="btn-group">
+                    <div class="btn-group">
                         <a class="btn btn-danger btn-xs"
                            href="{{ path('impuesto_edit', { 'id': entity.id }) }}"><span
                                     class="glyphicon glyphicon-edit"> Editar</span></a>
-                    </div>#}
+                    </div>
                 </td>
             </tr>
         {% else %}

@@ -33,7 +33,6 @@ class ImpuestoType extends AbstractType
             ->add('tipo', 'choice', array(
                     'choices' => array(
                         'fijo'       => 'Fijo',
-                        'none'       => 'None',
                         'porcentaje' => 'Porcentaje (%)', ),
                     'multiple' => false,
                     'expanded' => false,

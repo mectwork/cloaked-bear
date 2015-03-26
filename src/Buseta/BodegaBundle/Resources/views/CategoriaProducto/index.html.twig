@@ -56,8 +56,8 @@
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
         <tr>
-            <th>Valor {{ knp_pagination_sortable(entities, 'Valor', 't.valor') }}</th>
-            <th>Descripción {{ knp_pagination_sortable(entities, 'Descripción', 't.descripcion') }}</th>
+            <th>Valor{# {{ knp_pagination_sortable(entities, 'Valor', 't.valor') }}#}</th>
+            <th>Descripción{# {{ knp_pagination_sortable(entities, 'Descripción', 't.descripcion') }}#}</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
@@ -70,15 +70,15 @@
                 <td style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"
-                           href="{{ path('reporte_show', { 'id': entity.id }) }}"><span
+                           href="{{ path('categoria_producto_show', { 'id': entity.id }) }}"><span
                                     class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </div>
 
-                    {#<div class="btn-group">
+                    <div class="btn-group">
                         <a class="btn btn-danger btn-xs"
-                           href="{{ path('reporte_edit', { 'id': entity.id }) }}"><span
+                           href="{{ path('categoria_producto_edit', { 'id': entity.id }) }}"><span
                                     class="glyphicon glyphicon-edit"> Editar</span></a>
-                    </div>#}
+                    </div>
                 </td>
             </tr>
         {% else %}

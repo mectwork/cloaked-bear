@@ -4,8 +4,12 @@
 
 {% endblock %}
 
+{% block title %}
+    Adicionar Nuevo Almacén
+{% endblock %}
+
 {% block titulo_encabezado %}
-    Adicionar nueva bodega
+    Adicionar Nuevo Almacén
 {% endblock %}
 
 {% block area_trabajo %}
@@ -13,25 +17,21 @@
     <form action="{{ path('bodega_create') }}" method="post" {{ form_enctype(form) }}>
         <div class="row show-grid">
             <div class="col-md-6">
-                <label>Código:</label>
-                {{ form_widget(form.codigo) }}
+                {{ form_row(form.codigo) }}
             </div>
 
             <div class="col-md-6">
-                <label>Nombre de bodega:</label>
-                {{ form_widget(form.nombre) }}
+                {{ form_row(form.nombre) }}
             </div>
         </div>
 
         <div class="row show-grid">
             <div class="col-md-6">
-                <label>Descripción:</label>
-                {{ form_widget(form.descripcion) }}
+                {{ form_row(form.descripcion) }}
             </div>
 
             <div class="col-md-6">
-                <label>Dirección:</label>
-                {{ form_widget(form.direccion) }}
+                {{ form_row(form.direccion) }}
             </div>
         </div>
 

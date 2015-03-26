@@ -6,8 +6,12 @@
 
 {% endblock %}
 
+{% block title %}
+    Realizar Nuevo Movimiento entre Almacenes
+{% endblock %}
+
 {% block titulo_encabezado %}
-    Realizar nuevo movimiento entre almacenes
+    Realizar Nuevo Movimiento entre Almacenes
 {% endblock %}
 
 {% block area_trabajo %}
@@ -209,7 +213,7 @@
                 var values = $.parseJSON(data);
                 var $almacenDestino_selector = $({{ form.almacenDestino.vars.id }});
 
-                $almacenDestino_selector.html('<option>---Seleccione almacén destino---</option>');
+                $almacenDestino_selector.html('<option>---Seleccione---</option>');
 
                 for (var i=0, total = values.length; i < total; i++) {
                     $almacenDestino_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
@@ -217,8 +221,5 @@
             }
         });
     });
-
-
     </script>
-
 {% endblock javascripts %}

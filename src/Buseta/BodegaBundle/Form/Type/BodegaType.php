@@ -17,30 +17,30 @@ class BodegaType extends AbstractType
         $builder
             ->add('codigo', 'text', array(
                     'required' => false,
+                    'label' => 'Código',
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('nombre', 'text', array(
                     'required' => true,
+                    'label' => 'Nombre',
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 250px',
                     ),
                 ))
             ->add('descripcion', 'textarea', array(
                     'required' => false,
+                    'label' => 'Descripción',
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 350px',
                     ),
                 ))
             ->add('direccion', 'textarea', array(
                     'required' => false,
+                    'label' => 'Dirección',
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 350px',
                     ),
                 ))
         ;

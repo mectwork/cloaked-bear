@@ -17,7 +17,7 @@ class MovimientosProductosType extends AbstractType
         $builder
             ->add('producto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Producto',
-                'empty_value' => '---Seleccione un producto---',
+                'empty_value' => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),

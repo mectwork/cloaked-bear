@@ -118,6 +118,10 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script src="{{ asset('vendors/funciones_datetime_new.js') }}"></script>
+    <script type="text/javascript">
+        $('#data_busqueda_informe_stock_type_fecha').datetimepicker({
+            'format': 'DD/MM/YYYY'
+        });
+    </script>
 
 {% endblock %}

@@ -271,7 +271,6 @@ class NomencladorData extends AbstractFixture
     private $tipo_impuestos = array(
         'fijo',
         'porcentaje',
-        'porcentaje',
     );
 
     private $tarifa_impuestos = array(

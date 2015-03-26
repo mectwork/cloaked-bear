@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * Class NecesidadMaterialLineaController
@@ -285,26 +286,55 @@ class NecesidadMaterialLineaController extends Controller
         ));
     }
     /**
-     * Deletes a NecesidadMaterialLinea entity.
+     * Deletes a NecesidadMaterialLina entity.
+     *
+     * @Route("/{id}/delete", name="necesidad_material_linea_delete")
+     * @Method({"DELETE", "GET"})
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(NecesidadMaterialLinea $necesidadMaterialLinea, Request $request)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($necesidadMaterialLinea->getId());
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaBodegaBundle:NecesidadMaterialLinea')->find($id);
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+            try {
+                $em = $this->get('doctrine.orm.entity_manager');
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find NecesidadMaterialLinea entity.');
+                $em->remove($necesidadMaterialLinea);
+                $em->flush();
+
+                $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 202);
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('success', $message);
+                }
+            } catch (\Exception $e) {
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Línea de Necesidad de Material'), 'BusetaTallerBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
             }
-
-            $em->remove($entity);
-            $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('linea'));
+        $renderView =  $this->renderView('@BusetaBodega/NecesidadMaterial/Linea/delete_modal.html.twig', array(
+            'entity' => $necesidadMaterialLinea,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
+        return $this->redirect($this->generateUrl('necesidadmaterial_lineas_list'));
     }
 
     /**
@@ -319,7 +349,6 @@ class NecesidadMaterialLineaController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('linea_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
     }

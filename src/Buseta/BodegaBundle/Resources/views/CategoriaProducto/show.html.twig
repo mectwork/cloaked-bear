@@ -27,18 +27,26 @@
     </table>
 
     <div class="form-actions">
-        {{ form_start(delete_form) }}
         <a class="btn btn-primary" href="{{ path('categoria_producto_edit', { 'id': entity.id }) }}"> Editar</a>
         <a class="btn btn-primary" href="{{ path('categoria_producto') }}"> Listado</a>
-        <button type="sumbit" class="btn btn-primary">Eliminar</button>
-        {{ form_end(delete_form) }}
+        <a href="#delete" data-href="{{ path('categoria_producto_delete', {'id': entity.id}) }}" class="btn btn-danger">
+            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
     </div>
 
+    {% include 'BusetaBodegaBundle:CategoriaProducto:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
 
 {% endblock %}
 
 
 {% block contenido %}
 
+{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var categoriaproductodeleteevent = new DeleteEvent('{{ path('categoria_producto') }}', 'div#categoriaproducto_records_list', false);
+        categoriaproductodeleteevent.start_events();
+    </script>
 {% endblock %}

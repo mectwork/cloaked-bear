@@ -390,21 +390,19 @@ class ProductoController extends Controller
         if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             try {
                 $em = $this->get('doctrine.orm.entity_manager');
-                //if($producto->getReporte() && $observacion->getReporte()->getDiagnostico()) {
-                    if($request->isXmlHttpRequest()) {
-                        return new JsonResponse(array(
-                            'message' => 'No se puede eliminar un producto de reporte asociado a otra entidad',
-                        ), 500);
-                    }
-                //}
 
                 $em->remove($producto);
                 $em->flush();
 
+                $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
+
                 if($request->isXmlHttpRequest()) {
                     return new JsonResponse(array(
-                        'message' => $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle'),
+                        'message' => $message,
                     ), 202);
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('success', $message);
                 }
             } catch (\Exception $e) {
                 $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Producto'), 'BusetaTallerBundle');
@@ -426,7 +424,8 @@ class ProductoController extends Controller
         if($request->isXmlHttpRequest()) {
             return new JsonResponse(array('view' => $renderView));
         }
-        return new Response($renderView);
+        return $this->redirect($this->generateUrl('producto'));
+
     }
 
     /**

@@ -31,7 +31,7 @@ class AddAlmacenDestinoFieldSubscriber implements EventSubscriberInterface
         if ($almacenOrigen === null) {
             $form->add('almacenDestino', 'choice', array(
                 'choices' => array(),
-                'empty_value'   => '---Seleccione almacén destino---',
+                'empty_value'   => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -39,7 +39,7 @@ class AddAlmacenDestinoFieldSubscriber implements EventSubscriberInterface
         } else {
             $form->add('almacenDestino', 'entity', array(
                 'class'         => 'BusetaBodegaBundle:Bodega',
-                'empty_value'   => '---Seleccione almacén destino---',
+                'empty_value'   => '---Seleccione---',
                 'auto_initialize' => false,
                 'data'          => $almacenDestino,
                 'attr' => array(
@@ -79,7 +79,7 @@ class AddAlmacenDestinoFieldSubscriber implements EventSubscriberInterface
             $this->addAlmacenDestinoForm($form);
         } else {
             $almacenDestino = ($data->getAlmacenDestino()) ? $data->getAlmacenDestino() : null;
-            $almacenOrigen = ($almacenDestino) ? $almacenDestino->getAlmacenOrigen() : null;
+            $almacenOrigen = ($data->getAlmacenOrigen()) ? $data->getAlmacenOrigen() : null;
             $this->addAlmacenDestinoForm($form, $almacenDestino, $almacenOrigen);
         }
     }

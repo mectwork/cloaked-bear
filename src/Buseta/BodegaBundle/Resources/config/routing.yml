@@ -37,3 +37,7 @@ buseta_bodega_necesidadmateriallinea:
 buseta_bodega_productoprecio:
     resource: "@BusetaBodegaBundle/Controller/PrecioProductoController.php"
     type: annotation
+
+buseta_bodega_categoriaproducto:
+    resource: "@BusetaBodegaBundle/Controller/CategoriaProductoController.php"
+    type: annotation
