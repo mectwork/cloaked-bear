@@ -7,12 +7,15 @@ use Buseta\BodegaBundle\Form\Model\TerceroModel;
 use Buseta\BodegaBundle\Form\Type\DireccionType;
 use Buseta\BodegaBundle\Form\Filter\TerceroFilter;
 use Buseta\BodegaBundle\Form\Model\TerceroFilterModel;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Buseta\BodegaBundle\Entity\Tercero;
 use Buseta\BodegaBundle\Form\Type\TerceroType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Tercero controller.
@@ -104,46 +107,60 @@ class TerceroController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new TerceroModel();
-        $form = $this->createCreateForm($entity);
+        $model = new TerceroModel();
+        $form = $this->createCreateForm($model);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->get('doctrine.orm.entity_manager');
 
-            if ($entity->getDireccionId() !== null && $entity->getDireccionId() !== '') {
-                $direccion = $em->find('BusetaBodegaBundle:Direccion', $entity->getDireccionId());
+            $tercero = $model->getEntityData();
+
+            try {
+                $em->persist($tercero);
+                $em->flush();
+
+                $message = $this->get('translator')->trans('messages.create.success', array(), 'BusetaBodegaBundle');
+                if($request->isXmlHttpRequest()) {
+                    $form = $this->createEditForm($model);
+
+                    $view = $this->renderView('BusetaBodegaBundle:Tercero:edit.html.twig', array(
+                        'edit_form' => $form->createView(),
+                        'entity' => $tercero,
+                    ));
+
+                    return new JsonResponse(array(
+                        'message' => $message,
+                        'view' => $view,
+                    ));
+                }
+
+                $this->get('session')->getFlashBag()->add('success', $message);
+
+                return $this->redirect($this->generateUrl('tercero_show', array('id' => $tercero->getId())));
+            } catch (\Exception $e) {
+                $error = $this->get('translator')->trans('messages.create.error.%key%', array('key' => 'Tercero'), 'BusetaBodegaBundle');
+                $this->get('logger')->addCritical(sprintf('%s .%s', $error, $e->getMessage()));
+
+                if ($request->isXmlHttpRequest()) {
+                    $form->addError(new FormError($error));
+                } else {
+                    $this->get('session')->getFlashBag()->add('danger', $error);
+                }
             }
-
-            $tercero = new Tercero();
-            $tercero->setActivo($entity->getActivo());
-
-            if (isset($direccion)) {
-                $tercero->setDireccion($direccion);
-            }
-
-            $tercero->setAlias($entity->getAlias());
-            $tercero->setApellidos($entity->getApellidos());
-            $tercero->setCliente($entity->getCliente());
-            $tercero->setCodigo($entity->getCodigo());
-            $tercero->setInstitucion($entity->getDireccion());
-            $tercero->setNombres($entity->getNombres());
-            $tercero->setProveedor($entity->getProveedor());
-            $tercero->setPersona($entity->getPersona());
-            $em->persist($tercero);
-
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('tercero_show', array('id' => $tercero->getId())));
         }
 
-        $direccion = $this->createForm(new DireccionType());
-
-        return $this->render('BusetaBodegaBundle:Tercero:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-            'direccion' => $direccion->createView(),
+        $view = $this->renderView('BusetaBodegaBundle:Tercero:new.html.twig', array(
+            'form' => $form->createView(),
         ));
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(array(
+                'view' => $view,
+            ));
+        }
+
+        return new Response($view);
     }
 
     /**
@@ -167,8 +184,6 @@ class TerceroController extends Controller
 
     /**
      * Displays a form to create a new Tercero entity.
-     *
-     * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      *
@@ -212,6 +227,10 @@ class TerceroController extends Controller
     /**
      * Displays a form to edit an existing Tercero entity.
      *
+     * @param Tercero $tercero
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @Route("/{id}/edit", name="tercero_edit")
      * @Method("GET")
      */
@@ -219,15 +238,10 @@ class TerceroController extends Controller
     {
         $model = new TerceroModel($tercero);
         $editForm = $this->createEditForm($model);
-        $deleteForm = $this->createDeleteForm($tercero->getId());
-
-        $direccionForm = $this->createForm(new DireccionType(), $tercero->getDireccion());
 
         return $this->render('BusetaBodegaBundle:Tercero:edit.html.twig', array(
             'entity'      => $tercero,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-            'direccion'   => $direccionForm->createView(),
         ));
     }
 

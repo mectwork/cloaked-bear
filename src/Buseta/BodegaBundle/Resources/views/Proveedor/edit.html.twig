@@ -130,7 +130,7 @@
                 var href = $(e.target).attr('href');
 
                 proveedor.proveedor_id = $('input[id="' + proveedor.form_id + '_proveedorId"]').val();
-                proveedor.tercero_id = $('input[id="' + proveedor.form_id + '_terceroId"]').val();
+                proveedor.id = $('input[id="' + proveedor.form_id + '_terceroId"]').val();
 
                 if (href === '#direcciones') {
                     direccion._load();
@@ -152,7 +152,7 @@
             var url = Routing.generate('proveedor_create');
 
             proveedor.proveedor_id = $('input[id="' + proveedor.form_id + '_proveedorId"]').val();
-            proveedor.tercero_id = $('input[id="' + proveedor.form_id + '_terceroId"]').val();
+            proveedor.id = $('input[id="' + proveedor.form_id + '_terceroId"]').val();
 
             if(proveedor.proveedor_id !== '' && proveedor.proveedor_id !== undefined) {
                 url = Routing.generate('proveedor_update', {'id': proveedor.proveedor_id});
@@ -173,7 +173,7 @@
                 addGlobalMessage('success', response.message);
                 // Proveedor Id
                 proveedor.proveedor_id = $('input[id="' + proveedor.form_id + '_proveedorId"]').val();
-                proveedor.tercero_id = $('input[id="' + proveedor.form_id + '_terceroId"]').val();
+                proveedor.id = $('input[id="' + proveedor.form_id + '_terceroId"]').val();
             } else if(jqXHR.status == 202) {
                 addGlobalMessage('success', response.message);
             }
@@ -214,7 +214,7 @@
 
             //tabs._add_loadding(direccion.tabname);
 
-            var url = Routing.generate('direccion', {'tercero': proveedor.tercero_id});
+            var url = Routing.generate('direccion', {'tercero': proveedor.id});
             if($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
                 url = $(this).attr('href');
             }
@@ -231,7 +231,7 @@
                 e.preventDefault();
             }
 
-            var url = Routing.generate('direccion_new', {'tercero': proveedor.tercero_id});
+            var url = Routing.generate('direccion_new', {'tercero': proveedor.id});
             if($(this).attr('href') !== undefined && $(this).attr('href') === '#btn_direccion_edit') {
                 url = Routing.generate('direccion_edit', {'id': $(this).data('content')});
             }
@@ -316,7 +316,7 @@
 
             tabs._add_loadding(contacto.tabname);
 
-            var url = Routing.generate('mecanismocontacto', {'tercero': proveedor.tercero_id});
+            var url = Routing.generate('mecanismocontacto', {'tercero': proveedor.id});
             if($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
                 url = $(this).attr('href');
             }
@@ -335,7 +335,7 @@
 
             console.log($(this).attr('href'));
 
-            var url = Routing.generate('mecanismocontacto_new', {'tercero': proveedor.tercero_id});
+            var url = Routing.generate('mecanismocontacto_new', {'tercero': proveedor.id});
             if($(this).attr('href') !== undefined && $(this).attr('href') === '#btn_contacto_edit') {
                 url = Routing.generate('mecanismocontacto_edit', {'id': $(this).data('content')});
             }

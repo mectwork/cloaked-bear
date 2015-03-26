@@ -1,0 +1,56 @@
+{% form_theme form '@BusetaBodega/Form/fields.twig' %}
+
+<form name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" action="{{ form.vars.action }}" method="post"
+        enctype="multipart/form-data">
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+    {{ form_errors(form) }}
+
+    <div class="row show-grid">
+        <div class="col-md-2">
+            <a href="#" class="thumbnail">
+                {%  if entity is defined and entity.foto %}
+                    <img src="{{ asset(entity.foto.webPath)}}" alt="Imagen" width="152" height="120"/>
+                {% else %}
+                    <img src="{{ asset('bundles/busetabodega/images/default.png') }}" alt="Imagen por defecto"/>
+                {% endif %}
+            </a>
+            {{ form_row(form.foto) }}
+        </div>
+
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.codigo) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.alias) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.nombres) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.apellidos) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.usuario) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.activo) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            <a id="btn_tercero_save" class="btn btn-primary" href="#save">{{ 'actions.confirm' | trans({}, 'BusetaBodegaBundle') }}</a>
+            <a class="btn btn-default" href="{{ path('tercero') }}"> {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+</form>

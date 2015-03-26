@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Form\Type;
 
+use Buseta\UploadBundle\Form\Type\UploadResourcesType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -16,75 +17,35 @@ class TerceroType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('id', 'hidden', array(
+                'required' => false,
+            ))
+            ->add('foto', new UploadResourcesType(), array(
+                'required' => false,
+                'label' => false,
+                'attr' => array(
+                    'class' => 'hidden',
+                ),
+            ))
             ->add('codigo', 'text', array(
                     'required' => false,
                     'label' => 'Código',
-                    'attr'   => array(
-                        'class' => 'form-control',
-                        'style' => 'width: 300px',
-                    ),
                 ))
             ->add('nombres', 'text', array(
                     'required' => false,
-                    'attr'   => array(
-                        'class' => 'form-control',
-                        'style' => 'width: 300px',
-                    ),
                 ))
             ->add('apellidos', 'text', array(
                     'required' => false,
-                    'attr'   => array(
-                        'class' => 'form-control',
-                        'style' => 'width: 300px',
-                    ),
                 ))
             ->add('alias', 'text', array(
                     'required' => false,
-                    'attr'   => array(
-                        'class' => 'form-control',
-                        'style' => 'width: 250px',
-                    ),
                 ))
-            ->add('cliente', 'checkbox', array(
-                    'required' => false,
-                ))
-            ->add('institucion', 'checkbox', array(
-                    'label' => 'Institución',
-                    'required' => false,
-                ))
-            ->add('proveedor', 'checkbox', array(
-                    'required' => false,
-                ))
-            ->add('persona', 'checkbox', array(
-                'required' => false,
-            ))
-            ->add('activo', 'checkbox', array(
-                    'required' => false,
-                ))
-            ->add('direccion', 'text', array(
-                'label' => 'Dirección',
-                'required' => false,
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('direccionId', 'hidden', array(
-                'required' => false,
-            ))
             ->add('usuario','entity',array(
                 'class' => 'BusetaSecurityBundle:User',
-                'attr' => array(
-                    'class' => 'form-control',
-                    'style' => 'width: 300px',
-                )
             ))
-            ->add('mecanismoscontacto','collection',array(
-                    'type' => new MecanismoContactoType(),
-                    'label' => ' ',
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                ))
+            ->add('activo', 'checkbox', array(
+                'required' => false,
+            ))
         ;
     }
 
@@ -103,6 +64,6 @@ class TerceroType extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_bodegabundle_tercero';
+        return 'bodega_tercero';
     }
 }

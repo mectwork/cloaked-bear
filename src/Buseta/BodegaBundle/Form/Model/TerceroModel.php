@@ -19,6 +19,8 @@ class TerceroModel implements TerceroModelInterface
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      */
     private $codigo;
 
