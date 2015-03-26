@@ -12,7 +12,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\Producto;
 use Buseta\BodegaBundle\Form\Type\ProductoType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
+
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Producto controller.
  *
@@ -204,6 +209,7 @@ class ProductoController extends Controller
             try {
                 $entity = $productoModel->getEntityData();
 
+
                 $em->persist($entity);
                 $em->flush();
 
@@ -261,16 +267,9 @@ class ProductoController extends Controller
     public function newAction()
     {
         $form   = $this->createCreateForm(new ProductoModel());
-        $entity = new Producto();
 
-        $precioProducto = new PrecioProducto();
-
-        $precioProducto = $this->createForm(new PrecioProductoType());
-        $form   = $this->createCreateForm($entity);
 
         return $this->render('BusetaBodegaBundle:Producto:new.html.twig', array(
-            'entity' => $entity,
-            'precioProducto'  => $precioProducto->createView(),
             'form'   => $form->createView(),
         ));
     }
@@ -297,109 +296,137 @@ class ProductoController extends Controller
 
     /**
      * Displays a form to edit an existing Producto entity.
+     *
+     * @Route("/{id}/edit", name="productos_producto_edit", methods={"GET"}, options={"expose":true})
      */
-    public function editAction($id)
+    public function editAction(Producto $producto)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BusetaBodegaBundle:Producto')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Producto entity.');
-        }
-
-        $precio = $this->createForm(new PrecioProductoType());
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createEditForm(new ProductoModel($producto));
+        $deleteForm = $this->createDeleteForm($producto->getId());
 
         return $this->render('BusetaBodegaBundle:Producto:edit.html.twig', array(
-            'entity'      => $entity,
-            'precioProducto' => $precio->createView(),
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'entity'        => $producto,
+            'edit_form'     => $editForm->createView(),
+            'delete_form'   => $deleteForm->createView(),
         ));
     }
 
     /**
      * Creates a form to edit a Producto entity.
      *
-     * @param Producto $entity The entity
+     * @param ProductoModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(Producto $entity)
+    private function createEditForm(ProductoModel $entity)
     {
-        $form = $this->createForm(new ProductoType(), $entity, array(
-            'action' => $this->generateUrl('producto_update', array('id' => $entity->getId())),
+        $form = $this->createForm('bodega_producto', $entity, array(
+            'action' => $this->generateUrl('productos_producto_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
-
-        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
 
     /**
      * Edits an existing Producto entity.
+     *
+     * @Route("/{id}/update", name="productos_producto_update", methods={"POST","PUT"}, options={"expose":true})
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, Producto $producto)
     {
-        $em = $this->getDoctrine()->getManager();
+        $productoModel = new ProductoModel($producto);
+        $editForm = $this->createEditForm($productoModel);
 
-        $entity = $em->getRepository('BusetaBodegaBundle:Producto')->find($id);
+        $editForm->handleRequest($request);
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em     = $this->get('doctrine.orm.entity_manager');
+            $trans  = $this->get('translator');
+            $logger = $this->get('logger');
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Producto entity.');
+            try {
+                $producto->setModelData($productoModel);
+                $em->flush();
+
+                $renderView = $this->renderView('@BusetaBodega/Producto/form_template.html.twig', array(
+                    'form'     => $editForm->createView(),
+                ));
+
+                return new JsonResponse(array(
+                    'view' => $renderView,
+                    'message' => $trans->trans('messages.update.success', array(), 'BusetaBodegaBundle')
+                ), 202);
+            } catch (\Exception $e) {
+                $logger->addCritical(sprintf(
+                    $trans->trans('messages.update.success', array(), 'BusetaBodegaBundle'). '. Detalles: %s',
+                    $e->getMessage()
+                ));
+
+                new JsonResponse(array(
+                    'message' => $trans->trans('messages.update.error.%entidad%', array('entidad' => 'Producto'), 'BusetaBodegaBundle')
+                ), 500);
+            }
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->submit($request);
-
-        if ($editForm->isValid()) {
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('producto_show', array('id' => $entity->getId())));
-        }
-
-        return $this->render('BusetaBodegaBundle:Producto:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+        $renderView = $this->renderView('@BusetaBodega/Producto/form_template.html.twig', array(
+            'form'     => $editForm->createView(),
         ));
+
+        return new JsonResponse(array('view' => $renderView));
     }
 
     /**
      * Deletes a Producto entity.
+     *
+     * @Route("/{id}/delete", name="producto_delete")
+     * @Method({"DELETE", "GET"})
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Producto $producto, Request $request)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($producto->getId());
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaBodegaBundle:Producto')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Producto entity.');
-            }
-
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             try {
-                $em->remove($entity);
+                $em = $this->get('doctrine.orm.entity_manager');
+                //if($producto->getReporte() && $observacion->getReporte()->getDiagnostico()) {
+                    if($request->isXmlHttpRequest()) {
+                        return new JsonResponse(array(
+                            'message' => 'No se puede eliminar un producto de reporte asociado a otra entidad',
+                        ), 500);
+                    }
+                //}
+
+                $em->remove($producto);
                 $em->flush();
 
-                $this->get('session')->getFlashBag()->add('success', 'Ha sido eliminado satisfactoriamente.');
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle'),
+                    ), 202);
+                }
             } catch (\Exception $e) {
-                $this->get('logger')->addCritical(
-                    sprintf('Ha ocurrido un error eliminando un Producto. Detalles: %s',
-                        $e->getMessage()
-                    ));
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Producto'), 'BusetaTallerBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
             }
         }
 
-        return $this->redirect($this->generateUrl('producto'));
+        $renderView =  $this->renderView('@BusetaBodega/Producto/delete_modal.html.twig', array(
+            'entity' => $producto,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
+        return new Response($renderView);
     }
 
     /**

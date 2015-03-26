@@ -6,12 +6,91 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\PrecioProducto;
 use Buseta\BodegaBundle\Form\Type\PrecioProductoType;
+use Buseta\BodegaBundle\Entity\Producto;
+
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 /**
  * PrecioProducto controller.
+ *
+ * @Route("/precioproducto")
  */
 class PrecioProductoController extends Controller
 {
+    /**
+     * @param Producto $producto
+     * @return Response
+     *
+     * @Route("/list/{producto}", name="producto_precios_list", methods={"GET"}, options={"expose":true})
+     * @ParamConverter("producto", options={"mapping":{"producto":"id"}})
+     */
+    public function listAction(Producto $producto, Request $request)
+    {
+        $entities = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('BusetaBodegaBundle:PrecioProducto')
+            ->findAllByProductoId($producto->getId());
+
+        $entities = $this->get('knp_paginator')
+            ->paginate(
+                $entities,
+                $request->query->get('page', 1),
+                5
+            );
+
+        return $this->render('@BusetaBodega/Producto/Precio/list_template.html.twig', array(
+            'entities' => $entities,
+            'producto' => $producto,
+        ));
+    }
+
+    /**
+     * @param Producto $producto
+     * @param Request $request
+     *
+     * @throws \Exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/new/modal/{producto}", name="producto_precios_new_modal", methods={"GET","POST"}, options={"expose":true})
+     */
+    public function newModalAction(Producto $producto, Request $request)
+    {
+        $trans = $this->get('translator');
+        $handler = $this->get('buseta_producto.precio.handler');
+        $handler->bindData($producto);
+
+        $handler->setRequest($request);
+
+        if($handler->handle()) {
+            $renderView = $this->renderView('@BusetaBodega/Producto/Precio/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
+            ), 201);
+        }
+
+        if($handler->getError()) {
+            $renderView = $this->renderView('@BusetaBodega/Producto/Precio/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Precio'), 'BusetaBodegaBundle')
+            ), 500);
+        }
+
+        $renderView = $this->renderView('@BusetaBodega/Producto/Precio/modal_form.html.twig', array(
+            'form' => $handler->getForm()->createView(),
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
+    }
+
     public function select_precio_productos_allAction(Request $request)
     {
         if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {

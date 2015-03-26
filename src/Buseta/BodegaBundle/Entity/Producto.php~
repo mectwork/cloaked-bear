@@ -582,27 +582,5 @@ class Producto
         return $this->precioProducto;
     }
 
-    /**
-     * Set categoriaProducto.
-     *
-     * @param \Buseta\BodegaBundle\Entity\CategoriaProducto $categoriaProducto
-     *
-     * @return Producto
-     */
-    public function setCategoriaProducto(\Buseta\BodegaBundle\Entity\CategoriaProducto $categoriaProducto = null)
-    {
-        $this->categoriaProducto = $categoriaProducto;
-
-        return $this;
-    }
-
-    /**
-     * Get categoriaProducto.
-     *
-     * @return \Buseta\BodegaBundle\Entity\CategoriaProducto
-     */
-    public function getCategoriaProducto()
-    {
-        return $this->categoriaProducto;
-    }
+    
 }

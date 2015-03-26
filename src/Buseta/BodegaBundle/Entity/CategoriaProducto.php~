@@ -38,7 +38,7 @@ class CategoriaProducto
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Producto", mappedBy="categoriaProducto", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Producto", mappedBy="bodega", cascade={"all"})
      */
     private $productos;
 
@@ -95,47 +95,5 @@ class CategoriaProducto
     public function __toString()
     {
         return $this->valor;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->productos = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
-    /**
-     * Add productos
-     *
-     * @param \Buseta\BodegaBundle\Entity\Producto $productos
-     * @return CategoriaProducto
-     */
-    public function addProducto(\Buseta\BodegaBundle\Entity\Producto $productos)
-    {
-        $productos->setCategoriaProducto($this);
-
-        $this->productos[] = $productos;
-    
-        return $this;
-    }
-
-    /**
-     * Remove productos
-     *
-     * @param \Buseta\BodegaBundle\Entity\Producto $productos
-     */
-    public function removeProducto(\Buseta\BodegaBundle\Entity\Producto $productos)
-    {
-        $this->productos->removeElement($productos);
-    }
-
-    /**
-     * Get productos
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getProductos()
-    {
-        return $this->productos;
     }
 }

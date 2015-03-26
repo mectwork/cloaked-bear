@@ -17,15 +17,33 @@ class ProductoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $objeto = $builder->getFormFactory();
+        /*$objeto = $builder->getFormFactory();
         $subgrupos = new AddSubgrupoFieldSubscriber($objeto);
         $builder->addEventSubscriber($subgrupos);
         $grupos = new AddGrupoFieldSubscriber($objeto);
-        $builder->addEventSubscriber($grupos);
+        $builder->addEventSubscriber($grupos);*/
 
         $builder
             ->add('id', 'hidden', array(
                 'required' => false,
+            ))
+            ->add('grupos', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:Grupo',
+                'empty_value' => '---Seleccione---',
+                'label' => 'Grupo',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('subgrupos', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:Subgrupo',
+                'empty_value' => '---Seleccione---',
+                'label' => 'Subgrupo',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
             ))
             ->add('codigo', 'text', array(
                 'required' => false,
@@ -43,7 +61,7 @@ class ProductoType extends AbstractType
             ))
             ->add('uom', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:UOM',
-                'empty_value' => '---Seleccione UOM---',
+                'empty_value' => '---Seleccione---',
                 'label' => 'Unidad de Medida (UOM)',
                 'required' => false,
                 'attr' => array(
@@ -52,7 +70,7 @@ class ProductoType extends AbstractType
             ))
             ->add('condicion', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Condicion',
-                'empty_value' => '---Seleccione condición---',
+                'empty_value' => '---Seleccione---',
                 'label' => 'Condición',
                 'required' => false,
                 'attr' => array(
@@ -62,7 +80,7 @@ class ProductoType extends AbstractType
             ->add('bodega', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'required' => false,
-                'empty_value' => '---Seleccione bodega---',
+                'empty_value' => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -71,7 +89,7 @@ class ProductoType extends AbstractType
                 'class' => 'BusetaBodegaBundle:CategoriaProducto',
                 'label' => 'Categoría de Producto',
                 'required' => false,
-                'empty_value' => '---Seleccione categoría de producto---',
+                'empty_value' => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -98,7 +116,7 @@ class ProductoType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
-            ->add('activo', null, array(
+            ->add('activo', 'checkbox', array(
                 'label' => 'Activo',
                 'required' => false,
             ));

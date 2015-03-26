@@ -136,37 +136,31 @@ class ProductoModel
             if ($producto->getBodega()) {
                 $this->bodega  = $producto->getBodega();
             }
-
-            if (!$producto->getMovimientos()->isEmpty()) {
-                $this->movimientos = $producto->getMovimientos();
-            } else {
-                $this->movimientos = new ArrayCollection();
+            if ($producto->getMovimientos()) {
+                $this->movimientos  = $producto->getMovimientos();
             }
+            if ($producto->getAlbaranLinea()) {
+                $this->albaranLinea  = $producto->getAlbaranLinea();
+            }
+            if ($producto->getGrupos()) {
+                $this->grupos  = $producto->getGrupos();
+            }
+            if ($producto->getSubgrupos()) {
+                $this->subgrupos  = $producto->getSubgrupos();
+            }
+            if ($producto->getPrecioProducto()) {
+                $this->precioProducto  = $producto->getPrecioProducto();
+            }
+            if ($producto->getCategoriaProducto()) {
+                $this->categoriaProducto  = $producto->getCategoriaProducto();
+            }
+
             if (!$producto->getPedidoCompraLineas()->isEmpty()) {
                 $this->pedido_compra_lineas = $producto->getPedidoCompraLineas();
             } else {
                 $this->pedido_compra_lineas = new ArrayCollection();
             }
-            if (!$producto->getAlbaranLinea()->isEmpty()) {
-                $this->albaranLinea = $producto->getAlbaranLinea();
-            } else {
-                $this->albaranLinea = new ArrayCollection();
-            }
-            if (!$producto->getGrupos()->isEmpty()) {
-                $this->grupos = $producto->getGrupos();
-            } else {
-                $this->grupos = new ArrayCollection();
-            }
-            if (!$producto->getSubgrupos()->isEmpty()) {
-                $this->subgrupos = $producto->getSubgrupos();
-            } else {
-                $this->subgrupos = new ArrayCollection();
-            }
-            if (!$producto->getPrecioProducto()->isEmpty()) {
-                $this->precioProducto = $producto->getPrecioProducto();
-            } else {
-                $this->precioProducto = new ArrayCollection();
-            }
+
         }
     }
 
@@ -181,6 +175,7 @@ class ProductoModel
         $producto->setActivo($this->getActivo());
         $producto->setMinimoBodega($this->getMinimoBodega());
         $producto->setMaximoBodega($this->getMaximoBodega());
+        $producto->setCategoriaProducto($this->getCategoriaProducto());
 
         if ($this->getUom() !== null) {
             $producto->setUom($this->getUom());

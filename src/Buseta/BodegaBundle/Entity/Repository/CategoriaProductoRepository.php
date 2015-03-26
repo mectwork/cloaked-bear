@@ -5,6 +5,7 @@ namespace Buseta\BodegaBundle\Entity\Repository;
 use Buseta\BodegaBundle\Entity\CategoriaProducto;
 use Buseta\BodegaBundle\Form\Model\CategoriaProductoFilterModel;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 
 /**
  * CategoriaProductoRepository

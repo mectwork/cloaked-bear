@@ -1,11 +1,11 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
 {% block title %}
-    Adicionar Nuevo Producto
+    Modificar Datos del Producto
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Adicionar Nuevo Producto
+    Modificar Datos del Producto: "{{ entity.nombre }}"
 {% endblock %}
 
 {% block area_trabajo %}
@@ -22,7 +22,7 @@
             <div class="tab-content" style="padding-top: 20px;">
                 <!-- TAB BASICOS-->
                 <div class="tab-pane fade in active" id="basicos">
-                    {% include '@BusetaBodega/Producto/form_template.html.twig' with {'form': form} %}
+                    {% include '@BusetaBodega/Producto/form_template.html.twig' with {'form': edit_form} %}
                 </div>
 
                 <!-- TAB PRECIOS-->
@@ -47,7 +47,7 @@
             // init producto
             producto._load();
 
-            $('#{{ form.grupos.vars.id }}').change(function(){
+            $('#{{ edit_form.grupos.vars.id }}').change(function(){
                 var data = {
                     grupo_id: $(this).val()
                 };
@@ -59,7 +59,7 @@
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
-                        var $subgrupo_selector = $('#{{ form.subgrupos.vars.id }}');
+                        var $subgrupo_selector = $('#{{ edit_form.subgrupos.vars.id }}');
 
                         $subgrupo_selector.html('<option>---Seleccione---</option>');
 

@@ -19,6 +19,12 @@ tercero:
   btn:
     adicionar: Adicionar Tercero
 
+precio:
+  btn:
+    adicionar: Adicionar Precio
+  modal:
+    title: Adicionar Nuevo Precio
+
 producto:
   btn:
     adicionar: Adicionar Producto
