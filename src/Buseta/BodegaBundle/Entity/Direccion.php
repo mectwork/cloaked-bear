@@ -26,7 +26,7 @@ class Direccion
     /**
      * @var \stdClass
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="direccines")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="direcciones")
      */
     private $tercero;
 
