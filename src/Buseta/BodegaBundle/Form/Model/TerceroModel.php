@@ -26,6 +26,7 @@ class TerceroModel implements TerceroModelInterface
 
     /**
      * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @Assert\Valid()
      */
     private $foto;
 

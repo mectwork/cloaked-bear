@@ -9,6 +9,7 @@
 {% block area_trabajo %}
     <ul class="nav nav-tabs">
         <li class="active"><a href="#basicos" data-toggle="tab">Tercero</a></li>
+        <li><a href="#persona" data-toggle="tab">Persona</a></li>
         <li><a href="#direcciones" data-toggle="tab">Direcciones</a></li>
         <li><a href="#contactos" data-toggle="tab">Mecanismos de contacto</a></li>
     </ul>
@@ -20,15 +21,14 @@
             {% include 'BusetaBodegaBundle:Tercero:form_template.html.twig' with {'form': edit_form} %}
         </div>
 
-        <!-- TAB DIRECCIONES-->
-        <div class="tab-pane fade" id="direcciones">
+        <!-- TAB PERSONA-->
+        <div class="tab-pane fade" id="persona"></div>
 
-        </div>
+        <!-- TAB DIRECCIONES-->
+        <div class="tab-pane fade" id="direcciones"></div>
 
         <!-- TAB MECANISMOS DE CONTACTO-->
-        <div class="tab-pane fade" id="contactos">
-
-        </div>
+        <div class="tab-pane fade" id="contactos"></div>
     </div>
 {% endblock %}
 
@@ -53,7 +53,6 @@
             form_id: $('div#basicos').find('form').attr('id'),
             form_name: $('div#basicos').find('form').attr('name'),
             id: '',
-            tabs_open: false,
             _load: function () {
                 $('a#btn_tercero_save').on('click', tercero._save);
                 $('a.thumbnail').on('click', function (e) {
@@ -84,6 +83,8 @@
                         direccion._load();
                     } else if(href === '#contactos') {
                         contacto._load();
+                    }else if(href === '#persona') {
+                        persona._load();
                     }
                 });
             },
@@ -117,6 +118,78 @@
             _always: function() {
                 // remove spinning
                 tabs._remove_loadding(tercero.tabname);
+            }
+        }
+    </script>
+
+    <!-- Persona script -->
+    <script type="text/javascript">
+        var persona = {
+            tabname: 'persona',
+            form_id: '',
+            form_name: '',
+            id: '',
+            _start_events: function () {
+                // persona Id
+                persona.id  = $('input[id="' + persona.form_id + '_id"]').val();
+
+                $('a#btn_persona_save').on('click', persona._save);
+            },
+            _load: function () {
+                if (tercero.id == '') {
+                    return;
+                }
+
+                // add spinning to show loading process
+                tabs._add_loadding(persona.tabname);
+
+                // Persona Id
+                persona.id = $('input[id="' + persona.form_id + '_id"]').val();
+
+                var url = Routing.generate('tercero_persona_new',{'tercero': tercero.id});
+                if(persona.id !== '' && persona.id !== undefined) {
+                    url = Routing.generate('tercero_persona_edit',{'tercero': tercero.id, 'id': persona.id});
+                }
+
+                $.get(url).done(function (response, textStatus, jqXHR) {
+                    $('div#persona').html(response);
+
+                    // initialize
+                    persona.form_id    = $('div.tab-pane#persona').find('form').attr('id');
+                    persona.form_name  = $('div.tab-pane#persona').find('form').attr('name');
+
+                    persona._start_events();
+                }).fail(utils._fail).always(persona._always);
+            },
+            _save: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
+
+                // add spinning to show loading process
+                tabs._add_loadding(persona.tabname);
+
+                var personaForm    = $('form#' + persona.form_id);
+
+                personaForm.ajaxSubmit({
+                    success: persona._done,
+                    error: utils._fail,
+                    complete: persona._always,
+                    dataType: 'json'
+                });
+            },
+            _done: function (response, textStatus, jqXHR) {
+                $('form#' + persona.form_id).replaceWith(response.view);
+
+                if(jqXHR.status == 201 || jqXHR.status == 202) {
+                    addGlobalMessage('success', response.message);
+                }
+
+                persona._start_events();
+            },
+            _always: function() {
+                // remove spinning
+                tabs._remove_loadding(persona.tabname);
             }
         }
     </script>

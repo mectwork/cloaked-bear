@@ -85,7 +85,9 @@ class Tercero
     private $cliente;
 
     /**
-     * @ORM\Column(name="persona", type="boolean", nullable=true)
+     * @var \Buseta\BodegaBundle\Entity\Persona
+     *
+     * @ORM\OneToOne(targetEntity="Buseta\BodegaBundle\Entity\Persona", mappedBy="tercero")
      */
     private $persona;
 
@@ -325,7 +327,7 @@ class Tercero
     /**
      * Get persona.
      *
-     * @return boolean
+     * @return \Buseta\BodegaBundle\Entity\Persona | null
      */
     public function getPersona()
     {
@@ -581,7 +583,7 @@ class Tercero
     /**
      * Get foto
      *
-     * @return \Buseta\UploadBundle\Entity\UploadResources 
+     * @return \Buseta\UploadBundle\Entity\UploadResources
      */
     public function getFoto()
     {

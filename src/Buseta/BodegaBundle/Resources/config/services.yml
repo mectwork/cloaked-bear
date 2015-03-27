@@ -2,12 +2,20 @@ parameters:
     consecutivoCompra: 89
 
 services:
+    # hidden_entity Form Type
+    form.type.hidden_entity:
+        class: Buseta\BodegaBundle\Form\Type\HiddenEntityType
+        arguments:
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: form.type, alias: hidden_entity }
+
     bodega.movimiento.type:
         class: Buseta\BodegaBundle\Form\Type\MovimientoType
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'buseta_bodegabundle_movimiento'}
-    bodega.nececidad.type:
+    bodega.necesidad.type:
         class: Buseta\BodegaBundle\Form\Type\NecesidadMaterialType
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
