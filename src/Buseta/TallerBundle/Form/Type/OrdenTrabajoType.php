@@ -39,7 +39,8 @@ class OrdenTrabajoType extends AbstractType
                 ),
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('responsable');
-                    $qb->andWhere($qb->expr()->eq('responsable.persona', true));
+                    $qb->join('responsable.persona', 'persona')
+                        ->andWhere($qb->expr()->isNotNull('persona'));
 
                     return $qb;
                 },
@@ -53,7 +54,8 @@ class OrdenTrabajoType extends AbstractType
                 ),
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('responsable');
-                    $qb->andWhere($qb->expr()->eq('responsable.usuario', true));
+                    $qb->join('responsable.usuario', 'usuario')
+                        ->andWhere($qb->expr()->isNotNull('usuario'));
 
                     return $qb;
                 },
@@ -85,7 +87,8 @@ class OrdenTrabajoType extends AbstractType
                 ),
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('ayudante');
-                    $qb->andWhere($qb->expr()->eq('ayudante.persona', true));
+                    $qb->join('ayudante.persona', 'persona')
+                        ->andWhere($qb->expr()->isNotNull('persona'));
 
                     return $qb;
                 },
@@ -101,6 +104,11 @@ class OrdenTrabajoType extends AbstractType
             ))
             ->add('diagnostico','entity',array(
                 'class' => 'BusetaTallerBundle:Diagnostico',
+                'query_builder' => function (EntityRepository $er) {
+                    $qb = $er->createQueryBuilder('d');
+                    return $qb->join('d.reporte', 'reporte')
+                        ->where($qb->expr()->isNull('reporte'));
+                },
                 'empty_value' => '---Seleccione---',
                 'label' => 'Diagnóstico',
                 'required' => false,
@@ -164,8 +172,9 @@ class OrdenTrabajoType extends AbstractType
                     'class' => 'form-control',
                 ),
                 'query_builder' => function (EntityRepository $repository) {
-                    $qb = $repository->createQueryBuilder('persona');
-                    $qb->andWhere($qb->expr()->eq('persona.persona', true));
+                    $qb = $repository->createQueryBuilder('tercero');
+                    $qb->join('tercero.persona', 'persona')
+                        ->andWhere($qb->expr()->isNotNull('persona'));
 
                     return $qb;
                 },
@@ -178,8 +187,9 @@ class OrdenTrabajoType extends AbstractType
                     'class' => 'form-control',
                 ),
                 'query_builder' => function (EntityRepository $repository) {
-                    $qb = $repository->createQueryBuilder('persona');
-                    $qb->andWhere($qb->expr()->eq('persona.persona', true));
+                    $qb = $repository->createQueryBuilder('tercero');
+                    $qb->join('tercero.persona', 'persona')
+                        ->andWhere($qb->expr()->isNotNull('persona'));
 
                     return $qb;
                 },

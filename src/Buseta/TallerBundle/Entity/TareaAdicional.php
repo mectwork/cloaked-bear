@@ -38,6 +38,7 @@ class TareaAdicional
 
     /**
      * @var \Buseta\TallerBundle\Entity\OrdenTrabajo
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\OrdenTrabajo", inversedBy="tareasAdicionales")
      */
     private $ordenTrabajo;
@@ -68,9 +69,8 @@ class TareaAdicional
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_estimada", type="date")
-     * @Assert\Date()
-     * @Assert\NotNull
      * @Assert\NotBlank
+     * @Assert\Date
      */
     private $fechaEstimada;
 
@@ -82,9 +82,9 @@ class TareaAdicional
     private $descripcion;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\GarantiaTarea")
+     * @ORM\Column(name="garantia", type="integer", nullable=true)
      */
     private $garantiaTarea;
 
@@ -293,11 +293,11 @@ class TareaAdicional
     /**
      * Set garantiaTarea.
      *
-     * @param \Buseta\NomencladorBundle\Entity\GarantiaTarea $garantiaTarea
+     * @param integer $garantiaTarea
      *
      * @return TareaAdicional
      */
-    public function setGarantiaTarea(\Buseta\NomencladorBundle\Entity\GarantiaTarea $garantiaTarea = null)
+    public function setGarantiaTarea($garantiaTarea)
     {
         $this->garantiaTarea = $garantiaTarea;
 
@@ -307,7 +307,7 @@ class TareaAdicional
     /**
      * Get garantiaTarea.
      *
-     * @return \Buseta\NomencladorBundle\Entity\GarantiaTarea
+     * @return integer
      */
     public function getGarantiaTarea()
     {

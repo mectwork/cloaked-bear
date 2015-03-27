@@ -28,9 +28,6 @@ class TareaAdicionalType extends AbstractType
 
         $tarea = new AddTareaMantenimientoFieldSubscriber($objeto);
         $builder->addEventSubscriber($tarea);
-//
-        $garantia = new AddGarantiaTareaAdicionalFieldSubscriber();
-        $builder->addEventSubscriber($garantia);
 
         $builder
             ->add('descripcion', 'textarea', array(
@@ -66,6 +63,14 @@ class TareaAdicionalType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('garantiaTarea', 'integer', array(
+                'required' => false,
+                'read_only' => true,
+                'label' => 'Garantía tarea',
+                'attr' => array(
                     'class' => 'form-control',
                 ),
             ));
