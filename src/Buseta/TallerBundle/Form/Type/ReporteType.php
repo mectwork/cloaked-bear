@@ -57,7 +57,6 @@ class ReporteType extends AbstractType
                 ),
                 'query_builder' => function(EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('reporta');
-
                     $qb->join('reporta.persona', 'p')
                         ->andWhere($qb->expr()->isNotNull('p'));
 

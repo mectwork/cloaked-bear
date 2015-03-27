@@ -99,14 +99,16 @@ class Tercero
     private $persona;
 
     /**
+     * @var \Buseta\BodegaBundle\Entity\Proveedor
+     *
+     * @ORM\OneToOne(targetEntity="Buseta\BodegaBundle\Entity\Proveedor", mappedBy="tercero")
+     */
+    private $proveedor;
+
+    /**
      * @ORM\Column(name="institucion", type="boolean", nullable=true)
      */
     private $institucion;
-
-    /**
-     * @ORM\Column(name="proveedor", type="boolean", nullable=true)
-     */
-    private $proveedor;
 
     /**
      * @ORM\Column(name="activo", type="boolean", nullable=true)
@@ -126,13 +128,6 @@ class Tercero
      * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\MecanismoContacto", mappedBy="tercero", cascade={"remove","persist"})
      */
     private $mecanismosContacto;
-
-    /**
-     * @var \Buseta\BodegaBundle\Entity\Proveedor
-     *
-     * @ORM\OneToOne(targetEntity="Buseta\BodegaBundle\Entity\Proveedor", mappedBy="tercero")
-     */
-    private $proveedor2;
 
 
     /**
@@ -395,30 +390,6 @@ class Tercero
     }
 
     /**
-     * Set proveedor.
-     *
-     * @param boolean $proveedor
-     *
-     * @return Tercero
-     */
-    public function setProveedor($proveedor)
-    {
-        $this->proveedor = $proveedor;
-
-        return $this;
-    }
-
-    /**
-     * Get proveedor.
-     *
-     * @return boolean
-     */
-    public function getProveedor()
-    {
-        return $this->proveedor;
-    }
-
-    /**
      * Add pedidoCompra.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra
@@ -589,27 +560,27 @@ class Tercero
     }
 
     /**
-     * Set proveedor2.
+     * Set proveedor.
      *
-     * @param \Buseta\BodegaBundle\Entity\Proveedor $proveedor2
+     * @param \Buseta\BodegaBundle\Entity\Proveedor $proveedor
      *
      * @return Tercero
      */
-    public function setProveedor2(\Buseta\BodegaBundle\Entity\Proveedor $proveedor2 = null)
+    public function setProveedor(\Buseta\BodegaBundle\Entity\Proveedor $proveedor = null)
     {
-        $this->proveedor2 = $proveedor2;
+        $this->proveedor = $proveedor;
 
         return $this;
     }
 
     /**
-     * Get proveedor2.
+     * Get proveedor.
      *
      * @return \Buseta\BodegaBundle\Entity\Proveedor
      */
-    public function getProveedor2()
+    public function getProveedor()
     {
-        return $this->proveedor2;
+        return $this->proveedor;
     }
 
     /**

@@ -25,7 +25,7 @@ class Proveedor
     /**
      * @var \Buseta\BodegaBundle\Entity\Tercero
      *
-     * @ORM\OneToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="proveedor2")
+     * @ORM\OneToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="proveedor")
      */
     private $tercero;
 

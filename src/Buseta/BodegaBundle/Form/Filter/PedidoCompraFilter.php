@@ -25,8 +25,9 @@ class PedidoCompraFilter extends AbstractType
             ->add('tercero','entity',array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'query_builder' => function(EntityRepository $er){
-                    return $er->createQueryBuilder('t')
-                        ->where('t.proveedor = true');
+                    $qb = $er->createQueryBuilder('t');
+                    return $qb->join('t.proveedor', 'proveedor')
+                        ->where($qb->expr()->isNotNull('proveedor'));
                 },
                 'empty_value' => '---Seleccione---',
                 'required' => true,
@@ -104,4 +105,4 @@ class PedidoCompraFilter extends AbstractType
     {
         return 'buseta_registro_compra_filter';
     }
-} 
+}
