@@ -68,6 +68,13 @@ class Producto
     private $movimientos;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\InventarioFisicoLinea", mappedBy="producto", cascade={"all"})
+     */
+    private $inventario_fisico_lineas;
+
+    /**
      * @ORM\Column(name="activo", type="boolean", nullable=true)
      */
     private $activo;
@@ -604,5 +611,40 @@ class Producto
     public function getCategoriaProducto()
     {
         return $this->categoriaProducto;
+    }
+
+    /**
+     * Add inventario_fisico_lineas
+     *
+     * @param \Buseta\BodegaBundle\Entity\InventarioFisicoLinea $inventarioFisicoLineas
+     * @return Producto
+     */
+    public function addInventarioFisicoLinea(\Buseta\BodegaBundle\Entity\InventarioFisicoLinea $inventarioFisicoLineas)
+    {
+        $inventarioFisicoLineas->setProducto($this);
+
+        $this->inventario_fisico_lineas[] = $inventarioFisicoLineas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove inventario_fisico_lineas
+     *
+     * @param \Buseta\BodegaBundle\Entity\InventarioFisicoLinea $inventarioFisicoLineas
+     */
+    public function removeInventarioFisicoLinea(\Buseta\BodegaBundle\Entity\InventarioFisicoLinea $inventarioFisicoLineas)
+    {
+        $this->inventario_fisico_lineas->removeElement($inventarioFisicoLineas);
+    }
+
+    /**
+     * Get inventario_fisico_lineas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInventarioFisicoLineas()
+    {
+        return $this->inventario_fisico_lineas;
     }
 }

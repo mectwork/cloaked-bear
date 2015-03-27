@@ -56,19 +56,12 @@ class Bodega
      */
     private $productos;
 
-//    /**
-//     * @var \Doctrine\Common\Collections\ArrayCollection
-//     *
-//     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Movimiento", mappedBy="movidoA", cascade={"all"})
-//     */
-//    private $movimientos;
-
-//    /**
-//     * @var \Doctrine\Common\Collections\ArrayCollection
-//     *
-//     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\Linea", mappedBy="bodegas", cascade={"all"})
-//     */
-//    private $lineas;
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\InventarioFisico", mappedBy="almacen", cascade={"all"})
+     */
+    private $inventarioFisico;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -105,40 +98,8 @@ class Bodega
     {
         $this->lineas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->productos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->inventarioFisico = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
-//    /**
-//     * Add lineas
-//     *
-//     * @param \Buseta\TallerBundle\Entity\Linea $lineas
-//     * @return Bodega
-//     */
-//    public function addLinea(\Buseta\TallerBundle\Entity\Linea $lineas)
-//    {
-//        $this->lineas[] = $lineas;
-//
-//        return $this;
-//    }
-//
-//    /**
-//     * Remove lineas
-//     *
-//     * @param \Buseta\TallerBundle\Entity\Linea $lineas
-//     */
-//    public function removeLinea(\Buseta\TallerBundle\Entity\Linea $lineas)
-//    {
-//        $this->lineas->removeElement($lineas);
-//    }
-//
-//    /**
-//     * Get lineas
-//     *
-//     * @return \Doctrine\Common\Collections\Collection
-//     */
-//    public function getLineas()
-//    {
-//        return $this->lineas;
-//    }
 
     /**
      * @param string $codigo
@@ -256,43 +217,46 @@ class Bodega
         return $this->productos;
     }
 
+    /**
+     * Add inventarioFisico.
+     *
+     * @param \Buseta\BodegaBundle\Entity\InventarioFisico $inventarioFisico
+     *
+     * @return Bodega
+     */
+    public function addInventarioFisico(\Buseta\BodegaBundle\Entity\InventarioFisico $inventarioFisico)
+    {
+        $inventarioFisico->setBodega($this);
+
+        $this->inventarioFisico[] = $inventarioFisico;
+
+        return $this;
+    }
+
+    /**
+     * Remove inventarioFisico.
+     *
+     * @param \Buseta\BodegaBundle\Entity\InventarioFisico $inventarioFisico
+     */
+    public function removeInventarioFisico(\Buseta\BodegaBundle\Entity\InventarioFisico $inventarioFisico)
+    {
+        $this->inventarioFisico->removeElement($inventarioFisico);
+    }
+
+    /**
+     * Get inventarioFisico.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getInventarioFisico()
+    {
+        return $this->inventarioFisico;
+    }
+
     public function __toString()
     {
         return $this->getNombre();
     }
-
-//    /**
-//     * Add movimientos
-//     *
-//     * @param \Buseta\BodegaBundle\Entity\Movimiento $movimientos
-//     * @return Bodega
-//     */
-//    public function addMovimiento(\Buseta\BodegaBundle\Entity\Movimiento $movimientos)
-//    {
-//        $this->movimientos[] = $movimientos;
-//
-//        return $this;
-//    }
-//
-//    /**
-//     * Remove movimientos
-//     *
-//     * @param \Buseta\BodegaBundle\Entity\Movimiento $movimientos
-//     */
-//    public function removeMovimiento(\Buseta\BodegaBundle\Entity\Movimiento $movimientos)
-//    {
-//        $this->movimientos->removeElement($movimientos);
-//    }
-//
-//    /**
-//     * Get movimientos
-//     *
-//     * @return \Doctrine\Common\Collections\Collection
-//     */
-//    public function getMovimientos()
-//    {
-//        return $this->movimientos;
-//    }
 
     /**
      * Add pedidoCompra.

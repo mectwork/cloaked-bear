@@ -42,3 +42,10 @@ almacen_ajax_busqueda_avanzada:
   pattern: /busqueda-avanzada/{page}/{cantResult}
   defaults: { _controller: "BusetaBodegaBundle:Bodega:busquedaAvanzada", page: 0, cantResult: 10 }
   requirements: { _method: "GET" }
+
+bodega_ajax_productos_all:
+  pattern: /select_bodega_productos_all
+  defaults: { _controller: "BusetaBodegaBundle:Bodega:select_bodega_productos_all" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true

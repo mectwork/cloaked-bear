@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\Bodega;
 use Buseta\BodegaBundle\Form\Type\BodegaType;
 use Buseta\BodegaBundle\Form\Filtro\BusquedaAlmacenType;
+use Buseta\BodegaBundle\Extras\FuncionesExtras;
 
 /**
  * Bodega controller.
@@ -248,5 +249,41 @@ class BodegaController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Updated automatically select All when change select Producto.
+     */
+    public function select_bodega_productos_allAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
+
+        $request = $this->getRequest();
+        if (!$request->isXmlHttpRequest()) {
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        //Obtengo el producto seleccionado
+        $producto = $em->getRepository('BusetaBodegaBundle:Producto')->findOneBy(array(
+            'id' => $request->query->get('producto_id'),
+        ));
+
+        //Obtengo el almacen seleccionado
+        $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->findOneBy(array(
+            'id' => $request->query->get('almacen_id'),
+        ));
+
+        $funcionesExtras = new FuncionesExtras();
+        $cantidadReal = $funcionesExtras->obtenerCantidaProductosAlmancen($producto, $almacen, $em);
+
+        $json = array(
+            'cantidadReal' => $cantidadReal,
+        );
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
 }

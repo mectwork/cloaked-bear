@@ -79,6 +79,10 @@ tercero:
   btn:
     adicionar: Adicionar Tercero
 
+inventariofisico:
+  btn:
+    adicionar: Adicionar Inventario Físico
+
 precio:
   btn:
     adicionar: Adicionar Precio

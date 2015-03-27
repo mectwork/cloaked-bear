@@ -1,0 +1,114 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block title %}
+    Datos del Inventario Físico
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Datos del Inventario Físico
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <table class="table table-striped" style="font-size: 16px;">
+        <tbody>
+
+            <tr>
+                <th>Nombre</th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+
+            <tr>
+                <th>Almacén</th>
+                <td>{{ entity.almacen }}</td>
+            </tr>
+
+            <tr>
+                <th>Fecha</th>
+                <td>{{ entity.fecha | date('d/m/Y') }}</td>
+            </tr>
+
+            <tr>
+                <th>Estado</th>
+                <td>{{ ('estado.'~entity.estado) | trans({}, 'BusetaTallerBundle') }}</td>
+            </tr>
+
+            <tr>
+                <th>Descripción</th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Líneas existentes</th>
+                <td>
+                    <table class="table table-striped" style="font-size: 16px;">
+                        <th>Número</th>
+                        <th>Producto</th>
+                        <th>Descripción</th>
+                        <th>Cantidad Real</th>
+                        <th>Cantidad Teórica</th>
+
+                        {% for linea in entity.inventarioFisicoLineas %}
+                        <tbody>
+                            <tr>
+                                <td>{{ linea.numero }}</td>
+                                <td>{{ linea.producto.nombre }}</td>
+                                <td>{{ linea.descripcion }}</td>
+                                <td>{{ linea.cantidadReal }}</td>
+                                <td>{{ linea.cantidadTeorica }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">
+                                    <span class="label label-danger">No existen líneas de inventarios físicos disponibles</span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="form-actions">
+        <!--Activar el botón Completar Proceso cuando el estado del Inventario sea Procesado -->
+        {% if entity.estado == 'PR' %}
+                <a class="btn btn-primary" href="{{ path('completarInventarioFisico', { 'id': entity.id }) }}"> Completar Proceso</a>
+            {% else %}
+                <a class="btn btn-primary" href="{{ path('procesarInventarioFisico', { 'id': entity.id }) }}"> Procesar</a>
+        {% endif %}
+        <a class="btn btn-primary" href="{{ path('inventariofisico') }}"> Listado</a>
+
+        {% if entity.estado == 'BO' %}
+            <a href="#delete" data-href="{{ path('inventariofisico_delete', {'id': entity.id}) }}" class="btn btn-danger">
+                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+        {% endif %}
+    </div>
+
+    {% if entity.estado == 'BO' %}
+        {% include 'BusetaBodegaBundle:InventarioFisico:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
+    {% endif %}
+
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+
+    {% if entity.estado == 'BO' %}
+        <script type="text/javascript">
+            var inventariofisicodeleteevent = new DeleteEvent('{{ path('inventariofisico') }}', 'div#inventariofisico_records_list', false);
+            inventariofisicodeleteevent.start_events();
+        </script>
+    {% endif %}
+
+{% endblock %}
+
