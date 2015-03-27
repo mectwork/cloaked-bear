@@ -2,8 +2,10 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Form\Model\AlbaranModel;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Albaran.
@@ -115,6 +117,11 @@ class Albaran
     private $deleted;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     */
+    private $deletedby;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -122,6 +129,44 @@ class Albaran
         $this->albaranLinea = new \Doctrine\Common\Collections\ArrayCollection();
         $this->updated = new \DateTime();
         $this->deleted = false;
+    }
+
+    /**
+     * @param AlbaranModel $model
+     * @return Albaran
+     */
+    public function setModelData(AlbaranModel $model)
+    {
+        $this->id = $model->getId();
+        $this->created = $model->getCreated();
+        $this->createdby = $model->getCreatedby();
+        $this->deleted = $model->getDeleted();
+        $this->deletedby = $model->getDeletedby();
+        $this->updated = $model->getUpdated();
+        $this->updatedby = $model->getUpdatedby();
+
+        $this->consecutivoCompra = $model->getConsecutivoCompra();
+        $this->numeroReferencia = $model->getNumeroReferencia();
+        $this->fechaMovimiento = $model->getFechaMovimiento();
+        $this->fechaContable = $model->getFechaContable();
+        $this->estadoDocumento = $model->getEstadoDocumento();
+
+        if ($model->getTercero()) {
+            $this->tercero  = $model->getTercero();
+        }
+        if ($model->getAlmacen()) {
+            $this->almacen  = $model->getAlmacen();
+        }
+        if ($model->getPedidoCompra()) {
+            $this->pedidoCompra  = $model->getPedidoCompra();
+        }
+        if (!$model->getAlbaranLinea()->isEmpty()) {
+            $this->albaranLinea = $model->getAlbaranLinea();
+        } else {
+            $this->albaranLinea = new ArrayCollection();
+        }
+
+        return $this;
     }
 
     /**
@@ -516,5 +561,21 @@ class Albaran
     public function getUpdatedby()
     {
         return $this->updatedby;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDeletedby()
+    {
+        return $this->deletedby;
+    }
+
+    /**
+     * @param mixed $deletedby
+     */
+    public function setDeletedby($deletedby)
+    {
+        $this->deletedby = $deletedby;
     }
 }

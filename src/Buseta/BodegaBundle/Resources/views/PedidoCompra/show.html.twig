@@ -114,13 +114,24 @@
         <a class="btn btn-primary" href="{{ path('pedidocompra_edit', { 'id': entity.id }) }}"> Editar</a>
         <a class="btn btn-primary" href="{{ path('procesarRegistro', { 'id': entity.id }) }}"> Procesar</a>
         <a class="btn btn-primary" href="{{ path('pedidocompra') }}"> Listado</a>
+        <a href="#delete" data-href="{{ path('pedidocompra_delete', {'id': entity.id}) }}" class="btn btn-danger">
+            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
     </div>
 
+    {% include 'BusetaBodegaBundle:PedidoCompra:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
 
 {% endblock %}
-
 
 {% block contenido %}
 
-
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var pedidocompradeleteevent = new DeleteEvent('{{ path('pedidocompra') }}', 'div#pedidocompra_records_list', false);
+        pedidocompradeleteevent.start_events();
+    </script>
+{% endblock %}
+

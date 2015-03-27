@@ -18,6 +18,11 @@ class NecesidadMaterialFilterModel
     private $numero_documento;
 
     /**
+     * @var string
+     */
+    private $estado_documento;
+
+    /**
      * @var \Buseta\BodegaBundle\Entity\Tercero
      */
     private $tercero;
@@ -62,6 +67,22 @@ class NecesidadMaterialFilterModel
     public function getAlmacen()
     {
         return $this->almacen;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEstadoDocumento()
+    {
+        return $this->estado_documento;
+    }
+
+    /**
+     * @param string $estado_documento
+     */
+    public function setEstadoDocumento($estado_documento)
+    {
+        $this->estado_documento = $estado_documento;
     }
 
     /**

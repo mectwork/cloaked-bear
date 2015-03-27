@@ -106,13 +106,23 @@
         <a class="btn btn-primary" href="{{ path('albaran_edit', { 'id': entity.id }) }}"> Editar</a>
         <a class="btn btn-primary" href="{{ path('procesarAlbaran', { 'id': entity.id }) }}"> Procesar</a>
         <a class="btn btn-primary" href="{{ path('albaran') }}"> Listado</a>
+        <a href="#delete" data-href="{{ path('albaran_delete', {'id': entity.id}) }}" class="btn btn-danger">
+            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
     </div>
 
+    {% include 'BusetaBodegaBundle:Albaran:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
 
 {% endblock %}
 
-
 {% block contenido %}
 
+{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var albarandeleteevent = new DeleteEvent('{{ path('albaran') }}', 'div#albaran_records_list', false);
+        albarandeleteevent.start_events();
+    </script>
 {% endblock %}

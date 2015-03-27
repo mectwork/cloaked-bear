@@ -12,8 +12,10 @@ use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\PedidoCompra;
+
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * PedidoCompra controller.
@@ -414,24 +416,53 @@ class PedidoCompraController extends Controller
 
     /**
      * Deletes a PedidoCompra entity.
+     *
+     * @Route("/{id}/delete", name="pedidocompra_delete")
+     * @Method({"DELETE", "GET"})
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(PedidoCompra $pedidocompra, Request $request)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($pedidocompra->getId());
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->find($id);
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+            try {
+                $em = $this->get('doctrine.orm.entity_manager');
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find PedidoCompra entity.');
+                $em->remove($pedidocompra);
+                $em->flush();
+
+                $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 202);
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('success', $message);
+                }
+            } catch (\Exception $e) {
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Pedido Compra'), 'BusetaTallerBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
             }
-
-            $em->remove($entity);
-            $em->flush();
         }
 
+        $renderView =  $this->renderView('@BusetaBodega/PedidoCompra/delete_modal.html.twig', array(
+            'entity' => $pedidocompra,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
         return $this->redirect($this->generateUrl('pedidocompra'));
     }
 
@@ -448,7 +479,6 @@ class PedidoCompraController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('pedidocompra_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
     }

@@ -2,15 +2,95 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\Entity\Albaran;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 /**
- * AlbaranLinea controller.
+ * Class AlbaranLineaController
+ * @package Buseta\BodegaBundle\Controller
+ *
+ * @Route("/albaran_linea")
  */
 class AlbaranLineaController extends Controller
 {
+    /**
+     * @param Albaran $albaran
+     * @return Response
+     *
+     * @Route("/list/{albaran}", name="albaran_lineas_list", methods={"GET"}, options={"expose":true})
+     * @ParamConverter("albaran", options={"mapping":{"albaran":"id"}})
+     */
+    public function listAction(Albaran $albaran, Request $request)
+    {
+        $entities = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('BusetaBodegaBundle:AlbaranLinea')
+            ->findAllByAlbaranId($albaran->getId());
+
+        $entities = $this->get('knp_paginator')
+            ->paginate(
+                $entities,
+                $request->query->get('page', 1),
+                5
+            );
+
+        return $this->render('@BusetaBodega/Albaran/Linea/list_template.html.twig', array(
+            'entities' => $entities,
+            'albaran' => $albaran,
+        ));
+    }
+
+    /**
+     * @param Albaran $albaran
+     * @param Request $request
+     *
+     * @throws \Exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/new/modal/{albaran}", name="albaran_lineas_new_modal", methods={"GET","POST"}, options={"expose":true})
+     */
+    public function newModalAction(Albaran $albaran, Request $request)
+    {
+        $trans = $this->get('translator');
+        $handler = $this->get('buseta_albaran.linea.handler');
+        $handler->bindData($albaran);
+
+        $handler->setRequest($request);
+
+        if($handler->handle()) {
+            $renderView = $this->renderView('@BusetaBodega/Albaran/Linea/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
+            ), 201);
+        }
+
+        if($handler->getError()) {
+            $renderView = $this->renderView('@BusetaBodega/Albaran/Linea/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Albarán'), 'BusetaBodegaBundle')
+            ), 500);
+        }
+
+        $renderView = $this->renderView('@BusetaBodega/Albaran/Linea/modal_form.html.twig', array(
+            'form' => $handler->getForm()->createView(),
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
+    }
+
     public function create_compraAction(Request $request)
     {
         $entity = new AlbaranLinea();
@@ -106,6 +186,7 @@ class AlbaranLineaController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing AlbaranLinea entity.
      */
