@@ -68,6 +68,14 @@ class TareaAdicionalType extends AbstractType
                 'attr'   => array(
                     'class' => 'form-control',
                 ),
+            ))
+            ->add('garantiaTarea', 'integer', array(
+                'required' => false,
+                'read_only' => true,
+                'label' => 'Garantía tarea',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
             ));
     }
 

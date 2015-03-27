@@ -74,10 +74,7 @@
             <th>Nombres{#{{ knp_pagination_sortable(entities, 'Nombres', 't.nombres') }}#}</th>
             <th>Apellidos{#{{ knp_pagination_sortable(entities, 'Apellidos', 't.apellidos') }}#}</th>
             <th>Alias{#{{ knp_pagination_sortable(entities, 'Alias', 't.alias') }}#}</th>
-            <th>Cliente{#{{ knp_pagination_sortable(entities, 'Cliente', 't.cliente') }}#}</th>
-            <th>Institución{#{{ knp_pagination_sortable(entities, 'Institución', 't.institución') }}#}</th>
-            <th>Proveedor{#{{ knp_pagination_sortable(entities, 'Proveedor', 't.proveedor') }}#}</th>
-            <th>Persona{#{{ knp_pagination_sortable(entities, 'Persona', 't.persona') }}#}</th>
+            <th>¿Es persona?</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
@@ -88,23 +85,12 @@
                 <td>{{ entity.nombres }}</td>
                 <td>{{ entity.apellidos }}</td>
                 <td>{{ entity.alias }}</td>
-                <td>{{ entity.cliente }}</td>
-                <td>{{ entity.institucion }}</td>
-                <td>{{ entity.proveedor }}</td>
-                <td>{{ entity.persona }}</td>
-
-                <td style="width: 18% !important; text-align: center;">
-                    <div class="btn-group">
-                        <a class="btn btn-success btn-xs"
-                           href="{{ path('reporte_show', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
-                    </div>
-
-                    {#<div class="btn-group">
-                        <a class="btn btn-danger btn-xs"
-                           href="{{ path('reporte_edit', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-edit"> Editar</span></a>
-                    </div>#}
+                <td class="text-center">{{ entity.persona ? '<i class="fa fa-circle text-success" title="Sí"></i>' : '<i class="fa fa-circle-o text-danger" title="No"></i>' }}</td>
+                <td style="text-align: center;">
+                    <a class="btn btn-success btn-xs" href="{{ path('tercero_show', { 'id': entity.id }) }}">
+                        <span class="glyphicon glyphicon-search"> {{ 'actions.show' | trans({}, 'BusetaBodegaBundle') }}</span></a>
+                    <a class="btn btn-danger btn-xs" href="{{ path('tercero_edit', { 'id': entity.id }) }}">
+                        <span class="glyphicon glyphicon-edit"> {{ 'actions.edit' | trans({}, 'BusetaBodegaBundle') }}</span></a>
                 </td>
             </tr>
         {% else %}

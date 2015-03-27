@@ -92,7 +92,9 @@ class Tercero
     private $cliente;
 
     /**
-     * @ORM\Column(name="persona", type="boolean", nullable=true)
+     * @var \Buseta\BodegaBundle\Entity\Persona
+     *
+     * @ORM\OneToOne(targetEntity="Buseta\BodegaBundle\Entity\Persona", mappedBy="tercero")
      */
     private $persona;
 
@@ -165,11 +167,7 @@ class Tercero
 
 
     /**
-     * Set id.
-     *
-     * @param integer $id
-     *
-     * @return Tercero
+     * @param string $alias
      */
     public function setId($id)
     {
@@ -192,8 +190,9 @@ class Tercero
     public function setUsuario($usuario)
     {
         $this->usuario = $usuario;
-    }
 
+        return $this;
+    }
     /**
      * @param mixed $activo
      */
@@ -334,6 +333,11 @@ class Tercero
      * Get cliente.
      *
      * @return boolean
+     * Set persona.
+     *
+     * @param boolean $persona
+     *
+     * @return Tercero
      */
     public function getCliente()
     {
@@ -368,6 +372,8 @@ class Tercero
      * Set institucion.
      *
      * @param boolean $institucion
+     *
+     * @param boolean $proveedor
      *
      * @return Tercero
      */

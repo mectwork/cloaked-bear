@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: luis
- * Date: 16/03/15
- * Time: 3:51.
- */
 
 namespace Buseta\TallerBundle\Form\EventListener;
 
@@ -51,6 +45,7 @@ class AddGarantiaTareaAdicionalFieldSubscriber implements EventSubscriberInterfa
 
     private function addGarantiaTareaAdicionalForm(FormInterface $form, $tarea = null)
     {
+
         if (null === $tarea) {
             $form->add('garantiaTarea', 'number', array(
                 'required' => true,

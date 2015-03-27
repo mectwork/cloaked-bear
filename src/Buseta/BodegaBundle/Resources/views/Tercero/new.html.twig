@@ -1,227 +1,370 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% form_theme form 'BusetaTemplateBundle:Widgets:collection_widget_mecanismos_contacto.html.twig' %}
-
-{% block nombre_menu_superior %}
-
-{% endblock %}
+{% block nombre_menu_superior %}{% endblock %}
 
 {% block titulo_encabezado %}
-    Adicionar nuevo tercero
+    Adicionar nuevo Tercero
 {% endblock %}
 
 {% block area_trabajo %}
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#basicos" data-toggle="tab">Tercero</a></li>
+        <li><a href="#direcciones" data-toggle="tab">Direcciones</a></li>
+        <li><a href="#contactos" data-toggle="tab">Mecanismos de contacto</a></li>
+    </ul>
 
-    <form action="{{ path('tercero_create') }}" method="post" {{ form_enctype(form) }}>
-
-        {{ form_errors(form) }}
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.nombres) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.apellidos) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.alias) }}
-            </div>
+    {# Tab panes #}
+    <div class="tab-content" style="padding-top: 20px;">
+        <!-- TAB BASICOS-->
+        <div class="tab-pane fade in active" id="basicos">
+            {% include 'BusetaBodegaBundle:Tercero:form_template.html.twig' with {'form': form} %}
         </div>
 
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.codigo) }}
-            </div>
+        <!-- TAB DIRECCIONES-->
+        <div class="tab-pane fade" id="direcciones">
 
-            <div class="col-md-4">
-                {{ form_row(form.direccion) }}
-            </div>
-
-            <div class="col-md-4">
-                <label>&nbsp;</label> <br>
-                <div class="btn-group" style="padding-bottom: 8px;">
-                    <a data-toggle="modal" data-target="#newDireccion" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i></a>
-                </div>
-            </div>
         </div>
 
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.usuario) }}
-            </div>
+        <!-- TAB MECANISMOS DE CONTACTO-->
+        <div class="tab-pane fade" id="contactos">
+
         </div>
-
-        <div class="row show-grid">
-            <div class="col-md-3">
-                {{ form_row(form.cliente) }}
-            </div>
-
-            <div class="col-md-3">
-                {{ form_row(form.institucion) }}
-            </div>
-
-            <div class="col-md-3">
-                {{ form_row(form.proveedor) }}
-            </div>
-
-            <div class="col-md-3">
-                {{ form_row(form.persona) }}
-            </div>
-        </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.activo) }}
-            </div>
-        </div>
-
-        {{ form_row(form.mecanismoscontacto) }}
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-
-                <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
-                <div class="btn-group">
-                    <a class="btn btn-primary" href="{{ path('tercero') }}"> Cancelar</a>
-                </div>
-
-            </div>
-        </div>
-
-        {{ form_rest(form) }}
-    </form>
-
-    <!-- Modal -->
-    <div class="modal fade" id="newDireccion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content" style="width: 850px;">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3 class="modal-title" id="myModalLabel">Datos de nueva dirección</h3>
-                </div>
-                <div class="modal-body" style="width: 800px;">
-                    {% include 'BusetaBodegaBundle:Extras:modal_direccion.html.twig'  %}
-                </div>
-                <div class="modal-footer">
-                    <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
-                    <a class="btn btn-primary add_tag_link_direccion" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</span></a>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
     </div>
 {% endblock %}
 
-
-{% block contenido %}
-
-{% endblock %}
-
 {% block javascripts %}
-    {{ parent() }}
-
   <script type="text/javascript">
-    var collectionHolder = $('table#buseta_bodegabundle_tercero_mecanismoscontacto');
-    var $addTagLink = $('a.add_tag_link');
-    var $addTagLinkDireccion = $('a.add_tag_link_direccion');
+      $(document).ready(function () {
+          tercero._load();
+      }).ajaxStart(function () {
+          $('.btn.btn-primary')
+                  .addClass('disabled')
+                  .prepend('<i class="fa fa-gear fa-spin"></i> ');
 
-    jQuery(document).ready(function() {
-        // count the current form inputs we have (e.g. 2), use that as the new
-        // index when inserting a new item (e.g. 2)
-        collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
-
-        $addTagLink.on('click', function(e) {
-            // prevent the link from creating a "#" on the URL
-            e.preventDefault();
-
-            // add a new tag form (see next code block)
-            addTagForm(collectionHolder);
-        });
-
-        $addTagLinkDireccion.on('click', function(e) {
-            // prevent the link from creating a "#" on the URL
-            e.preventDefault();
-
-            var modal = $('#newDireccion');
-
-            //captura de valores del modal
-            var direccion_modalA = modal.find('#buseta_bodegabundle_direccion_calle');
-            var direccion_modalB = modal.find('#buseta_bodegabundle_direccion_numero');
-            var direccion_modalC = modal.find('#buseta_bodegabundle_direccion_entre_calles');
-            var direccion_modalD = modal.find('#buseta_bodegabundle_direccion_pais');
-            var direccion_modalE = modal.find('#buseta_bodegabundle_direccion_subdivision');
-            var direccion_modalF = modal.find('#buseta_bodegabundle_direccion_ciudad');
-
-            var textDireccion = direccion_modalA.val()+". "+direccion_modalB.val()+". "+direccion_modalC.val()+". "+direccion_modalD.val()+". "+direccion_modalE.val()+". "+direccion_modalF.val();
-
-
-            var data = $('form#form_direccion').serialize();
-            $.ajax({
-                url: Routing.generate('direccion_create'),
-                type: 'POST',
-                data: data
-            })
-                    .done(function (response) {
-                        var values = $.parseJSON(response);
-
-                        //$('form#form_direccion').replaceWith(values.vista);
-                        $('div#newDireccion').modal('hide');
-                        $('#buseta_bodegabundle_tercero_direccion').val(textDireccion).prop('readonly','readonly');
-                        $('#buseta_bodegabundle_tercero_direccionId').val(values.id);
-                    })
-                    .fail(function(error){
-                        console.error('Ha ocurrido un error');
-                        $('form#form_direccion').replaceWith(error.responseText);
-                    })
-        });
-
-        updateDeleteLink();
-        updateView();
-
-        function addTagForm(collectionHolder) {
-            // Get the data-prototype explained earlier
-            var prototype = collectionHolder.data('prototype');
-
-            // get the new index
-            var index = collectionHolder.data('index');
-
-            // Replace '__name__' in the prototype's HTML to
-            // instead be a number based on how many items we have
-            var newForm = prototype.replace(/__name__/g, index);
-
-            // increase the index with one for the next item
-            collectionHolder.data('index', index + 1);
-
-            // Display the form in the page in an li, before the "Add a tag" link li
-            var $newFormDiv = $('<tr></tr>').append(newForm);
-            collectionHolder.find('tbody').append($newFormDiv);
-            updateDeleteLink();
-            updateView();
-        }
-
-        function updateDeleteLink(){
-            $('a.delete_tag_link').on('click', function(e) {
-                // prevent the link from creating a "#" on the URL
-                e.preventDefault();
-
-                // remove the li for the tag form
-                $(this).parent().parent().remove();
-                updateView();
-            });
-        }
-
-        function updateView(){
-            counter = collectionHolder.find('a.delete_tag_link').length;
-            if(counter == 0){
-                $('tr#no-elements-tr').show();
-            }else{
-                $('tr#no-elements-tr').hide();
-            }
-        }
-    });
+      }).ajaxStop(function () {
+          $('.btn.btn-primary')
+                  .removeClass('disabled')
+                  .find('i')
+                  .remove();
+      });
 
   </script>
+    <!-- Tercero script -->
+    <script type="text/javascript">
+        var tercero = {
+            tabname: 'basicos',
+            form_id: $('div#basicos').find('form').attr('id'),
+            form_name: $('div#basicos').find('form').attr('name'),
+            id: '',
+            tabs_open: false,
+            _load: function () {
+                $('a#btn_tercero_save').on('click', tercero._save);
+                $('a.thumbnail').on('click', function (e) {
+                    e.preventDefault();
+
+                    $('input[type="file"]').trigger('click');
+                });
+
+                tercero.id = $('input[id="' + tercero.form_id + '_id"]').val();
+                if (tercero.id === '' || tercero.id === undefined) {
+                    // hide all tabs on page load
+                    $('a[data-toggle="tab"]').each(function(key, item) {
+                        if($(item).attr('href') != '#basicos') {
+                            $(item).parent().hide();
+                        }
+                    });
+                } else {
+                    tabs._show_all_tabs();
+                }
+
+                // remove all assigned events
+                $('a[data-toggle="tab"]').unbind();
+                // on show tab events
+                $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+                    var href = $(e.target).attr('href');
+
+                    if (href === '#direcciones') {
+                        direccion._load();
+                    } else if(href === '#contactos') {
+                        contacto._load();
+                    }
+                });
+            },
+
+            _save: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
+
+                // add spinning to show loading process
+                tabs._add_loadding(tercero.tabname);
+
+                var proveedorForm    = $('form#' + tercero.form_id);
+
+                proveedorForm.ajaxSubmit({
+                    success: tercero._done,
+                    error: utils._fail,
+                    complete: tercero._always,
+                    dataType: 'json'
+                });
+            },
+            _done: function (response, textStatus, jqXHR) {
+                $('form#' + tercero.form_id).replaceWith($(response.view).find('form#' + tercero.form_id));
+
+                if(jqXHR.status == 201 || jqXHR.status == 202) {
+                    addGlobalMessage('success', response.message);
+
+                }
+                tercero._load();
+            },
+            _always: function() {
+                // remove spinning
+                tabs._remove_loadding(tercero.tabname);
+            }
+        }
+    </script>
+
+    <!-- Direcciones script -->
+    <script type="text/javascript">
+        var direccion = {
+            tabname:'direcciones',
+            form_name: '',
+            form_id: '',
+
+            _start_events: function (e) {
+                <!-- click en el botón 'Adicionar dirección' -->
+                $('a[href="#form_direccion_modal"]').on('click', direccion._load_modal);
+                // Paginator sort
+                $('table.records_list').find('a.sortable, a.asc, a.desc').on('click', direccion._load);
+                // Paginator navigation
+                $('div.direccion-paginator.row ul.pagination').find('a.paginator-link').on('click', direccion._load);
+            },
+
+            _load: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
+
+                tabs._add_loadding(direccion.tabname);
+
+                var url = Routing.generate('direccion', {'tercero': tercero.id});
+                if($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
+                    url = $(this).attr('href');
+                }
+
+                $.get(url).done(function (response, textStatus, jqXHR) {
+                    $('div#direcciones').html(response);
+
+                    direccion._start_events();
+                }).fail(utils._fail).always(direccion._always());
+            },
+
+            _load_modal: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
+
+                var url = Routing.generate('direccion_new', {'tercero': tercero.id});
+
+                $.get(url)
+                        .done(function(response, textStatus, jqXHR){
+
+                            $('div#form_direccion_modal').replaceWith($(response.view));
+
+                            direccion.form_id = $('div#form_direccion_modal').find('form').attr('id');
+                            direccion.form_name = $('div#form_direccion_modal').find('form').attr('name');
+
+                            $('a#btn_direccion_save').on('click', direccion._save_modal);
+                            $('a#btn_direccion_cancel').on('click', function(){
+                                $('div#form_direccion_modal').modal('hide');
+                            });
+
+                            $('div#form_direccion_modal').modal('show');
+                        }).fail(utils._fail).always(function(){});
+            },
+
+            _save_modal: function (e) {
+                if(e !== undefined) {
+                    e.preventDefault();
+                }
+
+                $('#btn_direccion_save').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-save')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
+
+                $('form#' + direccion.form_id).ajaxSubmit({
+                    success: direccion._done,
+                    error: utils._fail,
+                    complete: direccion._always,
+                    dataType: 'json'
+                });
+            },
+
+            _done: function (response, textStatus, jqXHR) {
+                if(jqXHR.status == 201 || jqXHR.status == 202) {
+                    //addGlobalMessage('success', response.message);
+
+                    $('div#form_direccion_modal').modal('hide');
+                    direccion._load();
+                } else {
+                    $('form#' + direccion.form_id).replaceWith($(response.view).find('form'));
+                }
+            },
+
+            _always: function () {
+                tabs._remove_loadding(direccion.tabname)
+            }
+        };
+    </script>
+
+    <!-- Mecanismos de Contacto script -->
+    <script type="text/javascript">
+        var contacto = {
+            tabname: 'contactos',
+            form_name: '',
+            form_id: '',
+
+            _start_events: function (e) {
+                <!-- click en el botón 'Adicionar mecanismo de contacto' -->
+                $('a[href="#form_contacto_modal"]').on('click', contacto._load_modal);
+                $('a[href="#btn_contacto_edit"]').on('click', contacto._load_modal);
+                // Paginator sort
+                $('table.records_list').find('a.sortable, a.asc, a.desc').on('click', contacto._load);
+                // Paginator navigation
+                $('div.direccion-paginator.row ul.pagination').find('a.paginator-link').on('click', contacto._load);
+            },
+
+            _load: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
+
+                tabs._add_loadding(contacto.tabname);
+
+                var url = Routing.generate('mecanismocontacto', {'tercero': tercero.id});
+                if($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
+                    url = $(this).attr('href');
+                }
+
+                $.get(url).done(function (response, textStatus, jqXHR) {
+                    $('div#contactos').html(response);
+
+                    contacto._start_events();
+                }).fail(utils._fail).always(contacto._always());
+            },
+
+            _load_modal: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
+
+                console.log($(this).attr('href'));
+
+                var url = Routing.generate('mecanismocontacto_new', {'tercero': tercero.id});
+                if($(this).attr('href') !== undefined && $(this).attr('href') === '#btn_contacto_edit') {
+                    url = Routing.generate('mecanismocontacto_edit', {'id': $(this).data('content')});
+                }
+
+                $.get(url)
+                        .done(function(response, textStatus, jqXHR){
+                            $('div#form_contacto_modal').replaceWith($(response.view));
+
+                            contacto.form_id = $('div#form_contacto_modal').find('form').attr('id');
+                            contacto.form_name = $('div#form_contacto_modal').find('form').attr('name');
+
+                            console.log(contacto.form_id);
+                            console.log(contacto.form_name);
+
+                            $('a#btn_contacto_save').on('click', contacto._save_modal);
+                            $('a#btn_contacto_cancel').on('click', function(){
+                                $('div#form_contacto_modal').modal('hide');
+                            });
+
+                            $('div#form_contacto_modal').modal('show');
+                        }).fail(utils._fail).always(function(){});
+            },
+
+            _save_modal: function (e) {
+                if(e !== undefined) {
+                    e.preventDefault();
+                }
+
+                $('#btn_contacto_save').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-save')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
+
+                $('form#' + contacto.form_id).ajaxSubmit({
+                    success: contacto._done,
+                    error: utils._fail,
+                    complete: contacto._always,
+                    dataType: 'json'
+                });
+            },
+
+            _done: function (response, textStatus, jqXHR) {
+                if(jqXHR.status == 201 || jqXHR.status == 202) {
+                    addGlobalMessage('success', response.message);
+
+                    $('div#form_contacto_modal').modal('hide');
+                    contacto._load();
+                } else {
+                    $('form#' + contacto.form_id).replaceWith($(response.view).find('form'));
+                }
+            },
+
+            _always: function () {
+                tabs._remove_loadding(contacto.tabname)
+            }
+        }
+    </script>
+
+    <!-- Extras script -->
+    <script type="text/javascript">
+        var tabs = {
+            loadding_image: '<span class="loading"><i class="fa fa-spinner fa-spin"></i> </span>',
+
+            _show_all_tabs: function() {
+                tabs._show_tab('direcciones');
+                tabs._show_tab('contactos');
+            },
+
+            _show_tab: function (tabname) {
+                $('li a[href="#' + tabname + '"]').parent().show();
+            },
+
+            _hide_tab: function () {
+                $('li a[href="#' + tabname + '"]').parent().hide();
+            },
+
+            _add_loadding: function (tabname) {
+                var spinning = $('li a[href="#' + tabname + '"]').find('span.loading');
+
+                if (spinning.length == 0) {
+                    var linktab = $('li a[href="#' + tabname + '"]');
+                    linktab.prepend($(tabs.loadding_image));
+                }
+            },
+
+            _remove_loadding: function (tabname) {
+                var spinning = $('li a[href="#' + tabname + '"]').find('span.loading');
+                spinning.remove();
+            }
+        };
+
+        var utils = {
+            _fail: function (jqXHR, textStatus, errorThrown) {
+                if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                    addGlobalMessage('danger', jqXHR.responseText.message);
+                } else {
+                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'HatueyERPTercerosBundle') }}');
+                }
+            }
+        };
+    </script>
 {% endblock javascripts %}

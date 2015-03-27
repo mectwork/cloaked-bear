@@ -67,11 +67,11 @@ buseta_template:
     prefix:   /
 
 BusetaBodegaBundle_producto:
-        resource: "@BusetaBodegaBundle/Resources/config/routing/producto.yml"
-        prefix:   /bodega/producto
+    resource: "@BusetaBodegaBundle/Resources/config/routing/producto.yml"
+    prefix:   /bodega/producto
 
 BusetaBodegaBundle_movimiento:
-        resource: "@BusetaBodegaBundle/Resources/config/routing/movimiento.yml"
+    resource: "@BusetaBodegaBundle/Resources/config/routing/movimiento.yml"
         prefix:   /bodega/movimiento
 
 BusetaBodegaBundle_bodega:
@@ -135,7 +135,3 @@ fos_user_change_password:
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
-
-#_imagine:
-#    resource: .
-#    type:     imagine

@@ -12,110 +12,97 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class TerceroModel implements TerceroModelInterface
 {
+    /**
+     * @var int
+     */
     private $id;
 
-    private $compras;
-
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank()
+     */
     private $codigo;
 
+    /**
+     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @Assert\Valid()
+     */
     private $foto;
 
     /**
+     * @var string
+     *
      * @Assert\NotBlank()
      */
     private $nombres;
 
+    /**
+     * @var string
+     *
+     */
     private $apellidos;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank
+     */
+    private $alias;
 
     /**
      * @var \Buseta\SecurityBundle\Entity\User
      */
     private $usuario;
 
-    private $alias;
-
-    private $direccion;
-
-    private $direccionId;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $mecanismoscontacto;
-
-    /**
-     * @var boolean
-     */
-    private $cliente;
-
-    /**
-     * @var boolean
-     */
-    private $institucion;
-
-    /**
-     * @var boolean
-     */
-    private $proveedor;
-
-    /**
-     * @var boolean
-     */
-    private $persona;
-
     /**
      * @var boolean
      */
     private $activo;
 
+
+    /**
+     * Constructor.
+     *
+     * @param Tercero $tercero
+     */
     public function __construct(Tercero $tercero = null)
     {
-        $this->mecanismoscontacto = new ArrayCollection();
-
         if ($tercero !== null) {
             $this->id = $tercero->getId();
-            $this->compras = $tercero->getPedidoCompra();
             $this->codigo = $tercero->getCodigo();
             $this->usuario = $tercero->getUsuario();
             $this->nombres = $tercero->getNombres();
             $this->apellidos = $tercero->getApellidos();
             $this->alias = $tercero->getAlias();
             $this->foto = $tercero->getFoto();
-
-            if ($tercero->getDireccion() !== null) {
-                $this->direccion = $tercero->getDireccion()->__toString();
-                $this->direccionId = $tercero->getDireccion()->getId();
-            }
-
-            $this->mecanismoscontacto = $tercero->getMecanismoscontacto();
-            $this->cliente = $tercero->getCliente();
-            $this->institucion = $tercero->getInstitucion();
-            $this->proveedor = $tercero->getProveedor();
-            $this->persona = $tercero->getPersona();
             $this->activo = $tercero->getActivo();
         }
     }
 
     /**
-     * @return \Buseta\SecurityBundle\Entity\User
+     * Get Tercero entity data.
+     *
+     * @return Tercero
      */
-    public function getUsuario()
+    public function getEntityData()
     {
-        return $this->usuario;
-    }
+        $tercero = new Tercero();
+        $tercero->setAlias($this->getAlias());
+        $tercero->setNombres($this->getNombres());
+        $tercero->setApellidos($this->getApellidos());
+        $tercero->setCodigo($this->getCodigo());
+        $tercero->setFoto($this->getFoto());
+        $tercero->setUsuario($this->getUsuario());
+        $tercero->setActivo($this->getActivo());
 
-    /**
-     * @param \Buseta\SecurityBundle\Entity\User $usuario
-     */
-    public function setUsuario($usuario)
-    {
-        $this->usuario = $usuario;
+        return $tercero;
     }
 
     /**
      * @return boolean
      */
-    public function getActivo()
+    public function isActivo()
     {
         return $this->activo;
     }
@@ -126,6 +113,14 @@ class TerceroModel implements TerceroModelInterface
     public function setActivo($activo)
     {
         $this->activo = $activo;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getActivo()
+    {
+        return $this->activo;
     }
 
     /**
@@ -153,7 +148,7 @@ class TerceroModel implements TerceroModelInterface
     }
 
     /**
-     * @param mixed $apellidos
+     * @param string $apellidos
      */
     public function setApellidos($apellidos)
     {
@@ -161,23 +156,7 @@ class TerceroModel implements TerceroModelInterface
     }
 
     /**
-     * @return boolean
-     */
-    public function getCliente()
-    {
-        return $this->cliente;
-    }
-
-    /**
-     * @param boolean $cliente
-     */
-    public function setCliente($cliente)
-    {
-        $this->cliente = $cliente;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getCodigo()
     {
@@ -185,155 +164,11 @@ class TerceroModel implements TerceroModelInterface
     }
 
     /**
-     * @param mixed $codigo
+     * @param string $codigo
      */
     public function setCodigo($codigo)
     {
         $this->codigo = $codigo;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCompras()
-    {
-        return $this->compras;
-    }
-
-    /**
-     * @param mixed $compras
-     */
-    public function setCompras($compras)
-    {
-        $this->compras = $compras;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDireccion()
-    {
-        return $this->direccion;
-    }
-
-    /**
-     * @param mixed $direccion
-     */
-    public function setDireccion($direccion)
-    {
-        $this->direccion = $direccion;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDireccionId()
-    {
-        return $this->direccionId;
-    }
-
-    /**
-     * @param mixed $direccionId
-     */
-    public function setDireccionId($direccionId)
-    {
-        $this->direccionId = $direccionId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getInstitucion()
-    {
-        return $this->institucion;
-    }
-
-    /**
-     * @param boolean $institucion
-     */
-    public function setInstitucion($institucion)
-    {
-        $this->institucion = $institucion;
-    }
-
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getMecanismoscontacto()
-    {
-        return $this->mecanismoscontacto;
-    }
-
-    /**
-     * @param \Doctrine\Common\Collections\ArrayCollection $mecanismoscontacto
-     */
-    public function setMecanismoscontacto($mecanismoscontacto)
-    {
-        $this->mecanismoscontacto = $mecanismoscontacto;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNombres()
-    {
-        return $this->nombres;
-    }
-
-    /**
-     * @param mixed $nombres
-     */
-    public function setNombres($nombres)
-    {
-        $this->nombres = $nombres;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getProveedor()
-    {
-        return $this->proveedor;
-    }
-
-    /**
-     * @param boolean $proveedor
-     */
-    public function setProveedor($proveedor)
-    {
-        $this->proveedor = $proveedor;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getPersona()
-    {
-        return $this->persona;
-    }
-
-    /**
-     * @param boolean $persona
-     */
-    public function setPersona($persona)
-    {
-        $this->persona = $persona;
     }
 
     /**
@@ -350,5 +185,53 @@ class TerceroModel implements TerceroModelInterface
     public function setFoto($foto)
     {
         $this->foto = $foto;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNombres()
+    {
+        return $this->nombres;
+    }
+
+    /**
+     * @param string $nombres
+     */
+    public function setNombres($nombres)
+    {
+        $this->nombres = $nombres;
+    }
+
+    /**
+     * @return \Buseta\SecurityBundle\Entity\User
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * @param \Buseta\SecurityBundle\Entity\User $usuario
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
     }
 }

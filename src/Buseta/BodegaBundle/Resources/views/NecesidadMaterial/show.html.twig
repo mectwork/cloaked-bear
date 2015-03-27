@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Datos de la Necesidad de Material
+    Datos de Necesidad de Material
 {% endblock %}
 
 {% block area_trabajo %}
@@ -85,18 +85,17 @@
                         <th>%Descuento</th>
                         <th>Importe Línea</th>
 
-                        {% for linea in entity.necesidadmateriallineas %}
-                        <tbody>
-                            <tr>
-                                <td>{{ linea.linea }}</td>
-                                <td>{{ linea.producto.nombre }}</td>
-                                <td>{{ linea.cantidadpedido }}</td>
-                                <td>{{ linea.uom.valor }}</td>
-                                <td>{{ linea.preciounitario }}</td>
-                                <td>{{ linea.impuesto.nombre }}</td>
-                                <td>{{ linea.porcientodescuento }}</td>
-                                <td>{{ linea.importelinea }}</td>
-                            </tr>
+                        {% for linea in entity.necesidadMaterialLineas %}
+                        <tr>
+                            <td>{{ linea.linea }}</td>
+                            <td>{{ linea.producto.nombre }}</td>
+                            <td>{{ linea.cantidadpedido }}</td>
+                            <td>{{ linea.uom.valor }}</td>
+                            <td>{{ linea.preciounitario }}</td>
+                            <td>{{ linea.impuesto.nombre }}</td>
+                            <td>{{ linea.porcientodescuento }}</td>
+                            <td>{{ linea.importelinea }}</td>
+                        </tr>
                         {% else %}
                             <tr>
                                 <td colspan="6">

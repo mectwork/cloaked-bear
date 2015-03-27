@@ -1,18 +1,26 @@
 buseta_bodega_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: BusetaBodegaBundle:Default:index }
+  pattern:  /hello/{name}
+  defaults: { _controller: BusetaBodegaBundle:Default:index }
 
 bodega_principal:
-    pattern:  /modulo/bodega
-    defaults: { _controller: "BusetaBodegaBundle:Bodega:principal" }
+  pattern:  /modulo/bodega
+  defaults: { _controller: "BusetaBodegaBundle:Bodega:principal" }
 
 bodega_informe_stock:
-    pattern:  /modulo/bodega/informe_stock
-    defaults: { _controller: "BusetaBodegaBundle:InformeStock:index" }
+  pattern:  /modulo/bodega/informe_stock
+  defaults: { _controller: "BusetaBodegaBundle:InformeStock:index" }
 
 bodega_informe_costos:
-    pattern:  /modulo/bodega/informe_costos
-    defaults: { _controller: "BusetaBodegaBundle:Informe:informeCostos" }
+  pattern:  /modulo/bodega/informe_costos
+  defaults: { _controller: "BusetaBodegaBundle:Informe:informeCostos" }
+
+buseta_bodega_terceros:
+  resource: "@BusetaBodegaBundle/Controller/TerceroController.php"
+  type:     annotation
+
+buseta_bodega_persona:
+  resource: "@BusetaBodegaBundle/Controller/PersonaController.php"
+  type:     annotation
 
 bodega_proveedor:
     resource: @BusetaBodegaBundle/Controller/ProveedorController.php
@@ -27,24 +35,24 @@ bodega_mecanismo_contacto:
     type:     annotation
 
 buseta_bodega_pedidocompra:
-    resource: "@BusetaBodegaBundle/Controller/PedidoCompraController.php"
-    type: annotation
+  resource: "@BusetaBodegaBundle/Controller/PedidoCompraController.php"
+  type:     annotation
 
 buseta_bodega_pedidocompralinea:
-    resource: "@BusetaBodegaBundle/Controller/PedidoCompraLineaController.php"
-    type: annotation
+  resource: "@BusetaBodegaBundle/Controller/PedidoCompraLineaController.php"
+  type:     annotation
 
 buseta_bodega_necesidadmaterial:
-    resource: "@BusetaBodegaBundle/Controller/NecesidadMaterialController.php"
-    type: annotation
+  resource: "@BusetaBodegaBundle/Controller/NecesidadMaterialController.php"
+  type:     annotation
 
 buseta_bodega_producto:
     resource: "@BusetaBodegaBundle/Controller/ProductoController.php"
     type: annotation
 
 buseta_bodega_necesidadmateriallinea:
-    resource: "@BusetaBodegaBundle/Controller/NecesidadMaterialLineaController.php"
-    type: annotation
+  resource: "@BusetaBodegaBundle/Controller/NecesidadMaterialLineaController.php"
+  type:     annotation
 
 buseta_bodega_productoprecio:
     resource: "@BusetaBodegaBundle/Controller/PrecioProductoController.php"
