@@ -1,66 +1,66 @@
 BusetaTallerBundle_tareaadicional:
-        resource: "@BusetaTallerBundle/Resources/config/routing/tareaadicional.yml"
-        prefix:   /tareaadicional
+    resource: "@BusetaTallerBundle/Resources/config/routing/tareaadicional.yml"
+    prefix:   /tareaadicional
 
 BusetaTallerBundle_ordentrabajo:
-        resource: "@BusetaTallerBundle/Resources/config/routing/ordentrabajo.yml"
-        prefix:   /ordentrabajo
+    resource: "@BusetaTallerBundle/Resources/config/routing/ordentrabajo.yml"
+    prefix:   /ordentrabajo
 
 BusetaTallerBundle_reporte:
-        resource: "@BusetaTallerBundle/Resources/config/routing/reporte.yml"
-        prefix:   /reporte
+    resource: "@BusetaTallerBundle/Resources/config/routing/reporte.yml"
+    prefix:   /reporte
 
 BusetaTallerBundle_diagnostico:
-        resource: "@BusetaTallerBundle/Resources/config/routing/diagnostico.yml"
-        prefix:   /diagnostico
+    resource: "@BusetaTallerBundle/Resources/config/routing/diagnostico.yml"
+    prefix:   /diagnostico
 
 BusetaTallerBundle_observacion:
-        resource: "@BusetaTallerBundle/Resources/config/routing/observacion.yml"
-        prefix:   /observacion
+    resource: "@BusetaTallerBundle/Resources/config/routing/observacion.yml"
+    prefix:   /observacion
 
 BusetaTallerBundle_observaciondiagnostico:
-        resource: "@BusetaTallerBundle/Resources/config/routing/observaciondiagnostico.yml"
-        prefix:   /observaciondiagnostico
+    resource: "@BusetaTallerBundle/Resources/config/routing/observaciondiagnostico.yml"
+    prefix:   /observaciondiagnostico
 
 BusetaTallerBundle_tareamantenimiento:
-        resource: "@BusetaTallerBundle/Resources/config/routing/tareamantenimiento.yml"
-        prefix:   /tareamantenimiento
+    resource: "@BusetaTallerBundle/Resources/config/routing/tareamantenimiento.yml"
+    prefix:   /tareamantenimiento
 
 BusetaTallerBundle_condicionespago:
-        resource: "@BusetaTallerBundle/Resources/config/routing/condicionespago.yml"
-        prefix:   /condicionespago
+    resource: "@BusetaTallerBundle/Resources/config/routing/condicionespago.yml"
+    prefix:   /condicionespago
 
 BusetaTallerBundle_pedidocompralinea:
-        resource: "@BusetaBodegaBundle/Resources/config/routing/pedido_compra_linea.yml"
-        prefix:   /pedidocompralinea
+    resource: "@BusetaBodegaBundle/Resources/config/routing/pedido_compra_linea.yml"
+    prefix:   /pedidocompralinea
 
 BusetaTallerBundle_pedidocompra:
-        resource: "@BusetaBodegaBundle/Resources/config/routing/pedidocompra.yml"
-        prefix:   /pedidocompra
+    resource: "@BusetaBodegaBundle/Resources/config/routing/pedidocompra.yml"
+    prefix:   /pedidocompra
 
 BusetaTallerBundle_necesidadmateriallinea:
-        resource: "@BusetaBodegaBundle/Resources/config/routing/necesidad_material_linea.yml"
-        prefix:   /necesidadmateriallinea
+    resource: "@BusetaBodegaBundle/Resources/config/routing/necesidad_material_linea.yml"
+    prefix:   /necesidadmateriallinea
 
 BusetaTallerBundle_necesidadmaterial:
-        resource: "@BusetaBodegaBundle/Resources/config/routing/necesidadmaterial.yml"
-        prefix:   /necesidadmaterial
+    resource: "@BusetaBodegaBundle/Resources/config/routing/necesidadmaterial.yml"
+    prefix:   /necesidadmaterial
 
 BusetaTallerBundle_precioproducto:
-        resource: "@BusetaBodegaBundle/Resources/config/routing/precio_producto.yml"
-        prefix:   /precioproducto
+    resource: "@BusetaBodegaBundle/Resources/config/routing/precio_producto.yml"
+    prefix:   /precioproducto
 
 BusetaTallerBundle_albaran:
-        resource: "@BusetaBodegaBundle/Resources/config/routing/albaran.yml"
-        prefix:   /albaran
+    resource: "@BusetaBodegaBundle/Resources/config/routing/albaran.yml"
+    prefix:   /albaran
 
 BusetaTallerBundle_albaranlinea:
-        resource: "@BusetaBodegaBundle/Resources/config/routing/albaran_linea.yml"
-        prefix:   /albaranlinea
+    resource: "@BusetaBodegaBundle/Resources/config/routing/albaran_linea.yml"
+    prefix:   /albaranlinea
 
 BusetaTallerBundle_impuesto:
-        resource: "@BusetaTallerBundle/Resources/config/routing/impuesto.yml"
-        prefix:   /impuesto
+    resource: "@BusetaTallerBundle/Resources/config/routing/impuesto.yml"
+    prefix:   /impuesto
 
 buseta_template:
     resource: "@BusetaTemplateBundle/Resources/config/routing.yml"
@@ -72,7 +72,7 @@ BusetaBodegaBundle_producto:
 
 BusetaBodegaBundle_movimiento:
     resource: "@BusetaBodegaBundle/Resources/config/routing/movimiento.yml"
-        prefix:   /bodega/movimiento
+    prefix:   /bodega/movimiento
 
 BusetaBodegaBundle_bodega:
     resource: "@BusetaBodegaBundle/Resources/config/routing/bodega.yml"
@@ -82,13 +82,9 @@ BusetaBodegaBundle_categoria_producto:
     resource: "@BusetaBodegaBundle/Resources/config/routing/categoria_producto.yml"
     prefix:   /bodega/categoria_producto
 
-BusetaBodegaBundle_tercero:
-    resource: "@BusetaBodegaBundle/Resources/config/routing/tercero.yml"
-    prefix:   /bodega/tercero
-
 BusetaTallerBundle_informestock:
-        resource: "@BusetaBodegaBundle/Resources/config/routing/informe_stock.yml"
-        prefix:   /informestock
+    resource: "@BusetaBodegaBundle/Resources/config/routing/informe_stock.yml"
+    prefix:   /informestock
 
 buseta_bodega:
     resource: "@BusetaBodegaBundle/Resources/config/routing.yml"
