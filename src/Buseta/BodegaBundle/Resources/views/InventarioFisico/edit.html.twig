@@ -1,0 +1,428 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% form_theme edit_form 'BusetaBodegaBundle:Widgets:collection_linea_insertadas.html.twig' %}
+
+{% block title %}
+    Adicionar Nuevo Inventario Físico
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Adicionar Nuevo Inventario Físico
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            {# Nav tabs #}
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos</a></li>
+                <li><a href="#lineas" data-toggle="tab">Líneas</a></li>
+            </ul>
+
+            {# Tab panes #}
+            <div class="tab-content" style="padding-top: 20px;">
+                <!-- TAB BASICOS-->
+                <div class="tab-pane fade in active" id="basicos">
+                    {% include '@BusetaBodega/InventarioFisico/form_template.html.twig' with {'form': edit_form} %}
+                </div>
+
+                <!-- TAB LINEAS-->
+                <div class="tab-pane fade" id="lineas">
+                    {# Líneas #}
+                </div>
+            </div>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+
+{% endblock area_trabajo %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <!-- Initialize script -->
+    <script type="text/javascript">
+        $(function (){
+            // init inventariofisico
+            inventariofisico._load();
+        });
+    </script>
+
+    <script type="text/javascript">
+        var button = {
+            _disable: function (selector) {
+                $(selector).addClass('disabled');
+            },
+            _enable: function (selector) {
+                $(selector).removeClass('disabled');
+            }
+        };
+        var tabs = {
+            loadding_image: '<i class="fa fa-spinner fa-spin"></i>',
+            _show_all_tabs: function() {
+                tabs._show_tab('lineas');
+            },
+            _show_tab: function (tabname) {
+                $('li a[href="#' + tabname + '"]').parent().show();
+            },
+            _hide_tab: function () {
+                $('li a[href="#' + tabname + '"]').parent().hide();
+            },
+            _add_loadding: function (tabname) {
+                var linktab = $('li a[href="#' + tabname + '"]');
+                linktab.prepend($(tabs.loadding_image));
+            },
+            _remove_loadding: function (tabname) {
+                var spinning = $('li a[href="#' + tabname + '"]').find('i.fa.fa-spinner.fa-spin');
+                spinning.remove();
+            },
+            _active: function (href) {
+                $('li a[href="' + href + '"]').parent().addClass('active');
+                $('div' + href).addClass('active').addClass('in');
+            },
+            _desactive: function (href) {
+                $('li a[href="' + href + '"]').parent().removeClass('active');
+                $('div' + href).removeClass('active').removeClass('in');
+            }
+        };
+        var utils = {
+            _fail: function (jqXHR, textStatus, errorThrown) {
+                if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                    addGlobalMessage('danger', jqXHR.responseText.message);
+                } else {
+                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+                }
+            }
+        };
+        var progressBar = {
+            _add_progressBar: function (name) {
+                var progressBar = $('<div class="progress" id="' + name + '_progress_bar"></div>'),
+                        bar = $('<div>')
+                                .addClass('progress-bar')
+                                .attr('role', 'progressbar')
+                                .attr('aria-valuenow', 2)
+                                .attr('aria-valuemin', 0)
+                                .attr('aria-valuemax', 100)
+                                .css('width', '2%')
+                                .append($('<span class="sr-only"></span>'));
+
+                progressBar.append(bar);
+
+                $('#' + name).hide().parent().prepend(progressBar);
+            },
+            _remove_progressBar: function(name) {
+                var progressBar = $('div#' + name + '_progress_bar');
+                progressBar.slideUp(400, function () {
+                    progressBar.remove();
+                });
+                $('#' + name).show();
+            }
+        };
+    </script>
+
+    <!-- InventarioFisico script -->
+    <script type="text/javascript">
+        var inventariofisico = {
+            form_id: $('div#basicos').find('form').attr('id'),
+            form_name: $('div#basicos').find('form').attr('name'),
+            id: '',
+            _load: function () {
+
+                $('#bodega_inventariofisico_type_fecha').datetimepicker({
+                    'format': 'DD/MM/YYYY'
+                });
+
+                $('a#btn_inventariofisico_save').on('click', inventariofisico._save);
+                inventariofisico.id = $('input[id="' + inventariofisico.form_id + '_id"]').val();
+                if (inventariofisico.id === '' || inventariofisico.id === undefined) {
+                    // hide all tabs on page load
+                    $('a[data-toggle="tab"]').each(function(key, item) {
+                        if($(item).attr('href') != '#basicos') {
+                            $(item).parent().hide();
+                        }
+                    });
+                }
+
+                // on show tab events
+                $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+                    var href = $(e.target).attr('href');
+                    var relhref = $(e.relatedTarget).attr('href');
+
+                    if (href === '#lineas') {
+                        lineas._load();
+                    }
+                });
+            },
+            _save: function (event) {
+                if (event != undefined) {
+                    event.preventDefault();
+                }
+
+                // disable btn
+                button._disable('a#btn_inventariofisico_save');
+
+                // add spinning to show loading process
+                tabs._add_loadding('basicos');
+
+                // InventarioFisico Id
+                inventariofisico.id = $('input[id="' + inventariofisico.form_id + '_id"]').val();
+
+                var inventariofisicosForm    = $('form#' + inventariofisico.form_id),
+                        url             = Routing.generate('inventariofisicos_inventariofisico_create',{});
+                if(inventariofisico.id !== '' && inventariofisico.id !== undefined) {
+                    url = Routing.generate('inventariofisicos_inventariofisico_update', {'id': inventariofisico.id});
+                }
+
+                inventariofisicosForm.ajaxSubmit({
+                    success: inventariofisico._done,
+                    error: utils._fail,
+                    complete: inventariofisico._always,
+                    uploadProgress: inventariofisico._upload,
+                    url: url,
+                    dataType: 'json'
+                });
+            },
+            _done: function (response, textStatus, jqXHR) {
+                $('form#' + inventariofisico.form_id).replaceWith(response.view);
+
+                if(jqXHR.status == 201) {
+                    addGlobalMessage('success', response.message);
+                    // InventarioFisico Id
+                    inventariofisico.id = $('input[id="' + inventariofisico.form_id + '_id"]').val();
+                    // activate all tabs
+                    tabs._show_all_tabs();
+                } else if(jqXHR.status == 202) {
+                    addGlobalMessage('success', response.message);
+                }
+                $('a#btn_inventariofisico_save').on('click', inventariofisico._save);
+            },
+            _always: function() {
+                // remove spinning
+                tabs._remove_loadding('basicos');
+                // remove progress bar
+                progressBar._remove_progressBar($('input[id="' + inventariofisico.form_id + '_foto_file"]').attr('id'));
+
+                button._enable('a#btn_inventariofisico_save');
+            },
+            _upload: function (event, position, total, percentComplete) {
+                var progressBarr = $('div#basicos').find('.progress-bar')[0];
+                if (progressBarr !== undefined) {
+                    $(progressBarr).css('width', percentComplete + '%');
+                    $(progressBarr).find('span').html(percentComplete + '% Completado');
+                }
+            }
+        };
+    </script>
+
+    <!-- Lineas script -->
+    <script type="text/javascript">
+        var lineas = {
+            form_name: '',
+            form_id: '',
+            id: '',
+            _start_events: function () {
+                $('a[href="#form_lineas_modal"]').on('click', lineas._load_modal);
+                // Paginator sort
+                $('table.lineas_records_list').find('a.sortable, a.asc, a.desc').on('click', lineas._load);
+                // Table addresses actions
+                $('table.lineas_records_list').find('a[href="#edit"]').on('click', lineas._load_modal);
+                $('table.lineas_records_list').find('a[href="#delete"]').on('click', lineas._load_delete_modal);
+                // Paginator navigation
+                $('div.lineas-paginator.row ul.pagination').find('a.paginator-link').on('click', lineas._load);
+            },
+            _load: function (event) {
+
+                if(event !== undefined) {
+                    event.preventDefault();
+                }
+
+                if (inventariofisico.id == '') {
+                    return;
+                }
+
+                // add spinning to show loading process
+                tabs._add_loadding('lineas');
+
+                var url = Routing.generate('inventariofisico_lineas_list',{'inventariofisico': inventariofisico.id});
+                if($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
+                    url = $(this).attr('href');
+                }
+
+                $.get(url).done(function (response, textStatus, jqXHR) {
+                    $('div#lineas').html(response);
+
+                    lineas._start_events();
+                }).fail(utils._fail).always(lineas._always);
+            },
+            _load_modal: function(event) {
+                if(event !== undefined) {
+                    event.preventDefault();
+                }
+
+                if(inventariofisico.id === '' || inventariofisico.id === undefined) {
+                    return;
+                }
+
+                var url = Routing.generate('inventariofisico_lineas_new_modal', {'inventariofisico': inventariofisico.id});
+                if($(this).attr('href') !== undefined && $(this).attr('href') === '#edit') {
+                    url = Routing.generate('inventariofisico_lineas_edit_modal', {'inventariofisico': inventariofisico.id, id:$(this).data('content')});
+                }
+
+                $.get(url)
+                        .done(function(response, textStatus, jqXHR){
+                            $('div#form_lineas_modal').replaceWith($(response.view));
+
+                            lineas.form_id = $('div#form_lineas_modal').find('form').attr('id');
+                            lineas.form_name = $('div#form_lineas_modal').find('form').attr('name');
+
+                            $('a#btn_lineas_save').on('click',  lineas._save_modal);
+
+                            $('a#btn_lineas_cancel').on('click', function(){
+                                $('div#form_lineas_modal').modal('hide');
+                            });
+
+                            //Valores iniciales del modal de nueva linea
+                            $('#' + lineas.form_id + '_cantidadTeorica').val(0);
+
+                            $('#' + lineas.form_id + '_producto').change(lineas._obtenerCantidadTeorica);
+
+                            $('div#form_lineas_modal').modal('show');
+                        }).fail(utils._fail).always(function(){});
+            },
+            _load_delete_modal: function(event) {
+                if(event !== undefined) {
+                    event.preventDefault();
+                }
+
+                if(inventariofisico.id === '' || inventariofisico.id === undefined) {
+                    return;
+                }
+
+                var id  = $(this).data('content'),
+                        url = Routing.generate('inventariofisico_lineas_delete', {id: id});
+                $.get(url)
+                        .done(function(response, textStatus, jqXHR){
+                            $('div#form_lineas_delete_modal').replaceWith($(response.view));
+
+                            $('div#form_lineas_delete_modal a#btn_lineas_delete').on('click', lineas._save_delete_modal);
+                            $('div#form_lineas_delete_modal a#btn_lineas_cancel').on('click', function(){
+                                $('div#form_lineas_delete_modal').modal('hide');
+                            });
+
+                            $('div#form_lineas_delete_modal').modal('show');
+                        }).fail(utils._fail).always(function(){});
+            },
+            _save_modal: function (event) {
+
+                if(event != undefined) {
+                    event.preventDefault();
+                }
+
+                $('#btn_lineas_save').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-save')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
+
+                var url = Routing.generate('inventariofisico_lineas_new_modal',{'inventariofisico': inventariofisico.id}),
+                        id  = $('#' + lineas.form_id + '_id').val();
+                if(id !== '' && id !== undefined) {
+                    url = Routing.generate('inventariofisico_lineas_edit_modal',{'inventariofisico': inventariofisico.id, id: id});
+                }
+
+                //Actualiza las nuevas lineas insertadas
+                $('form#' + lineas.form_id).ajaxSubmit({
+                    success: lineas._done,
+                    error: utils._fail,
+                    complete: lineas._always,
+                    url: url,
+                    dataType: 'json'
+                });
+
+                //Actualiza el InventarioFisico con los nuevos valores de los importes de lineas y totales
+                url = Routing.generate('inventariofisicos_inventariofisico_update', {'id': inventariofisico.id});
+
+                $('form#' + inventariofisico.form_id).ajaxSubmit({
+                    success: inventariofisico._done,
+                    error: utils._fail,
+                    complete: inventariofisico._always,
+                    url: url,
+                    dataType: 'json'
+                });
+
+            },
+            _save_delete_modal: function (event) {
+                if(event != undefined) {
+                    event.preventDefault();
+                }
+
+                $('#btn_lineas_delete').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-trash')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
+
+                var deleteForm = $('div#form_lineas_delete_modal').find('form'),
+                        url = $(deleteForm).attr('action');
+
+                deleteForm.ajaxSubmit({
+                    success: function (response, textStatus, jqXHR) {
+                        if(jqXHR.status == 202) {
+                            addGlobalMessage('success', response.message);
+                        }
+                        $('div#form_lineas_delete_modal').modal('hide');
+                        lineas._load();
+                    },
+                    error: utils._fail,
+                    complete: lineas._always,
+                    url: url,
+                    dataType: 'json'
+                });
+            },
+            _done: function (response, textStatus, jqXHR) {
+
+                $('form#' + lineas.form_id).replaceWith($(response.view).find('form'));
+
+                if(jqXHR.status == 201 || jqXHR.status == 202) {
+                    addGlobalMessage('success', response.message);
+
+                    $('div#form_lineas_modal').modal('hide');
+                    lineas._load();
+                }
+            },
+            _always: function(jqXHR, textStatus) {
+                // remove spinning
+                tabs._remove_loadding('lineas');
+                $('a[id^="btn_lineas_"]').find('span')
+                        .addClass('glyphicon')
+                        .addClass('glyphicon-save')
+                        .removeClass('fa')
+                        .removeClass('fa-gear')
+                        .removeClass('fa-spin');
+            },
+            _obtenerCantidadTeorica: function (event){
+                var data = {
+                    producto_id: $('#' + lineas.form_id + '_producto').val(),
+                    almacen_id: $('#' + inventariofisico.form_id + '_almacen').val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("bodega_ajax_productos_all") }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+                        var cantidadReal_text = $('#' + lineas.form_id + '_cantidadTeorica');
+
+                        cantidadReal_text.val(values.cantidadReal);
+                    }
+                });
+            }
+        };
+    </script>
+
+{% endblock javascripts %}
