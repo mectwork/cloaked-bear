@@ -94,7 +94,7 @@ class Tercero
     /**
      * @var \Buseta\BodegaBundle\Entity\Persona
      *
-     * @ORM\OneToOne(targetEntity="Buseta\BodegaBundle\Entity\Persona", mappedBy="tercero")
+     * @ORM\OneToOne(targetEntity="Buseta\BodegaBundle\Entity\Persona", mappedBy="tercero", cascade={"persist", "remove"})
      */
     private $persona;
 
@@ -342,12 +342,14 @@ class Tercero
     /**
      * Set persona.
      *
-     * @param boolean $persona
+     * @param \Buseta\BodegaBundle\Entity\Persona $persona
      *
      * @return Tercero
      */
-    public function setPersona($persona)
+    public function setPersona(\Buseta\BodegaBundle\Entity\Persona $persona)
     {
+        $persona->setTercero($this);
+
         $this->persona = $persona;
 
         return $this;
@@ -356,7 +358,7 @@ class Tercero
     /**
      * Get persona.
      *
-     * @return boolean
+     * @return \Buseta\BodegaBundle\Entity\Persona
      */
     public function getPersona()
     {

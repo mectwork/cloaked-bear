@@ -101,6 +101,7 @@ buseta_buses:
 
 buseta_security:
     resource: "@BusetaSecurityBundle/Resources/config/routing.yml"
+    prefix:   /security
 
 core:
     resource: "@CoreBundle/Resources/config/routing.yml"
