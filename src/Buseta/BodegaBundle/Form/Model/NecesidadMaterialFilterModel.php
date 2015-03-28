@@ -29,25 +29,21 @@ class NecesidadMaterialFilterModel
 
     /**
      * @var \Buseta\BodegaBundle\Entity\Bodega
-     * @Assert\NotBlank()
      */
     private $almacen;
 
     /**
      * @var \Buseta\NomencladorBundle\Entity\Moneda
-     * @Assert\NotBlank()
      */
     private $moneda;
 
     /**
      * @var \Buseta\NomencladorBundle\Entity\FormaPago
-     * @Assert\NotBlank()
      */
     private $forma_pago;
 
     /**
      * @var \Buseta\TallerBundle\Entity\CondicionesPago
-     * @Assert\NotBlank()
      */
     private $condiciones_pago;
 

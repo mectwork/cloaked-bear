@@ -25,6 +25,7 @@
     and (filter_form.vars.value.condicionespago is null or filter_form.vars.value.condicionespago is empty)
     and (filter_form.vars.value.importetotallineas is null or filter_form.vars.value.importetotallineas is empty)
     and (filter_form.vars.value.importetotal is null or filter_form.vars.value.importetotal is empty)
+    and (filter_form.vars.value.estadodocumento is null or filter_form.vars.value.estadodocumento is empty)
     %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
@@ -47,6 +48,7 @@
                 <div class="col-lg-4">{{ form_row(filter_form.condiciones_pago) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.importe_total_lineas) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.importe_total) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.estado_documento) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 

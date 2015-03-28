@@ -103,7 +103,7 @@ class PedidoCompraType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('estado', 'choice', array(
+            ->add('estado_documento', 'choice', array(
                 'required' => false,
                 'read_only' => true,
                 'empty_value' => '---Seleccione---',

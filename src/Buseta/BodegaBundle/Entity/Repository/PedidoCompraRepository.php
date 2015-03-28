@@ -33,6 +33,10 @@ class PedidoCompraRepository extends EntityRepository
                 $query->andWhere($query->expr()->eq('r.almacen', ':almacen'))
                     ->setParameter('almacen', $filter->getAlmacen());
             }
+            if ($filter->getEstadoDocumento() !== null && $filter->getEstadoDocumento() !== '') {
+                $query->andWhere($query->expr()->eq('r.estado_documento', ':estado_documento'))
+                    ->setParameter('estado_documento', $filter->getEstadoDocumento());
+            }
             if ($filter->getMoneda() !== null && $filter->getMoneda() !== '') {
                 $query->andWhere($query->expr()->eq('r.moneda', ':moneda'))
                     ->setParameter('moneda', $filter->getMoneda());

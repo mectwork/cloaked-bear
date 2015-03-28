@@ -14,6 +14,7 @@
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.numero is null or filter_form.vars.value.numero is empty)
         and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
+        and (filter_form.vars.value.estado is null or filter_form.vars.value.estado is empty)
     %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
@@ -30,6 +31,7 @@
             <div class="row">
                 <div class="col-lg-4">{{ form_row(filter_form.numero) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.autobus) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.estado) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
