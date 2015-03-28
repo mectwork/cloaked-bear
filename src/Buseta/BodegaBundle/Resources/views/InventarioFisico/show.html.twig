@@ -90,10 +90,7 @@
         {% endif %}
     </div>
 
-    {% if entity.estado == 'BO' %}
-        {% include 'BusetaBodegaBundle:InventarioFisico:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
-    {% endif %}
-
+    {% include 'BusetaBodegaBundle:InventarioFisico:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
 
 {% endblock %}
 

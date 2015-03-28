@@ -18,6 +18,10 @@ bodega_proveedor:
     resource: @BusetaBodegaBundle/Controller/ProveedorController.php
     type:     annotation
 
+bodega_index:
+    resource: @BusetaBodegaBundle/Controller/BodegaController.php
+    type:     annotation
+
 bodega_direccion:
     resource: @BusetaBodegaBundle/Controller/DireccionController.php
     type:     annotation

@@ -111,8 +111,8 @@
     <div class="form-actions">
         <a class="btn btn-primary" href="{{ path('producto_edit', { 'id': entity.id }) }}"> Editar</a>
         <a class="btn btn-primary" href="{{ path('producto') }}"> Listado</a>
-        <a href="#delete" data-href="{{ path('producto_delete', {'id': entity.id}) }}" class="btn btn-danger">
-            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+        {#<a href="#delete" data-href="{{ path('producto_delete', {'id': entity.id}) }}" class="btn btn-danger">
+            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>#}
         <a class="btn btn-primary" href="{{ path('producto_bitacora', { 'id': entity.id }) }}"> Bitácora</a>
     </div>
 

@@ -92,7 +92,7 @@ class PedidoCompraController extends Controller
 
         //registro los datos del nuevo albarán que se crear al procesar el pedido
         $albaran = new Albaran();
-        $albaran->setEstadoDocumento($pedidoCompra->getEstadoDocumento());
+        $albaran->setEstadoDocumento('BO');
         $albaran->setAlmacen($almacen);
         $albaran->setConsecutivoCompra($pedidoCompra->getConsecutivoCompra());
         $albaran->setTercero($tercero);

@@ -14,6 +14,7 @@
 
 {% block area_trabajo %}
 
+<div id="records_list">
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.numerodocumento is null or filter_form.vars.value.numerodocumento is empty)
@@ -95,7 +96,7 @@
                 <td>{{ entity.importetotal }}</td>
                 <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
 
-                <td style="width: 18% !important; text-align: center;">
+                <td style="width: 24% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"
                            href="{{ path('pedidocompra_show', { 'id': entity.id }) }}"><span
@@ -108,12 +109,16 @@
                                href="{{ path('pedidocompras_pedidocompra_edit', { 'id': entity.id }) }}"><span
                                         class="glyphicon glyphicon-edit"> Editar</span></a>
                         </div>
+                        <a href="#delete" data-href="{{ path('pedidocompra_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
                     {% else %}
                         <div class="btn-group">
                             <a class="btn btn-danger btn-xs disabled"
                                href="{{ path('pedidocompras_pedidocompra_edit', { 'id': entity.id }) }}"><span
                                         class="glyphicon glyphicon-edit"> Editar</span></a>
                         </div>
+                        <a href="#delete" data-href="{{ path('pedidocompra_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs disabled">
+                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
                     {% endif %}
                 </td>
             </tr>
@@ -129,7 +134,10 @@
         <div class="col-lg-4"></div>
         <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
     </div>
+</div>
 
+    <!-- Delete modal -->
+    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
 {% endblock area_trabajo %}
 
 {% block javascripts %}
@@ -162,5 +170,10 @@
                 })
             });
         });
+    </script>
+
+    <script type="text/javascript">
+        var deleteevent = new DeleteEvent('{{ path('pedidocompra') }}', 'div#records_list');
+        deleteevent.start_events();
     </script>
 {% endblock javascripts %}

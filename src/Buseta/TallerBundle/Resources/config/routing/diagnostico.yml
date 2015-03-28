@@ -46,3 +46,7 @@ diagnostico_ajax_ordentrabajo_autobus:
   requirements: { _method: "GET" }
   options:
       expose: true
+
+procesarDiagnostico:
+    pattern:  /{id}/procesarDiagnostico
+    defaults: { _controller: "BusetaTallerBundle:Diagnostico:procesarDiagnostico" }

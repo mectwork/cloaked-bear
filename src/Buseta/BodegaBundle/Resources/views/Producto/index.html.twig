@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block area_trabajo %}
-
+<div id="records_list">
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.codigo is null or filter_form.vars.value.codigo is empty)
@@ -97,6 +97,8 @@
                            href="{{ path('producto_edit', { 'id': entity.id }) }}"><span
                                     class="glyphicon glyphicon-edit"> Editar</span></a>
                     </div>
+                    {#<a href="#delete" data-href="{{ path('producto_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
+                        <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>#}
                 </td>
             </tr>
         {% else %}
@@ -111,6 +113,10 @@
         <div class="col-lg-4"></div>
         <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
     </div>
+</div>
+
+    <!-- Delete modal -->
+    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
 
 {% endblock area_trabajo %}
 
@@ -145,4 +151,9 @@
             });
         });
     </script>
+
+    {#<script type="text/javascript">
+        var deleteevent = new DeleteEvent('{{ path('producto') }}', 'div#records_list');
+        deleteevent.start_events();
+    </script>#}
 {% endblock javascripts %}

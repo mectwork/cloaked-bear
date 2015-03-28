@@ -102,7 +102,7 @@ class NecesidadMaterialController extends Controller
         $pedidoCompra->setMoneda($necesidadMaterial->getMoneda());
         $pedidoCompra->setFormaPago($necesidadMaterial->getFormaPago());
         $pedidoCompra->setCondicionesPago($necesidadMaterial->getCondicionesPago());
-        $pedidoCompra->setEstadoDocumento($necesidadMaterial->getEstadoDocumento());
+        $pedidoCompra->setEstadoDocumento('BO');
         $pedidoCompra->setImporteTotal($necesidadMaterial->getImporteTotal());
         $pedidoCompra->setImporteTotalLineas($necesidadMaterial->getImporteTotalLineas());
         $pedidoCompra->setCreated(new \DateTime());

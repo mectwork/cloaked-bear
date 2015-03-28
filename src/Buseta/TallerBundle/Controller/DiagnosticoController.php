@@ -24,6 +24,24 @@ use Symfony\Component\HttpFoundation\Response;
 class DiagnosticoController extends Controller
 {
 
+    public function procesarDiagnosticoAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $diagnostico = $em->getRepository('BusetaTallerBundle:Diagnostico')->find($id);
+
+        if (!$diagnostico) {
+            throw $this->createNotFoundException('Unable to find Diagnostico entity.');
+        }
+
+        //Cambia el estado de Borrador a Procesado
+        $diagnostico->setEstado('PR');
+        $em->persist($diagnostico);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('diagnostico'));
+    }
+
     public function generarOrdenTrabajoAction($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -40,6 +58,9 @@ class DiagnosticoController extends Controller
         $ordenTrabajo->setDiagnostico($diagnostico);
         $ordenTrabajo->setAutobus($diagnostico->getAutobus());
         $em->persist($ordenTrabajo);
+
+        $diagnostico->setEstado('CO');
+        $em->persist($diagnostico);
         $em->flush();
         return $this->redirect($this->generateUrl('diagnostico'));
     }

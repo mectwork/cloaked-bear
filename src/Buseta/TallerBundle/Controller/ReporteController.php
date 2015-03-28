@@ -21,6 +21,25 @@ use Buseta\TallerBundle\Form\Filter\ReporteFilter;
  */
 class ReporteController extends Controller
 {
+
+    public function procesarReporteAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $reporte = $em->getRepository('BusetaTallerBundle:Reporte')->find($id);
+
+        if (!$reporte) {
+            throw $this->createNotFoundException('Unable to find Reporte entity.');
+        }
+
+        //Cambia el estado de Borrador a Procesado
+        $reporte->setEstado('PR');
+        $em->persist($reporte);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('reporte'));
+    }
+
     public function generarDiagnosticoAction($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -37,6 +56,10 @@ class ReporteController extends Controller
         $diagnostico->setReporte($reporte);
         $diagnostico->setAutobus($reporte->getAutobus());
         $em->persist($diagnostico);
+
+        $reporte->setEstado('CO');
+        $em->persist($reporte);
+
         $em->flush();
 
         return $this->redirect($this->generateUrl('reporte'));

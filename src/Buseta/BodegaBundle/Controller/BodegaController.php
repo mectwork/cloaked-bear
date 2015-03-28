@@ -11,8 +11,14 @@ use Buseta\BodegaBundle\Form\Type\BodegaType;
 use Buseta\BodegaBundle\Form\Filtro\BusquedaAlmacenType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
 /**
  * Bodega controller.
+ *
+ * @Route("/bodega")
  */
 class BodegaController extends Controller
 {
@@ -205,33 +211,53 @@ class BodegaController extends Controller
 
     /**
      * Deletes a Bodega entity.
+     *
+     * @Route("/{id}/delete", name="bodega_delete")
+     * @Method({"DELETE", "GET"})
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Bodega $bodega, Request $request)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($bodega->getId());
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaBodegaBundle:Bodega')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Bodega entity.');
-            }
-
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             try {
-                $em->remove($entity);
+                $em = $this->get('doctrine.orm.entity_manager');
+
+                $em->remove($bodega);
                 $em->flush();
 
-                $this->get('session')->getFlashBag()->add('success', 'Ha sido eliminado satisfactoriamente.');
+                $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 202);
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('success', $message);
+                }
             } catch (\Exception $e) {
-                $this->get('logger')->addCritical(
-                    sprintf('Ha ocurrido un error eliminando una Bodega. Detalles: %s',
-                        $e->getMessage()
-                    ));
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Bodega'), 'BusetaTallerBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
             }
         }
 
+        $renderView =  $this->renderView('@BusetaBodega/Bodega/delete_modal.html.twig', array(
+            'entity' => $bodega,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
         return $this->redirect($this->generateUrl('bodega'));
     }
 

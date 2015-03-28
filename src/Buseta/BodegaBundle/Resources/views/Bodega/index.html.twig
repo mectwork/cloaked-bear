@@ -14,6 +14,7 @@
 
 {% block area_trabajo %}
 
+<div id="records_list">
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.codigo is null or filter_form.vars.value.codigo is empty)
@@ -79,17 +80,21 @@
                 <td>{{ entity.descripcion }}</td>
                 <td>{{ entity.direccion }}</td>
 
-                <td style="width: 18% !important; text-align: center;">
+                <td style="width: 24% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"
                            href="{{ path('bodega_show', { 'id': entity.id }) }}"><span
                                     class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </div>
 
-                    {#<div class="btn-group">
+                    <div class="btn-group">
                         <a class="btn btn-danger btn-xs"
-                           href="{{ path('albaran_edit', { 'id': entity.id }) }}"><span
+                           href="{{ path('bodega_edit', { 'id': entity.id }) }}"><span
                                     class="glyphicon glyphicon-edit"> Editar</span></a>
+                    </div>
+                    {#<div class="btn-group">
+                        <a href="#delete" data-href="{{ path('bodega_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
                     </div>#}
                 </td>
             </tr>
@@ -105,6 +110,10 @@
         <div class="col-lg-4"></div>
         <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
     </div>
+
+</div>
+    <!-- Delete modal -->
+    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
 
 {% endblock area_trabajo %}
 
@@ -138,5 +147,10 @@
                 })
             });
         });
+    </script>
+
+    <script type="text/javascript">
+        var deleteevent = new DeleteEvent('{{ path('bodega') }}', 'div#records_list');
+        deleteevent.start_events();
     </script>
 {% endblock javascripts %}

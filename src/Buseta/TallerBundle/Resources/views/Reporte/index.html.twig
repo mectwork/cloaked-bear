@@ -60,6 +60,7 @@
         <tr>
             <th>Número{#{{ knp_pagination_sortable(entities, 'Número', 't.numero') }}#}</th>
             <th>Número{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
+            <th>Estado{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
@@ -68,6 +69,7 @@
             <tr>
                 <td>{{ entity.numero }}</td>
                 <td>{{ entity.autobus }}</td>
+                <td>{{ ('estado.'~entity.estado) | trans({}, 'BusetaTallerBundle') }}</td>
                 {#<td>
                     {% if entity.ispersona %}
                         <span class="glyphicon glyphicon-ok"></span>

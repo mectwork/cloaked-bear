@@ -42,13 +42,11 @@ class InventarioFisicoLineaController extends Controller
                 5
             );
 
-        /*$deleteForm = $this->createDeleteForm($inventariofisico->getId());*/
 
         return $this->render('@BusetaBodega/InventarioFisico/Linea/list_template.html.twig', array(
             'entities' => $entities,
             'inventariofisico' => $inventariofisico,
-            /*'id' => $inventariofisico->getId(),
-            'delete_form' => $deleteForm->createView(),*/
+            'id' => $inventariofisico->getId(),
         ));
     }
 

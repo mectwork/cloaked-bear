@@ -1,64 +1,55 @@
-{#{% if reporte.diagnostico == null %}
-        <div class="btn-group" style="margin-bottom: 8px;">
-            <a class="btn btn-primary" href="#form_linea_modal"><span class="glyphicon glyphicon-plus-sign"></span> {{ 'linea.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
-        </div>
-{% endif %}#}
+<div id="inventariofisico_records_list">
 
-<div class="btn-group" style="margin-bottom: 8px;">
-    <a class="btn btn-primary" href="#form_lineas_modal"><span class="glyphicon glyphicon-plus-sign"></span> {{ 'linea.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
-</div>
+    <div class="btn-group" style="margin-bottom: 8px;">
+        <a class="btn btn-primary" href="#form_lineas_modal"><span class="glyphicon glyphicon-plus-sign"></span> {{ 'linea.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
+    </div>
 
-<div class="paginator row">
-    <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
-</div>
+    <div class="paginator row">
+        <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+    </div>
 
-<table class="linea_records_list table table-striped table-bordered table-condensed table-hover">
-    <thead>
-    <tr>
-        {#<th>{{ knp_pagination_sortable(entities, 'linea.valor' | trans({}, 'BusetaTallerBundle'), 'd.valor') }}</th>#}
-        <th style="text-align: left">Número</th>
-        <th style="text-align: left">Producto</th>
-        <th style="text-align: left">Cantidad Real</th>
-        <th style="text-align: left">Cantidad Teórica</th>
-        <th style="text-align: left">Descripcion</th>
-        <th style="text-align: center">Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for entity in entities %}
+    <table class="linea_records_list table table-striped table-bordered table-condensed table-hover">
+        <thead>
         <tr>
-            <td>{{ entity.numero }}</td>
-            <td>{{ entity.producto }}</td>
-            <td>{{ entity.cantidadReal }}</td>
-            <td>{{ entity.cantidadTeorica }}</td>
-            <td>{{ entity.descripcion }}</td>
-
-            {#<td style="width: 10%; text-align: center;">
-                <a href="#delete" data-href="{{ path('inventario_fisico_linea_delete', {'id': entity.id}) }}" class="btn btn-danger">
-                    <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
-            </td>#}
+            {#<th>{{ knp_pagination_sortable(entities, 'linea.valor' | trans({}, 'BusetaTallerBundle'), 'd.valor') }}</th>#}
+            <th style="text-align: left">Número</th>
+            <th style="text-align: left">Producto</th>
+            <th style="text-align: left">Cantidad Real</th>
+            <th style="text-align: left">Cantidad Teórica</th>
+            <th style="text-align: left">Descripcion</th>
+            <th style="text-align: center">Acciones</th>
         </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.numero }}</td>
+                <td>{{ entity.producto }}</td>
+                <td>{{ entity.cantidadReal }}</td>
+                <td>{{ entity.cantidadTeorica }}</td>
+                <td>{{ entity.descripcion }}</td>
 
-        {#{% include 'BusetaBodegaBundle:InventarioFisico/Linea:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}#}
+                <td style="width: 10%; text-align: center;">
+                    <a href="#delete" data-href="{{ path('inventario_fisico_linea_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
+                        <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+                </td>
+            </tr>
 
-    {% else %}
-        <tr>
-            <td colspan="10">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
 
-<div class="paginator row">
-    <div class="col-lg-4"></div>
-    <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
+        {% else %}
+            <tr>
+                <td colspan="10">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="paginator row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
+    </div>
+
 </div>
 
 <div class="modal" id="form_lineas_modal"></div>
 <div class="modal" id="form_lineas_delete_modal"></div>
-
-{#
-<script type="text/javascript">
-    var inventariofisicodeleteevent = new DeleteEvent('{{ path('inventariofisico_lineas_list',{'inventariofisico': id}) }}', 'div#inventariofisico_records_list', false);
-    inventariofisicodeleteevent.start_events();
-</script>#}
