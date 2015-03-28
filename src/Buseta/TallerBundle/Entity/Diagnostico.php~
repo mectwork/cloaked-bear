@@ -66,6 +66,14 @@ class Diagnostico
     private $observaciones;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="estadoDocumento", type="string")
+     * @Assert\NotBlank()
+     */
+    private $estadoDocumento = 'BO';
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -185,4 +193,27 @@ class Diagnostico
     }
 
 
+
+    /**
+     * Set ordenTrabajo
+     *
+     * @param \Buseta\TallerBundle\Entity\OrdenTrabajo $ordenTrabajo
+     * @return Diagnostico
+     */
+    public function setOrdenTrabajo(\Buseta\TallerBundle\Entity\OrdenTrabajo $ordenTrabajo = null)
+    {
+        $this->ordenTrabajo = $ordenTrabajo;
+    
+        return $this;
+    }
+
+    /**
+     * Get ordenTrabajo
+     *
+     * @return \Buseta\TallerBundle\Entity\OrdenTrabajo 
+     */
+    public function getOrdenTrabajo()
+    {
+        return $this->ordenTrabajo;
+    }
 }

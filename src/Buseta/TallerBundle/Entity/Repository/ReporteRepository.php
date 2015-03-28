@@ -28,6 +28,10 @@ class ReporteRepository extends EntityRepository
                 $query->andWhere($query->expr()->eq('r.autobus', ':autobus'))
                     ->setParameter('autobus', $filter->getAutobus());
             }
+            if ($filter->getEstado() !== null && $filter->getEstado() !== '') {
+                $query->andWhere($query->expr()->eq('r.estado', ':estado'))
+                    ->setParameter('estado', $filter->getEstado());
+            }
         }
 
         $query->orderBy('r.id', 'ASC');

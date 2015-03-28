@@ -92,6 +92,14 @@ class Reporte
     private $diagnostico;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="estado", type="string")
+     * @Assert\NotBlank()
+     */
+    private $estado = 'BO';
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -353,5 +361,28 @@ class Reporte
     public function getDiagnostico()
     {
         return $this->diagnostico;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param string $estado
+     * @return Reporte
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+    
+        return $this;
+    }
+
+    /**
+     * Get estadoDocumento
+     *
+     * @return string 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
     }
 }

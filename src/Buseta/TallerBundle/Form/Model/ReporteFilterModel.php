@@ -14,6 +14,11 @@ class ReporteFilterModel
     private $autobus;
 
     /**
+     * @var string
+     */
+    private $estado;
+
+    /**
      * @return \Buseta\BusesBundle\Entity\Autobus
      */
     public function getAutobus()
@@ -45,4 +50,19 @@ class ReporteFilterModel
         $this->numero = $numero;
     }
 
-} 
+    /**
+     * @return string
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
+     * @param string $estado
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+    }
+}

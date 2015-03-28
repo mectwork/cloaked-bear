@@ -40,12 +40,20 @@
     {# buttons group #}
     <div class="row">
         <div class="col-md-4">
-            {% if entity.ordenTrabajo == null %}
-                    <a class="btn btn-primary" href="{{ path('diagnostico_generar_ordentrabajo', { 'id': entity.id }) }}">
-                        <span class="glyphicon glyphicon-save"></span> Generar Orden de Trabajo</a>
-                {% else %}
-                    <a class="btn btn-primary disabled" href="{{ path('diagnostico_generar_ordentrabajo', { 'id': entity.id }) }}">
-                        <span class="glyphicon glyphicon-save"></span> Generar Orden de Trabajo</a>
+
+            {% if entity.ordenTrabajo == null and entity.estado == 'PR'%}
+                <a class="btn btn-primary" href="{{ path('diagnostico_generar_ordentrabajo', { 'id': entity.id }) }}">
+                    <span class="glyphicon glyphicon-save"></span> Generar Orden de Trabajo</a>
+            {% elseif entity.ordenTrabajo != null and entity.estado == 'CO' %}
+                <a class="btn btn-primary disabled" href="{{ path('diagnostico_generar_ordentrabajo', { 'id': entity.id }) }}">
+                    <span class="glyphicon glyphicon-save"></span> Generar Orden de Trabajo</a>
+            {% endif %}
+
+            {% if entity.estado == 'BO' %}
+                <a class="btn btn-primary" href="{{ path('procesarDiagnostico', { 'id': entity.id }) }}">
+                    <span class="glyphicon glyphicon-primary"></span>
+                    Procesar Diagnóstico
+                </a>
             {% endif %}
 
             <a class="btn btn-default" id="btn_diagnostico_cancel" href="{{ path('diagnostico') }}"><span

@@ -14,6 +14,7 @@
 
 {% block area_trabajo %}
 
+<div id="records_list">
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.numerodocumento is null or filter_form.vars.value.numerodocumento is empty)
@@ -24,6 +25,7 @@
     and (filter_form.vars.value.condicionespago is null or filter_form.vars.value.condicionespago is empty)
     and (filter_form.vars.value.importetotallineas is null or filter_form.vars.value.importetotallineas is empty)
     and (filter_form.vars.value.importetotal is null or filter_form.vars.value.importetotal is empty)
+    and (filter_form.vars.value.estadodocumento is null or filter_form.vars.value.estadodocumento is empty)
     %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
@@ -46,6 +48,7 @@
                 <div class="col-lg-4">{{ form_row(filter_form.condiciones_pago) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.importe_total_lineas) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.importe_total) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.estado_documento) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -80,6 +83,7 @@
             <th>Moneda{#{{ knp_pagination_sortable(entities, 'Moneda', 't.moneda') }}#}</th>
             <th>Forma de Pago{#{{ knp_pagination_sortable(entities, 'Forma de Pago', 't.forma_pago') }}#}</th>
             <th>Importe Total{#{{ knp_pagination_sortable(entities, 'Importe Total', 't.importe_total') }}#}</th>
+            <th>Estado{#{{ knp_pagination_sortable(entities, 'Importe Total', 't.importe_total') }}#}</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
@@ -92,19 +96,32 @@
                 <td>{{ entity.moneda }}</td>
                 <td>{{ entity.formapago }}</td>
                 <td>{{ entity.importetotal }}</td>
+                <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
 
-                <td style="width: 18% !important; text-align: center;">
+                <td style="width: 24% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"
                            href="{{ path('pedidocompra_show', { 'id': entity.id }) }}"><span
                                     class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </div>
 
-                    <div class="btn-group">
-                        <a class="btn btn-danger btn-xs"
-                           href="{{ path('pedidocompras_pedidocompra_edit', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-edit"> Editar</span></a>
-                    </div>
+                    {% if entity.estadodocumento == 'BO' %}
+                        <div class="btn-group">
+                            <a class="btn btn-danger btn-xs"
+                               href="{{ path('pedidocompras_pedidocompra_edit', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-edit"> Editar</span></a>
+                        </div>
+                        <a href="#delete" data-href="{{ path('pedidocompra_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+                    {% else %}
+                        <div class="btn-group">
+                            <a class="btn btn-danger btn-xs disabled"
+                               href="{{ path('pedidocompras_pedidocompra_edit', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-edit"> Editar</span></a>
+                        </div>
+                        <a href="#delete" data-href="{{ path('pedidocompra_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs disabled">
+                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
@@ -119,7 +136,10 @@
         <div class="col-lg-4"></div>
         <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
     </div>
+</div>
 
+    <!-- Delete modal -->
+    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
 {% endblock area_trabajo %}
 
 {% block javascripts %}
@@ -152,5 +172,10 @@
                 })
             });
         });
+    </script>
+
+    <script type="text/javascript">
+        var deleteevent = new DeleteEvent('{{ path('pedidocompra') }}', 'div#records_list');
+        deleteevent.start_events();
     </script>
 {% endblock javascripts %}

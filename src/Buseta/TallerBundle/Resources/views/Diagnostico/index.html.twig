@@ -15,6 +15,7 @@
     {% if (filter_form.vars.value.numero is null or filter_form.vars.value.numero is empty)
         and (filter_form.vars.value.reporte is null or filter_form.vars.value.reporte is empty)
         and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
+        and (filter_form.vars.value.estado is null or filter_form.vars.value.estado is empty)
     %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
@@ -32,6 +33,7 @@
                 <div class="col-lg-4">{{ form_row(filter_form.numero) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.reporte) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.autobus) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.estado) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -60,9 +62,10 @@
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
         <tr>
-            <th>Número {{ knp_pagination_sortable(entities, 'Número', 'd.numero') }}</th>
-            <th>Reporte {{ knp_pagination_sortable(entities, 'Reporte', 'd.diagnostico') }}</th>
-            <th>Autobús {{ knp_pagination_sortable(entities, 'Autobús', 'd.autobus') }}</th>
+            <th>Número {#{{ knp_pagination_sortable(entities, 'Número', 'd.numero') }}#}</th>
+            <th>Reporte {#{{ knp_pagination_sortable(entities, 'Reporte', 'd.diagnostico') }}#}</th>
+            <th>Autobús {#{{ knp_pagination_sortable(entities, 'Autobús', 'd.autobus') }}#}</th>
+            <th>Estado {#{{ knp_pagination_sortable(entities, 'Autobús', 'd.autobus') }}#}</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
@@ -84,6 +87,7 @@
                     {% endif %}
                 </td>
                 <td>{{ entity.autobus }}</td>
+                <td>{{ ('estado.'~entity.estado) | trans({}, 'BusetaTallerBundle') }}</td>
                 <td style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"

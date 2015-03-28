@@ -27,6 +27,10 @@ class DiagnosticoRepository extends EntityRepository
                 $query->andWhere($query->expr()->eq('d.autobus', ':autobus'))
                     ->setParameter('autobus', $filter->getAutobus());
             }
+            if ($filter->getEstado() !== null && $filter->getEstado() !== '') {
+                $query->andWhere($query->expr()->eq('d.estado', ':estado'))
+                    ->setParameter('estado', $filter->getEstado());
+            }
         }
 
         $query->orderBy('d.id', 'ASC');

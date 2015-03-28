@@ -68,6 +68,13 @@ class Producto
     private $movimientos;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\InventarioFisico", mappedBy="producto", cascade={"all"})
+     */
+    private $inventario_fisico_lineas;
+
+    /**
      * @ORM\Column(name="activo", type="boolean", nullable=true)
      */
     private $activo;
@@ -582,5 +589,27 @@ class Producto
         return $this->precioProducto;
     }
 
-    
+    /**
+     * Set categoriaProducto.
+     *
+     * @param \Buseta\BodegaBundle\Entity\CategoriaProducto $categoriaProducto
+     *
+     * @return Producto
+     */
+    public function setCategoriaProducto(\Buseta\BodegaBundle\Entity\CategoriaProducto $categoriaProducto = null)
+    {
+        $this->categoriaProducto = $categoriaProducto;
+
+        return $this;
+    }
+
+    /**
+     * Get categoriaProducto.
+     *
+     * @return \Buseta\BodegaBundle\Entity\CategoriaProducto
+     */
+    public function getCategoriaProducto()
+    {
+        return $this->categoriaProducto;
+    }
 }

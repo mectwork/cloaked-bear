@@ -9,6 +9,11 @@ class DiagnosticoFilterModel
     private $numero;
 
     /**
+     * @var string
+     */
+    private $estado;
+
+    /**
      * @var \Buseta\TallerBundle\Entity\Reporte
      */
     private $reporte;
@@ -48,6 +53,22 @@ class DiagnosticoFilterModel
     public function setReporte($reporte)
     {
         $this->reporte = $reporte;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
+     * @param string $estado
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
     }
 
     /**

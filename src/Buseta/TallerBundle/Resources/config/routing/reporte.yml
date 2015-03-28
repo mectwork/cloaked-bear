@@ -29,6 +29,10 @@ reporte_delete:
     defaults: { _controller: "BusetaTallerBundle:Reporte:delete" }
     requirements: { _method: post|delete }
 
+procesarReporte:
+    pattern:  /{id}/procesarReporte
+    defaults: { _controller: "BusetaTallerBundle:Reporte:procesarReporte" }
+
 reporte_generar_diagnostico:
     pattern:  /{id}/generar_diagnostico
     defaults: { _controller: "BusetaTallerBundle:Reporte:generarDiagnostico" }

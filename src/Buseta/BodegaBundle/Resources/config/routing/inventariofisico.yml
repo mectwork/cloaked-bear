@@ -1,0 +1,43 @@
+inventariofisico:
+    pattern:  /
+    defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:index" }
+
+inventariofisico_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:show" }
+
+inventariofisico_new:
+    pattern:  /new
+    defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:new" }
+
+inventariofisico_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:create" }
+    requirements: { _method: post }
+
+inventariofisico_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:edit" }
+
+inventariofisico_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:update" }
+    requirements: { _method: post|put }
+
+inventariofisico_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:delete" }
+    requirements: { _method: post|delete }
+
+procesarInventarioFisico:
+    pattern:  /{id}/procesarInventarioFisico
+    defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:procesarInventarioFisico" }
+
+completarInventarioFisico:
+    pattern:  /{id}/completarInventarioFisico
+    defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:completarInventarioFisico" }
+
+inventarioFisico_ajax_busqueda_avanzada:
+  pattern: /busqueda-avanzada/{page}/{cantResult}
+  defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:busquedaAvanzada", page: 0, cantResult: 10 }
+  requirements: { _method: "GET" }

@@ -30,7 +30,22 @@ class ReporteFilter extends AbstractType
                 'attr' => array(
                     'class' => 'form-control',
                 )
-            ));
+            ))
+            ->add('estado', 'choice', array(
+                'required' => false,
+                'empty_value' => '---Seleccione---',
+                'translation_domain' => 'BusetaTallerBundle',
+                'choices' => array(
+                    'CO' => 'estado.CO',
+                    'BO' => 'estado.BO',
+                    'PR' => 'estado.PR',
+                ),
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+        ;
+
     }
 
     /**

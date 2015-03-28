@@ -39,6 +39,10 @@ services:
         class: Buseta\BodegaBundle\Form\Handler\PedidoCompraLineaHandler
         arguments:
             - @service_container
+    buseta_inventariofisico.linea.handler:
+        class: Buseta\BodegaBundle\Form\Handler\InventarioFisicoLineaHandler
+        arguments:
+            - @service_container
     bodega.nececidad.type:
         class: Buseta\BodegaBundle\Form\Type\NecesidadMaterialType
         arguments: [@doctrine.orm.entity_manager, @service_container]
@@ -49,14 +53,19 @@ services:
         arguments:
             - @service_container
     buseta_albaran.linea.handler:
-            class: Buseta\BodegaBundle\Form\Handler\AlbaranLineaHandler
-            arguments:
-                - @service_container
+        class: Buseta\BodegaBundle\Form\Handler\AlbaranLineaHandler
+        arguments:
+            - @service_container
     bodega.producto.type:
-            class: Buseta\BodegaBundle\Form\Type\ProductoType
-            arguments: [@doctrine.orm.entity_manager, @service_container]
-            tags:
-                - {name: form.type, alias: 'bodega_producto'}
+        class: Buseta\BodegaBundle\Form\Type\ProductoType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'bodega_producto'}
+    bodega.inventariofisico.type:
+        class: Buseta\BodegaBundle\Form\Type\InventarioFisicoType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'bodega_inventariofisico_type'}
     buseta_producto.precio.handler:
         class: Buseta\BodegaBundle\Form\Handler\PrecioProductoHandler
         arguments:

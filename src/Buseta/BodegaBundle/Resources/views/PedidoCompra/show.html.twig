@@ -111,11 +111,20 @@
     </table>
 
     <div class="form-actions">
-        <a class="btn btn-primary" href="{{ path('pedidocompra_edit', { 'id': entity.id }) }}"> Editar</a>
-        <a class="btn btn-primary" href="{{ path('procesarRegistro', { 'id': entity.id }) }}"> Procesar</a>
+        {% if entity.estadodocumento == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('pedidocompra_edit', { 'id': entity.id }) }}"> Editar</a>
+        {% endif %}
+        {% if entity.estadodocumento == 'PR' %}
+            <a class="btn btn-primary" href="{{ path('completarRegistro', { 'id': entity.id }) }}"> Completar Proceso</a>
+        {% elseif entity.estadodocumento == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('procesarRegistro', { 'id': entity.id }) }}"> Procesar</a>
+        {% endif %}
         <a class="btn btn-primary" href="{{ path('pedidocompra') }}"> Listado</a>
-        <a href="#delete" data-href="{{ path('pedidocompra_delete', {'id': entity.id}) }}" class="btn btn-danger">
-            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+
+        {% if entity.estadodocumento == 'BO' %}
+            <a href="#delete" data-href="{{ path('pedidocompra_delete', {'id': entity.id}) }}" class="btn btn-danger">
+                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+        {% endif %}
     </div>
 
     {% include 'BusetaBodegaBundle:PedidoCompra:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
@@ -129,9 +138,11 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script type="text/javascript">
-        var pedidocompradeleteevent = new DeleteEvent('{{ path('pedidocompra') }}', 'div#pedidocompra_records_list', false);
-        pedidocompradeleteevent.start_events();
-    </script>
+    {% if entity.estadodocumento == 'BO' %}
+        <script type="text/javascript">
+            var pedidocompradeleteevent = new DeleteEvent('{{ path('pedidocompra') }}', 'div#pedidocompra_records_list', false);
+            pedidocompradeleteevent.start_events();
+        </script>
+    {% endif %}
 {% endblock %}
 

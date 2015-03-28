@@ -66,6 +66,14 @@ class Diagnostico
     private $observaciones;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="estado", type="string")
+     * @Assert\NotBlank()
+     */
+    private $estado = 'BO';
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -207,5 +215,28 @@ class Diagnostico
     public function getOrdenTrabajo()
     {
         return $this->ordenTrabajo;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param string $estado
+     * @return Diagnostico
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+    
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return string 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
     }
 }

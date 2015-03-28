@@ -57,7 +57,6 @@ class NecesidadMaterialType extends AbstractType
                 },
                 'empty_value' => '---Seleccione---',
                 'required' => true,
-                'label' => 'Proveedor',
                 'attr' => array(
                     'class' => 'form-control',
                 ),

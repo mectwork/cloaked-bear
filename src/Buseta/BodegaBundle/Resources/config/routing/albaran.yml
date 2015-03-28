@@ -47,6 +47,10 @@ procesarAlbaran:
     pattern:  /{id}/procesarAlbaran
     defaults: { _controller: "BusetaBodegaBundle:Albaran:procesarAlbaran" }
 
+completarAlbaran:
+    pattern:  /{id}/completarAlbaran
+    defaults: { _controller: "BusetaBodegaBundle:Albaran:completarAlbaran" }
+
 albaran_ajax_busqueda_avanzada:
   pattern: /busqueda-avanzada/{page}/{cantResult}
   defaults: { _controller: "BusetaBodegaBundle:Albaran:busquedaAvanzada", page: 0, cantResult: 10 }
