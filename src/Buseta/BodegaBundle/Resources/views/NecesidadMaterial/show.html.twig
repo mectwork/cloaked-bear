@@ -111,11 +111,20 @@
     </table>
 
     <div class="form-actions">
-        <a class="btn btn-primary" href="{{ path('necesidadmaterial_edit', { 'id': entity.id }) }}"> Editar</a>
-        <a class="btn btn-primary" href="{{ path('procesarNecesidad', { 'id': entity.id }) }}"> Procesar</a>
+        {% if entity.estadodocumento == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('necesidadmateriales_necesidadmaterial_edit', { 'id': entity.id }) }}"> Editar</a>
+        {% endif %}
+        {% if entity.estadodocumento == 'PR' %}
+            <a class="btn btn-primary" href="{{ path('completarNecesidad', { 'id': entity.id }) }}"> Completar Proceso</a>
+        {% elseif entity.estadodocumento == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('procesarNecesidad', { 'id': entity.id }) }}"> Procesar</a>
+        {% endif %}
         <a class="btn btn-primary" href="{{ path('necesidadmaterial') }}"> Listado</a>
-        <a href="#delete" data-href="{{ path('necesidadmaterial_delete', {'id': entity.id}) }}" class="btn btn-danger">
-            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+
+        {% if entity.estadodocumento == 'BO' %}
+            <a href="#delete" data-href="{{ path('necesidadmaterial_delete', {'id': entity.id}) }}" class="btn btn-danger">
+                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+        {% endif %}
     </div>
 
     {% include 'BusetaBodegaBundle:NecesidadMaterial:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
@@ -130,8 +139,10 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script type="text/javascript">
-        var necesidadmaterialdeleteevent = new DeleteEvent('{{ path('necesidadmaterial') }}', 'div#necesidadmaterial_records_list', false);
-        necesidadmaterialdeleteevent.start_events();
-    </script>
+    {% if entity.estadodocumento == 'BO' %}
+        <script type="text/javascript">
+            var necesidadmaterialdeleteevent = new DeleteEvent('{{ path('necesidadmaterial') }}', 'div#necesidadmaterial_records_list', false);
+            necesidadmaterialdeleteevent.start_events();
+        </script>
+    {% endif %}
 {% endblock %}

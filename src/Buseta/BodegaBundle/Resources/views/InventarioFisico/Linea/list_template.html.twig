@@ -33,14 +33,14 @@
             <td>{{ entity.cantidadTeorica }}</td>
             <td>{{ entity.descripcion }}</td>
 
-            <td style="width: 10%; text-align: center;">
-                {#{% if reporte.diagnostico == null %}#}
-                        <a class="btn btn-danger btn-xs" href="#delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
-                    {#{% else %}#}
-                        {#<a class="btn btn-danger btn-xs disabled" href="#delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>#}
-                {#{% endif %}#}
-            </td>
+            {#<td style="width: 10%; text-align: center;">
+                <a href="#delete" data-href="{{ path('inventario_fisico_linea_delete', {'id': entity.id}) }}" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+            </td>#}
         </tr>
+
+        {#{% include 'BusetaBodegaBundle:InventarioFisico/Linea:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}#}
+
     {% else %}
         <tr>
             <td colspan="10">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
@@ -56,3 +56,9 @@
 
 <div class="modal" id="form_lineas_modal"></div>
 <div class="modal" id="form_lineas_delete_modal"></div>
+
+{#
+<script type="text/javascript">
+    var inventariofisicodeleteevent = new DeleteEvent('{{ path('inventariofisico_lineas_list',{'inventariofisico': id}) }}', 'div#inventariofisico_records_list', false);
+    inventariofisicodeleteevent.start_events();
+</script>#}

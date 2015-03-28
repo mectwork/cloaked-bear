@@ -33,6 +33,10 @@ procesarNecesidad:
     pattern:  /{id}/procesarNecesidad
     defaults: { _controller: "BusetaBodegaBundle:NecesidadMaterial:procesarNecesidad" }
 
+completarNecesidad:
+    pattern:  /{id}/completarNecesidad
+    defaults: { _controller: "BusetaBodegaBundle:NecesidadMaterial:completarNecesidad" }
+
 necesidadMaterial_ajax_busqueda_avanzada:
   pattern: /busqueda-avanzada/{page}/{cantResult}
   defaults: { _controller: "BusetaBodegaBundle:NecesidadMaterial:busquedaAvanzada", page: 0, cantResult: 10 }

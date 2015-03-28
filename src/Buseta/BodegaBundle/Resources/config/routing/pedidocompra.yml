@@ -33,6 +33,10 @@ procesarRegistro:
     pattern:  /{id}/procesarRegistro
     defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:procesarRegistro" }
 
+completarRegistro:
+    pattern:  /{id}/completarRegistro
+    defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:completarRegistro" }
+
 pedidoCompra_ajax_busqueda_avanzada:
   pattern: /busqueda-avanzada/{page}/{cantResult}
   defaults: { _controller: "BusetaBodegaBundle:PedidoCompra:busquedaAvanzada", page: 0, cantResult: 10 }

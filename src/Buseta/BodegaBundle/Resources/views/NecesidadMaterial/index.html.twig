@@ -80,6 +80,7 @@
             <th>Moneda{#{{ knp_pagination_sortable(entities, 'Moneda', 't.moneda') }}#}</th>
             <th>Forma de Pago{#{{ knp_pagination_sortable(entities, 'Forma de Pago', 't.forma_pago') }}#}</th>
             <th>Importe Total{#{{ knp_pagination_sortable(entities, 'Importe Total', 't.importe_total') }}#}</th>
+            <th>Estado{#{{ knp_pagination_sortable(entities, 'Importe Total', 't.importe_total') }}#}</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
@@ -92,6 +93,7 @@
                 <td>{{ entity.moneda }}</td>
                 <td>{{ entity.formaPago }}</td>
                 <td>{{ entity.importeTotal }}</td>
+                <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
 
                 <td style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
@@ -100,11 +102,19 @@
                                     class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </div>
 
-                    <div class="btn-group">
-                        <a class="btn btn-danger btn-xs"
-                           href="{{ path('necesidadmateriales_necesidadmaterial_edit', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-edit"> Editar</span></a>
-                    </div>
+                    {% if entity.estadodocumento == 'BO' %}
+                            <div class="btn-group">
+                                <a class="btn btn-danger btn-xs"
+                                   href="{{ path('necesidadmateriales_necesidadmaterial_edit', { 'id': entity.id }) }}"><span
+                                            class="glyphicon glyphicon-edit"> Editar</span></a>
+                            </div>
+                        {% else %}
+                            <div class="btn-group">
+                                <a class="btn btn-danger btn-xs disabled"
+                                   href="{{ path('necesidadmateriales_necesidadmaterial_edit', { 'id': entity.id }) }}"><span
+                                            class="glyphicon glyphicon-edit"> Editar</span></a>
+                            </div>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

@@ -25,31 +25,25 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  */
 class AlbaranController extends Controller
 {
-    public function busquedaAvanzadaAction($page, $cantResult)
+    public function procesarAlbaranAction($id)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
-        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();
 
-        $orderBy = $request->query->get('orderBy');
-        $filter  = $request->query->get('filter');
+        $albaran = $em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
 
-        $filter = $filter;
+        if (!$albaran) {
+            throw $this->createNotFoundException('Unable to find Albaran entity.');
+        }
 
-        $busqueda = $em->getRepository('BusetaBodegaBundle:Albaran')
-            ->busquedaAvanzada($page, $cantResult, $filter, $orderBy);
-        $paginacion = $busqueda['paginacion'];
-        $results    = $busqueda['results'];
+        //Cambia el estado de Borrador a Procesado
+        $albaran->setEstadoDocumento('PR');
+        $em->persist($albaran);
+        $em->flush();
 
-        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-albaran.html.twig', array(
-            'albaranes'   => $results,
-            'page'       => $page,
-            'cantResult' => $cantResult,
-            'orderBy'    => $orderBy,
-            'paginacion' => $paginacion,
-        ));
+        return $this->redirect($this->generateUrl('albaran'));
     }
 
-    public function procesarAlbaranAction($id)
+    public function completarAlbaranAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -70,11 +64,17 @@ class AlbaranController extends Controller
             $bitacora->setCantMovida($linea->getCantidadMovida());
             $bitacora->setTipoMovimiento('V+');
 
-            $albaran->setDeleted(true);
+            //Cambia el estado de Procesado a Completado
+            $albaran->setEstadoDocumento('CO');
+
             $em->persist($bitacora);
-            $em->persist($albaran);
             $em->flush();
         }
+
+        //Cambia el estado de Procesado a Completado
+        $albaran->setEstadoDocumento('CO');
+        $em->persist($albaran);
+        $em->flush();
 
         return $this->redirect($this->generateUrl('albaran'));
     }

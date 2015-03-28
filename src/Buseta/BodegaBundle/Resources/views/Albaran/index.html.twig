@@ -66,6 +66,7 @@
             <th>Consecutivo Compra{#{{ knp_pagination_sortable(entities, 'Consecutivo Compra', 't.consecutivoCompra') }}#}</th>
             <th>Almacén{#{{ knp_pagination_sortable(entities, 'Almacén', 't.almacen') }}#}</th>
             <th>Tercero{#{{ knp_pagination_sortable(entities, 'Tercero', 't.tercero') }}#}</th>
+            <th>Estado{#{{ knp_pagination_sortable(entities, 'Tercero', 't.tercero') }}#}</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
@@ -76,6 +77,7 @@
                 <td>{{ entity.consecutivoCompra }}</td>
                 <td>{{ entity.almacen }}</td>
                 <td>{{ entity.tercero }}</td>
+                <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
 
                 <td style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
@@ -84,11 +86,19 @@
                                     class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </div>
 
-                    {#<div class="btn-group">
-                        <a class="btn btn-danger btn-xs"
-                           href="{{ path('albaran_edit', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-edit"> Editar</span></a>
-                    </div>#}
+                    {% if entity.estadodocumento == 'BO' %}
+                        <div class="btn-group">
+                            <a class="btn btn-danger btn-xs"
+                               href="{{ path('albarans_albaran_edit', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-edit"> Editar</span></a>
+                        </div>
+                    {% else %}
+                        <div class="btn-group">
+                            <a class="btn btn-danger btn-xs disabled"
+                               href="{{ path('albarans_albaran_edit', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-edit"> Editar</span></a>
+                        </div>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

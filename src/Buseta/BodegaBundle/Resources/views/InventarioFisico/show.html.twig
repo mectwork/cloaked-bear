@@ -74,11 +74,13 @@
     </table>
 
     <div class="form-actions">
-        <!--Activar el botón Completar Proceso cuando el estado del Inventario sea Procesado -->
+        {% if entity.estado == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('inventariofisico_edit', { 'id': entity.id }) }}"> Editar</a>
+        {% endif %}
         {% if entity.estado == 'PR' %}
-                <a class="btn btn-primary" href="{{ path('completarInventarioFisico', { 'id': entity.id }) }}"> Completar Proceso</a>
-            {% else %}
-                <a class="btn btn-primary" href="{{ path('procesarInventarioFisico', { 'id': entity.id }) }}"> Procesar</a>
+            <a class="btn btn-primary" href="{{ path('completarInventarioFisico', { 'id': entity.id }) }}"> Completar Proceso</a>
+        {% elseif entity.estado == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('procesarInventarioFisico', { 'id': entity.id }) }}"> Procesar</a>
         {% endif %}
         <a class="btn btn-primary" href="{{ path('inventariofisico') }}"> Listado</a>
 
@@ -101,7 +103,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-
 
     {% if entity.estado == 'BO' %}
         <script type="text/javascript">

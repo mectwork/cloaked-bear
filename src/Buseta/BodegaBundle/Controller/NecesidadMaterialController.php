@@ -26,108 +26,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  */
 class NecesidadMaterialController extends Controller
 {
-    public function busquedaAvanzadaAction($page, $cantResult)
-    {
-        $em = $this->get('doctrine.orm.entity_manager');
-        $request = $this->getRequest();
-
-        $orderBy = $request->query->get('orderBy');
-        $filter  = $request->query->get('filter');
-
-        $filter = $filter;
-
-        $busqueda = $em->getRepository('BusetaBodegaBundle:NecesidadMaterial')
-            ->busquedaAvanzada($page, $cantResult, $filter, $orderBy);
-        $paginacion = $busqueda['paginacion'];
-        $results    = $busqueda['results'];
-
-        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-necesidad-materiales.html.twig', array(
-            'necesidadMateriales'   => $results,
-            'page'       => $page,
-            'cantResult' => $cantResult,
-            'orderBy'    => $orderBy,
-            'paginacion' => $paginacion,
-        ));
-    }
-
-    public function comprobarPedidoAction(Request $request)
-    {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
-        }
-    
-        $request = $this->getRequest();
-        if (!$request->isXmlHttpRequest()) {
-            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
-        }
-
-        $em = $this->getDoctrine()->getManager();
-
-        $error = "Sin errores";
-
-        $consecutivo_compra = $request->query->get('consecutivo_compra');
-        $importe_total_lineas = $request->query->get('importe_total_lineas');
-        $importe_total = $request->query->get('importe_total');
-
-        if ($request->query->get('numero_documento')) {
-            $numero_documento = $request->query->get('numero_documento');
-        } else {
-            $error = "error";
-        }
-
-        if ($request->query->get('fecha_pedido')) {
-            $fecha_pedido = $request->query->get('fecha_pedido');
-
-            //$fecha = new \DateTime('now');
-            $date = '%s-%s-%s GMT-0';
-            $fecha = explode("/", $fecha_pedido);
-            $d = $fecha[0];
-            $m = $fecha[1];
-            $fecha = explode(" ", $fecha[2]); //YYYY HH:MM
-            $y = $fecha[0];
-            $fecha_pedido =  new \DateTime(sprintf($date, $y, $m, $d));
-        } else {
-            $error = "error";
-        }
-
-        if ($request->query->get('tercero')) {
-            $tercero = $request->query->get('tercero');
-        } else {
-            $error = "error";
-        }
-
-        if ($request->query->get('almacen')) {
-            $almacen = $request->query->get('almacen');
-        } else {
-            $error = "error";
-        }
-
-        if ($request->query->get('forma_pago')) {
-            $forma_pago = $request->query->get('forma_pago');
-        } else {
-            $error = "error";
-        }
-
-        if ($request->query->get('condiciones_pago')) {
-            $condiciones_pago = $request->query->get('condiciones_pago');
-        } else {
-            $error = "error";
-        }
-
-        if ($request->query->get('moneda')) {
-            $moneda = $request->query->get('moneda');
-        } else {
-            $error = "error";
-        }
-        
-        $json = array(
-            //'id' => $numero_documento,
-            'error' => $error,
-        );
-
-        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
-    }
-
     /**
      * Lists all NecesidadMaterial entities.
      */
@@ -162,6 +60,24 @@ class NecesidadMaterialController extends Controller
     }
 
     public function procesarNecesidadAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $necesidadMaterial = $em->getRepository('BusetaBodegaBundle:NecesidadMaterial')->find($id);
+
+        if (!$necesidadMaterial) {
+            throw $this->createNotFoundException('Unable to find NecesidadMaterial entity.');
+        }
+
+        //Cambia el estado de Borrador a Procesado
+        $necesidadMaterial->setEstadoDocumento('PR');
+        $em->persist($necesidadMaterial);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('necesidadmaterial'));
+    }
+
+    public function completarNecesidadAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -212,7 +128,8 @@ class NecesidadMaterialController extends Controller
             $em->flush();
         }
 
-        $necesidadMaterial->setDeleted(true);
+        $necesidadMaterial->setEstadoDocumento('CO');
+        //$necesidadMaterial->setDeleted(true);
         $em->persist($necesidadMaterial);
         $em->flush();
 

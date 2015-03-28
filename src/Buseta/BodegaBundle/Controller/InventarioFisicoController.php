@@ -104,14 +104,14 @@ class InventarioFisicoController extends Controller
                 $bitacora->setTipoMovimiento('I+');
 
                 $em->persist($bitacora);
-
-                //Cambia el estado de Procesado a Completado
-                $inventarioFisico->setEstado('CO');
-
-                $em->persist($inventarioFisico);
                 $em->flush();
             }
         }
+
+        //Cambia el estado de Procesado a Completado
+        $inventarioFisico->setEstado('CO');
+        $em->persist($inventarioFisico);
+        $em->flush();
 
         return $this->redirect($this->generateUrl('inventariofisico'));
     }

@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * Class InventarioFisicoLineaController
@@ -41,9 +42,13 @@ class InventarioFisicoLineaController extends Controller
                 5
             );
 
+        /*$deleteForm = $this->createDeleteForm($inventariofisico->getId());*/
+
         return $this->render('@BusetaBodega/InventarioFisico/Linea/list_template.html.twig', array(
             'entities' => $entities,
             'inventariofisico' => $inventariofisico,
+            /*'id' => $inventariofisico->getId(),
+            'delete_form' => $deleteForm->createView(),*/
         ));
     }
 
@@ -211,7 +216,8 @@ class InventarioFisicoLineaController extends Controller
 
         return $this->render('BusetaBodegaBundle:InventarioFisicoLinea:show.html.twig', array(
             'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        ));
+            'delete_form' => $deleteForm->createView(),
+        ));
     }
 
     /**
@@ -255,6 +261,7 @@ class InventarioFisicoLineaController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing InventarioFisicoLinea entity.
      */
@@ -284,43 +291,73 @@ class InventarioFisicoLineaController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a InventarioFisicoLinea entity.
+     *
+     * @Route("/{id}/delete", name="inventario_fisico_linea_delete")
+     * @Method({"DELETE", "GET"})
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(InventarioFisicoLinea $inventariofisicoLinea, Request $request)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($inventariofisicoLinea->getId());
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaBodegaBundle:InventarioFisicoLinea')->find($id);
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+            try {
+                $em = $this->get('doctrine.orm.entity_manager');
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find InventarioFisicoLinea entity.');
+                $em->remove($inventariofisicoLinea);
+                $em->flush();
+
+                $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 202);
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('success', $message);
+                }
+            } catch (\Exception $e) {
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Línea'), 'BusetaTallerBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
             }
-
-            $em->remove($entity);
-            $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('linea'));
+        $renderView =  $this->renderView('@BusetaBodega/InventarioFisico/Linea/delete_modal.html.twig', array(
+            'entity' => $inventariofisicoLinea,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
+        return $this->redirect($this->generateUrl('inventariofisico_lineas_list'));
     }
 
     /**
      * Creates a form to delete a InventarioFisicoLinea entity by id.
      *
      * @param mixed $id The entity id
+     *º
      *
      * @return \Symfony\Component\Form\Form The form
      */
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('linea_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('inventario_fisico_linea_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
-        ;
+            ;
     }
 }

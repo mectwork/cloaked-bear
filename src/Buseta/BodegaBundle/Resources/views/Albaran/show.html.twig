@@ -103,11 +103,20 @@
     </table>
 
     <div class="form-actions">
-        <a class="btn btn-primary" href="{{ path('albaran_edit', { 'id': entity.id }) }}"> Editar</a>
-        <a class="btn btn-primary" href="{{ path('procesarAlbaran', { 'id': entity.id }) }}"> Procesar</a>
+        {% if entity.estadodocumento == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('albarans_albaran_edit', { 'id': entity.id }) }}"> Editar</a>
+        {% endif %}
+        {% if entity.estadodocumento == 'PR' %}
+            <a class="btn btn-primary" href="{{ path('completarAlbaran', { 'id': entity.id }) }}"> Completar Proceso</a>
+        {% elseif entity.estadodocumento == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('procesarAlbaran', { 'id': entity.id }) }}"> Procesar</a>
+        {% endif %}
         <a class="btn btn-primary" href="{{ path('albaran') }}"> Listado</a>
-        <a href="#delete" data-href="{{ path('albaran_delete', {'id': entity.id}) }}" class="btn btn-danger">
-            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+
+        {% if entity.estadodocumento == 'BO' %}
+            <a href="#delete" data-href="{{ path('albaran_delete', {'id': entity.id}) }}" class="btn btn-danger">
+                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+        {% endif %}
     </div>
 
     {% include 'BusetaBodegaBundle:Albaran:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
