@@ -21,20 +21,15 @@ services:
         tags:
             - {name: form.type, alias: 'bodega_necesidad_material'}
     bodega.compra.type:
-            class: Buseta\BodegaBundle\Form\Type\PedidoCompraType
-            arguments: [@doctrine.orm.entity_manager, @service_container]
-            tags:
-                - {name: form.type, alias: 'bodega_pedido_compra'}
+        class: Buseta\BodegaBundle\Form\Type\PedidoCompraType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'bodega_pedido_compra'}
     bodega.albaran.type:
         class: Buseta\BodegaBundle\Form\Type\AlbaranType
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'bodega_albaran_type'}
-    bodega.compra.type:
-        class: Buseta\BodegaBundle\Form\Type\PedidoCompraType
-        arguments: [@doctrine.orm.entity_manager, @service_container]
-        tags:
-            - {name: form.type, alias: 'bodega_pedido_compra'}
     buseta_pedidocompra.linea.handler:
         class: Buseta\BodegaBundle\Form\Handler\PedidoCompraLineaHandler
         arguments:
@@ -49,11 +44,19 @@ services:
         arguments:
             - @service_container
     bodega.producto.type:
-            class: Buseta\BodegaBundle\Form\Type\ProductoType
-            arguments: [@doctrine.orm.entity_manager, @service_container]
-            tags:
-                - {name: form.type, alias: 'bodega_producto'}
+        class: Buseta\BodegaBundle\Form\Type\ProductoType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'bodega_producto'}
     buseta_producto.precio.handler:
-        class: Buseta\BodegaBundle\Form\Handler\PrecioProductoHandler
-        arguments:
-            - @service_container
+      class: Buseta\BodegaBundle\Form\Handler\PrecioProductoHandler
+      arguments:
+        - @service_container
+    # MANAGERS
+    buseta.bodega.terceros_manager:
+      class: Buseta\BodegaBundle\Manager\TerceroManager
+      arguments:
+        - @doctrine.orm.entity_manager
+        - @session
+        - @translator
+        - @logger

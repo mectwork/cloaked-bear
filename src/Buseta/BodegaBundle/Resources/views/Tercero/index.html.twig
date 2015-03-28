@@ -75,6 +75,7 @@
             <th>Apellidos{#{{ knp_pagination_sortable(entities, 'Apellidos', 't.apellidos') }}#}</th>
             <th>Alias{#{{ knp_pagination_sortable(entities, 'Alias', 't.alias') }}#}</th>
             <th>¿Es persona?</th>
+            <th>¿Es proveedor?</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
@@ -86,6 +87,7 @@
                 <td>{{ entity.apellidos }}</td>
                 <td>{{ entity.alias }}</td>
                 <td class="text-center">{{ entity.persona ? '<i class="fa fa-circle text-success" title="Sí"></i>' : '<i class="fa fa-circle-o text-danger" title="No"></i>' }}</td>
+                <td class="text-center">{{ entity.proveedor ? '<i class="fa fa-circle text-success" title="Sí"></i>' : '<i class="fa fa-circle-o text-danger" title="No"></i>' }}</td>
                 <td style="text-align: center;">
                     <a class="btn btn-success btn-xs" href="{{ path('tercero_show', { 'id': entity.id }) }}">
                         <span class="glyphicon glyphicon-search"> {{ 'actions.show' | trans({}, 'BusetaBodegaBundle') }}</span></a>
