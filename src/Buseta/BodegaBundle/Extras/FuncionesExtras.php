@@ -51,7 +51,7 @@ class FuncionesExtras
                 foreach ($bitacoras as $bitacora) {
                     if ($producto == $bitacora->getProducto()) {
                         //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                        if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+') {
+                        if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+' || $bitacora->getTipoMovimiento() == 'I+' ) {
                             $cantidadPedido += $bitacora->getCantMovida();
                         }
                         if ($bitacora->getTipoMovimiento() == 'M-') {
@@ -109,7 +109,7 @@ class FuncionesExtras
                 foreach ($bitacoras as $bitacora) {
                     if ($producto == $bitacora->getProducto() && $bitacora->getAlmacen() == $almacen) {
                         //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                        if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+') {
+                        if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+' || $bitacora->getTipoMovimiento() == 'I+') {
                             $cantidadPedido += $bitacora->getCantMovida();
                         }
                         if ($bitacora->getTipoMovimiento() == 'M-') {
@@ -146,7 +146,7 @@ class FuncionesExtras
                 $existe = true;
                 //Comprobar tipo de movimiento para realizar operación de sustracción o adición
                 //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+') {
+                if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+' || $bitacora->getTipoMovimiento() == 'I+') {
                     $cantidadPedido += $bitacora->getCantMovida();
                 }
                 if ($bitacora->getTipoMovimiento() == 'M-') {
@@ -184,7 +184,7 @@ class FuncionesExtras
                 foreach ($bitacoras as $bitacora) {
                     if ($producto == $bitacora->getProducto() && $bitacora->getAlmacen() == $almacen) {
                         //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                        if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+') {
+                        if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+' || $bitacora->getTipoMovimiento() == 'I+') {
                             $cantidadPedido += $bitacora->getCantMovida();
                         }
                         if ($bitacora->getTipoMovimiento() == 'M-') {
@@ -231,7 +231,7 @@ class FuncionesExtras
                 $existe = true;
                 //Comprobar tipo de movimiento para realizar operación de sustracción o adición
                 //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+') {
+                if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+' || $bitacora->getTipoMovimiento() == 'I+') {
                     $cantidadReal += $bitacora->getCantMovida();
                 }
                 if ($bitacora->getTipoMovimiento() == 'M-') {
