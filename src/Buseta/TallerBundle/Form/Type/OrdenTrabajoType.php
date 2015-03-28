@@ -106,8 +106,8 @@ class OrdenTrabajoType extends AbstractType
                 'class' => 'BusetaTallerBundle:Diagnostico',
                 'query_builder' => function (EntityRepository $er) {
                     $qb = $er->createQueryBuilder('d');
-                    return $qb->join('d.reporte', 'reporte')
-                        ->where($qb->expr()->isNull('reporte'));
+                    return $qb->join('d.ordenTrabajo', 'ot')
+                        ->where($qb->expr()->isNull('ot'));
                 },
                 'empty_value' => '---Seleccione---',
                 'label' => 'Diagnóstico',
@@ -173,10 +173,8 @@ class OrdenTrabajoType extends AbstractType
                 ),
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('tercero');
-                    $qb->join('tercero.persona', 'persona')
+                    return $qb->join('tercero.persona', 'persona')
                         ->andWhere($qb->expr()->isNotNull('persona'));
-
-                    return $qb;
                 },
             ))
             ->add('revisadoPor', 'entity', array(
