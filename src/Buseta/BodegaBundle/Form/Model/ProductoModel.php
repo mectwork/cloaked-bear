@@ -43,12 +43,6 @@ class ProductoModel
     private $condicion;
 
     /**
-     * @var \Buseta\BodegaBundle\Entity\Bodega
-     * @Assert\NotBlank()
-     */
-    private $bodega;
-
-    /**
      * @var \Buseta\BodegaBundle\Entity\CategoriaProducto
      * @Assert\NotBlank()
      */
@@ -76,18 +70,6 @@ class ProductoModel
      * @Assert\NotBlank()
      */
     private $albaranLinea;
-
-    /**
-     * @var integer
-     * @Assert\NotBlank()
-     */
-    private $minimo_bodega;
-
-    /**
-     * @var integer
-     * @Assert\NotBlank()
-     */
-    private $maximo_bodega;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -124,17 +106,12 @@ class ProductoModel
             $this->codigo = $producto->getCodigo();
             $this->nombre = $producto->getNombre();
             $this->activo = $producto->getActivo();
-            $this->minimo_bodega = $producto->getMinimoBodega();
-            $this->maximo_bodega = $producto->getMaximoBodega();
 
             if ($producto->getUom()) {
                 $this->uom  = $producto->getUom();
             }
             if ($producto->getCondicion()) {
                 $this->condicion  = $producto->getCondicion();
-            }
-            if ($producto->getBodega()) {
-                $this->bodega  = $producto->getBodega();
             }
             if ($producto->getMovimientos()) {
                 $this->movimientos  = $producto->getMovimientos();
@@ -173,8 +150,6 @@ class ProductoModel
         $producto->setCodigo($this->getCodigo());
         $producto->setNombre($this->getNombre());
         $producto->setActivo($this->getActivo());
-        $producto->setMinimoBodega($this->getMinimoBodega());
-        $producto->setMaximoBodega($this->getMaximoBodega());
         $producto->setCategoriaProducto($this->getCategoriaProducto());
 
         if ($this->getUom() !== null) {
@@ -182,9 +157,6 @@ class ProductoModel
         }
         if ($this->getCondicion() !== null) {
             $producto->setCondicion($this->getCondicion());
-        }
-        if ($this->getBodega() !== null) {
-            $producto->setBodega($this->getBodega());
         }
         if ($this->getGrupos() !== null) {
             $producto->setGrupos($this->getGrupos());
@@ -247,22 +219,6 @@ class ProductoModel
     public function setAlbaranLinea($albaranLinea)
     {
         $this->albaranLinea = $albaranLinea;
-    }
-
-    /**
-     * @return \Buseta\BodegaBundle\Entity\Bodega
-     */
-    public function getBodega()
-    {
-        return $this->bodega;
-    }
-
-    /**
-     * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
-     */
-    public function setBodega($bodega)
-    {
-        $this->bodega = $bodega;
     }
 
     /**
@@ -343,38 +299,6 @@ class ProductoModel
     public function setId($id)
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMaximoBodega()
-    {
-        return $this->maximo_bodega;
-    }
-
-    /**
-     * @param int $maximo_bodega
-     */
-    public function setMaximoBodega($maximo_bodega)
-    {
-        $this->maximo_bodega = $maximo_bodega;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMinimoBodega()
-    {
-        return $this->minimo_bodega;
-    }
-
-    /**
-     * @param int $minimo_bodega
-     */
-    public function setMinimoBodega($minimo_bodega)
-    {
-        $this->minimo_bodega = $minimo_bodega;
     }
 
     /**

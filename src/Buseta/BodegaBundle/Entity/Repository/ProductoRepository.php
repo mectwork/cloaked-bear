@@ -36,10 +36,6 @@ class ProductoRepository extends EntityRepository
                 $query->andWhere($query->expr()->eq('p.condicion', ':condicion'))
                     ->setParameter('condicion', $filter->getCondicion());
             }
-            if ($filter->getBodega() !== null && $filter->getBodega() !== '') {
-                $query->andWhere($query->expr()->eq('p.bodega', ':bodega'))
-                    ->setParameter('bodega', $filter->getBodega());
-            }
             if ($filter->getCategoriaProducto() !== null && $filter->getCategoriaProducto() !== '') {
                 $query->andWhere($query->expr()->eq('p.categoriaProducto', ':categoriaProducto'))
                     ->setParameter('categoriaProducto', $filter->getCategoriaProducto());

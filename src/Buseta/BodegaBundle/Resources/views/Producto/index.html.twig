@@ -16,7 +16,6 @@
     and (filter_form.vars.value.nombre is null or filter_form.vars.value.nombre is empty)
     and (filter_form.vars.value.categoriaProducto is null or filter_form.vars.value.categoriaProducto is empty)
     and (filter_form.vars.value.uom is null or filter_form.vars.value.uom is empty)
-    and (filter_form.vars.value.bodega is null or filter_form.vars.value.bodega is empty)
     and (filter_form.vars.value.condicion is null or filter_form.vars.value.condicion is empty)
     %}
         {% set display = 'display: none;' %}
@@ -36,7 +35,6 @@
                 <div class="col-lg-4">{{ form_row(filter_form.nombre) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.categoriaProducto) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.uom) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.bodega) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.condicion) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
@@ -70,7 +68,6 @@
             <th>Nombre{#{{ knp_pagination_sortable(entities, 'Nombre', 't.nombre') }}#}</th>
             <th>Categoría Producto{#{{ knp_pagination_sortable(entities, 'categoriaProducto', 't.categoriaProducto') }}#}</th>
             <th>UOM{#{{ knp_pagination_sortable(entities, 'UOM', 't.uom') }}#}</th>
-            <th>Bodega{#{{ knp_pagination_sortable(entities, 'Bodega', 't.bodega') }}#}</th>
             <th>Condición{#{{ knp_pagination_sortable(entities, 'Condición', 't.condicion') }}#}</th>
             <th style="text-align: center">Acciones</th>
         </tr>
@@ -82,7 +79,6 @@
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.categoriaProducto }}</td>
                 <td>{{ entity.uom }}</td>
-                <td>{{ entity.bodega }}</td>
                 <td>{{ entity.condicion }}</td>
 
                 <td style="width: 18% !important; text-align: center;">

@@ -46,14 +46,6 @@ class ProductoFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('bodega', 'entity', array(
-                'class' => 'BusetaBodegaBundle:Bodega',
-                'required' => false,
-                'empty_value' => '---Seleccione---',
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
             ->add('categoriaProducto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:CategoriaProducto',
                 'label' => 'Categoría de Producto',

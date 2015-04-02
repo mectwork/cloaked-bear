@@ -24,30 +24,9 @@ class ProductoFilterModel
     private $uom;
 
     /**
-     * @var \Buseta\BodegaBundle\Entity\Bodega
-     */
-    private $bodega;
-
-    /**
      * @var \Buseta\NomencladorBundle\Entity\Condicion
      */
     private $condicion;
-
-    /**
-     * @return \Buseta\BodegaBundle\Entity\Bodega
-     */
-    public function getBodega()
-    {
-        return $this->bodega;
-    }
-
-    /**
-     * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
-     */
-    public function setBodega($bodega)
-    {
-        $this->bodega = $bodega;
-    }
 
     /**
      * @return \Buseta\BodegaBundle\Entity\CategoriaProducto

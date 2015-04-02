@@ -51,11 +51,6 @@ class Producto
     private $condicion;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="productos")
-     */
-    private $bodega;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\CategoriaProducto", inversedBy="productos")
      */
     private $categoriaProducto;
@@ -101,22 +96,6 @@ class Producto
     private $albaranLinea;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="minimo_bodega", type="integer")
-     * @Assert\NotBlank()
-     */
-    private $minimo_bodega;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="maximo_bodega", type="integer")
-     * @Assert\NotBlank()
-     */
-    private $maximo_bodega;
-
-    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo")
@@ -147,17 +126,12 @@ class Producto
         $this->codigo = $model->getCodigo();
         $this->nombre = $model->getNombre();
         $this->activo = $model->getActivo();
-        $this->minimo_bodega = $model->getMinimoBodega();
-        $this->maximo_bodega = $model->getMaximoBodega();
 
         if ($model->getUom()) {
             $this->uom  = $model->getUom();
         }
         if ($model->getCondicion()) {
             $this->condicion  = $model->getCondicion();
-        }
-        if ($model->getBodega()) {
-            $this->bodega  = $model->getBodega();
         }
         if ($model->getMovimientos()) {
             $this->movimientos  = $model->getMovimientos();
@@ -296,30 +270,6 @@ class Producto
     }
 
     /**
-     * Set bodega.
-     *
-     * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
-     *
-     * @return Producto
-     */
-    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega = null)
-    {
-        $this->bodega = $bodega;
-
-        return $this;
-    }
-
-    /**
-     * Get bodega.
-     *
-     * @return \Buseta\BodegaBundle\Entity\Bodega
-     */
-    public function getBodega()
-    {
-        return $this->bodega;
-    }
-
-    /**
      * Add movimientos.
      *
      * @param \Buseta\BodegaBundle\Entity\Movimiento $movimientos
@@ -353,54 +303,6 @@ class Producto
     public function getMovimientos()
     {
         return $this->movimientos;
-    }
-
-    /**
-     * Set minimo_bodega.
-     *
-     * @param integer $minimoBodega
-     *
-     * @return Producto
-     */
-    public function setMinimoBodega($minimoBodega)
-    {
-        $this->minimo_bodega = $minimoBodega;
-
-        return $this;
-    }
-
-    /**
-     * Get minimo_bodega.
-     *
-     * @return integer
-     */
-    public function getMinimoBodega()
-    {
-        return $this->minimo_bodega;
-    }
-
-    /**
-     * Set maximo_bodega.
-     *
-     * @param integer $maximoBodega
-     *
-     * @return Producto
-     */
-    public function setMaximoBodega($maximoBodega)
-    {
-        $this->maximo_bodega = $maximoBodega;
-
-        return $this;
-    }
-
-    /**
-     * Get maximo_bodega.
-     *
-     * @return integer
-     */
-    public function getMaximoBodega()
-    {
-        return $this->maximo_bodega;
     }
 
     /**
