@@ -35,6 +35,8 @@
     </div>
     <!-- /.panel -->
 
+<div class="modal" id="form_precios_modal"></div>
+
 {% endblock area_trabajo %}
 
 {% block javascripts %}
@@ -43,32 +45,8 @@
     <!-- Initialize script -->
     <script type="text/javascript">
         $(function (){
-
             // init producto
             producto._load();
-
-            $('#{{ form.grupos.vars.id }}').change(function(){
-                var data = {
-                    grupo_id: $(this).val()
-                };
-
-                //Select dependientes entre Grupos y Subgrupos
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ path("producto_ajax_grupos_subgrupos") }}',
-                    data: data,
-                    success: function(data) {
-                        var values = $.parseJSON(data);
-                        var $subgrupo_selector = $('#{{ form.subgrupos.vars.id }}');
-
-                        $subgrupo_selector.html('<option>---Seleccione---</option>');
-
-                        for (var i=0, total = values.length; i < total; i++) {
-                            $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
-                        }
-                    }
-                });
-            });
         });
     </script>
 
@@ -150,9 +128,9 @@
             form_id: $('div#basicos').find('form').attr('id'),
             form_name: $('div#basicos').find('form').attr('name'),
             id: '',
-            _load: function () {                
-
+            _load: function () {
                 $('a#btn_producto_save').on('click', producto._save);
+
                 producto.id = $('input[id="' + producto.form_id + '_id"]').val();
                 if (producto.id === '' || producto.id === undefined) {
                     // hide all tabs on page load
@@ -161,9 +139,12 @@
                             $(item).parent().hide();
                         }
                     });
+                } else {
+                    tabs._show_all_tabs();
                 }
 
                 // on show tab events
+                $('a[data-toggle="tab"]').unbind('show.bs.tab');
                 $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
                     var href = $(e.target).attr('href');
                     var relhref = $(e.relatedTarget).attr('href');
@@ -171,6 +152,29 @@
                     if (href === '#precios') {
                         precios._load();
                     }
+                });
+
+                $('#{{ form.grupos.vars.id }}').on('change', function () {
+                    var data = {
+                        grupo_id: $(this).val()
+                    };
+
+                    //Select dependientes entre Grupos y Subgrupos
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ path("producto_ajax_grupos_subgrupos") }}',
+                        data: data,
+                        success: function(data) {
+                            var values = $.parseJSON(data);
+                            var $subgrupo_selector = $('#{{ form.subgrupos.vars.id }}');
+
+                            $subgrupo_selector.html('<option>---Seleccione---</option>');
+
+                            for (var i=0, total = values.length; i < total; i++) {
+                                $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                            }
+                        }
+                    });
                 });
             },
             _save: function (event) {
@@ -205,16 +209,10 @@
             _done: function (response, textStatus, jqXHR) {
                 $('form#' + producto.form_id).replaceWith(response.view);
 
-                if(jqXHR.status == 201) {
-                    addGlobalMessage('success', response.message);
-                    // Producto Id
-                    producto.id = $('input[id="' + producto.form_id + '_id"]').val();
-                    // activate all tabs
-                    tabs._show_all_tabs();
-                } else if(jqXHR.status == 202) {
+                if(jqXHR.status == 201 || jqXHR.status == 202) {
                     addGlobalMessage('success', response.message);
                 }
-                $('a#btn_producto_save').on('click', producto._save);
+                producto._load();
             },
             _always: function() {
                 // remove spinning
@@ -251,7 +249,6 @@
 
         },
         _load: function (event) {
-
             if(event !== undefined) {
                 event.preventDefault();
             }

@@ -84,7 +84,7 @@ function addCollectionForm(collectionHolder, deleteLink) {
  * @param message
  */
 function addGlobalMessage(type, message) {
-    var messagesHolder  = $('div.global-messages');
+    var messagesHolder  = $('div#global-messages');
     var index = messagesHolder.data('index');
     if(index == undefined) {
         index = 0;
