@@ -14,6 +14,37 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductoRepository extends EntityRepository
 {
+    public function filterProducto($busqueda)
+    {
+        $filter = $busqueda->getData();
+
+        $qb = $this->createQueryBuilder('p');
+        $query = $qb->where($qb->expr()->eq(true,true));
+
+        if($filter) {
+            if ($filter->getCodigo() !== null && $filter->getCodigo() !== '') {
+                $query->andWhere($qb->expr()->like('p.codigo',':codigo'))
+                    ->setParameter('codigo', '%' . $filter->getCodigo() . '%');
+            }
+            if ($filter->getNombre() !== null && $filter->getNombre() !== '') {
+                $query->andWhere($qb->expr()->like('p.nombre',':nombre'))
+                    ->setParameter('nombre', '%' . $filter->getNombre() . '%');
+            }
+            if ($filter->getCategoriaProducto() !== null && $filter->getCategoriaProducto() !== '') {
+                $query->andWhere($query->expr()->eq('p.categoriaProducto', ':categoriaProducto'))
+                    ->setParameter('categoriaProducto', $filter->getCategoriaProducto());
+            }
+        }
+
+        $query->orderBy('p.id', 'ASC');
+
+        try {
+            return $query->getQuery();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
+
     public function filter(ProductoFilterModel $filter = null)
     {
         $qb = $this->createQueryBuilder('p');

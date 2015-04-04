@@ -231,6 +231,19 @@ class MovimientoController extends Controller
      */
     public function newAction()
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
+
+        $paginator = $this->get('knp_paginator');
+
+        $productos = $paginator->paginate(
+            $productos,
+            $this->get('request')->query->get('page', 1),
+            5,
+            array('pageParameterName' => 'page')
+        );
+
         $entity = new Movimiento();
 
         $movimientosProductos = new MovimientosProductos();
@@ -241,6 +254,7 @@ class MovimientoController extends Controller
         return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
             'entity' => $entity,
             'movimientosProductos' => $movimientosProductos->createView(),
+            'productos' => $productos,
             'form'   => $form->createView(),
         ));
     }

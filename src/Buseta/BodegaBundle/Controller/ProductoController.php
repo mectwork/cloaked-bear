@@ -25,6 +25,42 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ProductoController extends Controller
 {
+    /**
+     * Updated automatically el filtrado de busqueda de productos.
+     */
+    public function productoFilterAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        }
+
+        $request = $this->getRequest();
+        if (!$request->isXmlHttpRequest()) {
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
+
+        $json = array(
+            'id' => $busqueda,
+        );
+
+        /*$em = $this->getDoctrine()->getManager();
+        $producto = $em->getRepository('BusetaBodegaBundle:Producto')->filterProducto($busqueda);
+
+        if($producto != null) {
+            $json = array(
+                'id' => $producto->getId(),
+            );
+        }
+        else {
+            $json = array(
+                'id' => null,
+            );
+        }*/
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
+
+
     public function productoBitacoraAction($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -48,30 +84,6 @@ class ProductoController extends Controller
         return $this->render('BusetaBodegaBundle:Producto:bitacora.html.twig', array(
             'bitacora' => $bitacora,
             'producto' => $producto,
-        ));
-    }
-
-    public function busquedaAvanzadaAction($page, $cantResult)
-    {
-        $em = $this->get('doctrine.orm.entity_manager');
-        $request = $this->getRequest();
-
-        $orderBy = $request->query->get('orderBy');
-        $filter  = $request->query->get('filter');
-
-        $filter = $filter;
-
-        $busqueda = $em->getRepository('BusetaBodegaBundle:Producto')
-            ->busquedaAvanzada($page, $cantResult, $filter, $orderBy);
-        $paginacion = $busqueda['paginacion'];
-        $results    = $busqueda['results'];
-
-        return $this->render('BusetaBodegaBundle:Extras/table:busqueda-avanzada-productos.html.twig', array(
-            'productos'   => $results,
-            'page'       => $page,
-            'cantResult' => $cantResult,
-            'orderBy'    => $orderBy,
-            'paginacion' => $paginacion,
         ));
     }
 

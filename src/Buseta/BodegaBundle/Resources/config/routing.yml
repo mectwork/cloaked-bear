@@ -1,3 +1,55 @@
+BusetaBodegaBundle_necesidadmaterial:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/necesidadmaterial.yml"
+    prefix:   /necesidadmaterial
+
+BusetaBodegaBundle_pedidocompralinea:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/pedido_compra_linea.yml"
+    prefix:   /pedidocompralinea
+
+BusetaBodegaBundle_pedidocompra:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/pedidocompra.yml"
+    prefix:   /pedidocompra
+
+BusetaBodegaBundle_inventariofisico:
+        resource: "@BusetaBodegaBundle/Resources/config/routing/inventariofisico.yml"
+        prefix:   /inventariofisico
+
+BusetaBodegaBundle_necesidadmateriallinea:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/necesidad_material_linea.yml"
+    prefix:   /necesidadmateriallinea
+
+BusetaBodegaBundle_producto:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/producto.yml"
+    prefix:   /bodega/producto
+
+BusetaBodegaBundle_movimiento:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/movimiento.yml"
+    prefix:   /bodega/movimiento
+
+BusetaBodegaBundle_bodega:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/bodega.yml"
+    prefix:   /bodega
+
+BusetaBodegaBundle_categoria_producto:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/categoria_producto.yml"
+    prefix:   /bodega/categoria_producto
+
+BusetaBodegaBundle_informestock:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/informe_stock.yml"
+    prefix:   /informestock
+
+BusetaBodegaBundle_precioproducto:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/precio_producto.yml"
+    prefix:   /precioproducto
+
+BusetaBodegaBundle_albaran:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/albaran.yml"
+    prefix:   /albaran
+
+BusetaBodegaBundle_albaranlinea:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/albaran_linea.yml"
+    prefix:   /albaranlinea
+
 buseta_bodega_homepage:
   pattern:  /hello/{name}
   defaults: { _controller: BusetaBodegaBundle:Default:index }
@@ -68,6 +120,10 @@ buseta_bodega_producto:
 
 buseta_bodega_necesidadmateriallinea:
   resource: "@BusetaBodegaBundle/Controller/NecesidadMaterialLineaController.php"
+  type:     annotation
+
+buseta_bodega_movimientosproductos:
+  resource: "@BusetaBodegaBundle/Controller/MovimientoProductosController.php"
   type:     annotation
 
 buseta_bodega_albaranlinea:

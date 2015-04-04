@@ -1,3 +1,39 @@
+BusetaTallerBundle_tareaadicional:
+    resource: "@BusetaTallerBundle/Resources/config/routing/tareaadicional.yml"
+    prefix:   /tareaadicional
+
+BusetaTallerBundle_ordentrabajo:
+    resource: "@BusetaTallerBundle/Resources/config/routing/ordentrabajo.yml"
+    prefix:   /ordentrabajo
+
+BusetaTallerBundle_reporte:
+    resource: "@BusetaTallerBundle/Resources/config/routing/reporte.yml"
+    prefix:   /reporte
+
+BusetaTallerBundle_diagnostico:
+    resource: "@BusetaTallerBundle/Resources/config/routing/diagnostico.yml"
+    prefix:   /diagnostico
+
+BusetaTallerBundle_observacion:
+    resource: "@BusetaTallerBundle/Resources/config/routing/observacion.yml"
+    prefix:   /observacion
+
+BusetaTallerBundle_observaciondiagnostico:
+    resource: "@BusetaTallerBundle/Resources/config/routing/observaciondiagnostico.yml"
+    prefix:   /observaciondiagnostico
+
+BusetaTallerBundle_tareamantenimiento:
+    resource: "@BusetaTallerBundle/Resources/config/routing/tareamantenimiento.yml"
+    prefix:   /tareamantenimiento
+
+BusetaTallerBundle_condicionespago:
+    resource: "@BusetaTallerBundle/Resources/config/routing/condicionespago.yml"
+    prefix:   /condicionespago
+
+BusetaTallerBundle_impuesto:
+    resource: "@BusetaTallerBundle/Resources/config/routing/impuesto.yml"
+    prefix:   /impuesto
+
 buseta_taller_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: BusetaTallerBundle:Default:index }

@@ -43,6 +43,13 @@ producto_ajax_productos_all:
   options:
       expose: true
 
+producto_filter:
+  pattern: /producto_filter
+  defaults: { _controller: "BusetaBodegaBundle:Producto:productoFilter" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true
+
 producto_ajax_busqueda_avanzada:
   pattern: /busqueda-avanzada/{page}/{cantResult}
   defaults: { _controller: "BusetaBodegaBundle:Producto:busquedaAvanzada", page: 0, cantResult: 10 }
