@@ -57,7 +57,7 @@ class PedidoCompraType extends AbstractType
                 },
                 'empty_value' => '---Seleccione---',
                 'required' => true,
-                'label' => 'Proveedor',
+                'label' => 'Nombre del Proveedor',
                 'attr' => array(
                     'class' => 'form-control',
                 ),

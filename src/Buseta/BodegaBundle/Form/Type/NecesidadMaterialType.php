@@ -56,6 +56,7 @@ class NecesidadMaterialType extends AbstractType
                         ->where($qb->expr()->isNotNull('proveedor'));
                 },
                 'empty_value' => '---Seleccione---',
+                'label' => 'Nombre del Proveedor',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',

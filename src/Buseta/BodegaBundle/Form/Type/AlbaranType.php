@@ -62,7 +62,7 @@ class AlbaranType extends AbstractType
             ))
             ->add('tercero', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
-                'label' => 'Proveedor',
+                'label' => 'Nombre del Proveedor',
                 'query_builder' => function (EntityRepository $er) {
                     $qb = $er->createQueryBuilder('t');
                     return $qb->join('t.proveedor', 'proveedor')
