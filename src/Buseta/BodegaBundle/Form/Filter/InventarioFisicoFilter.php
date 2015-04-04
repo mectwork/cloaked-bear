@@ -32,7 +32,7 @@ class InventarioFisicoFilter extends AbstractType
             ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'empty_value' => '---Seleccione---',
-                'label' => 'Almacén',
+                'label' => 'Bodega',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',

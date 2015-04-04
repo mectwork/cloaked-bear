@@ -123,7 +123,7 @@ class MovimientoController extends Controller
                 $fe = new FuncionesExtras();
                 $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $almacen, $cantidadProducto, $em);
 
-                //Comprobar la existencia del producto en el almacén seleccionado
+                //Comprobar la existencia del producto en la bodega seleccionada
                 if ($cantidadDisponible == 'No existe') {
                     //Volver al menu de de crear nuevo Movimiento
                     $movimientosProductos = $this->createForm(new MovimientosProductosType());
@@ -132,7 +132,7 @@ class MovimientoController extends Controller
                     $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
                     $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
 
-                    $form->addError(new FormError("Ese producto no existe en el almacén seleccionado"));
+                    $form->addError(new FormError("Ese producto no existe en la bodega seleccionada"));
 
                     return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
                         'entity' => $entity,
@@ -149,7 +149,7 @@ class MovimientoController extends Controller
                     $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
                     $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
 
-                    $form->addError(new FormError("No existe en el almacén '".$bodega->getNombre()."' la cantidad de productos solicitados para el producto: ".$producto->getNombre()));
+                    $form->addError(new FormError("No existe en la bodega '".$bodega->getNombre()."' la cantidad de productos solicitados para el producto: ".$producto->getNombre()));
 
                     return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
                         'entity' => $entity,
@@ -157,7 +157,7 @@ class MovimientoController extends Controller
                         'form'   => $form->createView(),
                     ));
                 }
-                //Si sí existe la cantidad del producto en el almacén seleccionado
+                //Si sí existe la cantidad del producto en la bodega seleccionada
                 else {
                     //Actualizar Bitácora - AlmacenOrigen
                     $bitacora = new BitacoraAlmacen();
@@ -364,7 +364,7 @@ class MovimientoController extends Controller
                 $this->get('session')->getFlashBag()->add('success', 'Ha sido eliminado satisfactoriamente.');
             } catch (\Exception $e) {
                 $this->get('logger')->addCritical(
-                    sprintf('Ha ocurrido un error eliminando un movimiento de almacén. Detalles: %s',
+                    sprintf('Ha ocurrido un error eliminando un movimiento de bodega. Detalles: %s',
                         $e->getMessage()
                     ));
             }

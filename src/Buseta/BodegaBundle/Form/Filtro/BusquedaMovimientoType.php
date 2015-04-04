@@ -33,8 +33,8 @@ class BusquedaMovimientoType extends AbstractType
             ))
             ->add('almacenOrigen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione almacén origen---',
-                'label' => 'Almacén Origen',
+                'empty_value' => '---Seleccione---',
+                'label' => 'Bodega Origen',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -42,8 +42,8 @@ class BusquedaMovimientoType extends AbstractType
             ))
             ->add('almacenDestino', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione almacén destino---',
-                'label' => 'Almacén Destino',
+                'empty_value' => '---Seleccione---',
+                'label' => 'Bodega Destino',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',

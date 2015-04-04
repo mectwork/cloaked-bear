@@ -72,7 +72,7 @@ class NecesidadMaterialType extends AbstractType
             ))
             ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'label' => 'Almacén',
+                'label' => 'Bodega',
                 'empty_value' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(

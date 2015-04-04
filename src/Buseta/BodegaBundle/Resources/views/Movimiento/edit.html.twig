@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Modificar datos de movimiento entre almacenes
+    Modificar datos de movimiento entre bodegas
 {% endblock %}
 
 {% block area_trabajo %}
@@ -15,12 +15,12 @@
   {{ form_start(edit_form) }}
     <div class="row show-grid">
         <div class="col-lg-4">
-            <label>Almacén Origen:</label>
+            <label>Bodega Origen:</label>
             {{ form_widget(edit_form.almacenOrigen) }}
         </div>
 
         <div class="col-lg-4">
-            <label>Almacén Destino:</label>
+            <label>Bodega Destino:</label>
             {{ form_widget(edit_form.almacenDestino) }}
         </div>
     </div>

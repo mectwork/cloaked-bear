@@ -31,8 +31,8 @@ class AlbaranFilter extends AbstractType
             ))
             ->add('almacen','entity',array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'label' => 'Almacén',
-                'empty_value' => '---Seleccione almacén---',
+                'label' => 'Bodega',
+                'empty_value' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -45,7 +45,7 @@ class AlbaranFilter extends AbstractType
                     return $qb->join('t.proveedor', 'proveedor')
                         ->where($qb->expr()->isNotNull('proveedor'));
                 },
-                'empty_value' => '---Seleccione proveedor---',
+                'empty_value' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
