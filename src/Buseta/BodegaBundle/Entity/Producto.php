@@ -117,6 +117,13 @@ class Producto
     private $precioProducto;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\CostoProducto", mappedBy="producto", cascade={"all"})
+     */
+    private $costoProducto;
+
+    /**
      * @param ProductoModel $model
      * @return Producto
      */
@@ -147,6 +154,9 @@ class Producto
         }
         if ($model->getPrecioProducto()) {
             $this->precioProducto  = $model->getPrecioProducto();
+        }
+        if ($model->getCostoProducto()) {
+            $this->costoProducto  = $model->getCostoProducto();
         }
         if ($model->getCategoriaProducto()) {
             $this->categoriaProducto  = $model->getCategoriaProducto();
@@ -489,6 +499,42 @@ class Producto
     public function getPrecioProducto()
     {
         return $this->precioProducto;
+    }
+
+    /**
+     * Add costoProducto.
+     *
+     * @param \Buseta\BodegaBundle\Entity\CostoProducto $costoProducto
+     *
+     * @return Producto
+     */
+    public function addCostoProducto(\Buseta\BodegaBundle\Entity\CostoProducto $costoProducto)
+    {
+        $costoProducto->setProducto($this);
+
+        $this->costoProducto[] = $costoProducto;
+
+        return $this;
+    }
+
+    /**
+     * Remove costoProducto.
+     *
+     * @param \Buseta\BodegaBundle\Entity\CostoProducto $costoProducto
+     */
+    public function removeCostoProducto(\Buseta\BodegaBundle\Entity\CostoProducto $costoProducto)
+    {
+        $this->costoProducto->removeElement($costoProducto);
+    }
+
+    /**
+     * Get costoProducto.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCostoProducto()
+    {
+        return $this->costoProducto;
     }
 
     /**

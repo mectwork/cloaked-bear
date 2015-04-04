@@ -55,6 +55,33 @@ class PrecioProductoHandler extends ProductoAbstractHandler
         $this->form->handleRequest($this->request);
         if($this->form->isSubmitted() && $this->form->isValid()) {
             try {
+
+                //Comprobar si el Precio actual esta activo
+                if($this->precio_producto->getActivo()) {
+                    $precioProductoActivo = $this->em->getRepository('BusetaBodegaBundle:PrecioProducto')->findOneBy(array(
+                        'producto' => $this->precio_producto->getProducto(),
+                        'activo' => true
+                    ));
+
+                    //Si existe el PrecioProducto activo entonces se desactiva
+                    if($precioProductoActivo != null) {
+                        $precioProductoActivo->setActivo(false);
+                        $this->em->persist($precioProductoActivo);
+                        $this->em->flush();
+                    }
+                }
+                elseif(!$this->precio_producto->getActivo()) {
+                    $precioProductoActivo = $this->em->getRepository('BusetaBodegaBundle:PrecioProducto')->findOneBy(array(
+                        'producto' => $this->precio_producto->getProducto(),
+                        'activo' => true
+                    ));
+
+                    //Si NO existe el PrecioProducto activo entonces se activa automatica el nuevo PrecioProducto
+                    if($precioProductoActivo == null) {
+                        $this->precio_producto->setActivo(true);
+                    }
+                }
+
                 $this->em->persist($this->precio_producto);
                 $this->em->flush();
 

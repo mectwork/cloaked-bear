@@ -1,22 +1,22 @@
 {#{% if reporte.diagnostico == null %}
         <div class="btn-group" style="margin-bottom: 8px;">
-            <a class="btn btn-primary" href="#form_precio_modal"><span class="glyphicon glyphicon-plus-sign"></span> {{ 'precio.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
+            <a class="btn btn-primary" href="#form_costo_modal"><span class="glyphicon glyphicon-plus-sign"></span> {{ 'costo.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
         </div>
 {% endif %}#}
 
 <div class="btn-group" style="margin-bottom: 8px;">
-    <a class="btn btn-primary" href="#form_precios_modal"><span class="glyphicon glyphicon-plus-sign"></span> {{ 'precio.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
+    <a class="btn btn-primary" href="#form_costos_modal"><span class="glyphicon glyphicon-plus-sign"></span> {{ 'costo.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
 </div>
 
 <div class="paginator row">
     <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
 </div>
 
-<table class="precio_records_list table table-striped table-bordered table-condensed table-hover">
+<table class="costo_records_list table table-striped table-bordered table-condensed table-hover">
     <thead>
     <tr>
-        {#<th>{{ knp_pagination_sortable(entities, 'precio.valor' | trans({}, 'BusetaTallerBundle'), 'd.valor') }}</th>#}
-        <th>Precio</th>
+        {#<th>{{ knp_pagination_sortable(entities, 'costo.valor' | trans({}, 'BusetaTallerBundle'), 'd.valor') }}</th>#}
+        <th>Costo</th>
         <th>Fecha Inicio</th>
         <th>Fecha Fin</th>
         <th>Activo</th>
@@ -26,7 +26,7 @@
     <tbody>
     {% for entity in entities %}
         <tr>
-            <td>{{ entity.precio }}</td>
+            <td>{{ entity.costo }}</td>
             <td>{{ entity.fechaInicio | date('d/m/Y') }}</td>
             <td>{{ entity.fechaFin | date('d/m/Y')}}</td>
             <td>
@@ -58,5 +58,5 @@
     <div class="col-lg-4">{{ knp_pagination_render(entities) }}</div>
 </div>
 
-<div class="modal" id="form_precios_modal"></div>
-<div class="modal" id="form_precios_delete_modal"></div>
+<div class="modal" id="form_costos_modal"></div>
+<div class="modal" id="form_costos_delete_modal"></div>

@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class PrecioProductoType extends AbstractType
+class CostoProductoType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,9 +15,9 @@ class PrecioProductoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('precio', 'number', array(
+            ->add('costo', 'number', array(
                 'required' => false,
-                'label' => 'Precio',
+                'label' => 'Costo',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -52,7 +52,7 @@ class PrecioProductoType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Entity\PrecioProducto',
+            'data_class' => 'Buseta\BodegaBundle\Entity\CostoProducto',
         ));
     }
 
@@ -61,6 +61,6 @@ class PrecioProductoType extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_bodegabundle_precio_producto';
+        return 'buseta_bodegabundle_costo_producto';
     }
 }

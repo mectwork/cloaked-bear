@@ -79,6 +79,12 @@ tercero:
   btn:
     adicionar: Adicionar Tercero
 
+costo:
+  btn:
+    adicionar: Adicionar Costo
+  modal:
+    title: Adicionar Nuevo Costo
+
 inventariofisico:
   btn:
     adicionar: Adicionar Inventario Físico

@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * PrecioProducto.
+ * CostoProducto.
  *
- * @ORM\Table(name="d_precio_producto")
- * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\PrecioProductoRepository")
+ * @ORM\Table(name="d_costo_producto")
+ * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\CostoProductoRepository")
  */
-class PrecioProducto
+class CostoProducto
 {
     /**
      * @var integer
@@ -25,10 +25,10 @@ class PrecioProducto
     /**
      * @var float
      *
-     * @ORM\Column(name="precio", type="decimal", scale=2)
+     * @ORM\Column(name="costo", type="decimal", scale=2)
      * @Assert\NotBlank()
      */
-    private $precio;
+    private $costo;
 
     /**
      * @var date
@@ -45,7 +45,7 @@ class PrecioProducto
     private $fechaFin;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto", inversedBy="precioProducto")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto", inversedBy="costoProducto")
      */
     private $producto;
 
@@ -65,27 +65,27 @@ class PrecioProducto
     }
 
     /**
-     * Set precio.
+     * Set costo.
      *
-     * @param string $precio
+     * @param string $costo
      *
-     * @return PrecioProducto
+     * @return CostoProducto
      */
-    public function setPrecio($precio)
+    public function setCosto($costo)
     {
-        $this->precio = $precio;
+        $this->costo = $costo;
 
         return $this;
     }
 
     /**
-     * Get precio.
+     * Get costo.
      *
      * @return string
      */
-    public function getPrecio()
+    public function getCosto()
     {
-        return $this->precio;
+        return $this->costo;
     }
 
     /**
@@ -93,7 +93,7 @@ class PrecioProducto
      *
      * @param \DateTime $fechaInicio
      *
-     * @return PrecioProducto
+     * @return CostoProducto
      */
     public function setFechaInicio($fechaInicio)
     {
@@ -117,7 +117,7 @@ class PrecioProducto
      *
      * @param \DateTime $fechaFin
      *
-     * @return PrecioProducto
+     * @return CostoProducto
      */
     public function setFechaFin($fechaFin)
     {
@@ -157,7 +157,7 @@ class PrecioProducto
      *
      * @param \Buseta\BodegaBundle\Entity\Producto $producto
      *
-     * @return PrecioProducto
+     * @return CostoProducto
      */
     public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
     {
