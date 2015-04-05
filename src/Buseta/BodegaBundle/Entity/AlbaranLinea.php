@@ -25,7 +25,7 @@ class AlbaranLinea
     /**
      * @var string
      *
-     * @ORM\Column(name="linea", type="string", nullable=false)
+     * @ORM\Column(name="linea", type="string", nullable=true)
      */
     private $linea;
 

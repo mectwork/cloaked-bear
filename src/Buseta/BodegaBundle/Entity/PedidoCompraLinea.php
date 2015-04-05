@@ -30,8 +30,7 @@ class PedidoCompraLinea
     /**
      * @var string
      *
-     * @ORM\Column(name="linea", type="string", nullable=false)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="linea", type="string", nullable=true)
      */
     private $linea;
 
