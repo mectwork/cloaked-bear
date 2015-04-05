@@ -30,14 +30,11 @@ class ProductoController extends Controller
      */
     public function productoFilterAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
-        }
-
-        $request = $this->getRequest();
         if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
         }
+
+
 
         $json = array(
             'id' => $busqueda,
@@ -279,7 +276,6 @@ class ProductoController extends Controller
     public function newAction()
     {
         $form   = $this->createCreateForm(new ProductoModel());
-
 
         return $this->render('BusetaBodegaBundle:Producto:new.html.twig', array(
             'form'   => $form->createView(),
