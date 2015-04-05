@@ -16,6 +16,7 @@
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos</a></li>
                 <li><a href="#precios" data-toggle="tab">Precios</a></li>
+                <li><a href="#costos" data-toggle="tab">Costos</a></li>
             </ul>
 
             {# Tab panes #}
@@ -29,11 +30,20 @@
                 <div class="tab-pane fade" id="precios">
                     {# Precios #}
                 </div>
+
+                <!-- TAB COSTOS-->
+                <div class="tab-pane fade" id="costos">
+                    {# Costos #}
+                </div>
             </div>
         </div>
         <!-- /.panel-body -->
     </div>
     <!-- /.panel -->
+
+    {#
+    <div class="modal" id="form_precios_modal"></div>
+    #}
 
 {% endblock area_trabajo %}
 
@@ -43,32 +53,8 @@
     <!-- Initialize script -->
     <script type="text/javascript">
         $(function (){
-
             // init producto
             producto._load();
-
-            $('#{{ edit_form.grupos.vars.id }}').change(function(){
-                var data = {
-                    grupo_id: $(this).val()
-                };
-
-                //Select dependientes entre Grupos y Subgrupos
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ path("producto_ajax_grupos_subgrupos") }}',
-                    data: data,
-                    success: function(data) {
-                        var values = $.parseJSON(data);
-                        var $subgrupo_selector = $('#{{ edit_form.subgrupos.vars.id }}');
-
-                        $subgrupo_selector.html('<option>---Seleccione---</option>');
-
-                        for (var i=0, total = values.length; i < total; i++) {
-                            $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
-                        }
-                    }
-                });
-            });
         });
     </script>
 
@@ -85,6 +71,7 @@
             loadding_image: '<i class="fa fa-spinner fa-spin"></i>',
             _show_all_tabs: function() {
                 tabs._show_tab('precios');
+                tabs._show_tab('costos');
             },
             _show_tab: function (tabname) {
                 $('li a[href="#' + tabname + '"]').parent().show();
@@ -150,9 +137,9 @@
             form_id: $('div#basicos').find('form').attr('id'),
             form_name: $('div#basicos').find('form').attr('name'),
             id: '',
-            _load: function () {                
-
+            _load: function () {
                 $('a#btn_producto_save').on('click', producto._save);
+
                 producto.id = $('input[id="' + producto.form_id + '_id"]').val();
                 if (producto.id === '' || producto.id === undefined) {
                     // hide all tabs on page load
@@ -161,9 +148,12 @@
                             $(item).parent().hide();
                         }
                     });
+                } else {
+                    tabs._show_all_tabs();
                 }
 
                 // on show tab events
+                $('a[data-toggle="tab"]').unbind('show.bs.tab');
                 $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
                     var href = $(e.target).attr('href');
                     var relhref = $(e.relatedTarget).attr('href');
@@ -171,6 +161,33 @@
                     if (href === '#precios') {
                         precios._load();
                     }
+                    if (href === '#costos') {
+                        costos._load();
+                    }
+
+                });
+
+                $('#{{ edit_form.grupos.vars.id }}').on('change', function () {
+                    var data = {
+                        grupo_id: $(this).val()
+                    };
+
+                    //Select dependientes entre Grupos y Subgrupos
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ path("producto_ajax_grupos_subgrupos") }}',
+                        data: data,
+                        success: function(data) {
+                            var values = $.parseJSON(data);
+                            var $subgrupo_selector = $('#{{ edit_form.subgrupos.vars.id }}');
+
+                            $subgrupo_selector.html('<option>---Seleccione---</option>');
+
+                            for (var i=0, total = values.length; i < total; i++) {
+                                $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                            }
+                        }
+                    });
                 });
             },
             _save: function (event) {
@@ -205,16 +222,10 @@
             _done: function (response, textStatus, jqXHR) {
                 $('form#' + producto.form_id).replaceWith(response.view);
 
-                if(jqXHR.status == 201) {
-                    addGlobalMessage('success', response.message);
-                    // Producto Id
-                    producto.id = $('input[id="' + producto.form_id + '_id"]').val();
-                    // activate all tabs
-                    tabs._show_all_tabs();
-                } else if(jqXHR.status == 202) {
+                if(jqXHR.status == 201 || jqXHR.status == 202) {
                     addGlobalMessage('success', response.message);
                 }
-                $('a#btn_producto_save').on('click', producto._save);
+                producto._load();
             },
             _always: function() {
                 // remove spinning
@@ -235,181 +246,393 @@
 
     <!-- Precios script -->
     <script type="text/javascript">
-    var precios = {
-        form_name: '',
-        form_id: '',
-        id: '',
-        _start_events: function () {
-            $('a[href="#form_precios_modal"]').on('click', precios._load_modal);
-            // Paginator sort
-            $('table.precios_records_list').find('a.sortable, a.asc, a.desc').on('click', precios._load);
-            // Table addresses actions
-            $('table.precios_records_list').find('a[href="#edit"]').on('click', precios._load_modal);
-            $('table.precios_records_list').find('a[href="#delete"]').on('click', precios._load_delete_modal);
-            // Paginator navigation
-            $('div.precios-paginator.row ul.pagination').find('a.paginator-link').on('click', precios._load);
+        var precios = {
+            form_name: '',
+            form_id: '',
+            id: '',
+            _start_events: function () {
+                $('a[href="#form_precios_modal"]').on('click', precios._load_modal);
+                // Paginator sort
+                $('table.precios_records_list').find('a.sortable, a.asc, a.desc').on('click', precios._load);
+                // Table addresses actions
+                $('table.precios_records_list').find('a[href="#edit"]').on('click', precios._load_modal);
+                $('table.precios_records_list').find('a[href="#delete"]').on('click', precios._load_delete_modal);
+                // Paginator navigation
+                $('div.precios-paginator.row ul.pagination').find('a.paginator-link').on('click', precios._load);
 
-        },
-        _load: function (event) {
+            },
+            _load: function (event) {
+                if(event !== undefined) {
+                    event.preventDefault();
+                }
 
-            if(event !== undefined) {
-                event.preventDefault();
-            }
+                if (producto.id == '') {
+                    return;
+                }
 
-            if (producto.id == '') {
-                return;
-            }
+                // add spinning to show loading process
+                tabs._add_loadding('precios');
 
-            // add spinning to show loading process
-            tabs._add_loadding('precios');
+                var url = Routing.generate('producto_precios_list',{'producto': producto.id});
+                if($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
+                    url = $(this).attr('href');
+                }
 
-            var url = Routing.generate('producto_precios_list',{'producto': producto.id});
-            if($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
-                url = $(this).attr('href');
-            }
+                $.get(url).done(function (response, textStatus, jqXHR) {
+                    $('div#precios').html(response);
 
-            $.get(url).done(function (response, textStatus, jqXHR) {
-                $('div#precios').html(response);
+                    precios._start_events();
+                }).fail(utils._fail).always(precios._always);
+            },
+            _load_modal: function(event) {
+                if(event !== undefined) {
+                    event.preventDefault();
+                }
 
-                precios._start_events();
-            }).fail(utils._fail).always(precios._always);
-        },
-        _load_modal: function(event) {
-            if(event !== undefined) {
-                event.preventDefault();
-            }
+                if(producto.id === '' || producto.id === undefined) {
+                    return;
+                }
 
-            if(producto.id === '' || producto.id === undefined) {
-                return;
-            }
+                var url = Routing.generate('producto_precios_new_modal', {'producto': producto.id});
+                if($(this).attr('href') !== undefined && $(this).attr('href') === '#edit') {
+                    url = Routing.generate('producto_precios_edit_modal', {'producto': producto.id, id:$(this).data('content')});
+                }
 
-            var url = Routing.generate('producto_precios_new_modal', {'producto': producto.id});
-            if($(this).attr('href') !== undefined && $(this).attr('href') === '#edit') {
-                url = Routing.generate('producto_precios_edit_modal', {'producto': producto.id, id:$(this).data('content')});
-            }
+                $.get(url)
+                        .done(function(response, textStatus, jqXHR){
 
-            $.get(url)
-                    .done(function(response, textStatus, jqXHR){
-                        $('div#form_precios_modal').replaceWith($(response.view));
+                            $('div#form_precios_modal').replaceWith($(response.view));
 
-                        precios.form_id = $('div#form_precios_modal').find('form').attr('id');
-                        precios.form_name = $('div#form_precios_modal').find('form').attr('name');
+                            precios.form_id = $('div#form_precios_modal').find('form').attr('id');
+                            precios.form_name = $('div#form_precios_modal').find('form').attr('name');
 
-                        //$('a#btn_precios_save').on('click', precios._save_modal);
-                        $('a#btn_precios_save').on('click',  precios._save_modal);
+                            //$('a#btn_precios_save').on('click', precios._save_modal);
+                            $('a#btn_precios_save').on('click',  precios._save_modal);
 
-                        $('a#btn_precios_cancel').on('click', function(){
-                            $('div#form_precios_modal').modal('hide');
-                        });
+                            $('a#btn_precios_cancel').on('click', function(){
+                                $('div#form_precios_modal').modal('hide');
+                            });
 
-                        $('#' + precios.form_id + '_fechaInicio').datetimepicker({
-                            'format': 'DD/MM/YYYY'
-                        });
+                            $('#' + precios.form_id + '_fechaInicio').datetimepicker({
+                                'format': 'DD/MM/YYYY'
+                            });
 
+                            var fechaInicio = $('#' + precios.form_id + '_fechaInicio').val();
+                            $('input:hidden[name^="data_busqueda_movimiento_producto_type[fechaInicio]_submit"]').val(fechaInicio);
 
-                        $('div#form_precios_modal').modal('show');
-                    }).fail(utils._fail).always(function(){});
-        },
-        _load_delete_modal: function(event) {
-            if(event !== undefined) {
-                event.preventDefault();
-            }
+                            $('#' + precios.form_id + '_fechaFin').datetimepicker({
+                                'format': 'DD/MM/YYYY'
+                            });
 
-            if(producto.id === '' || producto.id === undefined) {
-                return;
-            }
+                            var fechaFin = $('#' + precios.form_id + '_fechaFin').val();
+                            $('input:hidden[name^="data_busqueda_movimiento_producto_type[fechaFin]_submit"]').val(fechaFin);
 
-            var id  = $(this).data('content'),
-                    url = Routing.generate('producto_precios_delete', {id: id});
-            $.get(url)
-                    .done(function(response, textStatus, jqXHR){
-                        $('div#form_precios_delete_modal').replaceWith($(response.view));
+                            $('#' + precios.form_id + '_fechaInicio').on("dp.change", function (e) {
+                                $('#' + precios.form_id + '_fechaFin').data("DateTimePicker").setMinDate(e.date);
+                            });
+                            $('#' + precios.form_id + '_fechaFin').on("dp.change", function (e) {
+                                $('#' + precios.form_id + '_fechaInicio').data("DateTimePicker").setMaxDate(e.date);
+                            });
 
-                        $('div#form_precios_delete_modal a#btn_precios_delete').on('click', precios._save_delete_modal);
-                        $('div#form_precios_delete_modal a#btn_precios_cancel').on('click', function(){
-                            $('div#form_precios_delete_modal').modal('hide');
-                        });
+                            $('div#form_precios_modal').modal('show');
+                        }).fail(utils._fail).always(function(){});
+            },
+            _load_delete_modal: function(event) {
+                if(event !== undefined) {
+                    event.preventDefault();
+                }
 
-                        $('div#form_precios_delete_modal').modal('show');
-                    }).fail(utils._fail).always(function(){});
-        },
-        _save_modal: function (event) {
+                if(producto.id === '' || producto.id === undefined) {
+                    return;
+                }
 
-            if(event != undefined) {
-                event.preventDefault();
-            }
+                var id  = $(this).data('content'),
+                        url = Routing.generate('producto_precios_delete', {id: id});
+                $.get(url)
+                        .done(function(response, textStatus, jqXHR){
+                            $('div#form_precios_delete_modal').replaceWith($(response.view));
 
-            $('#btn_precios_save').find('span')
-                    .removeClass('glyphicon')
-                    .removeClass('glyphicon-save')
-                    .addClass('fa')
-                    .addClass('fa-gear')
-                    .addClass('fa-spin');
+                            $('div#form_precios_delete_modal a#btn_precios_delete').on('click', precios._save_delete_modal);
+                            $('div#form_precios_delete_modal a#btn_precios_cancel').on('click', function(){
+                                $('div#form_precios_delete_modal').modal('hide');
+                            });
 
-            var url = Routing.generate('producto_precios_new_modal',{'producto': producto.id}),
-                    id  = $('#' + precios.form_id + '_id').val();
-            if(id !== '' && id !== undefined) {
-                url = Routing.generate('producto_precios_edit_modal',{'producto': producto.id, id: id});
-            }
+                            $('div#form_precios_delete_modal').modal('show');
+                        }).fail(utils._fail).always(function(){});
+            },
+            _save_modal: function (event) {
 
-            $('form#' + precios.form_id).ajaxSubmit({
-                success: precios._done,
-                error: utils._fail,
-                complete: precios._always,
-                url: url,
-                dataType: 'json'
-            });
-        },
-        _save_delete_modal: function (event) {
-            if(event != undefined) {
-                event.preventDefault();
-            }
+                if(event != undefined) {
+                    event.preventDefault();
+                }
 
-            $('#btn_precios_delete').find('span')
-                    .removeClass('glyphicon')
-                    .removeClass('glyphicon-trash')
-                    .addClass('fa')
-                    .addClass('fa-gear')
-                    .addClass('fa-spin');
+                $('#btn_precios_save').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-save')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
 
-            var deleteForm = $('div#form_precios_delete_modal').find('form'),
-                    url = $(deleteForm).attr('action');
+                var url = Routing.generate('producto_precios_new_modal',{'producto': producto.id}),
+                        id  = $('#' + precios.form_id + '_id').val();
+                if(id !== '' && id !== undefined) {
+                    url = Routing.generate('producto_precios_edit_modal',{'producto': producto.id, id: id});
+                }
 
-            deleteForm.ajaxSubmit({
-                success: function (response, textStatus, jqXHR) {
-                    if(jqXHR.status == 202) {
-                        addGlobalMessage('success', response.message);
-                    }
-                    $('div#form_precios_delete_modal').modal('hide');
+                $('form#' + precios.form_id).ajaxSubmit({
+                    success: precios._done,
+                    error: utils._fail,
+                    complete: precios._always,
+                    url: url,
+                    dataType: 'json'
+                });
+            },
+            _save_delete_modal: function (event) {
+                if(event != undefined) {
+                    event.preventDefault();
+                }
+
+                $('#btn_precios_delete').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-trash')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
+
+                var deleteForm = $('div#form_precios_delete_modal').find('form'),
+                        url = $(deleteForm).attr('action');
+
+                deleteForm.ajaxSubmit({
+                    success: function (response, textStatus, jqXHR) {
+                        if(jqXHR.status == 202) {
+                            addGlobalMessage('success', response.message);
+                        }
+                        $('div#form_precios_delete_modal').modal('hide');
+                        precios._load();
+                    },
+                    error: utils._fail,
+                    complete: precios._always,
+                    url: url,
+                    dataType: 'json'
+                });
+            },
+            _done: function (response, textStatus, jqXHR) {
+                $('form#' + precios.form_id).replaceWith($(response.view).find('form'));
+
+                if(jqXHR.status == 201 || jqXHR.status == 202) {
+                    addGlobalMessage('success', response.message);
+
+                    $('div#form_precios_modal').modal('hide');
                     precios._load();
-                },
-                error: utils._fail,
-                complete: precios._always,
-                url: url,
-                dataType: 'json'
-            });
-        },
-        _done: function (response, textStatus, jqXHR) {
-            $('form#' + precios.form_id).replaceWith($(response.view).find('form'));
-
-            if(jqXHR.status == 201 || jqXHR.status == 202) {
-                addGlobalMessage('success', response.message);
-
-                $('div#form_precios_modal').modal('hide');
-                precios._load();
+                }
+            },
+            _always: function(jqXHR, textStatus) {
+                // remove spinning
+                tabs._remove_loadding('precios');
+                $('a[id^="btn_precios_"]').find('span')
+                        .addClass('glyphicon')
+                        .addClass('glyphicon-save')
+                        .removeClass('fa')
+                        .removeClass('fa-gear')
+                        .removeClass('fa-spin');
             }
-        },
-        _always: function(jqXHR, textStatus) {
-            // remove spinning
-            tabs._remove_loadding('precios');
-            $('a[id^="btn_precios_"]').find('span')
-                    .addClass('glyphicon')
-                    .addClass('glyphicon-save')
-                    .removeClass('fa')
-                    .removeClass('fa-gear')
-                    .removeClass('fa-spin');
-        }
-    };
+        };
+    </script>
+
+    <!-- Costos script -->
+    <script type="text/javascript">
+        var costos = {
+            form_name: '',
+            form_id: '',
+            id: '',
+            _start_events: function () {
+                $('a[href="#form_costos_modal"]').on('click', costos._load_modal);
+                // Paginator sort
+                $('table.costos_records_list').find('a.sortable, a.asc, a.desc').on('click', costos._load);
+                // Table addresses actions
+                $('table.costos_records_list').find('a[href="#edit"]').on('click', costos._load_modal);
+                $('table.costos_records_list').find('a[href="#delete"]').on('click', costos._load_delete_modal);
+                // Paginator navigation
+                $('div.costos-paginator.row ul.pagination').find('a.paginator-link').on('click', costos._load);
+
+            },
+            _load: function (event) {
+                if(event !== undefined) {
+                    event.preventDefault();
+                }
+
+                if (producto.id == '') {
+                    return;
+                }
+
+                // add spinning to show loading process
+                tabs._add_loadding('costos');
+
+                var url = Routing.generate('producto_costos_list',{'producto': producto.id});
+                if($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
+                    url = $(this).attr('href');
+                }
+
+                $.get(url).done(function (response, textStatus, jqXHR) {
+                    $('div#costos').html(response);
+
+                    costos._start_events();
+                }).fail(utils._fail).always(costos._always);
+            },
+            _load_modal: function(event) {
+                if(event !== undefined) {
+                    event.preventDefault();
+                }
+
+                if(producto.id === '' || producto.id === undefined) {
+                    return;
+                }
+
+                var url = Routing.generate('producto_costos_new_modal', {'producto': producto.id});
+                if($(this).attr('href') !== undefined && $(this).attr('href') === '#edit') {
+                    url = Routing.generate('producto_costos_edit_modal', {'producto': producto.id, id:$(this).data('content')});
+                }
+
+                $.get(url)
+                        .done(function(response, textStatus, jqXHR){
+
+                            $('div#form_costos_modal').replaceWith($(response.view));
+
+                            costos.form_id = $('div#form_costos_modal').find('form').attr('id');
+                            costos.form_name = $('div#form_costos_modal').find('form').attr('name');
+
+                            //$('a#btn_costos_save').on('click', costos._save_modal);
+                            $('a#btn_costos_save').on('click',  costos._save_modal);
+
+                            $('a#btn_costos_cancel').on('click', function(){
+                                $('div#form_costos_modal').modal('hide');
+                            });
+
+                            $('#' + costos.form_id + '_fechaInicio').datetimepicker({
+                                'format': 'DD/MM/YYYY'
+                            });
+
+                            var fechaInicio = $('#' + costos.form_id + '_fechaInicio').val();
+                            $('input:hidden[name^="data_busqueda_movimiento_producto_type[fechaInicio]_submit"]').val(fechaInicio);
+
+                            $('#' + costos.form_id + '_fechaFin').datetimepicker({
+                                'format': 'DD/MM/YYYY'
+                            });
+
+                            var fechaFin = $('#' + costos.form_id + '_fechaFin').val();
+                            $('input:hidden[name^="data_busqueda_movimiento_producto_type[fechaFin]_submit"]').val(fechaFin);
+
+                            $('#' + costos.form_id + '_fechaInicio').on("dp.change", function (e) {
+                                $('#' + costos.form_id + '_fechaFin').data("DateTimePicker").setMinDate(e.date);
+                            });
+                            $('#' + costos.form_id + '_fechaFin').on("dp.change", function (e) {
+                                $('#' + costos.form_id + '_fechaInicio').data("DateTimePicker").setMaxDate(e.date);
+                            });
+
+
+                            $('div#form_costos_modal').modal('show');
+                        }).fail(utils._fail).always(function(){});
+            },
+            _load_delete_modal: function(event) {
+                if(event !== undefined) {
+                    event.preventDefault();
+                }
+
+                if(producto.id === '' || producto.id === undefined) {
+                    return;
+                }
+
+                var id  = $(this).data('content'),
+                        url = Routing.generate('producto_costos_delete', {id: id});
+                $.get(url)
+                        .done(function(response, textStatus, jqXHR){
+                            $('div#form_costos_delete_modal').replaceWith($(response.view));
+
+                            $('div#form_costos_delete_modal a#btn_costos_delete').on('click', costos._save_delete_modal);
+                            $('div#form_costos_delete_modal a#btn_costos_cancel').on('click', function(){
+                                $('div#form_costos_delete_modal').modal('hide');
+                            });
+
+                            $('div#form_costos_delete_modal').modal('show');
+                        }).fail(utils._fail).always(function(){});
+            },
+            _save_modal: function (event) {
+
+                if(event != undefined) {
+                    event.preventDefault();
+                }
+
+                $('#btn_costos_save').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-save')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
+
+                var url = Routing.generate('producto_costos_new_modal',{'producto': producto.id}),
+                        id  = $('#' + costos.form_id + '_id').val();
+                if(id !== '' && id !== undefined) {
+                    url = Routing.generate('producto_costos_edit_modal',{'producto': producto.id, id: id});
+                }
+
+                $('form#' + costos.form_id).ajaxSubmit({
+                    success: costos._done,
+                    error: utils._fail,
+                    complete: costos._always,
+                    url: url,
+                    dataType: 'json'
+                });
+            },
+            _save_delete_modal: function (event) {
+                if(event != undefined) {
+                    event.preventDefault();
+                }
+
+                $('#btn_costos_delete').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-trash')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
+
+                var deleteForm = $('div#form_costos_delete_modal').find('form'),
+                        url = $(deleteForm).attr('action');
+
+                deleteForm.ajaxSubmit({
+                    success: function (response, textStatus, jqXHR) {
+                        if(jqXHR.status == 202) {
+                            addGlobalMessage('success', response.message);
+                        }
+                        $('div#form_costos_delete_modal').modal('hide');
+                        costos._load();
+                    },
+                    error: utils._fail,
+                    complete: costos._always,
+                    url: url,
+                    dataType: 'json'
+                });
+            },
+            _done: function (response, textStatus, jqXHR) {
+                $('form#' + costos.form_id).replaceWith($(response.view).find('form'));
+
+                if(jqXHR.status == 201 || jqXHR.status == 202) {
+                    addGlobalMessage('success', response.message);
+
+                    $('div#form_costos_modal').modal('hide');
+                    costos._load();
+                }
+            },
+            _always: function(jqXHR, textStatus) {
+                // remove spinning
+                tabs._remove_loadding('costos');
+                $('a[id^="btn_costos_"]').find('span')
+                        .addClass('glyphicon')
+                        .addClass('glyphicon-save')
+                        .removeClass('fa')
+                        .removeClass('fa-gear')
+                        .removeClass('fa-spin');
+            }
+        };
     </script>
 
 {% endblock javascripts %}

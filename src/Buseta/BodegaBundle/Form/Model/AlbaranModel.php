@@ -60,7 +60,7 @@ class AlbaranModel
      * @var string
      * @Assert\NotBlank()
      */
-    private $estadoDocumento;
+    private $estadoDocumento = 'BO';
 
     /**
      * @var \Buseta\BodegaBundle\Entity\PedidoCompra

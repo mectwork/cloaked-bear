@@ -129,11 +129,12 @@
             form_name: $('div#basicos').find('form').attr('name'),
             id: '',
             _load: function () {
+                $('a#btn_necesidadmaterial_save').on('click', necesidadmaterial._save);
+
                 $('#bodega_necesidad_material_fecha_pedido').datetimepicker({
                     'format': 'DD/MM/YYYY'
                 });
 
-                $('a#btn_necesidadmaterial_save').on('click', necesidadmaterial._save);
                 necesidadmaterial.id = $('input[id="' + necesidadmaterial.form_id + '_id"]').val();
                 if (necesidadmaterial.id === '' || necesidadmaterial.id === undefined) {
                     // hide all tabs on page load

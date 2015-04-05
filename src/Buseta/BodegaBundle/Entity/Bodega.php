@@ -52,13 +52,6 @@ class Bodega
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Producto", mappedBy="bodega", cascade={"all"})
-     */
-    private $productos;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
      * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\InventarioFisico", mappedBy="almacen", cascade={"all"})
      */
     private $inventarioFisico;
@@ -97,7 +90,6 @@ class Bodega
     public function __construct()
     {
         $this->lineas = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->productos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->inventarioFisico = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -181,41 +173,7 @@ class Bodega
         return $this->nombre;
     }
 
-    /**
-     * Add productos.
-     *
-     * @param \Buseta\BodegaBundle\Entity\Producto $productos
-     *
-     * @return Bodega
-     */
-    public function addProducto(\Buseta\BodegaBundle\Entity\Producto $productos)
-    {
-        $productos->setBodega($this);
 
-        $this->productos[] = $productos;
-
-        return $this;
-    }
-
-    /**
-     * Remove productos.
-     *
-     * @param \Buseta\BodegaBundle\Entity\Producto $productos
-     */
-    public function removeProducto(\Buseta\BodegaBundle\Entity\Producto $productos)
-    {
-        $this->productos->removeElement($productos);
-    }
-
-    /**
-     * Get productos.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getProductos()
-    {
-        return $this->productos;
-    }
 
     /**
      * Add inventarioFisico.

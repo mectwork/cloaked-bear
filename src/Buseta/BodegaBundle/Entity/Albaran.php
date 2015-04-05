@@ -71,7 +71,7 @@ class Albaran
      *
      * @ORM\Column(name="estadoDocumento", type="string", nullable=false)
      */
-    private $estadoDocumento;
+    private $estadoDocumento = 'BO';
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\PedidoCompra")

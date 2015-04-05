@@ -90,6 +90,12 @@ class ProductoModel
     private $precioProducto;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @Assert\NotBlank()
+     */
+    private $costoProducto;
+
+    /**
      * Constructor
      */
     public function __construct(Producto $producto = null)
@@ -100,6 +106,7 @@ class ProductoModel
         $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->subgrupos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->precioProducto = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->costoProducto = new \Doctrine\Common\Collections\ArrayCollection();
 
         if ($producto !== null) {
             $this->id = $producto->getId();
@@ -127,6 +134,9 @@ class ProductoModel
             }
             if ($producto->getPrecioProducto()) {
                 $this->precioProducto  = $producto->getPrecioProducto();
+            }
+            if ($producto->getCostoProducto()) {
+                $this->costoProducto  = $producto->getCostoProducto();
             }
             if ($producto->getCategoriaProducto()) {
                 $this->categoriaProducto  = $producto->getCategoriaProducto();
@@ -183,6 +193,11 @@ class ProductoModel
         if (!$this->getPrecioProducto()->isEmpty()) {
             foreach ($this->getPrecioProducto() as $precios) {
                 $producto->addPrecioProducto($precios);
+            }
+        }
+        if (!$this->getCostoProducto()->isEmpty()) {
+            foreach ($this->getCostoProducto() as $costos) {
+                $producto->addCostoProducto($costos);
             }
         }
 
@@ -363,6 +378,22 @@ class ProductoModel
     public function setPrecioProducto($precioProducto)
     {
         $this->precioProducto = $precioProducto;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCostoProducto()
+    {
+        return $this->costoProducto;
+    }
+
+    /**
+     * @param ArrayCollection $costoProducto
+     */
+    public function setCostoProducto($costoProducto)
+    {
+        $this->costoProducto = $costoProducto;
     }
 
     /**
