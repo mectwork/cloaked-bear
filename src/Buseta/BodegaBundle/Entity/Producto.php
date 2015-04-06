@@ -96,18 +96,18 @@ class Producto
     private $albaranLinea;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \Buseta\NomencladorBundle\Entity\Grupo
      *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo")
      */
-    private $grupos;
+    private $grupo;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \Buseta\NomencladorBundle\Entity\Subgrupo
      *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Subgrupo")
      */
-    private $subgrupos;
+    private $subgrupo;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -146,11 +146,11 @@ class Producto
         if ($model->getAlbaranLinea()) {
             $this->albaranLinea  = $model->getAlbaranLinea();
         }
-        if ($model->getGrupos()) {
-            $this->grupos  = $model->getGrupos();
+        if ($model->getGrupo()) {
+            $this->grupo  = $model->getGrupo();
         }
-        if ($model->getSubgrupos()) {
-            $this->subgrupos  = $model->getSubgrupos();
+        if ($model->getSubgrupo()) {
+            $this->subgrupo  = $model->getSubgrupo();
         }
         if ($model->getPrecioProducto()) {
             $this->precioProducto  = $model->getPrecioProducto();
@@ -316,39 +316,39 @@ class Producto
     }
 
     /**
-     * Set grupos.
+     * Set grupo.
      *
-     * @param \Buseta\NomencladorBundle\Entity\Grupo $grupos
+     * @param \Buseta\NomencladorBundle\Entity\Grupo $grupo
      *
      * @return Producto
      */
-    public function setGrupos(\Buseta\NomencladorBundle\Entity\Grupo $grupos = null)
+    public function setGrupo(\Buseta\NomencladorBundle\Entity\Grupo $grupo = null)
     {
-        $this->grupos = $grupos;
+        $this->grupo = $grupo;
 
         return $this;
     }
 
     /**
-     * Get grupos.
+     * Get grupo.
      *
      * @return \Buseta\NomencladorBundle\Entity\Grupo
      */
-    public function getGrupos()
+    public function getGrupo()
     {
-        return $this->grupos;
+        return $this->grupo;
     }
 
     /**
-     * Set subgrupos.
+     * Set subgrupo.
      *
-     * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos
+     * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupo
      *
      * @return Producto
      */
-    public function setSubgrupos(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos = null)
+    public function setSubgrupo(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupo = null)
     {
-        $this->subgrupos = $subgrupos;
+        $this->subgrupo = $subgrupo;
 
         return $this;
     }
@@ -358,9 +358,9 @@ class Producto
      *
      * @return \Buseta\NomencladorBundle\Entity\Subgrupo
      */
-    public function getSubgrupos()
+    public function getSubgrupo()
     {
-        return $this->subgrupos;
+        return $this->subgrupo;
     }
 
     /**

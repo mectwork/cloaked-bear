@@ -95,9 +95,8 @@ class MovimientoController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
-        $em = $this->getDoctrine()->getManager();
-
         if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $fechaMovimiento = new \DateTime();
 
             $request = $this->get('request');
@@ -187,12 +186,9 @@ class MovimientoController extends Controller
                     //Persistimos los movimientos
                     $entity->setCreatedBy($this->getUser()->getUsername());
                     $entity->setMovidoBy($this->getUser()->getUsername());
-                    $entity->setProducto($producto);
                     $entity->setAlmacenOrigen($almacenOrigen);
                     $entity->setAlmacenDestino($almacenDestino);
                     $entity->setFechaMovimiento($fechaMovimiento);
-                    $entity->setCantidadMovida($movimiento['cantidad']);
-                    $entity->setCategoriaProducto($producto->getCategoriaProducto());
                     $em->persist($entity);
                     $em->flush();
                 }
@@ -201,10 +197,10 @@ class MovimientoController extends Controller
             return $this->redirect($this->generateUrl('movimiento_show', array('id' => $entity->getId())));
         }
 
-        /*return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
+        return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
-        ));*/
+        ));
     }
 
     /**

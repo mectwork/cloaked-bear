@@ -72,16 +72,16 @@ class ProductoModel
     private $albaranLinea;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \Buseta\NomencladorBundle\Entity\Grupo
      * @Assert\NotBlank()
      */
-    private $grupos;
+    private $grupo;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \Buseta\NomencladorBundle\Entity\Subgrupo
      * @Assert\NotBlank()
      */
-    private $subgrupos;
+    private $subgrupo;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -103,8 +103,6 @@ class ProductoModel
         $this->movimientos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pedido_compra_lineas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->albaranLinea = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->subgrupos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->precioProducto = new \Doctrine\Common\Collections\ArrayCollection();
         $this->costoProducto = new \Doctrine\Common\Collections\ArrayCollection();
 
@@ -126,11 +124,11 @@ class ProductoModel
             if ($producto->getAlbaranLinea()) {
                 $this->albaranLinea  = $producto->getAlbaranLinea();
             }
-            if ($producto->getGrupos()) {
-                $this->grupos  = $producto->getGrupos();
+            if ($producto->getGrupo()) {
+                $this->grupos  = $producto->getGrupo();
             }
-            if ($producto->getSubgrupos()) {
-                $this->subgrupos  = $producto->getSubgrupos();
+            if ($producto->getSubgrupo()) {
+                $this->subgrupos  = $producto->getSubgrupo();
             }
             if ($producto->getPrecioProducto()) {
                 $this->precioProducto  = $producto->getPrecioProducto();
@@ -168,11 +166,11 @@ class ProductoModel
         if ($this->getCondicion() !== null) {
             $producto->setCondicion($this->getCondicion());
         }
-        if ($this->getGrupos() !== null) {
-            $producto->setGrupos($this->getGrupos());
+        if ($this->getGrupo() !== null) {
+            $producto->setGrupo($this->getGrupo());
         }
-        if ($this->getSubgrupos() !== null) {
-            $producto->setSubgrupos($this->getSubgrupos());
+        if ($this->getSubgrupo() !== null) {
+            $producto->setSubgrupo($this->getSubgrupo());
         }
 
         if (!$this->getMovimientos()->isEmpty()) {
@@ -287,17 +285,17 @@ class ProductoModel
     /**
      * @return ArrayCollection
      */
-    public function getGrupos()
+    public function getGrupo()
     {
-        return $this->grupos;
+        return $this->grupo;
     }
 
     /**
      * @param ArrayCollection $grupos
      */
-    public function setGrupos($grupos)
+    public function setGrupo($grupos)
     {
-        $this->grupos = $grupos;
+        $this->grupo = $grupos;
     }
 
     /**
@@ -399,17 +397,17 @@ class ProductoModel
     /**
      * @return ArrayCollection
      */
-    public function getSubgrupos()
+    public function getSubgrupo()
     {
-        return $this->subgrupos;
+        return $this->subgrupo;
     }
 
     /**
      * @param ArrayCollection $subgrupos
      */
-    public function setSubgrupos($subgrupos)
+    public function setSubgrupo($subgrupos)
     {
-        $this->subgrupos = $subgrupos;
+        $this->subgrupo = $subgrupos;
     }
 
     /**

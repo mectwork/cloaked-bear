@@ -27,16 +27,16 @@ class AddGrupoFieldSubscriber implements EventSubscriberInterface
 
     private function addGrupoForm($form, $grupo = null)
     {
-        $form->add('grupos', 'entity', array(
+        $form->add('grupo', 'entity', array(
             'class'         => 'BusetaNomencladorBundle:Grupo',
             'auto_initialize' => false,
-            'empty_value'   => '---Seleccione un grupo---',
+            'empty_value'   => '---Seleccione grupo---',
             'data' => $grupo,
             'attr' => array(
                 'class' => 'form-control',
             ),
             'query_builder' => function (EntityRepository $repository) {
-                    $qb = $repository->createQueryBuilder('grupos');
+                    $qb = $repository->createQueryBuilder('grupo');
 
                     return $qb;
                 },
@@ -51,8 +51,7 @@ class AddGrupoFieldSubscriber implements EventSubscriberInterface
         if (null === $data) {
             $this->addGrupoForm($form);
         } else {
-            //$grupo = ($data->city) ? $data->city->getSubgrupo()->getGrupo() : null ;
-            $grupo = ($data->getGrupos()) ? $data->getGrupos() : null;
+            $grupo = ($data->getGrupo()) ? $data->getGrupo() : null;
             $this->addGrupoForm($form, $grupo);
         }
     }
@@ -66,7 +65,7 @@ class AddGrupoFieldSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $grupo = array_key_exists('grupos', $data) ? $data['grupos'] : null;
+        $grupo = array_key_exists('grupo', $data) ? $data['grupo'] : null;
         $this->addGrupoForm($form, $grupo);
     }
 }

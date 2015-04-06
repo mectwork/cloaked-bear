@@ -2,7 +2,10 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Entity\MovimientosProductos;
+use Buseta\BodegaBundle\Form\Filter\MovimientosProductosFilter;
+use Buseta\BodegaBundle\Form\Model\MovimientosProductosFilterModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Form\Type\MovimientosProductosType;
@@ -48,49 +51,60 @@ class MovimientoProductosController extends Controller
     }
 
     /**
-     * @param MovimientosProductos $movimientoproducto
      * @param Request $request
      *
      * @throws \Exception
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/new/modal/{movimientoproducto}", name="movimientoproductos_new_modal", methods={"GET","POST"}, options={"expose":true})
-     * @ParamConverter("tercero", options={"mapping":{"tercero":"id"}})
+     * @Route("/new/modal/movimientoproducto", name="movimientoproductos_new_modal", methods={"GET"}, options={"expose":true})
      */
-    public function newModalAction(MovimientosProductos $movimientoproducto, Request $request)
+    public function newModalAction(Request $request)
     {
-        $trans = $this->get('translator');
-        $handler = $this->get('buseta_movimientoproducto.linea.handler');
-        $handler->bindData($movimientoproducto);
+        $filter = new MovimientosProductosFilterModel();
 
-        $handler->setRequest($request);
+        $form = $this->createForm(new MovimientosProductosFilter(), $filter, array(
+            'action' => $this->generateUrl('movimientoproductos_new_modal'),
+        ));
 
-        if($handler->handle()) {
-            $renderView = $this->renderView('@BusetaBodega/MovimientosProductos/Linea/modal_form.html.twig', array(
-                'form' => $handler->getForm()->createView(),
-            ));
-
-            return new JsonResponse(array(
-                'view' => $renderView,
-                'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
-            ), 201);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Producto')->filterProductos($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Producto')->findAll();
         }
 
-        if($handler->getError()) {
-            $renderView = $this->renderView('@BusetaBodega/MovimientosProductos/Linea/modal_form.html.twig', array(
-                'form' => $handler->getForm()->createView(),
-            ));
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $request->query->get('page', 1),
+            5
+        );
 
-            return new JsonResponse(array(
-                'view' => $renderView,
-                'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Línea'), 'BusetaBodegaBundle')
-            ), 500);
-        }
-
-        $renderView = $this->renderView('@BusetaBodega/MovimientosProductos/Linea/modal_form.html.twig', array(
-            'form' => $handler->getForm()->createView(),
+        $renderView = $this->renderView('@BusetaBodega/Movimiento/modal_form.html.twig', array(
+            'form' => $form->createView(),
+            'entities'      => $entities
         ));
 
         return new JsonResponse(array('view' => $renderView));
+    }
+
+    public function obtenerProductoAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($id);
+
+        if (!$producto) {
+            throw $this->createNotFoundException('Unable to find Producto entity.');
+        }
+
+        $json = array(
+            'id' => $producto->getId(),
+            'nombre' => $producto->getNombre(),
+        );
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
 
     /**

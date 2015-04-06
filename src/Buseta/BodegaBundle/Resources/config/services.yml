@@ -34,6 +34,10 @@ services:
         class: Buseta\BodegaBundle\Form\Handler\PedidoCompraLineaHandler
         arguments:
             - @service_container
+    buseta_movimientos.productos.handler:
+        class: Buseta\BodegaBundle\Form\Handler\MovimientosProductosHandler
+        arguments:
+            - @service_container
     buseta_inventariofisico.linea.handler:
         class: Buseta\BodegaBundle\Form\Handler\InventarioFisicoLineaHandler
         arguments:

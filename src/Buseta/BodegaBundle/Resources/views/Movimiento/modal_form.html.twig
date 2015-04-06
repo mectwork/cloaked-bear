@@ -1,0 +1,83 @@
+{% form_theme form '@BusetaBodega/Form/fields.twig' %}
+
+<div class="modal" id="form_productos_modal" tabindex="-1" role="dialog" aria-labelledby="createProductos" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="createProductos">{{ 'movimientos_productos.modal.title'|trans({},'BusetaBodegaBundle') }}</h4>
+            </div>
+            <div class="modal-body">
+                <form name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" action="{{ form.vars.action }}"
+
+                      {{ form_errors(form) }}
+
+                      method="{{ form.vars.method }}" enctype="multipart/form-data">
+
+                    <div class="row">
+                        <div class="col-lg-4">{{ form_row(form.codigo) }}</div>
+                        <div class="col-lg-4">{{ form_row(form.nombre) }}</div>
+                        <div class="col-lg-4">{{ form_row(form.categoria_producto) }}</div>
+                        <div class="col-lg-4">{{ form_row(form.grupo) }}</div>
+                        <div class="col-lg-4">{{ form_row(form.subgrupo) }}</div>
+                    </div>
+
+                    {{ form_row(form._token) }}
+                </form>
+
+                <div id="listado_productos">
+                    <div class="paginator row">
+                        <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+                    </div>
+
+                    <table class="records_list table table-striped table-bordered table-condensed table-hover">
+                        <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Categoría Producto</th>
+                            <th>Grupo</th>
+                            <th>Subgrupo</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for entity in entities %}
+                            <tr>
+                                <td>{{ entity.codigo }}</td>
+                                <td>{{ entity.nombre }}</td>
+                                <td>{{ entity.categoriaProducto }}</td>
+                                <td>{{ entity.grupo }}</td>
+                                <td>{{ entity.subgrupo }}</td>
+                                <td class="text-center">
+                                    <a class="btn btn-success btn-xs" href="#select-producto"
+                                            data-id="{{ entity.id }}" data-nombre="{{ entity.nombre }}">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="paginator row">
+                        <div class="col-lg-12 text-center">{{ knp_pagination_render(entities) }}</div>
+                    </div>
+                </div>
+            </div>
+
+            {#<div class="modal-footer">
+                <a href="#" class="btn btn-default" id="btn_productos_cancel" data-dismiss="modal"><span class="glyphicon glyphicon-chevron-left"></span>
+                    {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+                <a href="#" class="btn btn-primary" id="btn_productos_save"><span class="glyphicon glyphicon-save"></span>
+                    {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
+            </div>#}
+        </div>
+
+    </div>
+
+</div>

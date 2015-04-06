@@ -29,14 +29,22 @@ class Subgrupo extends BaseNomenclador
     private $grupo;
 
     /**
+     * Set grupo.
+     *
      * @param \Buseta\NomencladorBundle\Entity\Grupo $grupo
+     *
+     * @return Modelo
      */
-    public function setGrupo($grupo)
+    public function setMarca(\Buseta\NomencladorBundle\Entity\Grupo $grupo = null)
     {
         $this->grupo = $grupo;
+
+        return $this;
     }
 
     /**
+     * Get grupo
+     *
      * @return \Buseta\NomencladorBundle\Entity\Grupo
      */
     public function getGrupo()

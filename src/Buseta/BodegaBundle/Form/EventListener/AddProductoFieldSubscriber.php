@@ -1,13 +1,13 @@
 <?php
 
-namespace Buseta\TallerBundle\Form\EventListener;
+namespace Buseta\BodegaBundle\Form\EventListener;
 
+use Buseta\NomencladorBundle\Entity\Subgrupo;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Doctrine\ORM\EntityRepository;
-use Buseta\NomencladorBundle\Entity\Subgrupo;
 
 class AddProductoFieldSubscriber implements EventSubscriberInterface
 {

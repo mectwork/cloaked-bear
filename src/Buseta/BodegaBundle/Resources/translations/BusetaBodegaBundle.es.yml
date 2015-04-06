@@ -79,6 +79,9 @@ tercero:
   btn:
     adicionar: Adicionar Tercero
 
+movimientos_productos:
+  modal:
+    title: Filtrar Productos
 costo:
   btn:
     adicionar: Adicionar Costo

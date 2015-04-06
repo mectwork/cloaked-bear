@@ -17,17 +17,17 @@ class ProductoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /*$objeto = $builder->getFormFactory();
-        $subgrupos = new AddSubgrupoFieldSubscriber($objeto);
-        $builder->addEventSubscriber($subgrupos);
-        $grupos = new AddGrupoFieldSubscriber($objeto);
-        $builder->addEventSubscriber($grupos);*/
+        $objeto = $builder->getFormFactory();
+        $subgrupo = new AddSubgrupoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($subgrupo);
+        $grupo = new AddGrupoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($grupo);
 
         $builder
             ->add('id', 'hidden', array(
                 'required' => false,
             ))
-            ->add('grupos', 'entity', array(
+            /*->add('grupos', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Grupo',
                 'empty_value' => '---Seleccione---',
                 'label' => 'Grupo',
@@ -44,7 +44,7 @@ class ProductoType extends AbstractType
                 'attr' => array(
                     'class' => 'form-control',
                 ),
-            ))
+            ))*/
             ->add('codigo', 'text', array(
                 'required' => false,
                 'label' => 'Código',

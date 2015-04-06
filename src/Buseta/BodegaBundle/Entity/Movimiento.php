@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Movimiento.
@@ -32,23 +33,6 @@ class Movimiento
     private $almacenDestino;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto", inversedBy="movimientos")
-     */
-    private $producto;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\CategoriaProducto")
-     */
-    private $categoriaProducto;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="cantidadMovida", type="integer")
-     */
-    private $cantidadMovida;
-
-    /**
      * @var date
      *
      * @ORM\Column(name="fechaMovimiento", type="date")
@@ -59,6 +43,7 @@ class Movimiento
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\MovimientosProductos", mappedBy="movimiento", cascade={"all"})
+     * @Assert\Valid()
      */
     private $movimientos_productos;
 
@@ -111,30 +96,6 @@ class Movimiento
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set cantidadMovida.
-     *
-     * @param integer $cantidadMovida
-     *
-     * @return Movimiento
-     */
-    public function setCantidadMovida($cantidadMovida)
-    {
-        $this->cantidadMovida = $cantidadMovida;
-
-        return $this;
-    }
-
-    /**
-     * Get cantidadMovida.
-     *
-     * @return integer
-     */
-    public function getCantidadMovida()
-    {
-        return $this->cantidadMovida;
     }
 
     /**
@@ -330,30 +291,6 @@ class Movimiento
     }
 
     /**
-     * Set producto.
-     *
-     * @param \Buseta\BodegaBundle\Entity\Producto $producto
-     *
-     * @return Movimiento
-     */
-    public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
-    {
-        $this->producto = $producto;
-
-        return $this;
-    }
-
-    /**
-     * Get producto.
-     *
-     * @return \Buseta\BodegaBundle\Entity\Producto
-     */
-    public function getProducto()
-    {
-        return $this->producto;
-    }
-
-    /**
      * Add movimientos_productos.
      *
      * @param \Buseta\BodegaBundle\Entity\MovimientosProductos $movimientosProductos
@@ -387,21 +324,5 @@ class Movimiento
     public function getMovimientosProductos()
     {
         return $this->movimientos_productos;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCategoriaProducto()
-    {
-        return $this->categoriaProducto;
-    }
-
-    /**
-     * @param mixed $categoriaProducto
-     */
-    public function setCategoriaProducto($categoriaProducto)
-    {
-        $this->categoriaProducto = $categoriaProducto;
     }
 }

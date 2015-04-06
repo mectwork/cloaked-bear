@@ -167,7 +167,7 @@
 
                 });
 
-                $('#{{ form.grupos.vars.id }}').on('change', function () {
+                $('#{{ form.grupo.vars.id }}').on('change', function () {
                     var data = {
                         grupo_id: $(this).val()
                     };
@@ -179,7 +179,7 @@
                         data: data,
                         success: function(data) {
                             var values = $.parseJSON(data);
-                            var $subgrupo_selector = $('#{{ form.subgrupos.vars.id }}');
+                            var $subgrupo_selector = $('#{{ form.subgrupo.vars.id }}');
 
                             $subgrupo_selector.html('<option>---Seleccione---</option>');
 

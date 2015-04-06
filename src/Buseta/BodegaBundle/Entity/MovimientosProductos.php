@@ -3,12 +3,13 @@
 namespace Buseta\BodegaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * MovimientosProductos.
  *
- * @ORM\Table(name="d_movimientosProductos")
- * @ORM\Entity
+ * @ORM\Table(name="d_movimientos_productos")
+ * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\MovimientosProductosRepository")
  */
 class MovimientosProductos
 {
@@ -30,6 +31,7 @@ class MovimientosProductos
      * @var integer
      *
      * @ORM\Column(name="cantidad", type="integer")
+     * @Assert\NotBlank
      */
     private $cantidad;
 

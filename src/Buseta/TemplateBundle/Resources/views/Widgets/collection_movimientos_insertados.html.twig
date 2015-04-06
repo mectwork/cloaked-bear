@@ -41,9 +41,7 @@
     </div>
 
     {{ form_rest(form) }}
-    <div>
-
-    </div>
+</div>
     {% endspaceless %}
 {% endblock collection_widget %}
 
@@ -57,6 +55,8 @@
     <div class="col-lg-3 form-group">
         {{ form_errors(prototype.producto) }}
         {{ form_widget(prototype.producto) }}
+        {{ form_errors(prototype.nombre) }}
+        {{ form_widget(prototype.nombre) }}
     </div>
 
     <div class="col-lg-2 form-group">

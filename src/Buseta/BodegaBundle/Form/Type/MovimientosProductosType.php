@@ -4,6 +4,8 @@ namespace Buseta\BodegaBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MovimientosProductosType extends AbstractType
@@ -15,43 +17,14 @@ class MovimientosProductosType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre', 'text', array(
+            ->add('producto', 'hidden_entity', array(
+                'class' => 'BusetaBodegaBundle:Producto',
                 'required' => false,
-                'label' => 'Nombre',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
             ))
-            ->add('codigo', 'text', array(
+            ->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'nombrePreSetData'))
+            ->add('cantidad', 'text', array(
                 'required' => false,
-                'label' => 'Código',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('grupo', 'entity', array(
-                'class' => 'BusetaNomencladorBundle:Grupo',
-                'empty_value' => '---Seleccione---',
-                'label' => 'Grupo',
-                'required' => false,
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('subgrupo', 'entity', array(
-                'class' => 'BusetaNomencladorBundle:Subgrupo',
-                'empty_value' => '---Seleccione---',
-                'label' => 'Subgrupo',
-                'required' => false,
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('categoriaProducto', 'entity', array(
-                'class' => 'BusetaBodegaBundle:CategoriaProducto',
-                'label' => 'Categoría de Producto',
-                'required' => false,
-                'empty_value' => '---Seleccione---',
+                'label' => 'Cantidad',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -65,8 +38,33 @@ class MovimientosProductosType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Form\Model\MovimientosProductosFilterModel',
+            'data_class' => 'Buseta\BodegaBundle\Entity\MovimientosProductos',
         ));
+    }
+
+    public function nombrePreSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $data = $event->getData();
+
+        if($data != null && $data->getProducto()) {
+            $form->add('nombre', 'text', array(
+                'data' => $data->getProducto()->getNombre(),
+                'mapped' => false,
+                'read_only' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ));
+        } else {
+            $form->add('nombre', 'text', array(
+                'mapped' => false,
+                'read_only' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ));
+        }
     }
 
     /**

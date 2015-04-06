@@ -3,8 +3,9 @@
 namespace Buseta\BodegaBundle\Entity\Repository;
 
 use Buseta\BodegaBundle\Form\Model\ProductoFilterModel;
-use Buseta\NomencladorBundle\Entity\Categoria;
+use Buseta\BodegaBundle\Entity\CategoriaProducto;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 
 /**
  * ProductoRepository.
@@ -14,6 +15,43 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductoRepository extends EntityRepository
 {
+    public function filterProductos($filter)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $query = $qb->where($qb->expr()->eq(true,true));
+
+        if($filter) {
+            if ($filter->getCodigo() !== null && $filter->getCodigo() !== '') {
+                $query->andWhere($qb->expr()->like('p.codigo',':codigo'))
+                    ->setParameter('codigo', '%' . $filter->getCodigo() . '%');
+            }
+            if ($filter->getNombre() !== null && $filter->getNombre() !== '') {
+                $query->andWhere($qb->expr()->like('p.nombre',':nombre'))
+                    ->setParameter('nombre', '%' . $filter->getNombre() . '%');
+            }
+            if ($filter->getCategoriaProducto() !== null && $filter->getCategoriaProducto() !== '') {
+                $query->andWhere($query->expr()->eq('p.categoriaProducto', ':categoriaProducto'))
+                    ->setParameter('categoriaProducto', $filter->getCategoriaProducto());
+            }
+            if ($filter->getGrupo() !== null && $filter->getGrupo() !== '') {
+                $query->andWhere($query->expr()->eq('p.grupo', ':grupo'))
+                    ->setParameter('grupo', $filter->getGrupo());
+            }
+            if ($filter->getSubgrupo() !== null && $filter->getSubgrupo() !== '') {
+                $query->andWhere($query->expr()->eq('p.subgrupo', ':subgrupo'))
+                    ->setParameter('subgrupo', $filter->getSubgrupo());
+            }
+        }
+
+        $query->orderBy('p.id', 'ASC');
+
+        try {
+            return $query->getQuery();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
+
     public function filterProducto($busqueda)
     {
         $filter = $busqueda->getData();

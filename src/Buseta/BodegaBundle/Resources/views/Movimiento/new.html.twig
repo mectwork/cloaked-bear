@@ -1,6 +1,6 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{#{% form_theme form 'BusetaTemplateBundle:Widgets:collection_movimientos_insertados.html.twig' %}#}
+{% form_theme form 'BusetaTemplateBundle:Widgets:collection_movimientos_insertados.html.twig' %}
 
 {% block nombre_menu_superior %}
 
@@ -16,14 +16,14 @@
 
 {% block area_trabajo %}
 
-  {{ form_start(form) }}
-
     {% if form_errors(form) %}
         <div id="error" class="alert alert-danger" >
             <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
             <strong>!ERROR!</strong> {{ form_errors(form) }}
         </div>
     {% endif %}
+
+  {{ form_start(form) }}
 
     <div class="row show-grid">
         <div class="col-lg-4">
@@ -64,90 +64,7 @@
 
     {{ form_end(form) }}
 
-    <!-- Modal -->
-    <div class="modal" id="newMovimiento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content" style="width: 850px;">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3 class="modal-title" id="myModalLabel">Filtrar Producto</h3>
-                </div>
-                <div class="modal-body">
-                    <form id="filter_producto" action="{{ path('producto_filter') }}" method="get" {{ form_enctype(movimientosProductos) }}>
-                        <div class="row show-grid">
-                            <div class="col-md-4">
-                                {{ form_row(movimientosProductos.nombre) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(movimientosProductos.codigo) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(movimientosProductos.categoriaProducto) }}
-                            </div>
-                        </div>
-
-                        <div class="row show-grid">
-                            <div class="col-md-4">
-                                {{ form_row(movimientosProductos.grupo) }}
-                            </div>
-
-                            <div class="col-md-4">
-                                {{ form_row(movimientosProductos.subgrupo) }}
-                            </div>
-                        </div>
-
-                    {{ form_rest(movimientosProductos) }}
-                    </form>
-
-                    <div id="records_list" style="padding-left: 18px">
-                        <div class="paginator row">
-                            <div class="col-lg-4"><strong>Resultados:</strong> {{ productos.getTotalItemCount }}</div>
-                        </div>
-
-                        <table class="records_list table table-striped table-bordered table-condensed table-hover">
-                            <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Codigo</th>
-                                <th>Categoria Producto</th>
-                                <th>Grupo</th>
-                                <th>Subgrupo</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for entity in productos %}
-                                <tr>
-                                    <td>{{ entity.nombre }}</td>
-                                    <td>{{ entity.codigo }}</td>
-                                    <td>{{ entity.categoriaProducto }}</td>
-                                    <td>{{ entity.grupos }}</td>
-                                    <td>{{ entity.subgrupos }}</td>
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <td colspan="12">No se encontraron registros de productos en el sistema.</td>
-                                </tr>
-                            {% endfor %}
-
-                            </tbody>
-                        </table>
-
-                        <div class="paginator row">
-                            <div class="col-lg-12"></div>
-                            <div class="col-lg-12" style="text-align: center">{{ knp_pagination_render(productos) }}</div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
+    <div class="modal" id="form_productos_modal"></div>
 
 {% endblock %}
 
@@ -159,9 +76,40 @@
     {{ parent() }}
 
     <script type="text/javascript">
+        var ProductosList = function () {
+            this.list = [];
+
+            this.addId = function ( id ) {
+                this.list.push(id);
+            };
+
+            this.removeId = function ( id ) {
+                var aux = [];
+                for (var i = 0; i < this.list.length; i++) {
+                    if (this.list[i] != id) {
+                        aux.push(this.list[i]);
+                    }
+                }
+
+                this.list = aux;
+            };
+
+            this.findId = function ( id ) {
+                for (var i = 0; i < this.list.length; i++) {
+                    if (this.list[i] == id) {
+                        return id;
+                    }
+                }
+
+                return false;
+            }
+        }
+    </script>
+    <script type="text/javascript">
 
         var collectionHolder = $('div#buseta_bodegabundle_movimiento_movimientos_productos');
         var $addTagLink = $('a.add_tag_link');
+        var productosList = new ProductosList();
 
         jQuery(document).ready(function() {
 
@@ -172,91 +120,184 @@
             updateDeleteLink();
             updateView();
 
-            function addTagForm(collectionHolder) {
-                // Get the data-prototype explained earlier
-                var prototype = collectionHolder.data('prototype');
+            $('#adicionarMovimiento').on('click', loadModel);
 
-                // get the new index
-                var index = collectionHolder.data('index');
-
-                // Replace '__name__' in the prototype's HTML to
-                // instead be a number based on how many items we have
-                var newForm = prototype.replace(/__name__/g, index);
-
-                // increase the index with one for the next item
-                collectionHolder.data('index', index + 1);
-
-                // Display the form in the page in an li, before the "Add a tag" link li
-                var $newFormDiv = $('<div></div>').append(newForm);
-                collectionHolder.find('#tbody').append($newFormDiv);
-                updateDeleteLink();
-                updateView();
-            }
-
-            function updateDeleteLink(){
-                $('a.delete_tag_link').on('click', function(e) {
-                    // prevent the link from creating a "#" on the URL
-                    e.preventDefault();
-
-                    // remove the li for the tag form
-                    $(this).parent().parent().remove();
-
-                    updateView();
-                });
-            }
-
-            function updateView(){
-                counter = collectionHolder.find('a.delete_tag_link').length;
-                if(counter == 0){
-                    $('div#no-elements-tr').show();
-                }else{
-                    $('div#no-elements-tr').hide();
-                }
-            }
-
-            //Busqueda Dinamica del Filtrado del Ajax
-            $('#buseta_bodegabundle_movimientosProductos_nombre').on('keypress', function(){
-                var filterForm = $('form#filter_producto'),
-                        url = $(filterForm).attr('action');
-
-                filterForm.ajaxSubmit({
-                    success: function (response, textStatus, jqXHR) {
-                        console.log(response);
-                    },
-                    url: url,
-                    dataType: 'json'
-                });
+            $('input[id^="buseta_bodegabundle_movimiento_movimientos_productos_"][id$="_producto"]').each(function (key, value) {
+                productosList.addId(parseInt($(value).val()));
             });
 
-            $('#adicionarMovimiento').on('click', function () {
-                //Resetear valores del modal "newMovimiento"
-                var modal = $('#newMovimiento');
-                var movimiento_producto = modal.find('#buseta_bodegabundle_movimientosProductos_producto');
-                var movimiento_cantidad = modal.find('#buseta_bodegabundle_movimientosProductos_cantidad');
+        });
 
-                movimiento_producto.val('');
-                movimiento_cantidad.val('');
-            });
+        function addTagForm(collectionHolder) {
+            // Get the data-prototype explained earlier
+            var prototype = collectionHolder.data('prototype');
 
-            $addTagLink.on('click', function(e) {
+            // get the new index
+            var index = collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormDiv = $('<div></div>').append(newForm);
+            collectionHolder.find('#tbody').append($newFormDiv);
+            updateDeleteLink();
+            updateView();
+        }
+
+        function updateDeleteLink(){
+            $('a.delete_tag_link').on('click', function(e) {
                 // prevent the link from creating a "#" on the URL
                 e.preventDefault();
 
-                var modal = $('#newMovimiento');
+                var inputhidden = $(this).parent().parent().find('div').eq(0).find('input:hidden');
+                productosList.removeId(inputhidden.val());
 
-                // captura de valores del modal
-                var movimiento_producto = modal.find('#buseta_bodegabundle_movimientosProductos_producto');
-                var movimiento_cantidad = modal.find('#buseta_bodegabundle_movimientosProductos_cantidad');
+                // remove the li for the tag form
+                $(this).parent().parent().remove();
 
-                var index = collectionHolder.data('index');
-
-                addTagForm(collectionHolder);
-
-
-                $('#buseta_bodegabundle_movimiento_movimientos_productos_' + index + '_producto').val(movimiento_producto.val()).prop('readonly','readonly');
-                $('#buseta_bodegabundle_movimiento_movimientos_productos_' + index + '_cantidad').val(movimiento_cantidad.val()).prop('readonly','readonly');
+                updateView();
             });
-        });
+        }
+
+        function updateView(){
+            counter = collectionHolder.find('a.delete_tag_link').length;
+            if(counter == 0){
+                $('div#no-elements-tr').show();
+            }else{
+                $('div#no-elements-tr').hide();
+            }
+        }
+
+        function addProducto(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            var idproducto      = $(this).data('id');
+            var nombreproducto  = $(this).data('nombre');
+
+            var index = collectionHolder.data('index');
+
+            addTagForm(collectionHolder);
+
+            $('#buseta_bodegabundle_movimiento_movimientos_productos_' + index + '_producto').val(idproducto);
+            $('#buseta_bodegabundle_movimiento_movimientos_productos_' + index + '_nombre').val(nombreproducto);
+
+            productosList.addId(idproducto);
+            $(this).removeClass('btn-success').addClass('btn-danger');
+            $(this).find('span').removeClass('glyphicon-ok').addClass('glyphicon-remove');
+            $(this).unbind();
+            $(this).on('click', removeProducto);
+        }
+
+        function removeProducto(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            var idproducto      = $(this).data('id');
+
+            var inputhidden = $('input[id^="buseta_bodegabundle_movimiento_movimientos_productos_"][id$="_producto"][value="'+ idproducto +'"]');
+            inputhidden.parent().parent().find('div').eq(2).find('a').trigger('click');
+
+            productosList.removeId(idproducto);
+            $(this).removeClass('btn-danger').addClass('btn-success');
+            $(this).find('span').removeClass('glyphicon-remove').addClass('glyphicon-ok');
+            $(this).unbind();
+            $(this).on('click', addProducto);
+        }
+
+        function paginatorEvents() {
+            $('div.paginator ul.pagination').find('a.paginator-link').on('click', function(e){
+                e.preventDefault();
+
+                var url = Routing.generate('movimientoproductos_new_modal');
+                if ($(this).hasClass('paginator-link')) {
+                    url = $(this).attr('href');
+                }
+
+                $.get(url)
+                        .done(function (response, textStatus, jqXHR) {
+                            $('div#listado_productos').replaceWith($(response.view).find('div#listado_productos'));
+                            $('a[href="#select-producto"]').each(function (key, value) {
+                                var id = $(value).data('id');
+                                if(productosList.findId(id) !== false) {
+                                    $(this).removeClass('btn-success').addClass('btn-danger');
+                                    $(this).find('span').removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                                    $(value).on('click', removeProducto);
+                                } else {
+                                    $(value).on('click', addProducto);
+                                }
+                            });
+                            paginatorEvents();
+                        });
+            });
+        }
+
+        function loadModel(e) {
+            e.preventDefault();
+
+            var url = Routing.generate('movimientoproductos_new_modal');
+            if ($(this).hasClass('paginator-link')) {
+                url = $(this).attr('href');
+            }
+
+            $.get(url)
+                    .done(function (response, textStatus, jqXHR) {
+                        $('div#form_productos_modal').replaceWith($(response.view));
+                        $('div#form_productos_modal').modal('show');
+
+                        $('form#buseta_movimientosproductos_filter')
+                                .find('input,select')
+                                .on('keyup', ajaxFilterProductos)
+                                .on('change', ajaxFilterProductos);
+
+                        $('a[href="#select-producto"]').each(function (key, value) {
+                            var id = $(value).data('id');
+                            if(productosList.findId(id) !== false) {
+                                $(this).removeClass('btn-success').addClass('btn-danger');
+                                $(this).find('span').removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                                $(value).on('click', removeProducto);
+                            } else {
+                                $(value).on('click', addProducto);
+                            }
+                        });
+                        paginatorEvents();
+                    });
+        }
+
+        function ajaxFilterProductos(event)  {
+            var url = Routing.generate('movimientoproductos_new_modal');
+
+            $('form#buseta_movimientosproductos_filter').ajaxSubmit({
+                success: function(response) {
+                    $('div#listado_productos').replaceWith($(response.view).find('div#listado_productos'));
+                    $('a[href="#select-producto"]').each(function (key, value) {
+                        var id = $(value).data('id');
+                        if(productosList.findId(id) !== false) {
+                            $(this).removeClass('btn-success').addClass('btn-danger');
+                            $(this).find('span').removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                            $(value).on('click', removeProducto);
+                        } else {
+                            $(value).on('click', addProducto);
+                        }
+                    });
+                    paginatorEvents();
+                },
+                error:  function (jqXHR, textStatus, errorThrown) {
+                    if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                        addGlobalMessage('danger', jqXHR.responseText.message);
+                    } else {
+                        addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+                    }
+                },
+                url: url,
+                dataType: 'json'
+            });
+        }
 
         //Actualiza los almacenes de destino a partir de los almacenes de origen seleccionados con peticiones AJAX
         $({{ form.almacenOrigen.vars.id }}).change(function(){
