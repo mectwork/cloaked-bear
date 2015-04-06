@@ -1,51 +1,41 @@
 var fecha = $('#buseta_informestock_autobus_fecha').datetimepicker({
-    format: 'dd/mm/yyyy',
-    formatSubmit: 'dd/mm/yyyy'
+    'format': 'DD/MM/YYYY'
 });
 
 var fechaCostos = $('#data_busqueda_informe_costos_type_fecha').datetimepicker({
-    format: 'dd/mm/yyyy',
-    formatSubmit: 'dd/mm/yyyy'
+    'format': 'DD/MM/YYYY'
 });
 
 var fechaInformeStock = $('#data_busqueda_informe_stock_type_fecha').datetimepicker({
-    format: 'dd/mm/yyyy',
-    formatSubmit: 'dd/mm/yyyy'
+    'format': 'DD/MM/YYYY'
 });
 
 var fechaMovimiento = $('#bodega_albaran_type_fechaMovimiento').datetimepicker({
-    format: 'dd/mm/yyyy',
-    formatSubmit: 'dd/mm/yyyy'
+    'format': 'DD/MM/YYYY'
 });
 
 var fechaContable = $('#bodega_albaran_type_fechaContable').datetimepicker({
-    format: 'dd/mm/yyyy',
-    formatSubmit: 'dd/mm/yyyy'
+    'format': 'DD/MM/YYYY'
 });
 
 var fecha_pedido = $('#bodega_pedido_compra_fecha_pedido').datetimepicker({
-    format: 'dd/mm/yyyy',
-    formatSubmit: 'dd/mm/yyyy'
+    'format': 'DD/MM/YYYY'
 });
 
 var autobus_fecha_ingreso = $('#buseta_databundle_autobus_fecha_ingreso').datetimepicker({
-    format: 'dd/mm/yyyy',
-    formatSubmit: 'dd/mm/yyyy'
+    'format': 'DD/MM/YYYY'
 });
 
 var autobus_valido_hasta = $('#buseta_databundle_autobus_valido_hasta').datetimepicker({
-    format: 'dd/mm/yyyy',
-    formatSubmit: 'dd/mm/yyyy'
+    'format': 'DD/MM/YYYY'
 });
 
 var recorrido_inicio = $('#buseta_tallerbundle_tareamantenimiento_recorrido_inicio').datetimepicker({
-    format: 'dd/mm/yyyy',
-    formatSubmit: 'dd/mm/yyyy'
+    'format': 'DD/MM/YYYY'
 });
 
 var ultimo_cumplio = $('#buseta_tallerbundle_tareamantenimiento_ultimo_cumplio').datetimepicker({
-    format: 'dd/mm/yyyy',
-    formatSubmit: 'dd/mm/yyyy'
+    'format': 'DD/MM/YYYY'
 });
 
 var picker = autobus_fecha_ingreso.datetimepicker('picker');

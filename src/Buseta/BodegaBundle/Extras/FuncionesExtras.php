@@ -191,9 +191,9 @@ class FuncionesExtras
                             $cantidadPedido -= $bitacora->getCantMovida();
                         }
 
-                        foreach ($producto->getPrecioProducto() as $precios) {
-                            if ($precios->getActivo()) {
-                                $costoProducto = ($precios->getCosto());
+                        foreach ($producto->getCostoProducto() as $costos) {
+                            if ($costos->getActivo()) {
+                                $costoProducto = ($costos->getCosto());
                             }
                         }
                         $costos = $cantidadPedido * $costoProducto;
