@@ -52,6 +52,13 @@ class Tercero
     private $albaran;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Bodega", mappedBy="responsable", cascade={"all"})
+     */
+    private $bodega;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="codigo", type="string", nullable=true)
@@ -137,6 +144,7 @@ class Tercero
     {
         $this->pedidoCompra = new \Doctrine\Common\Collections\ArrayCollection();
         $this->albaran = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->bodega = new \Doctrine\Common\Collections\ArrayCollection();
         $this->direcciones = new \Doctrine\Common\Collections\ArrayCollection();
         $this->mecanismosContacto = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -611,5 +619,38 @@ class Tercero
     function __toString()
     {
         return sprintf('%s (%s)', trim($this->nombres . ' ' . $this->apellidos), $this->alias);
+    }
+
+    /**
+     * Add bodega
+     *
+     * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
+     * @return Tercero
+     */
+    public function addBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega)
+    {
+        $this->bodega[] = $bodega;
+    
+        return $this;
+    }
+
+    /**
+     * Remove bodega
+     *
+     * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
+     */
+    public function removeBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega)
+    {
+        $this->bodega->removeElement($bodega);
+    }
+
+    /**
+     * Get bodega
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBodega()
+    {
+        return $this->bodega;
     }
 }

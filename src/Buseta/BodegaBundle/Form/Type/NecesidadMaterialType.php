@@ -181,7 +181,7 @@ class NecesidadMaterialType extends AbstractType
         $form->add('consecutivo_compra', 'text', array(
             'required' => true,
             'read_only' => true,
-            'label'  => 'Consecutivo automático',
+            'label'  => 'Consecutivo Automático',
             'attr'   => array(
                 'class' => 'form-control',
             ),

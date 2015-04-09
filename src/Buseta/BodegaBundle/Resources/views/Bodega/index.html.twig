@@ -67,6 +67,7 @@
         <tr>
             <th>Número{#{{ knp_pagination_sortable(entities, 'Código', 't.codigo') }}#}</th>
             <th>Nombre{#{{ knp_pagination_sortable(entities, 'Nombre', 't.nombre') }}#}</th>
+            <th>Responsable{#{{ knp_pagination_sortable(entities, 'Nombre', 't.nombre') }}#}</th>
             <th>Descripción{#{{ knp_pagination_sortable(entities, 'Descripción', 't.descripcion') }}#}</th>
             <th>Dirección{#{{ knp_pagination_sortable(entities, 'Dirección', 't.direccion') }}#}</th>
             <th style="text-align: center">Acciones</th>
@@ -77,6 +78,7 @@
             <tr>
                 <td>{{ entity.codigo }}</td>
                 <td>{{ entity.nombre }}</td>
+                <td>{{ entity.responsable }}</td>
                 <td>{{ entity.descripcion }}</td>
                 <td>{{ entity.direccion }}</td>
 

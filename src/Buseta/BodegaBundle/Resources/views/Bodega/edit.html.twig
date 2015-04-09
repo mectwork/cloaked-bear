@@ -17,24 +17,23 @@
 <form action="{{ path('bodega_update',{'id':entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
 
     <div class="row show-grid">
-        <div class="col-md-6">
-            <label>Nombre:</label>
-            {{ form_widget(edit_form.nombre) }}
+        <div class="col-md-4">
+            {{ form_row(edit_form.nombre) }}
         </div>
-        <div class="col-md-6">
-            <label>Código:</label>
-            {{ form_widget(edit_form.codigo) }}
+        <div class="col-md-4">
+            {{ form_row(edit_form.codigo) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(edit_form.responsable) }}
         </div>
     </div>
 
     <div class="row show-grid">
         <div class="col-md-6">
-            <label>Descripción:</label>
-            {{ form_widget(edit_form.descripcion) }}
+            {{ form_row(edit_form.descripcion) }}
         </div>
         <div class="col-md-6">
-            <label>Dirección:</label>
-            {{ form_widget(edit_form.direccion) }}
+            {{ form_row(edit_form.direccion) }}
         </div>
     </div>
 

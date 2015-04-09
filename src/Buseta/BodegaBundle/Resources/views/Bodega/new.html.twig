@@ -16,12 +16,16 @@
 
     <form action="{{ path('bodega_create') }}" method="post" {{ form_enctype(form) }}>
         <div class="row show-grid">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 {{ form_row(form.codigo) }}
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
                 {{ form_row(form.nombre) }}
+            </div>
+
+            <div class="col-md-4">
+                {{ form_row(form.responsable) }}
             </div>
         </div>
 

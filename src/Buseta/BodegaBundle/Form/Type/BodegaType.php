@@ -5,6 +5,8 @@ namespace Buseta\BodegaBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
+
 
 class BodegaType extends AbstractType
 {
@@ -43,6 +45,21 @@ class BodegaType extends AbstractType
                         'class' => 'form-control',
                     ),
                 ))
+            ->add('responsable', 'entity', array(
+                'class' => 'BusetaBodegaBundle:Tercero',
+                'required' => false,
+                'label'  => 'Responsable',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+                'query_builder' => function (EntityRepository $repository) {
+                    $qb = $repository->createQueryBuilder('responsable');
+                    $qb->join('responsable.usuario', 'usuario')
+                        ->andWhere($qb->expr()->isNotNull('usuario'));
+
+                    return $qb;
+                },
+            ))
         ;
     }
 

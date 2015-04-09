@@ -85,6 +85,11 @@ class Bodega
     private $albaran;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="bodega")
+     */
+    private $responsable;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -172,8 +177,6 @@ class Bodega
     {
         return $this->nombre;
     }
-
-
 
     /**
      * Add inventarioFisico.
@@ -350,5 +353,29 @@ class Bodega
     public function getAlbaranLinea()
     {
         return $this->albaranLinea;
+    }
+
+
+    /**
+     * Set responsable
+     *
+     * @param \Buseta\BodegaBundle\Entity\Tercero $responsable
+     * @return Bodega
+     */
+    public function setResponsable(\Buseta\BodegaBundle\Entity\Tercero $responsable = null)
+    {
+        $this->responsable = $responsable;
+    
+        return $this;
+    }
+
+    /**
+     * Get responsable
+     *
+     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     */
+    public function getResponsable()
+    {
+        return $this->responsable;
     }
 }
