@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * GarantiaTarea.
  *
- * @ORM\Table(name="n_garantiatarea")
+ * @ORM\Table(name="n_garantia_tarea")
  * @ORM\Entity
  */
 class GarantiaTarea extends BaseNomenclador

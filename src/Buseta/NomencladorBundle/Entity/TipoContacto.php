@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TipoContacto.
  *
- * @ORM\Table(name="n_tipocontacto")
+ * @ORM\Table(name="n_tipo_contacto")
  * @ORM\Entity
  */
 class TipoContacto extends BaseNomenclador

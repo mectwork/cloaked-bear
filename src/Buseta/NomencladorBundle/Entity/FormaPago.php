@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * FormaPago.
  *
- * @ORM\Table(name="n_formapago")
+ * @ORM\Table(name="n_forma_pago")
  * @ORM\Entity
  */
 class FormaPago extends BaseNomenclador
