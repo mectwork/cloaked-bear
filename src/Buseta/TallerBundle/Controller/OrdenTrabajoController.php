@@ -2,13 +2,16 @@
 
 namespace Buseta\TallerBundle\Controller;
 
-use Buseta\TallerBundle\Entity\TareaAdicional;
 use Buseta\TallerBundle\Form\Type\TareaAdicionalType;
 use Buseta\TallerBundle\Manager\MantenimientoPreventivoManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\TallerBundle\Entity\OrdenTrabajo;
 use Buseta\TallerBundle\Form\Type\OrdenTrabajoType;
+
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 /**
  * OrdenTrabajo controller.
@@ -322,4 +325,27 @@ class OrdenTrabajoController extends Controller
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
+
+    /**
+     * Updated automatically select CentroCosto, Responsable y TipoOT when change select OrdenTrabajo
+     *
+     */
+    public function select_salidabodega_ordentrabajoAction(Request $request) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new Response('Acceso Denegado', 403);
+
+        if (!$request->isXmlHttpRequest())
+            return new Response('No es una petición Ajax', 500);
+
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        $ordenTrabajo = $em->find('BusetaTallerBundle:OrdenTrabajo', $request->query->get('orden_trabajo_id'));
+
+        return new JsonResponse(array(
+            'centro_costo' => $ordenTrabajo->getAutobus()->getId(),
+            'responsable' => $ordenTrabajo->getRealizadaPor()->getId(),
+            'tipo_ot' => $ordenTrabajo->getPrioridad(),
+        ), 200);
+    }
+
 }

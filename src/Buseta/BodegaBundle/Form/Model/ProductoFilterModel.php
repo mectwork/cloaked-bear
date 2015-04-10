@@ -14,6 +14,11 @@ class ProductoFilterModel
     private $nombre;
 
     /**
+     * @var string
+     */
+    private $descripcion;
+
+    /**
      * @var \Buseta\BodegaBundle\Entity\CategoriaProducto
      */
     private $categoriaProducto;
@@ -58,6 +63,22 @@ class ProductoFilterModel
     public function setCodigo($codigo)
     {
         $this->codigo = $codigo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * @param string $descripcion
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
     }
 
     /**

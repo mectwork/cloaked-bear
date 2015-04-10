@@ -15,6 +15,11 @@ services:
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'buseta_bodegabundle_movimiento'}
+    bodega.salidabodega.type:
+        class: Buseta\BodegaBundle\Form\Type\SalidaBodegaType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'buseta_bodegabundle_salida_bodega'}
     bodega.necesidad.type:
         class: Buseta\BodegaBundle\Form\Type\NecesidadMaterialType
         arguments: [@doctrine.orm.entity_manager, @service_container]
@@ -32,10 +37,6 @@ services:
             - {name: form.type, alias: 'bodega_albaran_type'}
     buseta_pedidocompra.linea.handler:
         class: Buseta\BodegaBundle\Form\Handler\PedidoCompraLineaHandler
-        arguments:
-            - @service_container
-    buseta_movimientos.productos.handler:
-        class: Buseta\BodegaBundle\Form\Handler\MovimientosProductosHandler
         arguments:
             - @service_container
     buseta_inventariofisico.linea.handler:

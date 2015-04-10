@@ -20,22 +20,22 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  * Class MovimientosProductosController
  * @package Buseta\BodegaBundle\Controller
  *
- * @Route("/movimientoproducto")
+ * @Route("/salidabodega_producto")
  */
-class MovimientoProductosController extends Controller
+class SalidaBodegaProductoController extends Controller
 {
     /**
-     * @param MovimientosProductos $movimientoproducto
+     * @param MovimientosProductos $salidabodega_producto
      * @return Response
      *
-     * @Route("/list/{movimientoproducto}", name="movimientoproductos_list", methods={"GET"}, options={"expose":true})
-     * @ParamConverter("movimientoproducto", options={"mapping":{"movimientoproducto":"id"}})
+     * @Route("/list/{salidabodega_producto}", name="salidabodega_productos_list", methods={"GET"}, options={"expose":true})
+     * @ParamConverter("salidabodega_producto", options={"mapping":{"salidabodega_producto":"id"}})
      */
-    public function listAction(MovimientosProductos $movimientoproducto, Request $request)
+    public function listAction(MovimientosProductos $salidabodega_producto, Request $request)
     {
         $entities = $this->get('doctrine.orm.entity_manager')
             ->getRepository('BusetaBodegaBundle:MovimientosProductos')
-            ->findAllByMovimientosProductosId($movimientoproducto->getId());
+            ->findAllByMovimientosProductosId($salidabodega_producto->getId());
 
         $entities = $this->get('knp_paginator')
             ->paginate(
@@ -46,7 +46,7 @@ class MovimientoProductosController extends Controller
 
         return $this->render('@BusetaBodega/Movimiento/MovimientosProductos/list_template.html.twig', array(
             'entities' => $entities,
-            'movimientoproducto' => $movimientoproducto,
+            'salidabodega_producto' => $salidabodega_producto,
         ));
     }
 
@@ -55,14 +55,14 @@ class MovimientoProductosController extends Controller
      *
      * @throws \Exception
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/new/modal/movimientoproducto", name="movimientoproductos_new_modal", methods={"GET"}, options={"expose":true})
+     * @Route("/new/modal/salidabodega_producto", name="salidabodega_productos_new_modal", methods={"GET"}, options={"expose":true})
      */
     public function newModalAction(Request $request)
     {
         $filter = new MovimientosProductosFilterModel();
 
         $form = $this->createForm(new MovimientosProductosFilter(), $filter, array(
-            'action' => $this->generateUrl('movimientoproductos_new_modal'),
+            'action' => $this->generateUrl('salidabodega_productos_new_modal'),
         ));
 
         $form->handleRequest($request);
@@ -283,20 +283,20 @@ class MovimientoProductosController extends Controller
     /**
      * Deletes a MovimientosProductosLina entity.
      *
-     * @Route("/{id}/delete", name="movimiento_producto_delete")
+     * @Route("/{id}/delete", name="salidabodega_producto_delete")
      * @Method({"DELETE", "GET"})
      */
-    public function deleteAction(MovimientosProductos $movimientoProducto, Request $request)
+    public function deleteAction(MovimientosProductos $salidabodegaProducto, Request $request)
     {
         $trans = $this->get('translator');
-        $deleteForm = $this->createDeleteForm($movimientoProducto->getId());
+        $deleteForm = $this->createDeleteForm($salidabodegaProducto->getId());
 
         $deleteForm->handleRequest($request);
         if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             try {
                 $em = $this->get('doctrine.orm.entity_manager');
 
-                $em->remove($movimientoProducto);
+                $em->remove($salidabodegaProducto);
                 $em->flush();
 
                 $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
@@ -322,14 +322,14 @@ class MovimientoProductosController extends Controller
         }
 
         $renderView =  $this->renderView('@BusetaBodega/MovimientosProductos/Linea/delete_modal.html.twig', array(
-            'entity' => $movimientoProducto,
+            'entity' => $salidabodegaProducto,
             'form' => $deleteForm->createView(),
         ));
 
         if($request->isXmlHttpRequest()) {
             return new JsonResponse(array('view' => $renderView));
         }
-        return $this->redirect($this->generateUrl('movimientoproductos_list'));
+        return $this->redirect($this->generateUrl('salidabodega_productos_list'));
     }
 
     /**

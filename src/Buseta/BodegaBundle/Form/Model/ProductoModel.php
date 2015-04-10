@@ -31,6 +31,11 @@ class ProductoModel
     private $nombre;
 
     /**
+     * @var string
+     */
+    private $descripcion;
+
+    /**
      * @var \Buseta\NomencladorBundle\Entity\UOM
      * @Assert\NotBlank()
      */
@@ -110,6 +115,7 @@ class ProductoModel
             $this->id = $producto->getId();
             $this->codigo = $producto->getCodigo();
             $this->nombre = $producto->getNombre();
+            $this->descripcion = $producto->getDescripcion();
             $this->activo = $producto->getActivo();
 
             if ($producto->getUom()) {
@@ -157,6 +163,7 @@ class ProductoModel
         $producto = new Producto();
         $producto->setCodigo($this->getCodigo());
         $producto->setNombre($this->getNombre());
+        $producto->setDescripcion($this->getDescripcion());
         $producto->setActivo($this->getActivo());
         $producto->setCategoriaProducto($this->getCategoriaProducto());
 
@@ -264,6 +271,22 @@ class ProductoModel
     public function setCodigo($codigo)
     {
         $this->codigo = $codigo;
+    }
+
+    /**
+     * @param string $descripcion
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
     }
 
     /**

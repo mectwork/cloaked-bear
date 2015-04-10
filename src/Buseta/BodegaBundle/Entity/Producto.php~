@@ -46,14 +46,17 @@ class Producto
     private $uom;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string")
+     * @Assert\NotBlank()
+     */
+    private $descripcion;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Condicion")
      */
     private $condicion;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="productos")
-     */
-    private $bodega;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\CategoriaProducto", inversedBy="productos")
@@ -70,7 +73,7 @@ class Producto
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\InventarioFisico", mappedBy="producto", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\InventarioFisicoLinea", mappedBy="producto", cascade={"all"})
      */
     private $inventario_fisico_lineas;
 
@@ -101,34 +104,18 @@ class Producto
     private $albaranLinea;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="minimo_bodega", type="integer")
-     * @Assert\NotBlank()
-     */
-    private $minimo_bodega;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="maximo_bodega", type="integer")
-     * @Assert\NotBlank()
-     */
-    private $maximo_bodega;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \Buseta\NomencladorBundle\Entity\Grupo
      *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo")
      */
-    private $grupos;
+    private $grupo;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \Buseta\NomencladorBundle\Entity\Subgrupo
      *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Subgrupo")
      */
-    private $subgrupos;
+    private $subgrupo;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -136,6 +123,13 @@ class Producto
      * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\PrecioProducto", mappedBy="producto", cascade={"all"})
      */
     private $precioProducto;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\CostoProducto", mappedBy="producto", cascade={"all"})
+     */
+    private $costoProducto;
 
     /**
      * @param ProductoModel $model
@@ -147,8 +141,6 @@ class Producto
         $this->codigo = $model->getCodigo();
         $this->nombre = $model->getNombre();
         $this->activo = $model->getActivo();
-        $this->minimo_bodega = $model->getMinimoBodega();
-        $this->maximo_bodega = $model->getMaximoBodega();
 
         if ($model->getUom()) {
             $this->uom  = $model->getUom();
@@ -156,23 +148,23 @@ class Producto
         if ($model->getCondicion()) {
             $this->condicion  = $model->getCondicion();
         }
-        if ($model->getBodega()) {
-            $this->bodega  = $model->getBodega();
-        }
         if ($model->getMovimientos()) {
             $this->movimientos  = $model->getMovimientos();
         }
         if ($model->getAlbaranLinea()) {
             $this->albaranLinea  = $model->getAlbaranLinea();
         }
-        if ($model->getGrupos()) {
-            $this->grupos  = $model->getGrupos();
+        if ($model->getGrupo()) {
+            $this->grupo  = $model->getGrupo();
         }
-        if ($model->getSubgrupos()) {
-            $this->subgrupos  = $model->getSubgrupos();
+        if ($model->getSubgrupo()) {
+            $this->subgrupo  = $model->getSubgrupo();
         }
         if ($model->getPrecioProducto()) {
             $this->precioProducto  = $model->getPrecioProducto();
+        }
+        if ($model->getCostoProducto()) {
+            $this->costoProducto  = $model->getCostoProducto();
         }
         if ($model->getCategoriaProducto()) {
             $this->categoriaProducto  = $model->getCategoriaProducto();
@@ -296,30 +288,6 @@ class Producto
     }
 
     /**
-     * Set bodega.
-     *
-     * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
-     *
-     * @return Producto
-     */
-    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega = null)
-    {
-        $this->bodega = $bodega;
-
-        return $this;
-    }
-
-    /**
-     * Get bodega.
-     *
-     * @return \Buseta\BodegaBundle\Entity\Bodega
-     */
-    public function getBodega()
-    {
-        return $this->bodega;
-    }
-
-    /**
      * Add movimientos.
      *
      * @param \Buseta\BodegaBundle\Entity\Movimiento $movimientos
@@ -356,87 +324,39 @@ class Producto
     }
 
     /**
-     * Set minimo_bodega.
+     * Set grupo.
      *
-     * @param integer $minimoBodega
+     * @param \Buseta\NomencladorBundle\Entity\Grupo $grupo
      *
      * @return Producto
      */
-    public function setMinimoBodega($minimoBodega)
+    public function setGrupo(\Buseta\NomencladorBundle\Entity\Grupo $grupo = null)
     {
-        $this->minimo_bodega = $minimoBodega;
+        $this->grupo = $grupo;
 
         return $this;
     }
 
     /**
-     * Get minimo_bodega.
-     *
-     * @return integer
-     */
-    public function getMinimoBodega()
-    {
-        return $this->minimo_bodega;
-    }
-
-    /**
-     * Set maximo_bodega.
-     *
-     * @param integer $maximoBodega
-     *
-     * @return Producto
-     */
-    public function setMaximoBodega($maximoBodega)
-    {
-        $this->maximo_bodega = $maximoBodega;
-
-        return $this;
-    }
-
-    /**
-     * Get maximo_bodega.
-     *
-     * @return integer
-     */
-    public function getMaximoBodega()
-    {
-        return $this->maximo_bodega;
-    }
-
-    /**
-     * Set grupos.
-     *
-     * @param \Buseta\NomencladorBundle\Entity\Grupo $grupos
-     *
-     * @return Producto
-     */
-    public function setGrupos(\Buseta\NomencladorBundle\Entity\Grupo $grupos = null)
-    {
-        $this->grupos = $grupos;
-
-        return $this;
-    }
-
-    /**
-     * Get grupos.
+     * Get grupo.
      *
      * @return \Buseta\NomencladorBundle\Entity\Grupo
      */
-    public function getGrupos()
+    public function getGrupo()
     {
-        return $this->grupos;
+        return $this->grupo;
     }
 
     /**
-     * Set subgrupos.
+     * Set subgrupo.
      *
-     * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos
+     * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupo
      *
      * @return Producto
      */
-    public function setSubgrupos(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupos = null)
+    public function setSubgrupo(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupo = null)
     {
-        $this->subgrupos = $subgrupos;
+        $this->subgrupo = $subgrupo;
 
         return $this;
     }
@@ -446,9 +366,9 @@ class Producto
      *
      * @return \Buseta\NomencladorBundle\Entity\Subgrupo
      */
-    public function getSubgrupos()
+    public function getSubgrupo()
     {
-        return $this->subgrupos;
+        return $this->subgrupo;
     }
 
     /**
@@ -590,6 +510,42 @@ class Producto
     }
 
     /**
+     * Add costoProducto.
+     *
+     * @param \Buseta\BodegaBundle\Entity\CostoProducto $costoProducto
+     *
+     * @return Producto
+     */
+    public function addCostoProducto(\Buseta\BodegaBundle\Entity\CostoProducto $costoProducto)
+    {
+        $costoProducto->setProducto($this);
+
+        $this->costoProducto[] = $costoProducto;
+
+        return $this;
+    }
+
+    /**
+     * Remove costoProducto.
+     *
+     * @param \Buseta\BodegaBundle\Entity\CostoProducto $costoProducto
+     */
+    public function removeCostoProducto(\Buseta\BodegaBundle\Entity\CostoProducto $costoProducto)
+    {
+        $this->costoProducto->removeElement($costoProducto);
+    }
+
+    /**
+     * Get costoProducto.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCostoProducto()
+    {
+        return $this->costoProducto;
+    }
+
+    /**
      * Set categoriaProducto.
      *
      * @param \Buseta\BodegaBundle\Entity\CategoriaProducto $categoriaProducto
@@ -611,5 +567,40 @@ class Producto
     public function getCategoriaProducto()
     {
         return $this->categoriaProducto;
+    }
+
+    /**
+     * Add inventario_fisico_lineas
+     *
+     * @param \Buseta\BodegaBundle\Entity\InventarioFisicoLinea $inventarioFisicoLineas
+     * @return Producto
+     */
+    public function addInventarioFisicoLinea(\Buseta\BodegaBundle\Entity\InventarioFisicoLinea $inventarioFisicoLineas)
+    {
+        $inventarioFisicoLineas->setProducto($this);
+
+        $this->inventario_fisico_lineas[] = $inventarioFisicoLineas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove inventario_fisico_lineas
+     *
+     * @param \Buseta\BodegaBundle\Entity\InventarioFisicoLinea $inventarioFisicoLineas
+     */
+    public function removeInventarioFisicoLinea(\Buseta\BodegaBundle\Entity\InventarioFisicoLinea $inventarioFisicoLineas)
+    {
+        $this->inventario_fisico_lineas->removeElement($inventarioFisicoLineas);
+    }
+
+    /**
+     * Get inventario_fisico_lineas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInventarioFisicoLineas()
+    {
+        return $this->inventario_fisico_lineas;
     }
 }

@@ -1,0 +1,110 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block title %}
+    Datos de la Salida de Producto
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Datos de la Salida de Producto
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <table class="table table-striped" style="font-size: 16px;">
+    <tbody>
+    <tr>
+        <th>Bodega Origen</th>
+        <td>{{ entity.almacenOrigen }}</td>
+        <th>Bodega Destino</th>
+        <td>{{ entity.almacenDestino }}</td>
+    </tr>
+    <tr>
+
+    </tr>
+    <tr>
+        <th>Fecha de Salida</th>
+        <td>{{ entity.fecha|date('d/m/Y')  }}</td>
+        <th>Centro Costo</th>
+        <td>{{ entity.centrocosto }}</td>
+    </tr>
+
+    <tr>
+        <th>Responsable</th>
+        <td>{{ entity.responsable  }}</td>
+        <th>Control Entrega Material</th>
+        <td>{{ entity.controlentregamaterial }}</td>
+    </tr>
+
+    <tr>
+        <th>Orden de Trabajo</th>
+        <td>{{ entity.ordentrabajo  }}</td>
+        <th>Tipo Orden de Trabajo</th>
+        <td>{{ entity.tipoot }}</td>
+    </tr>
+
+    <tr>
+        <th>Producto</th>
+        <td></td>
+        <th>Cantidad</th>
+        <td></td>
+    </tr>
+
+    <tr>
+        <th colspan="2">Observaciones</th>
+        <td></td>
+    </tr>
+
+    {% for objeto in entity.salidasproductos %}
+
+        <tr>
+            <td>{{ objeto.producto }}</td>
+            <td></td>
+            <td>{{ objeto.cantidad }}</td>
+            <td></td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+    </table>
+
+    <div class="form-actions">
+        {% if entity.estadodocumento == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('salidabodega_edit', { 'id': entity.id }) }}"> Editar</a>
+        {% endif %}
+        {% if entity.estadodocumento == 'PR' %}
+            <a class="btn btn-primary" href="{{ path('completarSalidaBodega', { 'id': entity.id }) }}"> Completar Proceso</a>
+        {% elseif entity.estadodocumento == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('procesarSalidaBodega', { 'id': entity.id }) }}"> Procesar</a>
+        {% endif %}
+        <a class="btn btn-primary" href="{{ path('salidabodega') }}"> Listado</a>
+
+        {% if entity.estadodocumento == 'BO' %}
+            <a href="#delete" data-href="{{ path('salidabodega_delete', {'id': entity.id}) }}" class="btn btn-danger">
+                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+        {% endif %}
+    </div>
+
+    {% include 'BusetaBodegaBundle:SalidaBodega:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
+
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if entity.estadodocumento == 'BO' %}
+        <script type="text/javascript">
+            var deleteevent = new DeleteEvent('{{ path('salidabodega') }}', 'div#salidabodega_records_list', false);
+            deleteevent.start_events();
+        </script>
+    {% endif %}
+{% endblock %}

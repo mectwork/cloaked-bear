@@ -23,6 +23,10 @@ BusetaBodegaBundle_producto:
     prefix:   /bodega/producto
 
 BusetaBodegaBundle_movimiento:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/salidabodega.yml"
+    prefix:   /bodega/salidabodega
+
+BusetaBodegaBundle_salidabodega:
     resource: "@BusetaBodegaBundle/Resources/config/routing/movimiento.yml"
     prefix:   /bodega/movimiento
 
@@ -118,12 +122,20 @@ buseta_bodega_producto:
     resource: "@BusetaBodegaBundle/Controller/ProductoController.php"
     type: annotation
 
+buseta_bodega_salidabodega:
+    resource: "@BusetaBodegaBundle/Controller/SalidaBodegaController.php"
+    type: annotation
+
 buseta_bodega_necesidadmateriallinea:
   resource: "@BusetaBodegaBundle/Controller/NecesidadMaterialLineaController.php"
   type:     annotation
 
 buseta_bodega_movimientosproductos:
   resource: "@BusetaBodegaBundle/Controller/MovimientoProductosController.php"
+  type:     annotation
+
+buseta_bodega_salidabodega_productos:
+  resource: "@BusetaBodegaBundle/Controller/SalidaBodegaProductoController.php"
   type:     annotation
 
 buseta_bodega_albaranlinea:

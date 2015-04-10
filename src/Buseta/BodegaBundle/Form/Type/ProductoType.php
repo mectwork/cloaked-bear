@@ -94,6 +94,13 @@ class ProductoType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
+            ->add('descripcion', 'textarea', array(
+                'required' => false,
+                'label'  => 'Descripción',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->add('activo', 'checkbox', array(
                 'label' => 'Activo',
                 'required' => false,

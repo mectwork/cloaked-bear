@@ -1,0 +1,59 @@
+salidabodega:
+    pattern:  /
+    defaults: { _controller: "BusetaBodegaBundle:SalidaBodega:index" }
+
+salidabodega_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaBodegaBundle:SalidaBodega:show" }
+
+salidabodega_new:
+    pattern:  /new
+    defaults: { _controller: "BusetaBodegaBundle:SalidaBodega:new" }
+
+salidabodega_create:
+    pattern:  /create
+    defaults: { _controller: "BusetaBodegaBundle:SalidaBodega:create" }
+    requirements: { _method: post }
+
+salidabodega_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BusetaBodegaBundle:SalidaBodega:edit" }
+
+salidabodega_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BusetaBodegaBundle:SalidaBodega:update" }
+    requirements: { _method: post|put }
+
+salidabodega_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BusetaBodegaBundle:SalidaBodega:delete" }
+    requirements: { _method: post|delete }
+
+salidabodegas_productos_create:
+    pattern:  /salidabodegas/create
+    defaults: { _controller: "BusetaBodegaBundle:SalidaBodega:create_salidabodega" }
+    requirements: { _method: post }
+
+salidabodegas_ajax_almacenOrigen_almacenDestino:
+  pattern: /select_almacenOrigen_almacenDestino
+  defaults: { _controller: "BusetaBodegaBundle:SalidaBodega:select_almacenOrigen_almacenDestino" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true
+
+salidabodega_informe:
+    pattern:  /informeSalidaBodega
+    defaults: { _controller: "BusetaBodegaBundle:Informe:informeSalidaBodegas" }
+
+salidabodega_ajax_busqueda_avanzada:
+  pattern: /busqueda-avanzada/{page}/{cantResult}
+  defaults: { _controller: "BusetaBodegaBundle:Informe:busquedaAvanzada", page: 0, cantResult: 10 }
+  requirements: { _method: "GET" }
+
+procesarSalidaBodega:
+    pattern:  /{id}/procesar
+    defaults: { _controller: "BusetaBodegaBundle:SalidaBodega:procesarSalidaBodega" }
+
+completarSalidaBodega:
+    pattern:  /{id}/completar
+    defaults: { _controller: "BusetaBodegaBundle:SalidaBodega:completarSalidaBodega" }

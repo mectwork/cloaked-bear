@@ -1,45 +1,81 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% form_theme form 'BusetaBodegaBundle:Widgets:collection_movimientos_insertados.html.twig' %}
+{% form_theme edit_form 'BusetaBodegaBundle:Widgets:collection_salidas_bodegas_insertadas.html.twig' %}
 
 {% block nombre_menu_superior %}
 
 {% endblock %}
 
 {% block title %}
-    Realizar Movimiento entre Bodegas
+    Modificar Datos de la Salida de Bodegas
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Realizar Movimiento entre Bodegas
+    Modificar Datos de la Salida de Bodegas
 {% endblock %}
 
 {% block area_trabajo %}
 
-    {% if form_errors(form) %}
+    {% if form_errors(edit_form) %}
         <div id="error" class="alert alert-danger" >
             <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-            <strong>!ERROR!</strong> {{ form_errors(form) }}
+            <strong>!ERROR!</strong> {{ form_errors(edit_form) }}
         </div>
     {% endif %}
 
-  {{ form_start(form) }}
+  {{ form_start(edit_form) }}
 
     <div class="row show-grid">
         <div class="col-lg-4">
-            <label>Bodega Origen:</label>
-            {{ form_widget(form.almacenOrigen) }}
+            {{ form_row(edit_form.almacenOrigen) }}
         </div>
 
         <div class="col-lg-4">
-            <label>Bodega Destino:</label>
-            {{ form_widget(form.almacenDestino) }}
+            {{ form_row(edit_form.almacenDestino) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(edit_form.orden_trabajo) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-lg-4">
+            {{ form_row(edit_form.centro_costo) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(edit_form.tipo_ot) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(edit_form.responsable) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-lg-4">
+            {{ form_row(edit_form.control_entrega_material) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(edit_form.fecha) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(edit_form.estado_documento) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-lg-12">
+            {{ form_row(edit_form.observaciones) }}
         </div>
     </div>
 
     <div class="row">
         <div class="col-lg-12">
-            {{ form_row(form.movimientos_productos) }}
+            {{ form_row(edit_form.salidas_productos) }}
         </div>
     </div>
 
@@ -47,7 +83,7 @@
     <div class="row show-grid">
         <div class="col-md-4">
             <div class="btn-group" style="padding-bottom: 8px;">
-                <a id="adicionarMovimiento" data-toggle="modal" data-target="#newMovimiento" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar movimiento</a>
+                <a id="adicionarSalidaBodega" data-toggle="modal" data-target="#newSalidaBodega" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar Salida de Producto</a>
             </div>
         </div>
     </div>
@@ -57,12 +93,12 @@
 
             <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
             <div class="btn-group">
-                <a class="btn btn-primary" href="{{ path('movimiento') }}"> Cancelar</a>
+                <a class="btn btn-primary" href="{{ path('salidabodega') }}"> Cancelar</a>
             </div>
         </div>
     </div>
 
-    {{ form_end(form) }}
+    {{ form_end(edit_form) }}
 
     <div class="modal" id="form_productos_modal"></div>
 
@@ -107,11 +143,15 @@
     </script>
     <script type="text/javascript">
 
-        var collectionHolder = $('div#buseta_bodegabundle_movimiento_movimientos_productos');
+        var collectionHolder = $('div#buseta_bodegabundle_salida_bodega_salidas_productos');
         var $addTagLink = $('a.add_tag_link');
         var productosList = new ProductosList();
 
         jQuery(document).ready(function() {
+
+            $('#buseta_bodegabundle_salida_bodega_fecha').datetimepicker({
+                'format': 'DD/MM/YYYY'
+            });
 
             // count the current form inputs we have (e.g. 2), use that as the new
             // index when inserting a new item (e.g. 2)
@@ -120,9 +160,9 @@
             updateDeleteLink();
             updateView();
 
-            $('#adicionarMovimiento').on('click', loadModel);
+            $('#adicionarSalidaBodega').on('click', loadModel);
 
-            $('input[id^="buseta_bodegabundle_movimiento_movimientos_productos_"][id$="_producto"]').each(function (key, value) {
+            $('input[id^="buseta_bodegabundle_salida_bodega_salidas_productos_"][id$="_producto"]').each(function (key, value) {
                 productosList.addId(parseInt($(value).val()));
             });
 
@@ -179,13 +219,16 @@
 
             var idproducto      = $(this).data('id');
             var nombreproducto  = $(this).data('nombre');
-
+            var codigoproducto  = $(this).data('codigo');
+            var descripcionproducto  = $(this).data('descripcion');
             var index = collectionHolder.data('index');
 
             addTagForm(collectionHolder);
 
-            $('#buseta_bodegabundle_movimiento_movimientos_productos_' + index + '_producto').val(idproducto);
-            $('#buseta_bodegabundle_movimiento_movimientos_productos_' + index + '_nombre').val(nombreproducto);
+            $('#buseta_bodegabundle_salida_bodega_salidas_productos_' + index + '_producto').val(idproducto);
+            $('#buseta_bodegabundle_salida_bodega_salidas_productos_' + index + '_nombre').val(nombreproducto);
+            $('#buseta_bodegabundle_salida_bodega_salidas_productos_' + index + '_codigo').val(codigoproducto);
+            $('#buseta_bodegabundle_salida_bodega_salidas_productos_' + index + '_descripcion').val(descripcionproducto);
 
             productosList.addId(idproducto);
             $(this).removeClass('btn-success').addClass('btn-danger');
@@ -200,7 +243,7 @@
 
             var idproducto      = $(this).data('id');
 
-            var inputhidden = $('input[id^="buseta_bodegabundle_movimiento_movimientos_productos_"][id$="_producto"][value="'+ idproducto +'"]');
+            var inputhidden = $('input[id^="buseta_bodegabundle_salida_bodega_salidas_productos_"][id$="_producto"][value="'+ idproducto +'"]');
             inputhidden.parent().parent().find('div').eq(2).find('a').trigger('click');
 
             productosList.removeId(idproducto);
@@ -214,7 +257,7 @@
             $('div.paginator ul.pagination').find('a.paginator-link').on('click', function(e){
                 e.preventDefault();
 
-                var url = Routing.generate('movimientoproductos_new_modal');
+                var url = Routing.generate('salidabodega_productos_new_modal');
                 if ($(this).hasClass('paginator-link')) {
                     url = $(this).attr('href');
                 }
@@ -240,7 +283,7 @@
         function loadModel(e) {
             e.preventDefault();
 
-            var url = Routing.generate('movimientoproductos_new_modal');
+            var url = Routing.generate('salidabodega_productos_new_modal');
             if ($(this).hasClass('paginator-link')) {
                 url = $(this).attr('href');
             }
@@ -270,7 +313,7 @@
         }
 
         function ajaxFilterProductos(event)  {
-            var url = Routing.generate('movimientoproductos_new_modal');
+            var url = Routing.generate('salidabodega_productos_new_modal');
 
             $('form#buseta_movimientosproductos_filter').ajaxSubmit({
                 success: function(response) {
@@ -300,18 +343,18 @@
         }
 
         //Actualiza los almacenes de destino a partir de los almacenes de origen seleccionados con peticiones AJAX
-        $({{ form.almacenOrigen.vars.id }}).change(function(){
+        $({{ edit_form.almacenOrigen.vars.id }}).change(function(){
             var data = {
                 almacenOrigen_id: $(this).val()
             };
 
             $.ajax({
                 type: 'GET',
-                url: '{{ path("movimientos_ajax_almacenOrigen_almacenDestino") }}',
+                url: '{{ path("salidabodegas_ajax_almacenOrigen_almacenDestino") }}',
                 data: data,
                 success: function(data) {
                     var values = $.parseJSON(data);
-                    var $almacenDestino_selector = $({{ form.almacenDestino.vars.id }});
+                    var $almacenDestino_selector = $({{ edit_form.almacenDestino.vars.id }});
 
                     $almacenDestino_selector.html('<option>---Seleccione---</option>');
 
@@ -319,6 +362,55 @@
                         $almacenDestino_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
                     }
                 }
+            });
+        });
+
+        //Al seleccionar la OT, automaticamente selecciona el Centro Costo (Autobus), Responsable, TipoOT,
+        $('#{{ edit_form.orden_trabajo.vars.id }}').change(function(){
+            var centro_costo_text = $('#{{ edit_form.centro_costo.vars.id }}');
+            var responsable_text  = $('#{{ edit_form.responsable.vars.id }}');
+            var tipo_ot_text  = $('#{{ edit_form.tipo_ot.vars.id }}');
+
+            var data = {
+                orden_trabajo_id: $(this).val()
+            };
+
+            $.get('{{ path("ordentrabajo_ajax_salidabodega") }}', data, function(data){
+
+                //Selecciona automática el CentroCosto segun la OrdenTrabajo seleccionado
+                centro_costo_text.val(data['centro_costo']);
+                centro_costo_text.css('display','none');
+                var text = centro_costo_text.find('option[value="'+centro_costo_text.val()+'"]').html();
+
+                centro_costo_text.parent().find('input').remove();
+                centro_costo_text
+                        .parent()
+                        .append($('<input class="form-control" type="text" disabled> ').val(text));
+
+                //Selecciona automática el Responsable segun la OrdenTrabajo seleccionado
+                responsable_text.val(data['responsable']);
+                responsable_text.css('display','none');
+                var text = responsable_text.find('option[value="'+responsable_text.val()+'"]').html();
+
+                responsable_text.parent().find('input').remove();
+                responsable_text
+                        .parent()
+                        .append($('<input class="form-control" type="text" disabled> ').val(text));
+
+                //Selecciona automática el TipoOT segun la OrdenTrabajo seleccionado
+                tipo_ot_text.val(data['tipo_ot']);
+                tipo_ot_text.css('display','none');
+                var text = tipo_ot_text.find('option[value="'+tipo_ot_text.val()+'"]').html();
+
+                tipo_ot_text.parent().find('input').remove();
+                tipo_ot_text
+                        .parent()
+                        .append($('<input class="form-control" type="text" disabled> ').val(text));
+            }, 'json').fail(function(error) {
+                centro_costo_text.parent().find('input').remove();
+                centro_costo_text.css('display','block');
+            }).always(function(){
+                centro_costo_text.trigger('change');
             });
         });
     </script>

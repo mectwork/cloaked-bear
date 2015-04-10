@@ -131,7 +131,7 @@ class MovimientoController extends Controller
                     $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
                     $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
 
-                    $form->addError(new FormError("Ese producto no existe en la bodega seleccionada"));
+                    $form->addError(new FormError("El producto '".$producto->getNombre()."' no existe en la bodega seleccionada"));
 
                     return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
                         'entity' => $entity,

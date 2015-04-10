@@ -46,6 +46,14 @@ class Producto
     private $uom;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string")
+     * @Assert\NotBlank()
+     */
+    private $descripcion;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Condicion")
      */
     private $condicion;
@@ -132,6 +140,7 @@ class Producto
         $this->id = $model->getId();
         $this->codigo = $model->getCodigo();
         $this->nombre = $model->getNombre();
+        $this->descripcion = $model->getDescripcion();
         $this->activo = $model->getActivo();
 
         if ($model->getUom()) {
@@ -594,5 +603,28 @@ class Producto
     public function getInventarioFisicoLineas()
     {
         return $this->inventario_fisico_lineas;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     * @return Producto
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string 
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
     }
 }
