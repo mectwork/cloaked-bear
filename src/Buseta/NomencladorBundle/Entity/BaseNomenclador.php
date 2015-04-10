@@ -2,7 +2,14 @@
 namespace Buseta\NomencladorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+/**
+ * Class BaseNomenclador
+ * @package Buseta\NomencladorBundle\Entity
+ *
+ * @UniqueEntity(fields={"valor"})
+ */
 abstract class BaseNomenclador
 {
     protected $id;

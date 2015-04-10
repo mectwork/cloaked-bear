@@ -4,12 +4,14 @@ namespace Buseta\BusesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Autobus.
  *
  * @ORM\Table(name="d_autobus")
  * @ORM\Entity(repositoryClass="Buseta\BusesBundle\Entity\Repository\AutobusRepository")
+ * @UniqueEntity(fields={"matricula"})
  */
 class Autobus
 {
@@ -26,7 +28,7 @@ class Autobus
      * @var string
      *
      * @ORM\Column(name="imagen_frontal", type="string", nullable=true)
-     * @Assert\Image()
+     * @Assert\Image(groups={"web", "console", "Autobus"})
      */
     private $imagen_frontal;
 
@@ -34,7 +36,7 @@ class Autobus
      * @var string
      *
      * @ORM\Column(name="imagen_lateral_d", type="string", nullable=true)
-     * @Assert\Image()
+     * @Assert\Image(groups={"web", "console", "Autobus"})
      */
     private $imagen_lateral_d;
 
@@ -42,7 +44,7 @@ class Autobus
      * @var string
      *
      * @ORM\Column(name="imagen_lateral_i", type="string", nullable=true)
-     * @Assert\Image()
+     * @Assert\Image(groups={"web", "console", "Autobus"})
      */
     private $imagen_lateral_i;
 
@@ -50,13 +52,14 @@ class Autobus
      * @var string
      *
      * @ORM\Column(name="imagen_trasera", type="string", nullable=true)
-     * @Assert\Image()
+     * @Assert\Image(groups={"web", "console", "Autobus"})
      */
     private $imagen_trasera;
 
     /**
      * @ORM\OneToMany(targetEntity="Buseta\BusesBundle\Entity\ArchivoAdjunto", mappedBy="autobuses", cascade={"persist"})
-     * @Assert\File()
+     * @Assert\File(groups={"web", "Autobus"})
+     *
      */
     private $archivo_adjunto;
 
@@ -64,6 +67,7 @@ class Autobus
      * @var string
      *
      * @ORM\Column(name="matricula", type="string", length=32)
+     * @Assert\NotBlank(groups={"web", "console", "Autobus"})
      */
     private $matricula;
 
@@ -199,7 +203,7 @@ class Autobus
      * @var integer
      *
      * @ORM\Column(name="peso_tara", type="integer")
-     * @Assert\Type(type="integer")
+     * @Assert\Type(type="integer", groups={"web", "console", "Autobus"})
      */
     private $peso_tara;
 
@@ -207,7 +211,7 @@ class Autobus
      * @var integer
      *
      * @ORM\Column(name="peso_bruto", type="integer")
-     * @Assert\Type("integer")
+     * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
     private $peso_bruto;
 
@@ -220,7 +224,7 @@ class Autobus
      * @var integer
      *
      * @ORM\Column(name="numero_plazas", type="integer")
-     * @Assert\Type("integer")
+     * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
     private $numero_plazas;
 
@@ -238,7 +242,7 @@ class Autobus
      * @var integer
      *
      * @ORM\Column(name="anno", type="integer", nullable=true)
-     * @Assert\Type("integer")
+     * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
     private $anno;
 
@@ -246,7 +250,7 @@ class Autobus
      * @var integer
      *
      * @ORM\Column(name="valor_unidad", type="integer", nullable=true)
-     * @Assert\Type("integer")
+     * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
     private $valor_unidad;
 
@@ -254,7 +258,7 @@ class Autobus
      * @var integer
      *
      * @ORM\Column(name="capacidad_tanque", type="integer")
-     * @Assert\Type("integer")
+     * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
     private $capacidad_tanque;
 
@@ -262,7 +266,7 @@ class Autobus
      * @var integer
      *
      * @ORM\Column(name="numero_unidad", type="integer", nullable=true)
-     * @Assert\Type("integer")
+     * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
     private $numero_unidad;
 
@@ -270,7 +274,7 @@ class Autobus
      * @var integer
      *
      * @ORM\Column(name="numero_cilindros", type="integer")
-     * @Assert\Type("integer")
+     * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
     private $numero_cilindros;
 
@@ -278,7 +282,7 @@ class Autobus
      * @var integer
      *
      * @ORM\Column(name="cilindrada", type="integer")
-     * @Assert\Type("integer")
+     * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
     private $cilindrada;
 
@@ -286,7 +290,7 @@ class Autobus
      * @var integer
      *
      * @ORM\Column(name="potencia", type="integer")
-     * @Assert\Type("integer")
+     * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
     private $potencia;
 
@@ -294,7 +298,7 @@ class Autobus
      * @var \DateTime
      *
      * @ORM\Column(name="valido_hasta", type="date")
-     * @Assert\Date()
+     * @Assert\Date(groups={"web", "console", "Autobus"})
      */
     private $valido_hasta;
 
@@ -316,7 +320,7 @@ class Autobus
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_ingreso", type="date")
-     * @Assert\Date()
+     * @Assert\Date(groups={"web", "console", "Autobus"})
      */
     private $fecha_ingreso;
 
@@ -373,7 +377,7 @@ class Autobus
      * @var integer
      *
      * @ORM\Column(name="kilometraje", type="integer", columnDefinition="INT( 11 ) NOT NULL DEFAULT '0'")
-     * @Assert\Type("integer")
+     * @Assert\Type("integer", groups={"web", "Autobus"})
      */
     private $kilometraje;
 
@@ -381,15 +385,16 @@ class Autobus
      * @ORM\Column(name="activo", type="boolean", nullable=true)
      */
     private $activo;
-    
+
     /**
      * @var integer
      *
      * @ORM\Column(name="horas", type="integer", columnDefinition="INT( 11 ) NOT NULL DEFAULT '0'")
+     * @Assert\Type("integer", groups={"web", "Autobus"})
      */
     private $horas;
 
-    
+
     /**
      * Get id.
      *
@@ -1623,7 +1628,7 @@ class Autobus
     public function setKilometraje($kilometraje)
     {
         $this->kilometraje = $kilometraje;
-    
+
         return $this;
     }
 
@@ -1644,7 +1649,7 @@ class Autobus
     {
         return $this->activo;
     }
-    
+
     /**
      * @param mixed $activo
      */
