@@ -21,8 +21,8 @@ class ImportProductosCommand extends ContainerAwareCommand
     private $subgrupos;
     private $uomesures;
     private $proveedores;
-    private $proveedoresSelected;
-    private $proveedoresLinked;
+    private $proveedoresSelected = array();
+    private $proveedoresLinked = array();
 
     /**
      * @var EntityManager $em
@@ -274,12 +274,12 @@ class ImportProductosCommand extends ContainerAwareCommand
         $choices = array();
         $count = 0;
         $startProveedor = $proveedor;
-        foreach ($this->proveedores as $m) {
-            if (strtolower($proveedor) == strtolower($m->getValor())) {
-                $proveedor = $m;
+        foreach ($this->proveedores as $p) {
+            if (strtolower($proveedor) == strtolower($p->getNombres())) {
+                $proveedor = $p;
                 break;
             } else {
-                $choices[$count++] = $m->getValor();
+                $choices[$count++] = $p->getNombres();
             }
         }
 
@@ -335,7 +335,9 @@ class ImportProductosCommand extends ContainerAwareCommand
     {
         $qb = $this->em->getRepository('BusetaBodegaBundle:Tercero')->createQueryBuilder('t');
         $this->proveedores = $qb->leftJoin('t.proveedor', 'p')
-            ->where($qb->expr()->isNotNull('p'));
+            ->where($qb->expr()->isNotNull('p'))
+            ->getQuery()
+            ->getResult();
     }
 
     private function reloadGrupo()
