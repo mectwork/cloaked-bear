@@ -57,6 +57,11 @@ class ProveedorModel implements TerceroModelInterface
     private $activo;
 
     /**
+     * @var string
+     */
+    private $cifNif;
+
+    /**
      * @var Moneda
      *
      * @Assert\NotNull()
@@ -89,6 +94,7 @@ class ProveedorModel implements TerceroModelInterface
             $this->nombres = $tercero->getNombres();
             $this->apellidos = $tercero->getApellidos();
             $this->activo = $tercero->getActivo();
+            $this->cifNif = $tercero->getCifNif();
         }
 
         $this->proveedorId = $proveedor->getId();
@@ -108,6 +114,7 @@ class ProveedorModel implements TerceroModelInterface
         $tercero->setNombres($this->getNombres());
         $tercero->setApellidos($this->getApellidos());
         $tercero->setActivo($this->getActivo());
+        $tercero->setCifNif($this->getCifNif());
 
         return $tercero;
     }
@@ -300,5 +307,19 @@ class ProveedorModel implements TerceroModelInterface
         $this->observaciones = $observaciones;
     }
 
+    /**
+     * @return string
+     */
+    public function getCifNif()
+    {
+        return $this->cifNif;
+    }
 
+    /**
+     * @param string $cifNif
+     */
+    public function setCifNif($cifNif)
+    {
+        $this->cifNif = $cifNif;
+    }
 }

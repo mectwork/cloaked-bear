@@ -74,6 +74,14 @@ class ProveedorType extends AbstractType
                 'translation_domain' => 'BusetaBodegaBundle',
                 'label' => 'proveedor.activo',
             ))
+            ->add('cif_nif', 'text', array(
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'proveedor.cifnif',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->add('moneda', 'entity', array(
                 'required' => true,
                 'class' => 'BusetaNomencladorBundle:Moneda',

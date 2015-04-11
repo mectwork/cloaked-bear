@@ -46,6 +46,7 @@ proveedor:
   moneda: Moneda
   credito: Crédito Límite
   observaciones: Observaciones
+  cifnif: CIF\NIF
 
 sexo:
   masculino: Masculino

@@ -97,8 +97,7 @@ class Tercero
     /**
      * @var string
      *
-     * @ORM\Column(name="cifNif", type="string")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="cifNif", type="string", nullable=true)
      */
     private $cifNif;
 
@@ -640,7 +639,7 @@ class Tercero
     public function addBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega)
     {
         $this->bodega[] = $bodega;
-    
+
         return $this;
     }
 
@@ -657,7 +656,7 @@ class Tercero
     /**
      * Get bodega
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getBodega()
     {
@@ -673,14 +672,14 @@ class Tercero
     public function setCifNif($cifNif)
     {
         $this->cifNif = $cifNif;
-    
+
         return $this;
     }
 
     /**
      * Get cifNif
      *
-     * @return string 
+     * @return string
      */
     public function getCifNif()
     {

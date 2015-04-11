@@ -86,7 +86,7 @@ class ImportProductosCommand extends ContainerAwareCommand
         for ($i = $startRow; $i < $totalRows; $i++) {
             $rowData = array();
             foreach ($data as $key => $value) {
-                $rowData[$key] = $sheet->getCell($key . ($i + 1))->getFormattedValue();
+                $rowData[$key] = $sheet->getCell($key . ($i + 1))->getValue();
             }
 
             $this->createProducto($rowData, $output, $progress);
