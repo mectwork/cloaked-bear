@@ -170,8 +170,40 @@ class ImportProveedoresCommand extends ContainerAwareCommand
             return null;
         }
 
+        //Crear MecanismoContacto
+        $newMecanismoContacto = new MecanismoContacto();
+        $newMecanismoContacto->setTelefono($data['H']);
+        $newMecanismoContacto->setFax($data['I']);
+
+        $errors = $validator->validate($newMecanismoContacto, array('console'));
+
+        if ($errors->count() === 0) {
+            try {
+                $this->em->persist($newMecanismoContacto);
+                $this->em->flush();
+
+                return $newMecanismoContacto;
+            } catch (\Exception $e) {
+                $progress->clear();
+                $output->writeln(sprintf('<error>Ha ocurrido un error persistiendo los datos de la nueva MecanismoContacto. Detalles %s</error>', $e->getMessage()), OutputInterface::OUTPUT_NORMAL);
+                $progress->display();
+
+                return null;
+            }
+        } else {
+            $progress->clear();
+            $output->writeln('<error>La MecanismoContacto contiene parámetros que contienen errores de validación. No se crea la entidad.</error>');
+            foreach ($errors as $error) {
+                /** @var \Symfony\Component\Validator\ConstraintViolation $error */
+                $output->writeln(sprintf('<error>%s: %s</error>', $error->getPropertyPath(), $error->getMessage()));
+            }
+            $progress->display();
+            return null;
+        }
+
         //Asignar atributo 'direccion' a Tercero
         $newTercero->addDireccione($newDireccion);
+        $newTercero->addMecanismosContacto($newMecanismoContacto);
         $this->em->persist($newTercero);
         $this->em->flush();
 

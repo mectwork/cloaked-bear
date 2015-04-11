@@ -16,6 +16,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ImportBusesCommand extends ContainerAwareCommand
 {
     private $colores;
+    private $combustibles;
+    private $estilos;
+    private $marcas;
+    private $modelos;
+    private $marcasmotor;
 
     /**
      * @var EntityManager $em
