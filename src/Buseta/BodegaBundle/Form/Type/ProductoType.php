@@ -4,6 +4,7 @@ namespace Buseta\BodegaBundle\Form\Type;
 
 use Buseta\BodegaBundle\Form\EventListener\AddGrupoFieldSubscriber;
 use Buseta\BodegaBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -27,27 +28,16 @@ class ProductoType extends AbstractType
             ->add('id', 'hidden', array(
                 'required' => false,
             ))
-            /*->add('grupos', 'entity', array(
-                'class' => 'BusetaNomencladorBundle:Grupo',
-                'empty_value' => '---Seleccione---',
-                'label' => 'Grupo',
+            ->add('codigo', 'text', array(
                 'required' => false,
+                'label' => 'Código ATSA',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
-            ->add('subgrupos', 'entity', array(
-                'class' => 'BusetaNomencladorBundle:Subgrupo',
-                'empty_value' => '---Seleccione---',
-                'label' => 'Subgrupo',
+            ->add('codigoA', 'text', array(
                 'required' => false,
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))*/
-            ->add('codigo', 'text', array(
-                'required' => false,
-                'label' => 'Código',
+                'label' => 'Código A',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -86,18 +76,23 @@ class ProductoType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('precioProducto', 'collection', array(
-                'type' => new PrecioProductoType(),
-                'label'  => false,
-                'required' => true,
-                'by_reference' => false,
-                'allow_add' => true,
-                'allow_delete' => true,
-            ))
             ->add('descripcion', 'textarea', array(
                 'required' => false,
                 'label'  => 'Descripción',
                 'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('proveedor', 'entity', array(
+                'required' => false,
+                'empty_value' => '---Seleccione---',
+                'class' => 'BusetaBodegaBundle:Tercero',
+                'query_builder' => function (EntityRepository $er) {
+                    $qb = $er->createQueryBuilder('t')
+                        ->leftJoin('t.proveedor', 'p');
+                    return $qb->where($qb->expr()->isNotNull('p'));
+                },
+                'attr' => array(
                     'class' => 'form-control',
                 ),
             ))

@@ -53,6 +53,14 @@ class Subgrupo extends BaseNomenclador
     }
 
     /**
+     * @param \Buseta\NomencladorBundle\Entity\Grupo $grupo
+     */
+    public function setGrupo($grupo)
+    {
+        $this->grupo = $grupo;
+    }
+
+    /**
      * @param int $id
      */
     public function setId($id)

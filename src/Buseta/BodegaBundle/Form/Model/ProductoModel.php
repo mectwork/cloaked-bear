@@ -14,7 +14,6 @@ class ProductoModel
 {
     /**
      * @var integer
-     *
      */
     private $id;
 
@@ -23,6 +22,12 @@ class ProductoModel
      * @Assert\NotBlank()
      */
     private $codigo;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     */
+    private $codigoA;
 
     /**
      * @var string
@@ -43,21 +48,13 @@ class ProductoModel
 
     /**
      * @var \Buseta\NomencladorBundle\Entity\Condicion
-     * @Assert\NotBlank()
      */
     private $condicion;
 
     /**
      * @var \Buseta\BodegaBundle\Entity\CategoriaProducto
-     * @Assert\NotBlank()
      */
     private $categoriaProducto;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     * @Assert\NotBlank()
-     */
-    private $movimientos;
 
     /**
      * @var boolean
@@ -65,58 +62,35 @@ class ProductoModel
     private $activo;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     * @Assert\NotBlank()
-     */
-    private $pedido_compra_lineas;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     * @Assert\NotBlank()
-     */
-    private $albaranLinea;
-
-    /**
      * @var \Buseta\NomencladorBundle\Entity\Grupo
-     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $grupo;
 
     /**
      * @var \Buseta\NomencladorBundle\Entity\Subgrupo
-     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $subgrupo;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     * @Assert\NotBlank()
+     * @var \Buseta\BodegaBundle\Entity\Tercero
      */
-    private $precioProducto;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     * @Assert\NotBlank()
-     */
-    private $costoProducto;
+    private $proveedor;
 
     /**
      * Constructor
      */
     public function __construct(Producto $producto = null)
     {
-        $this->movimientos = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->pedido_compra_lineas = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->albaranLinea = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->precioProducto = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->costoProducto = new \Doctrine\Common\Collections\ArrayCollection();
-
         if ($producto !== null) {
             $this->id = $producto->getId();
             $this->codigo = $producto->getCodigo();
+            $this->codigoA = $producto->getCodigoA();
             $this->nombre = $producto->getNombre();
             $this->descripcion = $producto->getDescripcion();
             $this->activo = $producto->getActivo();
+            $this->proveedor = $producto->getProveedor();
 
             if ($producto->getUom()) {
                 $this->uom  = $producto->getUom();
@@ -124,34 +98,15 @@ class ProductoModel
             if ($producto->getCondicion()) {
                 $this->condicion  = $producto->getCondicion();
             }
-            if ($producto->getMovimientos()) {
-                $this->movimientos  = $producto->getMovimientos();
-            }
-            if ($producto->getAlbaranLinea()) {
-                $this->albaranLinea  = $producto->getAlbaranLinea();
-            }
             if ($producto->getGrupo()) {
                 $this->grupos  = $producto->getGrupo();
             }
             if ($producto->getSubgrupo()) {
                 $this->subgrupos  = $producto->getSubgrupo();
             }
-            if ($producto->getPrecioProducto()) {
-                $this->precioProducto  = $producto->getPrecioProducto();
-            }
-            if ($producto->getCostoProducto()) {
-                $this->costoProducto  = $producto->getCostoProducto();
-            }
             if ($producto->getCategoriaProducto()) {
                 $this->categoriaProducto  = $producto->getCategoriaProducto();
             }
-
-            if (!$producto->getPedidoCompraLineas()->isEmpty()) {
-                $this->pedido_compra_lineas = $producto->getPedidoCompraLineas();
-            } else {
-                $this->pedido_compra_lineas = new ArrayCollection();
-            }
-
         }
     }
 
@@ -162,10 +117,12 @@ class ProductoModel
     {
         $producto = new Producto();
         $producto->setCodigo($this->getCodigo());
+        $producto->setCodigoA($this->getCodigoA());
         $producto->setNombre($this->getNombre());
         $producto->setDescripcion($this->getDescripcion());
         $producto->setActivo($this->getActivo());
         $producto->setCategoriaProducto($this->getCategoriaProducto());
+        $producto->setProveedor($this->getProveedor());
 
         if ($this->getUom() !== null) {
             $producto->setUom($this->getUom());
@@ -178,32 +135,6 @@ class ProductoModel
         }
         if ($this->getSubgrupo() !== null) {
             $producto->setSubgrupo($this->getSubgrupo());
-        }
-
-        if (!$this->getMovimientos()->isEmpty()) {
-            foreach ($this->getMovimientos() as $movimientos) {
-                $producto->addMovimiento($movimientos);
-            }
-        }
-        if (!$this->getPedidoCompraLineas()->isEmpty()) {
-            foreach ($this->getPedidoCompraLineas() as $pedidos) {
-                $producto->addPedidoCompraLinea($pedidos);
-            }
-        }
-        if (!$this->getAlbaranLinea()->isEmpty()) {
-            foreach ($this->getAlbaranLinea() as $albaranes) {
-                $producto->addAlbaranLinea($albaranes);
-            }
-        }
-        if (!$this->getPrecioProducto()->isEmpty()) {
-            foreach ($this->getPrecioProducto() as $precios) {
-                $producto->addPrecioProducto($precios);
-            }
-        }
-        if (!$this->getCostoProducto()->isEmpty()) {
-            foreach ($this->getCostoProducto() as $costos) {
-                $producto->addCostoProducto($costos);
-            }
         }
 
         return $producto;
@@ -223,22 +154,6 @@ class ProductoModel
     public function setActivo($activo)
     {
         $this->activo = $activo;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getAlbaranLinea()
-    {
-        return $this->albaranLinea;
-    }
-
-    /**
-     * @param ArrayCollection $albaranLinea
-     */
-    public function setAlbaranLinea($albaranLinea)
-    {
-        $this->albaranLinea = $albaranLinea;
     }
 
     /**
@@ -271,6 +186,22 @@ class ProductoModel
     public function setCodigo($codigo)
     {
         $this->codigo = $codigo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCodigoA()
+    {
+        return $this->codigoA;
+    }
+
+    /**
+     * @param string $codigoA
+     */
+    public function setCodigoA($codigoA)
+    {
+        $this->codigoA = $codigoA;
     }
 
     /**
@@ -338,22 +269,6 @@ class ProductoModel
     }
 
     /**
-     * @return ArrayCollection
-     */
-    public function getMovimientos()
-    {
-        return $this->movimientos;
-    }
-
-    /**
-     * @param ArrayCollection $movimientos
-     */
-    public function setMovimientos($movimientos)
-    {
-        $this->movimientos = $movimientos;
-    }
-
-    /**
      * @return string
      */
     public function getNombre()
@@ -367,54 +282,6 @@ class ProductoModel
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getPedidoCompraLineas()
-    {
-        return $this->pedido_compra_lineas;
-    }
-
-    /**
-     * @param ArrayCollection $pedido_compra_lineas
-     */
-    public function setPedidoCompraLineas($pedido_compra_lineas)
-    {
-        $this->pedido_compra_lineas = $pedido_compra_lineas;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getPrecioProducto()
-    {
-        return $this->precioProducto;
-    }
-
-    /**
-     * @param ArrayCollection $precioProducto
-     */
-    public function setPrecioProducto($precioProducto)
-    {
-        $this->precioProducto = $precioProducto;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getCostoProducto()
-    {
-        return $this->costoProducto;
-    }
-
-    /**
-     * @param ArrayCollection $costoProducto
-     */
-    public function setCostoProducto($costoProducto)
-    {
-        $this->costoProducto = $costoProducto;
     }
 
     /**
@@ -449,7 +316,19 @@ class ProductoModel
         $this->uom = $uom;
     }
 
+    /**
+     * @return \Buseta\BodegaBundle\Entity\Tercero
+     */
+    public function getProveedor()
+    {
+        return $this->proveedor;
+    }
 
-
-
+    /**
+     * @param \Buseta\BodegaBundle\Entity\Tercero $proveedor
+     */
+    public function setProveedor($proveedor)
+    {
+        $this->proveedor = $proveedor;
+    }
 }

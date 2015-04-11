@@ -5,6 +5,7 @@ namespace Buseta\BodegaBundle\Entity;
 use Buseta\BodegaBundle\Form\Model\ProductoModel;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -12,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="d_producto")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\ProductoRepository")
+ * @UniqueEntity(fields={"codigo"})
  */
 class Producto
 {
@@ -31,6 +33,14 @@ class Producto
      * @Assert\NotBlank()
      */
     private $codigo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codigo_a", type="string", nullable=true)
+     * @Assert\NotBlank()
+     */
+    private $codigoA;
 
     /**
      * @var string
@@ -62,6 +72,13 @@ class Producto
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\CategoriaProducto", inversedBy="productos")
      */
     private $categoriaProducto;
+
+    /**
+     * @var \Buseta\BodegaBundle\Entity\Tercero
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero")
+     */
+    private $proveedor;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -139,6 +156,7 @@ class Producto
     {
         $this->id = $model->getId();
         $this->codigo = $model->getCodigo();
+        $this->codigoA = $model->getCodigoA();
         $this->nombre = $model->getNombre();
         $this->descripcion = $model->getDescripcion();
         $this->activo = $model->getActivo();
@@ -149,31 +167,14 @@ class Producto
         if ($model->getCondicion()) {
             $this->condicion  = $model->getCondicion();
         }
-        if ($model->getMovimientos()) {
-            $this->movimientos  = $model->getMovimientos();
-        }
-        if ($model->getAlbaranLinea()) {
-            $this->albaranLinea  = $model->getAlbaranLinea();
-        }
         if ($model->getGrupo()) {
             $this->grupo  = $model->getGrupo();
         }
         if ($model->getSubgrupo()) {
             $this->subgrupo  = $model->getSubgrupo();
         }
-        if ($model->getPrecioProducto()) {
-            $this->precioProducto  = $model->getPrecioProducto();
-        }
-        if ($model->getCostoProducto()) {
-            $this->costoProducto  = $model->getCostoProducto();
-        }
         if ($model->getCategoriaProducto()) {
             $this->categoriaProducto  = $model->getCategoriaProducto();
-        }
-        if (!$model->getPedidoCompraLineas()->isEmpty()) {
-            $this->pedido_compra_lineas = $model->getPedidoCompraLineas();
-        } else {
-            $this->pedido_compra_lineas = new ArrayCollection();
         }
 
         return $this;
@@ -228,6 +229,22 @@ class Producto
     }
 
     /**
+     * @return string
+     */
+    public function getCodigoA()
+    {
+        return $this->codigoA;
+    }
+
+    /**
+     * @param string $codigoA
+     */
+    public function setCodigoA($codigoA)
+    {
+        $this->codigoA = $codigoA;
+    }
+
+    /**
      * @param int $id
      */
     public function setId($id)
@@ -278,14 +295,6 @@ class Producto
     public function __toString()
     {
         return $this->nombre;
-    }
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->pedido_compra_lineas = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -581,7 +590,7 @@ class Producto
         $inventarioFisicoLineas->setProducto($this);
 
         $this->inventario_fisico_lineas[] = $inventarioFisicoLineas;
-    
+
         return $this;
     }
 
@@ -598,7 +607,7 @@ class Producto
     /**
      * Get inventario_fisico_lineas
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getInventarioFisicoLineas()
     {
@@ -614,17 +623,53 @@ class Producto
     public function setDescripcion($descripcion)
     {
         $this->descripcion = $descripcion;
-    
+
         return $this;
     }
 
     /**
      * Get descripcion
      *
-     * @return string 
+     * @return string
      */
     public function getDescripcion()
     {
         return $this->descripcion;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->movimientos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->inventario_fisico_lineas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pedido_compra_lineas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->necesidad_material_lineas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->albaranLinea = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->precioProducto = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->costoProducto = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set proveedor
+     *
+     * @param \Buseta\BodegaBundle\Entity\Tercero $proveedor
+     * @return Producto
+     */
+    public function setProveedor(\Buseta\BodegaBundle\Entity\Tercero $proveedor = null)
+    {
+        $this->proveedor = $proveedor;
+
+        return $this;
+    }
+
+    /**
+     * Get proveedor
+     *
+     * @return \Buseta\BodegaBundle\Entity\Tercero
+     */
+    public function getProveedor()
+    {
+        return $this->proveedor;
     }
 }

@@ -12,44 +12,37 @@
         <div class="col-md-4">
             {{ form_row(form.nombre) }}
         </div>
-
         <div class="col-md-4">
             {{ form_row(form.codigo) }}
         </div>
-
+        <div class="col-md-4">
+            {{ form_row(form.codigoA) }}
+        </div>
         <div class="col-md-4">
             {{ form_row(form.uom) }}
         </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.grupo) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.subgrupo) }}
-            </div>
-
-            <div class="col-md-4">
-                {{ form_row(form.categoriaProducto) }}
-            </div>
+        <div class="col-md-4">
+            {{ form_row(form.grupo) }}
         </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.condicion) }}
-            </div>
-            <div class="col-lg-8">
-                {{ form_row(form.descripcion) }}
-            </div>
+        <div class="col-md-4">
+            {{ form_row(form.subgrupo) }}
         </div>
-
-        <div class="row show-grid">
-            <div class="col-lg-4">
-                {{ form_row(form.activo) }}
-            </div>
+        <div class="col-md-4">
+            {{ form_row(form.proveedor) }}
         </div>
-    </div>    
+        <div class="col-md-4">
+            {{ form_row(form.categoriaProducto) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.condicion) }}
+        </div>
+        <div class="col-lg-4">
+            {{ form_row(form.activo) }}
+        </div>
+        <div class="col-lg-12">
+            {{ form_row(form.descripcion) }}
+        </div>
+    </div>
 
     {# buttons group #}
     <div class="row">

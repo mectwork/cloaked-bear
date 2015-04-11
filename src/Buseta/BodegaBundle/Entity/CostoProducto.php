@@ -31,16 +31,16 @@ class CostoProducto
     private $costo;
 
     /**
-     * @var date
+     * @var \DateTime
      *
-     * @ORM\Column(name="fechaInicio", type="date")
+     * @ORM\Column(name="fechaInicio", type="date", nullable=true)
      */
     private $fechaInicio;
 
     /**
-     * @var date
+     * @var \DateTime
      *
-     * @ORM\Column(name="fechaFin", type="date")
+     * @ORM\Column(name="fechaFin", type="date", nullable=true)
      */
     private $fechaFin;
 
