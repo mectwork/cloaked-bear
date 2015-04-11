@@ -22,10 +22,11 @@ class MecanismoContacto
     private $id;
 
     /**
-     * @var \Buseta\NomencladorBundle\Entity\TipoContacto
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\TipoContacto")
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=255)
      */
-    private $tipocontacto;
+    private $nombre;
 
     /**
      * @var \Buseta\BodegaBundle\Entity\Tercero
@@ -36,14 +37,50 @@ class MecanismoContacto
     /**
      * @var string
      *
-     * @ORM\Column(name="tipo", type="string")
+     * @ORM\Column(name="telefono", type="string", length=255, nullable=true)
      */
-    private $valor;
+    private $telefono;
 
     /**
-     * Get id.
+     * @var string
      *
-     * @return integer
+     * @ORM\Column(name="telefono2", type="string", length=255, nullable=true)
+     */
+    private $telefono2;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fax", type="string", length=255, nullable=true)
+     */
+    private $fax;
+
+    /**
+     * @var \Buseta\BodegaBundle\Entity\Direccion
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Direccion", cascade={"persist","remove"})
+     */
+    private $direccion;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="dir_envio", type="boolean", nullable=true)
+     */
+    private $dirEnvio;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="activo", type="boolean", nullable=true)
+     */
+    private $activo;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
      */
     public function getId()
     {
@@ -51,74 +88,186 @@ class MecanismoContacto
     }
 
     /**
-     * Set valor.
+     * Set nombre
      *
-     * @param string $valor
-     *
+     * @param string $nombre
      * @return MecanismoContacto
      */
-    public function setValor($valor)
+    public function setNombre($nombre)
     {
-        $this->valor = $valor;
-
+        $this->nombre = $nombre;
+    
         return $this;
     }
 
     /**
-     * Get valor.
+     * Get nombre
      *
-     * @return string
+     * @return string 
      */
-    public function getValor()
+    public function getNombre()
     {
-        return $this->valor;
+        return $this->nombre;
     }
 
     /**
-     * Set tipocontacto.
+     * Set telefono
      *
-     * @param \Buseta\NomencladorBundle\Entity\TipoContacto $tipocontacto
-     *
+     * @param string $telefono
      * @return MecanismoContacto
      */
-    public function setTipocontacto(\Buseta\NomencladorBundle\Entity\TipoContacto $tipocontacto = null)
+    public function setTelefono($telefono)
     {
-        $this->tipocontacto = $tipocontacto;
-
+        $this->telefono = $telefono;
+    
         return $this;
     }
 
     /**
-     * Get tipocontacto.
+     * Get telefono
      *
-     * @return \Buseta\NomencladorBundle\Entity\TipoContacto
+     * @return string 
      */
-    public function getTipocontacto()
+    public function getTelefono()
     {
-        return $this->tipocontacto;
+        return $this->telefono;
     }
 
     /**
-     * Set tercero.
+     * Set telefono2
+     *
+     * @param string $telefono2
+     * @return MecanismoContacto
+     */
+    public function setTelefono2($telefono2)
+    {
+        $this->telefono2 = $telefono2;
+    
+        return $this;
+    }
+
+    /**
+     * Get telefono2
+     *
+     * @return string 
+     */
+    public function getTelefono2()
+    {
+        return $this->telefono2;
+    }
+
+    /**
+     * Set fax
+     *
+     * @param string $fax
+     * @return MecanismoContacto
+     */
+    public function setFax($fax)
+    {
+        $this->fax = $fax;
+    
+        return $this;
+    }
+
+    /**
+     * Get fax
+     *
+     * @return string 
+     */
+    public function getFax()
+    {
+        return $this->fax;
+    }
+
+    /**
+     * Set dirEnvio
+     *
+     * @param boolean $dirEnvio
+     * @return MecanismoContacto
+     */
+    public function setDirEnvio($dirEnvio)
+    {
+        $this->dirEnvio = $dirEnvio;
+    
+        return $this;
+    }
+
+    /**
+     * Get dirEnvio
+     *
+     * @return boolean 
+     */
+    public function getDirEnvio()
+    {
+        return $this->dirEnvio;
+    }
+
+    /**
+     * Set activo
+     *
+     * @param boolean $activo
+     * @return MecanismoContacto
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+    
+        return $this;
+    }
+
+    /**
+     * Get activo
+     *
+     * @return boolean 
+     */
+    public function getActivo()
+    {
+        return $this->activo;
+    }
+
+    /**
+     * Set tercero
      *
      * @param \Buseta\BodegaBundle\Entity\Tercero $tercero
-     *
      * @return MecanismoContacto
      */
     public function setTercero(\Buseta\BodegaBundle\Entity\Tercero $tercero = null)
     {
         $this->tercero = $tercero;
-
+    
         return $this;
     }
 
     /**
-     * Get tercero.
+     * Get tercero
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero
+     * @return \Buseta\BodegaBundle\Entity\Tercero 
      */
     public function getTercero()
     {
         return $this->tercero;
+    }
+
+    /**
+     * Set direccion
+     *
+     * @param \Buseta\BodegaBundle\Entity\Direccion $direccion
+     * @return MecanismoContacto
+     */
+    public function setDireccion(\Buseta\BodegaBundle\Entity\Direccion $direccion = null)
+    {
+        $this->direccion = $direccion;
+    
+        return $this;
+    }
+
+    /**
+     * Get direccion
+     *
+     * @return \Buseta\BodegaBundle\Entity\Direccion 
+     */
+    public function getDireccion()
+    {
+        return $this->direccion;
     }
 }

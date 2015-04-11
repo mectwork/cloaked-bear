@@ -11,10 +11,11 @@ direccion:
     title: Crear nueva dirección
     delete: Eliminar dirección
 
-contacto:
+mecanismo_contacto:
   tipo: Tipo de Contacto
   valor: Valor
   telefono: Teléfono
+  telefono2: Teléfono alternativo
   fax: Fax
   nombre: Nombre
   direccion: Dirección

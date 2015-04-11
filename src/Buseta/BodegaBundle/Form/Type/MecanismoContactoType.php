@@ -2,8 +2,11 @@
 
 namespace Buseta\BodegaBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MecanismoContactoType extends AbstractType
@@ -15,24 +18,61 @@ class MecanismoContactoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('tipocontacto', 'entity', array(
-                'class' => 'BusetaNomencladorBundle:TipoContacto',
-                'required' => true,
+            ->add('nombre', 'text', array(
+                'required' => false,
                 'translation_domain' => 'BusetaBodegaBundle',
-                'label' => 'contacto.tipo',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
+                'label' => 'mecanismo_contacto.nombre',
             ))
-            ->add('valor', 'text', array(
-                'required' => true,
+            ->add('telefono', 'text', array(
+                'required' => false,
                 'translation_domain' => 'BusetaBodegaBundle',
-                'label' => 'contacto.valor',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
+                'label' => 'mecanismo_contacto.telefono',
             ))
-        ;
+            ->add('telefono2', 'text', array(
+                'required'  => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'mecanismo_contacto.telefono2',
+            ))
+            ->add('fax', 'text', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'mecanismo_contacto.fax',
+            ))
+            ->add('dirEnvio', 'checkbox', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'mecanismo_contacto.dirEnvio',
+            ))
+            ->add('activo', 'checkbox', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'mecanismo_contacto.activo',
+            ));
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $data = $event->getData();
+            $form = $event->getForm();
+
+            if ($data && $data->getTercero()) {
+                $tercero = $data->getTercero();
+
+                $form->add('direccion', 'entity', array(
+                    'class' => 'BusetaBodegaBundle:Direccion',
+                    'query_builder' => function (EntityRepository $er) use ($tercero) {
+                        $qb = $er->createQueryBuilder('d')
+                            ->join('d.tercero', 't');
+
+                        return $qb
+                            ->where($qb->expr()->eq(':tercero','t.id'))
+                            ->setParameter('tercero', $tercero);
+                    },
+                    'required' => false,
+                    'translation_domain' => 'BusetaBodegaBundle',
+                    'label' => 'mecanismo_contacto.direccion'
+                ));
+            }
+
+        });
     }
 
     /**

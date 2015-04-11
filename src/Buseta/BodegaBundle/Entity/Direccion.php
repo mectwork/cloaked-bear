@@ -262,4 +262,11 @@ class Direccion
     {
         $this->setNombre();
     }
+
+    function __toString()
+    {
+        return $this->nombre;
+    }
+
+
 }

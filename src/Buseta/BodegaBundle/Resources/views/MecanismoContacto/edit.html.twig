@@ -1,3 +1,5 @@
+{% form_theme edit_form '@BusetaBodega/Form/fields.twig' %}
+
 <div class="modal" id="form_contacto_modal" tabindex="-1" role="dialog" aria-labelledby="createContact" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -12,17 +14,7 @@
                         <input type="hidden" name="_method" value="PUT"/>
                     {% endif %}
                     {{ form_errors(edit_form) }}
-
-                    <div class="row show-grid">
-                        <div class="col-md-6">
-                            {{ form_row(edit_form.tipocontacto) }}
-                        </div>
-
-                        <div class="col-md-6">
-                            {{ form_row(edit_form.valor) }}
-                        </div>
-                    </div>
-
+                    {{ form_widget(edit_form) }}
                     {{ form_rest(edit_form) }}
                 </form>
             </div>

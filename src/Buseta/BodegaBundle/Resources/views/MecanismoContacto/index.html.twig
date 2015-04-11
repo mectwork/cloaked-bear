@@ -1,5 +1,5 @@
 <div class="btn-group" style="margin-bottom: 8px;">
-    <a class="btn btn-primary" href="#form_contacto_modal" ><span class="glyphicon glyphicon-plus-sign"></span> {{ 'contacto.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
+    <a class="btn btn-primary" href="#form_contacto_modal" ><span class="glyphicon glyphicon-plus-sign"></span> {{ 'mecanismo_contacto.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
 </div>
 
 <div class="row">
@@ -9,20 +9,24 @@
 <table class="records_list table table-striped table-bordered table-condensed table-hover">
     <thead>
     <tr>
-        <th>Tipo de Contacto</th>
-        <th style="width: 50%;">Valor</th>
-        <th>Acciones</th>
+        <th>{{ knp_pagination_sortable(entities, 'mecanismo_contacto.nombre' | trans({}, 'BusetaBodegaBundle'), 'm.nombre') }}</th>
+        <th>{{ knp_pagination_sortable(entities, 'mecanismo_contacto.telefono' | trans({}, 'BusetaBodegaBundle'), 'm.telefono') }}</th>
+        <th>{{ 'mecanismo_contacto.direccion' | trans({}, 'BusetaBodegaBundle') }}</th>
+        <th>{{ knp_pagination_sortable(entities, 'mecanismo_contacto.dirEnvio' | trans({}, 'BusetaBodegaBundle'), 'm.dirEnvio') }}</th>
+        <th>{{ knp_pagination_sortable(entities, 'mecanismo_contacto.activo' | trans({}, 'BusetaBodegaBundle'), 'm.activo') }}</th>
+        <th style="text-align: center">Acciones</th>
     </tr>
     </thead>
     <tbody>
     {% for entity in entities %}
         <tr>
-            <td>{{ entity.tipocontacto }}</td>
-            <td>{{ entity.valor }}</td>
+            <td>{{ entity.nombre }}</td>
+            <td>{{ entity.telefono }}</td>
+            <td>{{ entity.direccion ? entity.direccion.nombre : '-' }}</td>
+            <td>{{ entity.dirEnvio ? '<i class="fa fa-circle text-success"></i>' : '<i class="fa fa-circle-o text-danger"></i>' }}</td>
+            <td>{{ entity.activo ? '<i class="fa fa-circle text-success"></i>' : '<i class="fa fa-circle-o text-danger"></i>' }}</td>
             <td  style="text-align: center;">
-                <div class="btn-group">
-                    <a class="btn btn-primary btn-xs" href="#btn_contacto_edit" data-content="{{ entity.id }}"><i class="fa fa-edit"> Editar</i></a>
-                </div>
+                <a class="btn btn-primary btn-xs" href="#btn_contacto_edit" data-content="{{ entity.id }}"><i class="fa fa-edit"> Editar</i></a>
             </td>
         </tr>
     {% endfor %}
