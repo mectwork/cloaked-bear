@@ -50,7 +50,6 @@ class Proveedor
      */
     private $observaciones;
 
-
     /**
      * Establece los valores desde el modelo en la entidad.
      *

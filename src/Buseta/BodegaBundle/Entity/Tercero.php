@@ -90,6 +90,7 @@ class Tercero
      * @var string
      *
      * @ORM\Column(name="alias", type="string")
+     * @Assert\NotBlank()
      */
     private $alias;
 

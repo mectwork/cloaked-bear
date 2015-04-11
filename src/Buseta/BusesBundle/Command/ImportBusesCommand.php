@@ -16,11 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ImportBusesCommand extends ContainerAwareCommand
 {
     private $colores;
-    private $combustibles;
-    private $estilos;
-    private $marcas;
-    private $modelos;
-    private $marcasmotor;
 
     /**
      * @var EntityManager $em
@@ -216,7 +211,7 @@ class ImportBusesCommand extends ContainerAwareCommand
             );
             $progress->display();
 
-            if ($result === $count) {
+            if ($result == $count) {
                 $estilo = $this->addNomenclador($estilo, 'Buseta\NomencladorBundle\Entity\Estilo');
             } else {
                 $estilo = $this->estilos[$result];
@@ -253,7 +248,7 @@ class ImportBusesCommand extends ContainerAwareCommand
             );
             $progress->display();
 
-            if ($result === $count) {
+            if ($result == $count) {
                 $combustible = $this->addNomenclador($combustible, 'Buseta\NomencladorBundle\Entity\Combutible');
             } else {
                 $combustible = $this->combustibles[$result];
@@ -290,7 +285,7 @@ class ImportBusesCommand extends ContainerAwareCommand
             );
             $progress->display();
 
-            if ($result === $count) {
+            if ($result == $count) {
                 $marca = $this->addNomenclador($marca, 'Buseta\NomencladorBundle\Entity\Marca');
             } else {
                 $marca = $this->marcas[$result];
@@ -327,7 +322,7 @@ class ImportBusesCommand extends ContainerAwareCommand
             );
             $progress->display();
 
-            if ($result === $count) {
+            if ($result == $count) {
                 $modelo = $this->addNomenclador($modelo, 'Buseta\NomencladorBundle\Entity\Modelo');
             } else {
                 $modelo = $this->modelos[$result];
@@ -364,7 +359,7 @@ class ImportBusesCommand extends ContainerAwareCommand
             );
             $progress->display();
 
-            if ($result === $count) {
+            if ($result == $count) {
                 $color = $this->addNomenclador($color, 'Buseta\NomencladorBundle\Entity\Color');
             } else {
                 $color = $this->colores[$result];
@@ -401,7 +396,7 @@ class ImportBusesCommand extends ContainerAwareCommand
             );
             $progress->display();
 
-            if ($result === $count) {
+            if ($result == $count) {
                 $marcaMotor = $this->addNomenclador($marcaMotor, 'Buseta\NomencladorBundle\Entity\MarcaMotor');
             } else {
                 $marcaMotor = $this->marcasmotor[$result];
