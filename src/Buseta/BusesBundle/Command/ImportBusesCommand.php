@@ -254,7 +254,7 @@ class ImportBusesCommand extends ContainerAwareCommand
             $progress->display();
 
             if ($result == $count) {
-                $combustible = $this->addNomenclador($combustible, 'Buseta\NomencladorBundle\Entity\Combutible');
+                $combustible = $this->addNomenclador($combustible, 'Buseta\NomencladorBundle\Entity\Combustible');
             } else {
                 $combustible = $this->combustibles[$result];
             }

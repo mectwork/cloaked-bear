@@ -37,6 +37,10 @@ class TerceroType extends AbstractType
             ->add('apellidos', 'text', array(
                     'required' => false,
                 ))
+            ->add('cif_nif', 'text', array(
+                'label' => 'CIF/NIF',
+                'required' => false,
+            ))
             ->add('alias', 'text', array(
                     'required' => false,
                 ))

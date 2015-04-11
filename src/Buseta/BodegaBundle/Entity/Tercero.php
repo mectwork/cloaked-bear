@@ -95,6 +95,14 @@ class Tercero
     private $alias;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="cifNif", type="string")
+     * @Assert\NotBlank()
+     */
+    private $cifNif;
+
+    /**
      * @ORM\Column(name="cliente", type="boolean", nullable=true)
      */
     private $cliente;
@@ -164,6 +172,7 @@ class Tercero
         $this->setApellidos($model->getApellidos());
         $this->setAlias($model->getAlias());
         $this->setCodigo($model->getCodigo());
+        $this->setCifNif($model->getCifNif());
         $this->setActivo($model->getActivo());
 
         return $this;
@@ -653,5 +662,28 @@ class Tercero
     public function getBodega()
     {
         return $this->bodega;
+    }
+
+    /**
+     * Set cifNif
+     *
+     * @param string $cifNif
+     * @return Tercero
+     */
+    public function setCifNif($cifNif)
+    {
+        $this->cifNif = $cifNif;
+    
+        return $this;
+    }
+
+    /**
+     * Get cifNif
+     *
+     * @return string 
+     */
+    public function getCifNif()
+    {
+        return $this->cifNif;
     }
 }

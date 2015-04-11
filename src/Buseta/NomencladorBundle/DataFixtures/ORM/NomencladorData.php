@@ -169,6 +169,7 @@ class NomencladorData extends AbstractFixture
 
             $objeto = new Moneda();
             $codigo = uniqid();
+            $objeto->setSimbolo('$');
             $objeto->setValor($this->monedas[$i]);
             $manager->persist($objeto);
             $manager->flush();
@@ -231,7 +232,7 @@ class NomencladorData extends AbstractFixture
             $objeto = new Subgrupo();
             $codigo = uniqid();
             $objeto->setValor($this->grupos[$i]);
-            $objeto->setGrupo($this->getReference('grupo' . $i));
+            //$objeto->setGrupo($this->getReference('grupo' . $i));
             $this->setReference('subgrupo' . $i, $objeto);
             $manager->persist($objeto);
             $manager->flush();
@@ -342,10 +343,10 @@ class NomencladorData extends AbstractFixture
     );
 
     private $monedas = array(
-        'euro',
-        'dólar americano',
-        'dólar canadiense',
-        'libra esterlina',
+        'Colones',
+        'Euro',
+        'Dólares',
+        'Libra esterlina',
     );
 
     private $oums = array(
@@ -403,7 +404,7 @@ class NomencladorData extends AbstractFixture
     );
 
     private $combustibles = array(
-        'Diesel',
+        'Diésel',
         'Gasolina',
         'Nafta',
     );

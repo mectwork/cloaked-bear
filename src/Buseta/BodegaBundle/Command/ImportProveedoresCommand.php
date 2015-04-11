@@ -100,41 +100,15 @@ class ImportProveedoresCommand extends ContainerAwareCommand
         /** @var DialogHelper $dialog */
         $dialog = $this->getHelperSet()->get('dialog');
 
-        $validator = $this->getContainer()->get('validator');
-
         //Crear Tercero
         $newTercero = new Tercero();
         $newTercero->setCodigo($data['A']);
         $newTercero->setAlias($data['B']);
         $newTercero->setNombres($data['C']);
-        //$newTercero->setCIFNIF($data['D']);
+        $newTercero->setCifNif($data['D']);
         $newTercero->setActivo(true);
 
-        $errors = $validator->validate($newTercero, array('console'));
-
-        if ($errors->count() === 0) {
-            try {
-                $this->em->persist($newTercero);
-                $this->em->flush();
-
-                return $newTercero;
-            } catch (\Exception $e) {
-                $progress->clear();
-                $output->writeln(sprintf('<error>Ha ocurrido un error persistiendo los datos del nuevo Tercero. Detalles %s</error>', $e->getMessage()), OutputInterface::OUTPUT_NORMAL);
-                $progress->display();
-
-                return null;
-            }
-        } else {
-            $progress->clear();
-            $output->writeln('<error>El Tercero contiene parámetros que contienen errores de validación. No se crea la entidad.</error>');
-            foreach ($errors as $error) {
-                /** @var \Symfony\Component\Validator\ConstraintViolation $error */
-                $output->writeln(sprintf('<error>%s: %s</error>', $error->getPropertyPath(), $error->getMessage()));
-            }
-            $progress->display();
-            return null;
-        }
+        $this->persistirDatos($newTercero, 'Tercero', $progress, $output);
 
         //Crear Direccion
         $newDireccion = new Direccion();
@@ -144,62 +118,15 @@ class ImportProveedoresCommand extends ContainerAwareCommand
         $newDireccion->setRegion($data['G']);
         $newDireccion->setPais('CR');
 
-        $errors = $validator->validate($newDireccion, array('console'));
-
-        if ($errors->count() === 0) {
-            try {
-                $this->em->persist($newDireccion);
-                $this->em->flush();
-
-                return $newDireccion;
-            } catch (\Exception $e) {
-                $progress->clear();
-                $output->writeln(sprintf('<error>Ha ocurrido un error persistiendo los datos de la nueva Direccion. Detalles %s</error>', $e->getMessage()), OutputInterface::OUTPUT_NORMAL);
-                $progress->display();
-
-                return null;
-            }
-        } else {
-            $progress->clear();
-            $output->writeln('<error>La Direccion contiene parámetros que contienen errores de validación. No se crea la entidad.</error>');
-            foreach ($errors as $error) {
-                /** @var \Symfony\Component\Validator\ConstraintViolation $error */
-                $output->writeln(sprintf('<error>%s: %s</error>', $error->getPropertyPath(), $error->getMessage()));
-            }
-            $progress->display();
-            return null;
-        }
+        $this->persistirDatos($newDireccion, 'Direccion', $progress, $output);
 
         //Crear MecanismoContacto
         $newMecanismoContacto = new MecanismoContacto();
+        $newMecanismoContacto->setNombre('Por defecto');
         $newMecanismoContacto->setTelefono($data['H']);
         $newMecanismoContacto->setFax($data['I']);
 
-        $errors = $validator->validate($newMecanismoContacto, array('console'));
-
-        if ($errors->count() === 0) {
-            try {
-                $this->em->persist($newMecanismoContacto);
-                $this->em->flush();
-
-                return $newMecanismoContacto;
-            } catch (\Exception $e) {
-                $progress->clear();
-                $output->writeln(sprintf('<error>Ha ocurrido un error persistiendo los datos de la nueva MecanismoContacto. Detalles %s</error>', $e->getMessage()), OutputInterface::OUTPUT_NORMAL);
-                $progress->display();
-
-                return null;
-            }
-        } else {
-            $progress->clear();
-            $output->writeln('<error>La MecanismoContacto contiene parámetros que contienen errores de validación. No se crea la entidad.</error>');
-            foreach ($errors as $error) {
-                /** @var \Symfony\Component\Validator\ConstraintViolation $error */
-                $output->writeln(sprintf('<error>%s: %s</error>', $error->getPropertyPath(), $error->getMessage()));
-            }
-            $progress->display();
-            return null;
-        }
+        $this->persistirDatos($newMecanismoContacto, 'Mecanismo de Contacto', $progress, $output);
 
         //Asignar atributo 'direccion' a Tercero
         $newTercero->addDireccione($newDireccion);
@@ -212,27 +139,35 @@ class ImportProveedoresCommand extends ContainerAwareCommand
 
         //Crear el Proveedor
         $newProveedor = new Proveedor();
-
         // Seleccionando Moneda
         $newProveedor->setMoneda($this->selectMoneda($data['J'], $output, $dialog, $progress));
         $newProveedor->setTercero($newTercero);
 
+        $this->persistirDatos($newProveedor, 'Proveedor', $progress, $output);
+
+    }
+
+    private function persistirDatos($entidad, $cadenaNombreEntidad, $progress, $output)
+    {
+        $validator = $this->getContainer()->get('validator');
+
+        $errors = $validator->validate($entidad, array('console'));
+
         if ($errors->count() === 0) {
             try {
-                $this->em->persist($newTercero);
+                $this->em->persist($entidad);
                 $this->em->flush();
 
-                return $newTercero;
             } catch (\Exception $e) {
                 $progress->clear();
-                $output->writeln(sprintf('<error>Ha ocurrido un error persistiendo los datos del nuevo Tercero. Detalles %s</error>', $e->getMessage()), OutputInterface::OUTPUT_NORMAL);
+                $output->writeln(sprintf('<error>Ha ocurrido un error persistiendo los datos de el/la nuevo/a '.$cadenaNombreEntidad.'. Detalles %s</error>', $e->getMessage()), OutputInterface::OUTPUT_NORMAL);
                 $progress->display();
 
                 return null;
             }
         } else {
             $progress->clear();
-            $output->writeln('<error>El Tercero contiene parámetros que contienen errores de validación. No se crea la entidad.</error>');
+            $output->writeln('<error>El/La '.$cadenaNombreEntidad.' contiene parámetros que contienen errores de validación. No se crea la entidad.</error>');
             foreach ($errors as $error) {
                 /** @var \Symfony\Component\Validator\ConstraintViolation $error */
                 $output->writeln(sprintf('<error>%s: %s</error>', $error->getPropertyPath(), $error->getMessage()));
@@ -240,7 +175,6 @@ class ImportProveedoresCommand extends ContainerAwareCommand
             $progress->display();
             return null;
         }
-
     }
 
     private function selectMoneda($moneda, OutputInterface $output,  DialogHelper $dialog, ProgressHelper $progress)
@@ -249,7 +183,7 @@ class ImportProveedoresCommand extends ContainerAwareCommand
         $count = 0;
         foreach ($this->monedas as $e) {
             if (strtolower($moneda) == strtolower($e->getValor())) {
-                $estilo = $e;
+                $moneda = $e;
                 break;
             } else {
                 $choices[$count++] = $e->getValor();

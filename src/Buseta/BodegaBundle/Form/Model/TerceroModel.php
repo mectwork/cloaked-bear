@@ -25,6 +25,13 @@ class TerceroModel implements TerceroModelInterface
     private $codigo;
 
     /**
+     * @var string
+     *
+     * @Assert\NotBlank()
+     */
+    private $cifNif;
+
+    /**
      * @var \Buseta\UploadBundle\Entity\UploadResources
      * @Assert\Valid()
      */
@@ -121,6 +128,24 @@ class TerceroModel implements TerceroModelInterface
     public function getActivo()
     {
         return $this->activo;
+    }
+
+    /**
+     * @param string $cifNif
+     */
+    public function setCifNif($cifNif)
+    {
+        $this->cifNif = $cifNif;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCifNif()
+    {
+        return $this->cifNif;
     }
 
     /**
