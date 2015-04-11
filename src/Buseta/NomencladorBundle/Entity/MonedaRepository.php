@@ -26,4 +26,21 @@ class MonedaRepository extends EntityRepository
             return false;
         }
     }
+
+    public function onlyOneActive($criteria = array())
+    {
+        if ($criteria['activo'] === false) {
+            return array();
+        }
+
+        $qb = $this->createQueryBuilder('m');
+        $query = $qb->where($qb->expr()->eq('m.activo', ':activo'))
+            ->setParameter('activo', true);
+
+        try {
+            return $query->getQuery()->getResult();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
 }
