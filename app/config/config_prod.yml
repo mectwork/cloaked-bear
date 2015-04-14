@@ -1,9 +1,10 @@
 imports:
     - { resource: config.yml }
 
-#framework:
+framework:
 #    validation:
 #        cache: apc
+    profiler: ~
 
 #doctrine:
 #    orm:
