@@ -107,7 +107,8 @@ class PedidoCompraController extends Controller
                 /** @var ConstraintViolation $e */
                 $session->getFlashBag()->add('danger', $e->getMessage());
             }
-            $error = true;
+
+            return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
         }
 
         if (!$error) {

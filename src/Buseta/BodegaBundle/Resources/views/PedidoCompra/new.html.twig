@@ -128,13 +128,14 @@
             form_id: $('div#basicos').find('form').attr('id'),
             form_name: $('div#basicos').find('form').attr('name'),
             id: '',
-            _load: function () {
-
+            _start_evens: function () {
                 $('#bodega_pedido_compra_fecha_pedido').datetimepicker({
                     'format': 'DD/MM/YYYY'
                 });
 
                 $('a#btn_pedidocompra_save').on('click', pedidocompra._save);
+            },
+            _load: function () {
                 pedidocompra.id = $('input[id="' + pedidocompra.form_id + '_id"]').val();
                 if (pedidocompra.id === '' || pedidocompra.id === undefined) {
                     // hide all tabs on page load
@@ -146,6 +147,7 @@
                 }
 
                 // on show tab events
+                $('a[data-toggle="tab"]').unbind('show.bs.tab');
                 $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
                     var href = $(e.target).attr('href');
                     var relhref = $(e.relatedTarget).attr('href');
@@ -154,6 +156,8 @@
                         lineas._load();
                     }
                 });
+
+                pedidocompra._start_evens();
             },
             _save: function (event) {
                 if (event != undefined) {
@@ -196,7 +200,7 @@
                 } else if(jqXHR.status == 202) {
                     addGlobalMessage('success', response.message);
                 }
-                $('a#btn_pedidocompra_save').on('click', pedidocompra._save);
+                pedidocompra._start_evens();
             },
             _always: function() {
                 // remove spinning
@@ -277,7 +281,6 @@
                 $('div.lineas-paginator.row ul.pagination').find('a.paginator-link').on('click', lineas._load);
             },
             _load: function (event) {
-
                 if(event !== undefined) {
                     event.preventDefault();
                 }
@@ -327,7 +330,10 @@
                                 $('div#form_lineas_modal').modal('hide');
                             });
 
-                            //Valores iniciales del modal de nueva linea
+                            // Chosen
+                            $('#' + lineas.form_id + '_producto').chosen();
+
+                            // Valores iniciales del modal de nueva linea
                             $('#' + lineas.form_id + '_cantidad_pedido').val(0);
 
                             $('#' + lineas.form_id + '_cantidad_pedido').change(lineas._generar_importe_linea);
@@ -362,16 +368,6 @@
                         }).fail(utils._fail).always(function(){});
             },
             _save_modal: function (event) {
-
-                //Actualiza los valores de los campos Importes Total y Total por Lineas
-                var monto = $('#' + lineas.form_id + '_importe_linea').val();
-
-                lineastotales.addLinea(monto);
-                var montototal = lineastotales.getTotal();
-                $('#bodega_pedido_compra_importe_total_lineas').val(montototal);
-                $('#bodega_pedido_compra_importe_total').val(montototal);
-                //--Actualiza los valores de los campos Importes Total y Total por Lineas
-
                 if(event != undefined) {
                     event.preventDefault();
                 }
@@ -397,18 +393,6 @@
                     url: url,
                     dataType: 'json'
                 });
-
-                //Actualiza el PedidoCompra con los nuevos valores de los importes de lineas y totales
-                url = Routing.generate('pedidocompra_update', {'id': pedidocompra.id});
-
-                $('form#' + pedidocompra.form_id).ajaxSubmit({
-                    success: pedidocompra._done,
-                    error: utils._fail,
-                    complete: pedidocompra._always,
-                    url: url,
-                    dataType: 'json'
-                });
-
             },
             _save_delete_modal: function (event) {
                 if(event != undefined) {
@@ -440,14 +424,34 @@
                 });
             },
             _done: function (response, textStatus, jqXHR) {
-
                 $('form#' + lineas.form_id).replaceWith($(response.view).find('form'));
 
                 if(jqXHR.status == 201 || jqXHR.status == 202) {
                     addGlobalMessage('success', response.message);
 
                     $('div#form_lineas_modal').modal('hide');
+
                     lineas._load();
+
+                    //Actualiza los valores de los campos Importes Total y Total por Lineas
+                    var monto = $('#' + lineas.form_id + '_importe_linea').val();
+
+                    lineastotales.addLinea(monto);
+                    var montototal = lineastotales.getTotal();
+                    $('#bodega_pedido_compra_importe_total_lineas').val(montototal);
+                    $('#bodega_pedido_compra_importe_total').val(montototal);
+                    //--Actualiza los valores de los campos Importes Total y Total por Lineas
+
+                    //Actualiza el PedidoCompra con los nuevos valores de los importes de lineas y totales
+                    url = Routing.generate('pedidocompra_update', {'id': pedidocompra.id});
+
+                    $('form#' + pedidocompra.form_id).ajaxSubmit({
+                        success: pedidocompra._done,
+                        error: utils._fail,
+                        complete: pedidocompra._always,
+                        url: url,
+                        dataType: 'json'
+                    });
                 }
             },
             _always: function(jqXHR, textStatus) {
@@ -474,12 +478,14 @@
                     url: '{{ path("impuesto_ajax_productos_all") }}',
                     data: data,
                     success: function(data) {
-                        var values = $.parseJSON(data);
+                        var values = data;
                         var importe_linea_text = $('#' + lineas.form_id + '_importe_linea');
                         var precio_text = $('#' + lineas.form_id + '_precio_unitario');
+                        var uom_select = $('#' + lineas.form_id + '_uom');
 
                         precio_text.val(values.precio);
                         importe_linea_text.val(values.importeLinea);
+                        uom_select.val(values.uom);
 
                         //$('#' + pedidocompra.form_id + '_importe_total_lineas').val(montototal);
                     }

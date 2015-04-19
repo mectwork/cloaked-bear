@@ -211,7 +211,7 @@ class PedidoCompra
     /**
      * @return bool
      *
-     * @Assert\True(groups={"on_complete"}, message="pedidocompra.on_complete.imports_not_equals", option={"translationDomain": "BusetaBodegaBundle"})
+     * @Assert\True(groups={"on_complete"}, message="El importe entrado para la Compra y el importe total del Registro no coinciden.")
      */
     public function isValidToComplete()
     {

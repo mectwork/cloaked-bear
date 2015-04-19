@@ -47,18 +47,18 @@ class PedidoCompraLineaType extends AbstractType
             ))
             ->add('precio_unitario', 'integer', array(
                 'required' => true,
-                'label'  => 'Precio unitario',
+                'label'  => 'Costo unitario',
                 'attr'   => array(
                     'class' => 'form-control',
                 ),
             ))
             ->add('impuesto', 'entity', array(
-                    'class' => 'BusetaTallerBundle:Impuesto',
-                    'empty_value' => '---Seleccione---',
-                    'required' => true,
-                    'attr' => array(
-                        'class' => 'form-control',
-                    ),
+                'class' => 'BusetaTallerBundle:Impuesto',
+                'empty_value' => '---Seleccione---',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
             ))
             ->add('moneda', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Moneda',
@@ -69,7 +69,7 @@ class PedidoCompraLineaType extends AbstractType
                 ),
             ))
             ->add('porciento_descuento', 'text', array(
-                'required' => true,
+                'required' => false,
                 'label'  => '% Descuento',
                 'attr'   => array(
                     'class' => 'form-control',

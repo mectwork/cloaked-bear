@@ -53,6 +53,11 @@
             </tr>
 
             <tr>
+                <th>Importe Compra</th>
+                <td>{{ entity.importeCompra }}</td>
+            </tr>
+
+            <tr>
                 <th>Importe Total Líneas</th>
                 <td>{{ entity.importetotallineas }}</td>
             </tr>
@@ -93,7 +98,7 @@
                                 <td>{{ linea.cantidadpedido }}</td>
                                 <td>{{ linea.uom.valor }}</td>
                                 <td>{{ linea.preciounitario }}</td>
-                                <td>{{ linea.impuesto.nombre }}</td>
+                                <td>{{ linea.impuesto ? linea.impuesto.nombre : '-' }}</td>
                                 <td>{{ linea.porcientodescuento }}</td>
                                 <td>{{ linea.importelinea }}</td>
                             </tr>

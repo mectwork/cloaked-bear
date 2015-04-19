@@ -2,6 +2,8 @@
 
 namespace Buseta\TallerBundle\Controller;
 
+use Buseta\BodegaBundle\Entity\CostoProducto;
+use Buseta\BodegaBundle\Entity\Producto;
 use Buseta\TallerBundle\Form\Filter\ImpuestoFilter;
 use Buseta\TallerBundle\Form\Model\ImpuestoFilterModel;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,25 +32,27 @@ class ImpuestoController extends Controller
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 
-        $request = $this->getRequest();
         if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
         }
 
         $em = $this->getDoctrine()->getManager();
 
+        /** @var Producto $producto */
         $producto = $em->getRepository('BusetaBodegaBundle:Producto')->findOneBy(array(
             'id' => $request->query->get('producto_id'),
         ));
 
+        /** @var Impuesto $impuesto */
         $impuesto = $em->getRepository('BusetaTallerBundle:Impuesto')->findOneBy(array(
             'id' => $request->query->get('impuesto_id'),
         ));
 
         $cantidad_pedido  = $request->query->get('cantidad_pedido');
-        foreach ($producto->getPrecioProducto() as $precios) {
-            if ($precios->getActivo()) {
-                $precioSalida = ($precios->getPrecio());
+        foreach ($producto->getCostoProducto() as $costo) {
+            /** @var CostoProducto $costo */
+            if ($costo->getActivo()) {
+                $precioSalida = ($costo->getCosto());
             }
         }
 
@@ -62,14 +66,15 @@ class ImpuestoController extends Controller
         $porciento_descuento = $request->query->get('porciento_descuento');
 
         $funcionesExtras = new FuncionesExtras();
-        $importeLinea = $funcionesExtras->ImporteLinea($impuesto, $cantidad_pedido, $precio_unitario, $porciento_descuento);
+        $importeLinea = $funcionesExtras->ImporteLinea($cantidad_pedido, $precio_unitario, $impuesto, $porciento_descuento);
 
         $json = array(
             'importeLinea' => $importeLinea,
             'precio' => $precio_unitario,
+            'uom' => $producto->getUom()->getId(),
         );
 
-        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+        return new \Symfony\Component\HttpFoundation\JsonResponse($json);
     }
 
     /**

@@ -65,7 +65,6 @@ class PedidoCompraLinea
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Impuesto", inversedBy="pedido_compra_lineas")
-     * @Assert\NotBlank()
      */
     private $impuesto;
 
@@ -79,7 +78,6 @@ class PedidoCompraLinea
      * @var float
      *
      * @ORM\Column(name="porciento_descuento", type="decimal", scale=2)
-     * @Assert\NotBlank()
      */
     private $porciento_descuento;
 
