@@ -76,6 +76,11 @@ class PedidoCompraModel
     /**
      * @var float
      */
+    private $importeCompra;
+
+    /**
+     * @var float
+     */
     private $importe_total_lineas;
 
     /**
@@ -143,6 +148,7 @@ class PedidoCompraModel
             $this->updatedby = $pedidocompra->getUpdatedby();
             $this->estado_documento = $pedidocompra->getEstadoDocumento();
             $this->fecha_pedido = $pedidocompra->getFechaPedido();
+            $this->importeCompra = $pedidocompra->getImporteCompra();
             $this->importe_total = $pedidocompra->getImporteTotal();
             $this->importe_total_lineas = $pedidocompra->getImporteTotalLineas();
             $this->numero_documento = $pedidocompra->getNumeroDocumento();
@@ -183,6 +189,7 @@ class PedidoCompraModel
         $pedidocompra->setDeletedby($this->getDeletedby());
         $pedidocompra->setEstadoDocumento($this->getEstadoDocumento());
         $pedidocompra->setFechaPedido($this->getFechaPedido());
+        $pedidocompra->setImporteCompra($this->getImporteCompra());
         $pedidocompra->setImporteTotal($this->getImporteTotal());
         $pedidocompra->setImporteTotalLineas($this->getImporteTotalLineas());
         $pedidocompra->setNumeroDocumento($this->getNumeroDocumento());
@@ -520,5 +527,21 @@ class PedidoCompraModel
     public function setUpdatedby($updatedby)
     {
         $this->updatedby = $updatedby;
+    }
+
+    /**
+     * @return float
+     */
+    public function getImporteCompra()
+    {
+        return $this->importeCompra;
+    }
+
+    /**
+     * @param float $importeCompra
+     */
+    public function setImporteCompra($importeCompra)
+    {
+        $this->importeCompra = $importeCompra;
     }
 }

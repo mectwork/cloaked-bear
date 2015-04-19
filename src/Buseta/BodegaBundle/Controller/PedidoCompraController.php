@@ -13,9 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\PedidoCompra;
 
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Validator\ConstraintViolation;
 
 /**
  * PedidoCompra controller.
@@ -26,6 +28,9 @@ class PedidoCompraController extends Controller
 {
     /**
      * Lists all PedidoCompra entities.
+     *
+     * @Route("/", name="pedidocompra")
+     * @Method("GET")
      */
     public function indexAction(Request $request)
     {
@@ -57,73 +62,102 @@ class PedidoCompraController extends Controller
         ));
     }
 
-    public function procesarRegistroAction($id)
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{id}/procesarRegistro", name="procesarRegistro")
+     * @Method("GET")
+     */
+    public function procesarRegistroAction(PedidoCompra $pedidoCompra)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $pedidoCompra = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->find($id);
-
-        if (!$pedidoCompra) {
-            throw $this->createNotFoundException('Unable to find PedidoCompra entity.');
-        }
-
         //Cambia el estado de Borrador a Procesado
         $pedidoCompra->setEstadoDocumento('PR');
-        $em->persist($pedidoCompra);
-        $em->flush();
+
+        try {
+            $em->persist($pedidoCompra);
+            $em->flush();
+        } catch (\Exception $e) {
+            $this->get('logger')->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
+            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
+        }
 
         return $this->redirect($this->generateUrl('pedidocompra'));
     }
 
-    public function completarRegistroAction($id)
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{id}/completarRegistro", name="completarRegistro")
+     * @Method("GET")
+     */
+    public function completarRegistroAction(PedidoCompra $pedidoCompra)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em         = $this->getDoctrine()->getManager();
+        $logger     = $this->get('logger');
+        $session    = $this->get('session');
+        $validator  = $this->get('validator');
+        $error      = false;
 
-        $pedidoCompra = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->find($id);
-
-        if (!$pedidoCompra) {
-            throw $this->createNotFoundException('Unable to find PedidoCompra entity.');
+        if (($errors = $validator->validate($pedidoCompra, 'on_complete')) && count($errors) > 0) {
+            foreach ($errors as $e) {
+                /** @var ConstraintViolation $e */
+                $session->getFlashBag()->add('danger', $e->getMessage());
+            }
+            $error = true;
         }
 
-        $fecha =  new \DateTime();
+        if (!$error) {
+            //Cambia el estado de Procesado a Completado
+            $pedidoCompra->setEstadoDocumento('CO');
+            try {
+                $em->persist($pedidoCompra);
+                $em->flush();
+            } catch (\Exception $e) {
+                $logger->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
+                $session->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
 
-        $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($pedidoCompra->getAlmacen());
-        $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($pedidoCompra->getTercero());
+                $error = true;
+            }
+        }
 
-        //registro los datos del nuevo albarán que se crear al procesar el pedido
-        $albaran = new Albaran();
-        $albaran->setEstadoDocumento('BO');
-        $albaran->setAlmacen($almacen);
-        $albaran->setConsecutivoCompra($pedidoCompra->getConsecutivoCompra());
-        $albaran->setTercero($tercero);
-        $albaran->setCreated(new \DateTime());
+        if (!$error) {
+            $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($pedidoCompra->getAlmacen());
+            $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($pedidoCompra->getTercero());
 
-        $em->persist($albaran);
-        $em->flush();
+            //registro los datos del nuevo albarán que se crear al procesar el pedido
+            $albaran = new Albaran();
+            $albaran->setEstadoDocumento('BO');
+            $albaran->setAlmacen($almacen);
+            $albaran->setConsecutivoCompra($pedidoCompra->getConsecutivoCompra());
+            $albaran->setTercero($tercero);
+            $albaran->setCreated(new \DateTime());
 
-        //registro los datos de las líneas del albarán
-        foreach ($pedidoCompra->getPedidoCompraLineas() as $linea) {
-            $albaranLinea = new AlbaranLinea();
-            $albaranLinea->setAlbaran($albaran);
-            $albaranLinea->setLinea($linea->getLinea());
-            $albaranLinea->setCantidadMovida($linea->getCantidadPedido());
-
-            $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($linea->getProducto());
-            $albaranLinea->setProducto($producto);
-
-            $albaranLinea->setAlmacen($almacen);
-
-            $uom = $em->getRepository('BusetaNomencladorBundle:UOM')->find($linea->getUOM());
-            $albaranLinea->setUom($uom);
-
-            $em->persist($albaranLinea);
+            $em->persist($albaran);
             $em->flush();
-        }
 
-        //Cambia el estado de Procesado a Completado
-        $pedidoCompra->setEstadoDocumento('CO');
-        $em->persist($pedidoCompra);
-        $em->flush();
+            //registro los datos de las líneas del albarán
+            foreach ($pedidoCompra->getPedidoCompraLineas() as $linea) {
+                $albaranLinea = new AlbaranLinea();
+                $albaranLinea->setAlbaran($albaran);
+                $albaranLinea->setLinea($linea->getLinea());
+                $albaranLinea->setCantidadMovida($linea->getCantidadPedido());
+
+                $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($linea->getProducto());
+                $albaranLinea->setProducto($producto);
+
+                $albaranLinea->setAlmacen($almacen);
+
+                $uom = $em->getRepository('BusetaNomencladorBundle:UOM')->find($linea->getUOM());
+                $albaranLinea->setUom($uom);
+
+                $em->persist($albaranLinea);
+                $em->flush();
+            }
+        }
 
         return $this->redirect($this->generateUrl('pedidocompra'));
     }
@@ -131,7 +165,8 @@ class PedidoCompraController extends Controller
     /**
      * Creates a new PedidoCompra entity.
      *
-     * @Route("/create", name="pedidocompras_pedidocompra_create", methods={"POST"}, options={"expose":true})
+     * @Route("/create", name="pedidocompra_create", options={"expose": true})
+     * @Method("POST")
      */
     public function createAction(Request $request)
     {
@@ -189,7 +224,7 @@ class PedidoCompraController extends Controller
     private function createCreateForm(PedidoCompraModel $entity)
     {
         $form = $this->createForm('bodega_pedido_compra', $entity, array(
-            'action' => $this->generateUrl('pedidocompras_pedidocompra_create'),
+            'action' => $this->generateUrl('pedidocompra_create'),
             'method' => 'POST',
         ));
 
@@ -199,7 +234,8 @@ class PedidoCompraController extends Controller
     /**
      * Displays a form to create a new PedidoCompra entity.
      *
-     * @Route("/new", name="pedidocompras_pedidocompra_new", methods={"GET"}, options={"expose":true})
+     * @Route("/new", name="pedidocompra_new")
+     * @Method("GET")
      */
     public function newAction()
     {
@@ -232,6 +268,9 @@ class PedidoCompraController extends Controller
 
     /**
      * Finds and displays a PedidoCompra entity.
+     *
+     * @Route("/{id}/show", name="pedidocompra_show")
+     * @Method("GET")
      */
     public function showAction($id)
     {
@@ -253,7 +292,8 @@ class PedidoCompraController extends Controller
     /**
      * Displays a form to edit an existing PedidoCompra entity.
      *
-     * @Route("/{id}/edit", name="pedidocompras_pedidocompra_edit", methods={"GET"}, options={"expose":true})
+     * @Route("/{id}/edit", name="pedidocompra_edit", options={"expose": true})
+     * @Method("GET")
      */
     public function editAction(PedidoCompra $pedidocompra)
     {
@@ -277,7 +317,7 @@ class PedidoCompraController extends Controller
     private function createEditForm(PedidoCompraModel $entity)
     {
         $form = $this->createForm('bodega_pedido_compra', $entity, array(
-            'action' => $this->generateUrl('pedidocompras_pedidocompra_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('pedidocompra_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -287,7 +327,8 @@ class PedidoCompraController extends Controller
     /**
      * Edits an existing PedidoCompra entity.
      *
-     * @Route("/{id}/update", name="pedidocompras_pedidocompra_update", methods={"POST","PUT"}, options={"expose":true})
+     * @Route("/{id}/update", name="pedidocompra_update", options={"expose": true})
+     * @Method({"POST", "PUT"})
      */
     public function updateAction(Request $request, PedidoCompra $pedidocompra)
     {
@@ -334,8 +375,8 @@ class PedidoCompraController extends Controller
     /**
      * Deletes a PedidoCompra entity.
      *
-     * @Route("/{id}/delete", name="pedidocompra_delete")
-     * @Method({"DELETE", "GET"})
+     * @Route("/{id}/delete", name="pedidocompra_delete", options={"expose": true})
+     * @Method({"DELETE", "GET", "POST"})
      */
     public function deleteAction(PedidoCompra $pedidocompra, Request $request)
     {

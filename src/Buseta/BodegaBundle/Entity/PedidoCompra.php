@@ -85,6 +85,13 @@ class PedidoCompra
     /**
      * @var float
      *
+     * @ORM\Column(name="importe_compra", type="decimal", scale=2, nullable=true)
+     */
+    private $importeCompra;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="importe_total_lineas", type="decimal", scale=2, nullable=true)
      */
     private $importe_total_lineas;
@@ -172,6 +179,7 @@ class PedidoCompra
         $this->updatedby = $model->getUpdatedby();
         $this->estado_documento = $model->getEstadoDocumento();
         $this->fecha_pedido = $model->getFechaPedido();
+        $this->importeCompra = $model->getImporteCompra();
         $this->importe_total = $model->getImporteTotal();
         $this->importe_total_lineas = $model->getImporteTotalLineas();
         $this->numero_documento = $model->getNumeroDocumento();
@@ -198,6 +206,16 @@ class PedidoCompra
         }
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     *
+     * @Assert\True(groups={"on_complete"}, message="pedidocompra.on_complete.imports_not_equals", option={"translationDomain": "BusetaBodegaBundle"})
+     */
+    public function isValidToComplete()
+    {
+        return $this->importeCompra === $this->importe_total;
     }
 
     /**
@@ -357,7 +375,7 @@ class PedidoCompra
     /**
      * Set importe_total.
      *
-     * @param string $importeTotal
+     * @param float $importeTotal
      *
      * @return PedidoCompra
      */
@@ -371,11 +389,35 @@ class PedidoCompra
     /**
      * Get importe_total.
      *
-     * @return string
+     * @return float
      */
     public function getImporteTotal()
     {
         return $this->importe_total;
+    }
+
+    /**
+     * Get importeCompra.
+     *
+     * @return float
+     */
+    public function getImporteCompra()
+    {
+        return $this->importeCompra;
+    }
+
+    /**
+     * Set importeCompra.
+     *
+     * @param float $importeCompra
+     *
+     * @return $this
+     */
+    public function setImporteCompra($importeCompra)
+    {
+        $this->importeCompra = $importeCompra;
+
+        return $this;
     }
 
     /**

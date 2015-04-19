@@ -7,8 +7,8 @@ BusetaBodegaBundle_pedidocompralinea:
     prefix:   /pedidocompralinea
 
 BusetaBodegaBundle_pedidocompra:
-    resource: "@BusetaBodegaBundle/Resources/config/routing/pedidocompra.yml"
-    prefix:   /pedidocompra
+    resource: "@BusetaBodegaBundle/Controller/PedidoCompraController.php"
+    type:     annotation
 
 BusetaBodegaBundle_inventariofisico:
         resource: "@BusetaBodegaBundle/Resources/config/routing/inventariofisico.yml"

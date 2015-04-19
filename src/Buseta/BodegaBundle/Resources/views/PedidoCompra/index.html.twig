@@ -108,7 +108,7 @@
                     {% if entity.estadodocumento == 'BO' %}
                         <div class="btn-group">
                             <a class="btn btn-danger btn-xs"
-                               href="{{ path('pedidocompras_pedidocompra_edit', { 'id': entity.id }) }}"><span
+                               href="{{ path('pedidocompra_edit', { 'id': entity.id }) }}"><span
                                         class="glyphicon glyphicon-edit"> Editar</span></a>
                         </div>
                         <a href="#delete" data-href="{{ path('pedidocompra_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
@@ -116,7 +116,7 @@
                     {% else %}
                         <div class="btn-group">
                             <a class="btn btn-danger btn-xs disabled"
-                               href="{{ path('pedidocompras_pedidocompra_edit', { 'id': entity.id }) }}"><span
+                               href="{{ path('pedidocompra_edit', { 'id': entity.id }) }}"><span
                                         class="glyphicon glyphicon-edit"> Editar</span></a>
                         </div>
                         <a href="#delete" data-href="{{ path('pedidocompra_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs disabled">

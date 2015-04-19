@@ -117,6 +117,7 @@ linea:
 pedidocompra:
   btn:
     adicionar: Adicionar Registro de Compra
+  on_complete.imports_not_equals: El importe entrado para la Compra y el importe total del Registro no coinciden.
 
 necesidadmaterial:
   btn:

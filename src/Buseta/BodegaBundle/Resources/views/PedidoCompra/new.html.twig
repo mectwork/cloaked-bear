@@ -170,9 +170,9 @@
                 pedidocompra.id = $('input[id="' + pedidocompra.form_id + '_id"]').val();
 
                 var pedidocomprasForm    = $('form#' + pedidocompra.form_id),
-                        url             = Routing.generate('pedidocompras_pedidocompra_create',{});
+                        url             = Routing.generate('pedidocompra_create',{});
                 if(pedidocompra.id !== '' && pedidocompra.id !== undefined) {
-                    url = Routing.generate('pedidocompras_pedidocompra_update', {'id': pedidocompra.id});
+                    url = Routing.generate('pedidocompra_update', {'id': pedidocompra.id});
                 }
 
                 pedidocomprasForm.ajaxSubmit({
@@ -399,7 +399,7 @@
                 });
 
                 //Actualiza el PedidoCompra con los nuevos valores de los importes de lineas y totales
-                url = Routing.generate('pedidocompras_pedidocompra_update', {'id': pedidocompra.id});
+                url = Routing.generate('pedidocompra_update', {'id': pedidocompra.id});
 
                 $('form#' + pedidocompra.form_id).ajaxSubmit({
                     success: pedidocompra._done,

@@ -119,6 +119,13 @@ class PedidoCompraType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
+            ->add('importeCompra', 'text', array(
+                'required' => false,
+                'label' => 'Importe compra',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->add('importe_total_lineas', 'text', array(
                 'required' => false,
                 'label'  => 'Importe total líneas',

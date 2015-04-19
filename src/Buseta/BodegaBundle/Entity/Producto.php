@@ -83,13 +83,6 @@ class Producto
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\Movimiento", mappedBy="producto", cascade={"all"})
-     */
-    private $movimientos;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
      * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\InventarioFisicoLinea", mappedBy="producto", cascade={"all"})
      */
     private $inventario_fisico_lineas;
@@ -295,42 +288,6 @@ class Producto
     public function __toString()
     {
         return $this->nombre;
-    }
-
-    /**
-     * Add movimientos.
-     *
-     * @param \Buseta\BodegaBundle\Entity\Movimiento $movimientos
-     *
-     * @return Producto
-     */
-    public function addMovimiento(\Buseta\BodegaBundle\Entity\Movimiento $movimientos)
-    {
-        $movimientos->setProducto($this);
-
-        $this->movimientos[] = $movimientos;
-
-        return $this;
-    }
-
-    /**
-     * Remove movimientos.
-     *
-     * @param \Buseta\BodegaBundle\Entity\Movimiento $movimientos
-     */
-    public function removeMovimiento(\Buseta\BodegaBundle\Entity\Movimiento $movimientos)
-    {
-        $this->movimientos->removeElement($movimientos);
-    }
-
-    /**
-     * Get movimientos.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getMovimientos()
-    {
-        return $this->movimientos;
     }
 
     /**
@@ -641,7 +598,6 @@ class Producto
      */
     public function __construct()
     {
-        $this->movimientos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->inventario_fisico_lineas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pedido_compra_lineas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->necesidad_material_lineas = new \Doctrine\Common\Collections\ArrayCollection();
