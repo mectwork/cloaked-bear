@@ -2,14 +2,6 @@ BusetaBodegaBundle_necesidadmaterial:
     resource: "@BusetaBodegaBundle/Resources/config/routing/necesidadmaterial.yml"
     prefix:   /necesidadmaterial
 
-BusetaBodegaBundle_pedidocompralinea:
-    resource: "@BusetaBodegaBundle/Resources/config/routing/pedido_compra_linea.yml"
-    prefix:   /pedidocompralinea
-
-BusetaBodegaBundle_pedidocompra:
-    resource: "@BusetaBodegaBundle/Controller/PedidoCompraController.php"
-    type:     annotation
-
 BusetaBodegaBundle_inventariofisico:
         resource: "@BusetaBodegaBundle/Resources/config/routing/inventariofisico.yml"
         prefix:   /inventariofisico

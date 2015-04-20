@@ -71,6 +71,17 @@ class PedidoCompraController extends Controller
      */
     public function procesarRegistroAction(PedidoCompra $pedidoCompra)
     {
+        $validator  = $this->get('validator');
+        $session    = $this->get('session');
+        if (($errors = $validator->validate($pedidoCompra, 'on_complete')) && count($errors) > 0) {
+            foreach ($errors as $e) {
+                /** @var ConstraintViolation $e */
+                $session->getFlashBag()->add('danger', $e->getMessage());
+            }
+
+            return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
+        }
+
         $em = $this->getDoctrine()->getManager();
 
         //Cambia el estado de Borrador a Procesado
@@ -99,30 +110,18 @@ class PedidoCompraController extends Controller
         $em         = $this->getDoctrine()->getManager();
         $logger     = $this->get('logger');
         $session    = $this->get('session');
-        $validator  = $this->get('validator');
         $error      = false;
 
-        if (($errors = $validator->validate($pedidoCompra, 'on_complete')) && count($errors) > 0) {
-            foreach ($errors as $e) {
-                /** @var ConstraintViolation $e */
-                $session->getFlashBag()->add('danger', $e->getMessage());
-            }
+        //Cambia el estado de Procesado a Completado
+        $pedidoCompra->setEstadoDocumento('CO');
+        try {
+            $em->persist($pedidoCompra);
+            $em->flush();
+        } catch (\Exception $e) {
+            $logger->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
+            $session->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
 
-            return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
-        }
-
-        if (!$error) {
-            //Cambia el estado de Procesado a Completado
-            $pedidoCompra->setEstadoDocumento('CO');
-            try {
-                $em->persist($pedidoCompra);
-                $em->flush();
-            } catch (\Exception $e) {
-                $logger->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
-                $session->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
-
-                $error = true;
-            }
+            $error = true;
         }
 
         if (!$error) {
@@ -242,22 +241,27 @@ class PedidoCompraController extends Controller
     {
         $form   = $this->createCreateForm(new PedidoCompraModel());
 
-        $em = $this->getDoctrine()->getManager();
-        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
+        $em = $this->get('doctrine.orm.entity_manager');
+        $productos = $em->getRepository('BusetaBodegaBundle:Producto')
+            ->createQueryBuilder('p')
+            ->select('p,c')
+            ->innerJoin('p.costoProducto', 'c')
+            ->getQuery()
+            ->getResult();
 
         $json = array();
-        $precioSalida = 0;
+        $costoSalida = 0;
 
         foreach ($productos as $p) {
-            foreach ($p->getPrecioProducto() as $precios) {
-                if ($precios->getActivo()) {
-                    $precioSalida = ($precios->getPrecio());
+            foreach ($p->getCostoProducto() as $costo) {
+                if ($costo->getActivo()) {
+                    $costoSalida = ($costo->getCosto());
                 }
             }
 
             $json[$p->getId()] = array(
                 'nombre' => $p->getNombre(),
-                'precio_salida' => $precioSalida,
+                'precio_salida' => $costoSalida,
             );
         }
 
@@ -346,6 +350,7 @@ class PedidoCompraController extends Controller
                 $pedidocompra->setModelData($pedidocompraModel);
                 $em->flush();
 
+                $editForm = $this->createEditForm(new PedidoCompraModel($pedidocompra));
                 $renderView = $this->renderView('@BusetaBodega/PedidoCompra/form_template.html.twig', array(
                     'form'     => $editForm->createView(),
                 ));
@@ -361,7 +366,7 @@ class PedidoCompraController extends Controller
                 ));
 
                 new JsonResponse(array(
-                    'message' => $trans->trans('messages.update.error.%entidad%', array('entidad' => 'Registro de Compra'), 'BusetaBodegaBundle')
+                    'message' => $trans->trans('messages.update.error.%key%', array('key' => 'Registro de Compra'), 'BusetaBodegaBundle')
                 ), 500);
             }
         }

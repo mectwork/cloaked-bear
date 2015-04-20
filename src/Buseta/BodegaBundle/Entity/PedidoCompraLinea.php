@@ -90,9 +90,10 @@ class PedidoCompraLinea
 
     public function __construct()
     {
-        $this->importe_linea = 0;
-        $this->porciento_descuento = 0;
-        $this->precio_unitario = 0;
+        $this->importe_linea        = 0;
+        $this->porciento_descuento  = 0;
+        $this->precio_unitario      = 0;
+        $this->cantidad_pedido      = 0;
     }
 
     /**
@@ -156,7 +157,7 @@ class PedidoCompraLinea
     /**
      * Set precio_unitario.
      *
-     * @param string $precioUnitario
+     * @param float $precioUnitario
      *
      * @return PedidoCompraLinea
      */
@@ -170,7 +171,7 @@ class PedidoCompraLinea
     /**
      * Get precio_unitario.
      *
-     * @return string
+     * @return float
      */
     public function getPrecioUnitario()
     {
@@ -204,7 +205,7 @@ class PedidoCompraLinea
     /**
      * Set importe_linea.
      *
-     * @param string $importeLinea
+     * @param float $importeLinea
      *
      * @return PedidoCompraLinea
      */
@@ -218,7 +219,7 @@ class PedidoCompraLinea
     /**
      * Get importe_linea.
      *
-     * @return string
+     * @return float
      */
     public function getImporteLinea()
     {

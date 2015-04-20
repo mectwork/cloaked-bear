@@ -20,8 +20,8 @@ class PedidoCompraLineaHandler extends PedidoCompraAbstractHandler
 
     public function bindData(PedidoCompra $pedidocompra, PedidoCompraLinea $pedidoCompraLinea = null)
     {
-        $this->pedidocompra      = $pedidocompra;
-        $this->pedidocompra_linea  = $pedidoCompraLinea;
+        $this->pedidocompra         = $pedidocompra;
+        $this->pedidocompra_linea   = $pedidoCompraLinea;
 
         if (!$this->pedidocompra_linea) {
             // Creando una nueva linea
@@ -30,11 +30,13 @@ class PedidoCompraLineaHandler extends PedidoCompraAbstractHandler
 
             $this->form = $this->formFactory->create(new PedidoCompraLineaType(), $this->pedidocompra_linea, array(
                 'method' => 'POST',
+                'action' => $this->router->generate('pedidocompra_lineas_new_modal', array('pedidocompra' => $pedidocompra->getId())),
             ));
         } else {
             // Editando una Linea ya existente
             $this->form = $this->formFactory->create(new PedidoCompraLineaType(), $this->pedidocompra_linea, array(
                 'method' => 'PUT',
+                'action' => $this->router->generate('pedidocompra_lineas_edit_modal', array('id' => $pedidoCompraLinea->getId(), 'pedidocompra' => $pedidocompra->getId())),
             ));
         }
     }

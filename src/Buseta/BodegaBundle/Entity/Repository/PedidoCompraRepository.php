@@ -59,7 +59,7 @@ class PedidoCompraRepository extends EntityRepository
             }
         }
 
-        $query->orderBy('r.id', 'ASC');
+        $query->orderBy('r.id', 'DESC');
 
         try {
             return $query->getQuery();

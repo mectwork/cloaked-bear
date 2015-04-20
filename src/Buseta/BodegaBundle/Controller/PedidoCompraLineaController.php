@@ -8,7 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
 
-use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -53,14 +54,63 @@ class PedidoCompraLineaController extends Controller
      *
      * @throws \Exception
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/new/modal/{pedidocompra}", name="pedidocompra_lineas_new_modal", methods={"GET","POST"}, options={"expose":true})
-     * @ParamConverter("tercero", options={"mapping":{"tercero":"id"}})
+     *
+     * @Route("/new/{pedidocompra}", name="pedidocompra_lineas_new_modal", options={"expose":true})
+     * @Method({"GET","POST"})
+     * @ParamConverter("pedidocompra", options={"mapping":{"pedidocompra":"id"}})
      */
     public function newModalAction(PedidoCompra $pedidocompra, Request $request)
     {
         $trans = $this->get('translator');
         $handler = $this->get('buseta_pedidocompra.linea.handler');
         $handler->bindData($pedidocompra);
+
+        $handler->setRequest($request);
+
+        if($handler->handle()) {
+            $renderView = $this->renderView('@BusetaBodega/PedidoCompra/Linea/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
+            ), 201);
+        }
+
+        if($handler->getError()) {
+            $renderView = $this->renderView('@BusetaBodega/PedidoCompra/Linea/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Línea'), 'BusetaBodegaBundle')
+            ), 500);
+        }
+
+        $renderView = $this->renderView('@BusetaBodega/PedidoCompra/Linea/modal_form.html.twig', array(
+            'form' => $handler->getForm()->createView(),
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
+    }
+
+    /**
+     * @param PedidoCompra $pedidocompra
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     *
+     * @Route("/{id}/edit/{pedidocompra}", name="pedidocompra_lineas_edit_modal", options={"expose":true})
+     * @Method({"GET","PUT"})
+     * @ParamConverter("pedidocompra", options={"mapping":{"pedidocompra":"id"}})
+     */
+    public function editModalAction(PedidoCompraLinea $pedidoCompraLinea, PedidoCompra $pedidocompra, Request $request)
+    {
+        $trans = $this->get('translator');
+        $handler = $this->get('buseta_pedidocompra.linea.handler');
+        $handler->bindData($pedidocompra, $pedidoCompraLinea);
 
         $handler->setRequest($request);
 
@@ -286,22 +336,42 @@ class PedidoCompraLineaController extends Controller
     }
     /**
      * Deletes a PedidoCompraLinea entity.
+     * @Route("/{id}/delete", name="pedidocompra_lineas_delete", options={"expose": true})
+     * @Method({"DELETE", "GET"})
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, PedidoCompraLinea $pedidoCompraLinea)
     {
-        $form = $this->createDeleteForm($id);
+        $form = $this->createDeleteForm($pedidoCompraLinea->getId());
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaBodegaBundle:PedidoCompraLinea')->find($id);
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find PedidoCompraLinea entity.');
+            try {
+                $em->remove($pedidoCompraLinea);
+                $em->flush();
+
+                $message = $this->get('translator')->trans('messages.delete.success', array(), 'BusetaBodegaBundle');
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array('message' => $message), 202);
+                }
+            } catch (\Exception $e) {
+                $message = $this->get('translator')->trans('messages.delete.error.%key%', array('key' => 'Linea Registro de Compra'), 'BusetaBodegaBundle');
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array('message' => $message), 500);
+                }
             }
+        }
 
-            $em->remove($entity);
-            $em->flush();
+        if ($request->isXmlHttpRequest()) {
+            $view = $this->renderView('@BusetaBodega/PedidoCompra/Linea/delete_modal.html.twig', array(
+                'entity'    => $pedidoCompraLinea,
+                'form'      => $form->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $view
+            ), 200);
         }
 
         return $this->redirect($this->generateUrl('linea'));
@@ -317,9 +387,8 @@ class PedidoCompraLineaController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('linea_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('pedidocompra_lineas_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
     }

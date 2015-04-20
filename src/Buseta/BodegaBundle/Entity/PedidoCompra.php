@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="d_pedido_compra")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\PedidoCompraRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class PedidoCompra
 {
@@ -156,9 +157,9 @@ class PedidoCompra
      */
     public function __construct()
     {
-        $this->pedido_compra_lineas = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->importe_total_lineas = 0;
         $this->importe_total = 0;
+        $this->importe_total_lineas = 0;
+        $this->pedido_compra_lineas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->updated = new \DateTime();
         $this->deleted = false;
     }
@@ -169,7 +170,6 @@ class PedidoCompra
      */
     public function setModelData(PedidoCompraModel $model)
     {
-        $this->id = $model->getId();
         $this->created = $model->getCreated();
         $this->createdby = $model->getCreatedby();
         $this->consecutivo_compra = $model->getConsecutivoCompra();
@@ -180,8 +180,6 @@ class PedidoCompra
         $this->estado_documento = $model->getEstadoDocumento();
         $this->fecha_pedido = $model->getFechaPedido();
         $this->importeCompra = $model->getImporteCompra();
-        $this->importe_total = $model->getImporteTotal();
-        $this->importe_total_lineas = $model->getImporteTotalLineas();
         $this->numero_documento = $model->getNumeroDocumento();
 
         if ($model->getTercero()) {
@@ -198,11 +196,6 @@ class PedidoCompra
         }
         if ($model->getCondicionesPago()) {
             $this->condiciones_pago  = $model->getCondicionesPago();
-        }
-        if (!$model->getPedidoCompraLineas()->isEmpty()) {
-            $this->pedido_compra_lineas = $model->getPedidoCompraLineas();
-        } else {
-            $this->pedido_compra_lineas = new ArrayCollection();
         }
 
         return $this;
@@ -718,5 +711,19 @@ class PedidoCompra
     public function getDeletedby()
     {
         return $this->deletedby;
+    }
+
+    /**
+     * @ORM\PreFlush
+     */
+    public function updateImporteTotal()
+    {
+        $this->importe_total_lineas = 0;
+        $this->importe_total = 0;
+        foreach ($this->pedido_compra_lineas as $linea) {
+            /** @var PedidoCompraLinea $linea */
+            $this->importe_total_lineas += $linea->getPrecioUnitario() * $linea->getCantidadPedido();
+            $this->importe_total += $linea->getImporteLinea();
+        }
     }
 }

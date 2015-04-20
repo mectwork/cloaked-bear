@@ -1,3 +1,4 @@
+# DIRECCION
 direccion:
   nombre: Nombre
   calle: Calle
@@ -11,6 +12,7 @@ direccion:
     title: Crear nueva dirección
     delete: Eliminar dirección
 
+# MECANISMO DE CONTACTO
 mecanismo_contacto:
   tipo: Tipo de Contacto
   valor: Valor
@@ -27,6 +29,7 @@ mecanismo_contacto:
     delete: Eliminar mecanismo de contacto
     title: Crear nuevo mecanismo de contacto
 
+# TERCERO
 tercero:
   codigo: Código
   nombres: Nombres
@@ -77,33 +80,36 @@ actions:
   back: Volver
   list: Listar
 
-tercero:
-  btn:
-    adicionar: Adicionar Tercero
-
+# MOVIMIENTO DE PRODUCTOS
 movimientos_productos:
   modal:
     title: Filtrar Productos
+
+# COSTO
 costo:
   btn:
     adicionar: Adicionar Costo
   modal:
     title: Adicionar Nuevo Costo
 
+# INVENTARIO FÍSICO
 inventariofisico:
   btn:
     adicionar: Adicionar Inventario Físico
 
+# PRECIO
 precio:
   btn:
     adicionar: Adicionar Precio
   modal:
     title: Adicionar Nuevo Precio
 
+# PRODUCTO
 producto:
   btn:
     adicionar: Adicionar Producto
 
+# CATEGORÍA DE PRODUCTO
 categoria_producto:
   btn:
     adicionar: Adicionar Categoría de Producto
@@ -114,22 +120,29 @@ linea:
   modal:
     title: Adicionar Nueva Línea
 
+# PEDIDO DE COMPRA
 pedidocompra:
   btn:
     adicionar: Adicionar Registro de Compra
 
-necesidadmaterial:
+# LINEAS PEDIDO DE COMPRA
+pedidocompralinea:
   btn:
-    adicionar: Adicionar Necesidad de Material
+    adicionar: Adicionar Línea
+  modal:
+    delete: Eliminar línea de Registro de Compra
 
+# ALBARAN
 albaran:
   btn:
     adicionar: Adicionar Albarán
 
+# BODEGA
 bodega:
   btn:
     adicionar: Adicionar Bodega
 
+# NECESIDAD MATERIAL
 necesidadmaterial:
   btn:
     adicionar: Adicionar Necesidad de Material

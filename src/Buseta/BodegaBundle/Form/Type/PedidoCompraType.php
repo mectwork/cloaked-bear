@@ -52,7 +52,9 @@ class PedidoCompraType extends AbstractType
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'query_builder' => function (EntityRepository $er) {
                     $qb = $er->createQueryBuilder('t');
-                    return $qb->join('t.proveedor', 'proveedor')
+                    return $qb
+                        ->select('t, proveedor')
+                        ->innerJoin('t.proveedor', 'proveedor')
                         ->where($qb->expr()->isNotNull('proveedor'));
                 },
                 'empty_value' => '---Seleccione---',
@@ -141,14 +143,6 @@ class PedidoCompraType extends AbstractType
                 'attr'   => array(
                     'class' => 'form-control',
                 ),
-            ))
-            ->add('pedido_compra_lineas', 'collection', array(
-                'type' => new PedidoCompraLineaType(),
-                'label'  => false,
-                'required' => true,
-                'by_reference' => false,
-                'allow_add' => true,
-                'allow_delete' => true,
             ))
         ;
     }
