@@ -451,4 +451,63 @@ class ProductoController extends Controller
             ->getForm()
             ;
     }
+
+    /**
+     * @param Producto $producto
+     *
+     * @Route("/{id}/data.{format}", name="productos_get_product_data", requirements={"format": "json|txt"}, defaults={"format":"json"}, options={"expose": true})
+     * @Method({"GET"})
+     */
+    public function getProductDataAction($id)
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+        $qb = $em->getRepository('BusetaBodegaBundle:Producto')
+            ->createQueryBuilder('producto');
+
+        /** @var \Buseta\BodegaBundle\Entity\Producto $producto */
+        $producto = $qb->select('producto,uom,categoriaProducto')
+            ->leftJoin('producto.uom', 'uom')
+            ->leftJoin('producto.categoriaProducto', 'categoriaProducto')
+            ->where($qb->expr()->eq('producto', ':id'))
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getSingleResult();
+
+        if (!$producto) {
+            return new JsonResponse('No existe el producto con id: ' . $id, 404);
+        }
+
+        $data = array(
+            'id'        => $producto->getId(),
+            'nombre'    => $producto->getNombre(),
+            'codigo'    => $producto->getCodigo(),
+            'codigoA'   => $producto->getCodigoA(),
+        );
+
+        // Select UOM
+        if ($producto->getUom()) {
+            $data['uom'] = array(
+                'id'    => $producto->getUom()->getId(),
+                'value' => $producto->getUom()->getValor(),
+            );
+        }
+
+        $precio = $em->getRepository('BusetaBodegaBundle:Producto')->getPrecioActivo($id);
+        if ($precio) {
+            $data['precio'] = array(
+                'id'        => $precio->getId(),
+                'precio'    => $precio->getPrecio(),
+            );
+        }
+
+        $costo = $em->getRepository('BusetaBodegaBundle:Producto')->getCostoActivo($id);
+        if ($costo) {
+            $data['costo'] = array(
+                'id'        => $costo->getId(),
+                'costo'     => $costo->getCosto(),
+            );
+        }
+
+        return new JsonResponse($data);
+    }
 }

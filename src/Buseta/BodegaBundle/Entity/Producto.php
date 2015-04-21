@@ -270,15 +270,15 @@ class Producto
     }
 
     /**
-     * @param mixed $uom
+     * @param \Buseta\NomencladorBundle\Entity\UOM $uom
      */
-    public function setUom($uom)
+    public function setUom($uom = null)
     {
         $this->uom = $uom;
     }
 
     /**
-     * @return mixed
+     * @return \Buseta\NomencladorBundle\Entity\UOM
      */
     public function getUom()
     {
@@ -287,7 +287,7 @@ class Producto
 
     public function __toString()
     {
-        return $this->nombre;
+        return sprintf('[%s] %s', $this->codigo, $this->nombre);
     }
 
     /**

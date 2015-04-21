@@ -114,9 +114,8 @@ var lineas = {
                 lineas.form_id = $('div#form_lineas_modal').find('form').attr('id');
                 lineas.form_name = $('div#form_lineas_modal').find('form').attr('name');
 
-                lineas._linea_start_events();
-
                 $('div#form_lineas_modal').modal('show');
+                lineas._linea_start_events();
             }).fail(utils._fail).always(function(){});
     },
     /**
@@ -134,11 +133,12 @@ var lineas = {
 
         // Chosen
         $('#' + lineas.form_id + '_producto').chosen();
+        $('#' + lineas.form_id + '_producto').bind('change', lineas._get_product_data);
 
-        $('#' + lineas.form_id + '_cantidad_pedido').change(lineas._generar_importe_linea);
-        $('#' + lineas.form_id + '_producto').change(lineas._generar_importe_linea);
-        $('#' + lineas.form_id + '_impuesto').change(lineas._generar_importe_linea);
-        $('#' + lineas.form_id + '_porciento_descuento').on('blur', lineas._generar_importe_linea);
+        $('#' + lineas.form_id + '_cantidad_pedido').bind('keyup change', lineas._update_importe_linea);
+        $('#' + lineas.form_id + '_impuesto').bind('change', lineas._update_importe_linea);
+        $('#' + lineas.form_id + '_porciento_descuento').bind('keyup change', lineas._update_importe_linea);
+        $('#' + lineas.form_id + '_precio_unitario').bind('keyup change', lineas._update_importe_linea);
     },
     /**
      * Carga el modal para eliminar una linea
@@ -284,31 +284,53 @@ var lineas = {
     /**
      * Obtiene por linea los valores para el costo, unidad de medida y actualiza el importe de linea por el producto
      */
-    _generar_importe_linea: function (event){
-        var data = {
-            producto_id: $('#' + lineas.form_id + '_producto').val(),
-            impuesto_id: $('#' + lineas.form_id + '_impuesto').val(),
-            cantidad_pedido: $('#' + lineas.form_id + '_cantidad_pedido').val(),
-            precio_unitario: $('#' + lineas.form_id + '_precio_unitario').val(),
-            porciento_descuento: $('#' + lineas.form_id + '_porciento_descuento').val()
-        };
+    _get_product_data: function (){
+        var producto_id = $('#' + lineas.form_id + '_producto').val();
 
-        $.ajax({
-            type: 'GET',
-            url: Routing.generate('impuesto_ajax_productos_all'),
-            data: data,
-            success: function(data) {
-                var values = data;
-                var importe_linea_text = $('#' + lineas.form_id + '_importe_linea');
-                var precio_text = $('#' + lineas.form_id + '_precio_unitario');
-                var uom_select = $('#' + lineas.form_id + '_uom');
-
-                precio_text.val(values.precio);
-                importe_linea_text.val(values.importeLinea);
-                uom_select.val(values.uom);
-
-                //$('#' + pedidocompra.form_id + '_importe_total_lineas').val(montototal);
+        $.getJSON(Routing.generate('productos_get_product_data', {'id': producto_id}), function (data) {
+            if (data.costo != undefined && data.costo != null) {
+                $('#' + lineas.form_id + '_precio_unitario').val(data.costo.costo);
             }
+
+            if (data.uom != undefined && data.uom != null) {
+                $('#' + lineas.form_id + '_uom').val(data.uom.id);
+            }
+
+            lineas._update_importe_linea();
         });
+    },
+    _update_importe_linea: function () {
+        var $importeLinea        = $('#' + lineas.form_id + '_importe_linea'),
+            $impuesto            = $('#' + lineas.form_id + '_impuesto'),
+            cantidadPedido      = $('#' + lineas.form_id + '_cantidad_pedido').val(),
+            costoUnitario       = $('#' + lineas.form_id + '_precio_unitario').val(),
+            porcientoDescuento  = $('#' + lineas.form_id + '_porciento_descuento').val(),
+            importeTotal        = 0,
+            importeImpuesto     = 0;
+
+        if (cantidadPedido == undefined || cantidadPedido == null) {
+            cantidadPedido = 0;
+        }
+
+        var bruto = cantidadPedido * costoUnitario;
+        var importeDescuento = bruto * porcientoDescuento / 100;
+
+        if($impuesto.val() != undefined && $impuesto.val() != null && $impuesto.val() != '') {
+            var tarifa  = $impuesto.find(':selected').data('tarifa'),
+                tipo    = $impuesto.find(':selected').data('tipo');
+            if (tipo == 'porcentaje') {
+                importeImpuesto = bruto * tarifa / 100;
+            } else {
+                importeImpuesto = tarifa;
+            }
+        }
+
+        importeTotal = bruto + importeImpuesto - importeDescuento;
+        if(!isNaN(importeTotal)) {
+            $importeLinea.val(importeTotal);
+        } else {
+            $importeLinea.val(0);
+        }
+
     }
 };

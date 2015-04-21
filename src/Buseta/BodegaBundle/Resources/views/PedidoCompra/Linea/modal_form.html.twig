@@ -1,5 +1,7 @@
 {% form_theme form '@BusetaBodega/Form/fields.twig' %}
 
+{% form_theme form.impuesto _self %}
+
 <div class="modal" id="form_lineas_modal" tabindex="-1" role="dialog" aria-labelledby="createLineas" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -25,3 +27,19 @@
         </div>
     </div>
 </div>
+
+
+{% block choice_widget_options -%}
+    {% if options is defined %}
+        {% for group_label, choice in options %}
+            {%- if choice is iterable -%}
+                <optgroup label="{{ group_label|trans({}, translation_domain) }}">
+                    {% set options = choice %}
+                    {{- block('choice_widget_options') -}}
+                </optgroup>
+            {%- else -%}
+                <option data-tipo="{{ choice.data.tipo }}" data-tarifa="{{ choice.data.tarifa }}" value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice.label|trans({}, translation_domain) }}</option>
+            {%- endif -%}
+        {% endfor %}
+    {% endif %}
+{%- endblock choice_widget_options %}

@@ -5,6 +5,7 @@ namespace Buseta\BodegaBundle\Entity\Repository;
 use Buseta\BodegaBundle\Form\Model\ProductoFilterModel;
 use Buseta\BodegaBundle\Entity\CategoriaProducto;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 
 /**
@@ -199,7 +200,7 @@ class ProductoRepository extends EntityRepository
         return $entities;
     }
 
-    public function busquedaAvanzada($page, $cantResult, $filter = array(), $orderBy = null) 
+    public function busquedaAvanzada($page, $cantResult, $filter = array(), $orderBy = null)
     {
         $q = 'SELECT p FROM BusetaBodegaBundle:Producto p WHERE p.id != 0';
 
@@ -335,5 +336,53 @@ class ProductoRepository extends EntityRepository
         }
 
         return $q;
+    }
+
+    public function getCostoActivo($id)
+    {
+        $qb = $this->_em->getRepository('BusetaBodegaBundle:CostoProducto')
+            ->createQueryBuilder('costo');
+
+        $costo = $qb->select('costo')
+            ->innerJoin('costo.producto', 'producto')
+            ->where($qb->expr()->andX(
+                $qb->expr()->eq('producto.id', ':id'),
+                $qb->expr()->eq('costo.activo', ':activo')
+            ))
+            ->setParameter('id', $id)
+            ->setParameter('activo', true)
+            ->getQuery();
+
+        try {
+            return $costo->getSingleResult();
+        } catch (NonUniqueResultException $e) {
+        } catch (NoResultException $e) {
+        }
+
+        return null;
+    }
+
+    public function getPrecioActivo($id)
+    {
+        $qb = $this->_em->getRepository('BusetaBodegaBundle:PrecioProducto')
+            ->createQueryBuilder('precio');
+
+        $precio = $qb->select('precio')
+            ->innerJoin('precio.producto', 'producto')
+            ->where($qb->expr()->andX(
+                $qb->expr()->eq('producto.id', ':id'),
+                $qb->expr()->eq('precio.activo', ':activo')
+            ))
+            ->setParameter('id', $id)
+            ->setParameter('activo', true)
+            ->getQuery();
+
+        try {
+            return $precio->getSingleResult();
+        } catch (NonUniqueResultException $e) {
+        } catch (NoResultException $e) {
+        }
+
+        return null;
     }
 }
