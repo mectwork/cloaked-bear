@@ -1,0 +1,67 @@
+{% form_theme form '@BusetaBodega/Form/fields.twig' %}
+
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data">
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+    {{ form_errors(form) }}
+    {{ form_row(form._token) }}
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.nombre) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.tipo) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.prefijo) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.sufijo) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.siguienteValor) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.cantidadIncrementar) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.relleno) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.cantidadRelleno) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.codigo) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.activo) }}
+        </div>
+    </div>
+
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <a class="btn btn-primary" id="btn_secuencia_save" href="#"><span class="glyphicon glyphicon-save"></span>
+                {{ 'actions.save' | trans({}, 'HatueySoftSequenceBundle') }}</a>
+            <a class="btn btn-default" id="btn_secuencia_cancel" href="{{ path('secuencia') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+                {{ 'actions.cancel' | trans({}, 'HatueySoftSequenceBundle') }}</a>
+        </div>
+    </div>
+</form>

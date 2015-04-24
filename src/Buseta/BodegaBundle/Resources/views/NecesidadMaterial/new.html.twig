@@ -89,6 +89,7 @@
         };
         var utils = {
             _fail: function (jqXHR, textStatus, errorThrown) {
+
                 if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
                     addGlobalMessage('danger', jqXHR.responseText.message);
                 } else {
@@ -128,6 +129,11 @@
             form_id: $('div#basicos').find('form').attr('id'),
             form_name: $('div#basicos').find('form').attr('name'),
             id: '',
+            _start_events: function () {
+                $('#bodega_necesidad_material_fecha_pedido').datetimepicker({
+                    'format': 'DD/MM/YYYY'
+                });
+            },
             _load: function () {
                 $('a#btn_necesidadmaterial_save').on('click', necesidadmaterial._save);
 
@@ -219,6 +225,7 @@
 
     <!-- Lineas script -->
     <script type="text/javascript">
+
         var Totales = function () {
             this.lineas = [];
             this.total = 0;

@@ -33,6 +33,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
+            new HatueySoft\SequenceBundle\HatueySoftSequenceBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {            

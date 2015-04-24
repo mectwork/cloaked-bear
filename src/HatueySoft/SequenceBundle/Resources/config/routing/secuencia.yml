@@ -1,0 +1,30 @@
+secuencia:
+    pattern:  /
+    defaults: { _controller: "HatueySoftSequenceBundle:Secuencia:index" }
+
+secuencia_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "HatueySoftSequenceBundle:Secuencia:show" }
+
+secuencia_new:
+    pattern:  /new
+    defaults: { _controller: "HatueySoftSequenceBundle:Secuencia:new" }
+
+secuencia_create:
+    pattern:  /create
+    defaults: { _controller: "HatueySoftSequenceBundle:Secuencia:create" }
+    requirements: { _method: post }
+
+secuencia_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "HatueySoftSequenceBundle:Secuencia:edit" }
+
+secuencia_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "HatueySoftSequenceBundle:Secuencia:update" }
+    requirements: { _method: post|put }
+
+secuencia_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "HatueySoftSequenceBundle:Secuencia:delete" }
+    requirements: { _method: post|delete }

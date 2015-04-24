@@ -142,3 +142,4 @@ easy_admin:
         'Tipo Contacto': Buseta\NomencladorBundle\Entity\TipoContacto
         'Unidad de Medida': Buseta\NomencladorBundle\Entity\UOM
         'Medio Reporte': Buseta\NomencladorBundle\Entity\MedioReporte
+
