@@ -54,55 +54,24 @@ class SecuenciaController extends Controller
         ));
     }
 
-    /**
-     * Creates a new Secuencia entity.
-     *
-     * @Route("/create", name="secuencias_secuencia_create", methods={"POST"}, options={"expose":true})
-     */
     public function createAction(Request $request)
     {
-        $secuencia = new Secuencia();
-        $form = $this->createCreateForm($secuencia);
-
+        $entity = new Secuencia();
+        $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em     = $this->get('doctrine.orm.entity_manager');
-            $trans  = $this->get('translator');
-            $logger = $this->get('logger');
 
-            try {
-                //$entity = $secuencia->getEntityData();
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
 
-                $em->persist($secuencia);
-                $em->flush();
-
-                // Creando nuevamente el formulario con los datos actualizados de la entidad
-                //$form = $this->createEditForm(new Secuencia($secuencia));
-                $renderView = $this->renderView('@HatueySoftSequence/Secuencia/form_template.html.twig', array(
-                    'form'   => $form->createView(),
-                ));
-
-                return new JsonResponse(array(
-                    'view' => $renderView,
-                    'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
-                ), 201);
-            } catch (\Exception $e) {
-                $logger->addCritical(sprintf(
-                    $trans->trans('', array(), 'BusetaBodegaBundle') . '. Detalles: %s',
-                    $e->getMessage()
-                ));
-
-                return new JsonResponse(array(
-                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Secuencia'), 'BusetaBodegaBundle')
-                ), 500);
-            }
+            return $this->redirect($this->generateUrl('secuencia_show', array('id' => $entity->getId())));
         }
 
-        $renderView = $this->renderView('@HatueySoftSequence/Secuencia/form_template.html.twig', array(
-            'form'     => $form->createView(),
+        return $this->render('@HatueySoftSequence/Secuencia/new.html.twig', array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
         ));
-
-        return new JsonResponse(array('view' => $renderView));
     }
 
     /**
@@ -135,6 +104,164 @@ class SecuenciaController extends Controller
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
+    }
+
+    /**
+     * Finds and displays a Secuencia entity.
+     */
+    public function showAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('HatueySoftSequenceBundle:Secuencia')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Secuencia entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+
+        return $this->render('HatueySoftSequenceBundle:Secuencia:show.html.twig', array(
+            'entity'      => $entity,
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Displays a form to edit an existing Secuencia entity.
+     */
+    public function editAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('HatueySoftSequenceBundle:Secuencia')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Secuencia entity.');
+        }
+
+        $editForm = $this->createEditForm($entity);
+        $deleteForm = $this->createDeleteForm($id);
+
+        return $this->render('@HatueySoftSequence/Secuencia/edit.html.twig', array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Creates a form to edit a Secuencia entity.
+     *
+     * @param Secuencia $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Secuencia $entity)
+    {
+        $form = $this->createForm(new SecuenciaType(), $entity, array(
+            'action' => $this->generateUrl('secuencia_update', array('id' => $entity->getId())),
+            'method' => 'PUT',
+        ));
+
+        return $form;
+    }
+    /**
+     * Edits an existing Secuencia entity.
+     */
+    public function updateAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('BusetaBodegaBundle:Secuencia')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Secuencia entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createEditForm($entity);
+        $editForm->submit($request);
+
+        if ($editForm->isValid()) {
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('secuencia_show', array('id' => $id)));
+        }
+
+        return $this->render('@HatueySoftSequence/Secuencia/edit.html.twig', array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Deletes a Secuencia entity.
+     *
+     * @Route("/{id}/delete", name="secuencia_delete")
+     * @Method({"DELETE", "GET"})
+     */
+    public function deleteAction(Secuencia $secuencia, Request $request)
+    {
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($secuencia->getId());
+
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+            try {
+                $em = $this->get('doctrine.orm.entity_manager');
+
+                $em->remove($secuencia);
+                $em->flush();
+
+                $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 202);
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('success', $message);
+                }
+            } catch (\Exception $e) {
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Secuencia'), 'BusetaTallerBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
+            }
+        }
+
+        $renderView =  $this->renderView('@HatueySoftSequence/Secuencia/delete_modal.html.twig', array(
+            'entity' => $secuencia,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
+        return $this->redirect($this->generateUrl('secuencia'));
+    }
+
+    /**
+     * Creates a form to delete a Secuencia entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('secuencia_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->getForm()
+            ;
     }
 }
 

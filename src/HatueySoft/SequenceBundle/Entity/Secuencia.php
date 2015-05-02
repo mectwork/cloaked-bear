@@ -44,7 +44,7 @@ class Secuencia
      * @var string
      *
      * @ORM\Column(name="prefijo", type="string")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      */
     private $prefijo;
 
@@ -52,47 +52,42 @@ class Secuencia
      * @var string
      *
      * @ORM\Column(name="sufijo", type="string")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      */
     private $sufijo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="siguienteValor", type="string")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="siguienteValor", type="string", nullable=true)
      */
     private $siguienteValor;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="cantidadIncrementar", type="integer")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="cantidadIncrementar", type="integer", nullable=true)
      */
     private $cantidadIncrementar;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="cantidadRelleno", type="integer")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="cantidadRelleno", type="integer", nullable=true)
      */
     private $cantidadRelleno;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="relleno", type="string")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="relleno", type="string", nullable=true)
      */
     private $relleno;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="codigo", type="string")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="codigo", type="string", nullable=true)
      */
     private $codigo;
 

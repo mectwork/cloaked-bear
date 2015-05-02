@@ -29,6 +29,7 @@ class SecuenciaType extends AbstractType
                 ))
             ->add('tipo', 'choice', array(
                 'label'  => 'Tipo',
+                'empty_value' => '---Seleccione---',
                 'choices' => array(
                     'incremental' => 'Incremental',
                     'fija' => 'Fija',

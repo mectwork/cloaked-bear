@@ -8,44 +8,44 @@
     {{ form_row(form._token) }}
 
     <div class="row show-grid">
-        <div class="col-md-4">
+        <div class="col-md-3">
             {{ form_row(form.nombre) }}
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             {{ form_row(form.tipo) }}
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             {{ form_row(form.prefijo) }}
         </div>
-    </div>
 
-    <div class="row show-grid">
-        <div class="col-md-4">
+        <div class="col-md-3">
             {{ form_row(form.sufijo) }}
         </div>
-
-        <div class="col-md-4">
-            {{ form_row(form.siguienteValor) }}
-        </div>
-
-        <div class="col-md-4">
-            {{ form_row(form.cantidadIncrementar) }}
-        </div>
     </div>
 
     <div class="row show-grid">
-        <div class="col-md-4">
+        <div id="fija" class="col-md-6">
+            {{ form_row(form.codigo) }}
+        </div>
+    </div>
+
+    <div id="incremental" class="row show-grid">
+        <div class="col-md-3">
             {{ form_row(form.relleno) }}
         </div>
 
-        <div class="col-md-4">
-            {{ form_row(form.cantidadRelleno) }}
+        <div class="col-md-3">
+            {{ form_row(form.siguienteValor) }}
         </div>
 
-        <div class="col-md-4">
-            {{ form_row(form.codigo) }}
+        <div class="col-md-3">
+            {{ form_row(form.cantidadIncrementar) }}
+        </div>
+
+        <div class="col-md-3">
+            {{ form_row(form.cantidadRelleno) }}
         </div>
     </div>
 
@@ -58,8 +58,7 @@
     {# buttons group #}
     <div class="row">
         <div class="col-md-4">
-            <a class="btn btn-primary" id="btn_secuencia_save" href="#"><span class="glyphicon glyphicon-save"></span>
-                {{ 'actions.save' | trans({}, 'HatueySoftSequenceBundle') }}</a>
+            <input class="btn btn-primary" style="height: 34px" type="submit" value="Salvar">
             <a class="btn btn-default" id="btn_secuencia_cancel" href="{{ path('secuencia') }}"><span class="glyphicon glyphicon-chevron-left"></span>
                 {{ 'actions.cancel' | trans({}, 'HatueySoftSequenceBundle') }}</a>
         </div>
