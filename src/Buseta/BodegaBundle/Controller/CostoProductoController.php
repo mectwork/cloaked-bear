@@ -52,7 +52,9 @@ class CostoProductoController extends Controller
      *
      * @throws \Exception
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @Route("/new/modal/{producto}", name="producto_costos_new_modal", methods={"GET","POST"}, options={"expose":true})
+     * @ParamConverter("producto", options={"mapping":{"producto":"id"}})
      */
     public function newModalAction(Producto $producto, Request $request)
     {
@@ -91,31 +93,65 @@ class CostoProductoController extends Controller
         return new JsonResponse(array('view' => $renderView));
     }
 
-    public function select_costo_productos_allAction(Request $request)
+    /**
+     * @param Producto $producto
+     * @param Request $request
+     *
+     * @throws \Exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/edit/{id}/modal/{producto}", name="producto_costos_edit_modal", methods={"GET","PUT"}, options={"expose":true})
+     * @ParamConverter("producto", options={"mapping":{"producto":"id"}})
+     */
+    public function editModalAction(CostoProducto $costo, Producto $producto, Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+        $trans = $this->get('translator');
+        $handler = $this->get('buseta_producto.costo.handler');
+        $handler->bindData($producto, $costo);
+
+        $handler->setRequest($request);
+
+        if($handler->handle()) {
+            $renderView = $this->renderView('@BusetaBodega/Producto/Costo/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.update.success', array(), 'BusetaBodegaBundle')
+            ), 202);
         }
 
-        $request = $this->getRequest();
-        if (!$request->isXmlHttpRequest()) {
-            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        if($handler->getError()) {
+            $renderView = $this->renderView('@BusetaBodega/Producto/Costo/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.update.error.%key%', array('key' => 'Costo'), 'BusetaBodegaBundle')
+            ), 500);
         }
 
-        $json = array(
-            'ok' => 'ok',
-        );
+        $renderView = $this->renderView('@BusetaBodega/Producto/Costo/modal_form.html.twig', array(
+            'form' => $handler->getForm()->createView(),
+        ));
 
-        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+        return new JsonResponse(array('view' => $renderView));
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @deprecated
+     */
     public function comprobarCostoAction(Request $request)
     {
         if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 
-        $request = $this->getRequest();
         if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
         }
@@ -189,171 +225,6 @@ class CostoProductoController extends Controller
         );
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
-    }
-
-    /**
-     * Lists all CostoProducto entities.
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('BusetaBodegaBundle:CostoProducto')->findAll();
-
-        return $this->render('BusetaBodegaBundle:CostoProducto:index.html.twig', array(
-            'entities' => $entities,
-        ));
-    }
-
-    /**
-     * Creates a new CostoProducto entity.
-     */
-    public function createAction(Request $request)
-    {
-        $entity = new CostoProducto();
-        $form = $this->createCreateForm($entity);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('linea_show', array('id' => $entity->getId())));
-        }
-
-        return $this->render('BusetaBodegaBundle:CostoProducto:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ));
-    }
-
-    public function create_compraAction(Request $request)
-    {
-        die;
-        $entity = new CostoProducto();
-        $form = $this->createCreateCompraForm($entity);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-        }
-    }
-
-    /**
-     * Creates a form to create a CostoProducto entity.
-     *
-     * @param CostoProducto $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCreateForm(CostoProducto $entity)
-    {
-        $form = $this->createForm(new CostoProductoType(), $entity, array(
-            'action' => $this->generateUrl('linea_create'),
-            'method' => 'POST',
-        ));
-
-        //$form->add('submit', 'submit', array('label' => 'Create'));
-
-        return $form;
-    }
-
-    /**
-     * Creates a form to create a CostoProducto entity.
-     *
-     * @param CostoProducto $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCreateCompraForm(CostoProducto $entity)
-    {
-        $form = $this->createForm(new CostoProductoType(), $entity, array(
-                'action' => $this->generateUrl('linea_compra_create'),
-                'method' => 'POST',
-            ));
-
-        //$form->add('submit', 'submit', array('label' => 'Create'));
-
-        return $form;
-    }
-
-    /**
-     * Displays a form to create a new CostoProducto entity.
-     */
-    public function newAction()
-    {
-        $entity = new CostoProducto();
-        $form   = $this->createCreateForm($entity);
-
-        return $this->render('BusetaBodegaBundle:CostoProducto:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ));
-    }
-
-    /**
-     * Finds and displays a CostoProducto entity.
-     */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BusetaBodegaBundle:CostoProducto')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find CostoProducto entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('BusetaBodegaBundle:CostoProducto:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        ));
-    }
-
-    /**
-     * Displays a form to edit an existing CostoProducto entity.
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BusetaBodegaBundle:CostoProducto')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find CostoProducto entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('BusetaBodegaBundle:CostoProducto:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Creates a form to edit a CostoProducto entity.
-     *
-     * @param CostoProducto $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createEditForm(CostoProducto $entity)
-    {
-        $form = $this->createForm(new CostoProductoType(), $entity, array(
-            'action' => $this->generateUrl('linea_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
-
-        //$form->add('submit', 'submit', array('label' => 'Update'));
-
-        return $form;
     }
 
     /**

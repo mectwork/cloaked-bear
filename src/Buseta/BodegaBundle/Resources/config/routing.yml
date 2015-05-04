@@ -46,10 +46,6 @@ BusetaBodegaBundle_albaranlinea:
     resource: "@BusetaBodegaBundle/Resources/config/routing/albaran_linea.yml"
     prefix:   /albaranlinea
 
-buseta_bodega_homepage:
-  pattern:  /hello/{name}
-  defaults: { _controller: BusetaBodegaBundle:Default:index }
-
 bodega_principal:
   pattern:  /modulo/bodega
   defaults: { _controller: "BusetaBodegaBundle:Bodega:principal" }

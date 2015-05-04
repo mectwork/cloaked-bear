@@ -12,38 +12,28 @@
     <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
 </div>
 
-<table class="costo_records_list table table-striped table-bordered table-condensed table-hover">
+<table class="costos_records_list table table-striped table-bordered table-condensed table-hover">
     <thead>
     <tr>
         {#<th>{{ knp_pagination_sortable(entities, 'costo.valor' | trans({}, 'BusetaTallerBundle'), 'd.valor') }}</th>#}
         <th>Costo</th>
-        <th>Fecha Inicio</th>
-        <th>Fecha Fin</th>
-        <th>Activo</th>
-        <th style="text-align: center">Acciones</th>
+        <th>Proveedor</th>
+        <th>Código alternativo</th>
+        <th>Estado</th>
+        <th style="width: 1%;border: 0;"></th>
+        <th style="width: 1%;border: 0;"></th>
     </tr>
     </thead>
     <tbody>
     {% for entity in entities %}
         <tr>
             <td>{{ entity.costo }}</td>
-            <td>{{ entity.fechaInicio | date('d/m/Y') }}</td>
-            <td>{{ entity.fechaFin | date('d/m/Y')}}</td>
-            <td>
-                {% if entity.activo %}
-                    Sí
-                {% else %}
-                    No
-                {% endif %}
-            </td>
+            <td>{{ entity.proveedor }}</td>
+            <td>{{ entity.codigoAlternativo }}</td>
+            <td class="text-center">{{ entity.activo ? '<i class="fa fa-circle text-success" title="Activo"></i>' : '<i class="fa fa-circle-o text-danger" title="No activo"></i>' }}</td>
 
-            <td style="width: 10%; text-align: center;">
-                {#{% if reporte.diagnostico == null %}#}
-                        <a class="btn btn-danger btn-xs" href="#delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
-                    {#{% else %}#}
-                        {#<a class="btn btn-danger btn-xs disabled" href="#delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>#}
-                {#{% endif %}#}
-            </td>
+            <td><a class="btn btn-primary btn-xs" href="#edit" data-content="{{ entity.id }}" title="Editar"><i class="fa fa-edit"> Editar</i></a></td>
+            <td><a class="btn btn-danger btn-xs" href="#delete" data-content="{{ entity.id }}" title="Eliminar"><i class="fa fa-remove"> Eliminar</i></a></td>
         </tr>
     {% else %}
         <tr>
@@ -53,8 +43,7 @@
     </tbody>
 </table>
 
-<div class="paginator row">
-    <div class="col-lg-4"></div>
+<div class="costos-paginator row">
     <div class="col-lg-12" style="text-align: center">{{ knp_pagination_render(entities) }}</div>
 </div>
 

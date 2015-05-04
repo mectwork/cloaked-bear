@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -18,27 +19,24 @@ class CostoProductoType extends AbstractType
             ->add('costo', 'number', array(
                 'required' => false,
                 'label' => 'Costo',
+            ))
+            ->add('proveedor', 'entity', array(
+                'required' => false,
+                'class' => 'BusetaBodegaBundle:Tercero',
+                'empty_value' => '.:Seleccione:.',
+                'query_builder' => function (EntityRepository $er) {
+                    $qb = $er->createQueryBuilder('t');
+                    return $qb->innerJoin('t.proveedor', 'p')
+                        ->where($qb->expr()->isNotNull('p'))
+                        ->orderBy('t.nombres', 'ASC');
+                },
                 'attr' => array(
-                    'class' => 'form-control',
+                    'class' => 'chosen'
                 ),
             ))
-            ->add('fechaInicio', 'date', array(
-                'widget' => 'single_text',
-                'label'  => 'Fecha Inicio',
-                'format'  => 'dd/MM/yyyy',
+            ->add('codigoAlternativo', 'text', array(
                 'required' => false,
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('fechaFin', 'date', array(
-                'widget' => 'single_text',
-                'label'  => 'Fecha Fin',
-                'format'  => 'dd/MM/yyyy',
-                'required' => false,
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
+                'label' => 'Código'
             ))
             ->add('activo', null, array(
                 'label' => 'Activo',

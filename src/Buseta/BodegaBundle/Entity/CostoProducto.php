@@ -31,21 +31,22 @@ class CostoProducto
     private $costo;
 
     /**
-     * @var \DateTime
+     * @var \Buseta\BodegaBundle\Entity\Tercero
      *
-     * @ORM\Column(name="fechaInicio", type="date", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero")
      */
-    private $fechaInicio;
+    private $proveedor;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="fechaFin", type="date", nullable=true)
+     * @ORM\Column(name="codigo_alternativo", type="string", length=32, nullable=true)
      */
-    private $fechaFin;
+    private $codigoAlternativo;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto", inversedBy="costoProducto")
+     * @Assert\NotNull
      */
     private $producto;
 
@@ -89,54 +90,6 @@ class CostoProducto
     }
 
     /**
-     * Set fechaInicio.
-     *
-     * @param \DateTime $fechaInicio
-     *
-     * @return CostoProducto
-     */
-    public function setFechaInicio($fechaInicio)
-    {
-        $this->fechaInicio = $fechaInicio;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaInicio.
-     *
-     * @return \DateTime
-     */
-    public function getFechaInicio()
-    {
-        return $this->fechaInicio;
-    }
-
-    /**
-     * Set fechaFin.
-     *
-     * @param \DateTime $fechaFin
-     *
-     * @return CostoProducto
-     */
-    public function setFechaFin($fechaFin)
-    {
-        $this->fechaFin = $fechaFin;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaFin.
-     *
-     * @return \DateTime
-     */
-    public function getFechaFin()
-    {
-        return $this->fechaFin;
-    }
-
-    /**
      * @param mixed $activo
      */
     public function setActivo($activo)
@@ -174,5 +127,52 @@ class CostoProducto
     public function getProducto()
     {
         return $this->producto;
+    }
+
+    /**
+     * Set proveedor
+     *
+     * @param \Buseta\BodegaBundle\Entity\Tercero $proveedor
+     *
+     * @return CostoProducto
+     */
+    public function setProveedor(\Buseta\BodegaBundle\Entity\Tercero $proveedor = null)
+    {
+        $this->proveedor = $proveedor;
+
+        return $this;
+    }
+
+    /**
+     * Get proveedor
+     *
+     * @return \Buseta\BodegaBundle\Entity\Tercero
+     */
+    public function getProveedor()
+    {
+        return $this->proveedor;
+    }
+
+    /**
+     * Set codigoAlternativo
+     *
+     * @param string $codigoAlternativo
+     * @return CostoProducto
+     */
+    public function setCodigoAlternativo($codigoAlternativo)
+    {
+        $this->codigoAlternativo = $codigoAlternativo;
+    
+        return $this;
+    }
+
+    /**
+     * Get codigoAlternativo
+     *
+     * @return string 
+     */
+    public function getCodigoAlternativo()
+    {
+        return $this->codigoAlternativo;
     }
 }
