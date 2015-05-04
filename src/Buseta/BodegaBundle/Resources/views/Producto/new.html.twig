@@ -15,7 +15,7 @@
             {# Nav tabs #}
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos</a></li>
-                <li><a href="#precios" data-toggle="tab">Precios</a></li>
+                {#<li><a href="#precios" data-toggle="tab">Precios</a></li>#}
                 <li><a href="#costos" data-toggle="tab">Costos</a></li>
             </ul>
 
@@ -26,10 +26,10 @@
                     {% include '@BusetaBodega/Producto/form_template.html.twig' with {'form': form} %}
                 </div>
 
-                <!-- TAB PRECIOS-->
-                <div class="tab-pane fade" id="precios">
+                {#<!-- TAB PRECIOS-->#}
+                {#<div class="tab-pane fade" id="precios">#}
                     {# Precios #}
-                </div>
+                {#</div>#}
 
                 <!-- TAB COSTOS-->
                 <div class="tab-pane fade" id="costos">

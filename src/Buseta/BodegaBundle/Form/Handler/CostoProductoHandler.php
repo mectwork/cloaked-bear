@@ -15,25 +15,32 @@ class CostoProductoHandler extends ProductoAbstractHandler
     /**
      * @var \Buseta\BodegaBundle\Entity\CostoProducto |null
      */
-    private $costo_producto;
+    private $costoProducto;
 
-    public function bindData(Producto $producto, CostoProducto $costoproducto = null)
+    public function bindData(Producto $producto, CostoProducto $costoProducto = null)
     {
         $this->producto      = $producto;
-        $this->costo_producto  = $costoproducto;
+        $this->costoProducto = $costoProducto;
 
-        if (!$this->costo_producto) {
+        if (!$this->costoProducto) {
             // Creando nuevo costo
-            $this->costo_producto = new CostoProducto();
-            $this->costo_producto->setProducto($producto);
+            $this->costoProducto = new CostoProducto();
+            $this->costoProducto->setProducto($producto);
 
-            $this->form = $this->formFactory->create(new CostoProductoType(), $this->costo_producto, array(
+            $this->form = $this->formFactory->create(new CostoProductoType(), $this->costoProducto, array(
                 'method' => 'POST',
+                'action' => $this->router->generate('producto_costos_new_modal', array(
+                    'producto'  => $producto->getId(),
+                )),
             ));
         } else {
             // Editando un costo ya existente
-            $this->form = $this->formFactory->create(new CostoProductoType(), $this->costo_producto, array(
+            $this->form = $this->formFactory->create(new CostoProductoType(), $this->costoProducto, array(
                 'method' => 'PUT',
+                'action' => $this->router->generate('producto_costos_edit_modal', array(
+                    'id'        => $costoProducto->getId(),
+                    'producto'  => $producto->getId(),
+                )),
             ));
         }
     }
@@ -55,37 +62,10 @@ class CostoProductoHandler extends ProductoAbstractHandler
         $this->form->handleRequest($this->request);
         if($this->form->isSubmitted() && $this->form->isValid()) {
             try {
-
-                //Comprobar si el Costo actual esta activo
-                if($this->costo_producto->getActivo()) {
-                    $costoProductoActivo = $this->em->getRepository('BusetaBodegaBundle:CostoProducto')->findOneBy(array(
-                        'producto' => $this->costo_producto->getProducto(),
-                        'activo' => true
-                    ));
-
-                    //Si existe el CostoProducto activo entonces se desactiva
-                    if($costoProductoActivo != null) {
-                        $costoProductoActivo->setActivo(false);
-                        $this->em->persist($costoProductoActivo);
-                        $this->em->flush();
-                    }
-                }
-                elseif(!$this->costo_producto->getActivo()) {
-                    $costoProductoActivo = $this->em->getRepository('BusetaBodegaBundle:CostoProducto')->findOneBy(array(
-                        'producto' => $this->costo_producto->getProducto(),
-                        'activo' => true
-                    ));
-
-                    //Si NO existe el CostoProducto activo entonces se activa automatica el nuevo CostoProducto
-                    if($costoProductoActivo == null) {
-                        $this->costo_producto->setActivo(true);
-                    }
-                }
-                
-                $this->em->persist($this->costo_producto);
+                $this->em->persist($this->costoProducto);
                 $this->em->flush();
 
-                return true;
+                return $this->costoProducto;
             } catch (\Exception $e) {
                 $this->logger->addCritical(sprintf(
                     $this->trans->trans('messages.update.error.%key%', array('key' => 'Costo de Producto'), 'BusetaBodegaBundle')

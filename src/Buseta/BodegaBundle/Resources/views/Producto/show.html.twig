@@ -46,39 +46,39 @@
         <td>{{ entity.condicion }}</td>
     </tr>
 
-    <tr>
-        <th>Precios existentes</th>
-        <td>
-            <table class="table table-striped" style="font-size: 16px;">
-                <th>Precio</th>
-                <th>Fecha Inicio</th>
-                <th>Fecha Fin</th>
-                <th>Activo</th>
+    {#<tr>#}
+        {#<th>Precios existentes</th>#}
+        {#<td>#}
+            {#<table class="table table-striped" style="font-size: 16px;">#}
+                {#<th>Precio</th>#}
+                {#<th>Fecha Inicio</th>#}
+                {#<th>Fecha Fin</th>#}
+                {#<th>Activo</th>#}
 
-                {% for precio in entity.precioproducto %}
-                <tbody>
-                <tr>
-                    <td>{{ precio.precio }}</td>
-                    <td>{{ precio.fechaInicio | date('d/m/Y') }}</td>
-                    <td>{{ precio.fechaFin | date('d/m/Y')}}</td>
-                    <td>
-                        {% if precio.activo %}
-                                Sí
-                            {% else %}
-                                No
-                        {% endif %}
-                    </td>
-                </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="6">
-                            <span class="label label-danger">No existen líneas de precios de productos disponibles</span>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </td>
-    </tr>
+                {#{% for precio in entity.precioproducto %}#}
+                {#<tbody>#}
+                {#<tr>#}
+                    {#<td>{{ precio.precio }}</td>#}
+                    {#<td>{{ precio.fechaInicio | date('d/m/Y') }}</td>#}
+                    {#<td>{{ precio.fechaFin | date('d/m/Y')}}</td>#}
+                    {#<td>#}
+                        {#{% if precio.activo %}#}
+                                {#Sí#}
+                            {#{% else %}#}
+                                {#No#}
+                        {#{% endif %}#}
+                    {#</td>#}
+                {#</tr>#}
+                {#{% else %}#}
+                    {#<tr>#}
+                        {#<td colspan="6">#}
+                            {#<span class="label label-danger">No existen líneas de precios de productos disponibles</span>#}
+                        {#</td>#}
+                    {#</tr>#}
+                {#{% endfor %}#}
+            {#</table>#}
+        {#</td>#}
+    {#</tr>#}
 
     <tr>
         <th>Costos existentes</th>
