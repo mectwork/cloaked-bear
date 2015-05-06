@@ -77,7 +77,7 @@ var costos = {
         }
 
         var id  = $(this).data('content'),
-            url = Routing.generate('producto_costos_delete', {id: id});
+            url = Routing.generate('producto_costo_delete', {id: id});
         $.get(url)
             .done(function(response, textStatus, jqXHR){
                 $('div#form_costos_delete_modal').replaceWith($(response.view));

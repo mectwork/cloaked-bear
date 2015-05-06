@@ -8,7 +8,9 @@ use Buseta\BodegaBundle\Entity\CostoProducto;
 use Buseta\BodegaBundle\Form\Type\CostoProductoType;
 use Buseta\BodegaBundle\Entity\Producto;
 
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -259,25 +261,44 @@ class CostoProductoController extends Controller
 
     /**
      * Deletes a CostoProducto entity.
+     *
+     * @Route("/{id}/delete", name="producto_costo_delete", options={"expose": true})
+     * @Method({"GET","DELETE"})
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, CostoProducto $costoProducto)
     {
-        $form = $this->createDeleteForm($id);
+        $form = $this->createDeleteForm($costoProducto->getId());
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaBodegaBundle:CostoProducto')->find($id);
+            $em = $this->get('doctrine.orm.entity_manager');
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find CostoProducto entity.');
+            try {
+                $em->remove($costoProducto);
+                $em->flush();
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $this->get('translator')->trans('messages.delete.success', array(), 'BusetaBodegaBundle'),
+                    ), 202);
+                }
+            } catch (\Exception $e) {
+                $error = sprintf('Ha ocurrido un error eliminando Costo de Producto. Detalles: %s', $e->getMessage());
+                $this->get('logger')->addCritical($error);
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => 'Ha ocurrido un error eliminando Costo de Producto.',
+                    ), 500);
+                }
             }
-
-            $em->remove($entity);
-            $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('linea'));
+        $view = $this->renderView('@BusetaBodega/Producto/Costo/delete_modal.html.twig', array(
+            'form' => $form->createView()
+        ));
+
+        return new JsonResponse(array('view' => $view));
     }
 
     /**
@@ -290,9 +311,8 @@ class CostoProductoController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('linea_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('producto_costo_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
     }
