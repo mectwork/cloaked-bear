@@ -132,7 +132,7 @@ var lineas = {
         });
 
         // Chosen
-        $('#' + lineas.form_id + '_producto').chosen();
+        $('#' + lineas.form_id + '_producto').chosen({ alt_search: true });
         $('#' + lineas.form_id + '_producto').bind('change', lineas._get_product_data);
 
         $('#' + lineas.form_id + '_cantidad_pedido').bind('keyup change', lineas._update_importe_linea);
@@ -288,9 +288,30 @@ var lineas = {
         var producto_id = $('#' + lineas.form_id + '_producto').val();
 
         $.getJSON(Routing.generate('productos_get_product_data', {'id': producto_id}), function (data) {
-            if (data.costo != undefined && data.costo != null) {
-                $('#' + lineas.form_id + '_precio_unitario').val(data.costo.costo);
-            }
+            var tbody = 'table#producto_proveedores_results_list',
+                provider, code, cost, select, tr, count = 0;
+            $(tbody).find('tr[data-content]').remove();
+            $.each(data.costos, function(id, costo) {
+                if (costo.proveedor != undefined) {
+                    provider    = $('<td>').text(costo.proveedor.nombre).append($('<input>',{type: 'hidden', value: costo.proveedor.id}));
+                } else {
+                    provider    = $('<td>').text('-');
+                }
+                code        = $('<td>').text(costo.codigo != undefined ? costo.codigo : '-');
+                cost        = $('<td>', {'data-action':'#edit', 'data-content': id}).text(costo.costo);
+                select      = $('<td>',{class: 'text-center', style: 'width: 1%;'}).html('<a href="#cost"><span class="fa fa-check"></span></a>');
+
+                tr = $('<tr>',{'data-content': true});
+                tr.append(provider)
+                    .append(code)
+                    .append(cost)
+                    .append(select);
+                $(tbody).append(tr);
+                count++;
+            });
+            count > 0 ? $(tbody).show() : $(tbody).hide();
+            $(tbody).find('a[href="#cost"]').on('click', lineas._select_product_cost);
+            $(tbody).find('td[data-action="#edit"]').on('click', lineas._edit_product_cost);
 
             if (data.uom != undefined && data.uom != null) {
                 $('#' + lineas.form_id + '_uom').val(data.uom.id);
@@ -298,6 +319,116 @@ var lineas = {
 
             lineas._update_importe_linea();
         });
+    },
+    _select_product_cost: function (event){
+        event.preventDefault();
+
+        var $this = $(this),
+            costo = $this.parent().prev().text();
+
+        if (costo != undefined && costo != null) {
+            $('#' + lineas.form_id + '_precio_unitario').val(costo);
+        }
+    },
+    _edit_product_cost: function (event) {
+        var $this = $(this),
+            value = $this.text(),
+            input = $('<input>',{class:'form-control', 'data-prev-value': value})
+                .val(value)
+                .bind('blur keyup', lineas._update_product_cost),
+            div   = $('<div>', {class: 'form-group', style: 'margin: 0;'}).append(input);
+
+        $this.unbind('click');
+        $this.html(div);
+        $this.find('input').focus();
+    },
+    _update_product_cost: function (event) {
+        var $this           = $(this),
+            value           = $this.val(),
+            div             = $this.parent(),
+            error_icon      = $('<span>', {class: 'fa fa-times form-control-feedback', 'aria-hidden': true, style: 'top: 0;'}),
+            loading_icon    = $('<span>', {class: 'fa fa-gear fa-spin form-control-feedback', 'aria-hidden': true, style: 'top: 0;'}),
+            help            = $('<p>',{class: 'help-block', style: 'margin-bottom: 5px;'}),
+            td              = div.parent();
+
+        $this.parent()
+            .removeClass('has-error')
+            .removeClass('has-feedback')
+            .find('span[class*="form-control-feedback"]')
+            .remove();
+        div.find('p.help-block').remove();
+
+        if (event.type == "blur" || (event.type == "keyup" && event.keyCode == 13)) {
+            if ($this.val().length === 0) {
+                help.text('El valor no debe estar vacío.');
+                div.addClass('has-error')
+                    .addClass('has-feedback')
+                    .append(error_icon)
+                    .append(help);
+
+                return false;
+            }
+
+            if (!$.isNumeric(value)) {
+                help.text('El valor debe ser un número válido.');
+                div.addClass('has-error')
+                    .addClass('has-feedback')
+                    .append(error_icon)
+                    .append(help);
+
+                return false;
+            }
+            div.addClass('has-success')
+                .addClass('has-feedback')
+                .append(loading_icon);
+
+            $.ajax({
+                url: Routing.generate('producto_costo_update_from_registro_compra', {id: td.data('content')}),
+                data: {
+                    costo: value
+                },
+                method: 'PUT'
+            }).done(function (data, statusText, jqXHR) {
+                if (jqXHR.status == 202) {
+                    //var json = JSON.parse(data);
+                    help.text('Se han salvado los datos.');
+                    div.find('p.help-block')
+                        .remove();
+                    div.append(help)
+                        .find('span[class*="form-control-feedback"]')
+                        .removeClass('fa-gear')
+                        .removeClass('fa-spin')
+                        .addClass('fa-check');
+
+                    setTimeout(function (){
+                        td.html(value);
+                        td.on('click', lineas._edit_product_cost);
+                    }, 2000);
+                }
+            }).fail(function () {
+                div.removeClass('has-succes')
+                    .addClass('has-error')
+                    .find('p.help-block')
+                    .remove();
+
+                help.text('Ha ocurrido un error.');
+                div.find('span[class*="form-control-feedback"]')
+                    .remove();
+                div.append(error_icon)
+                    .append(help);
+
+                setTimeout(function (){
+                    td.html(value);
+                    td.on('click', lineas._edit_product_cost);
+                }, 2000);
+            });
+        } else if(event.type == "keyup" && event.keyCode == 27) {
+            td.html($this.data('prev-value'));
+            td.on('click', lineas._edit_product_cost);
+
+            event.preventDefault();
+            event.stopPropagation();
+        }
     },
     _update_importe_linea: function () {
         var $importeLinea        = $('#' + lineas.form_id + '_importe_linea'),

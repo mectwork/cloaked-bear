@@ -13,6 +13,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 
 /**
@@ -315,5 +318,42 @@ class CostoProductoController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+
+    /**
+     * @Route("/update/{id}/from-registro-compra", name="producto_costo_update_from_registro_compra", options={"expose": true})
+     * @Method("PUT")
+     */
+    public function updateCostoFromRegistroCompraAction(Request $request, CostoProducto $costo)
+    {
+        if(!$request->isXmlHttpRequest()) {
+            throw new \Exception('Debe ser una petición Ajax.');
+        }
+
+        $newValue = $request->request->get('costo', -1);
+        if ($newValue !== -1) {
+            $em = $this->get('doctrine.orm.entity_manager');
+
+            try {
+                $costo->setCosto($newValue);
+
+                $em->persist($costo);
+                $em->flush();
+
+                return new Response('ok', 202);
+            } catch (\Exception $e) {
+                $error = sprintf('Ha ocurrido un error actualizando el costo con id "%d" del producto "%s". Detalles: %s',
+                    $costo->getId(),
+                    $costo->getProducto()->getCodigo(),
+                    $e->getMessage()
+                );
+                $this->get('logger')->addCritical($error);
+
+                return new Response('Ha ocurrido un error.', 500);
+            }
+        }
+
+        return new Response('ok', 200);
     }
 }

@@ -354,8 +354,7 @@ class ProductoRepository extends EntityRepository
             ->getQuery();
 
         try {
-            return $costo->getSingleResult();
-        } catch (NonUniqueResultException $e) {
+            return $costo->getResult();
         } catch (NoResultException $e) {
         }
 

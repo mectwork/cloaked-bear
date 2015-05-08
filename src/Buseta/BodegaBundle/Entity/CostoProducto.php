@@ -162,14 +162,14 @@ class CostoProducto
     public function setCodigoAlternativo($codigoAlternativo)
     {
         $this->codigoAlternativo = $codigoAlternativo;
-    
+
         return $this;
     }
 
     /**
      * Get codigoAlternativo
      *
-     * @return string 
+     * @return string
      */
     public function getCodigoAlternativo()
     {
