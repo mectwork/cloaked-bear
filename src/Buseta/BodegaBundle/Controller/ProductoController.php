@@ -481,7 +481,6 @@ class ProductoController extends Controller
             'id'        => $producto->getId(),
             'nombre'    => $producto->getNombre(),
             'codigo'    => $producto->getCodigo(),
-            'codigoA'   => $producto->getCodigoA(),
         );
 
         // Select UOM
@@ -492,20 +491,31 @@ class ProductoController extends Controller
             );
         }
 
-        $precio = $em->getRepository('BusetaBodegaBundle:Producto')->getPrecioActivo($id);
-        if ($precio) {
-            $data['precio'] = array(
-                'id'        => $precio->getId(),
-                'precio'    => $precio->getPrecio(),
-            );
-        }
+//        $precio = $em->getRepository('BusetaBodegaBundle:Producto')->getPrecioActivo($id);
+//        if ($precio) {
+//            $data['precio'] = array(
+//                'id'        => $precio->getId(),
+//                'precio'    => $precio->getPrecio(),
+//            );
+//        }
 
-        $costo = $em->getRepository('BusetaBodegaBundle:Producto')->getCostoActivo($id);
-        if ($costo) {
-            $data['costo'] = array(
-                'id'        => $costo->getId(),
-                'costo'     => $costo->getCosto(),
-            );
+        $costos = $em->getRepository('BusetaBodegaBundle:Producto')->getCostoActivo($id);
+        if ($costos) {
+            foreach ($costos as $costo) {
+                /** @var \Buseta\BodegaBundle\Entity\CostoProducto $costo */
+                $data['costos'][$costo->getId()] = array(
+                    'costo'     => $costo->getCosto(),
+                    'codigo'    => $costo->getCodigoAlternativo(),
+                );
+
+                if ($costo->getProveedor()) {
+                    $proveedor = $costo->getProveedor();
+                    $data['costos'][$costo->getId()]['proveedor'] = array(
+                        'id'        => $proveedor->getId(),
+                        'nombre'    => $proveedor->__toString(),
+                    );
+                }
+            }
         }
 
         return new JsonResponse($data);

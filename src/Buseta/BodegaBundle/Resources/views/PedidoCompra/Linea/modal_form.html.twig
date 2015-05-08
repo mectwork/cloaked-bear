@@ -1,9 +1,10 @@
 {% form_theme form '@BusetaBodega/Form/fields.twig' %}
 
-{% form_theme form.impuesto _self %}
+{% form_theme form.impuesto '@BusetaBodega/PedidoCompra/Linea/impuesto_form_theme.html.twig' %}
+{% form_theme form.producto '@BusetaBodega/PedidoCompra/Linea/producto_form_theme.html.twig' %}
 
 <div class="modal" id="form_lineas_modal" tabindex="-1" role="dialog" aria-labelledby="createLineas" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -15,7 +16,29 @@
                     {% if form.vars.method == 'PUT' %}
                         <input type="hidden" name="_method" value="PUT"/>
                     {% endif %}
-                    {{ form_widget(form) }}
+
+                    <div class="row">
+                        <div class="col-lg-12">{{ form_row(form.producto) }}</div>
+                        <div class="col-lg-12">
+                            <table id="producto_proveedores_results_list" class="table table-condensed table-striped table-bordered table-hover" style="display: none;">
+                                <tr>
+                                    <th>Proveedor</th>
+                                    <th>Código</th>
+                                    <th style="width: 20%;">Costo</th>
+                                    <th></th>
+                                </tr>
+                            </table>
+                        </div>
+                        {#<div class="col-lg-4">{{ form_row(form.linea) }}</div>#}
+                        <div class="col-lg-4">{{ form_row(form.cantidad_pedido) }}</div>
+                        <div class="col-lg-4">{{ form_row(form.uom) }}</div>
+                        <div class="col-lg-4">{{ form_row(form.precio_unitario) }}</div>
+                        <div class="col-lg-4">{{ form_row(form.moneda) }}</div>
+                        <div class="col-lg-4">{{ form_row(form.impuesto) }}</div>
+                        <div class="col-lg-4">{{ form_row(form.porciento_descuento) }}</div>
+                        <div class="col-lg-4">{{ form_row(form.importe_linea) }}</div>
+                    </div>
+                    {{ form_widget(form._token) }}
                 </form>
             </div>
             <div class="modal-footer">
@@ -27,19 +50,3 @@
         </div>
     </div>
 </div>
-
-
-{% block choice_widget_options -%}
-    {% if options is defined %}
-        {% for group_label, choice in options %}
-            {%- if choice is iterable -%}
-                <optgroup label="{{ group_label|trans({}, translation_domain) }}">
-                    {% set options = choice %}
-                    {{- block('choice_widget_options') -}}
-                </optgroup>
-            {%- else -%}
-                <option data-tipo="{{ choice.data.tipo }}" data-tarifa="{{ choice.data.tarifa }}" value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice.label|trans({}, translation_domain) }}</option>
-            {%- endif -%}
-        {% endfor %}
-    {% endif %}
-{%- endblock choice_widget_options %}
