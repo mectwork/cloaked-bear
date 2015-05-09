@@ -315,7 +315,7 @@ class MantenimientoPreventivoController extends Controller
             return new \Symfony\Component\HttpFoundation\Response(json_encode(array()), 200);
         }
 
-        $tarea = $em->getRepository('BusetaNomencladorBundle:Tarea')->find($tarea_id);
+        $tarea = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->find($tarea_id);
 
         $garantia = $tarea->getGarantia()->getDias();
 
