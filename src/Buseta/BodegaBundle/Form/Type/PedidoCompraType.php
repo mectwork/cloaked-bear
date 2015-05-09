@@ -144,6 +144,13 @@ class PedidoCompraType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
+            ->add('observaciones', 'textarea', array(
+                'required' => false,
+                'label'  => 'Observaciones',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
         ;
     }
 

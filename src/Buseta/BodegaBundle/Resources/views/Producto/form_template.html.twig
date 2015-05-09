@@ -46,11 +46,13 @@
 
     {# buttons group #}
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <a class="btn btn-primary" id="btn_producto_save" href="#"><span class="glyphicon glyphicon-save"></span>
                 {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
             <a class="btn btn-default" id="btn_producto_cancel" href="{{ path('producto') }}"><span class="glyphicon glyphicon-chevron-left"></span>
                 {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+            <a class="btn btn-primary" id="btn_producto_nuevo" href="{{ path('producto_new') }}"><span class="glyphicon glyphicon-save"></span>
+                {{ 'actions.nuevo' | trans({}, 'BusetaBodegaBundle') }}</a>
         </div>
     </div>
 </form>

@@ -26,6 +26,11 @@ class PedidoCompraModel
 
     /**
      * @var string
+     */
+    private $observaciones;
+
+    /**
+     * @var string
      *
      */
     private $consecutivo_compra;
@@ -152,6 +157,7 @@ class PedidoCompraModel
             $this->importe_total = $pedidocompra->getImporteTotal();
             $this->importe_total_lineas = $pedidocompra->getImporteTotalLineas();
             $this->numero_documento = $pedidocompra->getNumeroDocumento();
+            $this->observaciones = $pedidocompra->getObservaciones();
 
             if ($pedidocompra->getTercero()) {
                 $this->tercero  = $pedidocompra->getTercero();
@@ -195,6 +201,7 @@ class PedidoCompraModel
         $pedidocompra->setNumeroDocumento($this->getNumeroDocumento());
         $pedidocompra->setUpdated($this->getUpdated());
         $pedidocompra->setUpdatedby($this->getUpdatedby());
+        $pedidocompra->setObservaciones($this->getObservaciones());
 
         if ($this->getTercero() !== null) {
             $pedidocompra->setTercero($this->getTercero());
@@ -239,6 +246,22 @@ class PedidoCompraModel
     public function setPedidoCompraLineas($pedido_compra_lineas)
     {
         $this->pedido_compra_lineas = $pedido_compra_lineas;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
+    }
+
+    /**
+     * @param mixed $observaciones
+     */
+    public function setObservaciones($observaciones)
+    {
+        $this->observaciones = $observaciones;
     }
 
     /**

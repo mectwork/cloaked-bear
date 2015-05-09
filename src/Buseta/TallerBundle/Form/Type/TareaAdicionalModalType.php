@@ -23,33 +23,13 @@ class TareaAdicionalModalType extends AbstractType
         $builder->addEventSubscriber($grupos);
 
         $builder
-            ->add('tarea', 'text', array(
+            ->add('tareamantenimiento', 'text', array(
                 'required' => true,
-                'label'  => 'Tarea',
+                'label'  => 'Tarea de Mantenimiento',
                 'attr'   => array(
                     'class' => 'form-control',
-                    'width' => '40px',
                 ),
             ))
-            /*
-            ->add('grupos','entity',array(
-                'class' => 'BusetaNomencladorBundle:Grupo',
-                'empty_value' => '---Seleccione un grupo---',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
-            ->add('subgrupos','entity',array(
-                'class' => 'BusetaNomencladorBundle:Subgrupo',
-                'empty_value' => '---Seleccione un subgrupo---',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
-            */
-
             ->add('fecha_estimada', 'date', array(
                 'widget' => 'single_text',
                 'format'  => 'dd/MM/yyyy',

@@ -23,10 +23,10 @@ class TareaMantenimiento
     private $id;
 
     /**
-     * @var string
+     * @var \Buseta\NomencladorBundle\Entity\Tarea
      *
-     * @ORM\Column(name="valor", type="string", nullable=true)
-     * @Assert\NotBlank()
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Tarea")
+     * @Assert\NotNull
      */
     private $valor;
 
@@ -59,6 +59,13 @@ class TareaMantenimiento
      * @Assert\NotBlank()
      */
     private $horas;
+
+    /**
+     * @var \Buseta\NomencladorBundle\Entity\GarantiaTarea
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\GarantiaTarea")
+     */
+    private $garantia;
 
     /**
      * Get id.
@@ -167,13 +174,29 @@ class TareaMantenimiento
     }
 
     /**
+     * @return GarantiaTarea
+     */
+    public function getGarantia()
+    {
+        return $this->garantia;
+    }
+
+    /**
+     * @param GarantiaTarea $garantia
+     */
+    public function setGarantia($garantia)
+    {
+        $this->garantia = $garantia;
+    }
+
+    /**
      * Set valor.
      *
-     * @param string $valor
+     * @param \Buseta\NomencladorBundle\Entity\Tarea $valor
      *
      * @return TareaMantenimiento
      */
-    public function setValor($valor)
+    public function setValor(\Buseta\NomencladorBundle\Entity\Tarea $valor = null)
     {
         $this->valor = $valor;
 
@@ -183,7 +206,7 @@ class TareaMantenimiento
     /**
      * Get valor.
      *
-     * @return string
+     * @return \Buseta\NomencladorBundle\Entity\Tarea
      */
     public function getValor()
     {

@@ -31,7 +31,7 @@ class AddSubgrupoFieldSubscriber implements EventSubscriberInterface
         if ($grupo === null) {
             $form->add('subgrupo', 'choice', array(
                 'choices' => array(),
-                'empty_value'   => '---Seleccione subgrupo---',
+                'empty_value'   => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -39,7 +39,7 @@ class AddSubgrupoFieldSubscriber implements EventSubscriberInterface
         } else {
             $form->add('subgrupo', 'entity', array(
                 'class'         => 'BusetaNomencladorBundle:Subgrupo',
-                'empty_value'   => '---Seleccione subgrupo---',
+                'empty_value'   => '---Seleccione---',
                 'auto_initialize' => false,
                 'data'          => $subgrupo,
                 'attr' => array(

@@ -47,6 +47,13 @@ class PedidoCompra
     private $tercero;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="observaciones", type="string")
+     */
+    private $observaciones;
+
+    /**
      * @var date
      *
      * @ORM\Column(name="fecha_pedido", type="date")
@@ -179,6 +186,7 @@ class PedidoCompra
         $this->updatedby = $model->getUpdatedby();
         $this->estado_documento = $model->getEstadoDocumento();
         $this->fecha_pedido = $model->getFechaPedido();
+        $this->observaciones = $model->getObservaciones();
         $this->importeCompra = $model->getImporteCompra();
         $this->numero_documento = $model->getNumeroDocumento();
 
@@ -233,6 +241,22 @@ class PedidoCompra
         $this->necesidadMaterial = $necesidadMaterial;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
+    }
+
+    /**
+     * @param string $observaciones
+     */
+    public function setObservaciones($observaciones)
+    {
+        $this->observaciones = $observaciones;
     }
 
     /**

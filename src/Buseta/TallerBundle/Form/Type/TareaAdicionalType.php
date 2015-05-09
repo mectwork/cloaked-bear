@@ -26,8 +26,8 @@ class TareaAdicionalType extends AbstractType
         $subgrupos = new AddSubgrupoFieldSubscriber($objeto);
         $builder->addEventSubscriber($subgrupos);
 
-        $tarea = new AddTareaMantenimientoFieldSubscriber($objeto);
-        $builder->addEventSubscriber($tarea);
+        $tareamantenimiento = new AddTareaMantenimientoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($tareamantenimiento);
 
         $builder
             ->add('descripcion', 'textarea', array(
