@@ -26,6 +26,11 @@ class PedidoCompraModel
 
     /**
      * @var string
+     */
+    private $observaciones;
+
+    /**
+     * @var string
      *
      */
     private $consecutivo_compra;
@@ -176,6 +181,7 @@ class PedidoCompraModel
             $this->impuesto         = $pedidocompra->getImpuesto();
             $this->importeDescuento = $pedidocompra->getImporteDescuento();
             $this->importeImpuesto  = $pedidocompra->getImporteImpuesto();
+            $this->observaciones = $pedidocompra->getObservaciones();
 
             if ($pedidocompra->getTercero()) {
                 $this->tercero  = $pedidocompra->getTercero();
@@ -223,6 +229,7 @@ class PedidoCompraModel
         $pedidocompra->setDescuento($this->getDescuento());
         $pedidocompra->setImporteImpuesto($this->getImporteImpuesto());
         $pedidocompra->setImporteDescuento($this->getImporteDescuento());
+        $pedidocompra->setObservaciones($this->getObservaciones());
 
         if ($this->getTercero() !== null) {
             $pedidocompra->setTercero($this->getTercero());
@@ -267,6 +274,22 @@ class PedidoCompraModel
     public function setPedidoCompraLineas($pedido_compra_lineas)
     {
         $this->pedido_compra_lineas = $pedido_compra_lineas;
+    }
+
+    /**
+     * @return string
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
+    }
+
+    /**
+     * @param string $observaciones
+     */
+    public function setObservaciones($observaciones)
+    {
+        $this->observaciones = $observaciones;
     }
 
     /**

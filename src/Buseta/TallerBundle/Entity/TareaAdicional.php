@@ -44,12 +44,12 @@ class TareaAdicional
     private $ordenTrabajo;
 
     /**
-     * @var \Buseta\NomencladorBundle\Entity\Tarea
+     * @var \Buseta\TallerBundle\Entity\TareaMantenimiento
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Tarea")
+     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\TareaMantenimiento")
      * @Assert\NotNull
      */
-    private $tarea;
+    private $tareamantenimiento;
 
     /**
      * @var string
@@ -267,27 +267,27 @@ class TareaAdicional
     }
 
     /**
-     * Set tarea.
+     * Set tareamantenimiento.
      *
-     * @param \Buseta\NomencladorBundle\Entity\Tarea $tarea
+     * @param \Buseta\TallerBundle\Entity\TareaMantenimiento $tareamantenimiento
      *
      * @return TareaAdicional
      */
-    public function setTarea(\Buseta\NomencladorBundle\Entity\Tarea $tarea = null)
+    public function setTareaMantenimiento(\Buseta\TallerBundle\Entity\TareaMantenimiento $tareamantenimiento = null)
     {
-        $this->tarea = $tarea;
+        $this->tareamantenimiento = $tareamantenimiento;
 
         return $this;
     }
 
     /**
-     * Get tarea.
+     * Get tareamantenimiento.
      *
-     * @return \Buseta\NomencladorBundle\Entity\Tarea
+     * @return \Buseta\TallerBundle\Entity\TareaMantenimiento
      */
-    public function getTarea()
+    public function getTareaMantenimiento()
     {
-        return $this->tarea;
+        return $this->tareamantenimiento;
     }
 
     /**

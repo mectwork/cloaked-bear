@@ -31,7 +31,9 @@ class TareaMantenimientoType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('valor', 'text', array(
+            ->add('valor', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:Tarea',
+                'empty_value' => '---Seleccione---',
                 'required' => false,
                 'label'  => 'Valor',
                 'attr'   => array(
@@ -60,7 +62,7 @@ class TareaMantenimientoType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\NomencladorBundle\Entity\Tarea',
+            'data_class' => 'Buseta\TallerBundle\Entity\TareaMantenimiento',
             'action' => 'POST',
         ));
     }

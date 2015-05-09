@@ -4,12 +4,14 @@ namespace Buseta\TallerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * TareaMantenimiento.
  *
  * @ORM\Table(name="d_tarea_mantenimiento")
- * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\TareaMantimientoRepository")
+ * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\TareaMantenimientoRepository")
+ * @UniqueEntity(fields={"valor", "grupo", "subgrupo"}, repositoryMethod="onlyOneTarea", message="Ya se encuentra registrada una Tarea de Mantenimiento con este mismo Grupo y Subgrupo.")
  */
 class TareaMantenimiento
 {
@@ -23,10 +25,10 @@ class TareaMantenimiento
     private $id;
 
     /**
-     * @var string
+     * @var \Buseta\NomencladorBundle\Entity\Tarea
      *
-     * @ORM\Column(name="valor", type="string", nullable=true)
-     * @Assert\NotBlank()
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Tarea")
+     * @Assert\NotNull
      */
     private $valor;
 
@@ -59,6 +61,13 @@ class TareaMantenimiento
      * @Assert\NotBlank()
      */
     private $horas;
+
+    /**
+     * @var \Buseta\NomencladorBundle\Entity\GarantiaTarea
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\GarantiaTarea")
+     */
+    private $garantia;
 
     /**
      * Get id.
@@ -167,13 +176,29 @@ class TareaMantenimiento
     }
 
     /**
+     * @return GarantiaTarea
+     */
+    public function getGarantia()
+    {
+        return $this->garantia;
+    }
+
+    /**
+     * @param GarantiaTarea $garantia
+     */
+    public function setGarantia($garantia)
+    {
+        $this->garantia = $garantia;
+    }
+
+    /**
      * Set valor.
      *
-     * @param string $valor
+     * @param \Buseta\NomencladorBundle\Entity\Tarea $valor
      *
      * @return TareaMantenimiento
      */
-    public function setValor($valor)
+    public function setValor(\Buseta\NomencladorBundle\Entity\Tarea $valor = null)
     {
         $this->valor = $valor;
 
@@ -183,7 +208,7 @@ class TareaMantenimiento
     /**
      * Get valor.
      *
-     * @return string
+     * @return \Buseta\NomencladorBundle\Entity\Tarea
      */
     public function getValor()
     {

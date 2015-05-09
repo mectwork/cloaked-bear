@@ -140,5 +140,6 @@ easy_admin:
         'Moneda': Buseta\NomencladorBundle\Entity\Moneda
         'Tipo Compra': Buseta\NomencladorBundle\Entity\TipoCompra
         'Tipo Contacto': Buseta\NomencladorBundle\Entity\TipoContacto
+        'Tarea': Buseta\NomencladorBundle\Entity\Tarea
         'Unidad de Medida': Buseta\NomencladorBundle\Entity\UOM
         'Medio Reporte': Buseta\NomencladorBundle\Entity\MedioReporte
