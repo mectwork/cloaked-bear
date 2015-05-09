@@ -7,8 +7,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\TallerBundle\Entity\TareaMantenimiento;
 use Buseta\TallerBundle\Form\Type\TareaMantenimientoType;
 
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
 /**
- * TareaMantenimiento controller.
+ * NecesidadMaterial controller.
+ *
+ * @Route("/tareamantenimiento")
  */
 class TareaMantenimientoController extends Controller
 {
@@ -238,35 +244,56 @@ class TareaMantenimientoController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
-     * Deletes a TareaMantenimiento entity.
+     * Deletes a NecesidadMaterial entity.
+     *
+     * @Route("/{id}/delete", name="tareamantenimiento_delete")
+     * @Method({"DELETE", "GET"})
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(TareaMantenimiento $tareamantenimiento, Request $request)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($tareamantenimiento->getId());
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find TareaMantenimiento entity.');
-            }
-
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             try {
-                $em->remove($entity);
+                $em = $this->get('doctrine.orm.entity_manager');
+
+                $em->remove($tareamantenimiento);
                 $em->flush();
 
-                $this->get('session')->getFlashBag()->add('success', 'Ha sido eliminado satisfactoriamente.');
+                $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 202);
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('success', $message);
+                }
             } catch (\Exception $e) {
-                $this->get('logger')->addCritical(
-                    sprintf('Ha ocurrido un error eliminando una tarea de mantenimiento. Detalles: %s',
-                        $e->getMessage()
-                    ));
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Tarea de Mantenimiento'), 'BusetaTallerBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
             }
         }
 
+        $renderView =  $this->renderView('@BusetaTaller/TareaMantenimiento/delete_modal.html.twig', array(
+            'entity' => $tareamantenimiento,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
         return $this->redirect($this->generateUrl('tareamantenimiento'));
     }
 
