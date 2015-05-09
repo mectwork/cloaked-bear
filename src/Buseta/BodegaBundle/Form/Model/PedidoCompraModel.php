@@ -76,12 +76,32 @@ class PedidoCompraModel
     /**
      * @var float
      */
+    private $descuento;
+
+    /**
+     * @var \Buseta\TallerBundle\Entity\Impuesto
+     */
+    private $impuesto;
+
+    /**
+     * @var float
+     */
     private $importeCompra;
 
     /**
      * @var float
      */
     private $importe_total_lineas;
+
+    /**
+     * @var float
+     */
+    private $importeDescuento;
+
+    /**
+     * @var float
+     */
+    private $importeImpuesto;
 
     /**
      * @var float
@@ -152,6 +172,10 @@ class PedidoCompraModel
             $this->importe_total = $pedidocompra->getImporteTotal();
             $this->importe_total_lineas = $pedidocompra->getImporteTotalLineas();
             $this->numero_documento = $pedidocompra->getNumeroDocumento();
+            $this->descuento        = $pedidocompra->getDescuento();
+            $this->impuesto         = $pedidocompra->getImpuesto();
+            $this->importeDescuento = $pedidocompra->getImporteDescuento();
+            $this->importeImpuesto  = $pedidocompra->getImporteImpuesto();
 
             if ($pedidocompra->getTercero()) {
                 $this->tercero  = $pedidocompra->getTercero();
@@ -195,6 +219,10 @@ class PedidoCompraModel
         $pedidocompra->setNumeroDocumento($this->getNumeroDocumento());
         $pedidocompra->setUpdated($this->getUpdated());
         $pedidocompra->setUpdatedby($this->getUpdatedby());
+        $pedidocompra->setImpuesto($this->getImpuesto());
+        $pedidocompra->setDescuento($this->getDescuento());
+        $pedidocompra->setImporteImpuesto($this->getImporteImpuesto());
+        $pedidocompra->setImporteDescuento($this->getImporteDescuento());
 
         if ($this->getTercero() !== null) {
             $pedidocompra->setTercero($this->getTercero());
@@ -543,5 +571,69 @@ class PedidoCompraModel
     public function setImporteCompra($importeCompra)
     {
         $this->importeCompra = $importeCompra;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDescuento()
+    {
+        return $this->descuento;
+    }
+
+    /**
+     * @param float $descuento
+     */
+    public function setDescuento($descuento)
+    {
+        $this->descuento = $descuento;
+    }
+
+    /**
+     * @return \Buseta\TallerBundle\Entity\Impuesto
+     */
+    public function getImpuesto()
+    {
+        return $this->impuesto;
+    }
+
+    /**
+     * @param \Buseta\TallerBundle\Entity\Impuesto $impuesto
+     */
+    public function setImpuesto($impuesto)
+    {
+        $this->impuesto = $impuesto;
+    }
+
+    /**
+     * @return float
+     */
+    public function getImporteDescuento()
+    {
+        return $this->importeDescuento;
+    }
+
+    /**
+     * @param float $importeDescuento
+     */
+    public function setImporteDescuento($importeDescuento)
+    {
+        $this->importeDescuento = $importeDescuento;
+    }
+
+    /**
+     * @return float
+     */
+    public function getImporteImpuesto()
+    {
+        return $this->importeImpuesto;
+    }
+
+    /**
+     * @param float $importeImpuesto
+     */
+    public function setImporteImpuesto($importeImpuesto)
+    {
+        $this->importeImpuesto = $importeImpuesto;
     }
 }
