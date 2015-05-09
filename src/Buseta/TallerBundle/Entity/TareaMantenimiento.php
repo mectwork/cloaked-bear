@@ -4,12 +4,14 @@ namespace Buseta\TallerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * TareaMantenimiento.
  *
  * @ORM\Table(name="d_tarea_mantenimiento")
- * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\TareaMantimientoRepository")
+ * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\TareaMantenimientoRepository")
+ * @UniqueEntity(fields={"valor", "grupo", "subgrupo"}, repositoryMethod="onlyOneTarea", message="Ya se encuentra registrada una Tarea de Mantenimiento con este mismo Grupo y Subgrupo.")
  */
 class TareaMantenimiento
 {
