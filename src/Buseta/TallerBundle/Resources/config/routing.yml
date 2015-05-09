@@ -46,6 +46,10 @@ mantenimientopreventivo:
     resource: @BusetaTallerBundle/Controller/MantenimientoPreventivoController.php
     type: annotation
 
+buseta_taller_tareamantenimiento:
+    resource: "@BusetaTallerBundle/Controller/TareaMantenimientoController.php"
+    type: annotation
+
 buseta_taller_observacion:
     resource: "@BusetaTallerBundle/Controller/ObservacionController.php"
     type: annotation

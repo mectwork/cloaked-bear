@@ -14,6 +14,8 @@
 
 {% block area_trabajo %}
 
+<div id="records_list">
+
 <div class="btn-group" style="padding-bottom: 8px;">
     <a class="btn btn-primary" href="{{ path('tareamantenimiento_new') }}"><i class="fa fa-plus-circle"></i> Adicionar tarea de mantenimiento</a>
 </div>
@@ -40,7 +42,7 @@
                 <td>{{ entity.garantia }}</td>
                 <td>{{ entity.kilometros }}</td>
                 <td>{{ entity.horas }}</td>
-                <td  style="width: 18% !important; text-align: center;">
+                <td  style="width: 24% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs" href="{{ path('tareamantenimiento_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
                     </div>
@@ -48,6 +50,8 @@
                     <div class="btn-group">
                         <a class="btn btn-danger btn-xs" href="{{ path('tareamantenimiento_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
                     </div>
+                    <a href="#delete" data-href="{{ path('tareamantenimiento_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
+                        <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
                 </td>
                 </td>
             </tr>
@@ -68,4 +72,16 @@
         </div>
     </div>
 
+</div>
+
+    <!-- Delete modal -->
+    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
+
 {% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+    var deleteevent = new DeleteEvent('{{ path('tareamantenimiento') }}', 'div#records_list');
+    deleteevent.start_events();
+</script>
+{% endblock javascripts %}
