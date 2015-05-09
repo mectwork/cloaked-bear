@@ -2,7 +2,6 @@
 
 namespace Buseta\TallerBundle\Controller;
 
-use Buseta\NomencladorBundle\Entity\Tarea;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\TallerBundle\Entity\TareaMantenimiento;
@@ -79,7 +78,7 @@ class TareaMantenimientoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('BusetaNomencladorBundle:Tarea')->findAll();
+        $entities = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->findAll();
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
@@ -98,7 +97,7 @@ class TareaMantenimientoController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new Tarea();
+        $entity = new TareaMantenimiento();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -124,7 +123,7 @@ class TareaMantenimientoController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Tarea $entity)
+    private function createCreateForm(TareaMantenimiento $entity)
     {
         $form = $this->createForm(new TareaMantenimientoType(), $entity, array(
             'action' => $this->generateUrl('tareamantenimiento_create'),
@@ -141,7 +140,7 @@ class TareaMantenimientoController extends Controller
      */
     public function newAction()
     {
-        $entity = new Tarea();
+        $entity = new TareaMantenimiento();
         $form   = $this->createCreateForm($entity);
 
         return $this->render('BusetaTallerBundle:TareaMantenimiento:new.html.twig', array(
@@ -157,7 +156,7 @@ class TareaMantenimientoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaNomencladorBundle:Tarea')->find($id);
+        $entity = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find TareaMantenimiento entity.');
@@ -177,7 +176,7 @@ class TareaMantenimientoController extends Controller
     {
         $em = $this->get('doctrine.orm.entity_manager');
 
-        $entity = $em->getRepository('BusetaNomencladorBundle:Tarea')->find($id);
+        $entity = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find TareaMantenimiento entity.');
@@ -200,14 +199,12 @@ class TareaMantenimientoController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(Tarea $entity)
+    private function createEditForm(TareaMantenimiento $entity)
     {
         $form = $this->createForm(new TareaMantenimientoType(), $entity, array(
             'action' => $this->generateUrl('tareamantenimiento_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
-
-        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -218,7 +215,7 @@ class TareaMantenimientoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaNomencladorBundle:Tarea')->find($id);
+        $entity = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find TareaMantenimiento entity.');
@@ -251,7 +248,7 @@ class TareaMantenimientoController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaNomencladorBundle:Tarea')->find($id);
+            $entity = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find TareaMantenimiento entity.');

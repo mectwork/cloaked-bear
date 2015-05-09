@@ -277,7 +277,7 @@ class MantenimientoPreventivoController extends Controller
 
         $em = $this->get('doctrine.orm.entity_manager');
         $subgrupo_id = $request->query->get('subgrupo_id');
-        $tareas = $em->getRepository('BusetaNomencladorBundle:Tarea')->findBy(array(
+        $tareas = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->findBy(array(
             'subgrupo' => $subgrupo_id,
         ));
 
@@ -285,7 +285,7 @@ class MantenimientoPreventivoController extends Controller
         foreach ($tareas as $tarea) {
             $json[] = array(
                 'id' => $tarea->getId(),
-                'valor' => $tarea->getValor(),
+                'valor' => $tarea->getValor()->getValor(),
             );
         }
 

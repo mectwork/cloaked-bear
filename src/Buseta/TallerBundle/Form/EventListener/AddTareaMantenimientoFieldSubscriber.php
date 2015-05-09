@@ -26,28 +26,28 @@ class AddTareaMantenimientoFieldSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function addTareaMantenimientoForm($form, $tarea = null, $subgrupo = null)
+    private function addTareaMantenimientoForm($form, $tareamantenimiento = null, $subgrupo = null)
     {
         if ($subgrupo === null) {
-            $form->add('tarea', 'choice', array(
+            $form->add('tareamantenimiento', 'choice', array(
                 'choices' => array(),
-                'empty_value'   => '---Seleccione tarea---',
+                'empty_value'   => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
             ));
         } else {
-            $form->add('tarea', 'entity', array(
-                'class'         => 'BusetaNomencladorBundle:Tarea',
-                'empty_value'   => '---Seleccione tarea---',
+            $form->add('tareamantenimiento', 'entity', array(
+                'class'         => 'BusetaTallerBundle:TareaMantenimiento',
+                'empty_value'   => '---Seleccione---',
                 'auto_initialize' => false,
-                'data'          => $tarea,
+                'data'          => $tareamantenimiento,
                 'attr' => array(
                     'class' => 'form-control',
                 ),
                 'query_builder' => function (EntityRepository $repository) use ($subgrupo) {
-                        $qb = $repository->createQueryBuilder('tarea')
-                            ->innerJoin('tarea.subgrupo', 'subgrupo');
+                        $qb = $repository->createQueryBuilder('tareamantenimiento')
+                            ->innerJoin('tareamantenimiento.subgrupo', 'subgrupo');
                         if ($subgrupo instanceof Subgrupo) {
                             $qb->where('subgrupo = :subgrupo')
                                 ->setParameter('subgrupo', $subgrupo);
@@ -73,9 +73,9 @@ class AddTareaMantenimientoFieldSubscriber implements EventSubscriberInterface
         if (null == $data) {
             $this->addTareaMantenimientoForm($form);
         } else {
-            $tarea = ($data->getTarea()) ? $data->getTarea() : null;
-            $subgrupo = ($tarea) ? $tarea->getSubgrupo() : null;
-            $this->addTareaMantenimientoForm($form, $tarea, $subgrupo);
+            $tareamantenimiento = ($data->getTareaMantenimiento()) ? $data->getTareaMantenimiento() : null;
+            $subgrupo = ($tareamantenimiento) ? $tareamantenimiento->getSubgrupo() : null;
+            $this->addTareaMantenimientoForm($form, $tareamantenimiento, $subgrupo);
         }
     }
 
@@ -88,8 +88,8 @@ class AddTareaMantenimientoFieldSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $tarea = array_key_exists('tarea', $data) ? $data['tarea'] : null;
+        $tareamantenimiento = array_key_exists('tareamantenimiento', $data) ? $data['tareamantenimiento'] : null;
         $subgrupo = array_key_exists('subgrupo', $data) ? $data['subgrupo'] : null;
-        $this->addTareaMantenimientoForm($form, $tarea, $subgrupo);
+        $this->addTareaMantenimientoForm($form, $tareamantenimiento, $subgrupo);
     }
 }

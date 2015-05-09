@@ -225,7 +225,13 @@
                 if(jqXHR.status == 201 || jqXHR.status == 202) {
                     addGlobalMessage('success', response.message);
                 }
+
                 producto._load();
+
+                $.ajax({
+                    url: Routing.generate('productos_producto_new'),
+                    type: 'GET'
+                });
             },
             _always: function() {
                 // remove spinning
