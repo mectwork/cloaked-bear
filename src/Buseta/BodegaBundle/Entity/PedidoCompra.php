@@ -54,7 +54,7 @@ class PedidoCompra
     private $observaciones;
 
     /**
-     * @var date
+     * @var \DateTime
      *
      * @ORM\Column(name="fecha_pedido", type="date")
      * @Assert\Date()
@@ -93,6 +93,20 @@ class PedidoCompra
     /**
      * @var float
      *
+     * @ORM\Column(name="descuento", type="decimal", scale=2, nullable=true)
+     */
+    private $descuento;
+
+    /**
+     * @var \Buseta\TallerBundle\Entity\Impuesto
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Impuesto")
+     */
+    private $impuesto;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="importe_compra", type="decimal", scale=2, nullable=true)
      */
     private $importeCompra;
@@ -103,6 +117,20 @@ class PedidoCompra
      * @ORM\Column(name="importe_total_lineas", type="decimal", scale=2, nullable=true)
      */
     private $importe_total_lineas;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="importe_descuento", type="decimal", scale=2, nullable=true)
+     */
+    private $importeDescuento;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="importe_impuesto", type="decimal", scale=2, nullable=true)
+     */
+    private $importeImpuesto;
 
     /**
      * @var float
@@ -167,7 +195,6 @@ class PedidoCompra
         $this->importe_total = 0;
         $this->importe_total_lineas = 0;
         $this->pedido_compra_lineas = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->updated = new \DateTime();
         $this->deleted = false;
     }
 
@@ -189,6 +216,10 @@ class PedidoCompra
         $this->observaciones = $model->getObservaciones();
         $this->importeCompra = $model->getImporteCompra();
         $this->numero_documento = $model->getNumeroDocumento();
+        $this->descuento        = $model->getDescuento();
+        $this->impuesto         = $model->getImpuesto();
+        $this->importeDescuento = $model->getImporteDescuento();
+        $this->importeImpuesto  = $model->getImporteImpuesto();
 
         if ($model->getTercero()) {
             $this->tercero  = $model->getTercero();
@@ -738,16 +769,160 @@ class PedidoCompra
     }
 
     /**
+     * Set descuento
+     *
+     * @param string $descuento
+     * @return PedidoCompra
+     */
+    public function setDescuento($descuento)
+    {
+        $this->descuento = $descuento;
+
+        return $this;
+    }
+
+    /**
+     * Get descuento
+     *
+     * @return float|null
+     */
+    public function getDescuento()
+    {
+        return $this->descuento;
+    }
+
+    /**
+     * Set importeDescuento
+     *
+     * @param string $importeDescuento
+     * @return PedidoCompra
+     */
+    public function setImporteDescuento($importeDescuento)
+    {
+        $this->importeDescuento = $importeDescuento;
+
+        return $this;
+    }
+
+    /**
+     * Get importeDescuento
+     *
+     * @return float|null
+     */
+    public function getImporteDescuento()
+    {
+        return $this->importeDescuento;
+    }
+
+    /**
+     * Set importeImpuesto
+     *
+     * @param string $importeImpuesto
+     * @return PedidoCompra
+     */
+    public function setImporteImpuesto($importeImpuesto)
+    {
+        $this->importeImpuesto = $importeImpuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get importeImpuesto
+     *
+     * @return float|null
+     */
+    public function getImporteImpuesto()
+    {
+        return $this->importeImpuesto;
+    }
+
+    /**
+     * Set impuesto
+     *
+     * @param \Buseta\TallerBundle\Entity\Impuesto $impuesto
+     * @return PedidoCompra
+     */
+    public function setImpuesto(\Buseta\TallerBundle\Entity\Impuesto $impuesto = null)
+    {
+        $this->impuesto = $impuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get impuesto
+     *
+     * @return \Buseta\TallerBundle\Entity\Impuesto
+     */
+    public function getImpuesto()
+    {
+        return $this->impuesto;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->created = new \DateTime();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->updated = new \DateTime();
+    }
+
+    /**
      * @ORM\PreFlush
      */
     public function updateImporteTotal()
     {
         $this->importe_total_lineas = 0;
+        $this->importeDescuento = 0;
+        $this->importeImpuesto = 0;
         $this->importe_total = 0;
+
+        $factorDescuento = 0;
+        if ($this->descuento !== null && $this->descuento !== 0) {
+            $factorDescuento = $this->descuento / 100;
+        }
+
+        $factorImpuesto = 0;
+        if ($this->impuesto !== null) {
+            $factorImpuesto = $this->impuesto->getTarifa() / 100;
+        }
+
         foreach ($this->pedido_compra_lineas as $linea) {
             /** @var PedidoCompraLinea $linea */
-            $this->importe_total_lineas += $linea->getPrecioUnitario() * $linea->getCantidadPedido();
-            $this->importe_total += $linea->getImporteLinea();
+            $importeLinea = $linea->getPrecioUnitario() * $linea ->getCantidadPedido();
+
+            // descuento por linea
+            $factorDescuentoLinea = 0;
+            if($linea->getPorcientoDescuento() !== null && $linea->getPorcientoDescuento() !== 0) {
+                $factorDescuentoLinea = $linea->getPorcientoDescuento() / 100;
+            }
+            $descuento = $factorDescuento + $factorDescuentoLinea;
+            $importeDescuento = $importeLinea * $descuento;
+
+            // impuesto por linea
+            $factorImpuestoLinea = 0;
+            if ($linea->getImpuesto() !== null) {
+                $factorImpuestoLinea = $linea->getImpuesto()->getTarifa() / 100;
+            }
+            $impuesto = $factorImpuesto + $factorImpuestoLinea;
+            $importeImpuesto = ($importeLinea - $importeDescuento) * $impuesto;
+
+            // importe total (formula reducida)
+            $importeTotal = $importeLinea * (1 - $descuento) * (1 + $impuesto);
+
+            $this->importeDescuento += $importeDescuento;
+            $this->importeImpuesto += $importeImpuesto;
+            $this->importe_total_lineas += $importeLinea;
+            $this->importe_total += $importeTotal;
         }
     }
 }

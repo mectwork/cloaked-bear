@@ -121,14 +121,30 @@ class PedidoCompraType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('importeCompra', 'text', array(
+            ->add('descuento', 'number', array(
+                'required'  => false,
+                'label'     => 'Descuento compra',
+                'attr'      => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('impuesto', 'entity', array(
+                'class'         => 'BusetaTallerBundle:Impuesto',
+                'empty_value'   => '---Seleccione---',
+                'required'      => false,
+                'label'         => 'Impuesto compra',
+                'attr'          => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('importeCompra', 'number', array(
                 'required' => false,
                 'label' => 'Importe compra',
                 'attr'   => array(
                     'class' => 'form-control',
                 ),
             ))
-            ->add('importe_total_lineas', 'text', array(
+            ->add('importe_total_lineas', 'number', array(
                 'required' => false,
                 'label'  => 'Importe total líneas',
                 'read_only' => true,
@@ -136,7 +152,24 @@ class PedidoCompraType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('importe_total', 'text', array(
+
+            ->add('importeDescuento', 'number', array(
+                'required' => false,
+                'read_only' => true,
+                'label'  => 'Importe descuento',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('importeImpuesto', 'number', array(
+                'required' => false,
+                'read_only' => true,
+                'label'  => 'Importe impuesto',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('importe_total', 'number', array(
                 'required' => false,
                 'read_only' => true,
                 'label'  => 'Importe total',

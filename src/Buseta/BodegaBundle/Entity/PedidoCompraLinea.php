@@ -77,7 +77,7 @@ class PedidoCompraLinea
     /**
      * @var float
      *
-     * @ORM\Column(name="porciento_descuento", type="decimal", scale=2)
+     * @ORM\Column(name="porciento_descuento", type="decimal", scale=2, nullable=true)
      */
     private $porciento_descuento;
 

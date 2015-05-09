@@ -7,8 +7,7 @@
     {{ form_errors(form) }}
     {{ form_row(form.id) }}
     {{ form_row(form._token) }}
-
-    <div class="row show-grid">
+    <div class="row">
         <div class="col-md-4">
             {{ form_row(form.numero_documento) }}
         </div>
@@ -20,9 +19,7 @@
         <div class="col-md-4">
             {{ form_row(form.tercero) }}
         </div>
-    </div>
 
-    <div class="row show-grid">
         <div class="col-md-4">
             {{ form_row(form.almacen) }}
         </div>
@@ -34,9 +31,7 @@
         <div class="col-md-4">
             {{ form_row(form.forma_pago) }}
         </div>
-    </div>
 
-    <div class="row show-grid">
         <div class="col-md-4">
             {{ form_row(form.condiciones_pago) }}
         </div>
@@ -50,21 +45,38 @@
         </div>
     </div>
 
-    <div class="row show-grid">
-        <div class="col-md-12">
-            {{ form_row(form.observaciones) }}
-        </div>
+    <div class="col-md-12">
+        {{ form_row(form.observaciones) }}
     </div>
 
-    <div class="row show-grid">
+    <hr/>
+    <div class="row">
         <div class="col-md-4">
-            {{ form_row(form.importeCompra) }}
+            {{ form_row(form.impuesto) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.descuento) }}
         </div>
 
         <div class="col-md-4">
             {{ form_row(form.importe_total_lineas) }}
         </div>
 
+        <div class="col-md-4">
+            {{ form_row(form.importeImpuesto) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.importeDescuento) }}
+        </div>
+    </div>
+
+    <hr/>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form_row(form.importeCompra) }}
+        </div>
         <div class="col-md-4">
             {{ form_row(form.importe_total) }}
         </div>
@@ -76,7 +88,7 @@
             <a class="btn btn-primary" id="btn_pedidocompra_save" href="#"><span class="glyphicon glyphicon-save"></span>
                 {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
             <a class="btn btn-default" id="btn_pedidocompra_cancel" href="{{ path('pedidocompra') }}"><span class="glyphicon glyphicon-chevron-left"></span>
-                {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+                {{ 'actions.back' | trans({}, 'BusetaBodegaBundle') }}</a>
         </div>
     </div>
 </form>
