@@ -17,22 +17,11 @@
 
 /* template footer */
 footer {
-    bottom: 0;
     height: 35px;
-    left: 0;
-    margin: 0;
     padding: 5px;
-    right: 0;
-    position: fixed;
-    display: block;
-    top: auto;
-    visibility: visible;
-    width: auto;
     background-image: -moz-linear-gradient(center top , #E4E4E4, #FFFFFF);
     background-color: #F7F7F7;
     border-top: 1px solid #BBBBBB;
-    overflow: hidden;
-    z-index: 1000000 !important;
 }
 
 footer p {

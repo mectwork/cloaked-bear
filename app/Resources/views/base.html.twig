@@ -10,9 +10,12 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-
         {% block body %}{% endblock %}
-
+        {% block footer %}
+            <footer class="text-center">
+                <div class="footer"><a href="#"><strong>HatueySoft</strong></a> versión <small>{{ version_sistema }}</small></div>
+            </footer>
+        {% endblock %}
         {% include "::javascripts.html.twig" %}
         {% block foot_script %}
             {# To only use a subset or add more js overwrite and copy paste this block

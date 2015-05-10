@@ -38,7 +38,6 @@ class Producto
      * @var string
      *
      * @ORM\Column(name="codigo_a", type="string", nullable=true)
-     * @Assert\NotBlank()
      */
     private $codigoA;
 
@@ -58,7 +57,7 @@ class Producto
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string")
+     * @ORM\Column(name="descripcion", type="string", nullable=true)
      * @Assert\NotBlank()
      */
     private $descripcion;

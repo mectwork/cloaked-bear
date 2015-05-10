@@ -8,16 +8,16 @@
     {{ form_row(form.id) }}
     {{ form_row(form._token) }}
 
-    <div class="row show-grid">
+    <div class="row">
         <div class="col-md-4">
             {{ form_row(form.nombre) }}
         </div>
         <div class="col-md-4">
             {{ form_row(form.codigo) }}
         </div>
-        <div class="col-md-4">
-            {{ form_row(form.codigoA) }}
-        </div>
+        {#<div class="col-md-4">#}
+            {#{{ form_row(form.codigoA) }}#}
+        {#</div>#}
         <div class="col-md-4">
             {{ form_row(form.uom) }}
         </div>
@@ -27,9 +27,9 @@
         <div class="col-md-4">
             {{ form_row(form.subgrupo) }}
         </div>
-        <div class="col-md-4">
-            {{ form_row(form.proveedor) }}
-        </div>
+        {#<div class="col-md-4">#}
+            {#{{ form_row(form.proveedor) }}#}
+        {#</div>#}
         <div class="col-md-4">
             {{ form_row(form.categoriaProducto) }}
         </div>

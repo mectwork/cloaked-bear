@@ -32,7 +32,7 @@ var producto = {
 
         });
 
-        $('#' + producto.form_id).on('change', function () {
+        $('#' + producto.form_id + '_grupo').on('change', function () {
             var data = {
                 grupo_id: $(this).val()
             };
@@ -40,11 +40,11 @@ var producto = {
             //Select dependientes entre Grupos y Subgrupos
             $.ajax({
                 type: 'GET',
-                url: '{{ path("producto_ajax_grupos_subgrupos") }}',
+                url: Routing.generate('producto_ajax_grupos_subgrupos'),
                 data: data,
                 success: function(data) {
                     var values = $.parseJSON(data);
-                    var $subgrupo_selector = $('#{{ edit_form.subgrupo.vars.id }}');
+                    var $subgrupo_selector = $('#' + producto.form_id + '_subgrupo');
 
                     $subgrupo_selector.html('<option>---Seleccione---</option>');
 
