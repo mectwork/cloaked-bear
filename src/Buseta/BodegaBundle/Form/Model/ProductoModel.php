@@ -25,7 +25,6 @@ class ProductoModel
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
     private $codigoA;
 

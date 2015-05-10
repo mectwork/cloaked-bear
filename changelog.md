@@ -1,3 +1,19 @@
+beta4:
+  - Actualizada Adicionar tarea adicional en funcionalidad Orden de trabajo para asimilar la nueva estructura de nomenclador Tare, Tarea mantenimiento, Grupo y Subgrupo.
+  - Actualizada funcionalidad Tareas mantenimiento adicionando el nomenclador Tarea como parámetro "valor". Actualizada validación para Tarea de mantenimiento, que no permita crear más de una Tarea de mantenimiento con el mismo "valor" para el mismo Grupo y Subgrupo.
+  - Adicionado/Actualizado nomenclador Tareas para el registro de las tareas comunes de mantenimiento(Diagnosticar, reparar, cambiar, ajustar).
+  - Adicionado campo para Observaciones en la funcionalidad Registro de Compras.
+  - Actualizada fórmula para el cálculo de los importes del Registro de compras(Cálculo de forma individual, línea por línea).
+  - Adicionados los parámetros de Descuento, Impuesto, Importe de Descuento e Importe de impuesto para la factura de forma general(aplicando fórmula línea por línea).
+  - Actualizada funcionalidad para adicionar líneas en Registro de Compras.
+      Actualizada campo de selección para Producto al insertar/editar línea en Registro de compras, para permitir buscar por todos los códigos alternos activos que se encuentran registrados para un producto.
+      Adicionada funcionalidad para mostrar listado de Proveedores, Códigos alternos y Costo para el Producto seleccionado al insertar/editar línea.
+      Adicionada funcionalidad para editar el Costo del Producto desde la interfaz que muestra los datos mencionados anteriormente al seleccionar el Producto.
+  - Actualizada funcionalidad para costos de Producto. Adicionados Proveedor y Código alternativo para el costo.
+      Eliminados los campos de Codigo A y Proveedor en la interfaz de datos básicos del Producto.
+  - Eliminada pestaña de Precios para funcionalidad de Productos(actualmente no es aplicable si uso).
+beta3:
+  PENDIENTES
 beta2:
   - Refactorizando las funcionalidades para la Tarea.
   - Adicionado nuevo nomenclador Tarea.
