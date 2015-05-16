@@ -107,6 +107,22 @@ class ProveedorType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
+            ->add('email', 'email', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'proveedor.email',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('web', 'url', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'proveedor.web',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
         ;
     }
 

@@ -2,11 +2,11 @@
 
 namespace Buseta\BodegaBundle\Form\Type;
 
+use Buseta\BodegaBundle\Form\Model\TerceroModel;
 use Buseta\UploadBundle\Form\Type\UploadResourcesType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Buseta\BodegaBundle\Form\Model\TerceroModel;
 
 class TerceroType extends AbstractType
 {
@@ -49,6 +49,22 @@ class TerceroType extends AbstractType
             ))
             ->add('activo', 'checkbox', array(
                 'required' => false,
+            ))
+            ->add('email', 'email', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'tercero.email',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('web', 'url', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'tercero.web',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
             ))
         ;
     }

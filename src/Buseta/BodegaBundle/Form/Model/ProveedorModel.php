@@ -76,6 +76,16 @@ class ProveedorModel implements TerceroModelInterface
     /**
      * @var string
      */
+    private $email;
+
+    /**
+     * @var string
+     */
+    private $web;
+
+    /**
+     * @var string
+     */
     private $observaciones;
 
     public function __construct(Proveedor $proveedor = null)
@@ -95,6 +105,8 @@ class ProveedorModel implements TerceroModelInterface
             $this->apellidos = $tercero->getApellidos();
             $this->activo = $tercero->getActivo();
             $this->cifNif = $tercero->getCifNif();
+            $this->email = $tercero->getEmail();
+            $this->web = $tercero->getWeb();
         }
 
         $this->proveedorId = $proveedor->getId();
@@ -115,6 +127,8 @@ class ProveedorModel implements TerceroModelInterface
         $tercero->setApellidos($this->getApellidos());
         $tercero->setActivo($this->getActivo());
         $tercero->setCifNif($this->getCifNif());
+        $tercero->setEmail($this->getEmail());
+        $tercero->setWeb($this->getWeb());
 
         return $tercero;
     }
@@ -322,4 +336,38 @@ class ProveedorModel implements TerceroModelInterface
     {
         $this->cifNif = $cifNif;
     }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWeb()
+    {
+        return $this->web;
+    }
+
+    /**
+     * @param string $web
+     */
+    public function setWeb($web)
+    {
+        $this->web = $web;
+    }
+
+
 }
