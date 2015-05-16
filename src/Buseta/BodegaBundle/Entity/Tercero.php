@@ -138,11 +138,28 @@ class Tercero
     private $direcciones;
 
     /**
+     * @ORM\Column(name="email", type="string", length=100, nullable=true)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(name="web", type="string", length=255, nullable=true)
+     */
+    private $web;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\MecanismoContacto", mappedBy="tercero", cascade={"remove","persist"})
      */
     private $mecanismosContacto;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\PersonaContacto", mappedBy="tercero", cascade={"remove","persist"})
+     */
+    private $personaContacto;
 
 
     /**
@@ -155,6 +172,7 @@ class Tercero
         $this->bodega = new \Doctrine\Common\Collections\ArrayCollection();
         $this->direcciones = new \Doctrine\Common\Collections\ArrayCollection();
         $this->mecanismosContacto = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->personaContacto = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -684,5 +702,84 @@ class Tercero
     public function getCifNif()
     {
         return $this->cifNif;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return Tercero
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set web
+     *
+     * @param string $web
+     * @return Tercero
+     */
+    public function setWeb($web)
+    {
+        $this->web = $web;
+    
+        return $this;
+    }
+
+    /**
+     * Get web
+     *
+     * @return string 
+     */
+    public function getWeb()
+    {
+        return $this->web;
+    }
+
+    /**
+     * Add personaContacto
+     *
+     * @param \Buseta\BodegaBundle\Entity\PersonaContacto $personaContacto
+     * @return Tercero
+     */
+    public function addPersonaContacto(\Buseta\BodegaBundle\Entity\PersonaContacto $personaContacto)
+    {
+        $this->personaContacto[] = $personaContacto;
+    
+        return $this;
+    }
+
+    /**
+     * Remove personaContacto
+     *
+     * @param \Buseta\BodegaBundle\Entity\PersonaContacto $personaContacto
+     */
+    public function removePersonaContacto(\Buseta\BodegaBundle\Entity\PersonaContacto $personaContacto)
+    {
+        $this->personaContacto->removeElement($personaContacto);
+    }
+
+    /**
+     * Get personaContacto
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPersonaContacto()
+    {
+        return $this->personaContacto;
     }
 }

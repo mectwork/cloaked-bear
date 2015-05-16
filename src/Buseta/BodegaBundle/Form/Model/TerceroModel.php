@@ -3,8 +3,6 @@
 namespace Buseta\BodegaBundle\Form\Model;
 
 use Buseta\BodegaBundle\Entity\Tercero;
-use Buseta\BodegaBundle\Form\Model\TerceroModelInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -67,6 +65,15 @@ class TerceroModel implements TerceroModelInterface
      */
     private $activo;
 
+    /**
+     * @var string
+     */
+    private $email;
+
+    /**
+     * @var string
+     */
+    private $web;
 
     /**
      * Constructor.
@@ -84,6 +91,8 @@ class TerceroModel implements TerceroModelInterface
             $this->alias = $tercero->getAlias();
             $this->foto = $tercero->getFoto();
             $this->activo = $tercero->getActivo();
+            $this->email = $tercero->getEmail();
+            $this->web = $tercero->getWeb();
         }
     }
 
@@ -102,6 +111,8 @@ class TerceroModel implements TerceroModelInterface
         $tercero->setFoto($this->getFoto());
         $tercero->setUsuario($this->getUsuario());
         $tercero->setActivo($this->getActivo());
+        $tercero->setEmail($this->getEmail());
+        $tercero->setWeb($this->getWeb());
 
         return $tercero;
     }
@@ -259,4 +270,37 @@ class TerceroModel implements TerceroModelInterface
     {
         $this->usuario = $usuario;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWeb()
+    {
+        return $this->web;
+    }
+
+    /**
+     * @param string $web
+     */
+    public function setWeb($web)
+    {
+        $this->web = $web;
+    }
+
 }
