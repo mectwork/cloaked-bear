@@ -11,6 +11,7 @@
         <li class="active"><a href="#basicos" data-toggle="tab">Tercero</a></li>
         <li><a href="#direcciones" data-toggle="tab">Direcciones</a></li>
         <li><a href="#contactos" data-toggle="tab">Mecanismos de contacto</a></li>
+        <li><a href="#pcontactos" data-toggle="tab">Personas de contacto</a></li>
     </ul>
 
     {# Tab panes #}
@@ -27,6 +28,11 @@
 
         <!-- TAB MECANISMOS DE CONTACTO-->
         <div class="tab-pane fade" id="contactos">
+
+        </div>
+
+        <!-- TAB PERSONA DE CONTACTO-->
+        <div class="tab-pane fade" id="pcontactos">
 
         </div>
     </div>
@@ -87,6 +93,8 @@
                         direccion._load();
                     } else if(href === '#contactos') {
                         contacto._load();
+                    } else if(href === '#pcontactos') {
+                        pcontacto._load();
                     }
                 });
             },
@@ -261,8 +269,6 @@
                     e.preventDefault();
                 }
 
-                console.log($(this).attr('href'));
-
                 var url = Routing.generate('mecanismocontacto_new', {'tercero': tercero.id});
                 if($(this).attr('href') !== undefined && $(this).attr('href') === '#btn_contacto_edit') {
                     url = Routing.generate('mecanismocontacto_edit', {'id': $(this).data('content')});
@@ -274,9 +280,6 @@
 
                             contacto.form_id = $('div#form_contacto_modal').find('form').attr('id');
                             contacto.form_name = $('div#form_contacto_modal').find('form').attr('name');
-
-                            console.log(contacto.form_id);
-                            console.log(contacto.form_name);
 
                             $('a#btn_contacto_save').on('click', contacto._save_modal);
                             $('a#btn_contacto_cancel').on('click', function(){
@@ -320,6 +323,105 @@
 
             _always: function () {
                 tabs._remove_loadding(contacto.tabname)
+            }
+        }
+    </script>
+
+    <!-- Personas de Contacto script -->
+    <script type="text/javascript">
+        var pcontacto = {
+            tabname: 'pcontactos',
+            form_name: '',
+            form_id: '',
+
+            _start_events: function (e) {
+                <!-- click en el botón 'Adicionar persona de contacto' -->
+                $('a[href="#form_pcontacto_modal"]').on('click', pcontacto._load_modal);
+                $('a[href="#btn_pcontacto_edit"]').on('click', pcontacto._load_modal);
+                // Paginator sort
+                $('table.records_list').find('a.sortable, a.asc, a.desc').on('click', pcontacto._load);
+                // Paginator navigation
+                $('div.direccion-paginator.row ul.pagination').find('a.paginator-link').on('click', pcontacto._load);
+            },
+
+            _load: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
+
+                tabs._add_loadding(pcontacto.tabname);
+
+                var url = Routing.generate('personacontacto', {'tercero': tercero.id});
+                if($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
+                    url = $(this).attr('href');
+                }
+
+                $.get(url).done(function (response, textStatus, jqXHR) {
+                    $('div#pcontactos').html(response);
+
+                    pcontacto._start_events();
+                }).fail(utils._fail).always(pcontacto._always());
+            },
+
+            _load_modal: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
+
+                var url = Routing.generate('personacontacto_new', {'tercero': tercero.id});
+                if($(this).attr('href') !== undefined && $(this).attr('href') === '#btn_pcontacto_edit') {
+                    url = Routing.generate('personacontacto_edit', {'id': $(this).data('content')});
+                }
+
+                $.get(url)
+                        .done(function(response, textStatus, jqXHR){
+                            $('div#form_pcontacto_modal').replaceWith($(response.view));
+
+                            pcontacto.form_id = $('div#form_pcontacto_modal').find('form').attr('id');
+                            pcontacto.form_name = $('div#form_pcontacto_modal').find('form').attr('name');
+
+                            $('a#btn_pcontacto_save').on('click', pcontacto._save_modal);
+                            $('a#btn_pcontacto_cancel').on('click', function(){
+                                $('div#form_pcontacto_modal').modal('hide');
+                            });
+
+                            $('div#form_pcontacto_modal').modal('show');
+                        }).fail(utils._fail).always(function(){});
+            },
+
+            _save_modal: function (e) {
+                if(e !== undefined) {
+                    e.preventDefault();
+                }
+
+                $('#btn_pcontacto_save').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-save')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
+
+                $('form#' + pcontacto.form_id).ajaxSubmit({
+                    success: pcontacto._done,
+                    error: utils._fail,
+                    complete: pcontacto._always,
+                    dataType: 'json'
+                });
+            },
+
+            _done: function (response, textStatus, jqXHR) {
+                if(jqXHR.status == 201 || jqXHR.status == 202) {
+                    addGlobalMessage('success', response.message);
+
+                    $('div#form_pcontacto_modal').modal('hide');
+                    pcontacto._load();
+                } else {
+                    $('form#' + pcontacto.form_id).replaceWith($(response.view).find('form'));
+                }
+            },
+
+            _always: function () {
+                tabs._remove_loadding(pcontacto.tabname)
             }
         }
     </script>
