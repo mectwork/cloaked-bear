@@ -24,11 +24,18 @@ class Direccion
     private $id;
 
     /**
-     * @var \stdClass
+     * @var \Buseta\BodegaBundle\Entity\Tercero
      *
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="direcciones")
      */
     private $tercero;
+
+    /**
+     * @var \Buseta\BodegaBundle\Entity\PersonaContacto
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\PersonaContacto", mappedBy="direccion")
+     */
+    private $pcontacto;
 
     /**
      * @var string
@@ -71,6 +78,20 @@ class Direccion
      * @ORM\Column(name="pais", type="string", length=255, nullable=true)
      */
     private $pais;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="latitud", type="decimal", nullable=true)
+     */
+    private $latitud;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="longitud", type="decimal", nullable=true)
+     */
+    private $longitud;
 
     /**
      * Get id.
@@ -268,5 +289,82 @@ class Direccion
         return $this->nombre;
     }
 
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->pcontacto = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add pcontacto
+     *
+     * @param \Buseta\BodegaBundle\Entity\PersonaContacto $pcontacto
+     * @return Direccion
+     */
+    public function addPcontacto(\Buseta\BodegaBundle\Entity\PersonaContacto $pcontacto)
+    {
+        $this->pcontacto[] = $pcontacto;
+    
+        return $this;
+    }
+
+    /**
+     * Remove pcontacto
+     *
+     * @param \Buseta\BodegaBundle\Entity\PersonaContacto $pcontacto
+     */
+    public function removePcontacto(\Buseta\BodegaBundle\Entity\PersonaContacto $pcontacto)
+    {
+        $this->pcontacto->removeElement($pcontacto);
+    }
+
+    /**
+     * Get pcontacto
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPcontacto()
+    {
+        return $this->pcontacto;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLatitud()
+    {
+        return $this->latitud;
+    }
+
+    /**
+     * @param float $latitud
+     */
+    public function setLatitud($latitud)
+    {
+        $this->latitud = $latitud;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLongitud()
+    {
+        return $this->longitud;
+    }
+
+    /**
+     * @param float $longitud
+     */
+    public function setLongitud($longitud)
+    {
+        $this->longitud = $longitud;
+
+        return $this;
+    }
 
 }

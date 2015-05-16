@@ -64,6 +64,22 @@ class DireccionType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
+            ->add('latitud', 'integer', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'direccion.latitud',
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('longitud', 'integer', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'direccion.longitud',
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
         ;
     }
 
