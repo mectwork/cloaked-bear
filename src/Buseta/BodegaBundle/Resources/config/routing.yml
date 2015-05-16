@@ -82,6 +82,10 @@ bodega_mecanismo_contacto:
     resource: @BusetaBodegaBundle/Controller/MecanismoContactoController.php
     type:     annotation
 
+bodega_persona_contacto:
+    resource: @BusetaBodegaBundle/Controller/PersonaContactoController.php
+    type:     annotation
+
 buseta_bodega_pedidocompra:
   resource: "@BusetaBodegaBundle/Controller/PedidoCompraController.php"
   type:     annotation

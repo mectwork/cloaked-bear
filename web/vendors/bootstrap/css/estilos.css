@@ -16,6 +16,11 @@
     vertical-align: top !important;
 }
 
+table thead tr:first-child a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
 .imagen-autobus {
     width: 128px;
     height: 128px;

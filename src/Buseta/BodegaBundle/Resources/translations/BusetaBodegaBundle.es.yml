@@ -6,6 +6,8 @@ direccion:
   localidad: Cantón
   region: Distrito
   pais: País
+  longitud: Longitud
+  latitud: Latitud
   btn:
     adicionar: Adicionar dirección
   modal:
@@ -29,6 +31,21 @@ mecanismo_contacto:
     delete: Eliminar mecanismo de contacto
     title: Crear nuevo mecanismo de contacto
 
+# PERSONA DE CONTACTO
+persona_contacto:
+  nombre: Nombre
+  apellidos: Apellidos
+  cargo: Cargo
+  telefono: Teléfono
+  telefono2: Teléfono alternativo
+  fax: Fax
+  email: Correo electrónico
+  btn:
+      adicionar: Adicionar persona de contacto
+  modal:
+    delete: Eliminar persona de contacto
+    title: Crear nueva persona de contacto
+
 # TERCERO
 tercero:
   codigo: Código
@@ -36,6 +53,8 @@ tercero:
   apellidos: Apellidos
   alias: Alias
   descripcion: Descripción
+  email: Email
+  web: Web
   btn:
     adicionar: Adicionar tercero
 
@@ -50,6 +69,8 @@ proveedor:
   credito: Crédito Límite
   observaciones: Observaciones
   cifnif: CIF\NIF
+  email: Email
+  web: Web
 
 sexo:
   masculino: Masculino

@@ -1,0 +1,44 @@
+<div class="btn-group" style="margin-bottom: 8px;">
+    <a class="btn btn-primary" href="#form_pcontacto_modal" ><span class="glyphicon glyphicon-plus-sign"></span> {{ 'persona_contacto.btn.adicionar' | trans({}, 'BusetaBodegaBundle') }}</a>
+</div>
+
+<div class="row">
+    <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+</div>
+
+<table class="records_list table table-striped table-bordered table-condensed table-hover">
+    <thead>
+    <tr>
+        <th>{{ knp_pagination_sortable(entities, 'persona_contacto.nombre' | trans({}, 'BusetaBodegaBundle'), 'm.nombre') }}</th>
+        <th>{{ knp_pagination_sortable(entities, 'persona_contacto.apellidos' | trans({}, 'BusetaBodegaBundle'), 'm.apellidos') }}</th>
+        <th>{{ 'persona_contacto.cargo' | trans({}, 'BusetaBodegaBundle') }}</th>
+        <th>{{ 'persona_contacto.telefono' | trans({}, 'BusetaBodegaBundle') }}</th>
+        <th>{{ 'persona_contacto.telefono2' | trans({}, 'BusetaBodegaBundle') }}</th>
+        <th>{{ 'persona_contacto.fax' | trans({}, 'BusetaBodegaBundle') }}</th>
+        <th>{{ 'persona_contacto.email' | trans({}, 'BusetaBodegaBundle') }}</th>
+        <th style="text-align: center">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td>{{ entity.nombre }}</td>
+            <td>{{ entity.apellidos }}</td>
+            <td>{{ entity.cargo }}</td>
+            <td>{{ entity.telefono ? entity.telefono : '-' }}</td>
+            <td>{{ entity.telefono2 ? entity.telefono2 : '-' }}</td>
+            <td>{{ entity.fax ? entity.fax : '-' }}</td>
+            <td>{{ entity.email ? entity.email : '-' }}</td>
+            <td  style="text-align: center;">
+                <a class="btn btn-primary btn-xs" href="#btn_pcontacto_edit" data-content="{{ entity.id }}"><i class="fa fa-edit"> Editar</i></a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="pcontacto-paginator row">
+    <div class="col-lg-12 text-center">{{ knp_pagination_render(entities) }}</div>
+</div>
+
+<div class="modal" id="form_pcontacto_modal"></div>
