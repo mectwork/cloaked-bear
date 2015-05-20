@@ -20,9 +20,14 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('hatuey_soft_sequence');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->variableNode('sequences')
+                    ->defaultValue(array())
+                    ->info('define las entidades que usarán las secuencias definidas')
+                    ->example(' "entidad_seq:" Valor\NombreBundle\Entity\Entidad')
+                ->end()
+            ->end();
 
         return $treeBuilder;
     }

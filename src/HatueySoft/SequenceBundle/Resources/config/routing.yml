@@ -2,10 +2,10 @@ hatuey_soft_sequence_homepage:
     path:     /hello/{name}
     defaults: { _controller: HatueySoftSequenceBundle:Default:index }
 
-hatuey_soft_sequence_albaran:
+hatuey_soft_sequence:
     resource: "@HatueySoftSequenceBundle/Resources/config/routing/secuencia.yml"
     prefix:   /secuencia
 
-hatuey_soft_sequence:
+hatuey_soft_sequence_annotation:
   resource: "@HatueySoftSequenceBundle/Controller/SecuenciaController.php"
   type:     annotation
