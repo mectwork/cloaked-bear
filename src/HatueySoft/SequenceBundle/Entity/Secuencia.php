@@ -33,7 +33,7 @@ class Secuencia
     /**
      * @var string
      *
-     * @ORM\Column(name="tipo", type="string")
+     * @ORM\Column(name="tipo", type="string", nullable=true)
      * @Assert\Choice(choices={"incremental", "fija"})
      * @Assert\NotNull
      * @Assert\NotBlank
@@ -43,7 +43,7 @@ class Secuencia
     /**
      * @var string
      *
-     * @ORM\Column(name="prefijo", type="string")
+     * @ORM\Column(name="prefijo", type="string", nullable=true)
      * @Assert\NotBlank
      */
     private $prefijo;
@@ -51,7 +51,7 @@ class Secuencia
     /**
      * @var string
      *
-     * @ORM\Column(name="sufijo", type="string")
+     * @ORM\Column(name="sufijo", type="string", nullable=true)
      * @Assert\NotBlank
      */
     private $sufijo;

@@ -22,6 +22,7 @@ class SecuenciaType extends AbstractType
         $builder
             ->add('nombre', 'text', array(
                     'required' => false,
+                    'read_only' => true,
                     'label'  => 'Nombre de Secuencia',
                     'attr'   => array(
                         'class' => 'form-control',
@@ -34,7 +35,6 @@ class SecuenciaType extends AbstractType
                     'incremental' => 'Incremental',
                     'fija' => 'Fija',
                 ),
-                'data' => 'normal',
                 'attr'   => array(
                     'class' => 'form-control',
                 ),

@@ -26,6 +26,27 @@ class SecuenciaController extends Controller
      */
     public function indexAction(Request $request)
     {
+        //Obteniendo los valores definidos en el archivo "config.yml" para las secuencias
+        $sequences_values = $this->get('service_container')->getParameter('hatuey_soft_sequence');
+
+        $em = $this->getDoctrine()->getManager();
+
+        //Recorrer arreglo bidimensional
+        foreach($sequences_values as $nombre=>$seq) {
+            $secuencia = new Secuencia();
+
+            $sec_existentes = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('HatueySoftSequenceBundle:Secuencia')->findBy(
+                    array('nombre' => $nombre)
+                );
+
+            if(count($sec_existentes) == 0) {
+                $secuencia->setNombre($nombre);
+                $em->persist($secuencia);
+                $em->flush();
+            }
+        }
+
         $filter = new SecuenciaFilterModel();
 
         $form = $this->createForm(new SecuenciaFilter(), $filter, array(
@@ -166,6 +187,7 @@ class SecuenciaController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Secuencia entity.
      */
@@ -173,7 +195,7 @@ class SecuenciaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaBodegaBundle:Secuencia')->find($id);
+        $entity = $em->getRepository('HatueySoftSequenceBundle:Secuencia')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Secuencia entity.');

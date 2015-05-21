@@ -54,11 +54,11 @@
     </div>
 
     <hr/>
-    <div class="btn-group" style="margin-bottom: 8px;">
+    {#<div class="btn-group" style="margin-bottom: 8px;">
         <a class="btn btn-primary" href="{{ path('secuencia_new') }}">
             <span class="glyphicon glyphicon-plus-sign"></span> {{ 'secuencia.btn.adicionar'|trans({}, 'HatueySoftSequenceBundle') }}
         </a>
-    </div>
+    </div>#}
 
     <div class="paginator row">
         <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
@@ -71,6 +71,7 @@
             <th>Tipo{#{{ knp_pagination_sortable(entities, 'Nombre del Proveedor', 't.tercero') }}#}</th>
             <th>Prefijo{#{{ knp_pagination_sortable(entities, 'Almacén', 't.almacen') }}#}</th>
             <th>Sufijo{#{{ knp_pagination_sortable(entities, 'Moneda', 't.moneda') }}#}</th>
+            <th>Activo{#{{ knp_pagination_sortable(entities, 'Activo', 't.activo') }}#}</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
@@ -81,12 +82,21 @@
                 <td>{{ entity.tipo }}</td>
                 <td>{{ entity.prefijo }}</td>
                 <td>{{ entity.sufijo }}</td>
+                <td class="text-center">{{ entity.activo ? '<i class="fa fa-circle text-success" title="Sí"></i>' : '<i class="fa fa-circle-o text-danger" title="No"></i>' }}</td>
 
                 <td style="width: 24% !important; text-align: center;">
                     <div class="btn-group">
-                        <a class="btn btn-success btn-xs"
-                           href="{{ path('secuencia_show', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
+
+                        {% if entity.tipo == null %}
+                            <a class="btn btn-success btn-xs"
+                               href="{{ path('secuencia_edit', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-edit"> Crear</span></a>
+                        {% else %}
+                            <a class="btn btn-success btn-xs"
+                               href="{{ path('secuencia_show', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-search"> Mostrar</span></a>
+                        {% endif %}
+
                         <a class="btn btn-danger btn-xs"
                            href="{{ path('secuencia_edit', { 'id': entity.id }) }}"><span
                                     class="glyphicon glyphicon-edit"> Editar</span></a>

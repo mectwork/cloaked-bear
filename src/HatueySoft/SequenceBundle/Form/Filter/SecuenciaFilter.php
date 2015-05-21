@@ -23,11 +23,11 @@ class SecuenciaFilter extends AbstractType
             ))
             ->add('tipo', 'choice', array(
                 'label'  => 'Tipo',
+                'empty_value' => '---Seleccione---',
                 'choices' => array(
                     'incremental' => 'Incremental',
                     'fija' => 'Fija',
                 ),
-                'data' => 'normal',
                 'attr'   => array(
                     'class' => 'form-control',
                 ),

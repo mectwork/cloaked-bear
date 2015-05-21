@@ -153,3 +153,4 @@ hatuey_soft_sequence:
     sequences:
         'producto_seq': Buseta\BodegaBundle\Entity\Producto
         'bodega_seq': Buseta\BodegaBundle\Entity\Bodega
+        'tercero_seq': Buseta\BodegaBundle\Entity\Tercero
