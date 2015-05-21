@@ -14,24 +14,23 @@
 
 {% block area_trabajo %}
 
-<div id="records_list">
-
 <div class="btn-group" style="padding-bottom: 8px;">
     <a class="btn btn-primary" href="{{ path('tareamantenimiento_new') }}"><i class="fa fa-plus-circle"></i> Adicionar tarea de mantenimiento</a>
 </div>
 
-<table class="records_list table table-striped table-bordered table-condensed table-hover">
+<div id="records_list">
+    <table class="table table-striped table-bordered table-condensed table-hover">
 
-       <thead>
-            <tr>
-                <th>Tarea</th>
-                <th>Grupo</th>
-                <th>Subgrupo</th>
-                <th>Garantía</th>
-                <th>Kilómetros</th>
-                <th>Horas</th>
-                <th>Acciones</th>
-            </tr>
+        <thead>
+        <tr>
+            <th>Tarea</th>
+            <th>Grupo</th>
+            <th>Subgrupo</th>
+            <th>Garantía</th>
+            <th>Kilómetros</th>
+            <th>Horas</th>
+            <th>Acciones</th>
+        </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
@@ -62,20 +61,17 @@
         {% endfor %}
 
         </tbody>
-</table>
+    </table>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                {{ knp_pagination_render(entities) }}
-            </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            {{ knp_pagination_render(entities) }}
         </div>
     </div>
-
 </div>
 
-    <!-- Delete modal -->
-    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
+<!-- Delete modal -->
+<div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
 
 {% endblock %}
 

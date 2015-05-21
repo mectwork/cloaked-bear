@@ -7,10 +7,11 @@ var DeleteEvent = function ( uri, containerSelector, ajaxModal ) {
         this.ajaxModal = true;
     }
 
-    this.start_events = function () {
+    DeleteEvent.prototype.start_events = function () {
         $( 'a.btn.btn-danger[href="#delete"]' ).on( 'click', { instance : this }, this.modal );
     };
-    this.reload_list = function () {
+
+    DeleteEvent.prototype.reload_list = function () {
         var url = this.uri,
             instance = this;
         $.get(url, function ( response ) {
@@ -20,7 +21,7 @@ var DeleteEvent = function ( uri, containerSelector, ajaxModal ) {
             instance.start_events();
         });
     };
-    this.modal = function ( event ) {
+    DeleteEvent.prototype.modal = function ( event ) {
         var href = $( this ).data( 'href' ),
             instance = event.data.instance;
 
@@ -32,7 +33,7 @@ var DeleteEvent = function ( uri, containerSelector, ajaxModal ) {
             $( 'div#modal-danger' ).modal( 'show' );
         }, 'JSON').fail().always();
     };
-    this.delete = function ( event ) {
+    DeleteEvent.prototype.delete = function ( event ) {
         var instance = event.data.instance;
 
         if( event !== undefined ) {
