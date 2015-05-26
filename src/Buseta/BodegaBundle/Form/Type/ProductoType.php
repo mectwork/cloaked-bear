@@ -19,10 +19,10 @@ class ProductoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $objeto = $builder->getFormFactory();
-        $subgrupo = new AddSubgrupoFieldSubscriber($objeto);
-        $builder->addEventSubscriber($subgrupo);
-        $grupo = new AddGrupoFieldSubscriber($objeto);
-        $builder->addEventSubscriber($grupo);
+        $subgrupoSubscriber = new AddSubgrupoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($subgrupoSubscriber);
+        $grupoSubscriber = new AddGrupoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($grupoSubscriber);
 
         $builder
             ->add('id', 'hidden', array(
@@ -89,7 +89,8 @@ class ProductoType extends AbstractType
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'query_builder' => function (EntityRepository $er) {
                     $qb = $er->createQueryBuilder('t')
-                        ->leftJoin('t.proveedor', 'p');
+                        ->leftJoin('t.proveedor', 'p')
+                        ->orderBy('t.nombres', 'ASC');
                     return $qb->where($qb->expr()->isNotNull('p'));
                 },
                 'attr' => array(

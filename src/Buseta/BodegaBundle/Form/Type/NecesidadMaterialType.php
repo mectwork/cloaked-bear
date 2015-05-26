@@ -47,13 +47,14 @@ class NecesidadMaterialType extends AbstractType
                     'attr'   => array(
                         'class' => 'form-control',
                     ),
-                ))//
+                ))
             ->add('tercero', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'query_builder' => function (EntityRepository $er) {
                     $qb = $er->createQueryBuilder('t');
                     return $qb->join('t.proveedor', 'proveedor')
-                        ->where($qb->expr()->isNotNull('proveedor'));
+                        ->where($qb->expr()->isNotNull('proveedor'))
+                        ->orderBy('t.nombres', 'ASC');
                 },
                 'empty_value' => '---Seleccione---',
                 'label' => 'Nombre del Proveedor',

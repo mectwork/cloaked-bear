@@ -98,10 +98,10 @@ class ProductoModel
                 $this->condicion  = $producto->getCondicion();
             }
             if ($producto->getGrupo()) {
-                $this->grupos  = $producto->getGrupo();
+                $this->grupo  = $producto->getGrupo();
             }
             if ($producto->getSubgrupo()) {
-                $this->subgrupos  = $producto->getSubgrupo();
+                $this->subgrupo  = $producto->getSubgrupo();
             }
             if ($producto->getCategoriaProducto()) {
                 $this->categoriaProducto  = $producto->getCategoriaProducto();
