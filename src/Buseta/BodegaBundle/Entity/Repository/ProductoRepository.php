@@ -94,6 +94,20 @@ class ProductoRepository extends EntityRepository
                 $query->andWhere($qb->expr()->like('p.codigo',':codigo'))
                     ->setParameter('codigo', '%' . $filter->getCodigo() . '%');
             }
+            if ($filter->getCodigoAlternativo() !== null && $filter->getCodigoAlternativo() !== '') {
+                $query->innerJoin('p.costoProducto', 'costoProducto')
+                    ->where($qb->expr()->andX(
+                        $qb->expr()->like('costoProducto.codigoAlternativo',':codigoAlternativo')
+                    ))
+                    ->setParameter('codigoAlternativo', '%' . $filter->getCodigoAlternativo() . '%');
+            }
+            if ($filter->getProveedor() !== null && $filter->getProveedor() !== '') {
+                $query->innerJoin('p.costoProducto', 'costoProducto')
+                    ->where($qb->expr()->andX(
+                        $qb->expr()->eq('costoProducto.proveedor',':proveedor')
+                    ))
+                    ->setParameter('proveedor', $filter->getProveedor());
+            }
             if ($filter->getNombre() !== null && $filter->getNombre() !== '') {
                 $query->andWhere($qb->expr()->like('p.nombre',':nombre'))
                     ->setParameter('nombre', '%' . $filter->getNombre() . '%');

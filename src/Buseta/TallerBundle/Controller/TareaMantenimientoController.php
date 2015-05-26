@@ -98,6 +98,7 @@ class TareaMantenimientoController extends Controller
             'entities' => $entities,
         ));
     }
+
     /**
      * Creates a new TareaMantenimiento entity.
      */

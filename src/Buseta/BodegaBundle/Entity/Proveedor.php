@@ -208,6 +208,11 @@ class Proveedor
         return $this->moneda;
     }
 
+    public function __toString()
+    {
+        return $this->tercero->getNombres();
+    }
+
     /**
      * Add marcas
      *
@@ -218,7 +223,7 @@ class Proveedor
     {
         $marca->addProveedore($this);
         $this->marcas[] = $marca;
-    
+
         return $this;
     }
 

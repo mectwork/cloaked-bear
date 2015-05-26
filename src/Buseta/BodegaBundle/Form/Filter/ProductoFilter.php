@@ -55,6 +55,22 @@ class ProductoFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
+            ->add('proveedor', 'entity', array(
+                'class' => 'BusetaBodegaBundle:Proveedor',
+                'empty_value' => '---Seleccione---',
+                'label' => 'Proveedor',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('codigoAlternativo', 'text', array(
+                'required' => false,
+                'label' => 'Código Alternativo',
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
         ;
     }
 
