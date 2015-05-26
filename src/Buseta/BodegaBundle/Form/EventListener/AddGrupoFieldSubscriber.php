@@ -30,16 +30,16 @@ class AddGrupoFieldSubscriber implements EventSubscriberInterface
         $form->add('grupo', 'entity', array(
             'class'         => 'BusetaNomencladorBundle:Grupo',
             'auto_initialize' => false,
-            'empty_value'   => '---Seleccione grupo---',
+            'empty_value'   => '---Seleccione---',
             'data' => $grupo,
             'attr' => array(
                 'class' => 'form-control',
             ),
             'query_builder' => function (EntityRepository $repository) {
-                    $qb = $repository->createQueryBuilder('grupo');
+                $qb = $repository->createQueryBuilder('grupo');
 
-                    return $qb;
-                },
+                return $qb;
+            },
         ));
     }
 

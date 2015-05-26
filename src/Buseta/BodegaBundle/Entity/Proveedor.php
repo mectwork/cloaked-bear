@@ -185,4 +185,9 @@ class Proveedor
     {
         return $this->moneda;
     }
+
+    public function __toString()
+    {
+        return $this->tercero->getNombres();
+    }
 }

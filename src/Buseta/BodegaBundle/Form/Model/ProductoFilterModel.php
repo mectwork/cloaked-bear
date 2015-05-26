@@ -11,6 +11,11 @@ class ProductoFilterModel
     /**
      * @var string
      */
+    private $codigoAlternativo;
+
+    /**
+     * @var string
+     */
     private $nombre;
 
     /**
@@ -24,6 +29,11 @@ class ProductoFilterModel
     private $categoriaProducto;
 
     /**
+     * @var \Buseta\BodegaBundle\Entity\Proveedor
+     */
+    private $proveedor;
+
+    /**
      * @var \Buseta\NomencladorBundle\Entity\UOM
      */
     private $uom;
@@ -32,6 +42,38 @@ class ProductoFilterModel
      * @var \Buseta\NomencladorBundle\Entity\Condicion
      */
     private $condicion;
+
+    /**
+     * @return string
+     */
+    public function getCodigoAlternativo()
+    {
+        return $this->codigoAlternativo;
+    }
+
+    /**
+     * @param string $codigoAlternativo
+     */
+    public function setCodigoAlternativo($codigoAlternativo)
+    {
+        $this->codigoAlternativo = $codigoAlternativo;
+    }
+
+    /**
+     * @return \Buseta\BodegaBundle\Entity\Proveedor
+     */
+    public function getProveedor()
+    {
+        return $this->proveedor;
+    }
+
+    /**
+     * @param \Buseta\BodegaBundle\Entity\Proveedor $proveedor
+     */
+    public function setProveedor($proveedor)
+    {
+        $this->proveedor = $proveedor;
+    }
 
     /**
      * @return \Buseta\BodegaBundle\Entity\CategoriaProducto

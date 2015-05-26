@@ -73,9 +73,7 @@ class Producto
     private $categoriaProducto;
 
     /**
-     * @var \Buseta\BodegaBundle\Entity\Tercero
-     *
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="productos")
      */
     private $proveedor;
 
