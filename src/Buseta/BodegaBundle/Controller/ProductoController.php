@@ -309,7 +309,8 @@ class ProductoController extends Controller
      */
     public function editAction(Producto $producto)
     {
-        $editForm = $this->createEditForm(new ProductoModel($producto));
+        $model = new ProductoModel($producto);
+        $editForm = $this->createEditForm($model);
         $deleteForm = $this->createDeleteForm($producto->getId());
 
         return $this->render('BusetaBodegaBundle:Producto:edit.html.twig', array(

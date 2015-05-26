@@ -73,7 +73,6 @@ class AddSubgrupoFieldSubscriber implements EventSubscriberInterface
         if (null == $data) {
             $this->addSubgrupoForm($form);
         } else {
-            //$province = ($data->city) ? $data->city->getSubgrupo() : null ;
             $subgrupo = ($data->getSubgrupo()) ? $data->getSubgrupo() : null;
             $grupo = ($subgrupo) ? $subgrupo->getGrupo() : null;
             $this->addSubgrupoForm($form, $subgrupo, $grupo);
