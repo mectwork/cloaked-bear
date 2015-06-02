@@ -17,7 +17,7 @@ abstract class BaseNomenclador
     /**
      * @var string
      *
-     * @ORM\Column(name="valor", type="string", length=32)
+     * @ORM\Column(name="valor", type="string", length=64)
      */
     protected $valor;
 
