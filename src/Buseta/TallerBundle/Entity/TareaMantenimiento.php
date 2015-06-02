@@ -35,14 +35,14 @@ class TareaMantenimiento
     /**
      * @var \Buseta\NomencladorBundle\Entity\Grupo
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo")
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo", cascade={"persist"})
      */
     private $grupo;
 
     /**
      * @var \Buseta\NomencladorBundle\Entity\Subgrupo
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Subgrupo")
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Subgrupo", cascade={"persist"})
      */
     private $subgrupo;
 

@@ -9,6 +9,8 @@ use Buseta\NomencladorBundle\Entity\Color;
 use Buseta\TallerBundle\Entity\TareaMantenimiento;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -28,6 +30,8 @@ class ImportTareasMantenimientoCommand extends ContainerAwareCommand
      */
     private $em;
 
+    private $dry;
+
     protected function configure()
     {
         $this
@@ -37,6 +41,7 @@ class ImportTareasMantenimientoCommand extends ContainerAwareCommand
                 new InputArgument('excel-ref', InputArgument::REQUIRED, 'Dirección de referencia para el archivo excel del cual cargar los datos.'),
                 new InputOption('start-row','r', InputOption::VALUE_OPTIONAL, 'Fila en la cual empezar a procesar los datos.'),
                 new InputOption('register-components','c', InputOption::VALUE_NONE, 'Registra las tareas, garantías, grupos y los subgrupos en el sistema.'),
+                new InputOption('dry-run','d', InputOption::VALUE_NONE, 'Ejecuta el comando pero no registra los datos o actualiza entidades.'),
             ))
             ->setDescription('Importa los datos de las Tareas de Mantenimiento desde Excel.')
             ->setHelp('')
@@ -45,9 +50,16 @@ class ImportTareasMantenimientoCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $outputFormater = new OutputFormatter(true, array(
+            'warn' => new OutputFormatterStyle('yellow')
+        ));
+        $output->setFormatter($outputFormater);
+
+        $this->dry = $input->getOption('dry-run');
+
         $file = $input->getArgument('excel-ref');
         $verbose = $input->getOption('verbose');
-        $startRow = 3;
+        $startRow = 2;
         if($input->getOption('start-row')) {
             $startRow = $input->getOption('start-row');
         }
@@ -73,10 +85,6 @@ class ImportTareasMantenimientoCommand extends ContainerAwareCommand
             'F' => 'Horas',
         );
 
-        /** @var ProgressHelper $progress */
-        $progress = $this->getHelperSet()->get('progress');
-        $progress->start($output, $totalRows - $startRow);
-
         $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $this->loadAll();
@@ -86,6 +94,10 @@ class ImportTareasMantenimientoCommand extends ContainerAwareCommand
             // registrando subgrupos
             $this->registerSubgrupos($objPHPExcel, $input, $output);
         }
+
+        /** @var ProgressHelper $progress */
+        $progress = $this->getHelperSet()->get('progress');
+        $progress->start($output, $totalRows - $startRow);
 
         $sheet = $objPHPExcel->getActiveSheet();
         for ($i = $startRow; $i < $totalRows; $i++) {
@@ -116,14 +128,31 @@ class ImportTareasMantenimientoCommand extends ContainerAwareCommand
         $newtareamantenimiento->setKilometros($data['E']);
         $newtareamantenimiento->setHoras($data['F']);
 
-        try {
-            $this->em->persist($newtareamantenimiento);
-            $this->em->flush();
+        $validator = $this->getContainer()->get('validator');
+        $errors = $validator->validate($newtareamantenimiento);
 
-            return $newtareamantenimiento;
-        } catch (\Exception $e) {
+        if ($errors->count() === 0) {
+            try {
+                if (!$this->dry) {
+                    $this->em->persist($newtareamantenimiento);
+                    $this->em->flush();
+                }
+
+                return $newtareamantenimiento;
+            } catch (\Exception $e) {
+                $progress->clear();
+                $output->writeln(sprintf('<error>Ha ocurrido un error persistiendo los datos de la nueva Tarea Mantenimiento. Detalles %s</error>', $e->getMessage()), OutputInterface::OUTPUT_NORMAL);
+                $progress->display();
+
+                return null;
+            }
+        } else {
             $progress->clear();
-            $output->writeln(sprintf('<error>Ha ocurrido un error persistiendo los datos de la nueva Tarea Mantenimiento. Detalles %s</error>', $e->getMessage()), OutputInterface::OUTPUT_NORMAL);
+            $output->writeln('<error>La Tarea de Mantenimiento contiene parámetros con errores de validación. No se crea la entidad.</error>');
+            foreach ($errors as $error) {
+                /** @var \Symfony\Component\Validator\ConstraintViolation $error */
+                $output->writeln(sprintf('<error>%s: %s</error>', $error->getPropertyPath(), $error->getMessage()));
+            }
             $progress->display();
 
             return null;
@@ -135,7 +164,8 @@ class ImportTareasMantenimientoCommand extends ContainerAwareCommand
         $choices = array();
         $count = 0;
         foreach ($this->grupos as $g) {
-            if (strtolower($grupo) == strtolower($g->getValor())) {
+            if (strtolower($grupo) == strtolower($g->getValor()) || substr_count(strtolower($grupo), strtolower($g->getValor()))  > 0) {
+                $g->setValor($grupo);
                 $grupo = $g;
                 break;
             } else {
@@ -158,7 +188,9 @@ class ImportTareasMantenimientoCommand extends ContainerAwareCommand
             $progress->display();
 
             if ($result == $count) {
-                $grupo = $this->addNomenclador($grupo, 'Buseta\NomencladorBundle\Entity\Grupo');
+                $grupo = $this->addNomenclador(array(
+                    'valor' => $grupo
+                ), 'Buseta\NomencladorBundle\Entity\Grupo');
             } else {
                 $grupo = $this->grupos[$result];
             }
@@ -172,7 +204,8 @@ class ImportTareasMantenimientoCommand extends ContainerAwareCommand
         $choices = array();
         $count = 0;
         foreach ($this->subgrupos as $c) {
-            if (strtolower($subgrupo) == strtolower($c->getValor())) {
+            if (strtolower($subgrupo) == strtolower($c->getValor()) || substr_count(strtolower($subgrupo), strtolower($c->getValor()))  > 0) {
+                $c->setValor($subgrupo);
                 $subgrupo = $c;
                 break;
             } else {
@@ -314,8 +347,10 @@ class ImportTareasMantenimientoCommand extends ContainerAwareCommand
             $entity->$setMethod($value);
         }
 
-        $this->em->persist($entity);
-        $this->em->flush();
+        if (!$this->dry) {
+            $this->em->persist($entity);
+            $this->em->flush();
+        }
 
         // 'Buseta\NomencladorBundle\Entity\*'
         $reloadMethod = sprintf('reload%s', explode('\\', $class)[3]);
@@ -336,23 +371,51 @@ class ImportTareasMantenimientoCommand extends ContainerAwareCommand
         }
 
         $count = count($grupos);
+        /** @var ProgressHelper $progress */
+        $output->writeln('<info>Comenzando procesado de Grupos.</info>');
+        $progress = $this->getHelperSet()->get('progress');
+        $progress->start($output, $count);
+
         foreach ($grupos as $value) {
             $object = null;
+            $subvalue = substr($value, 0, 32);
             foreach ($this->grupos as $grupo) {
                 if (strtolower($value) == strtolower($grupo->getValor())) {
                     $object = $grupo;
+                    break;
+                } else if (strtolower($subvalue) == strtolower($grupo->getValor())) {
+                    $progress->clear();
+                    $output->writeln(sprintf('<info>El grupo con nombre "%s" se encuentra registrado como "%s", se procede a actualizar sus datos.</info>', $value, $subvalue));
+                    $progress->display();
+
+                    $grupo->setValor($value);
+                    $object = $grupo;
+                    if (!$this->dry) {
+                        $this->getContainer()->get('doctrine.orm.entity_manager')->persist($grupo);
+                        $this->getContainer()->get('doctrine.orm.entity_manager')->flush();
+                    }
                     break;
                 }
             }
 
             if(!$object) {
+                $progress->clear();
+                $output->writeln(sprintf('<warn>No se ha encontrado un grupo con nombre "%s", se procede a crearlo en los nomencladores.</warn>', $value));
+                $progress->display();
+
                 $this->addNomenclador(array(
                     'valor' => $value,
                 ), 'Buseta\NomencladorBundle\Entity\Grupo');
 
                 $this->reloadGrupo();
+
+
             }
+
+            $progress->advance();
         }
+
+        $progress->finish();
     }
 
     private function registerSubgrupos(\PHPExcel $objPHPExcel, InputInterface $input, OutputInterface $output)
@@ -365,7 +428,7 @@ class ImportTareasMantenimientoCommand extends ContainerAwareCommand
             $subgrupo = $objPHPExcel->getActiveSheet()->getCell('C' . $i)->getValue();
             if (!in_array($subgrupo, $subaux)) {
                 $subgrupos[] = array(
-                    'valor' => $subgrupo,
+                    'valor' => trim($subgrupo),
                     'grupo' => $grupo
                 );
                 $subaux[] = $subgrupo;
@@ -373,16 +436,39 @@ class ImportTareasMantenimientoCommand extends ContainerAwareCommand
         }
 
         $count = count($subgrupos);
+        /** @var ProgressHelper $progress */
+        $output->writeln('<info>Comenzando procesado de Subgrupos.</info>');
+        $progress = $this->getHelperSet()->get('progress');
+        $progress->start($output, $count);
+
         foreach ($subgrupos as $value) {
             $object = null;
+            $subvalue = substr($value['valor'], 0, 32);
+            var_dump($value['valor'], $subvalue);
             foreach ($this->subgrupos as $subgrupo) {
-                if (strtolower($value['valor']) == strtolower($subgrupo->getValor()) && strtolower($value['grupo']) == strtolower($subgrupo->getGrupo()->getValor())) {
+                if (strtolower($value['grupo']) == strtolower($subgrupo->getGrupo()->getValor()) && strtolower($value['valor']) == strtolower($subgrupo->getValor())) {
                     $object = $subgrupo;
+                    break;
+                } else if (strtolower($value['grupo']) == strtolower($subgrupo->getGrupo()->getValor()) && strtolower($subvalue) == strtolower($subgrupo->getValor())) {
+                    $progress->clear();
+                    $output->writeln(sprintf('<info>El subgrupo con nombre "%s" se encuentra registrado como "%s", se procede a actualizar sus datos.</info>', $value['valor'], $subvalue));
+                    $progress->display();
+
+                    $subgrupo->setValor($value['valor']);
+                    $object = $subgrupo;
+                    if (!$this->dry) {
+                        $this->getContainer()->get('doctrine.orm.entity_manager')->persist($subgrupo);
+                        $this->getContainer()->get('doctrine.orm.entity_manager')->flush();
+                    }
                     break;
                 }
             }
 
             if(!$object) {
+                $progress->clear();
+                $output->writeln(sprintf('<warn>No se ha encontrado un subgrupo con nombre "%s", se procede a crearlo en los nomencladores.</warn>', $value['valor']));
+                $progress->display();
+
                 $grupo = null;
                 foreach ($this->grupos as $g) {
                     if (strtolower($value['grupo']) == strtolower($g->getValor())) {
@@ -397,7 +483,11 @@ class ImportTareasMantenimientoCommand extends ContainerAwareCommand
 
                 $this->reloadSubgrupo();
             }
+
+            $progress->advance();
         }
+
+        $progress->finish();
     }
 
 //    private function selectingComponent($startObject, $object, $result, $count, $type, OutputInterface $output,  DialogHelper $dialog, ProgressHelper $progress)
