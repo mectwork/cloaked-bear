@@ -131,6 +131,13 @@ var lineas = {
             $('div#form_lineas_modal').modal('hide');
         });
 
+        //Al presionar el boton de actualizacion de datos del producto
+        //se deben recargar los valores relacionados con el producto seleccionado
+        $('#actualizar_productos').unbind('click');
+        $('#actualizar_productos').click(function () {
+            lineas._get_product_data();
+        });
+
         // Chosen
         $('#' + lineas.form_id + '_producto').chosen({ alt_search: true });
         $('#' + lineas.form_id + '_producto').bind('change', lineas._get_product_data);
@@ -284,13 +291,25 @@ var lineas = {
     /**
      * Obtiene por linea los valores para el costo, unidad de medida y actualiza el importe de linea por el producto
      */
-    _get_product_data: function (){
+    _get_product_data: function(){
         var producto_id = $('#' + lineas.form_id + '_producto').val();
-
         $.getJSON(Routing.generate('productos_get_product_data', {'id': producto_id}), function (data) {
             var tbody = 'table#producto_proveedores_results_list',
                 provider, code, cost, select, tr, count = 0;
+
+            var ep = '#editar_producto';
+            $(ep).find('[data-content]').remove();
+
+            var editar_producto = $('#editar_producto');
+
             $(tbody).find('tr[data-content]').remove();
+
+            //Boton para editar el producto seleccionado en una nueva pestaña del sistema
+            producto = $('<a>', { 'href': Routing.generate('productos_producto_edit', {'id': producto_id}), 'target': '_blank', 'class': 'form-control btn btn-danger btn-xl', 'value': 'Editar', 'style': 'margin-bottom: 3px', 'data-action':'#edit', 'data-content': producto_id});
+            span = $('<span>', {'class': 'glyphicon glyphicon-edit'}).text(' Modificar');
+            producto.append(span);
+            editar_producto.append(producto);
+
             $.each(data.costos, function(id, costo) {
                 if (costo.proveedor != undefined) {
                     provider    = $('<td>').text(costo.proveedor.nombre).append($('<input>',{type: 'hidden', value: costo.proveedor.id}));
@@ -306,6 +325,7 @@ var lineas = {
                     .append(code)
                     .append(cost)
                     .append(select);
+
                 $(tbody).append(tr);
                 count++;
             });
