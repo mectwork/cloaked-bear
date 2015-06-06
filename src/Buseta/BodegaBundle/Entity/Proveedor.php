@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Entity;
 
 use Buseta\BodegaBundle\Form\Model\ProveedorModel;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -51,6 +52,22 @@ class Proveedor
     private $observaciones;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Buseta\NomencladorBundle\Entity\MarcaProveedor", inversedBy="proveedores", cascade={"persist","remove"})
+     */
+    private $marcas;
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->marcas = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * Establece los valores desde el modelo en la entidad.
      *
      * @param ProveedorModel $model
@@ -62,6 +79,11 @@ class Proveedor
         $this->setMoneda($model->getMoneda());
         $this->setCreditoLimite($model->getCreditoLimite());
         $this->setObservaciones($model->getObservaciones());
+
+        $marcas = $model->getMarcas();
+        foreach ($marcas as $marca) {
+            $this->addMarca($marca);
+        }
 
         return $this;
     }
@@ -184,5 +206,40 @@ class Proveedor
     public function getMoneda()
     {
         return $this->moneda;
+    }
+
+    /**
+     * Add marcas
+     *
+     * @param \Buseta\NomencladorBundle\Entity\MarcaProveedor $marcas
+     * @return Proveedor
+     */
+    public function addMarca(\Buseta\NomencladorBundle\Entity\MarcaProveedor $marca)
+    {
+        $marca->addProveedore($this);
+        $this->marcas[] = $marca;
+    
+        return $this;
+    }
+
+    /**
+     * Remove marcas
+     *
+     * @param \Buseta\NomencladorBundle\Entity\MarcaProveedor $marcas
+     */
+    public function removeMarca(\Buseta\NomencladorBundle\Entity\MarcaProveedor $marca)
+    {
+
+        $this->marcas->removeElement($marca);
+    }
+
+    /**
+     * Get marcas
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getMarcas()
+    {
+        return $this->marcas;
     }
 }

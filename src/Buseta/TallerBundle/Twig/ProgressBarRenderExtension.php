@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: luis
- * Date: 11/03/15
- * Time: 19:49.
- */
 
 namespace Buseta\TallerBundle\Twig;
 

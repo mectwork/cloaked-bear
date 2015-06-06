@@ -48,8 +48,68 @@
             e.preventDefault();
 
             $('input[id$="_foto_file"]').trigger('click');
-        })
+        });
+
+        var $collectionHolder;
+        // setup an "add a tag" link
+        var $addTagLink = $('<a href="#" class="add_tag_link">Nueva Marca</a>');
+        var $newLinkLi = $('<li class="tag"></li>').append($addTagLink);
+
+        // Get the ul that holds the collection of tags
+        $collectionHolder = $('ul.tags');
+
+        // add the "add a tag" anchor and li to the tags ul
+        $collectionHolder.append($newLinkLi);
+
+
+        // add a delete link to all of the existing tag form li elements
+        $collectionHolder.find('li').each(function() {
+            if ($(this).children(':first').is('span')) {
+                addTagFormDeleteLink($(this));
+            }
+        });
+
+
+        // count the current form inputs we have (e.g. 2), use that as the new
+        // index when inserting a new item (e.g. 2)
+        $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+        $addTagLink.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+            // add a new tag form (see next code block)
+            addTagForm($collectionHolder, $newLinkLi);
+        });
     });
+
+    function addTagForm($collectionHolder, $newLinkLi) {
+        // Get the data-prototype explained earlier
+        var prototype = $collectionHolder.data('prototype');
+        // get the new index
+        var index = $collectionHolder.data('index');
+        // Replace '__name__' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        var newForm = prototype.replace(/__name__/g, index);
+        // increase the index with one for the next item
+        $collectionHolder.data('index', index + 1);
+        // Display the form in the page in an li, before the "Add a tag" link li
+        var $newFormLi = $('<li class="tag"></li>').append(newForm);
+        $newLinkLi.before($newFormLi);
+        // add a delete link to the new form
+        addTagFormDeleteLink($newFormLi);
+    }
+
+    function addTagFormDeleteLink($tagFormLi) {
+        var $removeFormA = $('<a href="#"><span class="glyphicon glyphicon-remove"></span></a>');
+        $tagFormLi.append($removeFormA);
+        $removeFormA.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+            // remove the li for the tag form
+            $tagFormLi.remove();
+        });
+    }
+
 </script>
 
 <!-- Proveedor script -->
@@ -155,6 +215,8 @@
         _start_events: function (e) {
             <!-- click en el botón 'Adicionar dirección' -->
             $('a[href="#form_direccion_modal"]').on('click', direccion._load_modal);
+            $('a[href="#btn_direccion_edit"]').on('click', direccion._load_modal);
+            $('a[href="#btn_direccion_delete"]').on('click', direccion._load_delete_modal());
             // Paginator sort
             $('table.records_list').find('a.sortable, a.asc, a.desc').on('click', direccion._load);
             // Paginator navigation
@@ -178,6 +240,29 @@
 
                 direccion._start_events();
             }).fail(utils._fail).always(direccion._always());
+        },
+
+        _load_delete_modal: function(e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+
+            if(proveedor.tercero_id === '' || proveedor.tercero_id === undefined) {
+                return;
+            }
+
+            var url = Routing.generate('terceros_direccion_delete', {'id': $(this).data('content')});
+
+            $.get(url).done(function(response, textStatus, jqXHR){
+                $('div#form_address_delete_modal').replaceWith($(response.view));
+
+                $('div#form_address_delete_modal a#btn_direccion_delete').on('click', direccion._save_delete_modal);
+                $('div#form_address_delete_modal a#btn_direccion_cancel').on('click', function(){
+                    $('div#form_address_delete_modal').modal('hide');
+                });
+
+                $('div#form_address_delete_modal').modal('show');
+            }).fail(utils._fail).always(function(){});
         },
 
         _load_modal: function (e) {
@@ -224,6 +309,38 @@
             });
         },
 
+        _save_delete_modal: function (event) {
+            console.log('_save_delete_modal');
+
+            if(event != undefined) {
+                event.preventDefault();
+            }
+
+            $('#btn_direccion_delete').find('span')
+                    .removeClass('glyphicon')
+                    .removeClass('glyphicon-save')
+                    .addClass('fa')
+                    .addClass('fa-gear')
+                    .addClass('fa-spin');
+
+            var deleteForm = $('div#form_address_delete_modal').find('form'),
+                    url = $(deleteForm).attr('action');
+
+            deleteForm.ajaxSubmit({
+                success: function (response, textStatus, jqXHR) {
+                    if(jqXHR.status == 202) {
+                        addGlobalMessage('success', response.message);
+                    }
+                    $('div#form_address_delete_modal').modal('hide');
+                    direccion._load();
+                },
+                error: utils._fail,
+                complete: direccion._always,
+                url: url,
+                dataType: 'json'
+            });
+        },
+
         _done: function (response, textStatus, jqXHR) {
             if(jqXHR.status == 201 || jqXHR.status == 202) {
                 //addGlobalMessage('success', response.message);
@@ -252,6 +369,7 @@
             <!-- click en el botón 'Adicionar mecanismo de contacto' -->
             $('a[href="#form_contacto_modal"]').on('click', contacto._load_modal);
             $('a[href="#btn_contacto_edit"]').on('click', contacto._load_modal);
+            $('a[href="#btn_contacto_delete"]').on('click', contacto._load_delete_modal);
             // Paginator sort
             $('table.records_list').find('a.sortable, a.asc, a.desc').on('click', contacto._load);
             // Paginator navigation
@@ -303,6 +421,29 @@
                 }).fail(utils._fail).always(function(){});
         },
 
+        _load_delete_modal: function(e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+
+            if(proveedor.tercero_id === '' || proveedor.tercero_id === undefined) {
+                return;
+            }
+
+            var url = Routing.generate('terceros_mecanismocontacto_delete', {'id': $(this).data('content')});
+
+            $.get(url).done(function(response, textStatus, jqXHR){
+                $('div#form_contacto_delete_modal').replaceWith($(response.view));
+
+                $('div#form_contacto_delete_modal a#btn_contacto_delete').on('click', contacto._save_delete_modal);
+                $('div#form_contacto_delete_modal a#btn_contacto_cancel').on('click', function(){
+                    $('div#form_contacto_delete_modal').modal('hide');
+                });
+
+                $('div#form_contacto_delete_modal').modal('show');
+            }).fail(utils._fail).always(function(){});
+        },
+
         _save_modal: function (e) {
             if(e !== undefined) {
                 e.preventDefault();
@@ -319,6 +460,37 @@
                 success: contacto._done,
                 error: utils._fail,
                 complete: contacto._always,
+                dataType: 'json'
+            });
+        },
+
+        _save_delete_modal: function (event) {
+
+            if(event != undefined) {
+                event.preventDefault();
+            }
+
+            $('#btn_contacto_delete').find('span')
+                    .removeClass('glyphicon')
+                    .removeClass('glyphicon-save')
+                    .addClass('fa')
+                    .addClass('fa-gear')
+                    .addClass('fa-spin');
+
+            var deleteForm = $('div#form_contacto_delete_modal').find('form'),
+                    url = $(deleteForm).attr('action');
+
+            deleteForm.ajaxSubmit({
+                success: function (response, textStatus, jqXHR) {
+                    if(jqXHR.status == 202) {
+                        addGlobalMessage('success', response.message);
+                    }
+                    $('div#form_contacto_delete_modal').modal('hide');
+                    contacto._load();
+                },
+                error: utils._fail,
+                complete: contacto._always,
+                url: url,
                 dataType: 'json'
             });
         },
@@ -350,8 +522,8 @@
         _start_events: function () {
             <!-- click en el botón 'Adicionar persna de contacto' -->
             $('a[href="#form_pcontacto_modal"]').on('click', pcontacto._load_modal);
-
             $('a[href="#btn_pcontacto_edit"]').on('click', pcontacto._load_modal);
+            $('a[href="#btn_pcontacto_delete"]').on('click', pcontacto._load_delete_modal);
 
             // Paginator sort
             $('table.records_list').find('a.sortable, a.asc, a.desc').on('click', pcontacto._load);
@@ -406,6 +578,29 @@
                     }).fail(utils._fail).always(function(){});
         },
 
+        _load_delete_modal: function(e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+
+            if(proveedor.tercero_id === '' || proveedor.tercero_id === undefined) {
+                return;
+            }
+
+            var url = Routing.generate('terceros_personacontacto_delete', {'id': $(this).data('content')});
+
+            $.get(url).done(function(response, textStatus, jqXHR){
+                $('div#form_pcontacto_delete_modal').replaceWith($(response.view));
+
+                $('div#form_pcontacto_delete_modal a#btn_pcontacto_delete').on('click', pcontacto._save_delete_modal);
+                $('div#form_pcontacto_delete_modal a#btn_pcontacto_cancel').on('click', function(){
+                    $('div#form_pcontacto_delete_modal').modal('hide');
+                });
+
+                $('div#form_pcontacto_delete_modal').modal('show');
+            }).fail(utils._fail).always(function(){});
+        },
+
         _save_modal: function (e) {
             if(e !== undefined) {
                 e.preventDefault();
@@ -422,6 +617,37 @@
                 success: pcontacto._done,
                 error: utils._fail,
                 complete: pcontacto._always,
+                dataType: 'json'
+            });
+        },
+
+        _save_delete_modal: function (event) {
+
+            if(event != undefined) {
+                event.preventDefault();
+            }
+
+            $('#btn_pcontacto_delete').find('span')
+                    .removeClass('glyphicon')
+                    .removeClass('glyphicon-save')
+                    .addClass('fa')
+                    .addClass('fa-gear')
+                    .addClass('fa-spin');
+
+            var deleteForm = $('div#form_pcontacto_delete_modal').find('form'),
+                    url = $(deleteForm).attr('action');
+
+            deleteForm.ajaxSubmit({
+                success: function (response, textStatus, jqXHR) {
+                    if(jqXHR.status == 202) {
+                        addGlobalMessage('success', response.message);
+                    }
+                    $('div#form_pcontacto_delete_modal').modal('hide');
+                    pcontacto._load();
+                },
+                error: utils._fail,
+                complete: pcontacto._always,
+                url: url,
                 dataType: 'json'
             });
         },

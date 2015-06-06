@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Form\Type;
 
+use Buseta\NomencladorBundle\Form\MarcaProveedorType;
 use Buseta\UploadBundle\Form\Type\UploadResourcesType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -122,6 +123,12 @@ class ProveedorType extends AbstractType
                 'attr' => array(
                     'class' => 'form-control',
                 ),
+            ))
+            ->add('marcas', 'collection', array(
+                'type' => new MarcaProveedorType(),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
             ))
         ;
     }

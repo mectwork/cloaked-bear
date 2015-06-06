@@ -3,6 +3,8 @@
 namespace Buseta\BodegaBundle\Controller;
 
 use Buseta\BodegaBundle\Form\Model\ProveedorModel;
+use Buseta\NomencladorBundle\Entity\FormaPago;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -66,6 +68,7 @@ class ProveedorController extends Controller
 
                 $proveedor = $entity->getProveedorData();
                 $proveedor->setTercero($tercero);
+
                 $em->persist($proveedor);
 
                 $em->flush();
@@ -127,6 +130,7 @@ class ProveedorController extends Controller
     public function newAction()
     {
         $entity = new ProveedorModel();
+
         $form   = $this->createCreateForm($entity);
 
         return $this->render('BusetaBodegaBundle:Proveedor:new.html.twig', array(
@@ -205,6 +209,7 @@ class ProveedorController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Proveedor entity.
      *
@@ -217,6 +222,10 @@ class ProveedorController extends Controller
         $em = $this->get('doctrine.orm.entity_manager');
 
         $entity = $em->getRepository('BusetaBodegaBundle:Proveedor')->find($id);
+        $marcasOld = new ArrayCollection();
+        foreach ($entity->getMarcas() as $marca) {
+            $marcasOld->add($marca);
+        }
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Proveedor entity.');
@@ -242,9 +251,10 @@ class ProveedorController extends Controller
 
             $em->flush();
 
+            $model = new ProveedorModel($entity);
             $editForm = $this->createEditForm($model);
             $renderView = $this->renderView('BusetaBodegaBundle:Proveedor:proveedor_model.html.twig', array(
-                'entity'      => $entity,
+                'entity' => $entity,
                 'form'   => $editForm->createView(),
             ));
 

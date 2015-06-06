@@ -3,12 +3,20 @@ services:
     buseta.manager.mantenimiento_preventivo:
         class: Buseta\TallerBundle\Manager\MantenimientoPreventivoManager
 
-    # Twig extension
+    # Twig extension for ProgessBar
     buseta.twig.progress_extension:
         class: Buseta\TallerBundle\Twig\ProgressBarRenderExtension
         arguments:
             - @doctrine.orm.entity_manager
             - @buseta.manager.mantenimiento_preventivo
+        tags:
+            - { name: twig.extension }
+
+    # Twig extension for Tag
+    buseta.twig.tag_extension:
+        class: Buseta\BodegaBundle\Twig\TagRenderExtension
+        arguments:
+            - @doctrine.orm.entity_manager
         tags:
             - { name: twig.extension }
 

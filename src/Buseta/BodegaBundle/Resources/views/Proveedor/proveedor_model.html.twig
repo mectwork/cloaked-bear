@@ -1,5 +1,9 @@
 <form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="post" enctype="multipart/form-data">
     {{ form_errors(form) }}
+    {{ form_row(form._token) }}
+    {{ form_row(form.proveedorId) }}
+    {{ form_row(form.terceroId) }}
+    {{ form_row(form.foto) }}
 
     {% if form.vars.method == 'PUT' %}
         <input type="hidden" name="_method" value="PUT"/>
@@ -61,7 +65,19 @@
         <div class="col-md-12">
             {{ form_row(form.observaciones) }}
         </div>
+        <div class="col-md-12">
+            <label for="buseta_bodegabundle_marcas">Marcas</label>
+            <ul id="buseta_bodegabundle_marcas" class="tags form-control" data-prototype="{{ form_widget(form.marcas.vars.prototype) | e }}">
+                {% for marca in form.marcas %}
+                    <li class="tag">
+                        <span>{{ marca.vars.value.nombre }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
+
+
 
     {# buttons group #}
     <div class="row">
@@ -72,6 +88,4 @@
                 {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
         </div>
     </div>
-
-    {{ form_rest(form) }}
 </form>

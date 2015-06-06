@@ -33,3 +33,66 @@ table thead tr:first-child a {
 #buseta_databundle_autobus_imagen_lateral_d,#buseta_databundle_autobus_imagen_lateral_i {
     width: 412px !important;
 }
+
+ul.tags {
+    padding: 5px;
+    margin-bottom: 10px;
+    height: auto;
+}
+
+li.tag {
+    display: inline-block;
+    height: 22px;
+    background: #EEEEEE;
+    border: 1px solid #B2B2B2;
+    border-radius: 12px;
+    font-size: 13px;
+}
+
+li.tag a {
+    margin: 7px 7px 7px 0;
+}
+
+li.tag a:hover {
+    color: #CC1700;
+}
+
+li.tag > span {
+    margin: 5px 0 5px 5px;
+    padding-right: 7px;
+}
+
+li.tag > a:first-child {
+    margin: 5px;
+    text-decoration: none;
+}
+
+li.tag div[id^='buseta_bodegabundle_proveedor_marcas_'] {
+    float: left;
+    padding-right: 10px;
+}
+
+li.tag div[id^='buseta_bodegabundle_proveedor_marcas_'] input {
+    height: 20px;
+    border: none;
+    padding: 0 8px;
+    margin-right: 7px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    font-size: 13px;
+    background: #EEEEEE;
+
+}
+
+li.tag span + a:last-child,
+li.tag div[id^='buseta_bodegabundle_proveedor_marcas_'] + a:last-child {
+    border-left: 1px solid #919191;
+    padding-left: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+li.tag span + a:last-child span,
+li.tag div[id^='buseta_bodegabundle_proveedor_marcas_'] + a:last-child span {
+    margin-top: 3px;
+}

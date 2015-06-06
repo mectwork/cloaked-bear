@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * PersonaContacto controller.
@@ -222,30 +223,55 @@ class PersonaContactoController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
-     * Deletes a PersonaContacto entity.
+     * @param PersonaContacto $personaContacto
+     * @param Request $request
      *
-     * @Route("/{id}", name="personacontacto_delete")
-     * @Method("DELETE")
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @Route("/{id}/delete", name="terceros_personacontacto_delete", methods={"GET", "POST", "DELETE"}, options={"expose":true})
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(PersonaContacto $personaContacto, Request $request)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($personaContacto->getId());
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaBodegaBundle:PersonaContacto')->find($id);
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+            try {
+                $em = $this->get('doctrine.orm.entity_manager');
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find PersonaContacto entity.');
+                $em->remove($personaContacto);
+                $em->flush();
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $trans->trans('messages.delete.success', array(), 'BusetaBodegaBundle'),
+                    ), 202);
+                }
+                // faltaría forma tradicional
+            } catch (\Exception $e) {
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'PersonaContacto'), 'BusetaBodegaBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
+                // faltaría forma tradicional
             }
-
-            $em->remove($entity);
-            $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('personacontacto'));
+        $renderView =  $this->renderView('@BusetaBodega/PersonaContacto/delete_modal.html.twig', array(
+            'entity' => $personaContacto,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
+        return new Response($renderView);
     }
 
     /**
@@ -258,7 +284,7 @@ class PersonaContactoController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('personacontacto_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('terceros_personacontacto_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->getForm();
     }

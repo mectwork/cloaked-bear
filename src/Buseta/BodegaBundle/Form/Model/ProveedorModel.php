@@ -88,6 +88,12 @@ class ProveedorModel implements TerceroModelInterface
      */
     private $observaciones;
 
+    /**
+     * @var array
+     */
+    private $marcas;
+
+
     public function __construct(Proveedor $proveedor = null)
     {
         if ($proveedor === null) {
@@ -113,6 +119,7 @@ class ProveedorModel implements TerceroModelInterface
         $this->moneda = $proveedor->getMoneda();
         $this->creditoLimite = $proveedor->getCreditoLimite();
         $this->observaciones = $proveedor->getObservaciones();
+        $this->marcas = $proveedor->getMarcas();
     }
 
     public function getTerceroData()
@@ -141,6 +148,10 @@ class ProveedorModel implements TerceroModelInterface
         $proveedor->setMoneda($this->getMoneda());
         $proveedor->setCreditoLimite($this->getCreditoLimite());
         $proveedor->setObservaciones($this->getObservaciones());
+
+        foreach ($this->marcas as $marca) {
+            $proveedor->addMarca($marca);
+        }
 
         return $proveedor;
     }
@@ -369,5 +380,20 @@ class ProveedorModel implements TerceroModelInterface
         $this->web = $web;
     }
 
+    /**
+     * @return array
+     */
+    public function getMarcas()
+    {
+        return $this->marcas;
+    }
+
+    /**
+     * @param array $marcas
+     */
+    public function setMarcas($marcas)
+    {
+        $this->marcas = $marcas;
+    }
 
 }

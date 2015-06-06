@@ -31,6 +31,10 @@
                 <div class="btn-group">
                     <a class="btn btn-danger btn-xs" href="#btn_direccion_edit" data-content="{{ entity.id }}"><i class="fa fa-edit"> Editar</i></a>
                 </div>
+
+                <div class="btn-group">
+                    <a class="btn btn-danger btn-xs" href="#btn_direccion_delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
+                </div>
             </td>
         </tr>
     {% endfor %}
@@ -43,3 +47,4 @@
 
 
 <div class="modal" id="form_direccion_modal"></div>
+<div class="modal" id="form_address_delete_modal"></div>

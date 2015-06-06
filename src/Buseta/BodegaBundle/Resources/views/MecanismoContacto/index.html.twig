@@ -27,6 +27,7 @@
             <td>{{ entity.activo ? '<i class="fa fa-circle text-success"></i>' : '<i class="fa fa-circle-o text-danger"></i>' }}</td>
             <td  style="text-align: center;">
                 <a class="btn btn-primary btn-xs" href="#btn_contacto_edit" data-content="{{ entity.id }}"><i class="fa fa-edit"> Editar</i></a>
+                <a class="btn btn-danger btn-xs" href="#btn_contacto_delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
             </td>
         </tr>
     {% endfor %}
@@ -38,3 +39,4 @@
 </div>
 
 <div class="modal" id="form_contacto_modal"></div>
+<div class="modal" id="form_contacto_delete_modal"></div>
