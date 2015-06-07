@@ -239,8 +239,14 @@ class ProveedorController extends Controller
 
             $trans  = $this->get('translator');
 
-//            $tercero = $entity->getTerceroData();
-//            $proveedor = $entity->getProveedorData();
+            $marcasNew = $model->getMarcas();
+            foreach ($marcasNew as $marca) {
+                if (null === $marca->getId()) {
+                    $em->persist($marca);
+                }
+            }
+            $em->flush();
+
             $tercero = $entity->getTercero();
 
             $entity->setModelData($model);

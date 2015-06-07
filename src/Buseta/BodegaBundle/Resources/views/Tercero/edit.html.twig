@@ -204,6 +204,8 @@
             _start_events: function (e) {
                 <!-- click en el botón 'Adicionar dirección' -->
                 $('a[href="#form_direccion_modal"]').on('click', direccion._load_modal);
+                $('a[href="#btn_direccion_edit"]').on('click', direccion._load_modal);
+                $('a[href="#btn_direccion_delete"]').on('click', direccion._load_delete_modal);
                 // Paginator sort
                 $('table.records_list').find('a.sortable, a.asc, a.desc').on('click', direccion._load);
                 // Paginator navigation
@@ -235,6 +237,9 @@
                 }
 
                 var url = Routing.generate('direccion_new', {'tercero': tercero.id});
+                if ($(this).attr('href') !== undefined && $(this).attr('href') === '#btn_direccion_edit') {
+                    url = Routing.generate('direccion_edit', {'id': $(this).data('content')});
+                }
 
                 $.get(url)
                         .done(function(response, textStatus, jqXHR){
@@ -253,6 +258,25 @@
                         }).fail(utils._fail).always(function(){});
             },
 
+            _load_delete_modal: function(e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
+
+               var url = Routing.generate('terceros_direccion_delete', {'id': $(this).data('content')});
+
+                $.get(url).done(function(response, textStatus, jqXHR){
+                    $('div#form_address_delete_modal').replaceWith($(response.view));
+
+                    $('div#form_address_delete_modal a#btn_direccion_delete').on('click', direccion._save_delete_modal);
+                    $('div#form_address_delete_modal a#btn_direccion_cancel').on('click', function(){
+                        $('div#form_address_delete_modal').modal('hide');
+                    });
+
+                    $('div#form_address_delete_modal').modal('show');
+                }).fail(utils._fail).always(function(){});
+            },
+
             _save_modal: function (e) {
                 if(e !== undefined) {
                     e.preventDefault();
@@ -269,6 +293,38 @@
                     success: direccion._done,
                     error: utils._fail,
                     complete: direccion._always,
+                    dataType: 'json'
+                });
+            },
+
+            _save_delete_modal: function (event) {
+                console.log('_save_delete_modal');
+
+                if(event != undefined) {
+                    event.preventDefault();
+                }
+
+                $('#btn_direccion_delete').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-save')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
+
+                var deleteForm = $('div#form_address_delete_modal').find('form'),
+                        url = $(deleteForm).attr('action');
+
+                deleteForm.ajaxSubmit({
+                    success: function (response, textStatus, jqXHR) {
+                        if(jqXHR.status == 202) {
+                            addGlobalMessage('success', response.message);
+                        }
+                        $('div#form_address_delete_modal').modal('hide');
+                        direccion._load();
+                    },
+                    error: utils._fail,
+                    complete: direccion._always,
+                    url: url,
                     dataType: 'json'
                 });
             },
@@ -301,6 +357,7 @@
                 <!-- click en el botón 'Adicionar mecanismo de contacto' -->
                 $('a[href="#form_contacto_modal"]').on('click', contacto._load_modal);
                 $('a[href="#btn_contacto_edit"]').on('click', contacto._load_modal);
+                $('a[href="#btn_contacto_delete"]').on('click', contacto._load_delete_modal);
                 // Paginator sort
                 $('table.records_list').find('a.sortable, a.asc, a.desc').on('click', contacto._load);
                 // Paginator navigation
@@ -357,6 +414,25 @@
                         }).fail(utils._fail).always(function(){});
             },
 
+            _load_delete_modal: function(e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
+
+                var url = Routing.generate('terceros_mecanismocontacto_delete', {'id': $(this).data('content')});
+
+                $.get(url).done(function(response, textStatus, jqXHR){
+                    $('div#form_contacto_delete_modal').replaceWith($(response.view));
+
+                    $('div#form_contacto_delete_modal a#btn_contacto_delete').on('click', contacto._save_delete_modal);
+                    $('div#form_contacto_delete_modal a#btn_contacto_cancel').on('click', function(){
+                        $('div#form_contacto_delete_modal').modal('hide');
+                    });
+
+                    $('div#form_contacto_delete_modal').modal('show');
+                }).fail(utils._fail).always(function(){});
+            },
+
             _save_modal: function (e) {
                 if(e !== undefined) {
                     e.preventDefault();
@@ -373,6 +449,37 @@
                     success: contacto._done,
                     error: utils._fail,
                     complete: contacto._always,
+                    dataType: 'json'
+                });
+            },
+
+            _save_delete_modal: function (event) {
+
+                if(event != undefined) {
+                    event.preventDefault();
+                }
+
+                $('#btn_contacto_delete').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-save')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
+
+                var deleteForm = $('div#form_contacto_delete_modal').find('form'),
+                        url = $(deleteForm).attr('action');
+
+                deleteForm.ajaxSubmit({
+                    success: function (response, textStatus, jqXHR) {
+                        if(jqXHR.status == 202) {
+                            addGlobalMessage('success', response.message);
+                        }
+                        $('div#form_contacto_delete_modal').modal('hide');
+                        contacto._load();
+                    },
+                    error: utils._fail,
+                    complete: contacto._always,
+                    url: url,
                     dataType: 'json'
                 });
             },
