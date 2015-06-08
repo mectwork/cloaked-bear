@@ -85,6 +85,7 @@ class TerceroModel implements TerceroModelInterface
         if ($tercero !== null) {
             $this->id = $tercero->getId();
             $this->codigo = $tercero->getCodigo();
+            $this->cifNif = $tercero->getCifNif();
             $this->usuario = $tercero->getUsuario();
             $this->nombres = $tercero->getNombres();
             $this->apellidos = $tercero->getApellidos();
@@ -113,6 +114,7 @@ class TerceroModel implements TerceroModelInterface
         $tercero->setActivo($this->getActivo());
         $tercero->setEmail($this->getEmail());
         $tercero->setWeb($this->getWeb());
+        $tercero->setCifNif($this->getCifNif());
 
         return $tercero;
     }
