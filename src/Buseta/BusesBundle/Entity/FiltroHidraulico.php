@@ -24,19 +24,19 @@ class FiltroHidraulico
     /**
      * @var string
      *
-     * @ORM\Column(name="filtro_hidraulico_1", type="string", length=15)
+     * @ORM\Column(name="filtroHidraulico1", type="string", length=15)
      */
-    private $filtro_hidraulico_1;
+    private $filtroHidraulico1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="filtro_hidraulico_2", type="string", length=15)
+     * @ORM\Column(name="filtroHidraulico2", type="string", length=15)
      */
-    private $filtro_hidraulico_2;
+    private $filtroHidraulico2;
 
     /**
-     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="filtro_hidraulico")
+     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="filtroHidraulico")
      */
     private $autobus;
 
@@ -57,11 +57,11 @@ class FiltroHidraulico
     }
 
     /**
-     * @param string $filtro_hidraulico_1
+     * @param string $filtroHidraulico1
      */
-    public function setFiltroHidraulico1($filtro_hidraulico_1)
+    public function setFiltroHidraulico1($filtroHidraulico1)
     {
-        $this->filtro_hidraulico_1 = $filtro_hidraulico_1;
+        $this->filtroHidraulico1 = $filtroHidraulico1;
     }
 
     /**
@@ -69,15 +69,15 @@ class FiltroHidraulico
      */
     public function getFiltroHidraulico1()
     {
-        return $this->filtro_hidraulico_1;
+        return $this->filtroHidraulico1;
     }
 
     /**
-     * @param string $filtro_hidraulico_2
+     * @param string $filtroHidraulico2
      */
-    public function setFiltroHidraulico2($filtro_hidraulico_2)
+    public function setFiltroHidraulico2($filtroHidraulico2)
     {
-        $this->filtro_hidraulico_2 = $filtro_hidraulico_2;
+        $this->filtroHidraulico2 = $filtroHidraulico2;
     }
 
     /**
@@ -85,7 +85,7 @@ class FiltroHidraulico
      */
     public function getFiltroHidraulico2()
     {
-        return $this->filtro_hidraulico_2;
+        return $this->filtroHidraulico2;
     }
 
     /**
@@ -111,6 +111,6 @@ class FiltroHidraulico
      */
     public function hasData()
     {
-        return $this->filtro_hidraulico_1 && $this->filtro_hidraulico_2;
+        return $this->filtroHidraulico1 && $this->filtroHidraulico2;
     }
 }

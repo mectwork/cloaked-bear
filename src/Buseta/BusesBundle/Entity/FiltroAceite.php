@@ -24,26 +24,26 @@ class FiltroAceite
     /**
      * @var string
      *
-     * @ORM\Column(name="filtro_aceite_1", type="string", length=15)
+     * @ORM\Column(name="filtroAceite1", type="string", length=15)
      */
-    private $filtro_aceite_1;
+    private $filtroAceite1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="filtro_aceite_2", type="string", length=15)
+     * @ORM\Column(name="filtroAceite2", type="string", length=15)
      */
-    private $filtro_aceite_2;
+    private $filtroAceite2;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="filtro_aceite_3", type="string", length=15)
+     * @ORM\Column(name="filtroAceite3", type="string", length=15)
      */
-    private $filtro_aceite_3;
+    private $filtroAceite3;
 
     /**
-     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="filtro_aceite")
+     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="filtroAceite")
      */
     private $autobus;
 
@@ -64,11 +64,11 @@ class FiltroAceite
     }
 
     /**
-     * @param string $filtro_aceite_1
+     * @param string $filtroAceite1
      */
-    public function setFiltroAceite1($filtro_aceite_1)
+    public function setFiltroAceite1($filtroAceite1)
     {
-        $this->filtro_aceite_1 = $filtro_aceite_1;
+        $this->filtroAceite1 = $filtroAceite1;
     }
 
     /**
@@ -76,15 +76,15 @@ class FiltroAceite
      */
     public function getFiltroAceite1()
     {
-        return $this->filtro_aceite_1;
+        return $this->filtroAceite1;
     }
 
     /**
-     * @param string $filtro_aceite_2
+     * @param string $filtroAceite2
      */
-    public function setFiltroAceite2($filtro_aceite_2)
+    public function setFiltroAceite2($filtroAceite2)
     {
-        $this->filtro_aceite_2 = $filtro_aceite_2;
+        $this->filtroAceite2 = $filtroAceite2;
     }
 
     /**
@@ -92,15 +92,15 @@ class FiltroAceite
      */
     public function getFiltroAceite2()
     {
-        return $this->filtro_aceite_2;
+        return $this->filtroAceite2;
     }
 
     /**
-     * @param string $filtro_aceite_3
+     * @param string $filtroAceite3
      */
-    public function setFiltroAceite3($filtro_aceite_3)
+    public function setFiltroAceite3($filtroAceite3)
     {
-        $this->filtro_aceite_3 = $filtro_aceite_3;
+        $this->filtroAceite3 = $filtroAceite3;
     }
 
     /**
@@ -108,7 +108,7 @@ class FiltroAceite
      */
     public function getFiltroAceite3()
     {
-        return $this->filtro_aceite_3;
+        return $this->filtroAceite3;
     }
 
     /**
@@ -134,6 +134,6 @@ class FiltroAceite
      */
     public function hasData()
     {
-        return $this->filtro_aceite_1 && $this->filtro_aceite_2 && $this->filtro_aceite_3;
+        return $this->filtroAceite1 && $this->filtroAceite2 && $this->filtroAceite3;
     }
 }

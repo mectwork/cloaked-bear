@@ -22,11 +22,11 @@ var fecha_pedido = $('#bodega_pedido_compra_fecha_pedido').datetimepicker({
     'format': 'DD/MM/YYYY'
 });
 
-var autobus_fecha_ingreso = $('#buseta_databundle_autobus_fecha_ingreso').datetimepicker({
+var autobus_fecha_ingreso = $('#buses_autobus_basico_fecha_ingreso').datetimepicker({
     'format': 'DD/MM/YYYY'
 });
 
-var autobus_valido_hasta = $('#buseta_databundle_autobus_valido_hasta').datetimepicker({
+var autobus_valido_hasta = $('#buses_autobus_basico_valido_hasta').datetimepicker({
     'format': 'DD/MM/YYYY'
 });
 
@@ -65,11 +65,11 @@ $('input:hidden[name^="data_busqueda_informe_costos_type[fecha]_submit"]').val(f
 var fechaInformeStock = $('#data_busqueda_informe_stock_type_fecha').val();
 $('input:hidden[name^="data_busqueda_informe_stock_type[fecha]_submit"]').val(fechaInformeStock);
 
-var valido = $('#buseta_databundle_autobus_valido_hasta').val();
-$('input:hidden[name^="buseta_databundle_autobus[valido_hasta]_submit"]').val(valido);
+var valido = $('#buses_autobus_basico_valido_hasta').val();
+$('input:hidden[name^="buses_autobus_basico[valido_hasta]_submit"]').val(valido);
 
-var fechaingreso = $('#buseta_databundle_autobus_fecha_ingreso').val();
-$('input:hidden[name^="buseta_databundle_autobus[fecha_ingreso]_submit"]').val(fechaingreso);
+var fechaingreso = $('#buses_autobus_basico_fecha_ingreso').val();
+$('input:hidden[name^="buses_autobus_basico[fecha_ingreso]_submit"]').val(fechaingreso);
 
 var fechamovimiento = $('#bodega_albaran_type_fechaMovimiento').val();
 $('input:hidden[name^="bodega_albaran_type[fechaMovimiento]_submit"]').val(fechamovimiento);

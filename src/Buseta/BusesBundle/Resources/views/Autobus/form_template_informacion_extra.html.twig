@@ -1,0 +1,84 @@
+{% form_theme form '@BusetaBodega/Form/fields.twig' %}
+
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data">
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+    {{ form_errors(form) }}
+    {{ form_row(form.id) }}
+    {{ form_row(form._token) }}
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.numeroUnidad) }}
+            {{ form_errors(form.numeroUnidad) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.valorUnidad) }}
+            {{ form_errors(form.valorUnidad) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.anno) }}
+            {{ form_errors(form.anno) }}
+        </div>
+
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.marcaCajacambio) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.tipoCajacambio) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.carterCapacidadlitros) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.aceitecajacambios) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.aceitehidraulico) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.aceitemotor) }}
+        </div>
+
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.aceitetransmision) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.bateria1) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.bateria2) }}
+        </div>
+    </div>
+
+    <br/>
+
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <a class="btn btn-primary" id="btn_autobus_extra_save" href="#"><span class="glyphicon glyphicon-save"></span>
+                {{ 'actions.save' | trans({}, 'BusetaBusesBundle') }}</a>
+            <a class="btn btn-default" id="btn_autobus_extra_cancel" href="{{ path('autobus') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+                {{ 'actions.cancel' | trans({}, 'BusetaBusesBundle') }}</a>
+        </div>
+    </div>
+
+</form>

@@ -24,19 +24,19 @@ class FiltroCaja
     /**
      * @var string
      *
-     * @ORM\Column(name="filtro_caja_1", type="string", length=15)
+     * @ORM\Column(name="filtroCaja1", type="string", length=15)
      */
-    private $filtro_caja_1;
+    private $filtroCaja1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="filtro_caja_2", type="string", length=15)
+     * @ORM\Column(name="filtroCaja2", type="string", length=15)
      */
-    private $filtro_caja_2;
+    private $filtroCaja2;
 
     /**
-     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="filtro_caja")
+     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="filtroCaja")
      */
     private $autobus;
 
@@ -57,11 +57,11 @@ class FiltroCaja
     }
 
     /**
-     * @param string $filtro_caja_1
+     * @param string $filtroCaja1
      */
-    public function setFiltroCaja1($filtro_caja_1)
+    public function setFiltroCaja1($filtroCaja1)
     {
-        $this->filtro_caja_1 = $filtro_caja_1;
+        $this->filtroCaja1 = $filtroCaja1;
     }
 
     /**
@@ -69,15 +69,15 @@ class FiltroCaja
      */
     public function getFiltroCaja1()
     {
-        return $this->filtro_caja_1;
+        return $this->filtroCaja1;
     }
 
     /**
-     * @param string $filtro_caja_2
+     * @param string $filtroCaja2
      */
-    public function setFiltroCaja2($filtro_caja_2)
+    public function setFiltroCaja2($filtroCaja2)
     {
-        $this->filtro_caja_2 = $filtro_caja_2;
+        $this->filtroCaja2 = $filtroCaja2;
     }
 
     /**
@@ -85,7 +85,7 @@ class FiltroCaja
      */
     public function getFiltroCaja2()
     {
-        return $this->filtro_caja_2;
+        return $this->filtroCaja2;
     }
 
     /**
@@ -111,6 +111,6 @@ class FiltroCaja
      */
     public function hasData()
     {
-        return $this->filtro_caja_1 && $this->filtro_caja_2;
+        return $this->filtroCaja1 && $this->filtroCaja2;
     }
 }

@@ -15,25 +15,22 @@ class FiltroAceiteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('filtro_aceite_1', 'text', array(
+            ->add('filtroAceite1', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 150px',
                     ),
                 ))
-            ->add('filtro_aceite_2', 'text', array(
+            ->add('filtroAceite2', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 150px',
                     ),
                 ))
-            ->add('filtro_aceite_3', 'text', array(
+            ->add('filtroAceite3', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 150px',
                     ),
                 ))
         ;

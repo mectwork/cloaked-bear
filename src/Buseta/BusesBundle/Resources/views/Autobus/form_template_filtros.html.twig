@@ -1,0 +1,79 @@
+{% form_theme form '@BusetaBodega/Form/fields.twig' %}
+
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data">
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+    {{ form_errors(form) }}
+    {{ form_row(form.id) }}
+    {{ form_row(form._token) }}
+
+    <div class="row show-grid">
+        <div class="col-md-3">
+            {{ form_row(form.filtroCaja.filtroCaja1) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.filtroCaja.filtroCaja2) }}
+        </div>
+
+        <div class="col-md-3">
+            {{ form_row(form.filtroTransmision.filtroTransmision) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-3">
+            {{ form_row(form.filtroAgua.filtroAgua1) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.filtroAgua.filtroAgua2) }}
+        </div>
+
+        <div class="col-md-3">
+            {{ form_row(form.filtroHidraulico.filtroHidraulico1) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.filtroHidraulico.filtroHidraulico2) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-3">
+            {{ form_row(form.filtroDiesel.filtroDiesel1) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.filtroDiesel.filtroDiesel2) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.filtroDiesel.filtroDiesel3) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.filtroDiesel.filtroDiesel4) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-3">
+            {{ form_row(form.filtroAceite.filtroAceite1) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.filtroAceite.filtroAceite2) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.filtroAceite.filtroAceite3) }}
+        </div>
+    </div>
+
+    <br/>
+
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <a class="btn btn-primary" id="btn_autobus_filtros_save" href="#"><span class="glyphicon glyphicon-save"></span>
+                {{ 'actions.save' | trans({}, 'BusetaBusesBundle') }}</a>
+            <a class="btn btn-default" id="btn_autobus_filtros_cancel" href="{{ path('autobus') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+                {{ 'actions.cancel' | trans({}, 'BusetaBusesBundle') }}</a>
+        </div>
+    </div>
+
+</form>

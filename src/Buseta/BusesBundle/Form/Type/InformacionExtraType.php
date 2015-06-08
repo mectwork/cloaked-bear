@@ -1,0 +1,123 @@
+<?php
+
+namespace Buseta\BusesBundle\Form\Type;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+class InformacionExtraType extends AbstractType
+{
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('id', 'hidden', array(
+                'required' => false,
+            ))
+            ->add('valorUnidad', 'text', array(
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('numeroUnidad', 'text', array(
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('anno', 'number', array(
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('marcaCajacambio', 'text', array(
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('tipoCajacambio', 'text', array(
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('carterCapacidadlitros', 'text', array(
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('bateria1', 'text', array(
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('bateria2', 'text', array(
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('aceitecajacambios', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:AceiteCajaCambios',
+                'empty_value' => '---Seleccione---',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('aceitehidraulico', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:AceiteHidraulico',
+                'empty_value' => '---Seleccione---',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('aceitemotor', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:AceiteMotor',
+                'empty_value' => '---Seleccione---',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('aceitetransmision', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:AceiteTransmision',
+                'empty_value' => '---Seleccione---',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+        ;
+    }
+
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Buseta\BusesBundle\Form\Model\InformacionExtraModel',
+        ));
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'buses_autobus_informacion_extra';
+    }
+}

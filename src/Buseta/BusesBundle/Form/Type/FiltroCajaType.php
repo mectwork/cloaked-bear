@@ -15,18 +15,16 @@ class FiltroCajaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('filtro_caja_1', 'text', array(
+            ->add('filtroCaja1', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 150px',
                     ),
                 ))
-            ->add('filtro_caja_2', 'text', array(
+            ->add('filtroCaja2', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 150px',
                     ),
                 ))
         ;

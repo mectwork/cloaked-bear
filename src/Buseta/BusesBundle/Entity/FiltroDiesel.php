@@ -24,33 +24,33 @@ class FiltroDiesel
     /**
      * @var string
      *
-     * @ORM\Column(name="filtro_diesel_1", type="string", length=15)
+     * @ORM\Column(name="filtroDiesel1", type="string", length=15)
      */
-    private $filtro_diesel_1;
+    private $filtroDiesel1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="filtro_diesel_2", type="string", length=15)
+     * @ORM\Column(name="filtroDiesel2", type="string", length=15)
      */
-    private $filtro_diesel_2;
+    private $filtroDiesel2;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="filtro_diesel_3", type="string", length=15)
+     * @ORM\Column(name="filtroDiesel3", type="string", length=15)
      */
-    private $filtro_diesel_3;
+    private $filtroDiesel3;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="filtro_diesel_4", type="string", length=15)
+     * @ORM\Column(name="filtroDiesel4", type="string", length=15)
      */
-    private $filtro_diesel_4;
+    private $filtroDiesel4;
 
     /**
-     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="filtro_diesel")
+     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="filtroDiesel")
      */
     private $autobus;
 
@@ -71,11 +71,11 @@ class FiltroDiesel
     }
 
     /**
-     * @param string $filtro_diesel_1
+     * @param string $filtroDiesel1
      */
-    public function setFiltroDiesel1($filtro_diesel_1)
+    public function setFiltroDiesel1($filtroDiesel1)
     {
-        $this->filtro_diesel_1 = $filtro_diesel_1;
+        $this->filtroDiesel1 = $filtroDiesel1;
     }
 
     /**
@@ -83,15 +83,15 @@ class FiltroDiesel
      */
     public function getFiltroDiesel1()
     {
-        return $this->filtro_diesel_1;
+        return $this->filtroDiesel1;
     }
 
     /**
-     * @param string $filtro_diesel_2
+     * @param string $filtroDiesel2
      */
-    public function setFiltroDiesel2($filtro_diesel_2)
+    public function setFiltroDiesel2($filtroDiesel2)
     {
-        $this->filtro_diesel_2 = $filtro_diesel_2;
+        $this->filtroDiesel2 = $filtroDiesel2;
     }
 
     /**
@@ -99,15 +99,15 @@ class FiltroDiesel
      */
     public function getFiltroDiesel2()
     {
-        return $this->filtro_diesel_2;
+        return $this->filtroDiesel2;
     }
 
     /**
-     * @param string $filtro_diesel_3
+     * @param string $filtroDiesel3
      */
-    public function setFiltroDiesel3($filtro_diesel_3)
+    public function setFiltroDiesel3($filtroDiesel3)
     {
-        $this->filtro_diesel_3 = $filtro_diesel_3;
+        $this->filtroDiesel3 = $filtroDiesel3;
     }
 
     /**
@@ -115,15 +115,15 @@ class FiltroDiesel
      */
     public function getFiltroDiesel3()
     {
-        return $this->filtro_diesel_3;
+        return $this->filtroDiesel3;
     }
 
     /**
-     * @param string $filtro_diesel_4
+     * @param string $filtroDiesel4
      */
-    public function setFiltroDiesel4($filtro_diesel_4)
+    public function setFiltroDiesel4($filtroDiesel4)
     {
-        $this->filtro_diesel_4 = $filtro_diesel_4;
+        $this->filtroDiesel4 = $filtroDiesel4;
     }
 
     /**
@@ -131,7 +131,7 @@ class FiltroDiesel
      */
     public function getFiltroDiesel4()
     {
-        return $this->filtro_diesel_4;
+        return $this->filtroDiesel4;
     }
 
     /**
@@ -157,6 +157,6 @@ class FiltroDiesel
      */
     public function hasData()
     {
-        return $this->filtro_diesel_1 && $this->filtro_diesel_2 && $this->filtro_diesel_3 && $this->filtro_diesel_4;
+        return $this->filtroDiesel1 && $this->filtroDiesel2 && $this->filtroDiesel3 && $this->filtroDiesel4;
     }
 }

@@ -24,12 +24,12 @@ class FiltroTransmision
     /**
      * @var string
      *
-     * @ORM\Column(name="filtro_transmision", type="string", length=15)
+     * @ORM\Column(name="filtroTransmision", type="string", length=15)
      */
-    private $filtro_transmision;
+    private $filtroTransmision;
 
     /**
-     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="filtro_transmision")
+     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="filtroTransmision")
      */
     private $autobus;
 
@@ -50,11 +50,11 @@ class FiltroTransmision
     }
 
     /**
-     * @param string $filtro_transmision
+     * @param string $filtroTransmision
      */
-    public function setFiltroTransmision($filtro_transmision)
+    public function setFiltroTransmision($filtroTransmision)
     {
-        $this->filtro_transmision = $filtro_transmision;
+        $this->filtroTransmision = $filtroTransmision;
     }
 
     /**
@@ -62,7 +62,7 @@ class FiltroTransmision
      */
     public function getFiltroTransmision()
     {
-        return $this->filtro_transmision;
+        return $this->filtroTransmision;
     }
 
     /**
@@ -88,6 +88,6 @@ class FiltroTransmision
      */
     public function hasData()
     {
-        return $this->filtro_transmision;
+        return $this->filtroTransmision;
     }
 }

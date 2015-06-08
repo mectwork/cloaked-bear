@@ -2,9 +2,13 @@
 
 namespace Buseta\BusesBundle\Entity;
 
+use Buseta\BusesBundle\Form\Model\FiltroModel;
+use Buseta\BusesBundle\Form\Model\ImagenModel;
+use Buseta\BusesBundle\Form\Model\InformacionExtraModel;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Buseta\BusesBundle\Form\Model\AutobusBasicoModel;
 
 /**
  * Autobus.
@@ -27,41 +31,41 @@ class Autobus
     /**
      * @var string
      *
-     * @ORM\Column(name="imagen_frontal", type="string", nullable=true)
+     * @ORM\Column(name="imagenFrontal", type="string", nullable=true)
      * @Assert\Image(groups={"web", "console", "Autobus"})
      */
-    private $imagen_frontal;
+    private $imagenFrontal;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="imagen_lateral_d", type="string", nullable=true)
+     * @ORM\Column(name="imagenLateralD", type="string", nullable=true)
      * @Assert\Image(groups={"web", "console", "Autobus"})
      */
-    private $imagen_lateral_d;
+    private $imagenLateralD;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="imagen_lateral_i", type="string", nullable=true)
+     * @ORM\Column(name="imagenLateralI", type="string", nullable=true)
      * @Assert\Image(groups={"web", "console", "Autobus"})
      */
-    private $imagen_lateral_i;
+    private $imagenLateralI;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="imagen_trasera", type="string", nullable=true)
+     * @ORM\Column(name="imagenTrasera", type="string", nullable=true)
      * @Assert\Image(groups={"web", "console", "Autobus"})
      */
-    private $imagen_trasera;
+    private $imagenTrasera;
 
     /**
      * @ORM\OneToMany(targetEntity="Buseta\BusesBundle\Entity\ArchivoAdjunto", mappedBy="autobuses", cascade={"persist"})
      * @Assert\File(groups={"web", "Autobus"})
      *
      */
-    private $archivo_adjunto;
+    private $archivoAdjunto;
 
     /**
      * @var string
@@ -81,81 +85,81 @@ class Autobus
     /**
      * @var string
      *
-     * @ORM\Column(name="marca_cajacambio", type="string", nullable=true)
+     * @ORM\Column(name="marcaCajacambio", type="string", nullable=true)
      */
-    private $marca_cajacambio;
+    private $marcaCajacambio;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tipo_cajacambio", type="string", nullable=true)
+     * @ORM\Column(name="tipoCajacambio", type="string", nullable=true)
      */
-    private $tipo_cajacambio;
+    private $tipoCajacambio;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="bateria_1", type="string", nullable=true)
+     * @ORM\Column(name="bateria1", type="string", nullable=true)
      */
-    private $bateria_1;
+    private $bateria1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="bateria_2", type="string", nullable=true)
+     * @ORM\Column(name="bateria2", type="string", nullable=true)
      */
-    private $bateria_2;
+    private $bateria2;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="numero_chasis", type="string", length=32)
+     * @ORM\Column(name="numeroChasis", type="string", length=32)
      */
-    private $numero_chasis;
+    private $numeroChasis;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="numero_motor", type="string", length=32)
+     * @ORM\Column(name="numeroMotor", type="string", length=32)
      */
-    private $numero_motor;
+    private $numeroMotor;
 
     /**
      * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroAceite", mappedBy="autobus", cascade={"all"})
      */
-    private $filtro_aceite;
+    private $filtroAceite;
 
     /**
      * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroAgua", mappedBy="autobus", cascade={"all"})
      */
-    private $filtro_agua;
+    private $filtroAgua;
 
     /**
      * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroDiesel", mappedBy="autobus", cascade={"all"})
      */
-    private $filtro_diesel;
+    private $filtroDiesel;
 
     /**
      * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroHidraulico", mappedBy="autobus", cascade={"all"})
      */
-    private $filtro_hidraulico;
+    private $filtroHidraulico;
 
     /**
      * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroTransmision", mappedBy="autobus", cascade={"all"})
      */
-    private $filtro_transmision;
+    private $filtroTransmision;
 
     /**
      * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroCaja", mappedBy="autobus", cascade={"all"})
      */
-    private $filtro_caja;
+    private $filtroCaja;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="carter_capacidadlitros", type="string", nullable=true)
+     * @ORM\Column(name="carterCapacidadlitros", type="string", nullable=true)
      */
-    private $carter_capacidadlitros;
+    private $carterCapacidadlitros;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Marca")
@@ -202,18 +206,18 @@ class Autobus
     /**
      * @var integer
      *
-     * @ORM\Column(name="peso_tara", type="integer")
+     * @ORM\Column(name="pesoTara", type="integer")
      * @Assert\Type(type="integer", groups={"web", "console", "Autobus"})
      */
-    private $peso_tara;
+    private $pesoTara;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="peso_bruto", type="integer")
+     * @ORM\Column(name="pesoBruto", type="integer")
      * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
-    private $peso_bruto;
+    private $pesoBruto;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Color")
@@ -223,15 +227,15 @@ class Autobus
     /**
      * @var integer
      *
-     * @ORM\Column(name="numero_plazas", type="integer")
+     * @ORM\Column(name="numeroPlazas", type="integer")
      * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
-    private $numero_plazas;
+    private $numeroPlazas;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\MarcaMotor")
      */
-    private $marca_motor;
+    private $marcaMotor;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Combustible")
@@ -249,34 +253,34 @@ class Autobus
     /**
      * @var integer
      *
-     * @ORM\Column(name="valor_unidad", type="integer", nullable=true)
+     * @ORM\Column(name="valorUnidad", type="integer", nullable=true)
      * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
-    private $valor_unidad;
+    private $valorUnidad;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="capacidad_tanque", type="integer")
+     * @ORM\Column(name="capacidadTanque", type="integer")
      * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
-    private $capacidad_tanque;
+    private $capacidadTanque;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="numero_unidad", type="integer", nullable=true)
+     * @ORM\Column(name="numeroUnidad", type="integer", nullable=true)
      * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
-    private $numero_unidad;
+    private $numeroUnidad;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="numero_cilindros", type="integer")
+     * @ORM\Column(name="numeroCilindros", type="integer")
      * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
-    private $numero_cilindros;
+    private $numeroCilindros;
 
     /**
      * @var integer
@@ -297,32 +301,32 @@ class Autobus
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="valido_hasta", type="date")
+     * @ORM\Column(name="validoHasta", type="date")
      * @Assert\Date(groups={"web", "console", "Autobus"})
      */
-    private $valido_hasta;
+    private $validoHasta;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="fecha_rtv_1", type="string")
+     * @ORM\Column(name="fechaRtv1", type="string")
      */
-    private $fecha_rtv_1;
+    private $fechaRtv1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="fecha_rtv_2", type="string")
+     * @ORM\Column(name="fechaRtv2", type="string")
      */
-    private $fecha_rtv_2;
+    private $fechaRtv2;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_ingreso", type="date")
+     * @ORM\Column(name="fechaIngreso", type="date")
      * @Assert\Date(groups={"web", "console", "Autobus"})
      */
-    private $fecha_ingreso;
+    private $fechaIngreso;
 
     /**
      * @var string
@@ -348,9 +352,9 @@ class Autobus
     /**
      * @var string
      *
-     * @ORM\Column(name="lector_cedulas", type="string", nullable=true)
+     * @ORM\Column(name="lectorCedulas", type="string", nullable=true)
      */
-    private $lector_cedulas;
+    private $lectorCedulas;
 
     /**
      * @var string
@@ -394,6 +398,141 @@ class Autobus
      */
     private $horas;
 
+    /**
+     * @param AutobusBasicoModel $model
+     * @return Autobus
+     */
+    public function setModelData(AutobusBasicoModel $model)
+    {
+        $this->matricula = $model->getMatricula();
+        $this->numero = $model->getNumero();
+        $this->numeroChasis = $model->getNumeroChasis();
+        $this->numeroCilindros = $model->getNumeroCilindros();
+        $this->numeroMotor = $model->getNumeroMotor();
+        $this->numeroPlazas = $model->getNumeroPlazas();
+        $this->pesoTara = $model->getPesoTara();
+        $this->pesoBruto = $model->getPesoBruto();
+        $this->cilindrada = $model->getCilindrada();
+        $this->potencia = $model->getPotencia();
+        $this->validoHasta = $model->getValidoHasta();
+        $this->fechaIngreso = $model->getFechaIngreso();
+        $this->fechaRtv1 = $model->getFechaRtv1();
+        $this->fechaRtv2 = $model->getFechaRtv2();
+        $this->capacidadTanque = $model->getCapacidadTanque();
+        $this->rampas = $model->getRampas();
+        $this->barras = $model->getBarras();
+        $this->wifi = $model->getWifi();
+        $this->gps = $model->getGps();
+        $this->camaras = $model->getCamaras();
+        $this->lectorCedulas = $model->getLectorCedulas();
+        $this->publicidad = $model->getPublicidad();
+        $this->activo = $model->getActivo();
+
+        if ($model->getMarca()) {
+            $this->marca  = $model->getMarca();
+        }
+        if ($model->getMarcaMotor()) {
+            $this->marcaMotor  = $model->getMarcaMotor();
+        }
+        if ($model->getModelo()) {
+            $this->modelo  = $model->getModelo();
+        }
+        if ($model->getEstilo()) {
+            $this->estilo  = $model->getEstilo();
+        }
+        if ($model->getColor()) {
+            $this->color  = $model->getColor();
+        }
+        if ($model->getCombustible()) {
+            $this->combustible  = $model->getCombustible();
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param InformacionExtraModel $model
+     * @return Autobus
+     */
+    public function setModelDataInformacionExtra(InformacionExtraModel $model)
+    {
+        $this->numeroUnidad = $model->getNumeroUnidad();
+        $this->valorUnidad = $model->getValorUnidad();
+        $this->anno = $model->getAnno();
+        $this->marcaCajacambio = $model->getMarcaCajacambio();
+        $this->tipoCajacambio = $model->getTipoCajacambio();
+        $this->carterCapacidadlitros = $model->getCarterCapacidadlitros();
+        $this->bateria1 = $model->getBateria1();
+        $this->bateria2 = $model->getBateria2();
+
+        if ($model->getAceitecajacambios()) {
+            $this->aceitecajacambios  = $model->getAceitecajacambios();
+        }
+
+        if ($model->getAceitetransmision()) {
+            $this->aceitetransmision  = $model->getAceitetransmision();
+        }
+
+        if ($model->getAceitemotor()) {
+            $this->aceitemotor  = $model->getAceitemotor();
+        }
+
+        if ($model->getAceitehidraulico()) {
+            $this->aceitehidraulico  = $model->getAceitehidraulico();
+        }
+
+
+        return $this;
+    }
+
+    /**
+     * @param FiltroModel $model
+     * @return Autobus
+     */
+    public function setModelDataFiltro(FiltroModel $model)
+    {
+
+        if($model->getFiltroCaja()->hasData()){
+            $this->setFiltroCaja($model->getFiltroCaja());
+        }
+
+        if($model->getFiltroDiesel()->hasData()){
+            $this->setFiltroDiesel($model->getFiltroDiesel());
+        }
+
+        if($model->getFiltroAceite()->hasData()){
+            $this->setFiltroAceite($model->getFiltroAceite());
+        }
+
+        if($model->getFiltroTransmision()->hasData()){
+            $this->setFiltroTransmision($model->getFiltroTransmision());
+        }
+
+        if($model->getFiltroAgua()->hasData()){
+            $this->setFiltroAgua($model->getFiltroAgua());
+        }
+
+        if($model->getFiltroHidraulico()->hasData()){
+            $this->setFiltroHidraulico($model->getFiltroHidraulico());
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ImagenModel $model
+     * @return Autobus
+     */
+    public function setModelDataImagen(ImagenModel $model)
+    {
+        $this->imagenFrontal = $model->getImagenFrontal();
+        $this->imagenTrasera = $model->getImagenTrasera();
+        $this->imagenLateralD = $model->getImagenLateralD();
+        $this->imagenLateralI = $model->getImagenLateralI();
+
+        return $this;
+    }
+
 
     /**
      * Get id.
@@ -406,7 +545,7 @@ class Autobus
     }
 
     /**
-     * Set imagen_frontal.
+     * Set imagenFrontal.
      *
      * @param string $imagenFrontal
      *
@@ -414,23 +553,23 @@ class Autobus
      */
     public function setImagenFrontal($imagenFrontal)
     {
-        $this->imagen_frontal = $imagenFrontal;
+        $this->imagenFrontal = $imagenFrontal;
 
         return $this;
     }
 
     /**
-     * Get imagen_frontal.
+     * Get imagenFrontal.
      *
      * @return string
      */
     public function getImagenFrontal()
     {
-        return $this->imagen_frontal;
+        return $this->imagenFrontal;
     }
 
     /**
-     * Set imagen_lateral_d.
+     * Set imagenLateralD.
      *
      * @param string $imagenLateralD
      *
@@ -438,23 +577,23 @@ class Autobus
      */
     public function setImagenLateralD($imagenLateralD)
     {
-        $this->imagen_lateral_d = $imagenLateralD;
+        $this->imagenLateralD = $imagenLateralD;
 
         return $this;
     }
 
     /**
-     * Get imagen_lateral_d.
+     * Get imagenLateralD.
      *
      * @return string
      */
     public function getImagenLateralD()
     {
-        return $this->imagen_lateral_d;
+        return $this->imagenLateralD;
     }
 
     /**
-     * Set imagen_lateral_i.
+     * Set imagenLateralI.
      *
      * @param string $imagenLateralI
      *
@@ -462,23 +601,23 @@ class Autobus
      */
     public function setImagenLateralI($imagenLateralI)
     {
-        $this->imagen_lateral_i = $imagenLateralI;
+        $this->imagenLateralI = $imagenLateralI;
 
         return $this;
     }
 
     /**
-     * Get imagen_lateral_i.
+     * Get imagenLateralI.
      *
      * @return string
      */
     public function getImagenLateralI()
     {
-        return $this->imagen_lateral_i;
+        return $this->imagenLateralI;
     }
 
     /**
-     * Set imagen_trasera.
+     * Set imagenTrasera.
      *
      * @param string $imagenTrasera
      *
@@ -486,19 +625,19 @@ class Autobus
      */
     public function setImagenTrasera($imagenTrasera)
     {
-        $this->imagen_trasera = $imagenTrasera;
+        $this->imagenTrasera = $imagenTrasera;
 
         return $this;
     }
 
     /**
-     * Get imagen_trasera.
+     * Get imagenTrasera.
      *
      * @return string
      */
     public function getImagenTrasera()
     {
-        return $this->imagen_trasera;
+        return $this->imagenTrasera;
     }
 
     /**
@@ -542,7 +681,7 @@ class Autobus
     }
 
     /**
-     * Set marca_cajacambio.
+     * Set marcaCajacambio.
      *
      * @param string $marcaCajacambio
      *
@@ -550,23 +689,23 @@ class Autobus
      */
     public function setMarcaCajacambio($marcaCajacambio)
     {
-        $this->marca_cajacambio = $marcaCajacambio;
+        $this->marcaCajacambio = $marcaCajacambio;
 
         return $this;
     }
 
     /**
-     * Get marca_cajacambio.
+     * Get marcaCajacambio.
      *
      * @return string
      */
     public function getMarcaCajacambio()
     {
-        return $this->marca_cajacambio;
+        return $this->marcaCajacambio;
     }
 
     /**
-     * Set tipo_cajacambio.
+     * Set tipoCajacambio.
      *
      * @param string $tipoCajacambio
      *
@@ -574,23 +713,23 @@ class Autobus
      */
     public function setTipoCajacambio($tipoCajacambio)
     {
-        $this->tipo_cajacambio = $tipoCajacambio;
+        $this->tipoCajacambio = $tipoCajacambio;
 
         return $this;
     }
 
     /**
-     * Get tipo_cajacambio.
+     * Get tipoCajacambio.
      *
      * @return string
      */
     public function getTipoCajacambio()
     {
-        return $this->tipo_cajacambio;
+        return $this->tipoCajacambio;
     }
 
     /**
-     * Set bateria_1.
+     * Set bateria1.
      *
      * @param string $bateria1
      *
@@ -598,23 +737,23 @@ class Autobus
      */
     public function setBateria1($bateria1)
     {
-        $this->bateria_1 = $bateria1;
+        $this->bateria1 = $bateria1;
 
         return $this;
     }
 
     /**
-     * Get bateria_1.
+     * Get bateria1.
      *
      * @return string
      */
     public function getBateria1()
     {
-        return $this->bateria_1;
+        return $this->bateria1;
     }
 
     /**
-     * Set bateria_2.
+     * Set bateria2.
      *
      * @param string $bateria2
      *
@@ -622,23 +761,23 @@ class Autobus
      */
     public function setBateria2($bateria2)
     {
-        $this->bateria_2 = $bateria2;
+        $this->bateria2 = $bateria2;
 
         return $this;
     }
 
     /**
-     * Get bateria_2.
+     * Get bateria2.
      *
      * @return string
      */
     public function getBateria2()
     {
-        return $this->bateria_2;
+        return $this->bateria2;
     }
 
     /**
-     * Set numero_chasis.
+     * Set numeroChasis.
      *
      * @param string $numeroChasis
      *
@@ -646,23 +785,23 @@ class Autobus
      */
     public function setNumeroChasis($numeroChasis)
     {
-        $this->numero_chasis = $numeroChasis;
+        $this->numeroChasis = $numeroChasis;
 
         return $this;
     }
 
     /**
-     * Get numero_chasis.
+     * Get numeroChasis.
      *
      * @return string
      */
     public function getNumeroChasis()
     {
-        return $this->numero_chasis;
+        return $this->numeroChasis;
     }
 
     /**
-     * Set numero_motor.
+     * Set numeroMotor.
      *
      * @param string $numeroMotor
      *
@@ -670,23 +809,23 @@ class Autobus
      */
     public function setNumeroMotor($numeroMotor)
     {
-        $this->numero_motor = $numeroMotor;
+        $this->numeroMotor = $numeroMotor;
 
         return $this;
     }
 
     /**
-     * Get numero_motor.
+     * Get numeroMotor.
      *
      * @return string
      */
     public function getNumeroMotor()
     {
-        return $this->numero_motor;
+        return $this->numeroMotor;
     }
 
     /**
-     * Set carter_capacidadlitros.
+     * Set carterCapacidadlitros.
      *
      * @param string $carterCapacidadlitros
      *
@@ -694,23 +833,23 @@ class Autobus
      */
     public function setCarterCapacidadlitros($carterCapacidadlitros)
     {
-        $this->carter_capacidadlitros = $carterCapacidadlitros;
+        $this->carterCapacidadlitros = $carterCapacidadlitros;
 
         return $this;
     }
 
     /**
-     * Get carter_capacidadlitros.
+     * Get carterCapacidadlitros.
      *
      * @return string
      */
     public function getCarterCapacidadlitros()
     {
-        return $this->carter_capacidadlitros;
+        return $this->carterCapacidadlitros;
     }
 
     /**
-     * Set peso_tara.
+     * Set pesoTara.
      *
      * @param integer $pesoTara
      *
@@ -718,23 +857,23 @@ class Autobus
      */
     public function setPesoTara($pesoTara)
     {
-        $this->peso_tara = $pesoTara;
+        $this->pesoTara = $pesoTara;
 
         return $this;
     }
 
     /**
-     * Get peso_tara.
+     * Get pesoTara.
      *
      * @return integer
      */
     public function getPesoTara()
     {
-        return $this->peso_tara;
+        return $this->pesoTara;
     }
 
     /**
-     * Set peso_bruto.
+     * Set pesoBruto.
      *
      * @param integer $pesoBruto
      *
@@ -742,23 +881,23 @@ class Autobus
      */
     public function setPesoBruto($pesoBruto)
     {
-        $this->peso_bruto = $pesoBruto;
+        $this->pesoBruto = $pesoBruto;
 
         return $this;
     }
 
     /**
-     * Get peso_bruto.
+     * Get pesoBruto.
      *
      * @return integer
      */
     public function getPesoBruto()
     {
-        return $this->peso_bruto;
+        return $this->pesoBruto;
     }
 
     /**
-     * Set numero_plazas.
+     * Set numeroPlazas.
      *
      * @param integer $numeroPlazas
      *
@@ -766,19 +905,19 @@ class Autobus
      */
     public function setNumeroPlazas($numeroPlazas)
     {
-        $this->numero_plazas = $numeroPlazas;
+        $this->numeroPlazas = $numeroPlazas;
 
         return $this;
     }
 
     /**
-     * Get numero_plazas.
+     * Get numeroPlazas.
      *
      * @return integer
      */
     public function getNumeroPlazas()
     {
-        return $this->numero_plazas;
+        return $this->numeroPlazas;
     }
 
     /**
@@ -806,7 +945,7 @@ class Autobus
     }
 
     /**
-     * Set valor_unidad.
+     * Set valorUnidad.
      *
      * @param integer $valorUnidad
      *
@@ -814,23 +953,23 @@ class Autobus
      */
     public function setValorUnidad($valorUnidad)
     {
-        $this->valor_unidad = $valorUnidad;
+        $this->valorUnidad = $valorUnidad;
 
         return $this;
     }
 
     /**
-     * Get valor_unidad.
+     * Get valorUnidad.
      *
      * @return integer
      */
     public function getValorUnidad()
     {
-        return $this->valor_unidad;
+        return $this->valorUnidad;
     }
 
     /**
-     * Set capacidad_tanque.
+     * Set capacidadTanque.
      *
      * @param integer $capacidadTanque
      *
@@ -838,23 +977,23 @@ class Autobus
      */
     public function setCapacidadTanque($capacidadTanque)
     {
-        $this->capacidad_tanque = $capacidadTanque;
+        $this->capacidadTanque = $capacidadTanque;
 
         return $this;
     }
 
     /**
-     * Get capacidad_tanque.
+     * Get capacidadTanque.
      *
      * @return integer
      */
     public function getCapacidadTanque()
     {
-        return $this->capacidad_tanque;
+        return $this->capacidadTanque;
     }
 
     /**
-     * Set numero_unidad.
+     * Set numeroUnidad.
      *
      * @param integer $numeroUnidad
      *
@@ -862,23 +1001,23 @@ class Autobus
      */
     public function setNumeroUnidad($numeroUnidad)
     {
-        $this->numero_unidad = $numeroUnidad;
+        $this->numeroUnidad = $numeroUnidad;
 
         return $this;
     }
 
     /**
-     * Get numero_unidad.
+     * Get numeroUnidad.
      *
      * @return integer
      */
     public function getNumeroUnidad()
     {
-        return $this->numero_unidad;
+        return $this->numeroUnidad;
     }
 
     /**
-     * Set numero_cilindros.
+     * Set numeroCilindros.
      *
      * @param integer $numeroCilindros
      *
@@ -886,19 +1025,19 @@ class Autobus
      */
     public function setNumeroCilindros($numeroCilindros)
     {
-        $this->numero_cilindros = $numeroCilindros;
+        $this->numeroCilindros = $numeroCilindros;
 
         return $this;
     }
 
     /**
-     * Get numero_cilindros.
+     * Get numeroCilindros.
      *
      * @return integer
      */
     public function getNumeroCilindros()
     {
-        return $this->numero_cilindros;
+        return $this->numeroCilindros;
     }
 
     /**
@@ -950,7 +1089,7 @@ class Autobus
     }
 
     /**
-     * Set valido_hasta.
+     * Set validoHasta.
      *
      * @param \DateTime $validoHasta
      *
@@ -958,23 +1097,23 @@ class Autobus
      */
     public function setValidoHasta($validoHasta)
     {
-        $this->valido_hasta = $validoHasta;
+        $this->validoHasta = $validoHasta;
 
         return $this;
     }
 
     /**
-     * Get valido_hasta.
+     * Get validoHasta.
      *
      * @return \DateTime
      */
     public function getValidoHasta()
     {
-        return $this->valido_hasta;
+        return $this->validoHasta;
     }
 
     /**
-     * Set fecha_rtv_1.
+     * Set fechaRtv1.
      *
      * @param string $fechaRtv1
      *
@@ -982,23 +1121,23 @@ class Autobus
      */
     public function setFechaRtv1($fechaRtv1)
     {
-        $this->fecha_rtv_1 = $fechaRtv1;
+        $this->fechaRtv1 = $fechaRtv1;
 
         return $this;
     }
 
     /**
-     * Get fecha_rtv_1.
+     * Get fechaRtv1.
      *
      * @return string
      */
     public function getFechaRtv1()
     {
-        return $this->fecha_rtv_1;
+        return $this->fechaRtv1;
     }
 
     /**
-     * Set fecha_rtv_2.
+     * Set fechaRtv2.
      *
      * @param string $fechaRtv2
      *
@@ -1006,23 +1145,23 @@ class Autobus
      */
     public function setFechaRtv2($fechaRtv2)
     {
-        $this->fecha_rtv_2 = $fechaRtv2;
+        $this->fechaRtv2 = $fechaRtv2;
 
         return $this;
     }
 
     /**
-     * Get fecha_rtv_2.
+     * Get fechaRtv2.
      *
      * @return string
      */
     public function getFechaRtv2()
     {
-        return $this->fecha_rtv_2;
+        return $this->fechaRtv2;
     }
 
     /**
-     * Set fecha_ingreso.
+     * Set fechaIngreso.
      *
      * @param \DateTime $fechaIngreso
      *
@@ -1030,19 +1169,19 @@ class Autobus
      */
     public function setFechaIngreso($fechaIngreso)
     {
-        $this->fecha_ingreso = $fechaIngreso;
+        $this->fechaIngreso = $fechaIngreso;
 
         return $this;
     }
 
     /**
-     * Get fecha_ingreso.
+     * Get fechaIngreso.
      *
      * @return \DateTime
      */
     public function getFechaIngreso()
     {
-        return $this->fecha_ingreso;
+        return $this->fechaIngreso;
     }
 
     /**
@@ -1118,7 +1257,7 @@ class Autobus
     }
 
     /**
-     * Set lector_cedulas.
+     * Set lectorCedulas.
      *
      * @param string $lectorCedulas
      *
@@ -1126,19 +1265,19 @@ class Autobus
      */
     public function setLectorCedulas($lectorCedulas)
     {
-        $this->lector_cedulas = $lectorCedulas;
+        $this->lectorCedulas = $lectorCedulas;
 
         return $this;
     }
 
     /**
-     * Get lector_cedulas.
+     * Get lectorCedulas.
      *
      * @return string
      */
     public function getLectorCedulas()
     {
-        return $this->lector_cedulas;
+        return $this->lectorCedulas;
     }
 
     /**
@@ -1214,7 +1353,7 @@ class Autobus
     }
 
     /**
-     * Set filtro_aceite.
+     * Set filtroAceite.
      *
      * @param \Buseta\BusesBundle\Entity\FiltroAceite $filtroAceite
      *
@@ -1223,23 +1362,23 @@ class Autobus
     public function setFiltroAceite(\Buseta\BusesBundle\Entity\FiltroAceite $filtroAceite = null)
     {
         $filtroAceite->setAutobus($this);
-        $this->filtro_aceite = $filtroAceite;
+        $this->filtroAceite = $filtroAceite;
 
         return $this;
     }
 
     /**
-     * Get filtro_aceite.
+     * Get filtroAceite.
      *
      * @return \Buseta\BusesBundle\Entity\FiltroAceite
      */
     public function getFiltroAceite()
     {
-        return $this->filtro_aceite;
+        return $this->filtroAceite;
     }
 
     /**
-     * Set filtro_agua.
+     * Set filtroAgua.
      *
      * @param \Buseta\BusesBundle\Entity\FiltroAgua $filtroAgua
      *
@@ -1248,23 +1387,23 @@ class Autobus
     public function setFiltroAgua(\Buseta\BusesBundle\Entity\FiltroAgua $filtroAgua = null)
     {
         $filtroAgua->setAutobus($this);
-        $this->filtro_agua = $filtroAgua;
+        $this->filtroAgua = $filtroAgua;
 
         return $this;
     }
 
     /**
-     * Get filtro_agua.
+     * Get filtroAgua.
      *
      * @return \Buseta\BusesBundle\Entity\FiltroAgua
      */
     public function getFiltroAgua()
     {
-        return $this->filtro_agua;
+        return $this->filtroAgua;
     }
 
     /**
-     * Set filtro_diesel.
+     * Set filtroDiesel.
      *
      * @param \Buseta\BusesBundle\Entity\FiltroDiesel $filtroDiesel
      *
@@ -1273,23 +1412,23 @@ class Autobus
     public function setFiltroDiesel(\Buseta\BusesBundle\Entity\FiltroDiesel $filtroDiesel = null)
     {
         $filtroDiesel->setAutobus($this);
-        $this->filtro_diesel = $filtroDiesel;
+        $this->filtroDiesel = $filtroDiesel;
 
         return $this;
     }
 
     /**
-     * Get filtro_diesel.
+     * Get filtroDiesel.
      *
      * @return \Buseta\BusesBundle\Entity\FiltroDiesel
      */
     public function getFiltroDiesel()
     {
-        return $this->filtro_diesel;
+        return $this->filtroDiesel;
     }
 
     /**
-     * Set filtro_hidraulico.
+     * Set filtroHidraulico.
      *
      * @param \Buseta\BusesBundle\Entity\FiltroHidraulico $filtroHidraulico
      *
@@ -1298,23 +1437,23 @@ class Autobus
     public function setFiltroHidraulico(\Buseta\BusesBundle\Entity\FiltroHidraulico $filtroHidraulico = null)
     {
         $filtroHidraulico->setAutobus($this);
-        $this->filtro_hidraulico = $filtroHidraulico;
+        $this->filtroHidraulico = $filtroHidraulico;
 
         return $this;
     }
 
     /**
-     * Get filtro_hidraulico.
+     * Get filtroHidraulico.
      *
      * @return \Buseta\BusesBundle\Entity\FiltroHidraulico
      */
     public function getFiltroHidraulico()
     {
-        return $this->filtro_hidraulico;
+        return $this->filtroHidraulico;
     }
 
     /**
-     * Set filtro_transmision.
+     * Set filtroTransmision.
      *
      * @param \Buseta\BusesBundle\Entity\FiltroTransmision $filtroTransmision
      *
@@ -1323,23 +1462,23 @@ class Autobus
     public function setFiltroTransmision(\Buseta\BusesBundle\Entity\FiltroTransmision $filtroTransmision = null)
     {
         $filtroTransmision->setAutobus($this);
-        $this->filtro_transmision = $filtroTransmision;
+        $this->filtroTransmision = $filtroTransmision;
 
         return $this;
     }
 
     /**
-     * Get filtro_transmision.
+     * Get filtroTransmision.
      *
      * @return \Buseta\BusesBundle\Entity\FiltroTransmision
      */
     public function getFiltroTransmision()
     {
-        return $this->filtro_transmision;
+        return $this->filtroTransmision;
     }
 
     /**
-     * Set filtro_caja.
+     * Set filtroCaja.
      *
      * @param \Buseta\BusesBundle\Entity\FiltroCaja $filtroCaja
      *
@@ -1348,19 +1487,19 @@ class Autobus
     public function setFiltroCaja(\Buseta\BusesBundle\Entity\FiltroCaja $filtroCaja = null)
     {
         $filtroCaja->setAutobus($this);
-        $this->filtro_caja = $filtroCaja;
+        $this->filtroCaja = $filtroCaja;
 
         return $this;
     }
 
     /**
-     * Get filtro_caja.
+     * Get filtroCaja.
      *
      * @return \Buseta\BusesBundle\Entity\FiltroCaja
      */
     public function getFiltroCaja()
     {
-        return $this->filtro_caja;
+        return $this->filtroCaja;
     }
 
     /**
@@ -1396,11 +1535,11 @@ class Autobus
     }
 
     /**
-     * @param mixed $archivo_adjunto
+     * @param mixed $archivoAdjunto
      */
-    public function setArchivoAdjunto($archivo_adjunto)
+    public function setArchivoAdjunto($archivoAdjunto)
     {
-        $this->archivo_adjunto = $archivo_adjunto;
+        $this->archivoAdjunto = $archivoAdjunto;
     }
 
     /**
@@ -1408,13 +1547,13 @@ class Autobus
      */
     public function __construct()
     {
-        $this->archivo_adjunto = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->archivoAdjunto = new \Doctrine\Common\Collections\ArrayCollection();
         $this->kilometraje = 0;
         $this->horas = 0;
     }
 
     /**
-     * Add archivo_adjunto.
+     * Add archivoAdjunto.
      *
      * @param \Buseta\BusesBundle\Entity\ArchivoAdjunto $archivoAdjunto
      *
@@ -1424,29 +1563,29 @@ class Autobus
     {
         $archivoAdjunto->setAutobuses($this);
 
-        $this->archivo_adjunto[] = $archivoAdjunto;
+        $this->archivoAdjunto[] = $archivoAdjunto;
 
         return $this;
     }
 
     /**
-     * Remove archivo_adjunto.
+     * Remove archivoAdjunto.
      *
      * @param \Buseta\BusesBundle\Entity\ArchivoAdjunto $archivoAdjunto
      */
     public function removeArchivoAdjunto(\Buseta\BusesBundle\Entity\ArchivoAdjunto $archivoAdjunto)
     {
-        $this->archivo_adjunto->removeElement($archivoAdjunto);
+        $this->archivoAdjunto->removeElement($archivoAdjunto);
     }
 
     /**
-     * Get archivo_adjunto.
+     * Get archivoAdjunto.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
     public function getArchivoAdjunto()
     {
-        return $this->archivo_adjunto;
+        return $this->archivoAdjunto;
     }
 
     public function __toString()
@@ -1591,15 +1730,15 @@ class Autobus
      */
     public function getMarcaMotor()
     {
-        return $this->marca_motor;
+        return $this->marcaMotor;
     }
 
     /**
-     * @param mixed $marca_motor
+     * @param mixed $marcaMotor
      */
-    public function setMarcaMotor($marca_motor)
+    public function setMarcaMotor($marcaMotor)
     {
-        $this->marca_motor = $marca_motor;
+        $this->marcaMotor = $marcaMotor;
     }
 
     /**

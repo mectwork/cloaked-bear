@@ -24,19 +24,19 @@ class FiltroAgua
     /**
      * @var string
      *
-     * @ORM\Column(name="filtro_agua_1", type="string", length=15)
+     * @ORM\Column(name="filtroAgua1", type="string", length=15)
      */
-    private $filtro_agua_1;
+    private $filtroAgua1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="filtro_agua_2", type="string", length=15)
+     * @ORM\Column(name="filtroAgua2", type="string", length=15)
      */
-    private $filtro_agua_2;
+    private $filtroAgua2;
 
     /**
-     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="filtro_agua")
+     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="filtroAgua")
      */
     private $autobus;
 
@@ -57,11 +57,11 @@ class FiltroAgua
     }
 
     /**
-     * @param string $filtro_agua_1
+     * @param string $filtroAgua1
      */
-    public function setFiltroAgua1($filtro_agua_1)
+    public function setFiltroAgua1($filtroAgua1)
     {
-        $this->filtro_agua_1 = $filtro_agua_1;
+        $this->filtroAgua1 = $filtroAgua1;
     }
 
     /**
@@ -69,15 +69,15 @@ class FiltroAgua
      */
     public function getFiltroAgua1()
     {
-        return $this->filtro_agua_1;
+        return $this->filtroAgua1;
     }
 
     /**
-     * @param string $filtro_agua_2
+     * @param string $filtroAgua2
      */
-    public function setFiltroAgua2($filtro_agua_2)
+    public function setFiltroAgua2($filtroAgua2)
     {
-        $this->filtro_agua_2 = $filtro_agua_2;
+        $this->filtroAgua2 = $filtroAgua2;
     }
 
     /**
@@ -85,7 +85,7 @@ class FiltroAgua
      */
     public function getFiltroAgua2()
     {
-        return $this->filtro_agua_2;
+        return $this->filtroAgua2;
     }
 
     /**
@@ -111,6 +111,6 @@ class FiltroAgua
      */
     public function hasData()
     {
-        return $this->filtro_agua_1 && $this->filtro_agua_2;
+        return $this->filtroAgua1 && $this->filtroAgua2;
     }
 }
