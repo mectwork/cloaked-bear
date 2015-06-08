@@ -7,3 +7,12 @@ BusetaBuses_homepage:
 autobus_principal:
     pattern:  /modulo/autobus
     defaults: { _controller: "BusetaBusesBundle:Autobus:principal" }
+buseta_buses_autobus:
+  resource: "@BusetaBusesBundle/Controller/AutobusController.php"
+  type:     annotation
+buseta_buses_autobus_filtro:
+  resource: "@BusetaBusesBundle/Controller/AutobusFiltroController.php"
+  type:     annotation
+buseta_buses_autobus_imagen:
+  resource: "@BusetaBusesBundle/Controller/AutobusImagenController.php"
+  type:     annotation

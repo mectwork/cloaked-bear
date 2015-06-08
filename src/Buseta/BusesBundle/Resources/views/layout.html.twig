@@ -26,13 +26,13 @@
         <!-- /.row -->
         {# Session flashes #}
         {% block flashes %}
-            {% if app.session.flashbag.peekAll|length > 0 %}
-                <div class="row">
-                    <div class="col-sm-12">
+            <div class="row">
+                <div class="global-messages col-sm-12">
+                    {% if app.session.flashbag.peekAll|length > 0 %}
                         {{ session_flash() }}
-                    </div>
+                    {% endif %}
                 </div>
-            {% endif %}
+            </div>
         {% endblock flashes %}
 
         {% block area_trabajo %}

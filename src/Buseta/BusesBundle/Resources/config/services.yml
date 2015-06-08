@@ -5,3 +5,23 @@ services:
     handlebuses:
         class: Buseta\BusesBundle\Handle\HandleAutobus
         arguments: [@doctrine.orm.entity_manager]
+    buses.buses_autobus.type:
+        class: Buseta\BusesBundle\Form\Type\AutobusBasicoType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'buses_autobus_basico'}
+    buses.buses_autobus_extra.type:
+        class: Buseta\BusesBundle\Form\Type\InformacionExtraType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'buses_autobus_informacion_extra'}
+    buses.buses_autobus_filtro.type:
+        class: Buseta\BusesBundle\Form\Type\FiltroType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'buses_autobus_filtro'}
+    buses.buses_autobus_imagenes.type:
+        class: Buseta\BusesBundle\Form\Type\ImagenType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'buses_autobus_imagenes'}

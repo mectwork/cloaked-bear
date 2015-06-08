@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class FiltroHidraulicoType extends AbstractType
+class FiltroType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,18 +15,20 @@ class FiltroHidraulicoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('filtroHidraulico1', 'text', array(
-                    'required' => false,
-                    'attr'   => array(
-                        'class' => 'form-control',
-                    ),
-                ))
-            ->add('filtroHidraulico2', 'text', array(
-                    'required' => false,
-                    'attr'   => array(
-                        'class' => 'form-control',
-                    ),
-                ))
+            ->add('id', 'hidden', array(
+                'required' => false,
+            ))
+            ->add('filtroAceite', new FiltroAceiteType())
+
+            ->add('filtroDiesel', new FiltroDieselType())
+
+            ->add('filtroHidraulico', new FiltroHidraulicoType())
+
+            ->add('filtroCaja', new FiltroCajaType())
+
+            ->add('filtroTransmision', new FiltroTransmisionType())
+
+            ->add('filtroAgua', new FiltroAguaType())
         ;
     }
 
@@ -36,7 +38,7 @@ class FiltroHidraulicoType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Buseta\BusesBundle\Entity\FiltroHidraulico',
+                'data_class' => 'Buseta\BusesBundle\Form\Model\FiltroModel',
         ));
     }
 
@@ -45,6 +47,7 @@ class FiltroHidraulicoType extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_databundle_filtro_hidraulico';
+        return 'buses_autobus_filtro';
     }
+
 }

@@ -57,7 +57,6 @@ class ProductoController extends Controller
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
 
-
     public function productoBitacoraAction($id)
     {
         $em = $this->getDoctrine()->getManager();

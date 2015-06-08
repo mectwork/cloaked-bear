@@ -1,0 +1,43 @@
+{% form_theme form '@BusetaBodega/Form/fields.twig' %}
+
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data">
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+    {{ form_errors(form) }}
+    {{ form_row(form.id) }}
+    {{ form_row(form._token) }}
+
+    <div class="row show-grid">
+        <div class="col-md-6">
+            {{ form_row(form.imagenFrontal) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_row(form.imagenTrasera) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-6">
+            {{ form_row(form.imagenLateralI) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_row(form.imagenLateralD) }}
+        </div>
+    </div>
+
+    <br/>
+
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <a class="btn btn-primary" id="btn_autobus_imagenes_save" href="#"><span class="glyphicon glyphicon-save"></span>
+                {{ 'actions.save' | trans({}, 'BusetaBusesBundle') }}</a>
+            <a class="btn btn-default" id="btn_autobus_imagenes_cancel" href="{{ path('autobus') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+                {{ 'actions.cancel' | trans({}, 'BusetaBusesBundle') }}</a>
+        </div>
+    </div>
+
+</form>

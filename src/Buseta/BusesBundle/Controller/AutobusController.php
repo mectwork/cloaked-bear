@@ -4,66 +4,33 @@ namespace Buseta\BusesBundle\Controller;
 
 use Buseta\BusesBundle\Entity\ArchivoAdjunto;
 use Buseta\BusesBundle\Form\Filter\AutobusFilter;
+use Buseta\BusesBundle\Form\Model\AutobusBasicoModel;
 use Buseta\BusesBundle\Form\Model\AutobusFilterModel;
 use Buseta\BusesBundle\Form\Model\FileModel;
+use Buseta\BusesBundle\Form\Model\InformacionExtraModel;
 use Buseta\BusesBundle\Form\Type\ArchivoAdjuntoType;
 use Buseta\BusesBundle\Form\Type\KilometrajeType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Buseta\BusesBundle\Form\Model\AutobusModel;
 use Buseta\BusesBundle\Form\Type\AutobusType;
 use Buseta\BusesBundle\Form\Filtro\BusquedaAutobusType;
 use Buseta\BusesBundle\Entity\Autobus;
 
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Autobus controller.
+ *
+ * @Route("/autobus")
  */
 class AutobusController extends Controller
 {
-    /**
-     * Updated automatically select Modelo when change select Marca
-     *
-     */
-    public function select_marca_modeloAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
-            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
-
-        $request = $this->getRequest();
-        if (!$request->isXmlHttpRequest())
-            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
-
-        $em = $this->getDoctrine()->getManager();
-
-        $em = $this->getDoctrine()->getManager();
-        $modelos = $em->getRepository('BusetaNomencladorBundle:Modelo')->findBy(array(
-            'marca' => $request->query->get('marca_id')
-        ));
-
-        $json = array();
-        foreach ($modelos as $modelo)
-        {
-            if($modelo->getId() != $request->query->get('marca_id'))
-            {
-                $json[] = array(
-                    'id' => $modelo->getId(),
-                    'valor' => $modelo->getValor(),
-                );
-            }
-        }
-
-        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
-    }
 
     /**
-     * Module Autobus entiy.
-     */
-    public function principalAction()
-    {
-        return $this->render('BusetaBusesBundle:Default:principal.html.twig');
-    }
-
-    /**
-     * Lists all Autobus entities.
+     * Lists all Autobuses entities.
      */
     public function indexAction(Request $request)
     {
@@ -82,12 +49,11 @@ class AutobusController extends Controller
                 ->getRepository('BusetaBusesBundle:Autobus')->filter();
         }
 
-        //CASO BUSQUEDA-AUTOBUS
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            10
+            5
         );
 
         return $this->render('BusetaBusesBundle:Autobus:index.html.twig', array(
@@ -98,286 +64,231 @@ class AutobusController extends Controller
 
     /**
      * Creates a new Autobus entity.
+     *
+     * @Route("/create", name="autobuses_autobus_basicos_create", methods={"POST"}, options={"expose":true})
      */
     public function createAction(Request $request)
     {
-        //echo '<pre>';
-        //print_r($request->files);exit;
+        $basicosModel = new AutobusBasicoModel();
+        $form = $this->createCreateForm($basicosModel);
 
-        $entityModel = new AutobusModel();
-        $form = $this->createCreateForm($entityModel);
         $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em     = $this->get('doctrine.orm.entity_manager');
+            $trans  = $this->get('translator');
+            $logger = $this->get('logger');
 
-        if ($form->isValid()) {
-            $model = $this->get('handlebuses');
+            try {
+                $entity = $basicosModel->getEntityData();
+                $em->persist($entity);
+                $em->flush();
 
-            $em = $this->getDoctrine()->getManager();
-            $entity = $model->HandleAutobusNew($em, $entityModel);
-
-            if ($model) {
-                return $this->redirect($this->generateUrl('autobus_show', array('id' => $entity->getId())));
-            }
-
-            return $this->render('BusetaBusesBundle:Autobus:new.html.twig', array(
-                    'entity' => $entity,
+                // Creando nuevamente el formulario con los datos actualizados de la entidad
+                $form = $this->createEditForm(new AutobusBasicoModel($entity));
+                $renderView = $this->renderView('@BusetaBuses/Autobus/form_template.html.twig', array(
                     'form'   => $form->createView(),
                 ));
+
+                return new JsonResponse(array(
+                    'view' => $renderView,
+                    'message' => $trans->trans('messages.create.success', array(), 'BusetaBusesBundle')
+                ), 201);
+            } catch (\Exception $e) {
+                $logger->addCritical(sprintf(
+                    $trans->trans('', array(), 'BusetaBusesBundle') . '. Detalles: %s',
+                    $e->getMessage()
+                ));
+
+                return new JsonResponse(array(
+                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Datos Basicos de Autobus'), 'BusetaBusesBundle')
+                ), 500);
+            }
         }
 
-        return $this->render('BusetaBusesBundle:Autobus:new.html.twig', array(
-            'entity' => $entityModel,
-            'form'   => $form->createView(),
+        $renderView = $this->renderView('@BusetaBuses/Autobus/form_template.html.twig', array(
+            'form'     => $form->createView(),
         ));
+
+        return new JsonResponse(array('view' => $renderView));
     }
 
     /**
      * Creates a form to create a Autobus entity.
      *
-     * @param Autobus $entity The entity
+     * @param AutobusBasicoModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(AutobusModel $entity)
+    private function createCreateForm(AutobusBasicoModel $entity)
     {
-        $form = $this->createForm(new AutobusType(), $entity, array(
-            'action' => $this->generateUrl('autobus_create'),
+        $form = $this->createForm('buses_autobus_basico', $entity, array(
+            'action' => $this->generateUrl('autobuses_autobus_basicos_create'),
             'method' => 'POST',
         ));
-
-        //$form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
 
+
+    /**
+     * Edits an existing Autobus entity.
+     *
+     * @Route("/extra/{id}/update", name="autobuses_autobus_informacionextra_update", options={"expose": true})
+     * @Method({"POST", "PUT"})
+     */
+    public function updateInformacionExtraAction(Request $request, Autobus $autobus)
+    {
+        $extraModel = new InformacionExtraModel($autobus);
+        $editForm = $this->createInformacionExtraEditForm($extraModel);
+
+        $editForm->handleRequest($request);
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em     = $this->get('doctrine.orm.entity_manager');
+            $trans  = $this->get('translator');
+            $logger = $this->get('logger');
+
+            try {
+                $autobus->setModelDataInformacionExtra($extraModel);
+                $em->persist($autobus);
+                $em->flush();
+
+                $editForm = $this->createInformacionExtraEditForm(new InformacionExtraModel($autobus));
+                $renderView = $this->renderView('@BusetaBuses/Autobus/form_template_informacion_extra.html.twig', array(
+                    'form'     => $editForm->createView(),
+                ));
+
+                return new JsonResponse(array(
+                    'view' => $renderView,
+                    'message' => $trans->trans('messages.update.success', array(), 'BusetaBodegaBundle')
+                ), 202);
+            } catch (\Exception $e) {
+                $logger->addCritical(sprintf(
+                    $trans->trans('messages.update.success', array(), 'BusetaBodegaBundle'). '. Detalles: %s',
+                    $e->getMessage()
+                ));
+
+                new JsonResponse(array(
+                    'message' => $trans->trans('messages.update.error.%key%', array('key' => 'Informacion Extra del Autobus'), 'BusetaBodegaBundle')
+                ), 500);
+            }
+        }
+
+        $renderView = $this->renderView('@BusetaBuses/Autobus/form_template_informacion_extra.html.twig', array(
+            'form'     => $editForm->createView(),
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
+    }
+
     /**
      * Displays a form to create a new Autobus entity.
+     *
+     * @Route("/new", name="autobuses_autobus_basicos_new", methods={"GET"}, options={"expose":true})
      */
     public function newAction()
     {
-        $form   = $this->createCreateForm(new AutobusModel());
+        $form   = $this->createCreateForm(new AutobusBasicoModel());
 
         return $this->render('BusetaBusesBundle:Autobus:new.html.twig', array(
             'form'   => $form->createView(),
         ));
     }
 
-    private function getMarcasModelosJSON($em)
-    {
-        $json = array();
-
-        $marcas  = $em->getRepository('BusetaNomencladorBundle:Marca')->findAll();
-
-        foreach ($marcas as $m) {
-            $modelos = $em->getRepository('BusetaNomencladorBundle:Modelo')->findBy(array(
-                    'marca' => $m->getId(),
-                ));
-
-            $childrens = array();
-
-            foreach ($modelos as $modelo) {
-                $childrens[$modelo->getId()] = $modelo->getValor();
-            }
-
-            $json[$m->getId()] = array(
-                'name' => $m->getValor(),
-                'childrens' => $childrens,
-            );
-        }
-
-        return $json;
-    }
-
     /**
-     * Finds and displays a Autobus entity.
+     * Displays a form to create a new Autobus entity.
+     *
+     * @Route("/{id}/extra/new", name="autobuses_autobus_informacionextra_new", methods={"GET"}, options={"expose":true})
      */
-    public function showAction($id)
+    public function newExtraAction(Autobus $autobus)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
+        $form   = $this->createInformacionExtraEditForm(new InformacionExtraModel($autobus));
 
-        $entity = $em->getRepository('BusetaBusesBundle:Autobus')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Autobus entity.');
-        }
-
-        $mpreventivos = $em->getRepository('BusetaTallerBundle:MantenimientoPreventivo')->findByAutobus($id);
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('BusetaBusesBundle:Autobus:show.html.twig', array(
-            'entity'       => $entity,
-            'mpreventivos' => $mpreventivos,
-            'delete_form'  => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Displays a form to edit an existing Autobus entity.
-     */
-    public function editAction($id)
-    {
-        $entity = new Autobus();
-
-        $em = $this->getDoctrine()->getManager();
-        $handler = $this->get('handlebuses');
-
-        $entity = $em->getRepository('BusetaBusesBundle:Autobus')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Autobus entity.');
-        }
-
-        $editForm = $this->createEditForm($handler->fillDataAutobusModel($entity));
-        $deleteForm = $this->createDeleteForm($id);
-
-        $json = $this->getMarcasModelosJSON($em);
-
-        return $this->render('BusetaBusesBundle:Autobus:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-            'json'        => json_encode($json),
+        return $this->render('@BusetaBuses/Autobus/form_template_informacion_extra.html.twig', array(
+            'form'   => $form->createView(),
         ));
     }
 
     /**
      * Creates a form to edit a Autobus entity.
      *
-     * @param Autobus $entity The entity
+     * @param AutobusBasicoModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(AutobusModel $model)
+    private function createEditForm(AutobusBasicoModel $entity)
     {
-        $form = $this->createForm(new AutobusType(), $model, array(
-            'action' => $this->generateUrl('autobus_update', array('id' => $model->getId())),
+        $form = $this->createForm('buses_autobus_basico', $entity, array(
+            'action' => $this->generateUrl('autobus_basico_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
-        //$form->add('submit', 'submit', array('label' => 'Update'));
-
         return $form;
     }
-    /**
-     * Edits an existing Autobus entity.
-     */
-    public function updateAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $handler = $this->get('handlebuses');
-
-        $entity = $em->getRepository('BusetaBusesBundle:Autobus')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Autobus entity.');
-        }
-
-        $autobusmodel = $handler->fillDataAutobusModel($entity);
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($autobusmodel);
-        $editForm->submit($request);
-
-        if ($editForm->isValid()) {
-
-            //Aqui llamo el Handle con entity y model
-            $entity = $handler->HandleAutobusEdit($autobusmodel, $entity);
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('autobus_show', array('id' => $entity->getId())));
-        }
-
-        return $this->render('BusetaBusesBundle:Autobus:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-    /**
-     * Deletes a Autobus entity.
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->submit($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaBusesBundle:Autobus')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Autobus entity.');
-            }
-
-            try {
-                $em->remove($entity);
-                $em->flush();
-
-                $this->get('session')->getFlashBag()->add('success', 'Ha sido eliminado satisfactoriamente.');
-            } catch (\Exception $e) {
-                $this->get('logger')->addCritical(
-                    sprintf('Ha ocurrido un error eliminando un Autobús. Detalles: %s',
-                        $e->getMessage()
-                    ));
-            }
-        }
-
-        return $this->redirect($this->generateUrl('autobus'));
-    }
 
     /**
-     * Creates a form to delete a Autobus entity by id.
+     * Creates a form to edit a Autobus entity.
      *
-     * @param mixed $id The entity id
+     * @param InformacionExtraModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
+    private function createInformacionExtraEditForm(InformacionExtraModel $entity)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('autobus_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            //->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
-    }
-
-    public function modelosAction($idMarca)
-    {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
-        }
-
-        $request = $this->getRequest();
-        if (!$request->isXmlHttpRequest()) {
-            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $modelos = $em->getRepository('BusetaNomencladorBundle:Modelo')->findBy(array(
-                'marca' => $idMarca,
-            ));
-
-        $json = array();
-        foreach ($modelos as $modelos) {
-            $json[] = array(
-                'id' => $modelos->getId(),
-                'codigo' => $modelos->getCodigo(),
-            );
-        }
-
-        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
-    }
-
-    public function renderKilometrajeFormAction($entity = null)
-    {
-        $form = $this->createForm(new KilometrajeType(), $entity, array(
-            'method' => 'POST',
+        $form = $this->createForm('buses_autobus_informacion_extra', $entity, array(
+            'action' => $this->generateUrl('autobuses_autobus_informacionextra_update', array('id' => $entity->getId())),
+            'method' => 'PUT',
         ));
 
-        return $this->render('@BusetaBuses/Autobus/Kilometraje/_form.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        return $form;
     }
+
+    /**
+     * Edits an existing Autobus entity.
+     *
+     * @Route("/{id}/update", name="autobus_basico_update", options={"expose": true})
+     * @Method({"POST", "PUT"})
+     */
+    public function updateAction(Request $request, Autobus $autobus)
+    {
+        $autobusModel = new AutobusBasicoModel($autobus);
+        $editForm = $this->createEditForm($autobusModel);
+
+        $editForm->handleRequest($request);
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em     = $this->get('doctrine.orm.entity_manager');
+            $trans  = $this->get('translator');
+            $logger = $this->get('logger');
+
+            try {
+                $autobus->setModelData($autobusModel);
+                $em->flush();
+
+                $editForm = $this->createEditForm(new AutobusBasicoModel($autobus));
+                $renderView = $this->renderView('@BusetaBuses/Autobus/form_template.html.twig', array(
+                    'form'     => $editForm->createView(),
+                ));
+
+                return new JsonResponse(array(
+                    'view' => $renderView,
+                    'message' => $trans->trans('messages.update.success', array(), 'BusetaBodegaBundle')
+                ), 202);
+            } catch (\Exception $e) {
+                $logger->addCritical(sprintf(
+                    $trans->trans('messages.update.success', array(), 'BusetaBodegaBundle'). '. Detalles: %s',
+                    $e->getMessage()
+                ));
+
+                new JsonResponse(array(
+                    'message' => $trans->trans('messages.update.error.%key%', array('key' => 'Autobus Basico'), 'BusetaBodegaBundle')
+                ), 500);
+            }
+        }
+
+        $renderView = $this->renderView('@BusetaBuses/Autobus/form_template.html.twig', array(
+            'form'     => $editForm->createView(),
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
+    }
+
 }

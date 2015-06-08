@@ -15,11 +15,10 @@ class FiltroTransmisionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('filtro_transmision', 'text', array(
+            ->add('filtroTransmision', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 150px',
                     ),
                 ))
         ;

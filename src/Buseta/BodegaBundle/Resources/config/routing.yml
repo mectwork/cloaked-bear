@@ -3,8 +3,8 @@ BusetaBodegaBundle_necesidadmaterial:
     prefix:   /necesidadmaterial
 
 BusetaBodegaBundle_inventariofisico:
-        resource: "@BusetaBodegaBundle/Resources/config/routing/inventariofisico.yml"
-        prefix:   /inventariofisico
+    resource: "@BusetaBodegaBundle/Resources/config/routing/inventariofisico.yml"
+    prefix:   /inventariofisico
 
 BusetaBodegaBundle_necesidadmateriallinea:
     resource: "@BusetaBodegaBundle/Resources/config/routing/necesidad_material_linea.yml"

@@ -15,18 +15,16 @@ class FiltroAguaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('filtro_agua_1', 'text', array(
+            ->add('filtroAgua1', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 150px',
                     ),
                 ))
-            ->add('filtro_agua_2', 'text', array(
+            ->add('filtroAgua2', 'text', array(
                     'required' => false,
                     'attr'   => array(
                         'class' => 'form-control',
-                        'style' => 'width: 150px',
                     ),
                 ))
         ;

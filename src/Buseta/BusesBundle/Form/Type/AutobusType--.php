@@ -400,6 +400,6 @@ class AutobusType extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_databundle_autobus';
+        return 'buseta_buses_autobus';
     }
 }
