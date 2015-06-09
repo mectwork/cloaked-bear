@@ -42,10 +42,19 @@
 
 {% endblock %}
 
+{% block foot_script_assetic %}
+    {#{% javascripts filter="yui_js" output='js/main.js'#}
+    {#'@BusetaBodegaBundle/Resources/public/js/*'#}
+    {#%}#}
+    {#<script type="text/javascript" src="{{ asset_url }}"></script>#}
+    {#{% endjavascripts %}#}
+{% endblock foot_script_assetic %}
+{% block javascripts %}{% endblock %}
+
+{#
 {% block inside_javascripts %}
-
-
     {% block inside_javascripts_inter %}
     {% endblock %}
 
 {% endblock %}
+#}

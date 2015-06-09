@@ -2,6 +2,7 @@
 
 namespace Buseta\BusesBundle\Form\Type;
 
+use Buseta\UploadBundle\Form\Type\UploadResourcesType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -18,30 +19,48 @@ class ImagenType extends AbstractType
             ->add('id', 'hidden', array(
                 'required' => false,
             ))
-            ->add('imagenFrontal', 'file', array(
+            ->add('imagenFrontal', new UploadResourcesType(), array(
                 'required' => false,
-                'attr'   => array(
-                    'class' => 'form-control',
+                'label' => 'Imagen Frontal',
+                'attr' => array(
+                    'class' => 'hidden',
+                ),
+            ))->add('imagenFrontalInterior', new UploadResourcesType(), array(
+                'required' => false,
+                'label' => 'Imagen Frontal Interior',
+                'attr' => array(
+                    'class' => 'hidden',
                 ),
             ))
-            ->add('imagenLateralD', 'file', array(
+            ->add('imagenLateralD', new UploadResourcesType(), array(
                 'required' => false,
-                'attr'   => array(
-                    'class' => 'form-control',
+                'label' => 'Imagen Lateral Derecha',
+                'attr' => array(
+                    'class' => 'hidden',
                 ),
             ))
-            ->add('imagenLateralI', 'file', array(
+            ->add('imagenLateralI', new UploadResourcesType(), array(
                 'required' => false,
-                'attr'   => array(
-                    'class' => 'form-control',
+                'label' => 'Imagen Lateral Izquierda',
+                'attr' => array(
+                    'class' => 'hidden',
                 ),
             ))
-            ->add('imagenTrasera', 'file', array(
+            ->add('imagenTrasera', new UploadResourcesType(), array(
                 'required' => false,
-                'attr'   => array(
-                    'class' => 'form-control',
+                'label' => 'Imagen Trasera',
+                'attr' => array(
+                    'class' => 'hidden',
                 ),
             ))
+            ->add('imagenTraseraInterior', new UploadResourcesType(), array(
+                'required' => false,
+                'label' => 'Imagen Trasera Interior',
+                'attr' => array(
+                    'class' => 'hidden',
+                ),
+            ))
+
         ;
     }
 

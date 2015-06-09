@@ -32,40 +32,54 @@
                                     <tr>
                                         <th>Imagen Lateral Izquierda</th>
                                         <td>
-                                            {% if entity.imagenlaterali == '' %}
-                                                <label style="color: red">No tiene</label>
+                                            {%  if entity is defined and entity.imagenLateralI %}
+                                                <img src="{{ asset(entity.imagenLateralI.webPath)}}" alt="Imagen" width="164px" height="92px"/>
                                             {% else %}
-                                                {% set path = 'images/' ~ entity.imagenlaterali %}
-                                                <img src="{{ asset(path)}}" alt="Imagen lateral izquierda" class="imagen-autobus" />
+                                                <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
                                             {% endif %}
                                         </td>
                                         <th>Imagen Lateral Derecha</th>
                                         <td>
-                                            {% if entity.imagenlaterald == '' %}
-                                                <label style="color: red">No tiene</label>
+                                            {%  if entity is defined and entity.imagenLateralD %}
+                                                <img src="{{ asset(entity.imagenLateralD.webPath)}}" alt="Imagen" width="164px" height="92px"/>
                                             {% else %}
-                                                {% set path = 'images/' ~ entity.imagenlaterald %}
-                                                <img src="{{ asset(path)}}" alt="Imagen lateral derecha" class="imagen-autobus" />
+                                                <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
                                             {% endif %}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Imagen Frontal</th>
                                         <td>
-                                            {% if entity.imagenfrontal == '' %}
-                                                <label style="color: red">No tiene</label>
+                                            {%  if entity is defined and entity.imagenFrontal %}
+                                                <img src="{{ asset(entity.imagenFrontal.webPath)}}" alt="Imagen" width="164px" height="92px"/>
                                             {% else %}
-                                                {% set path = 'images/' ~ entity.imagenfrontal %}
-                                                <img src="{{ asset(path)}}" alt="Imagen frontal" class="imagen-autobus" />
+                                                <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
                                             {% endif %}
                                         </td>
+                                        <th>Imagen Frontal Interior</th>
+                                        <td>
+                                            {%  if entity is defined and entity.imagenFrontalInterior %}
+                                                <img src="{{ asset(entity.imagenFrontalInterior.webPath)}}" alt="Imagen" width="164px" height="92px"/>
+                                            {% else %}
+                                                <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <th>Imagen Trasera</th>
                                         <td>
-                                            {% if entity.imagentrasera == '' %}
-                                                <label style="color: red">No tiene</label>
+                                            {%  if entity is defined and entity.imagenTrasera %}
+                                                <img src="{{ asset(entity.imagenTrasera.webPath)}}" alt="Imagen" width="164px" height="92px"/>
                                             {% else %}
-                                                {% set path = 'images/' ~ entity.imagentrasera %}
-                                                <img src="{{ asset(path)}}" alt="Imagen trasera" class="imagen-autobus" />
+                                                <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
+                                            {% endif %}
+                                        </td>
+                                        <th>Imagen Trasera Interior</th>
+                                        <td>
+                                            {%  if entity is defined and entity.imagenTraseraInterior %}
+                                                <img src="{{ asset(entity.imagenTraseraInterior.webPath)}}" alt="Imagen" width="164px" height="92px"/>
+                                            {% else %}
+                                                <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -383,7 +397,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for mpreventivo in mpreventivos %}
+                                    {#{% for mpreventivo in mpreventivos %}
                                         <tr>
                                             <td>{{ mpreventivo.grupo }}</td>
                                             <td>{{ mpreventivo.subgrupo }}</td>
@@ -405,7 +419,7 @@
                                         <tr>
                                             <td colspan="12">No se encontraron registros de mantenimientos preventivos en el sistema.</td>
                                         </tr>
-                                    {% endfor %}
+                                    {% endfor %}#}
                                 </tbody>
                             </table>
                         </div>
@@ -416,17 +430,25 @@
     </div>
 
     <div class="form-actions">
-        {{ form_start(delete_form) }}
         <a class="btn btn-primary" href="{{ path('autobus_edit', { 'id': entity.id }) }}"> Editar</a>
         <a class="btn btn-primary" href="{{ path('autobus') }}"> Listado</a>
-        <button type="submit" class="btn btn-primary">Eliminar</button>
-        {{ form_end(delete_form) }}
+        <a href="#delete" data-href="{{ path('autobus_delete', {'id': entity.id}) }}" class="btn btn-danger">
+            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
     </div>
+
+    {% include 'BusetaBusesBundle:Autobus:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
 
 {% endblock %}
 
-
 {% block contenido %}
 
+{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var deleteevent = new DeleteEvent('{{ path('autobus') }}', 'div#autobus_records_list', false);
+        deleteevent.start_events();
+    </script>
 {% endblock %}

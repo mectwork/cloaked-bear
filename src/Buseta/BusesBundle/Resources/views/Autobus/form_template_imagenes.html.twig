@@ -9,22 +9,72 @@
     {{ form_row(form._token) }}
 
     <div class="row show-grid">
-        <div class="col-md-6">
+        <div class="col-md-3">
+            <a id="imagenFrontal" href="#" class="thumbnail">
+                {%  if entity is defined and entity.imagenFrontal %}
+                    <img src="{{ asset(entity.imagenFrontal.webPath)}}" alt="Imagen" width="100%" height="100%"/>
+                {% else %}
+                    <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto"/>
+                {% endif %}
+            </a>
             {{ form_row(form.imagenFrontal) }}
         </div>
 
-        <div class="col-md-6">
-            {{ form_row(form.imagenTrasera) }}
+        <div class="col-md-3">
+            <a id="imagenFrontalInterior" href="#" class="thumbnail">
+                {%  if entity is defined and entity.imagenFrontalInterior %}
+                    <img src="{{ asset(entity.imagenFrontalInterior.webPath)}}" alt="Imagen" width="100%" height="100%"/>
+                {% else %}
+                    <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto"/>
+                {% endif %}
+            </a>
+            {{ form_row(form.imagenFrontalInterior) }}
+        </div>
+
+        <div class="col-md-3">
+            <a id="imagenLateralD" href="#" class="thumbnail">
+                {%  if entity is defined and entity.imagenLateralD %}
+                    <img src="{{ asset(entity.imagenLateralD.webPath)}}" alt="Imagen" width="100%" height="100%"/>
+                {% else %}
+                    <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto"/>
+                {% endif %}
+            </a>
+            {{ form_row(form.imagenLateralD) }}
         </div>
     </div>
 
     <div class="row show-grid">
-        <div class="col-md-6">
+        <div class="col-md-3">
+            <a id="imagenLateralI" href="#" class="thumbnail">
+                {%  if entity is defined and entity.imagenLateralI %}
+                    <img src="{{ asset(entity.imagenLateralI.webPath)}}" alt="Imagen" width="100%" height="100%"/>
+                {% else %}
+                    <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto"/>
+                {% endif %}
+            </a>
             {{ form_row(form.imagenLateralI) }}
         </div>
 
-        <div class="col-md-6">
-            {{ form_row(form.imagenLateralD) }}
+        <div class="col-md-3">
+            <a id="imagenTrasera" href="#" class="thumbnail">
+                {%  if entity is defined and entity.imagenTrasera %}
+                    <img src="{{ asset(entity.imagenTrasera.webPath)}}" alt="Imagen" width="100%" height="100%"/>
+                {% else %}
+                    <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto"/>
+                {% endif %}
+            </a>
+            {{ form_row(form.imagenTrasera) }}
+        </div>
+
+        <div class="col-md-3">
+            <a id="imagenTraseraInterior" href="#" class="thumbnail">
+                {%  if entity is defined and entity.imagenTraseraInterior %}
+                    <img src="{{ asset(entity.imagenTraseraInterior.webPath)}}" alt="Imagen" width="100%" height="100%"/>
+                {% else %}
+                    <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto"/>
+                {% endif %}
+            </a>
+            {{ form_row(form.imagenTraseraInterior) }}
         </div>
     </div>
 
@@ -36,7 +86,7 @@
             <a class="btn btn-primary" id="btn_autobus_imagenes_save" href="#"><span class="glyphicon glyphicon-save"></span>
                 {{ 'actions.save' | trans({}, 'BusetaBusesBundle') }}</a>
             <a class="btn btn-default" id="btn_autobus_imagenes_cancel" href="{{ path('autobus') }}"><span class="glyphicon glyphicon-chevron-left"></span>
-                {{ 'actions.cancel' | trans({}, 'BusetaBusesBundle') }}</a>
+                {{ 'actions.list' | trans({}, 'BusetaBusesBundle') }}</a>
         </div>
     </div>
 

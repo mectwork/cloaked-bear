@@ -307,7 +307,7 @@ class PedidoCompraController extends Controller
 
         return $this->render('BusetaBodegaBundle:PedidoCompra:edit.html.twig', array(
             'entity'        => $pedidocompra,
-            'edit_form'     => $editForm->createView(),
+            'edit_form'     => $editForm->createVieautobusw(),
             'delete_form'   => $deleteForm->createView(),
         ));
     }

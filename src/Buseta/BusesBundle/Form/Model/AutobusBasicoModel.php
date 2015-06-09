@@ -178,6 +178,16 @@ class AutobusBasicoModel
     private $wifi;
 
     /**
+     * @var integer
+     */
+    private $kilometraje;
+
+    /**
+     * @var integer
+     */
+    private $horas;
+
+    /**
      * @var boolean
      */
     private $activo = true;
@@ -215,6 +225,8 @@ class AutobusBasicoModel
             $this->lectorCedulas = $autobus->getLectorCedulas();
             $this->publicidad = $autobus->getPublicidad();
             $this->activo = $autobus->getActivo();
+            $this->kilometraje = $autobus->getKilometraje();
+            $this->horas = $autobus->getHoras();
 
             if ($autobus->getMarca()) {
                 $this->marca  = $autobus->getMarca();
@@ -270,6 +282,8 @@ class AutobusBasicoModel
         $autobus->setGps($this->getGps());
         $autobus->setLectorCedulas($this->getLectorCedulas());
         $autobus->setPublicidad($this->getPublicidad());
+        $autobus->setKilometraje($this->getKilometraje());
+        $autobus->setHoras($this->getHoras());
         $autobus->setActivo($this->getActivo());
 
         if ($this->getMarca() !== null) {
@@ -319,6 +333,38 @@ class AutobusBasicoModel
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getKilometraje()
+    {
+        return $this->kilometraje;
+    }
+
+    /**
+     * @param int $kilometraje
+     */
+    public function setKilometraje($kilometraje)
+    {
+        $this->kilometraje = $kilometraje;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHoras()
+    {
+        return $this->horas;
+    }
+
+    /**
+     * @param int $horas
+     */
+    public function setHoras($horas)
+    {
+        $this->horas = $horas;
     }
 
     /**

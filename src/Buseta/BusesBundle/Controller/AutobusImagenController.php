@@ -45,6 +45,7 @@ class AutobusImagenController extends Controller
                 $editForm = $this->createEditForm(new ImagenModel($autobus));
                 $renderView = $this->renderView('@BusetaBuses/Autobus/form_template_imagenes.html.twig', array(
                     'form'     => $editForm->createView(),
+                    'entity' => $autobus,
                 ));
 
                 return new JsonResponse(array(
@@ -81,6 +82,7 @@ class AutobusImagenController extends Controller
 
         return $this->render('@BusetaBuses/Autobus/form_template_imagenes.html.twig', array(
             'form'   => $form->createView(),
+            'entity' => $autobus,
         ));
     }
 
