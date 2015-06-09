@@ -29,36 +29,46 @@ class Autobus
     private $id;
 
     /**
-     * @var string
+     * @var \Buseta\UploadBundle\Entity\UploadResources
      *
-     * @ORM\Column(name="imagenFrontal", type="string", nullable=true)
-     * @Assert\Image(groups={"web", "console", "Autobus"})
+     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"all"})
      */
     private $imagenFrontal;
 
     /**
-     * @var string
+     * @var \Buseta\UploadBundle\Entity\UploadResources
      *
-     * @ORM\Column(name="imagenLateralD", type="string", nullable=true)
-     * @Assert\Image(groups={"web", "console", "Autobus"})
+     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"all"})
+     */
+    private $imagenFrontalInterior;
+
+    /**
+     * @var \Buseta\UploadBundle\Entity\UploadResources
+     *
+     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"all"})
      */
     private $imagenLateralD;
 
     /**
-     * @var string
+     * @var \Buseta\UploadBundle\Entity\UploadResources
      *
-     * @ORM\Column(name="imagenLateralI", type="string", nullable=true)
-     * @Assert\Image(groups={"web", "console", "Autobus"})
+     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"all"})
      */
     private $imagenLateralI;
 
     /**
-     * @var string
+     * @var \Buseta\UploadBundle\Entity\UploadResources
      *
-     * @ORM\Column(name="imagenTrasera", type="string", nullable=true)
-     * @Assert\Image(groups={"web", "console", "Autobus"})
+     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"all"})
      */
     private $imagenTrasera;
+
+    /**
+     * @var \Buseta\UploadBundle\Entity\UploadResources
+     *
+     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"all"})
+     */
+    private $imagenTraseraInterior;
 
     /**
      * @ORM\OneToMany(targetEntity="Buseta\BusesBundle\Entity\ArchivoAdjunto", mappedBy="autobuses", cascade={"persist"})
@@ -380,8 +390,7 @@ class Autobus
     /**
      * @var integer
      *
-     * @ORM\Column(name="kilometraje", type="integer", columnDefinition="INT( 11 ) NOT NULL DEFAULT '0'")
-     * @Assert\Type("integer", groups={"web", "Autobus"})
+     * @ORM\Column(name="kilometraje", type="integer", nullable=true)
      */
     private $kilometraje;
 
@@ -393,8 +402,7 @@ class Autobus
     /**
      * @var integer
      *
-     * @ORM\Column(name="horas", type="integer", columnDefinition="INT( 11 ) NOT NULL DEFAULT '0'")
-     * @Assert\Type("integer", groups={"web", "Autobus"})
+     * @ORM\Column(name="horas", type="integer", nullable=true)
      */
     private $horas;
 
@@ -427,6 +435,8 @@ class Autobus
         $this->lectorCedulas = $model->getLectorCedulas();
         $this->publicidad = $model->getPublicidad();
         $this->activo = $model->getActivo();
+        $this->kilometraje = $model->getKilometraje();
+        $this->horas = $model->getHoras();
 
         if ($model->getMarca()) {
             $this->marca  = $model->getMarca();
@@ -525,10 +535,32 @@ class Autobus
      */
     public function setModelDataImagen(ImagenModel $model)
     {
-        $this->imagenFrontal = $model->getImagenFrontal();
-        $this->imagenTrasera = $model->getImagenTrasera();
-        $this->imagenLateralD = $model->getImagenLateralD();
-        $this->imagenLateralI = $model->getImagenLateralI();
+        if($model->getImagenFrontal() != null) {
+            $this->imagenFrontal = $model->getImagenFrontal();
+        }
+
+        if($model->getImagenFrontalInterior() != null) {
+            $this->imagenFrontalInterior = $model->getImagenFrontalInterior();
+        }
+
+        if($model->getImagenTrasera() != null) {
+            $this->imagenTrasera = $model->getImagenTrasera();
+        }
+
+        if($model->getImagenTraseraInterior() != null) {
+            $this->imagenTraseraInterior = $model->getImagenTraseraInterior();
+        }
+
+        if($model->getImagenLateralD() != null) {
+            $this->imagenLateralD = $model->getImagenLateralD();
+        }
+
+        if($model->getImagenLateralI() != null) {
+            $this->imagenLateralI = $model->getImagenLateralI();
+        }
+
+
+
 
         return $this;
     }
@@ -545,10 +577,9 @@ class Autobus
     }
 
     /**
-     * Set imagenFrontal.
+     * Set imagenFrontal
      *
-     * @param string $imagenFrontal
-     *
+     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenFrontal
      * @return Autobus
      */
     public function setImagenFrontal($imagenFrontal)
@@ -559,9 +590,9 @@ class Autobus
     }
 
     /**
-     * Get imagenFrontal.
+     * Get imagenFrontal
      *
-     * @return string
+     * @return \Buseta\UploadBundle\Entity\UploadResources
      */
     public function getImagenFrontal()
     {
@@ -569,10 +600,9 @@ class Autobus
     }
 
     /**
-     * Set imagenLateralD.
+     * Set imagenLateralD
      *
-     * @param string $imagenLateralD
-     *
+     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenLateralD
      * @return Autobus
      */
     public function setImagenLateralD($imagenLateralD)
@@ -583,9 +613,9 @@ class Autobus
     }
 
     /**
-     * Get imagenLateralD.
+     * Get imagenLateralD
      *
-     * @return string
+     * @return \Buseta\UploadBundle\Entity\UploadResources
      */
     public function getImagenLateralD()
     {
@@ -593,10 +623,9 @@ class Autobus
     }
 
     /**
-     * Set imagenLateralI.
+     * Set imagenLateralI
      *
-     * @param string $imagenLateralI
-     *
+     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenLateralI
      * @return Autobus
      */
     public function setImagenLateralI($imagenLateralI)
@@ -607,9 +636,9 @@ class Autobus
     }
 
     /**
-     * Get imagenLateralI.
+     * Get imagenLateralI
      *
-     * @return string
+     * @return \Buseta\UploadBundle\Entity\UploadResources
      */
     public function getImagenLateralI()
     {
@@ -617,10 +646,9 @@ class Autobus
     }
 
     /**
-     * Set imagenTrasera.
+     * Set imagenTrasera
      *
-     * @param string $imagenTrasera
-     *
+     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenTrasera
      * @return Autobus
      */
     public function setImagenTrasera($imagenTrasera)
@@ -631,13 +659,59 @@ class Autobus
     }
 
     /**
-     * Get imagenTrasera.
+     * Get imagenTrasera
      *
-     * @return string
+     * @return \Buseta\UploadBundle\Entity\UploadResources
      */
     public function getImagenTrasera()
     {
         return $this->imagenTrasera;
+    }
+
+    /**
+     * Set imagenTraseraInterior
+     *
+     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenTraseraInterior
+     * @return Autobus
+     */
+    public function setImagenTraseraInterior($imagenTraseraInterior)
+    {
+        $this->imagenTraseraInterior = $imagenTraseraInterior;
+
+        return $this;
+    }
+
+    /**
+     * Get imagenTraseraInterior
+     *
+     * @return \Buseta\UploadBundle\Entity\UploadResources
+     */
+    public function getImagenTraseraInterior()
+    {
+        return $this->imagenTraseraInterior;
+    }
+
+    /**
+     * Set imagenFrontalInterior
+     *
+     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenFrontalInterior
+     * @return Autobus
+     */
+    public function setImagenFrontalInterior($imagenFrontalInterior)
+    {
+        $this->imagenFrontalInterior = $imagenFrontalInterior;
+
+        return $this;
+    }
+
+    /**
+     * Get imagenFrontalInterior
+     *
+     * @return \Buseta\UploadBundle\Entity\UploadResources
+     */
+    public function getImagenFrontalInterior()
+    {
+        return $this->imagenFrontalInterior;
     }
 
     /**

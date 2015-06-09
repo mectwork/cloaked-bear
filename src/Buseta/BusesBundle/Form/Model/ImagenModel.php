@@ -3,7 +3,6 @@
 namespace Buseta\BusesBundle\Form\Model;
 
 use Buseta\BusesBundle\Entity\Autobus;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -12,44 +11,46 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ImagenModel
 {
     /**
-     * @Assert\File(maxSize="6000000")
-     *
-     * @var UploadedFile
+     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @Assert\Valid()
      */
     private $imagenFrontal;
 
     /**
-     * @Assert\File(maxSize="6000000")
-     *
-     * @var UploadedFile
+     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @Assert\Valid()
+     */
+    private $imagenFrontalInterior;
+
+    /**
+     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @Assert\Valid()
      */
     private $imagenLateralD;
 
     /**
-     * @Assert\File(maxSize="6000000")
-     *
-     * @var UploadedFile
+     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @Assert\Valid()
      */
     private $imagenLateralI;
 
     /**
-     * @Assert\File(maxSize="6000000")
-     *
-     * @var UploadedFile
+     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @Assert\Valid()
      */
     private $imagenTrasera;
+
+    /**
+     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @Assert\Valid()
+     */
+    private $imagenTraseraInterior;
 
     function __construct(Autobus $autobus)
     {
         if($autobus->getId() != null)
         {
             $this->id = $autobus->getId();
-
-            $this->imagenTrasera = $autobus->getImagenTrasera();
-            $this->imagenFrontal = $autobus->getImagenFrontal();
-            $this->imagenLateralD = $autobus->getImagenLateralD();
-            $this->imagenLateralI = $autobus->getImagenLateralI();
-
         }
     }
 
@@ -70,7 +71,7 @@ class ImagenModel
     }
 
     /**
-     * @return UploadedFile
+     * @return \Buseta\UploadBundle\Entity\UploadResources
      */
     public function getImagenFrontal()
     {
@@ -78,7 +79,7 @@ class ImagenModel
     }
 
     /**
-     * @param UploadedFile $imagenFrontal
+     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenFrontal
      */
     public function setImagenFrontal($imagenFrontal)
     {
@@ -86,7 +87,7 @@ class ImagenModel
     }
 
     /**
-     * @return UploadedFile
+     * @return \Buseta\UploadBundle\Entity\UploadResources
      */
     public function getImagenLateralD()
     {
@@ -94,7 +95,7 @@ class ImagenModel
     }
 
     /**
-     * @param UploadedFile $imagenLateralD
+     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenLateralD
      */
     public function setImagenLateralD($imagenLateralD)
     {
@@ -102,7 +103,7 @@ class ImagenModel
     }
 
     /**
-     * @return UploadedFile
+     * @return \Buseta\UploadBundle\Entity\UploadResources
      */
     public function getImagenLateralI()
     {
@@ -110,7 +111,7 @@ class ImagenModel
     }
 
     /**
-     * @param UploadedFile $imagenLateralI
+     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenLateralI
      */
     public function setImagenLateralI($imagenLateralI)
     {
@@ -118,7 +119,7 @@ class ImagenModel
     }
 
     /**
-     * @return UploadedFile
+     * @return \Buseta\UploadBundle\Entity\UploadResources
      */
     public function getImagenTrasera()
     {
@@ -126,12 +127,43 @@ class ImagenModel
     }
 
     /**
-     * @param UploadedFile $imagenTrasera
+     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenTrasera
      */
     public function setImagenTrasera($imagenTrasera)
     {
         $this->imagenTrasera = $imagenTrasera;
     }
 
+    /**
+     * @return \Buseta\UploadBundle\Entity\UploadResources
+     */
+    public function getImagenFrontalInterior()
+    {
+        return $this->imagenFrontalInterior;
+    }
+
+    /**
+     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenFrontalInterior
+     */
+    public function setImagenFrontalInterior($imagenFrontalInterior)
+    {
+        $this->imagenFrontalInterior = $imagenFrontalInterior;
+    }
+
+    /**
+     * @return \Buseta\UploadBundle\Entity\UploadResources
+     */
+    public function getImagenTraseraInterior()
+    {
+        return $this->imagenTraseraInterior;
+    }
+
+    /**
+     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenTraseraInterior
+     */
+    public function setImagenTraseraInterior($imagenTraseraInterior)
+    {
+        $this->imagenTraseraInterior = $imagenTraseraInterior;
+    }
 
 }

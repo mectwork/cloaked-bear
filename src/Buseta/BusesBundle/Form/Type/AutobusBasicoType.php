@@ -24,6 +24,48 @@ class AutobusBasicoType extends AbstractType
         $marca = new AddMarcaFieldSubscriber($objeto);
         $builder->addEventSubscriber($marca);
 
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $autobus = $event->getData();
+            $form = $event->getForm();
+
+            // este es un autobus nuevo
+            if (!$autobus || null === $autobus->getId()) {
+                $form
+                    ->add('kilometraje', 'integer', array(
+                        'required' => false,
+                        'read_only' => true,
+                        'attr' => array(
+                            'class' => 'form-control',
+                            'style' => 'width: 250px',
+                        ),
+                    ))
+                    ->add('horas', 'integer', array(
+                        'required' => false,
+                        'read_only' => true,
+                        'attr' => array(
+                            'class' => 'form-control',
+                            'style' => 'width: 250px',
+                        ),
+                    ));
+            } else {
+                $form
+                    ->add('kilometraje', 'integer', array(
+                        'required' => false,
+                        'attr' => array(
+                            'class' => 'form-control',
+                            'style' => 'width: 250px',
+                        ),
+                    ))
+                    ->add('horas', 'integer', array(
+                        'required' => false,
+                        'attr' => array(
+                            'class' => 'form-control',
+                            'style' => 'width: 250px',
+                        ),
+                    ));
+            }
+        });
+
         $builder
             ->add('id', 'hidden', array(
                 'required' => false,

@@ -28,6 +28,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AutobusController extends Controller
 {
+    /**
+     * Module Buses entity.
+     */
+    public function principalAction()
+    {
+        return $this->render('BusetaBusesBundle:Default:principal.html.twig');
+    }
 
     /**
      * Lists all Autobuses entities.
@@ -129,57 +136,6 @@ class AutobusController extends Controller
         return $form;
     }
 
-
-    /**
-     * Edits an existing Autobus entity.
-     *
-     * @Route("/extra/{id}/update", name="autobuses_autobus_informacionextra_update", options={"expose": true})
-     * @Method({"POST", "PUT"})
-     */
-    public function updateInformacionExtraAction(Request $request, Autobus $autobus)
-    {
-        $extraModel = new InformacionExtraModel($autobus);
-        $editForm = $this->createInformacionExtraEditForm($extraModel);
-
-        $editForm->handleRequest($request);
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em     = $this->get('doctrine.orm.entity_manager');
-            $trans  = $this->get('translator');
-            $logger = $this->get('logger');
-
-            try {
-                $autobus->setModelDataInformacionExtra($extraModel);
-                $em->persist($autobus);
-                $em->flush();
-
-                $editForm = $this->createInformacionExtraEditForm(new InformacionExtraModel($autobus));
-                $renderView = $this->renderView('@BusetaBuses/Autobus/form_template_informacion_extra.html.twig', array(
-                    'form'     => $editForm->createView(),
-                ));
-
-                return new JsonResponse(array(
-                    'view' => $renderView,
-                    'message' => $trans->trans('messages.update.success', array(), 'BusetaBodegaBundle')
-                ), 202);
-            } catch (\Exception $e) {
-                $logger->addCritical(sprintf(
-                    $trans->trans('messages.update.success', array(), 'BusetaBodegaBundle'). '. Detalles: %s',
-                    $e->getMessage()
-                ));
-
-                new JsonResponse(array(
-                    'message' => $trans->trans('messages.update.error.%key%', array('key' => 'Informacion Extra del Autobus'), 'BusetaBodegaBundle')
-                ), 500);
-            }
-        }
-
-        $renderView = $this->renderView('@BusetaBuses/Autobus/form_template_informacion_extra.html.twig', array(
-            'form'     => $editForm->createView(),
-        ));
-
-        return new JsonResponse(array('view' => $renderView));
-    }
-
     /**
      * Displays a form to create a new Autobus entity.
      *
@@ -195,16 +151,47 @@ class AutobusController extends Controller
     }
 
     /**
-     * Displays a form to create a new Autobus entity.
+     * Finds and displays a Autobus entity.
      *
-     * @Route("/{id}/extra/new", name="autobuses_autobus_informacionextra_new", methods={"GET"}, options={"expose":true})
+     * @Route("/{id}/show", name="autobus_show")
+     * @Method("GET")
      */
-    public function newExtraAction(Autobus $autobus)
+    public function showAction($id)
     {
-        $form   = $this->createInformacionExtraEditForm(new InformacionExtraModel($autobus));
+        $em = $this->getDoctrine()->getManager();
 
-        return $this->render('@BusetaBuses/Autobus/form_template_informacion_extra.html.twig', array(
-            'form'   => $form->createView(),
+        $entity = $em->getRepository('BusetaBusesBundle:Autobus')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Autobus entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+
+        return $this->render('BusetaBusesBundle:Autobus:show.html.twig', array(
+            'entity'      => $entity,
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Displays a form to edit an existing Tercero entity.
+     *
+     * @param Autobus $autobus
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/{id}/edit", name="autobus_edit")
+     * @Method("GET")
+     */
+    public function editAction(Autobus $autobus)
+    {
+        $model = new AutobusBasicoModel($autobus);
+        $editForm = $this->createEditForm($model);
+
+        return $this->render('BusetaBusesBundle:Autobus:edit.html.twig', array(
+            'entity'      => $autobus,
+            'edit_form'   => $editForm->createView(),
         ));
     }
 
@@ -219,23 +206,6 @@ class AutobusController extends Controller
     {
         $form = $this->createForm('buses_autobus_basico', $entity, array(
             'action' => $this->generateUrl('autobus_basico_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
-
-        return $form;
-    }
-
-    /**
-     * Creates a form to edit a Autobus entity.
-     *
-     * @param InformacionExtraModel $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createInformacionExtraEditForm(InformacionExtraModel $entity)
-    {
-        $form = $this->createForm('buses_autobus_informacion_extra', $entity, array(
-            'action' => $this->generateUrl('autobuses_autobus_informacionextra_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -289,6 +259,75 @@ class AutobusController extends Controller
         ));
 
         return new JsonResponse(array('view' => $renderView));
+    }
+
+    /**
+     * Deletes a Autobus entity.
+     *
+     * @Route("/{id}/delete", name="autobus_delete", options={"expose": true})
+     * @Method({"DELETE", "GET", "POST"})
+     */
+    public function deleteAction(Autobus $autobus, Request $request)
+    {
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($autobus->getId());
+
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+            try {
+                $em = $this->get('doctrine.orm.entity_manager');
+
+                $em->remove($autobus);
+                $em->flush();
+
+                $message = $trans->trans('messages.delete.success', array(), 'BusetaBusesBundle');
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 202);
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('success', $message);
+                }
+            } catch (\Exception $e) {
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Autobus'), 'BusetaBodegaBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
+            }
+        }
+
+        $renderView =  $this->renderView('@BusetaBuses/Autobus/delete_modal.html.twig', array(
+            'entity' => $autobus,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
+        return $this->redirect($this->generateUrl('autobus'));
+    }
+
+    /**
+     * Creates a form to delete a Autobus entity by id.
+     *
+     * @param mixed $id The entity id
+     *º
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('autobus_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->getForm()
+            ;
     }
 
 }

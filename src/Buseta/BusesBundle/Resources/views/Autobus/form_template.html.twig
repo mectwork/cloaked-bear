@@ -107,6 +107,16 @@
     </div>
 
     <div class="row">
+        <div class="col-lg-6">
+            {{ form_row(form.kilometraje) }}
+        </div>
+
+        <div class="col-lg-6">
+            {{ form_row(form.horas) }}
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-lg-4">
             <div class="checkbox">
                 <label>
@@ -183,7 +193,7 @@
             <a class="btn btn-primary" id="btn_autobus_save" href="#"><span class="glyphicon glyphicon-save"></span>
                 {{ 'actions.save' | trans({}, 'BusetaBusesBundle') }}</a>
             <a class="btn btn-default" id="btn_autobus_cancel" href="{{ path('autobus') }}"><span class="glyphicon glyphicon-chevron-left"></span>
-                {{ 'actions.cancel' | trans({}, 'BusetaBusesBundle') }}</a>
+                {{ 'actions.list' | trans({}, 'BusetaBusesBundle') }}</a>
         </div>
     </div>
 

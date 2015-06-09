@@ -10,9 +10,17 @@ var imagenes = {
         imagenes.form_name = $('div#imagenes').find('form').attr('name');
 
         tabs._remove_loadding('imagenes');
+
+        $('a.thumbnail').on('click', function (e) {
+            e.preventDefault();
+
+            var nombre = $(this).attr('id');
+
+            $('input[type="file"][id="' + imagenes.form_id + '_' + nombre + '_file"]').trigger('click');
+        });
+
     },
     _load: function (event) {
-
         if(event !== undefined) {
             event.preventDefault();
         }
