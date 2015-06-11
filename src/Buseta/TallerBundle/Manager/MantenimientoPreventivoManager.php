@@ -26,7 +26,8 @@ class MantenimientoPreventivoManager
 
         $query = $qb->select(array('dot.kilometraje'))
             ->innerJoin('dta.ordenTrabajo', 'dot')
-            ->andWhere($qb->expr()->eq('dta.tarea', ':tarea'))
+            ->innerJoin('dta.tareamantenimiento', 'tam')
+            ->andWhere($qb->expr()->eq('tam.valor', ':tarea'))
             ->andWhere($qb->expr()->eq('dta.grupo', ':grupo'))
             ->andWhere($qb->expr()->eq('dta.subgrupo', ':subgrupo'))
             ->andWhere($qb->expr()->eq('dot.autobus', ':autobus'))
