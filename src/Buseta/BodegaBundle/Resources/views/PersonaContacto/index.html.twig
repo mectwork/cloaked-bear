@@ -31,6 +31,7 @@
             <td>{{ entity.email ? entity.email : '-' }}</td>
             <td  style="text-align: center;">
                 <a class="btn btn-primary btn-xs" href="#btn_pcontacto_edit" data-content="{{ entity.id }}"><i class="fa fa-edit"> Editar</i></a>
+                <a class="btn btn-danger btn-xs" href="#btn_pcontacto_delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
             </td>
         </tr>
     {% endfor %}
@@ -42,3 +43,4 @@
 </div>
 
 <div class="modal" id="form_pcontacto_modal"></div>
+<div class="modal" id="form_pcontacto_delete_modal"></div>

@@ -58,6 +58,7 @@ tercero:
   btn:
     adicionar: Adicionar tercero
 
+# PROVEEDOR
 proveedor:
   codigo: Código
   alias: Alias"Se ha creado los datos de forma satisfactoria."
@@ -71,6 +72,8 @@ proveedor:
   cifnif: CIF\NIF
   email: Email
   web: Web
+  modal:
+    pago: Forma de pago
 
 sexo:
   masculino: Masculino
@@ -97,10 +100,9 @@ actions:
   show: Ver
   edit: Editar
   delete: Eliminar
-  cancel: Salir
+  cancel: Cancelar
   back: Volver
   list: Listar
-  nuevo: Crear Nuevo
 
 # MOVIMIENTO DE PRODUCTOS
 movimientos_productos:

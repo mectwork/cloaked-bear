@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * MecanismoContacto controller.
@@ -223,31 +224,55 @@ class MecanismoContactoController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
-     * Deletes a MecanismoContacto entity.
+     * @param MecanismoContacto $mecanismoContacto
+     * @param Request $request
      *
-     * @Route("/{id}", name="mecanismocontacto_delete")
-     *
-     * @Method("DELETE")
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @Route("/{id}/delete", name="terceros_mecanismocontacto_delete", methods={"GET", "POST", "DELETE"}, options={"expose":true})
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(MecanismoContacto $mecanismoContacto, Request $request)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($mecanismoContacto->getId());
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaBodegaBundle:MecanismoContacto')->find($id);
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+            try {
+                $em = $this->get('doctrine.orm.entity_manager');
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find MecanismoContacto entity.');
+                $em->remove($mecanismoContacto);
+                $em->flush();
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $trans->trans('messages.delete.success', array(), 'BusetaBodegaBundle'),
+                    ), 202);
+                }
+                // faltaría forma tradicional
+            } catch (\Exception $e) {
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'MecanismoContacto'), 'BusetaBodegaBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
+                // faltaría forma tradicional
             }
-
-            $em->remove($entity);
-            $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('mecanismocontacto'));
+        $renderView =  $this->renderView('@BusetaBodega/MecanismoContacto/delete_modal.html.twig', array(
+            'entity' => $mecanismoContacto,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
+        return new Response($renderView);
     }
 
     /**
@@ -260,7 +285,7 @@ class MecanismoContactoController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('mecanismocontacto_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('terceros_mecanismocontacto_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->getForm()
             ;
