@@ -27,9 +27,9 @@
         </div>
 
         <div class="row show-grid">
-            <div class="col-md-4">
-                {{ form_row(form.tarea) }}
-            </div>
+            {#<div class="col-md-4">#}
+                {#{{ form_row(form.tarea) }}#}
+            {#</div>#}
 
             <div class="col-md-4">
                 {{ form_row(form.fechaInicio) }}
@@ -122,7 +122,7 @@
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data);
-                        var tarea_selector = $('#{{ form.tarea.vars.id }}');
+                        {#var tarea_selector = $('#{{ form.tarea.vars.id }}');#}
 
                         tarea_selector.html('<option>---Seleccione tarea de mantenimiento---</option>');
                         for (var i = 0, len = values.length; i < len; i++) {
@@ -132,23 +132,23 @@
                 });
             });
 
-            $('#{{ form.tarea.vars.id }}').change(function () {
-                var data = {
-                    tarea_id: $(this).val()
-                };
+            {#$('#{{ form.tarea.vars.id }}').change(function () {#}
+                {#var data = {#}
+                    {#tarea_id: $(this).val()#}
+                {#};#}
 
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ path('ajax_select_mpreventivo_tarea') }}',
-                    data: data,
-                    success: function (data) {
-                        var values = $.parseJSON(data);
+                {#$.ajax({#}
+                    {#type: 'GET',#}
+                    {#url: '{{ path('ajax_select_mpreventivo_tarea') }}',#}
+                    {#data: data,#}
+                    {#success: function (data) {#}
+                        {#var values = $.parseJSON(data);#}
 
-                        $('#buseta_tallerbundle_mantenimientopreventivo_kilometraje').val(values[0]['kilometros']);
-                        $('#buseta_tallerbundle_mantenimientopreventivo_horas').val(values[0]['horas']);
-                    }
-                });
-            });
+                        {#$('#buseta_tallerbundle_mantenimientopreventivo_kilometraje').val(values[0]['kilometros']);#}
+                        {#$('#buseta_tallerbundle_mantenimientopreventivo_horas').val(values[0]['horas']);#}
+                    {#}#}
+                {#});#}
+            {#});#}
 
         });
     </script>

@@ -18,8 +18,8 @@ class MantenimientoPreventivoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $objeto = $builder->getFormFactory();
-        $tareaSubscriber = new AddTareaMantenimientoFieldSubscriber($objeto);
-        $builder->addEventSubscriber($tareaSubscriber);
+//        $tareaSubscriber = new AddTareaMantenimientoFieldSubscriber($objeto);
+//        $builder->addEventSubscriber($tareaSubscriber);
         $subgrupoSubscriber = new AddSubgrupoFieldSubscriber($objeto);
         $builder->addEventSubscriber($subgrupoSubscriber);
         $grupoSubscriber = new AddGrupoFieldSubscriber($objeto);
