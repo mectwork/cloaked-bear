@@ -1,3 +1,7 @@
+beta5:
+  - [New] Entidad Persona de Contacto para Terceros y Proveedor.
+  - [New] Parámetros Web y Fax en Tercero.
+  - [New] Coordenadas geolocalización en Dirección(Tercero/Proveedor).
 beta4:
   - Actualizada Adicionar tarea adicional en funcionalidad Orden de trabajo para asimilar la nueva estructura de nomenclador Tare, Tarea mantenimiento, Grupo y Subgrupo.
   - Actualizada funcionalidad Tareas mantenimiento adicionando el nomenclador Tarea como parámetro "valor". Actualizada validación para Tarea de mantenimiento, que no permita crear más de una Tarea de mantenimiento con el mismo "valor" para el mismo Grupo y Subgrupo.
