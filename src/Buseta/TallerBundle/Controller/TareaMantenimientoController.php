@@ -2,6 +2,8 @@
 
 namespace Buseta\TallerBundle\Controller;
 
+use Buseta\TallerBundle\Form\Filter\TareaMantenimientoFilter;
+use Buseta\TallerBundle\Form\Model\TareaMantenimientoFilterModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\TallerBundle\Entity\TareaMantenimiento;
@@ -80,22 +82,33 @@ class TareaMantenimientoController extends Controller
     /**
      * Lists all TareaMantenimiento entities.
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $filter = new TareaMantenimientoFilterModel();
 
-        $entities = $em->getRepository('BusetaTallerBundle:TareaMantenimiento')->findAll();
+        $form = $this->createForm(new TareaMantenimientoFilter(), $filter, array(
+            'action' => $this->generateUrl('tareamantenimiento'),
+        ));
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaTallerBundle:TareaMantenimiento')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaTallerBundle:TareaMantenimiento')->filter();
+        }
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
             $entities,
-            $this->get('request')->query->get('page', 1),
-            10,
-            array('pageParameterName' => 'page')
+            $request->query->get('page', 1),
+            5
         );
 
         return $this->render('BusetaTallerBundle:TareaMantenimiento:index.html.twig', array(
-            'entities' => $entities,
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
         ));
     }
 
