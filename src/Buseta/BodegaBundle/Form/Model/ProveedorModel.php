@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Form\Model;
 
+use Buseta\BodegaBundle\Entity\Proveedor;
 use Buseta\NomencladorBundle\Entity\Moneda;
 
 class ProveedorModel
