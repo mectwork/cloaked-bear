@@ -3,12 +3,14 @@
 namespace Buseta\TallerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * MantenimientoPreventivo.
  *
  * @ORM\Table(name="d_mantenimiento_preventivo")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\MantenimientoPreventivoRepository")
+ * @UniqueEntity(fields={"tarea", "grupo", "subgrupo"}, repositoryMethod="onlyOneTarea", message="Ya se encuentra registrado un Mantenimiento Preventivo con este mismo Grupo, Subgrupo y Tarea.")
  */
 class MantenimientoPreventivo
 {

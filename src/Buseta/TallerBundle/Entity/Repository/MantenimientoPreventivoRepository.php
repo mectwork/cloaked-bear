@@ -43,4 +43,29 @@ class MantenimientoPreventivoRepository extends EntityRepository
             return array();
         }
     }
+
+    public function onlyOneTarea($criteria = array())
+    {
+        $qb = $this->createQueryBuilder('t');
+        $query = $qb->where($qb->expr()->eq(true,true));
+
+        if ($criteria['tarea'] !== null && $criteria['tarea'] !== '') {
+            $query->andWhere($query->expr()->eq('t.tarea', ':tarea'))
+                ->setParameter('tarea', $criteria['tarea']);
+        }
+        if ($criteria['grupo'] !== null && $criteria['grupo'] !== '') {
+            $query->andWhere($query->expr()->eq('t.grupo', ':grupo'))
+                ->setParameter('grupo', $criteria['grupo']);
+        }
+        if ($criteria['subgrupo'] !== null && $criteria['subgrupo'] !== '') {
+            $query->andWhere($query->expr()->eq('t.subgrupo', ':subgrupo'))
+                ->setParameter('subgrupo', $criteria['subgrupo']);
+        }
+
+        try {
+            return $query->getQuery()->getResult();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
 }
