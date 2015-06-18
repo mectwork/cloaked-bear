@@ -3,6 +3,8 @@
 namespace Buseta\BodegaBundle\Controller;
 
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
+use Buseta\BodegaBundle\Form\Filter\MovimientoFilter;
+use Buseta\BodegaBundle\Form\Model\MovimientoFilterModel;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -67,22 +69,35 @@ class MovimientoController extends Controller
     /**
      * Lists all Movimiento entities.
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        $filter = new MovimientoFilterModel();
+
+        $form = $this->createForm(new MovimientoFilter(), $filter, array(
+            'action' => $this->generateUrl('movimiento'),
+        ));
+
+        $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('BusetaBodegaBundle:Movimiento')->findAll();
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Movimiento')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Movimiento')->filter();
+        }
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
             $entities,
-            $this->get('request')->query->get('page', 1),
-            5,
-            array('pageParameterName' => 'page')
+            $request->query->get('page', 1),
+            5
         );
 
         return $this->render('BusetaBodegaBundle:Movimiento:index.html.twig', array(
-            'entities' => $entities,
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
         ));
     }
 
