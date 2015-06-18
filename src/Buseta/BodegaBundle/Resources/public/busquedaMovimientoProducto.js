@@ -25,9 +25,8 @@ function plegarFormulario(){
 }
 
 function updateReportesView(){
-    cargando = $('<img src="/images/loading.gif" />');
 
-    $('div.movimientos-result-table').html(cargando);
+    $('div.movimientos-result-table').html();
 
     $.ajax({
         url: "busqueda-avanzada/"+$page+"/"+$cantResult,
