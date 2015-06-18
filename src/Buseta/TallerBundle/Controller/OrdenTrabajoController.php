@@ -2,6 +2,8 @@
 
 namespace Buseta\TallerBundle\Controller;
 
+use Buseta\TallerBundle\Form\Filter\OrdenTrabajoFilter;
+use Buseta\TallerBundle\Form\Model\OrdenTrabajoFilterModel;
 use Buseta\TallerBundle\Form\Type\TareaAdicionalType;
 use Buseta\TallerBundle\Manager\MantenimientoPreventivoManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,22 +23,33 @@ class OrdenTrabajoController extends Controller
     /**
      * Lists all OrdenTrabajo entities.
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $filter = new OrdenTrabajoFilterModel();
 
-        $entities = $em->getRepository('BusetaTallerBundle:OrdenTrabajo')->findAll();
+        $form = $this->createForm(new OrdenTrabajoFilter(), $filter, array(
+            'action' => $this->generateUrl('ordentrabajo'),
+        ));
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaTallerBundle:OrdenTrabajo')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaTallerBundle:OrdenTrabajo')->filter();
+        }
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
             $entities,
-            $this->get('request')->query->get('page', 1),
-            5,
-            array('pageParameterName' => 'page')
+            $request->query->get('page', 1),
+            5
         );
 
         return $this->render('BusetaTallerBundle:OrdenTrabajo:index.html.twig', array(
-            'entities' => $entities,
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
         ));
     }
 
