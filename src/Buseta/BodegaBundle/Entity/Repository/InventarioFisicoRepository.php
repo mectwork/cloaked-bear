@@ -32,6 +32,14 @@ class InventarioFisicoRepository extends EntityRepository
                 $query->andWhere($query->expr()->eq('i.estado', ':estado'))
                     ->setParameter('estado', $filter->getEstado());
             }
+            if ($filter->getFechaInicio() !== null && $filter->getFechaInicio() !== '') {
+                $query->andWhere($qb->expr()->gte('i.fecha',':fechaInicio'))
+                    ->setParameter('fechaInicio', $filter->getFechaInicio());
+            }
+            if ($filter->getFechaFin() !== null && $filter->getFechaFin() !== '') {
+                $query->andWhere($qb->expr()->lte('i.fecha',':fechaFin'))
+                    ->setParameter('fechaFin', $filter->getFechaFin());
+            }
         }
 
         $query->orderBy('i.id', 'ASC');

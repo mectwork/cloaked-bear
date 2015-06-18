@@ -19,7 +19,8 @@
         {% set headericon = 'glyphicon-chevron-down' %}
         {% if (filter_form.vars.value.nombre is null or filter_form.vars.value.nombre is empty)
         and (filter_form.vars.value.almacen is null or filter_form.vars.value.almacen is empty)
-        and (filter_form.vars.value.fecha is null or filter_form.vars.value.fecha is empty)
+        and (filter_form.vars.value.fechaInicio is null or filter_form.vars.value.fechaInicio is empty)
+        and (filter_form.vars.value.fechaFin is null or filter_form.vars.value.fechaFin is empty)
         and (filter_form.vars.value.estado is null or filter_form.vars.value.estado is empty)
         %}
             {% set display = 'display: none;' %}
@@ -37,7 +38,8 @@
                 <div class="row">
                     <div class="col-lg-4">{{ form_row(filter_form.nombre) }}</div>
                     <div class="col-lg-4">{{ form_row(filter_form.almacen) }}</div>
-                    <div class="col-lg-4">{{ form_row(filter_form.fecha) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
                     <div class="col-lg-4">{{ form_row(filter_form.estado) }}</div>
                 </div>
                 {{ form_widget(filter_form._token) }}
@@ -158,6 +160,27 @@
                 $('form#filter_form').find('select').each(function () {
                     $(this).val(null);
                 })
+            });
+
+            $('#buseta_inventario_fisico_filter_fechaInicio').datetimepicker({
+                'format': 'DD/MM/YYYY'
+            });
+
+            var fechaInicio = $('#buseta_inventario_fisico_filter_fechaInicio').val();
+            $('input:hidden[name^="buseta_inventario_fisico_filter[fechaInicio]_submit"]').val(fechaInicio);
+
+            $('#buseta_inventario_fisico_filter_fechaFin').datetimepicker({
+                'format': 'DD/MM/YYYY'
+            });
+
+            var fechaFin = $('#buseta_inventario_fisico_filter_fechaFin').val();
+            $('input:hidden[name^="buseta_inventario_fisico_filter[fechaFin]_submit"]').val(fechaFin);
+
+            $("#buseta_inventario_fisico_filter_fechaInicio").on("dp.change", function (e) {
+                $('#buseta_inventario_fisico_filter_fechaFin').data("DateTimePicker").setMinDate(e.date);
+            });
+            $("#buseta_inventario_fisico_filter_fechaFin").on("dp.change", function (e) {
+                $('#buseta_inventario_fisico_filter_fechaInicio').data("DateTimePicker").setMaxDate(e.date);
             });
         });
     </script>
