@@ -21,7 +21,12 @@ class InventarioFisicoFilterModel
     /**
      * @var date
      */
-    private $fecha;
+    private $fechaInicio;
+
+    /**
+     * @var date
+     */
+    private $fechaFin;
 
     /**
      * @var string
@@ -79,17 +84,33 @@ class InventarioFisicoFilterModel
     /**
      * @return date
      */
-    public function getFecha()
+    public function getFechaInicio()
     {
-        return $this->fecha;
+        return $this->fechaInicio;
     }
 
     /**
-     * @param date $fecha
+     * @param date $fechaInicio
      */
-    public function setFecha($fecha)
+    public function setFechaInicio($fechaInicio)
     {
-        $this->fecha = $fecha;
+        $this->fechaInicio = $fechaInicio;
+    }
+
+    /**
+     * @return date
+     */
+    public function getFechaFin()
+    {
+        return $this->fechaFin;
+    }
+
+    /**
+     * @param date $fechaFin
+     */
+    public function setFechaFin($fechaFin)
+    {
+        $this->fechaFin = $fechaFin;
     }
 
     /**

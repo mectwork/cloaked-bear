@@ -14,8 +14,18 @@
 
 {% block area_trabajo %}
 
-    <h4><a id="busqueda_movimiento" style="cursor: pointer; "><i class="icon-chevron-down"></i> Búsqueda de Movimientos
-            de Bodegas</a></h4>
+    {% set display = '' %}
+    {% set headericon = 'glyphicon-chevron-down' %}
+        {% set display = 'display: none;' %}
+        {% set headericon = 'glyphicon-chevron-right' %}
+
+    <h4>
+        <a id="busqueda_movimiento" style="cursor: pointer;">
+            <span class="glyphicon {{ headericon }}"></span>
+            Búsqueda
+        </a>
+    </h4>
+
     <div id="busqueda_movimiento_div" class="panel panel-default" style="display: none">
         <div class="panel-body">
             <fieldset>
@@ -45,12 +55,14 @@
 
                 <div class="row show-grid">
                     <div class="col-md-6">
-                        <input class="btn btn-primary btn-bg" style="width: 100px;" value="Buscar" name="buscar"
-                               onclick="setFilters()">
+                        <a id="filter_form_submit_btn" class="btn btn-success btn-small" onclick="setFilters()">
+                            <span class="glyphicon glyphicon-filter"></span> Filtrar
+                        </a>
 
                         <div class="btn-group">
-                            <a class="btn btn-success btn-bg" href="{{ path('bodega') }}"><i class="fa fa-search">
-                                    Reiniciar Búsqueda</i></a>
+                            <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                                <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -69,6 +81,33 @@
     {{ parent() }}
 
     <script type="text/javascript">
+
+        $('a#filter_form_header').click(function () {
+            if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
+                $('a#filter_form_header span')
+                        .removeClass('glyphicon-chevron-right')
+                        .addClass('glyphicon-chevron-down');
+            } else {
+                $('a#filter_form_header span')
+                        .removeClass('glyphicon-chevron-down')
+                        .addClass('glyphicon-chevron-right');
+            }
+
+            $('div#filter_form_component').slideToggle(500);
+        });
+
+        $('a#filter_form_submit_btn').click(function () {
+            $('form#filter_form').submit();
+        });
+
+        $('a#filter_form_reset_btn').click(function () {
+            $('form').find('input').each(function () {
+                $(this).val(null);
+            });
+            $('form').find('select').each(function () {
+                $(this).val(null);
+            })
+        });
 
         $(function () {
             $('#data_busqueda_movimiento_producto_type_fechaInicio').datetimepicker({

@@ -1,82 +1,170 @@
 {% extends "BusetaTallerBundle::layout.html.twig" %}
 
-{% block nombre_menu_superior %}
-
-{% endblock %}
-
-{% block titulo %}
-    Listado de tarea_mantenimientos
+{% block title %}
+    Listado de Tareas de Mantenimiento
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listado de tareas de mantenimiento
+    Listados de Tareas de Mantenimiento
 {% endblock %}
 
 {% block area_trabajo %}
 
-<div class="btn-group" style="padding-bottom: 8px;">
-    <a class="btn btn-primary" href="{{ path('tareamantenimiento_new') }}"><i class="fa fa-plus-circle"></i> Adicionar tarea de mantenimiento</a>
-</div>
+    {% set display = '' %}
+    {% set headericon = 'glyphicon-chevron-down' %}
+    {% if (filter_form.vars.value.valor is null or filter_form.vars.value.valor is empty)
+    and (filter_form.vars.value.grupo is null or filter_form.vars.value.grupo is empty)
+    and (filter_form.vars.value.subgrupo is null or filter_form.vars.value.subgrupo is empty)
+    and (filter_form.vars.value.garantia is null or filter_form.vars.value.garantia is empty)
+    %}
+        {% set display = 'display: none;' %}
+        {% set headericon = 'glyphicon-chevron-right' %}
+    {% endif %}
 
-<div id="records_list">
-    <table class="table table-striped table-bordered table-condensed table-hover">
+    <h4>
+        <a id="filter_form_header" style="cursor: pointer;">
+            <span class="glyphicon {{ headericon }}"></span>
+            Búsqueda
+        </a>
+    </h4>
 
-        <thead>
-        <tr>
-            <th>Tarea</th>
-            <th>Grupo</th>
-            <th>Subgrupo</th>
-            <th>Garantía</th>
-            <th>Kilómetros</th>
-            <th>Horas</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
+    <div id="filter_form_component" style="{{ display }}">
+        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+            <div class="row">
+                <div class="col-lg-4">{{ form_row(filter_form.valor) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.grupo) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.subgrupo) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.garantia) }}</div>
+            </div>
+            {{ form_widget(filter_form._token) }}
+
+            <div class="filter-actions" style="margin-top: 8px;">
+                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                    <span class="glyphicon glyphicon-filter"></span> Filtrar
+                </a>
+                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <hr/>
+
+    <div class="btn-group" style="padding-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('tareamantenimiento_new') }}"><i class="fa fa-plus-circle"></i> Adicionar tarea de mantenimiento</a>
+    </div>
+
+    <div id="records_list">
+        <table class="table table-striped table-bordered table-condensed table-hover">
+
+            <thead>
             <tr>
-                <td>{{ entity.valor }}</td>
-                <td>{{ entity.grupo }}</td>
-                <td>{{ entity.subgrupo }}</td>
-                <td>{{ entity.garantia }}</td>
-                <td>{{ entity.kilometros }}</td>
-                <td>{{ entity.horas }}</td>
-                <td  style="width: 24% !important; text-align: center;">
-                    <div class="btn-group">
-                        <a class="btn btn-success btn-xs" href="{{ path('tareamantenimiento_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
-                    </div>
-
-                    <div class="btn-group">
-                        <a class="btn btn-danger btn-xs" href="{{ path('tareamantenimiento_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
-                    </div>
-                    <a href="#delete" data-href="{{ path('tareamantenimiento_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
-                        <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
-                </td>
-                </td>
+                <th>Tarea</th>
+                <th>Grupo</th>
+                <th>Subgrupo</th>
+                <th>Garantía</th>
+                <th>Kilómetros</th>
+                <th>Horas</th>
+                <th>Acciones</th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">No se encontraron registros de tareas de mantenimientos en el sistema.</td>
-            </tr>
-        {% endfor %}
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.valor }}</td>
+                    <td>{{ entity.grupo }}</td>
+                    <td>{{ entity.subgrupo }}</td>
+                    <td>{{ entity.garantia }}</td>
+                    <td>{{ entity.kilometros }}</td>
+                    <td>{{ entity.horas }}</td>
+                    <td  style="width: 24% !important; text-align: center;">
+                        <div class="btn-group">
+                            <a class="btn btn-success btn-xs" href="{{ path('tareamantenimiento_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
+                        </div>
 
-        </tbody>
-    </table>
+                        <div class="btn-group">
+                            <a class="btn btn-danger btn-xs" href="{{ path('tareamantenimiento_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
+                        </div>
+                        <a href="#delete" data-href="{{ path('tareamantenimiento_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+                    </td>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="12">No se encontraron registros de tareas de mantenimientos en el sistema.</td>
+                </tr>
+            {% endfor %}
 
-    <div class="row">
-        <div class="col-md-12 text-center">
-            {{ knp_pagination_render(entities) }}
+            </tbody>
+        </table>
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                {{ knp_pagination_render(entities) }}
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Delete modal -->
-<div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
+    <!-- Delete modal -->
+    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
 
 {% endblock %}
 
 {% block javascripts %}
 <script type="text/javascript">
+    $(document).ready(function () {
+        $('a#filter_form_header').click(function () {
+            if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
+                $('a#filter_form_header span')
+                        .removeClass('glyphicon-chevron-right')
+                        .addClass('glyphicon-chevron-down');
+            } else {
+                $('a#filter_form_header span')
+                        .removeClass('glyphicon-chevron-down')
+                        .addClass('glyphicon-chevron-right');
+            }
+
+            $('div#filter_form_component').slideToggle(500);
+        });
+
+        $('a#filter_form_submit_btn').click(function () {
+            $('form#filter_form').submit();
+        });
+
+        $('a#filter_form_reset_btn').click(function () {
+            $('form#filter_form').find('input').each(function () {
+                $(this).val(null);
+            });
+            $('form#filter_form').find('select').each(function () {
+                $(this).val(null);
+            })
+        });
+
+        $('#{{ filter_form.grupo.vars.id }}').change(function () {
+            var data = {
+                grupo_id: $(this).val()
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
+                data: data,
+                success: function (data) {
+                    var values = $.parseJSON(data);
+                    var $subgrupo_selector = $('#{{ filter_form.subgrupo.vars.id }}');
+
+                    $subgrupo_selector.html('<option>---Seleccione---</option>');
+
+                    for (var i = 0, total = values.length; i < total; i++) {
+                        $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                    }
+                }
+            });
+        });
+    });
+
     var deleteevent = new DeleteEvent('{{ path('tareamantenimiento') }}', 'div#records_list');
     deleteevent.start_events();
 </script>

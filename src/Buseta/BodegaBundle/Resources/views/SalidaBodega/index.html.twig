@@ -15,6 +15,51 @@
 {% block area_trabajo %}
 
 <div id="records_list">
+    {% set display = '' %}
+    {% set headericon = 'glyphicon-chevron-down' %}
+    {% if (filter_form.vars.value.almacenOrigen is null or filter_form.vars.value.almacenOrigen is empty)
+    and (filter_form.vars.value.almacenDestino is null or filter_form.vars.value.almacenDestino is empty)
+    and (filter_form.vars.value.centroCosto is null or filter_form.vars.value.centroCosto is empty)
+    and (filter_form.vars.value.fechaInicio is null or filter_form.vars.value.fechaInicio is empty)
+    and (filter_form.vars.value.fechaFin is null or filter_form.vars.value.fechaFin is empty)
+    and (filter_form.vars.value.responsable is null or filter_form.vars.value.responsable is empty)
+    and (filter_form.vars.value.ordenTrabajo is null or filter_form.vars.value.ordenTrabajo is empty)
+    %}
+        {% set display = 'display: none;' %}
+        {% set headericon = 'glyphicon-chevron-right' %}
+    {% endif %}
+
+    <h4>
+        <a id="filter_form_header" style="cursor: pointer;">
+            <span class="glyphicon {{ headericon }}"></span>
+            Búsqueda
+        </a>
+    </h4>
+    <div id="filter_form_component" style="{{ display }}">
+        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+            <div class="row">
+                <div class="col-lg-4">{{ form_row(filter_form.almacenOrigen) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.almacenDestino) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.centroCosto) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.responsable) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.ordenTrabajo) }}</div>
+            </div>
+            {{ form_widget(filter_form._token) }}
+
+            <div class="filter-actions" style="margin-top: 8px;">
+                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                    <span class="glyphicon glyphicon-filter"></span> Filtrar
+                </a>
+                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <hr/>
 
     <div class="btn-group" style="padding-bottom: 8px;">
         <a class="btn btn-primary" href="{{ path('salidabodega_new') }}"><i class="fa fa-plus-circle"></i> Realizar Salida de Bodega</a>
@@ -117,6 +162,27 @@
                 $('form#filter_form').find('select').each(function () {
                     $(this).val(null);
                 })
+            });
+
+            $('#buseta_salidabodega_filter_fechaInicio').datetimepicker({
+                'format': 'DD/MM/YYYY'
+            });
+
+            var fechaInicio = $('#buseta_salidabodega_filter_fechaInicio').val();
+            $('input:hidden[name^="buseta_salidabodega_filter[fechaInicio]_submit"]').val(fechaInicio);
+
+            $('#buseta_salidabodega_filter_fechaFin').datetimepicker({
+                'format': 'DD/MM/YYYY'
+            });
+
+            var fechaFin = $('#buseta_salidabodega_filter_fechaFin').val();
+            $('input:hidden[name^="buseta_salidabodega_filter[fechaFin]_submit"]').val(fechaFin);
+
+            $("#buseta_salidabodega_filter_fechaInicio").on("dp.change", function (e) {
+                $('#buseta_salidabodega_filter_fechaFin').data("DateTimePicker").setMinDate(e.date);
+            });
+            $("#buseta_salidabodega_filter_fechaFin").on("dp.change", function (e) {
+                $('#buseta_salidabodega_filter_fechaInicio').data("DateTimePicker").setMaxDate(e.date);
             });
         });
     </script>

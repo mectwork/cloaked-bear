@@ -14,6 +14,51 @@
 
 {% block area_trabajo %}
 
+    {% set display = '' %}
+    {% set headericon = 'glyphicon-chevron-down' %}
+    {% if (filter_form.vars.value.numero is null or filter_form.vars.value.numero is empty)
+        and (filter_form.vars.value.requisionMateriales is null or filter_form.vars.value.requisionMateriales is empty)
+        and (filter_form.vars.value.diagnosticadoPor is null or filter_form.vars.value.diagnosticadoPor is empty)
+        and (filter_form.vars.value.ayudante is null or filter_form.vars.value.ayudante is empty)
+        and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
+        and (filter_form.vars.value.diagnostico is null or filter_form.vars.value.diagnostico is empty)
+    %}
+        {% set display = 'display: none;' %}
+        {% set headericon = 'glyphicon-chevron-right' %}
+    {% endif %}
+
+    <h4>
+        <a id="filter_form_header" style="cursor: pointer;">
+            <span class="glyphicon {{ headericon }}"></span>
+            Búsqueda
+        </a>
+    </h4>
+
+    <div id="filter_form_component" style="{{ display }}">
+        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+            <div class="row">
+                <div class="col-lg-4">{{ form_row(filter_form.numero) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.requisionMateriales) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.diagnosticadoPor) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.ayudante) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.autobus) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.diagnostico) }}</div>
+            </div>
+            {{ form_widget(filter_form._token) }}
+
+            <div class="filter-actions" style="margin-top: 8px;">
+                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                    <span class="glyphicon glyphicon-filter"></span> Filtrar
+                </a>
+                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <hr/>
+
     <!-- OT, Autobus, Grupo, Autobus, Tarea, Realizado por, Fecha estimada-->
 
     <div class="btn-group" style="padding-bottom: 8px;">
@@ -77,3 +122,36 @@
     </div>
 
 {% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a#filter_form_header').click(function () {
+                if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-right')
+                            .addClass('glyphicon-chevron-down');
+                } else {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-down')
+                            .addClass('glyphicon-chevron-right');
+                }
+
+                $('div#filter_form_component').slideToggle(500);
+            });
+
+            $('a#filter_form_submit_btn').click(function () {
+                $('form#filter_form').submit();
+            });
+
+            $('a#filter_form_reset_btn').click(function () {
+                $('form#filter_form').find('input').each(function () {
+                    $(this).val(null);
+                });
+                $('form#filter_form').find('select').each(function () {
+                    $(this).val(null);
+                })
+            });
+        });
+    </script>
+{% endblock javascripts %}

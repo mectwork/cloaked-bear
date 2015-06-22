@@ -19,6 +19,20 @@ beta4:
   - Eliminada pestaña de Precios para funcionalidad de Productos(actualmente no es aplicable si uso).
 beta3:
   PENDIENTES
+  - [Update] Filtro de búsqueda de Inventario Físico.
+  - [New] Filtro de búsqueda de Orden de Trabajo.
+  - [New] Filtro de búsqueda de Tareas de Mantenimiento.
+  - [Update] Filtro de búsqueda de Movimientos de Bodegas.
+  - [New] Filtro de búsqueda de Salida de Bodega.
+  - [New] Filtro de búsqueda de Movimientos de Productos.
+  - [Hotfix] Show de Proveedor.
+  - [New] Filtro de búsqueda de Proveedores.
+  - [Hotfix] Mensaje autenticacion del sistema.
+  - [Update] Funcionalidades de entidad Autobus.
+  - Refactorizado el procesamiento de la entidad Autobus.
+  - Adicionado botones Editar Producto y Actualizar Lineas de Registros de Compras, en el modal de las Lineas de Registro de Compras.
+  - Solucionado problema al cargar Grupos y Subgrupos en la interfaz de edición de Producto.
+  - Añadidos filtros 'Proveedor' y 'CodidoAlternativo' al Listado de Productos
 beta2:
   - Refactorizando las funcionalidades para la Tarea.
   - Adicionado nuevo nomenclador Tarea.

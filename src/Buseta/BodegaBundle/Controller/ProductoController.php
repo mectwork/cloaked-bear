@@ -34,8 +34,6 @@ class ProductoController extends Controller
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
         }
 
-
-
         $json = array(
             'id' => $busqueda,
         );

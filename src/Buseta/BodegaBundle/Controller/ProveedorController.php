@@ -2,6 +2,8 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\Form\Filter\ProveedorFilter;
+use Buseta\BodegaBundle\Form\Model\ProveedorFilterModel;
 use Buseta\BodegaBundle\Form\Model\ProveedorModel;
 use Buseta\NomencladorBundle\Entity\FormaPago;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -29,21 +31,36 @@ class ProveedorController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $filter = new ProveedorFilterModel();
+
+        $form = $this->createForm(new ProveedorFilter(), $filter, array(
+            'action' => $this->generateUrl('proveedor'),
+        ));
+
+        $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('BusetaBodegaBundle:Proveedor')->findAll();
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Proveedor')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Proveedor')->filter();
+        }
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            10
+            5
         );
 
         return $this->render('BusetaBodegaBundle:Proveedor:index.html.twig', array(
-            'entities' => $entities,
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
         ));
     }
+
     /**
      * Creates a new Proveedor entity.
      *

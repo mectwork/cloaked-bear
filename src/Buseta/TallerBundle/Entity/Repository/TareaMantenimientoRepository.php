@@ -2,6 +2,7 @@
 
 namespace Buseta\TallerBundle\Entity\Repository;
 
+use Buseta\TallerBundle\Form\Model\TareaMantenimientoFilterModel;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 
@@ -13,6 +14,39 @@ use Doctrine\ORM\NoResultException;
  */
 class TareaMantenimientoRepository extends EntityRepository
 {
+    public function filter(TareaMantenimientoFilterModel $filter = null)
+    {
+        $qb = $this->createQueryBuilder('t');
+        $query = $qb->where($qb->expr()->eq(true,true));
+
+        if($filter) {
+            if ($filter->getValor() !== null && $filter->getValor() !== '') {
+                $query->andWhere($query->expr()->eq('t.valor', ':valor'))
+                    ->setParameter('valor', $filter->getValor());
+            }
+            if ($filter->getGrupo() !== null && $filter->getGrupo() !== '') {
+                $query->andWhere($query->expr()->eq('t.grupo', ':grupo'))
+                    ->setParameter('grupo', $filter->getGrupo());
+            }
+            if ($filter->getSubgrupo() !== null && $filter->getSubgrupo() !== '') {
+                $query->andWhere($query->expr()->eq('t.subgrupo', ':subgrupo'))
+                    ->setParameter('subgrupo', $filter->getSubgrupo());
+            }
+            if ($filter->getGarantia() !== null && $filter->getGarantia() !== '') {
+                $query->andWhere($query->expr()->eq('t.garantia', ':garantia'))
+                    ->setParameter('garantia', $filter->getGarantia());
+            }
+        }
+
+        $query->orderBy('t.id', 'ASC');
+
+        try {
+            return $query->getQuery();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
+
     public function onlyOneTarea($criteria = array())
     {
         $qb = $this->createQueryBuilder('t');

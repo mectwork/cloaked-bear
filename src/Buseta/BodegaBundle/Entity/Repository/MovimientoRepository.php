@@ -1,7 +1,8 @@
 <?php
 
-namespace Buseta\BodegaBundle\Entity;
+namespace Buseta\BodegaBundle\Entity\Repository;
 
+use Buseta\BodegaBundle\Form\Model\MovimientoFilterModel;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 
@@ -13,6 +14,47 @@ use Doctrine\ORM\NoResultException;
  */
 class MovimientoRepository extends EntityRepository
 {
+    public function filter(MovimientoFilterModel $filter = null)
+    {
+        $qb = $this->createQueryBuilder('m');
+        $query = $qb->where($qb->expr()->eq(true,true));
+
+        if($filter) {
+            if ($filter->getProducto() !== null && $filter->getProducto() !== '') {
+                $query->innerJoin('m.movimientos_productos', 'movimientos_productos')
+                    ->where($qb->expr()->andX(
+                        $qb->expr()->eq('movimientos_productos.producto',':producto')
+                    ))
+                    ->setParameter('producto', $filter->getProducto());
+            }
+            if ($filter->getAlmacenOrigen() !== null && $filter->getAlmacenOrigen() !== '') {
+                $query->andWhere($query->expr()->eq('m.almacenOrigen', ':almacenOrigen'))
+                    ->setParameter('almacenOrigen', $filter->getAlmacenOrigen());
+            }
+            if ($filter->getAlmacenDestino() !== null && $filter->getAlmacenDestino() !== '') {
+                $query->andWhere($query->expr()->eq('m.almacenDestino', ':almacenDestino'))
+                    ->setParameter('almacenDestino', $filter->getAlmacenDestino());
+            }
+            if ($filter->getFechaInicio() !== null && $filter->getFechaInicio() !== '') {
+                $query->andWhere($qb->expr()->gte('m.fechaMovimiento',':fechaInicio'))
+                    ->setParameter('fechaInicio', $filter->getFechaInicio());
+            }
+            if ($filter->getFechaFin() !== null && $filter->getFechaFin() !== '') {
+                $query->andWhere($qb->expr()->lte('m.fechaMovimiento',':fechaFin'))
+                    ->setParameter('fechaFin', $filter->getFechaFin());
+            }
+
+        }
+
+        $query->orderBy('m.id', 'ASC');
+
+        try {
+            return $query->getQuery();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
+
     public function busquedaAvanzada($page, $cantResult, $filter = array(), $orderBy = null)
     {
         $q = 'SELECT p FROM BusetaBodegaBundle:Movimiento p WHERE p.id != 0';

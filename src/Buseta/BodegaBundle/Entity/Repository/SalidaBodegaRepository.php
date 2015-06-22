@@ -2,7 +2,9 @@
 
 namespace Buseta\BodegaBundle\Entity\Repository;
 
+use Buseta\BodegaBundle\Form\Model\SalidaBodegaFilterModel;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 
 /**
  * SalidaBodegaRepository
@@ -12,4 +14,49 @@ use Doctrine\ORM\EntityRepository;
  */
 class SalidaBodegaRepository extends EntityRepository
 {
+    public function filter(SalidaBodegaFilterModel $filter = null)
+    {
+        $qb = $this->createQueryBuilder('sb');
+        $query = $qb->where($qb->expr()->eq(true,true));
+
+        if($filter) {
+            if ($filter->getCentroCosto() !== null && $filter->getCentroCosto() !== '') {
+                $query->andWhere($query->expr()->eq('sb.centroCosto', ':centroCosto'))
+                    ->setParameter('centroCosto', $filter->getCentroCosto());
+            }
+            if ($filter->getOrdenTrabajo() !== null && $filter->getOrdenTrabajo() !== '') {
+                $query->andWhere($query->expr()->eq('sb.ordenTrabajo', ':ordenTrabajo'))
+                    ->setParameter('ordenTrabajo', $filter->getOrdenTrabajo());
+            }
+            if ($filter->getResponsable() !== null && $filter->getResponsable() !== '') {
+                $query->andWhere($query->expr()->eq('sb.responsable', ':responsable'))
+                    ->setParameter('responsable', $filter->getResponsable());
+            }
+            if ($filter->getAlmacenOrigen() !== null && $filter->getAlmacenOrigen() !== '') {
+                $query->andWhere($query->expr()->eq('sb.almacenOrigen', ':almacenOrigen'))
+                    ->setParameter('almacenOrigen', $filter->getAlmacenOrigen());
+            }
+            if ($filter->getAlmacenDestino() !== null && $filter->getAlmacenDestino() !== '') {
+                $query->andWhere($query->expr()->eq('sb.almacenDestino', ':almacenDestino'))
+                    ->setParameter('almacenDestino', $filter->getAlmacenDestino());
+            }
+            if ($filter->getFechaInicio() !== null && $filter->getFechaInicio() !== '') {
+                $query->andWhere($qb->expr()->gte('sb.fecha',':fechaInicio'))
+                    ->setParameter('fechaInicio', $filter->getFechaInicio());
+            }
+            if ($filter->getFechaFin() !== null && $filter->getFechaFin() !== '') {
+                $query->andWhere($qb->expr()->lte('sb.fecha',':fechaFin'))
+                    ->setParameter('fechaFin', $filter->getFechaFin());
+            }
+
+        }
+
+        $query->orderBy('sb.id', 'ASC');
+
+        try {
+            return $query->getQuery();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
 }

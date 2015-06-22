@@ -4,9 +4,8 @@ namespace Buseta\BodegaBundle\Form\Filter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
 
-class InventarioFisicoFilter extends AbstractType
+class MovimientoFilter extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,32 +14,36 @@ class InventarioFisicoFilter extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre', 'text', array(
-                'required' => false,
-                'label'  => 'Nombre',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('descripcion', 'textarea', array(
-                'required' => false,
-                'label'  => 'Descripción',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('almacen', 'entity', array(
+            ->add('almacenOrigen','entity',array(
                 'class' => 'BusetaBodegaBundle:Bodega',
+                'label' => 'Bodega Origen',
                 'empty_value' => '---Seleccione---',
-                'label' => 'Bodega',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
-                ),
+                )
+            ))
+            ->add('almacenDestino','entity',array(
+                'class' => 'BusetaBodegaBundle:Bodega',
+                'label' => 'Bodega Destino',
+                'empty_value' => '---Seleccione---',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('producto','entity',array(
+                'class' => 'BusetaBodegaBundle:Producto',
+                'label' => 'Producto',
+                'empty_value' => '---Seleccione---',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
             ))
             ->add('fechaInicio', 'date', array(
                 'widget' => 'single_text',
-                'label'  => 'Fecha Inicio',
+                'label'  => 'Fecha Inicial',
                 'format'  => 'dd/MM/yyyy',
                 'required' => false,
                 'attr'   => array(
@@ -49,22 +52,9 @@ class InventarioFisicoFilter extends AbstractType
             ))
             ->add('fechaFin', 'date', array(
                 'widget' => 'single_text',
-                'label'  => 'Fecha Inicio',
+                'label'  => 'Fecha Final',
                 'format'  => 'dd/MM/yyyy',
                 'required' => false,
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('estado', 'choice', array(
-                'required' => false,
-                'empty_value' => '---Seleccione---',
-                'translation_domain' => 'BusetaTallerBundle',
-                'choices' => array(
-                    'CO' => 'estado.CO',
-                    'BO' => 'estado.BO',
-                    'PR' => 'estado.PR',
-                ),
                 'attr'   => array(
                     'class' => 'form-control',
                 ),
@@ -78,7 +68,7 @@ class InventarioFisicoFilter extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Form\Model\InventarioFisicoFilterModel',
+            'data_class' => 'Buseta\BodegaBundle\Form\Model\MovimientoFilterModel',
             'method' => 'GET',
         ));
     }
@@ -88,6 +78,6 @@ class InventarioFisicoFilter extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_inventario_fisico_filter';
+        return 'buseta_movimiento_filter';
     }
 } 

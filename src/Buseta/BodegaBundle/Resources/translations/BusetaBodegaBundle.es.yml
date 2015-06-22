@@ -70,6 +70,8 @@ proveedor:
   credito: Crédito Límite
   observaciones: Observaciones
   cifnif: CIF\NIF
+  btn:
+      adicionar: Adicionar proveedor
   email: Email
   web: Web
   modal:

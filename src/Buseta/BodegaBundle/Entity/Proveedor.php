@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Proveedor.
  *
  * @ORM\Table(name="d_proveedor")
- * @ORM\Entity(repositoryClass="")
+ * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\ProveedorRepository")
  */
 class Proveedor
 {
