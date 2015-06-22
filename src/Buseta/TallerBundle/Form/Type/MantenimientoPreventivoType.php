@@ -4,7 +4,6 @@ namespace Buseta\TallerBundle\Form\Type;
 
 use Buseta\TallerBundle\Form\EventListener\AddGrupoFieldSubscriber;
 use Buseta\TallerBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
-use Buseta\TallerBundle\Form\EventListener\AddTareaMantenimientoFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -26,6 +25,15 @@ class MantenimientoPreventivoType extends AbstractType
         $builder->addEventSubscriber($grupoSubscriber);
 
         $builder
+            ->add('tarea', 'entity', array(
+                'required' => true,
+                'label' => 'Tarea',
+                'class' => 'BusetaNomencladorBundle:Tarea',
+                'empty_value' => '---Seleccione---',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->add('kilometraje', 'number', array(
                 'required' => true,
                 'label' => 'Kilometraje',

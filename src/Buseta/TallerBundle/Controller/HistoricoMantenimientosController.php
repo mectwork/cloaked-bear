@@ -40,6 +40,7 @@ class HistoricoMantenimientosController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             if ($filter->getAutobus() !== null && $filter->getAutobus() !== '') {
                 $query->innerJoin('dot.autobus', 'da')
                     ->andWhere($qb->expr()->like('da.matricula', ':autobus'))
@@ -56,8 +57,9 @@ class HistoricoMantenimientosController extends Controller
                     ->setParameter('subgrupo', '%'.$filter->getSubgrupo().'%');
             }
             if ($filter->getTarea() !== null && $filter->getTarea() !== '') {
-                $query->innerJoin('dta.tarea', 'nt')
-                    ->andWhere($qb->expr()->like('nt.valor', ':tarea'))
+                $query->innerJoin('dta.tareamantenimiento', 'tm')
+                    ->innerJoin('tm.valor', 'tarea')
+                    ->andWhere($qb->expr()->like('tarea.valor', ':tarea'))
                     ->setParameter('tarea', '%'.$filter->getTarea().'%');
             }
         }

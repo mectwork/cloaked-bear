@@ -54,11 +54,12 @@
         </thead>
         <tbody>
         {% for entity in entities %}
+            {#{{ dump(entity) }}#}
             <tr>
                 <td>{{ entity.ordenTrabajo.autobus }}</td>
                 <td>{{ entity.grupo }}</td>
                 <td>{{ entity.subgrupo }}</td>
-                <td>{{ entity.tarea }}</td>
+                <td>{{ entity.tareamantenimiento }}</td>
                 <td>{{ entity.ordenTrabajo.kilometraje }}</td>
                 <td>{%  if entity.ordenTrabajo.fechaInicio %}{{ entity.ordenTrabajo.fechaInicio | date('d/m/Y') }}{% endif %}</td>
                 <td>{%  if entity.ordenTrabajo.fechaFinal %}{{ entity.ordenTrabajo.fechaFinal | date('d/m/Y') }}{% endif %}</td>

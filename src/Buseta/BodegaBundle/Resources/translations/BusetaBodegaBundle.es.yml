@@ -102,10 +102,9 @@ actions:
   show: Ver
   edit: Editar
   delete: Eliminar
-  cancel: Salir
+  cancel: Cancelar
   back: Volver
   list: Listar
-  nuevo: Crear Nuevo
 
 # MOVIMIENTO DE PRODUCTOS
 movimientos_productos:

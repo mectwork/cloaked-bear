@@ -225,6 +225,8 @@ class PersonaContactoController extends Controller
     }
 
     /**
+     * Deletes a PersonaContacto entity.
+     *
      * @param PersonaContacto $personaContacto
      * @param Request $request
      *

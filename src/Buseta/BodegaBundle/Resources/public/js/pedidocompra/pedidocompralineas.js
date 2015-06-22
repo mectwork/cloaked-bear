@@ -297,9 +297,6 @@ var lineas = {
             var tbody = 'table#producto_proveedores_results_list',
                 provider, code, cost, select, tr, count = 0;
 
-            var ep = '#editar_producto';
-            $(ep).find('[data-content]').remove();
-
             var editar_producto = $('#editar_producto');
 
             $(tbody).find('tr[data-content]').remove();

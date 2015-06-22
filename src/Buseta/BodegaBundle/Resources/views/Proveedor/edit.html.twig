@@ -79,9 +79,6 @@
                         <div class="col-md-4">
                             {{ form_row(edit_form.activo) }}
                         </div>
-                    </div>
-
-                    <div class="row show-grid">
                         <div class="col-md-12">
                             {{ form_row(edit_form.observaciones) }}
                         </div>
@@ -116,11 +113,6 @@
 
             <!-- TAB MECANISMOS DE CONTACTO-->
             <div class="tab-pane fade" id="contactos">
-
-            </div>
-
-            <!-- TAB PERSONA DE CONTACTO-->
-            <div class="tab-pane fade" id="pcontactos">
 
             </div>
         </div>
@@ -266,17 +258,15 @@
 
         _done: function (response, textStatus, jqXHR) {
             $('form#' + proveedor.form_id).replaceWith(response.view);
+            initTagsComponents();
+
             if(jqXHR.status == 201) {
                 addGlobalMessage('success', response.message);
                 // Proveedor Id
                 proveedor.proveedor_id = $('input[id="' + proveedor.form_id + '_proveedorId"]').val();
                 proveedor.tercero_id = $('input[id="' + proveedor.form_id + '_terceroId"]').val();
-
-                initTagsComponents();
             } else if(jqXHR.status == 202) {
                 addGlobalMessage('success', response.message);
-
-                initTagsComponents();
             }
 
             $('a#btn_proveedor_save').on('click', proveedor._save);
