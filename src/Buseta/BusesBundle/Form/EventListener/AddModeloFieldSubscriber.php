@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Doctrine\ORM\EntityRepository;
 use Buseta\NomencladorBundle\Entity\Marca;
+use Symfony\Component\Form\FormInterface;
 
 class AddModeloFieldSubscriber implements EventSubscriberInterface
 {
@@ -26,7 +27,7 @@ class AddModeloFieldSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function addModeloForm($form, $modelo = null, $marca = null)
+    private function addModeloForm(FormInterface $form, $modelo = null, $marca = null)
     {
         if($marca === null) {
             $form->add('modelo','choice',array(
@@ -34,7 +35,7 @@ class AddModeloFieldSubscriber implements EventSubscriberInterface
                 'empty_value'   => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
-                ), 
+                ),
             ));
         } else {
             $form->add('modelo','entity', array(
@@ -70,12 +71,12 @@ class AddModeloFieldSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $form = $event->getForm();
 
-        if (null == $data) {
+        if (null === $data) {
             $this->addModeloForm($form);
         } else {
-            //$province = ($data->city) ? $data->city->getModelo() : null ;
             $modelo = ($data->getModelo()) ? $data->getModelo() : null ;
             $marca = ($modelo) ? $modelo->getMarca() : null ;
+
             $this->addModeloForm($form, $modelo, $marca);
         }
     }
@@ -91,6 +92,7 @@ class AddModeloFieldSubscriber implements EventSubscriberInterface
 
         $modelo = array_key_exists('modelo', $data) ? $data['modelo'] : null;
         $marca = array_key_exists('marca', $data) ? $data['marca'] : null;
+
         $this->addModeloForm($form, $modelo, $marca);
     }
 }

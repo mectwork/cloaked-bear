@@ -1,71 +1,30 @@
-/**
- * Created by julio on 13/03/15.
- */
-localChange()
-$("input#barras").click(localChange);
-$("input#rampas").click(localChange);
-$("input#camaras").click(localChange);
-$("input#lector").click(localChange);
-$("input#publicidad").click(localChange);
-$("input#gps").click(localChange);
-$("input#wifi").click(localChange);
+function setCheckboxsEvents() {
+    var checkboxs = ['barras', 'rampas', 'camaras', 'lectorCedulas', 'publicidad', 'gps', 'wifi'];
 
-function localChange() {
-    barras = $("input#barras:checked").is(":empty");
-    rampas = $("input#rampas:checked").is(":empty");
-    camaras = $("input#camaras:checked").is(":empty");
-    publicidad = $("input#publicidad:checked").is(":empty");
-    gps = $("input#gps:checked").is(":empty");
-    wifi = $("input#wifi:checked").is(":empty");
-    lector = $("input#lector:checked").is(":empty");
-
-    if (!barras) {
-        $('textarea#buses_autobus_basico_barras').val("");
-        $('textarea#buses_autobus_basico_barras').fadeOut();
-    } else {
-        $('textarea#buses_autobus_basico_barras').fadeIn();
+    for(var check in checkboxs) {
+        $('input#' + check).unbind('click').on('click', checkboxClick);
     }
+}
 
-    if (!rampas) {
-        $('textarea#buses_autobus_basico_rampas').val("");
-        $('textarea#buses_autobus_basico_rampas').fadeOut();
+function checkboxClick (e) {
+    var checked = $(this).is("checked"),
+        id      = $(this).attr('id'),
+        textarea = $('#' + autobus.form_id + '_' + id);
+    if (!checked) {
+        textarea.fadeOut().val("");
     } else {
-        $('textarea#buses_autobus_basico_rampas').fadeIn();
+        textarea.fadeIn();
     }
+}
 
-    if (!camaras) {
-        $('textarea#buses_autobus_basico_camaras').val("");
-        $('textarea#buses_autobus_basico_camaras').fadeOut();
-    } else {
-        $('textarea#buses_autobus_basico_camaras').fadeIn();
+function checkedEval() {
+    var checkboxs = ['barras', 'rampas', 'camaras', 'lectorCedulas', 'publicidad', 'gps', 'wifi'];
+    for(var check in checkboxs) {
+        var textarea = $('#' + autobus.form_id + '_' + check);
+        if(!$('input#' + check).is('checked')) {
+            textarea.fadeOut().val("");
+        } else {
+            textarea.fadeIn();
+        }
     }
-
-    if (!publicidad) {
-        $('textarea#buses_autobus_basico_publicidad').val("");
-        $('textarea#buses_autobus_basico_publicidad').fadeOut();
-    } else {
-        $('textarea#buses_autobus_basico_publicidad').fadeIn();
-    }
-
-    if (!gps) {
-        $('textarea#buses_autobus_basico_gps').val("");
-        $('textarea#buses_autobus_basico_gps').fadeOut();
-    } else {
-        $('textarea#buses_autobus_basico_gps').fadeIn();
-    }
-
-    if (!wifi) {
-        $('textarea#buses_autobus_basico_wifi').val("");
-        $('textarea#buses_autobus_basico_wifi').fadeOut();
-    } else {
-        $('textarea#buses_autobus_basico_wifi').fadeIn();
-    }
-
-    if (!lector) {
-        $('textarea#buses_autobus_basico_lector_cedulas').val("");
-        $('textarea#buses_autobus_basico_lector_cedulas').fadeOut();
-    } else {
-        $('textarea#buses_autobus_basico_lector_cedulas').fadeIn();
-    }
-
 }

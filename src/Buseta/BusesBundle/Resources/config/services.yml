@@ -5,9 +5,11 @@ services:
     handlebuses:
         class: Buseta\BusesBundle\Handle\HandleAutobus
         arguments: [@doctrine.orm.entity_manager]
+
+    # FORM TYPES
     buses.buses_autobus.type:
         class: Buseta\BusesBundle\Form\Type\AutobusBasicoType
-        arguments: [@doctrine.orm.entity_manager, @service_container]
+        arguments: [@security.context]
         tags:
             - {name: form.type, alias: 'buses_autobus_basico'}
     buses.buses_autobus_extra.type:

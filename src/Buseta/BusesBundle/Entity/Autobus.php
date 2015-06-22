@@ -71,11 +71,13 @@ class Autobus
     private $imagenTraseraInterior;
 
     /**
-     * @ORM\OneToMany(targetEntity="Buseta\BusesBundle\Entity\ArchivoAdjunto", mappedBy="autobuses", cascade={"persist"})
-     * @Assert\File(groups={"web", "Autobus"})
+     * @var \Doctrine\Common\Collections\ArrayCollection
      *
+     * @ORM\OneToMany(targetEntity="Buseta\BusesBundle\Entity\ArchivoAdjunto", mappedBy="autobus", cascade={"persist","remove"})
+     * @Assert\File(groups={"web", "Autobus"})
+     * @Assert\Valid()
      */
-    private $archivoAdjunto;
+    private $archivosAdjuntos;
 
     /**
      * @var string
@@ -390,7 +392,7 @@ class Autobus
     /**
      * @var integer
      *
-     * @ORM\Column(name="kilometraje", type="integer", nullable=true)
+     * @ORM\Column(name="kilometraje", type="integer")
      */
     private $kilometraje;
 
@@ -402,11 +404,23 @@ class Autobus
     /**
      * @var integer
      *
-     * @ORM\Column(name="horas", type="integer", nullable=true)
+     * @ORM\Column(name="horas", type="integer")
      */
     private $horas;
 
     /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->archivosAdjuntos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->kilometraje = 0;
+        $this->horas = 0;
+    }
+
+    /**
+     * Set model para datos básicos
+     *
      * @param AutobusBasicoModel $model
      * @return Autobus
      */
@@ -456,11 +470,19 @@ class Autobus
         if ($model->getCombustible()) {
             $this->combustible  = $model->getCombustible();
         }
+        if (!$model->getArchivosAdjuntos()->isEmpty()) {
+            foreach ($model->getArchivosAdjuntos() as $archivo) {
+                $newArchivo = $archivo->getEntityData();
+                $this->addArchivosAdjunto($newArchivo);
+            }
+        }
 
         return $this;
     }
 
     /**
+     * Set model para Información Extra
+     *
      * @param InformacionExtraModel $model
      * @return Autobus
      */
@@ -496,6 +518,8 @@ class Autobus
     }
 
     /**
+     * Set model para Filtros
+     *
      * @param FiltroModel $model
      * @return Autobus
      */
@@ -530,6 +554,8 @@ class Autobus
     }
 
     /**
+     * Set model para Imágenes
+     *
      * @param ImagenModel $model
      * @return Autobus
      */
@@ -1617,57 +1643,6 @@ class Autobus
     }
 
     /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->archivoAdjunto = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->kilometraje = 0;
-        $this->horas = 0;
-    }
-
-    /**
-     * Add archivoAdjunto.
-     *
-     * @param \Buseta\BusesBundle\Entity\ArchivoAdjunto $archivoAdjunto
-     *
-     * @return Autobus
-     */
-    public function addArchivoAdjunto(\Buseta\BusesBundle\Entity\ArchivoAdjunto $archivoAdjunto)
-    {
-        $archivoAdjunto->setAutobuses($this);
-
-        $this->archivoAdjunto[] = $archivoAdjunto;
-
-        return $this;
-    }
-
-    /**
-     * Remove archivoAdjunto.
-     *
-     * @param \Buseta\BusesBundle\Entity\ArchivoAdjunto $archivoAdjunto
-     */
-    public function removeArchivoAdjunto(\Buseta\BusesBundle\Entity\ArchivoAdjunto $archivoAdjunto)
-    {
-        $this->archivoAdjunto->removeElement($archivoAdjunto);
-    }
-
-    /**
-     * Get archivoAdjunto.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getArchivoAdjunto()
-    {
-        return $this->archivoAdjunto;
-    }
-
-    public function __toString()
-    {
-        return sprintf('%d (%s)', $this->numero, $this->matricula);
-    }
-
-    /**
      * Add compras.
      *
      * @param \Buseta\TallerBundle\Entity\Compra $compras
@@ -1893,5 +1868,47 @@ class Autobus
     public function getHoras()
     {
         return $this->horas;
+    }
+
+    /**
+     * Add archivosAdjuntos
+     *
+     * @param \Buseta\BusesBundle\Entity\ArchivoAdjunto $archivosAdjuntos
+     * @return Autobus
+     */
+    public function addArchivosAdjunto(\Buseta\BusesBundle\Entity\ArchivoAdjunto $archivosAdjuntos)
+    {
+        $archivosAdjuntos->setAutobus($this);
+
+        $this->archivosAdjuntos[] = $archivosAdjuntos;
+
+        return $this;
+    }
+
+    /**
+     * Remove archivosAdjuntos
+     *
+     * @param \Buseta\BusesBundle\Entity\ArchivoAdjunto $archivosAdjuntos
+     */
+    public function removeArchivosAdjunto(\Buseta\BusesBundle\Entity\ArchivoAdjunto $archivosAdjuntos)
+    {
+        $archivosAdjuntos->setAutobus(null);
+
+        $this->archivosAdjuntos->removeElement($archivosAdjuntos);
+    }
+
+    /**
+     * Get archivosAdjuntos
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getArchivosAdjuntos()
+    {
+        return $this->archivosAdjuntos;
+    }
+
+    public function __toString()
+    {
+        return sprintf('%d (%s)', $this->numero, $this->matricula);
     }
 }

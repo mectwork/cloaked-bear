@@ -20,7 +20,7 @@
                 <li><a id="autobusExtras" href="#informacionextra" data-toggle="tab">Información Extra</a></li>
                 <li><a id="autobusFiltros" href="#filtros" data-toggle="tab">Filtros</a></li>
                 <li><a id="autobusImagenes" href="#imagenes" data-toggle="tab">Imágenes</a></li>
-                {#<li><a href="#kilometraje" data-toggle="tab">Kilometraje</a></li>#}
+                <li><a id="archivosAdjuntos" href="#archivosadjuntos" data-toggle="tab">Archivos adjuntos</a></li>
             </ul>
 
             {# Tab panes #}
@@ -29,18 +29,10 @@
                 <div class="tab-pane fade in active" id="basicos">
                     {% include '@BusetaBuses/Autobus/form_template.html.twig' with {'form': form} %}
                 </div>
-
-                <div class="tab-pane fade" id="informacionextra">
-                </div>
-
-                <div class="tab-pane fade" id="filtros">
-
-                </div>
-
-                <div class="tab-pane fade" id="imagenes">
-
-                </div>
-
+                <div class="tab-pane fade" id="informacionextra"></div>
+                <div class="tab-pane fade" id="filtros"></div>
+                <div class="tab-pane fade" id="imagenes"></div>
+                <div class="tab-pane fade" id="archivosadjuntos"></div>
             </div>
 
         </div>
@@ -72,7 +64,7 @@
                 tabs._show_tab('informacionextra');
                 tabs._show_tab('filtros');
                 tabs._show_tab('imagenes');
-                tabs._show_tab('otros');
+                tabs._show_tab('archivosadjuntos');
             },
             _show_tab: function (tabname) {
                 $('li a[href="#' + tabname + '"]').parent().show();
@@ -135,18 +127,14 @@
     <!-- Fechas script -->
     <script type="text/javascript" src="{{ asset('bundles/busetabodega/js/funciones_datetime.js') }}"></script>
 
-    <!-- checkClicks script -->
-    <script src="{{ asset('bundles/busetabuses/js/checkClick.js') }}"></script>
-
     <!-- Autobus-Basico script -->
     <script type="text/javascript" src="{{ asset('bundles/busetabuses/js/autobus/autobus_basico.js') }}"></script>
-
+    <!-- Archivo Adjunto script -->
+    <script type="text/javascript" src="{{ asset('bundles/busetabuses/js/autobus/autobus_archivoadjunto.js') }}"></script>
     <!-- Autobus-InformacionExtra script -->
     <script type="text/javascript" src="{{ asset('bundles/busetabuses/js/autobus/autobus_informacion_extra.js') }}"></script>
-
     <!-- Autobus-Filtros script -->
     <script type="text/javascript" src="{{ asset('bundles/busetabuses/js/autobus/autobus_filtros.js') }}"></script>
-
     <!-- Autobus-Imagenes script -->
     <script type="text/javascript" src="{{ asset('bundles/busetabuses/js/autobus/autobus_imagenes.js') }}"></script>
 
@@ -155,18 +143,6 @@
         $(function (){
             // init autobus
             autobus._load();
-        });
-        $('#autobusExtras').on('click', function () {
-            // init informacionextra
-            extra._load();
-        });
-        $('#autobusFiltros').on('click', function () {
-            // init filtros
-            filtros._load();
-        });
-        $('#autobusImagenes').on('click', function () {
-            // init filtros
-            imagenes._load();
         });
     </script>
 {% endblock javascripts %}

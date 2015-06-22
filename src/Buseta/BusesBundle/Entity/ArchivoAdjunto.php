@@ -2,7 +2,9 @@
 
 namespace Buseta\BusesBundle\Entity;
 
+use Buseta\UploadBundle\Model\UploadAbstract;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ArchivoAdjunto.
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="d_autobus_archivo_adjunto")
  * @ORM\Entity
  */
-class ArchivoAdjunto
+class ArchivoAdjunto extends UploadAbstract
 {
     /**
      * @var integer
@@ -22,39 +24,40 @@ class ArchivoAdjunto
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="archivo_adjunto")
+     * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus", inversedBy="archivosAdjuntos")
      */
-    private $autobuses;
+    private $autobus;
 
     /**
-     * @var string
+     * {@inheritDoc}
      *
-     * @ORM\Column(name="valor", type="string")
+     * @Assert\File(
+     *     maxSize="6M",
+     *     mimeTypes={"application/pdf",
+     *          "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.documen",
+     *          "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+     *          "application/zip", "application/x-compressed-zip",
+     *          "application/x-rar-compressed"},
+     *     mimeTypesMessage="El archivo seleccionado no es un archivo válido (pdf, doc, docx, xls, xlsx, zip, rar)."
+     * )
+     * @Assert\NotNull()
      */
-    private $valor;
+    protected $file;
 
     /**
-     * @param mixed $autobuses
+     * @param \Buseta\BusesBundle\Entity\Autobus $autobus
      */
-    public function setAutobuses($autobuses)
+    public function setAutobus($autobus)
     {
-        $this->autobuses = $autobuses;
+        $this->autobus = $autobus;
     }
 
     /**
-     * @return mixed
+     * @return \Buseta\BusesBundle\Entity\Autobus
      */
-    public function getAutobuses()
+    public function getAutobus()
     {
-        return $this->autobuses;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
+        return $this->autobus;
     }
 
     /**
@@ -63,21 +66,5 @@ class ArchivoAdjunto
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param string $valor
-     */
-    public function setValor($valor)
-    {
-        $this->valor = $valor;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValor()
-    {
-        return $this->valor;
     }
 }

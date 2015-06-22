@@ -14,7 +14,7 @@
                 {%  if entity is defined and entity.imagenFrontal %}
                     <img src="{{ asset(entity.imagenFrontal.webPath)}}" alt="Imagen" width="100%" height="100%"/>
                 {% else %}
-                    <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto"/>
+                    <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen frontal"/>
                 {% endif %}
             </a>
             {{ form_row(form.imagenFrontal) }}
@@ -25,7 +25,7 @@
                 {%  if entity is defined and entity.imagenFrontalInterior %}
                     <img src="{{ asset(entity.imagenFrontalInterior.webPath)}}" alt="Imagen" width="100%" height="100%"/>
                 {% else %}
-                    <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto"/>
+                    <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen frontal interior"/>
                 {% endif %}
             </a>
             {{ form_row(form.imagenFrontalInterior) }}
@@ -36,7 +36,7 @@
                 {%  if entity is defined and entity.imagenLateralD %}
                     <img src="{{ asset(entity.imagenLateralD.webPath)}}" alt="Imagen" width="100%" height="100%"/>
                 {% else %}
-                    <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto"/>
+                    <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen lateral derecho"/>
                 {% endif %}
             </a>
             {{ form_row(form.imagenLateralD) }}
@@ -49,7 +49,7 @@
                 {%  if entity is defined and entity.imagenLateralI %}
                     <img src="{{ asset(entity.imagenLateralI.webPath)}}" alt="Imagen" width="100%" height="100%"/>
                 {% else %}
-                    <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto"/>
+                    <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen lateral izquierdo"/>
                 {% endif %}
             </a>
             {{ form_row(form.imagenLateralI) }}
@@ -60,7 +60,7 @@
                 {%  if entity is defined and entity.imagenTrasera %}
                     <img src="{{ asset(entity.imagenTrasera.webPath)}}" alt="Imagen" width="100%" height="100%"/>
                 {% else %}
-                    <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto"/>
+                    <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen trasera"/>
                 {% endif %}
             </a>
             {{ form_row(form.imagenTrasera) }}
@@ -71,7 +71,7 @@
                 {%  if entity is defined and entity.imagenTraseraInterior %}
                     <img src="{{ asset(entity.imagenTraseraInterior.webPath)}}" alt="Imagen" width="100%" height="100%"/>
                 {% else %}
-                    <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto"/>
+                    <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen trasera interior"/>
                 {% endif %}
             </a>
             {{ form_row(form.imagenTraseraInterior) }}

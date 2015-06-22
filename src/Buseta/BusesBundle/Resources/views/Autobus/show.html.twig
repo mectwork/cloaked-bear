@@ -35,7 +35,7 @@
                                             {%  if entity is defined and entity.imagenLateralI %}
                                                 <img src="{{ asset(entity.imagenLateralI.webPath)}}" alt="Imagen" width="164px" height="92px"/>
                                             {% else %}
-                                                <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
+                                                <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
                                             {% endif %}
                                         </td>
                                         <th>Imagen Lateral Derecha</th>
@@ -43,7 +43,7 @@
                                             {%  if entity is defined and entity.imagenLateralD %}
                                                 <img src="{{ asset(entity.imagenLateralD.webPath)}}" alt="Imagen" width="164px" height="92px"/>
                                             {% else %}
-                                                <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
+                                                <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -53,7 +53,7 @@
                                             {%  if entity is defined and entity.imagenFrontal %}
                                                 <img src="{{ asset(entity.imagenFrontal.webPath)}}" alt="Imagen" width="164px" height="92px"/>
                                             {% else %}
-                                                <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
+                                                <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
                                             {% endif %}
                                         </td>
                                         <th>Imagen Frontal Interior</th>
@@ -61,7 +61,7 @@
                                             {%  if entity is defined and entity.imagenFrontalInterior %}
                                                 <img src="{{ asset(entity.imagenFrontalInterior.webPath)}}" alt="Imagen" width="164px" height="92px"/>
                                             {% else %}
-                                                <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
+                                                <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -71,7 +71,7 @@
                                             {%  if entity is defined and entity.imagenTrasera %}
                                                 <img src="{{ asset(entity.imagenTrasera.webPath)}}" alt="Imagen" width="164px" height="92px"/>
                                             {% else %}
-                                                <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
+                                                <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
                                             {% endif %}
                                         </td>
                                         <th>Imagen Trasera Interior</th>
@@ -79,7 +79,7 @@
                                             {%  if entity is defined and entity.imagenTraseraInterior %}
                                                 <img src="{{ asset(entity.imagenTraseraInterior.webPath)}}" alt="Imagen" width="164px" height="92px"/>
                                             {% else %}
-                                                <img src="{{ asset('images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
+                                                <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -356,19 +356,19 @@
                                         <th></th>
                                         <td></td>
                                     </tr>
-                                    <tr>
-                                        <th>Archivos adjuntos</th>
-                                        <td colspan="2">
-                                            {% for archivo in entity.archivoadjunto %}
-                                                {% set path = 'files/' ~ archivo.valor %}
-                                                <a class="bg-warning" href="{{ asset(path) }}"> {{ archivo.valor }} </a>
-                                            {% else %}
-                                                <label style="color: red">No tiene</label>
-                                            {% endfor %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
+                                    {#<tr>#}
+                                        {#<th>Archivos adjuntos</th>#}
+                                        {#<td colspan="2">#}
+                                            {#{% for archivo in entity.archivoadjunto %}#}
+                                                {#{% set path = 'files/' ~ archivo.valor %}#}
+                                                {#<a class="bg-warning" href="{{ asset(path) }}"> {{ archivo.valor }} </a>#}
+                                            {#{% else %}#}
+                                                {#<label style="color: red">No tiene</label>#}
+                                            {#{% endfor %}#}
+                                        {#</td>#}
+                                        {#<th></th>#}
+                                        {#<td></td>#}
+                                    {#</tr>#}
                                     <tr>
                                         <th>Kilometraje</th>
                                         <td>{{ entity.kilometraje }}</td>

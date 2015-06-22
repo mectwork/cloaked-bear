@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Proveedor.
  *
  * @ORM\Table(name="d_proveedor")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="")
  */
 class Proveedor
 {
@@ -31,7 +31,7 @@ class Proveedor
     private $tercero;
 
     /**
-     * @var \stdClass
+     * @var \Buseta\NomencladorBundle\Entity\Moneda
      *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Moneda")
      */

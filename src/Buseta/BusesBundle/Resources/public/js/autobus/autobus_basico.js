@@ -2,7 +2,12 @@ var autobus = {
     form_id: $('div#basicos').find('form').attr('id'),
     form_name: $('div#basicos').find('form').attr('name'),
     id: '',
+    checkboxs: ['barras', 'rampas', 'camaras', 'lectorCedulas', 'publicidad', 'gps', 'wifi'],
     _start_evens: function () {
+        $('a#btn_autobus_save')
+            .unbind('click')
+            .on('click', autobus._save);
+
         $('#buses_autobus_basico_fechaIngreso').datetimepicker({
             'format': 'DD/MM/YYYY'
         });
@@ -10,9 +15,10 @@ var autobus = {
             'format': 'DD/MM/YYYY'
         });
 
+        autobus.setCheckboxsEvents();
+        autobus.checkboxCheckedEval();
     },
     _load: function () {
-        $('a#btn_autobus_save').on('click', autobus._save);
         autobus.id = $('input[id="' + autobus.form_id + '_id"]').val();
         if (autobus.id === '' || autobus.id === undefined) {
             // hide all tabs on page load
@@ -28,8 +34,16 @@ var autobus = {
             var href = $(e.target).attr('href');
             var relhref = $(e.relatedTarget).attr('href');
 
-            if (href === '#kilometraje') {
-                kilometraje._load();
+            if (href === '#informacionextra') {
+                extra._load();
+            } else if (href === '#filtros') {
+                filtros._load();
+            } else if (href === '#imagenes') {
+                imagenes._load();
+            } else if (href === '#archivosadjuntos') {
+                archivoadjunto._load();
+            } else if(href !== '#basicos') {
+                console.error('No es una pestaña válida!!!')
             }
         });
 
@@ -92,6 +106,43 @@ var autobus = {
         if (progressBarr !== undefined) {
             $(progressBarr).css('width', percentComplete + '%');
             $(progressBarr).find('span').html(percentComplete + '% Completado');
+        }
+    },
+    // checkbox functions
+    setCheckboxsEvents: function () {
+        for(var key in autobus.checkboxs) {
+            $('input#' + autobus.checkboxs[key])
+                .unbind('click')
+                .on('click', autobus.checkboxClick);
+        }
+    },
+    checkboxClick: function (e) {
+        var id      = $(this).attr('id'),
+            textarea = $('#' + autobus.form_id + '_' + id),
+            checked = $(this).is(":checked");
+
+        if (!checked) {
+            textarea.fadeOut().val("");
+        } else {
+            textarea.fadeIn();
+        }
+    },
+    checkboxCheckedEval: function () {
+        for(var key in autobus.checkboxs) {
+            var check = autobus.checkboxs[key],
+                textarea = $('#' + autobus.form_id + '_' + check),
+                checked = $('input#' + check).is('checked');
+
+            if ((textarea.val() != undefined && textarea.val() != '')) {
+                $('input#' + check).attr('checked', true);
+                checked = true;
+            }
+
+            if (!checked) {
+                textarea.fadeOut().val("");
+            } else {
+                textarea.fadeIn();
+            }
         }
     }
 };

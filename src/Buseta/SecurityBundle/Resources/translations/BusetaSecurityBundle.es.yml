@@ -1,3 +1,4 @@
+'Bad credentials' : "Las credenciales no son correctas."
 usuario:
   data:
     nombres: Nombres:

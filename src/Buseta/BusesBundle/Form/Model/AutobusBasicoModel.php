@@ -132,9 +132,10 @@ class AutobusBasicoModel
     private $combustible;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @Assert\Valid()
      */
-    private $archivoAdjunto;
+    private $archivosAdjuntos;
 
     /**
      * @var integer
@@ -197,7 +198,7 @@ class AutobusBasicoModel
      */
     public function __construct(Autobus $autobus = null)
     {
-        $this->archivoAdjunto = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->archivosAdjuntos = new \Doctrine\Common\Collections\ArrayCollection();
 
         if ($autobus !== null) {
             $this->id = $autobus->getId();
@@ -246,11 +247,11 @@ class AutobusBasicoModel
             if ($autobus->getCombustible()) {
                 $this->combustible  = $autobus->getCombustible();
             }
-            /*if (!$autobus->getArchivoAdjunto()->isEmpty()) {
-                $this->archivoAdjunto = $autobus->getArchivoAdjunto();
-            } else {
-                $this->archivoAdjunto = new ArrayCollection();
-            }*/
+            if (!$autobus->getArchivosAdjuntos()->isEmpty()) {
+                foreach ($autobus->getArchivosAdjuntos() as $archivo) {
+                    $this->archivosAdjuntos->add(new ArchivoAdjuntoModel($archivo));
+                }
+            }
         }
     }
 
@@ -310,11 +311,11 @@ class AutobusBasicoModel
             $autobus->setEstilo($this->getEstilo());
         }
 
-        /*if (!$this->getArchivoAdjunto()->isEmpty()) {
-            foreach ($this->getArchivoAdjunto() as $archivo) {
-                $autobus->addArchivoAdjunto($archivo);
+        if (!$this->getArchivosAdjuntos()->isEmpty()) {
+            foreach ($this->getArchivosAdjuntos() as $archivo) {
+                $autobus->addArchivosAdjunto($archivo);
             }
-        }*/
+        }
 
         return $autobus;
     }
@@ -690,17 +691,17 @@ class AutobusBasicoModel
     /**
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getArchivoAdjunto()
+    public function getArchivosAdjuntos()
     {
-        return $this->archivoAdjunto;
+        return $this->archivosAdjuntos;
     }
 
     /**
      * @param \Doctrine\Common\Collections\Collection $archivoAdjunto
      */
-    public function setArchivoAdjunto($archivoAdjunto)
+    public function setArchivosAdjuntos($archivosAdjuntos)
     {
-        $this->archivoAdjunto = $archivoAdjunto;
+        $this->archivosAdjuntos = $archivosAdjuntos;
     }
 
     /**
@@ -846,5 +847,4 @@ class AutobusBasicoModel
     {
         $this->activo = $activo;
     }
-
 }

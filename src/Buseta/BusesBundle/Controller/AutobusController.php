@@ -4,20 +4,17 @@ namespace Buseta\BusesBundle\Controller;
 
 use Buseta\BusesBundle\Entity\ArchivoAdjunto;
 use Buseta\BusesBundle\Form\Filter\AutobusFilter;
+use Buseta\BusesBundle\Form\Model\ArchivoAdjuntoModel;
 use Buseta\BusesBundle\Form\Model\AutobusBasicoModel;
 use Buseta\BusesBundle\Form\Model\AutobusFilterModel;
-use Buseta\BusesBundle\Form\Model\FileModel;
-use Buseta\BusesBundle\Form\Model\InformacionExtraModel;
+use Buseta\BusesBundle\Entity\Autobus;
+
 use Buseta\BusesBundle\Form\Type\ArchivoAdjuntoType;
-use Buseta\BusesBundle\Form\Type\KilometrajeType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Buseta\BusesBundle\Form\Type\AutobusType;
-use Buseta\BusesBundle\Form\Filtro\BusquedaAutobusType;
-use Buseta\BusesBundle\Entity\Autobus;
-
-use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -143,7 +140,7 @@ class AutobusController extends Controller
      */
     public function newAction()
     {
-        $form   = $this->createCreateForm(new AutobusBasicoModel());
+        $form   = $this->createCreateForm(new AutobusBasicoModel(new Autobus()));
 
         return $this->render('BusetaBusesBundle:Autobus:new.html.twig', array(
             'form'   => $form->createView(),
@@ -330,4 +327,95 @@ class AutobusController extends Controller
             ;
     }
 
+    /**
+     * @param Request $request
+     * @param Autobus $autobus
+     *
+     * @return JsonResponse
+     *
+     * @Route("/{id}/archivoAdjunto", name="autobus_archivoadjunto", options={"expose": true})
+     * @Method({"GET", "POST"})
+     */
+    public function newArchivoAdjunto(Request $request, Autobus $autobus)
+    {
+        $model = new ArchivoAdjuntoModel();
+        $model->setAutobus($autobus);
+        $form = $this->createArchivoAdjuntoForm($model);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->get('doctrine.orm.entity_manager');
+
+            try {
+                $archivoAdjunto = $model->getEntityData();
+                $autobus->addArchivosAdjunto($archivoAdjunto);
+
+                $em->persist($autobus);
+                $em->flush();
+
+                return new JsonResponse(array(
+                    'message' => 'Se ha adicionado el archivo satisfatoriamente.'
+                ), 201);
+            } catch (\Exception $ex) {
+                $this->get('logger')->addCritical(sprintf('Ha ocurrido un error adicionando el archivo. Detalles: %s', $ex->getMessage()));
+
+                return new JsonResponse(array(
+                    'message' => 'Ha ocurrido un error adicionando el archivo.'
+                ), 500);
+            }
+        }
+
+        $view = $this->renderView('@BusetaBuses/Autobus/form_template_archivoadjunto.html.twig', array(
+            'form'   => $form->createView(),
+            'entity' => $autobus,
+        ));
+        return new JsonResponse(array(
+            'view' => $view
+        ), 200);
+    }
+
+    /**
+     * @param ArchivoAdjuntoModel $model
+     * @return \Symfony\Component\Form\Form
+     */
+    private function createArchivoAdjuntoForm(ArchivoAdjuntoModel $model)
+    {
+        $form = $this->createForm(new ArchivoAdjuntoType(), $model, array(
+            'method' => 'POST',
+            'action' => $this->generateUrl('autobus_archivoadjunto', array('id' => $model->getAutobus()->getId()))
+        ));
+
+        return $form;
+    }
+
+    /**
+     * @param Request $request
+     * @param ArchivoAdjunto $archivoAdjunto
+     * @param Autobus $autobus
+     *
+     * @return JsonResponse
+     *
+     * @Route("/{id}/archivoAdjunto/{archivo}/delete", name="autobus_archivoadjunto_delete", options={"expose": true})
+     * @Method("DELETE")
+     * @ParamConverter("autobus")
+     * @ParamConverter("archivoAdjunto", options={"mapping": {"archivo": "id"}})
+     */
+    public function deleteArchivoAdjuntoAction(Request $request, Autobus $autobus, ArchivoAdjunto $archivoAdjunto)
+    {
+        if ($archivoAdjunto->getAutobus()->getId() !== $autobus->getId()) {
+            new JsonResponse(array('message' => 'El Archivo Adjunto no se corresponde con el Autobus activo.'), 500);
+        }
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $logger = $this->get('logger');
+        try {
+            $em->remove($archivoAdjunto);
+            $em->flush();
+
+            return new JsonResponse(array('message' => 'Se ha eliminado el Archivo Adjunto satisfactoriamente.'), 202);
+        } catch (\Exception $e) {
+            $logger->addCritical(sprintf('Ha ocurrido un error eliminando el Archivo Adjunto con id: %d. Detalles: %s', $archivoAdjunto->getId(), $e->getMessage()));
+            return new JsonResponse(array('message' => 'Ha ocurrido un error eliminando el Archivo Adjunto.'), 202);
+        }
+    }
 }

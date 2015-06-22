@@ -1,4 +1,5 @@
 beta5:
+  - [New] Funcionalidad para subir archivos adjuntos en Autobus.
   - [New] Entidad Persona de Contacto para Terceros y Proveedor.
   - [New] Parámetros Web y Fax en Tercero.
   - [New] Coordenadas geolocalización en Dirección(Tercero/Proveedor).
