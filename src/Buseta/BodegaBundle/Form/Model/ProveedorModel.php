@@ -3,6 +3,8 @@
 namespace Buseta\BodegaBundle\Form\Model;
 
 use Buseta\BodegaBundle\Entity\Proveedor;
+use Buseta\BodegaBundle\Entity\Tercero;
+use Symfony\Component\Validator\Constraints as Assert;
 use Buseta\NomencladorBundle\Entity\Moneda;
 
 class ProveedorModel

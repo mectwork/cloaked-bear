@@ -2,34 +2,26 @@
 
 {% block area_trabajo %}
 <div class="row">
-<div class="col-lg-12">
-    <ul class="nav nav-tabs">
-        <li class="active"><a href="#basicos" data-toggle="tab">Proveedor</a></li>
-        <li><a href="#direcciones" data-toggle="tab">Direcciones</a></li>
-        <li><a href="#contactos" data-toggle="tab">Mecanismos de contacto</a></li>
-        <li><a href="#pcontactos" data-toggle="tab">Personas de contacto</a></li>
-    </ul>
+    <div class="col-lg-12">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#basicos" data-toggle="tab">Proveedor</a></li>
+            <li><a href="#direcciones" data-toggle="tab">Direcciones</a></li>
+            <li><a href="#contactos" data-toggle="tab">Mecanismos de contacto</a></li>
+            <li><a href="#pcontactos" data-toggle="tab">Personas de contacto</a></li>
+        </ul>
 
-    {# Tab panes #}
-    <div class="tab-content" style="padding-top: 20px;">
-        <!-- TAB BASICOS-->
-        <div class="tab-pane fade in active" id="basicos">
-            {% include 'BusetaBodegaBundle:Proveedor:proveedor_model.html.twig' with {'form': form} %}
-        </div>
-
-        <!-- TAB DIRECCIONES-->
-        <div class="tab-pane fade" id="direcciones">
-
-        </div>
-
-        <!-- TAB MECANISMOS DE CONTACTO-->
-        <div class="tab-pane fade" id="contactos">
-
-        </div>
-
-        <!-- TAB PERSONAS DE CONTACTO-->
-        <div class="tab-pane fade" id="pcontactos">
-
+        {# Tab panes #}
+        <div class="tab-content" style="padding-top: 20px;">
+            <!-- TAB BASICOS-->
+            <div class="tab-pane fade in active" id="basicos">
+                {% include 'BusetaBodegaBundle:Proveedor:proveedor_model.html.twig' with {'form': form} %}
+            </div>
+            <!-- TAB DIRECCIONES-->
+            <div class="tab-pane fade" id="direcciones"></div>
+            <!-- TAB MECANISMOS DE CONTACTO-->
+            <div class="tab-pane fade" id="contactos"></div>
+            <!-- TAB PERSONAS DE CONTACTO-->
+            <div class="tab-pane fade" id="pcontactos"></div>
         </div>
     </div>
 </div>
