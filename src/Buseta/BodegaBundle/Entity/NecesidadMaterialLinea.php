@@ -65,7 +65,6 @@ class NecesidadMaterialLinea
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Impuesto", inversedBy="necesidad_material_lineas")
-     * @Assert\NotBlank()
      */
     private $impuesto;
 
@@ -78,8 +77,7 @@ class NecesidadMaterialLinea
     /**
      * @var float
      *
-     * @ORM\Column(name="porciento_descuento", type="decimal", scale=2)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="porciento_descuento", type="decimal", scale=2, nullable=true)
      */
     private $porciento_descuento;
 
@@ -92,9 +90,10 @@ class NecesidadMaterialLinea
 
     public function __construct()
     {
-        $this->importe_linea = 0;
-        $this->porciento_descuento = 0;
-        $this->precio_unitario = 0;
+        $this->importe_linea        = 0;
+        $this->porciento_descuento  = 0;
+        $this->precio_unitario      = 0;
+        $this->cantidad_pedido      = 0;
     }
 
     /**
@@ -158,7 +157,7 @@ class NecesidadMaterialLinea
     /**
      * Set precio_unitario.
      *
-     * @param string $precioUnitario
+     * @param float $precioUnitario
      *
      * @return NecesidadMaterialLinea
      */
@@ -172,7 +171,7 @@ class NecesidadMaterialLinea
     /**
      * Get precio_unitario.
      *
-     * @return string
+     * @return float
      */
     public function getPrecioUnitario()
     {
@@ -206,7 +205,7 @@ class NecesidadMaterialLinea
     /**
      * Set importe_linea.
      *
-     * @param string $importeLinea
+     * @param float $importeLinea
      *
      * @return NecesidadMaterialLinea
      */
@@ -220,7 +219,7 @@ class NecesidadMaterialLinea
     /**
      * Get importe_linea.
      *
-     * @return string
+     * @return float
      */
     public function getImporteLinea()
     {

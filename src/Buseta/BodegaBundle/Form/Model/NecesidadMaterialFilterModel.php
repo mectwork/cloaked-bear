@@ -1,15 +1,6 @@
 <?php
-
 namespace Buseta\BodegaBundle\Form\Model;
 
-use Buseta\BodegaBundle\Entity\NecesidadMaterial;
-use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
-
-/**
- * NecesidadMaterial Model
- *
- */
 class NecesidadMaterialFilterModel
 {
     /**
@@ -200,4 +191,5 @@ class NecesidadMaterialFilterModel
     {
         $this->tercero = $tercero;
     }
-}
+
+} 

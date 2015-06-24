@@ -8,11 +8,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\NecesidadMaterialLinea;
 use Buseta\BodegaBundle\Form\Type\NecesidadMaterialLineaType;
 
-use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * Class NecesidadMaterialLineaController
@@ -54,14 +54,63 @@ class NecesidadMaterialLineaController extends Controller
      *
      * @throws \Exception
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/new/modal/{necesidadmaterial}", name="necesidadmaterial_lineas_new_modal", methods={"GET","POST"}, options={"expose":true})
-     * @ParamConverter("tercero", options={"mapping":{"tercero":"id"}})
+     *
+     * @Route("/new/{necesidadmaterial}", name="necesidadmaterial_lineas_new_modal", options={"expose":true})
+     * @Method({"GET","POST"})
+     * @ParamConverter("necesidadmaterial", options={"mapping":{"necesidadmaterial":"id"}})
      */
     public function newModalAction(NecesidadMaterial $necesidadmaterial, Request $request)
     {
         $trans = $this->get('translator');
         $handler = $this->get('buseta_necesidadmaterial.linea.handler');
         $handler->bindData($necesidadmaterial);
+
+        $handler->setRequest($request);
+
+        if($handler->handle()) {
+            $renderView = $this->renderView('@BusetaBodega/NecesidadMaterial/Linea/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
+            ), 201);
+        }
+
+        if($handler->getError()) {
+            $renderView = $this->renderView('@BusetaBodega/NecesidadMaterial/Linea/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Línea'), 'BusetaBodegaBundle')
+            ), 500);
+        }
+
+        $renderView = $this->renderView('@BusetaBodega/NecesidadMaterial/Linea/modal_form.html.twig', array(
+            'form' => $handler->getForm()->createView(),
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
+    }
+
+    /**
+     * @param NecesidadMaterial $necesidadmaterial
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     *
+     * @Route("/{id}/edit/{necesidadmaterial}", name="necesidadmaterial_lineas_edit_modal", options={"expose":true})
+     * @Method({"GET","PUT"})
+     * @ParamConverter("necesidadmaterial", options={"mapping":{"necesidadmaterial":"id"}})
+     */
+    public function editModalAction(NecesidadMaterialLinea $necesidadMaterialLinea, NecesidadMaterial $necesidadmaterial, Request $request)
+    {
+        $trans = $this->get('translator');
+        $handler = $this->get('buseta_necesidadmaterial.linea.handler');
+        $handler->bindData($necesidadmaterial, $necesidadMaterialLinea);
 
         $handler->setRequest($request);
 
@@ -172,9 +221,9 @@ class NecesidadMaterialLineaController extends Controller
     private function createCreateCompraForm(NecesidadMaterialLinea $entity)
     {
         $form = $this->createForm(new NecesidadMaterialLineaType(), $entity, array(
-                'action' => $this->generateUrl('linea_compra_create'),
-                'method' => 'POST',
-            ));
+            'action' => $this->generateUrl('linea_compra_create'),
+            'method' => 'POST',
+        ));
 
         //$form->add('submit', 'submit', array('label' => 'Create'));
 
@@ -286,55 +335,46 @@ class NecesidadMaterialLineaController extends Controller
         ));
     }
     /**
-     * Deletes a NecesidadMaterialLina entity.
-     *
-     * @Route("/{id}/delete", name="necesidad_material_linea_delete")
+     * Deletes a NecesidadMaterialLinea entity.
+     * @Route("/{id}/delete", name="necesidadmaterial_lineas_delete", options={"expose": true})
      * @Method({"DELETE", "GET"})
      */
-    public function deleteAction(NecesidadMaterialLinea $necesidadMaterialLinea, Request $request)
+    public function deleteAction(Request $request, NecesidadMaterialLinea $necesidadMaterialLinea)
     {
-        $trans = $this->get('translator');
-        $deleteForm = $this->createDeleteForm($necesidadMaterialLinea->getId());
+        $form = $this->createDeleteForm($necesidadMaterialLinea->getId());
+        $form->handleRequest($request);
 
-        $deleteForm->handleRequest($request);
-        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
             try {
-                $em = $this->get('doctrine.orm.entity_manager');
-
                 $em->remove($necesidadMaterialLinea);
                 $em->flush();
 
-                $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
-
+                $message = $this->get('translator')->trans('messages.delete.success', array(), 'BusetaBodegaBundle');
                 if($request->isXmlHttpRequest()) {
-                    return new JsonResponse(array(
-                        'message' => $message,
-                    ), 202);
-                }
-                else {
-                    $this->get('session')->getFlashBag()->add('success', $message);
+                    return new JsonResponse(array('message' => $message), 202);
                 }
             } catch (\Exception $e) {
-                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Línea de Necesidad de Material'), 'BusetaTallerBundle');
-                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
-
+                $message = $this->get('translator')->trans('messages.delete.error.%key%', array('key' => 'Linea Registro de Compra'), 'BusetaBodegaBundle');
                 if($request->isXmlHttpRequest()) {
-                    return new JsonResponse(array(
-                        'message' => $message,
-                    ), 500);
+                    return new JsonResponse(array('message' => $message), 500);
                 }
             }
         }
 
-        $renderView =  $this->renderView('@BusetaBodega/NecesidadMaterial/Linea/delete_modal.html.twig', array(
-            'entity' => $necesidadMaterialLinea,
-            'form' => $deleteForm->createView(),
-        ));
+        if ($request->isXmlHttpRequest()) {
+            $view = $this->renderView('@BusetaBodega/NecesidadMaterial/Linea/delete_modal.html.twig', array(
+                'entity'    => $necesidadMaterialLinea,
+                'form'      => $form->createView(),
+            ));
 
-        if($request->isXmlHttpRequest()) {
-            return new JsonResponse(array('view' => $renderView));
+            return new JsonResponse(array(
+                'view' => $view
+            ), 200);
         }
-        return $this->redirect($this->generateUrl('necesidadmaterial_lineas_list'));
+
+        return $this->redirect($this->generateUrl('linea'));
     }
 
     /**
@@ -347,9 +387,9 @@ class NecesidadMaterialLineaController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('linea_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('necesidadmaterial_lineas_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->getForm()
-        ;
+            ;
     }
 }

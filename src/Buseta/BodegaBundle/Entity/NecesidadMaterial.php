@@ -7,12 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
-
 /**
  * NecesidadMaterial.
  *
  * @ORM\Table(name="d_necesidad_material")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\NecesidadMaterialRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class NecesidadMaterial
 {
@@ -47,7 +47,14 @@ class NecesidadMaterial
     private $tercero;
 
     /**
-     * @var date
+     * @var string
+     *
+     * @ORM\Column(name="observaciones", type="string")
+     */
+    private $observaciones;
+
+    /**
+     * @var \DateTime
      *
      * @ORM\Column(name="fecha_pedido", type="date")
      * @Assert\Date()
@@ -86,6 +93,27 @@ class NecesidadMaterial
     /**
      * @var float
      *
+     * @ORM\Column(name="descuento", type="decimal", scale=2, nullable=true)
+     */
+    private $descuento;
+
+    /**
+     * @var \Buseta\TallerBundle\Entity\Impuesto
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Impuesto")
+     */
+    private $impuesto;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="importe_compra", type="decimal", scale=2, nullable=true)
+     */
+    private $importeCompra;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="importe_total_lineas", type="decimal", scale=2, nullable=true)
      */
     private $importe_total_lineas;
@@ -93,9 +121,28 @@ class NecesidadMaterial
     /**
      * @var float
      *
+     * @ORM\Column(name="importe_descuento", type="decimal", scale=2, nullable=true)
+     */
+    private $importeDescuento;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="importe_impuesto", type="decimal", scale=2, nullable=true)
+     */
+    private $importeImpuesto;
+
+    /**
+     * @var float
+     *
      * @ORM\Column(name="importe_total", type="decimal", scale=2, nullable=true)
      */
     private $importe_total;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\NecesidadMaterial")
+     */
+    private $necesidadMaterial;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -145,10 +192,9 @@ class NecesidadMaterial
      */
     public function __construct()
     {
-        $this->necesidad_material_lineas = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->importe_total_lineas = 0;
         $this->importe_total = 0;
-        $this->updated = new \DateTime();
+        $this->importe_total_lineas = 0;
+        $this->necesidad_material_lineas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->deleted = false;
     }
 
@@ -158,7 +204,6 @@ class NecesidadMaterial
      */
     public function setModelData(NecesidadMaterialModel $model)
     {
-        $this->id = $model->getId();
         $this->created = $model->getCreated();
         $this->createdby = $model->getCreatedby();
         $this->consecutivo_compra = $model->getConsecutivoCompra();
@@ -168,9 +213,13 @@ class NecesidadMaterial
         $this->updatedby = $model->getUpdatedby();
         $this->estado_documento = $model->getEstadoDocumento();
         $this->fecha_pedido = $model->getFechaPedido();
-        $this->importe_total = $model->getImporteTotal();
-        $this->importe_total_lineas = $model->getImporteTotalLineas();
+        $this->observaciones = $model->getObservaciones();
+        $this->importeCompra = $model->getImporteCompra();
         $this->numero_documento = $model->getNumeroDocumento();
+        $this->descuento        = $model->getDescuento();
+        $this->impuesto         = $model->getImpuesto();
+        $this->importeDescuento = $model->getImporteDescuento();
+        $this->importeImpuesto  = $model->getImporteImpuesto();
 
         if ($model->getTercero()) {
             $this->tercero  = $model->getTercero();
@@ -187,13 +236,18 @@ class NecesidadMaterial
         if ($model->getCondicionesPago()) {
             $this->condiciones_pago  = $model->getCondicionesPago();
         }
-        if (!$model->getNecesidadMaterialLineas()->isEmpty()) {
-            $this->necesidad_material_lineas = $model->getNecesidadMaterialLineas();
-        } else {
-            $this->necesidad_material_lineas = new ArrayCollection();
-        }
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     *
+     * @Assert\True(groups={"on_complete"}, message="El importe entrado para la Compra y el importe total del Registro no coinciden.")
+     */
+    public function isValidToComplete()
+    {
+        return $this->importeCompra === $this->importe_total;
     }
 
     /**
@@ -204,6 +258,46 @@ class NecesidadMaterial
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set necesidadMaterial.
+     *
+     * @param \Buseta\BodegaBundle\Entity\NecesidadMaterial $necesidadMaterial
+     *
+     * @return NecesidadMaterial
+     */
+    public function setNecesidadMaterial(\Buseta\BodegaBundle\Entity\NecesidadMaterial $necesidadMaterial = null)
+    {
+        $this->necesidadMaterial = $necesidadMaterial;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
+    }
+
+    /**
+     * @param string $observaciones
+     */
+    public function setObservaciones($observaciones)
+    {
+        $this->observaciones = $observaciones;
+    }
+
+    /**
+     * Get necesidadMaterial.
+     *
+     * @return \Buseta\BodegaBundle\Entity\NecesidadMaterial
+     */
+    public function getNecesidadMaterial()
+    {
+        return $this->necesidadMaterial;
     }
 
     /**
@@ -329,7 +423,7 @@ class NecesidadMaterial
     /**
      * Set importe_total.
      *
-     * @param string $importeTotal
+     * @param float $importeTotal
      *
      * @return NecesidadMaterial
      */
@@ -343,11 +437,35 @@ class NecesidadMaterial
     /**
      * Get importe_total.
      *
-     * @return string
+     * @return float
      */
     public function getImporteTotal()
     {
         return $this->importe_total;
+    }
+
+    /**
+     * Get importeCompra.
+     *
+     * @return float
+     */
+    public function getImporteCompra()
+    {
+        return $this->importeCompra;
+    }
+
+    /**
+     * Set importeCompra.
+     *
+     * @param float $importeCompra
+     *
+     * @return $this
+     */
+    public function setImporteCompra($importeCompra)
+    {
+        $this->importeCompra = $importeCompra;
+
+        return $this;
     }
 
     /**
@@ -648,5 +766,163 @@ class NecesidadMaterial
     public function getDeletedby()
     {
         return $this->deletedby;
+    }
+
+    /**
+     * Set descuento
+     *
+     * @param string $descuento
+     * @return NecesidadMaterial
+     */
+    public function setDescuento($descuento)
+    {
+        $this->descuento = $descuento;
+
+        return $this;
+    }
+
+    /**
+     * Get descuento
+     *
+     * @return float|null
+     */
+    public function getDescuento()
+    {
+        return $this->descuento;
+    }
+
+    /**
+     * Set importeDescuento
+     *
+     * @param string $importeDescuento
+     * @return NecesidadMaterial
+     */
+    public function setImporteDescuento($importeDescuento)
+    {
+        $this->importeDescuento = $importeDescuento;
+
+        return $this;
+    }
+
+    /**
+     * Get importeDescuento
+     *
+     * @return float|null
+     */
+    public function getImporteDescuento()
+    {
+        return $this->importeDescuento;
+    }
+
+    /**
+     * Set importeImpuesto
+     *
+     * @param string $importeImpuesto
+     * @return NecesidadMaterial
+     */
+    public function setImporteImpuesto($importeImpuesto)
+    {
+        $this->importeImpuesto = $importeImpuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get importeImpuesto
+     *
+     * @return float|null
+     */
+    public function getImporteImpuesto()
+    {
+        return $this->importeImpuesto;
+    }
+
+    /**
+     * Set impuesto
+     *
+     * @param \Buseta\TallerBundle\Entity\Impuesto $impuesto
+     * @return NecesidadMaterial
+     */
+    public function setImpuesto(\Buseta\TallerBundle\Entity\Impuesto $impuesto = null)
+    {
+        $this->impuesto = $impuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get impuesto
+     *
+     * @return \Buseta\TallerBundle\Entity\Impuesto
+     */
+    public function getImpuesto()
+    {
+        return $this->impuesto;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->created = new \DateTime();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->updated = new \DateTime();
+    }
+
+    /**
+     * @ORM\PreFlush
+     */
+    public function updateImporteTotal()
+    {
+        $this->importe_total_lineas = 0;
+        $this->importeDescuento = 0;
+        $this->importeImpuesto = 0;
+        $this->importe_total = 0;
+
+        $factorDescuento = 0;
+        if ($this->descuento !== null && $this->descuento !== 0) {
+            $factorDescuento = $this->descuento / 100;
+        }
+
+        $factorImpuesto = 0;
+        if ($this->impuesto !== null) {
+            $factorImpuesto = $this->impuesto->getTarifa() / 100;
+        }
+
+        foreach ($this->necesidad_material_lineas as $linea) {
+            /** @var NecesidadMaterialLinea $linea */
+            $importeLinea = $linea->getPrecioUnitario() * $linea ->getCantidadPedido();
+
+            // descuento por linea
+            $factorDescuentoLinea = 0;
+            if($linea->getPorcientoDescuento() !== null && $linea->getPorcientoDescuento() !== 0) {
+                $factorDescuentoLinea = $linea->getPorcientoDescuento() / 100;
+            }
+            $descuento = $factorDescuento + $factorDescuentoLinea;
+            $importeDescuento = $importeLinea * $descuento;
+
+            // impuesto por linea
+            $factorImpuestoLinea = 0;
+            if ($linea->getImpuesto() !== null) {
+                $factorImpuestoLinea = $linea->getImpuesto()->getTarifa() / 100;
+            }
+            $impuesto = $factorImpuesto + $factorImpuestoLinea;
+            $importeImpuesto = ($importeLinea - $importeDescuento) * $impuesto;
+
+            // importe total (formula reducida)
+            $importeTotal = $importeLinea * (1 - $descuento) * (1 + $impuesto);
+
+            $this->importeDescuento += $importeDescuento;
+            $this->importeImpuesto += $importeImpuesto;
+            $this->importe_total_lineas += $importeLinea;
+            $this->importe_total += $importeTotal;
+        }
     }
 }

@@ -12,27 +12,28 @@
     <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
 </div>
 
-<table class="linea_records_list table table-striped table-bordered table-condensed table-hover">
+<table class="lineas_records_list table table-striped table-bordered table-condensed table-hover">
     <thead>
     <tr>
         {#<th>{{ knp_pagination_sortable(entities, 'linea.valor' | trans({}, 'BusetaTallerBundle'), 'd.valor') }}</th>#}
-        <th style="text-align: left">Línea</th>
+        <th>Código</th>
         <th style="text-align: left">Producto</th>
         <th style="text-align: left">Cant.Pedido</th>
         <th style="text-align: left">UOM</th>
-        <th style="text-align: left">Precio</th>
+        <th style="text-align: left">Costo</th>
         <th style="text-align: left">Impuesto</th>
         <th style="text-align: left">Moneda</th>
         <th style="text-align: left">%Descuento</th>
         <th style="text-align: left">Importe</th>
-        <th style="text-align: center">Acciones</th>
+        <th style="border: 0;width: 1%;"></th>
+        <th style="border: 0;width: 1%;"></th>
     </tr>
     </thead>
     <tbody>
     {% for entity in entities %}
         <tr>
-            <td>{{ entity.linea }}</td>
-            <td>{{ entity.producto }}</td>
+            <td>{{ entity.producto.codigo }}</td>
+            <td>{{ entity.producto.nombre }}</td>
             <td>{{ entity.cantidadpedido }}</td>
             <td>{{ entity.uom }}</td>
             <td>{{ entity.preciounitario }}</td>
@@ -40,13 +41,11 @@
             <td>{{ entity.moneda }}</td>
             <td>{{ entity.porcientodescuento }}</td>
             <td>{{ entity.importelinea }}</td>
-
-            <td style="width: 10%; text-align: center;">
-                {#{% if reporte.diagnostico == null %}#}
-                        <a class="btn btn-danger btn-xs" href="#delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
-                    {#{% else %}#}
-                        {#<a class="btn btn-danger btn-xs disabled" href="#delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>#}
-                {#{% endif %}#}
+            <td class="text-center">
+                <a class="btn btn-primary btn-xs" href="#edit" data-content="{{ entity.id }}"><i class="fa fa-edit"> Editar</i></a>
+            </td>
+            <td class="text-center">
+                <a class="btn btn-danger btn-xs" href="#delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
             </td>
         </tr>
     {% else %}
@@ -57,10 +56,10 @@
     </tbody>
 </table>
 
-<div class="paginator row">
+<div class="lineas-paginator row">
     <div class="col-lg-4"></div>
     <div class="col-lg-12" style="text-align: center">{{ knp_pagination_render(entities) }}</div>
 </div>
 
 <div class="modal" id="form_lineas_modal"></div>
-<div class="modal" id="form_lineas_delete_modal"></div>
+<div class="modal" id="form_necesidadmateriallinea_delete_modal"></div>

@@ -20,8 +20,8 @@ class NecesidadMaterialLineaHandler extends NecesidadMaterialAbstractHandler
 
     public function bindData(NecesidadMaterial $necesidadmaterial, NecesidadMaterialLinea $necesidadMaterialLinea = null)
     {
-        $this->necesidadmaterial      = $necesidadmaterial;
-        $this->necesidadmaterial_linea  = $necesidadMaterialLinea;
+        $this->necesidadmaterial         = $necesidadmaterial;
+        $this->necesidadmaterial_linea   = $necesidadMaterialLinea;
 
         if (!$this->necesidadmaterial_linea) {
             // Creando una nueva linea
@@ -30,11 +30,13 @@ class NecesidadMaterialLineaHandler extends NecesidadMaterialAbstractHandler
 
             $this->form = $this->formFactory->create(new NecesidadMaterialLineaType(), $this->necesidadmaterial_linea, array(
                 'method' => 'POST',
+                'action' => $this->router->generate('necesidadmaterial_lineas_new_modal', array('necesidadmaterial' => $necesidadmaterial->getId())),
             ));
         } else {
             // Editando una Linea ya existente
             $this->form = $this->formFactory->create(new NecesidadMaterialLineaType(), $this->necesidadmaterial_linea, array(
                 'method' => 'PUT',
+                'action' => $this->router->generate('necesidadmaterial_lineas_edit_modal', array('id' => $necesidadMaterialLinea->getId(), 'necesidadmaterial' => $necesidadmaterial->getId())),
             ));
         }
     }
