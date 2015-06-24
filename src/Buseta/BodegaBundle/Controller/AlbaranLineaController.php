@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * Class AlbaranLineaController
@@ -52,7 +53,10 @@ class AlbaranLineaController extends Controller
      *
      * @throws \Exception
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/new/modal/{albaran}", name="albaran_lineas_new_modal", methods={"GET","POST"}, options={"expose":true})
+     *
+     * @Route("/new/{albaran}", name="albaran_lineas_new_modal", options={"expose":true})
+     * @Method({"GET","POST"})
+     * @ParamConverter("albaran", options={"mapping":{"albaran":"id"}})
      */
     public function newModalAction(Albaran $albaran, Request $request)
     {
@@ -91,6 +95,54 @@ class AlbaranLineaController extends Controller
         return new JsonResponse(array('view' => $renderView));
     }
 
+    /**
+     * @param Albaran $albaran
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     *
+     * @Route("/{id}/edit/{albaran}", name="albaran_lineas_edit_modal", options={"expose":true})
+     * @Method({"GET","PUT"})
+     * @ParamConverter("albaran", options={"mapping":{"albaran":"id"}})
+     */
+    public function editModalAction(AlbaranLinea $albaranLinea, Albaran $albaran, Request $request)
+    {
+        $trans = $this->get('translator');
+        $handler = $this->get('buseta_albaran.linea.handler');
+        $handler->bindData($albaran, $albaranLinea);
+
+        $handler->setRequest($request);
+
+        if($handler->handle()) {
+            $renderView = $this->renderView('@BusetaBodega/Albaran/Linea/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
+            ), 201);
+        }
+
+        if($handler->getError()) {
+
+            $renderView = $this->renderView('@BusetaBodega/Albaran/Linea/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Línea'), 'BusetaBodegaBundle')
+            ), 500);
+        }
+
+        $renderView = $this->renderView('@BusetaBodega/Albaran/Linea/modal_form.html.twig', array(
+            'form' => $handler->getForm()->createView(),
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
+    }
+
     public function create_compraAction(Request $request)
     {
         $entity = new AlbaranLinea();
@@ -117,8 +169,11 @@ class AlbaranLineaController extends Controller
             throw $this->createNotFoundException('Unable to find AlbaranLinea entity.');
         }
 
-        return $this->render('BusetaBodegaBundle:AlbaranLinea:show.html.twig', array(
+        $deleteForm = $this->createDeleteForm($id);
+
+        return $this->render('@BusetaBodega/Albaran/show.html.twig', array(
             'entity'      => $entity,
+            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -228,5 +283,64 @@ class AlbaranLineaController extends Controller
             'delete_form' => $deleteForm->createView(),
             'json'   => json_encode($json),
         ));
+    }
+
+    /**
+     * Deletes a AlbaranLinea entity.
+     * @Route("/{id}/delete", name="albaran_lineas_delete", options={"expose": true})
+     * @Method({"DELETE", "GET"})
+     */
+    public function deleteAction(Request $request, AlbaranLinea $albaranLinea)
+    {
+        $form = $this->createDeleteForm($albaranLinea->getId());
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            try {
+                $em->remove($albaranLinea);
+                $em->flush();
+
+                $message = $this->get('translator')->trans('messages.delete.success', array(), 'BusetaBodegaBundle');
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array('message' => $message), 202);
+                }
+            } catch (\Exception $e) {
+                $message = $this->get('translator')->trans('messages.delete.error.%key%', array('key' => 'Linea Albaran'), 'BusetaBodegaBundle');
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array('message' => $message), 500);
+                }
+            }
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            $view = $this->renderView('@BusetaBodega/Albaran/Linea/delete_modal.html.twig', array(
+                'entity'    => $albaranLinea,
+                'form'      => $form->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $view
+            ), 200);
+        }
+
+        return $this->redirect($this->generateUrl('linea'));
+    }
+
+    /**
+     * Creates a form to delete a AlbaranLinea entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('albaran_lineas_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->getForm()
+            ;
     }
 }

@@ -72,7 +72,6 @@
                 <th>Líneas existentes</th>
                 <td>
                     <table class="table table-striped" style="font-size: 16px;">
-                        <th>Línea</th>
                         <th>Producto</th>
                         <th>Cantidad Movida</th>
                         <th>Bodega</th>
@@ -82,7 +81,6 @@
                         {% for linea in entity.albaranLinea %}
                         <tbody>
                         <tr>
-                            <td>{{ linea.linea }}</td>
                             <td>{{ linea.producto.nombre }}</td>
                             <td>{{ linea.cantidadMovida }}</td>
                             <td>{{ linea.almacen.nombre }}</td>

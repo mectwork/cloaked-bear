@@ -1,12 +1,12 @@
-<div class="modal" id="form_observacion_delete_modal" tabindex="-1" role="dialog" aria-labelledby="deleteObservacion" aria-hidden="true">
+<div class="modal" id="form_albaranlinea_delete_modal" tabindex="-1" role="dialog" aria-labelledby="deleteAlbaranLinea" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="createObservacion">{{ 'observacion.modal.delete'|trans({},'BusetaTallerBundle') }}</h4>
+                <h4 class="modal-title" id="deleteAlbaranLinea">{{ 'albaranlinea.modal.delete'|trans({},'BusetaBodegaBundle') }}</h4>
             </div>
             <div class="modal-body">
-                <p>Usted está tratando de eliminar la observación <strong>"{{ entity.valor }}"</strong>.
+                <p>Usted está tratando de eliminar la línea <strong>"{{ entity.producto }}"</strong>.
                     Al aceptar la acción se eliminarán los datos de forma permanente. <strong>¿Está seguro que desea continuar?</strong></p>
                 <form name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" action="{{ form.vars.action }}"
                       method="post" enctype="multipart/form-data">
@@ -17,10 +17,10 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <a href="#" class="btn btn-default" id="btn_observacion_cancel" data-dismiss="modal"><span class="glyphicon glyphicon-chevron-left"></span>
-                    {{ 'actions.cancel' | trans({}, 'BusetaTallerBundle') }}</a>
-                <a href="#" class="btn btn-danger" id="btn_observacion_delete"><span class="glyphicon glyphicon-trash"></span>
-                    {{ 'actions.confirm' | trans({}, 'BusetaTallerBundle') }}</a>
+                <a href="#" class="btn btn-default" id="btn_albaranlinea_cancel" data-dismiss="modal"><span class="glyphicon glyphicon-chevron-left"></span>
+                    {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+                <a href="#" class="btn btn-danger" id="btn_albaranlinea_delete"><span class="glyphicon glyphicon-trash"></span>
+                    {{ 'actions.confirm' | trans({}, 'BusetaBodegaBundle') }}</a>
             </div>
         </div>
     </div>

@@ -31,16 +31,19 @@ class AlbaranLinea
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto", inversedBy="albaranLinea")
+     * @Assert\NotBlank()
      */
     private $producto;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="albaranLinea")
+     * @Assert\NotBlank()
      */
     private $almacen;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\UOM")
+     * @Assert\NotBlank()
      */
     private $uom;
 
@@ -48,7 +51,7 @@ class AlbaranLinea
      * @var integer
      *
      * @ORM\Column(name="cantidadMovida", type="integer")
-     * @Assert\Type("integer")
+     * @Assert\NotBlank()
      */
     private $cantidadMovida;
 

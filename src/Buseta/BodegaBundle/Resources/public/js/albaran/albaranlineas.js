@@ -1,54 +1,9 @@
-var Totales = function () {
-    this.lineas = [];
-    this.total = 0;
-
-    this.addLinea = function(monto) {
-        monto = parseInt(monto);
-        this.lineas.push({monto: monto});
-        this.total += monto;
-    };
-
-    /*this.addLinea = function(id, monto) {
-     this.lineas.push({id: id, monto: monto});
-     this.monto += monto;
-     };*/
-
-    this.removeLinea = function ( id ) {
-        var aux = [];
-        for ( var i = 0; i < this.lineas.length; i++ ) {
-            if( this.lineas[i].id !== id ) {
-                aux.push(this.lineas[i]);
-            } else {
-                this.total -= this.lineas[i].monto;
-            }
-        }
-
-        this.lineas = aux;
-    };
-
-    this.countTotal = function () {
-        this.total = 0;
-        for ( var i = 0 ; i < this.lineas.length ; i++ ) {
-            var monto = this.lineas[i].monto;
-            this.total += parseInt(monto);
-        }
-
-        return this.total;
-    };
-
-    this.getTotal = function () {
-        return this.total;
-    }
-};
-var lineastotales = new Totales();
-
 var lineas = {
     form_name: '',
     form_id: '',
     id: '',
     _start_events: function () {
         $('a[href="#form_lineas_modal"]').on('click', lineas._load_modal);
-
         // Paginator sort
         $('table.lineas_records_list').find('a.sortable, a.asc, a.desc').on('click', lineas._load);
         // Table addresses actions
@@ -81,8 +36,12 @@ var lineas = {
             lineas._start_events();
         }).fail(utils._fail).always(lineas._always);
     },
+    /**
+     * Carga el modal para crear/editar una linea
+     * @param event
+     * @private
+     */
     _load_modal: function(event) {
-
         if(event !== undefined) {
             event.preventDefault();
         }
@@ -103,25 +62,26 @@ var lineas = {
                 lineas.form_id = $('div#form_lineas_modal').find('form').attr('id');
                 lineas.form_name = $('div#form_lineas_modal').find('form').attr('name');
 
-                $('#buseta_bodegabundle_albaran_linea_producto').chosen();
-                $('#buseta_bodegabundle_albaran_linea_almacen').chosen();
-
-                $('a#btn_lineas_save').on('click',  lineas._save_modal);
-
-                $('a#btn_lineas_cancel').on('click', function(){
-                    $('div#form_lineas_modal').modal('hide');
-                });
-
-                //Valores iniciales del modal de nueva linea
-                $('#' + lineas.form_id + '_cantidad_pedido').val(0);
-
-                $('#' + lineas.form_id + '_cantidad_pedido').change(lineas._generar_importe_linea);
-                $('#' + lineas.form_id + '_producto').change(lineas._generar_importe_linea);
-                $('#' + lineas.form_id + '_impuesto').change(lineas._generar_importe_linea);
-                $('#' + lineas.form_id + '_porciento_descuento').on('blur', lineas._generar_importe_linea);
-
                 $('div#form_lineas_modal').modal('show');
+                lineas._linea_start_events();
             }).fail(utils._fail).always(function(){});
+    },
+    /**
+     * Actualiza los eventos para el modal de lineas
+     * @private
+     */
+    _linea_start_events: function () {
+        $('a#btn_lineas_save').unbind('click');
+        $('a#btn_lineas_save').on('click',  lineas._save_modal);
+
+        $('a#btn_lineas_cancel').unbind('click');
+        $('a#btn_lineas_cancel').on('click', function(){
+            $('div#form_lineas_modal').modal('hide');
+        });
+
+        // Chosen
+        $('#' + lineas.form_id + '_producto').chosen({ alt_search: true });
+        $('#' + lineas.form_id + '_almacen').chosen({ alt_search: true });
     },
     _load_delete_modal: function(event) {
         if(event !== undefined) {
@@ -136,27 +96,22 @@ var lineas = {
             url = Routing.generate('albaran_lineas_delete', {id: id});
         $.get(url)
             .done(function(response, textStatus, jqXHR){
-                $('div#form_lineas_delete_modal').replaceWith($(response.view));
+                $('div#form_albaranlinea_delete_modal').replaceWith($(response.view));
 
-                $('div#form_lineas_delete_modal a#btn_lineas_delete').on('click', lineas._save_delete_modal);
-                $('div#form_lineas_delete_modal a#btn_lineas_cancel').on('click', function(){
-                    $('div#form_lineas_delete_modal').modal('hide');
+                $('div#form_albaranlinea_delete_modal a#btn_albaranlinea_delete').on('click', lineas._save_delete_modal);
+                $('div#form_albaranlinea_delete_modal a#btn_albaranlinea_cancel').on('click', function(){
+                    $('div#form_albaranlinea_delete_modal').modal('hide');
                 });
 
-                $('div#form_lineas_delete_modal').modal('show');
+                $('div#form_albaranlinea_delete_modal').modal('show');
             }).fail(utils._fail).always(function(){});
     },
+    /**
+     * Salva el modal para crear/editar una linea
+     * @param event
+     * @private
+     */
     _save_modal: function (event) {
-
-        //Actualiza los valores de los campos Importes Total y Total por Lineas
-        var monto = $('#' + lineas.form_id + '_importe_linea').val();
-
-        lineastotales.addLinea(monto);
-        var montototal = lineastotales.getTotal();
-        $('#bodega_pedido_compra_importe_total_lineas').val(montototal);
-        $('#bodega_pedido_compra_importe_total').val(montototal);
-        //--Actualiza los valores de los campos Importes Total y Total por Lineas
-
         if(event != undefined) {
             event.preventDefault();
         }
@@ -168,32 +123,13 @@ var lineas = {
             .addClass('fa-gear')
             .addClass('fa-spin');
 
-        var url = Routing.generate('albaran_lineas_new_modal',{'albaran': albaran.id}),
-            id  = $('#' + lineas.form_id + '_id').val();
-        if(id !== '' && id !== undefined) {
-            url = Routing.generate('albaran_lineas_edit_modal',{'albaran': albaran.id, id: id});
-        }
-
         //Actualiza las nuevas lineas insertadas
         $('form#' + lineas.form_id).ajaxSubmit({
             success: lineas._done,
             error: utils._fail,
             complete: lineas._always,
-            url: url,
             dataType: 'json'
         });
-
-        //Actualiza el PedidoCompra con los nuevos valores de los importes de lineas y totales
-        url = Routing.generate('albarans_albaran_update', {'id': albaran.id});
-
-        $('form#' + albaran.form_id).ajaxSubmit({
-            success: albaran._done,
-            error: utils._fail,
-            complete: albaran._always,
-            url: url,
-            dataType: 'json'
-        });
-
     },
     _save_delete_modal: function (event) {
         if(event != undefined) {
@@ -207,7 +143,7 @@ var lineas = {
             .addClass('fa-gear')
             .addClass('fa-spin');
 
-        var deleteForm = $('div#form_lineas_delete_modal').find('form'),
+        var deleteForm = $('div#form_albaranlinea_delete_modal').find('form'),
             url = $(deleteForm).attr('action');
 
         deleteForm.ajaxSubmit({
@@ -215,7 +151,8 @@ var lineas = {
                 if(jqXHR.status == 202) {
                     addGlobalMessage('success', response.message);
                 }
-                $('div#form_lineas_delete_modal').modal('hide');
+                $('div#form_albaranlinea_delete_modal').modal('hide');
+
                 lineas._load();
             },
             error: utils._fail,
@@ -232,7 +169,11 @@ var lineas = {
             addGlobalMessage('success', response.message);
 
             $('div#form_lineas_modal').modal('hide');
+
             lineas._load();
+        } else {
+            $('div#form_lineas_modal').modal('hide');
+            lineas._linea_start_events();
         }
     },
     _always: function(jqXHR, textStatus) {
@@ -244,30 +185,5 @@ var lineas = {
             .removeClass('fa')
             .removeClass('fa-gear')
             .removeClass('fa-spin');
-    },
-    _generar_importe_linea: function (event){
-        var data = {
-            producto_id: $('#' + lineas.form_id + '_producto').val(),
-            impuesto_id: $('#' + lineas.form_id + '_impuesto').val(),
-            cantidad_pedido: $('#' + lineas.form_id + '_cantidad_pedido').val(),
-            precio_unitario: $('#' + lineas.form_id + '_precio_unitario').val(),
-            porciento_descuento: $('#' + lineas.form_id + '_porciento_descuento').val()
-        };
-
-        $.ajax({
-            type: 'GET',
-            url: '{{ path("impuesto_ajax_productos_all") }}',
-            data: data,
-            success: function(data) {
-                var values = $.parseJSON(data);
-                var importe_linea_text = $('#' + lineas.form_id + '_importe_linea');
-                var precio_text = $('#' + lineas.form_id + '_precio_unitario');
-
-                precio_text.val(values.precio);
-                importe_linea_text.val(values.importeLinea);
-
-                //$('#' + albaran.form_id + '_importe_total_lineas').val(montototal);
-            }
-        });
     }
 };

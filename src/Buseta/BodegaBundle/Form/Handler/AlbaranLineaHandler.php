@@ -7,7 +7,6 @@ use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Form\Type\AlbaranLineaType;
 
 
-
 class AlbaranLineaHandler extends AlbaranAbstractHandler
 {
     /**
@@ -21,8 +20,8 @@ class AlbaranLineaHandler extends AlbaranAbstractHandler
 
     public function bindData(Albaran $albaran, AlbaranLinea $albaranLinea = null)
     {
-        $this->albaran      = $albaran;
-        $this->albaran_linea  = $albaranLinea;
+        $this->albaran         = $albaran;
+        $this->albaran_linea   = $albaranLinea;
 
         if (!$this->albaran_linea) {
             // Creando una nueva linea
@@ -31,11 +30,13 @@ class AlbaranLineaHandler extends AlbaranAbstractHandler
 
             $this->form = $this->formFactory->create(new AlbaranLineaType(), $this->albaran_linea, array(
                 'method' => 'POST',
+                'action' => $this->router->generate('albaran_lineas_new_modal', array('albaran' => $albaran->getId())),
             ));
         } else {
             // Editando una Linea ya existente
             $this->form = $this->formFactory->create(new AlbaranLineaType(), $this->albaran_linea, array(
                 'method' => 'PUT',
+                'action' => $this->router->generate('albaran_lineas_edit_modal', array('id' => $albaranLinea->getId(), 'albaran' => $albaran->getId())),
             ));
         }
     }
@@ -63,7 +64,7 @@ class AlbaranLineaHandler extends AlbaranAbstractHandler
                 return true;
             } catch (\Exception $e) {
                 $this->logger->addCritical(sprintf(
-                    $this->trans->trans('messages.update.error.%key%', array('key' => 'Albarán Líneas'), 'BusetaBodegaBundle')
+                    $this->trans->trans('messages.update.error.%key%', array('key' => 'Albaran Líneas'), 'BusetaBodegaBundle')
                     . ' Detalles: %s',
                     $e->getMessage()
                 ));

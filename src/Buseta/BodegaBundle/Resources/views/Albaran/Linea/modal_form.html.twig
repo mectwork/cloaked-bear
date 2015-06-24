@@ -1,7 +1,7 @@
 {% form_theme form '@BusetaBodega/Form/fields.twig' %}
 
 <div class="modal" id="form_lineas_modal" tabindex="-1" role="dialog" aria-labelledby="createLineas" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -13,7 +13,16 @@
                     {% if form.vars.method == 'PUT' %}
                         <input type="hidden" name="_method" value="PUT"/>
                     {% endif %}
-                    {{ form_widget(form) }}
+
+                    <div class="row">
+                        <div class="col-lg-6">{{ form_row(form.producto) }}</div>
+                        <div class="col-lg-6">{{ form_row(form.almacen) }}</div>
+                        <div class="col-lg-6">{{ form_row(form.valorAtributos) }}</div>
+                        <div class="col-lg-6">{{ form_row(form.uom) }}</div>
+                        <div class="col-lg-6">{{ form_row(form.cantidadMovida) }}</div>
+                    </div>
+
+                    {{ form_widget(form._token) }}
                 </form>
             </div>
             <div class="modal-footer">
