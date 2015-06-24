@@ -25,13 +25,6 @@ class AlbaranLinea
     /**
      * @var string
      *
-     * @ORM\Column(name="linea", type="string", nullable=true)
-     */
-    private $linea;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="valorAtributos", type="string", nullable=true)
      */
     private $valorAtributos;
@@ -72,30 +65,6 @@ class AlbaranLinea
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set linea.
-     *
-     * @param string $linea
-     *
-     * @return AlbaranLinea
-     */
-    public function setLinea($linea)
-    {
-        $this->linea = $linea;
-
-        return $this;
-    }
-
-    /**
-     * Get linea.
-     *
-     * @return string
-     */
-    public function getLinea()
-    {
-        return $this->linea;
     }
 
     /**

@@ -1,9 +1,3 @@
-{#{% if reporte.diagnostico == null %}
-        <div class="btn-group" style="margin-bottom: 8px;">
-            <a class="btn btn-primary" href="#form_linea_modal"><span class="glyphicon glyphicon-plus-sign"></span> {{ 'linea.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
-        </div>
-{% endif %}#}
-
 <div class="btn-group" style="margin-bottom: 8px;">
     <a class="btn btn-primary" href="#form_lineas_modal"><span class="glyphicon glyphicon-plus-sign"></span> {{ 'linea.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
 </div>
@@ -16,7 +10,6 @@
     <thead>
     <tr>
         {#<th>{{ knp_pagination_sortable(entities, 'linea.valor' | trans({}, 'BusetaTallerBundle'), 'd.valor') }}</th>#}
-        <th style="text-align: left">Línea</th>
         <th style="text-align: left">Producto</th>
         <th style="text-align: left">Cantidad Movida</th>
         <th style="text-align: left">Bodega</th>
@@ -28,7 +21,6 @@
     <tbody>
     {% for entity in entities %}
         <tr>
-            <td>{{ entity.linea }}</td>
             <td>{{ entity.producto }}</td>
             <td>{{ entity.cantidadMovida }}</td>
             <td>{{ entity.almacen }}</td>
