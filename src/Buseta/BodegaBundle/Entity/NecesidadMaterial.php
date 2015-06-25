@@ -49,7 +49,7 @@ class NecesidadMaterial
     /**
      * @var string
      *
-     * @ORM\Column(name="observaciones", type="string")
+     * @ORM\Column(name="observaciones", type="string", nullable=true)
      */
     private $observaciones;
 
