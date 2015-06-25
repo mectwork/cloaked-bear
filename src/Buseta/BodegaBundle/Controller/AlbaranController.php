@@ -25,6 +25,42 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  */
 class AlbaranController extends Controller
 {
+    /**
+     * Lists all Albaran entities.
+     *
+     * @Route("/", name="albaran")
+     * @Method("GET")
+     */
+    public function indexAction(Request $request)
+    {
+        $filter = new AlbaranFilterModel();
+
+        $form = $this->createForm(new AlbaranFilter(), $filter, array(
+            'action' => $this->generateUrl('albaran'),
+        ));
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Albaran')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:Albaran')->filter();
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $request->query->get('page', 1),
+            5
+        );
+
+        return $this->render('BusetaBodegaBundle:Albaran:index.html.twig', array(
+            'entities'      => $entities,
+            'filter_form'   => $form->createView(),
+        ));
+    }
+
     public function procesarAlbaranAction($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -203,39 +239,6 @@ class AlbaranController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
 
-    }
-
-    /**
-     * Lists all Albaran entities.
-     */
-    public function indexAction(Request $request)
-    {
-        $filter = new AlbaranFilterModel();
-
-        $form = $this->createForm(new AlbaranFilter(), $filter, array(
-            'action' => $this->generateUrl('albaran'),
-        ));
-
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-            $entities = $this->get('doctrine.orm.entity_manager')
-                ->getRepository('BusetaBodegaBundle:Albaran')->filter($filter);
-        } else {
-            $entities = $this->get('doctrine.orm.entity_manager')
-                ->getRepository('BusetaBodegaBundle:Albaran')->filter();
-        }
-
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-            $entities,
-            $request->query->get('page', 1),
-            5
-        );
-
-        return $this->render('BusetaBodegaBundle:Albaran:index.html.twig', array(
-            'entities'      => $entities,
-            'filter_form'   => $form->createView(),
-        ));
     }
 
     /**

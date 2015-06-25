@@ -25,29 +25,25 @@ class AlbaranLinea
     /**
      * @var string
      *
-     * @ORM\Column(name="linea", type="string", nullable=true)
-     */
-    private $linea;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="valorAtributos", type="string", nullable=true)
      */
     private $valorAtributos;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto", inversedBy="albaranLinea")
+     * @Assert\NotBlank()
      */
     private $producto;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="albaranLinea")
+     * @Assert\NotBlank()
      */
     private $almacen;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\UOM")
+     * @Assert\NotBlank()
      */
     private $uom;
 
@@ -55,7 +51,7 @@ class AlbaranLinea
      * @var integer
      *
      * @ORM\Column(name="cantidadMovida", type="integer")
-     * @Assert\Type("integer")
+     * @Assert\NotBlank()
      */
     private $cantidadMovida;
 
@@ -72,30 +68,6 @@ class AlbaranLinea
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set linea.
-     *
-     * @param string $linea
-     *
-     * @return AlbaranLinea
-     */
-    public function setLinea($linea)
-    {
-        $this->linea = $linea;
-
-        return $this;
-    }
-
-    /**
-     * Get linea.
-     *
-     * @return string
-     */
-    public function getLinea()
-    {
-        return $this->linea;
     }
 
     /**

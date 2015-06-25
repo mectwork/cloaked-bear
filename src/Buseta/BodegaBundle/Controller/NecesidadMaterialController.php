@@ -15,9 +15,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\NecesidadMaterial;
 
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Validator\ConstraintViolation;
 
 /**
  * NecesidadMaterial controller.
@@ -28,6 +30,9 @@ class NecesidadMaterialController extends Controller
 {
     /**
      * Lists all NecesidadMaterial entities.
+     *
+     * @Route("/", name="necesidadmaterial")
+     * @Method("GET")
      */
     public function indexAction(Request $request)
     {
@@ -59,79 +64,123 @@ class NecesidadMaterialController extends Controller
         ));
     }
 
-    public function procesarNecesidadAction($id)
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{id}/procesarNecesidad", name="procesarNecesidad")
+     * @Method("GET")
+     */
+    public function procesarNecesidadAction(NecesidadMaterial $necesidadMaterial)
     {
-        $em = $this->getDoctrine()->getManager();
+        $validator  = $this->get('validator');
+        $session    = $this->get('session');
+        if (($errors = $validator->validate($necesidadMaterial, 'on_complete')) && count($errors) > 0) {
+            foreach ($errors as $e) {
+                /** @var ConstraintViolation $e */
+                $session->getFlashBag()->add('danger', $e->getMessage());
+            }
 
-        $necesidadMaterial = $em->getRepository('BusetaBodegaBundle:NecesidadMaterial')->find($id);
-
-        if (!$necesidadMaterial) {
-            throw $this->createNotFoundException('Unable to find NecesidadMaterial entity.');
+            return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
         }
+
+        $em = $this->getDoctrine()->getManager();
 
         //Cambia el estado de Borrador a Procesado
         $necesidadMaterial->setEstadoDocumento('PR');
-        $em->persist($necesidadMaterial);
-        $em->flush();
+
+        try {
+            $em->persist($necesidadMaterial);
+            $em->flush();
+        } catch (\Exception $e) {
+            $this->get('logger')->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
+            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
+        }
 
         return $this->redirect($this->generateUrl('necesidadmaterial'));
     }
 
-    public function completarNecesidadAction($id)
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{id}/completarNecesidad", name="completarNecesidad")
+     * @Method("GET")
+     */
+    public function completarNecesidadAction(NecesidadMaterial $necesidadMaterial)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em         = $this->getDoctrine()->getManager();
+        $logger     = $this->get('logger');
+        $session    = $this->get('session');
+        $error      = false;
 
-        $necesidadMaterial = $em->getRepository('BusetaBodegaBundle:NecesidadMaterial')->find($id);
-
-        if (!$necesidadMaterial) {
-            throw $this->createNotFoundException('Unable to find NecesidadMaterial entity.');
-        }
-
-        $fecha =  new \DateTime();
-
-        $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($necesidadMaterial->getAlmacen());
-        $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($necesidadMaterial->getTercero());
-
-        //Registro los datos del nuevo PedidoCompra que se crear al procesar la NecesidadMaterial
-        $pedidoCompra = new PedidoCompra();
-        $pedidoCompra->setNumeroDocumento($necesidadMaterial->getNumeroDocumento());
-        $pedidoCompra->setConsecutivoCompra($necesidadMaterial->getConsecutivoCompra());
-        $pedidoCompra->setTercero($tercero);
-        $pedidoCompra->setFechaPedido($necesidadMaterial->getFechaPedido());
-        $pedidoCompra->setAlmacen($almacen);
-        $pedidoCompra->setMoneda($necesidadMaterial->getMoneda());
-        $pedidoCompra->setFormaPago($necesidadMaterial->getFormaPago());
-        $pedidoCompra->setCondicionesPago($necesidadMaterial->getCondicionesPago());
-        $pedidoCompra->setEstadoDocumento('BO');
-        $pedidoCompra->setImporteTotal($necesidadMaterial->getImporteTotal());
-        $pedidoCompra->setImporteTotalLineas($necesidadMaterial->getImporteTotalLineas());
-        $pedidoCompra->setCreated(new \DateTime());
-
-        $em->persist($pedidoCompra);
-        $em->flush();
-
-        //Registro los datos de las líneas del PedidoCompra
-        foreach ($necesidadMaterial->getNecesidadMaterialLineas() as $linea) {
-            $registroCompraLinea = new PedidoCompraLinea();
-            $registroCompraLinea->setPedidoCompra($pedidoCompra);
-            $registroCompraLinea->setLinea($linea->getLinea());
-            $registroCompraLinea->setProducto($linea->getProducto());
-            $registroCompraLinea->setCantidadPedido($linea->getCantidadPedido());
-            $registroCompraLinea->setUom($linea->getUom());
-            $registroCompraLinea->setPrecioUnitario($linea->getPrecioUnitario());
-            $registroCompraLinea->setImpuesto($linea->getImpuesto());
-            $registroCompraLinea->setMoneda($linea->getMoneda());
-            $registroCompraLinea->setPorcientoDescuento($linea->getPorcientoDescuento());
-            $registroCompraLinea->setImporteLinea($linea->getImporteLinea());
-
-            $em->persist($registroCompraLinea);
-            $em->flush();
-        }
-
+        //Cambia el estado de Procesado a Completado
         $necesidadMaterial->setEstadoDocumento('CO');
-        //$necesidadMaterial->setDeleted(true);
-        $em->persist($necesidadMaterial);
-        $em->flush();
+        try {
+            $em->persist($necesidadMaterial);
+            $em->flush();
+        } catch (\Exception $e) {
+            $logger->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
+            $session->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
+
+            $error = true;
+        }
+
+        if (!$error) {
+            $fecha =  new \DateTime();
+
+            $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($necesidadMaterial->getAlmacen());
+            $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($necesidadMaterial->getTercero());
+
+            //Registro los datos del nuevo PedidoCompra que se crear al procesar la NecesidadMaterial
+            $pedidoCompra = new PedidoCompra();
+            $pedidoCompra->setNumeroDocumento($necesidadMaterial->getNumeroDocumento());
+            $pedidoCompra->setConsecutivoCompra($necesidadMaterial->getConsecutivoCompra());
+            $pedidoCompra->setTercero($tercero);
+            $pedidoCompra->setFechaPedido($necesidadMaterial->getFechaPedido());
+            $pedidoCompra->setAlmacen($almacen);
+            $pedidoCompra->setMoneda($necesidadMaterial->getMoneda());
+            $pedidoCompra->setFormaPago($necesidadMaterial->getFormaPago());
+            $pedidoCompra->setCondicionesPago($necesidadMaterial->getCondicionesPago());
+            $pedidoCompra->setEstadoDocumento('BO');
+            $pedidoCompra->setImporteTotal($necesidadMaterial->getImporteTotal());
+            $pedidoCompra->setImporteTotalLineas($necesidadMaterial->getImporteTotalLineas());
+            $pedidoCompra->setImpuesto($necesidadMaterial->getImpuesto());
+            $pedidoCompra->setDescuento($necesidadMaterial->getDescuento());
+            $pedidoCompra->setImporteImpuesto($necesidadMaterial->getImporteImpuesto());
+            $pedidoCompra->setImporteDescuento($necesidadMaterial->getImporteDescuento());
+            $pedidoCompra->setImporteCompra($necesidadMaterial->getImporteCompra());
+            $pedidoCompra->setObservaciones($necesidadMaterial->getObservaciones());
+            $pedidoCompra->setCreated(new \DateTime());
+
+            $em->persist($pedidoCompra);
+            $em->flush();
+
+            //Registro los datos de las líneas del PedidoCompra
+            foreach ($necesidadMaterial->getNecesidadMaterialLineas() as $linea) {
+                $registroCompraLinea = new PedidoCompraLinea();
+                $registroCompraLinea->setPedidoCompra($pedidoCompra);
+                $registroCompraLinea->setLinea($linea->getLinea());
+                $registroCompraLinea->setProducto($linea->getProducto());
+                $registroCompraLinea->setCantidadPedido($linea->getCantidadPedido());
+                $registroCompraLinea->setUom($linea->getUom());
+                $registroCompraLinea->setPrecioUnitario($linea->getPrecioUnitario());
+                $registroCompraLinea->setImpuesto($linea->getImpuesto());
+                $registroCompraLinea->setMoneda($linea->getMoneda());
+                $registroCompraLinea->setPorcientoDescuento($linea->getPorcientoDescuento());
+                $registroCompraLinea->setImporteLinea($linea->getImporteLinea());
+
+                $em->persist($registroCompraLinea);
+                $em->flush();
+            }
+
+            $necesidadMaterial->setEstadoDocumento('CO');
+            //$necesidadMaterial->setDeleted(true);
+            $em->persist($necesidadMaterial);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('necesidadmaterial'));
+        }
 
         return $this->redirect($this->generateUrl('necesidadmaterial'));
     }
@@ -139,7 +188,8 @@ class NecesidadMaterialController extends Controller
     /**
      * Creates a new NecesidadMaterial entity.
      *
-     * @Route("/create", name="necesidadmateriales_necesidadmaterial_create", methods={"POST"}, options={"expose":true})
+     * @Route("/create", name="necesidadmaterial_create", options={"expose": true})
+     * @Method("POST")
      */
     public function createAction(Request $request)
     {
@@ -197,7 +247,7 @@ class NecesidadMaterialController extends Controller
     private function createCreateForm(NecesidadMaterialModel $entity)
     {
         $form = $this->createForm('bodega_necesidad_material', $entity, array(
-            'action' => $this->generateUrl('necesidadmateriales_necesidadmaterial_create'),
+            'action' => $this->generateUrl('necesidadmaterial_create'),
             'method' => 'POST',
         ));
 
@@ -207,28 +257,34 @@ class NecesidadMaterialController extends Controller
     /**
      * Displays a form to create a new NecesidadMaterial entity.
      *
-     * @Route("/new", name="necesidadmateriales_necesidadmaterial_new", methods={"GET"}, options={"expose":true})
+     * @Route("/new", name="necesidadmaterial_new")
+     * @Method("GET")
      */
     public function newAction()
     {
         $form   = $this->createCreateForm(new NecesidadMaterialModel());
 
-        $em = $this->getDoctrine()->getManager();
-        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
+        $em = $this->get('doctrine.orm.entity_manager');
+        $productos = $em->getRepository('BusetaBodegaBundle:Producto')
+            ->createQueryBuilder('p')
+            ->select('p,c')
+            ->innerJoin('p.costoProducto', 'c')
+            ->getQuery()
+            ->getResult();
 
         $json = array();
-        $precioSalida = 0;
+        $costoSalida = 0;
 
         foreach ($productos as $p) {
-            foreach ($p->getPrecioProducto() as $precios) {
-                if ($precios->getActivo()) {
-                    $precioSalida = ($precios->getPrecio());
+            foreach ($p->getCostoProducto() as $costo) {
+                if ($costo->getActivo()) {
+                    $costoSalida = ($costo->getCosto());
                 }
             }
 
             $json[$p->getId()] = array(
                 'nombre' => $p->getNombre(),
-                'precio_salida' => $precioSalida,
+                'precio_salida' => $costoSalida,
             );
         }
 
@@ -240,6 +296,9 @@ class NecesidadMaterialController extends Controller
 
     /**
      * Finds and displays a NecesidadMaterial entity.
+     *
+     * @Route("/{id}/show", name="necesidadmaterial_show")
+     * @Method("GET")
      */
     public function showAction($id)
     {
@@ -261,7 +320,8 @@ class NecesidadMaterialController extends Controller
     /**
      * Displays a form to edit an existing NecesidadMaterial entity.
      *
-     * @Route("/{id}/edit", name="necesidadmateriales_necesidadmaterial_edit", methods={"GET"}, options={"expose":true})
+     * @Route("/{id}/edit", name="necesidadmaterial_edit", options={"expose": true})
+     * @Method("GET")
      */
     public function editAction(NecesidadMaterial $necesidadmaterial)
     {
@@ -285,7 +345,7 @@ class NecesidadMaterialController extends Controller
     private function createEditForm(NecesidadMaterialModel $entity)
     {
         $form = $this->createForm('bodega_necesidad_material', $entity, array(
-            'action' => $this->generateUrl('necesidadmateriales_necesidadmaterial_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('necesidadmaterial_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -295,7 +355,8 @@ class NecesidadMaterialController extends Controller
     /**
      * Edits an existing NecesidadMaterial entity.
      *
-     * @Route("/{id}/update", name="necesidadmateriales_necesidadmaterial_update", methods={"POST","PUT"}, options={"expose":true})
+     * @Route("/{id}/update", name="necesidadmaterial_update", options={"expose": true})
+     * @Method({"POST", "PUT"})
      */
     public function updateAction(Request $request, NecesidadMaterial $necesidadmaterial)
     {
@@ -312,6 +373,7 @@ class NecesidadMaterialController extends Controller
                 $necesidadmaterial->setModelData($necesidadmaterialModel);
                 $em->flush();
 
+                $editForm = $this->createEditForm(new NecesidadMaterialModel($necesidadmaterial));
                 $renderView = $this->renderView('@BusetaBodega/NecesidadMaterial/form_template.html.twig', array(
                     'form'     => $editForm->createView(),
                 ));
@@ -327,7 +389,7 @@ class NecesidadMaterialController extends Controller
                 ));
 
                 new JsonResponse(array(
-                    'message' => $trans->trans('messages.update.error.%entidad%', array('entidad' => 'Registro de Compra'), 'BusetaBodegaBundle')
+                    'message' => $trans->trans('messages.update.error.%key%', array('key' => 'Registro de Compra'), 'BusetaBodegaBundle')
                 ), 500);
             }
         }
@@ -342,8 +404,8 @@ class NecesidadMaterialController extends Controller
     /**
      * Deletes a NecesidadMaterial entity.
      *
-     * @Route("/{id}/delete", name="necesidadmaterial_delete")
-     * @Method({"DELETE", "GET"})
+     * @Route("/{id}/delete", name="necesidadmaterial_delete", options={"expose": true})
+     * @Method({"DELETE", "GET", "POST"})
      */
     public function deleteAction(NecesidadMaterial $necesidadmaterial, Request $request)
     {
@@ -369,7 +431,7 @@ class NecesidadMaterialController extends Controller
                     $this->get('session')->getFlashBag()->add('success', $message);
                 }
             } catch (\Exception $e) {
-                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Necesidad Material'), 'BusetaTallerBundle');
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Pedido Compra'), 'BusetaTallerBundle');
                 $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
 
                 if($request->isXmlHttpRequest()) {
@@ -405,6 +467,6 @@ class NecesidadMaterialController extends Controller
             ->setAction($this->generateUrl('necesidadmaterial_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->getForm()
-        ;
+            ;
     }
 }

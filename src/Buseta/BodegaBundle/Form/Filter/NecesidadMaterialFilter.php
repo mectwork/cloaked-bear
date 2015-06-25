@@ -24,7 +24,7 @@ class NecesidadMaterialFilter extends AbstractType
             ))
             ->add('tercero','entity',array(
                 'class' => 'BusetaBodegaBundle:Tercero',
-                'query_builder' => function (EntityRepository $er) {
+                'query_builder' => function(EntityRepository $er){
                     $qb = $er->createQueryBuilder('t');
                     return $qb->join('t.proveedor', 'proveedor')
                         ->where($qb->expr()->isNotNull('proveedor'));
@@ -70,6 +70,20 @@ class NecesidadMaterialFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
+            ->add('importe_total_lineas', 'text', array(
+                'required' => false,
+                'label'  => 'Importe total líneas',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('importe_total', 'text', array(
+                'required' => false,
+                'label'  => 'Importe total',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('estado_documento', 'choice', array(
                 'required' => false,
                 'empty_value' => '---Seleccione---',
@@ -79,20 +93,6 @@ class NecesidadMaterialFilter extends AbstractType
                     'BO' => 'estado.BO',
                     'PR' => 'estado.PR',
                 ),
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('importe_total_lineas', 'text', array(
-                'required' => false,
-                'label'  => 'Importe total líneas',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('importe_total', 'text', array(
-                'required' => false,
-                'label'  => 'Importe total',
                 'attr'   => array(
                     'class' => 'form-control',
                 ),

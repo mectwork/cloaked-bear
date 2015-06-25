@@ -42,23 +42,25 @@ class NecesidadMaterialType extends AbstractType
                 'required' => false,
             ))
             ->add('numero_documento', 'text', array(
-                    'required' => false,
-                    'label'  => 'Nro.Documento',
-                    'attr'   => array(
-                        'class' => 'form-control',
-                    ),
-                ))
+                'required' => false,
+                'label'  => 'Nro.Documento',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))//
             ->add('tercero', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'query_builder' => function (EntityRepository $er) {
                     $qb = $er->createQueryBuilder('t');
-                    return $qb->join('t.proveedor', 'proveedor')
+                    return $qb
+                        ->select('t, proveedor')
+                        ->innerJoin('t.proveedor', 'proveedor')
                         ->where($qb->expr()->isNotNull('proveedor'))
                         ->orderBy('t.nombres', 'ASC');
                 },
                 'empty_value' => '---Seleccione---',
-                'label' => 'Nombre del Proveedor',
                 'required' => true,
+                'label' => 'Nombre del Proveedor',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -120,7 +122,30 @@ class NecesidadMaterialType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('importe_total_lineas', 'text', array(
+            ->add('descuento', 'number', array(
+                'required'  => false,
+                'label'     => 'Descuento compra',
+                'attr'      => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('impuesto', 'entity', array(
+                'class'         => 'BusetaTallerBundle:Impuesto',
+                'empty_value'   => '---Seleccione---',
+                'required'      => false,
+                'label'         => 'Impuesto compra',
+                'attr'          => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('importeCompra', 'number', array(
+                'required' => false,
+                'label' => 'Importe compra',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('importe_total_lineas', 'number', array(
                 'required' => false,
                 'label'  => 'Importe total líneas',
                 'read_only' => true,
@@ -128,7 +153,24 @@ class NecesidadMaterialType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('importe_total', 'text', array(
+
+            ->add('importeDescuento', 'number', array(
+                'required' => false,
+                'read_only' => true,
+                'label'  => 'Importe descuento',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('importeImpuesto', 'number', array(
+                'required' => false,
+                'read_only' => true,
+                'label'  => 'Importe impuesto',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('importe_total', 'number', array(
                 'required' => false,
                 'read_only' => true,
                 'label'  => 'Importe total',
@@ -136,13 +178,12 @@ class NecesidadMaterialType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('necesidad_material_lineas', 'collection', array(
-                'type' => new NecesidadMaterialLineaType(),
-                'label'  => false,
-                'required' => true,
-                'by_reference' => false,
-                'allow_add' => true,
-                'allow_delete' => true,
+            ->add('observaciones', 'textarea', array(
+                'required' => false,
+                'label'  => 'Observaciones',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
             ))
         ;
     }
@@ -155,7 +196,6 @@ class NecesidadMaterialType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Buseta\BodegaBundle\Form\Model\NecesidadMaterialModel',
         ));
-
     }
 
     /**
@@ -182,7 +222,7 @@ class NecesidadMaterialType extends AbstractType
         $form->add('consecutivo_compra', 'text', array(
             'required' => true,
             'read_only' => true,
-            'label'  => 'Consecutivo Automático',
+            'label'  => 'Consecutivo automático',
             'attr'   => array(
                 'class' => 'form-control',
             ),

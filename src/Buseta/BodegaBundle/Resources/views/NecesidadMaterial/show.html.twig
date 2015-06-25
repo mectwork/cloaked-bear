@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Datos de Necesidad de Material
+    Datos de la Necesidad de Material
 {% endblock %}
 
 {% block area_trabajo %}
@@ -19,17 +19,17 @@
 
             <tr>
                 <th>Nro.Documento</th>
-                <td>{{ entity.numeroDocumento }}</td>
+                <td>{{ entity.numerodocumento }}</td>
             </tr>
 
             <tr>
                 <th>Nro.Referencia</th>
-                <td>{{ entity.consecutivoCompra }}</td>
+                <td>{{ entity.consecutivocompra }}</td>
             </tr>
 
             <tr>
                 <th>Fecha Pedido</th>
-                <td>{{ entity.fechaPedido | date('d/m/Y') }}</td>
+                <td>{{ entity.fechapedido | date('d/m/Y') }}</td>
             </tr>
 
             <tr>
@@ -39,12 +39,12 @@
 
             <tr>
                 <th>Forma de Pago</th>
-                <td>{{ entity.formaPago }}</td>
+                <td>{{ entity.formapago }}</td>
             </tr>
 
             <tr>
                 <th>Condiciones de Pago</th>
-                <td>{{ entity.condicionesPago }}</td>
+                <td>{{ entity.condicionespago }}</td>
             </tr>
 
             <tr>
@@ -53,13 +53,18 @@
             </tr>
 
             <tr>
+                <th>Importe Compra</th>
+                <td>{{ entity.importeCompra }}</td>
+            </tr>
+
+            <tr>
                 <th>Importe Total Líneas</th>
-                <td>{{ entity.importeTotalLineas }}</td>
+                <td>{{ entity.importetotallineas }}</td>
             </tr>
 
             <tr>
                 <th>Importe Total</th>
-                <td>{{ entity.importeTotal }}</td>
+                <td>{{ entity.importetotal }}</td>
             </tr>
 
             <tr>
@@ -70,6 +75,11 @@
             <tr>
                 <th>Estado Documento</th>
                 <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
+            </tr>
+
+            <tr>
+                <th>Observaciones</th>
+                <td>{{ entity.observaciones }}</td>
             </tr>
 
             <tr>
@@ -85,21 +95,22 @@
                         <th>%Descuento</th>
                         <th>Importe Línea</th>
 
-                        {% for linea in entity.necesidadMaterialLineas %}
-                        <tr>
-                            <td>{{ linea.linea }}</td>
-                            <td>{{ linea.producto.nombre }}</td>
-                            <td>{{ linea.cantidadpedido }}</td>
-                            <td>{{ linea.uom.valor }}</td>
-                            <td>{{ linea.preciounitario }}</td>
-                            <td>{{ linea.impuesto.nombre }}</td>
-                            <td>{{ linea.porcientodescuento }}</td>
-                            <td>{{ linea.importelinea }}</td>
-                        </tr>
+                        {% for linea in entity.necesidadmateriallineas %}
+                        <tbody>
+                            <tr>
+                                <td>{{ linea.linea }}</td>
+                                <td>{{ linea.producto.nombre }}</td>
+                                <td>{{ linea.cantidadpedido }}</td>
+                                <td>{{ linea.uom.valor }}</td>
+                                <td>{{ linea.preciounitario }}</td>
+                                <td>{{ linea.impuesto ? linea.impuesto.nombre : '-' }}</td>
+                                <td>{{ linea.porcientodescuento }}</td>
+                                <td>{{ linea.importelinea }}</td>
+                            </tr>
                         {% else %}
                             <tr>
                                 <td colspan="6">
-                                    <span class="label label-danger">No existen líneas de necesidad de materiales disponibles</span>
+                                    <span class="label label-danger">No existen líneas de registros de compras disponibles</span>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -111,7 +122,7 @@
 
     <div class="form-actions">
         {% if entity.estadodocumento == 'BO' %}
-            <a class="btn btn-primary" href="{{ path('necesidadmateriales_necesidadmaterial_edit', { 'id': entity.id }) }}"> Editar</a>
+            <a class="btn btn-primary" href="{{ path('necesidadmaterial_edit', { 'id': entity.id }) }}"> Editar</a>
         {% endif %}
         {% if entity.estadodocumento == 'PR' %}
             <a class="btn btn-primary" href="{{ path('completarNecesidad', { 'id': entity.id }) }}"> Completar Proceso</a>
@@ -130,7 +141,6 @@
 
 {% endblock %}
 
-
 {% block contenido %}
 
 {% endblock %}
@@ -145,3 +155,4 @@
         </script>
     {% endif %}
 {% endblock %}
+

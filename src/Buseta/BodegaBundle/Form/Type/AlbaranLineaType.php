@@ -15,20 +15,6 @@ class AlbaranLineaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('linea', 'integer', array(
-                    'required' => true,
-                    'label'  => 'Línea',
-                    'attr'   => array(
-                        'class' => 'form-control',
-                    ),
-            ))
-            ->add('valorAtributos', 'text', array(
-                'required' => true,
-                'label'  => 'Valor atributos',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ))
             ->add('producto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Producto',
                 'empty_value' => '---Seleccione producto---',
@@ -41,8 +27,15 @@ class AlbaranLineaType extends AbstractType
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'empty_value' => '---Seleccione---',
                 'label' => 'Bodega',
-                'required' => true,
+                'required' => false,
                 'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('valorAtributos', 'text', array(
+                'required' => true,
+                'label'  => 'Valor atributos',
+                'attr'   => array(
                     'class' => 'form-control',
                 ),
             ))

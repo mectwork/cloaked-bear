@@ -6,7 +6,6 @@ use Buseta\BodegaBundle\Form\Model\NecesidadMaterialFilterModel;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 
-
 /**
  * NecesidadMaterialRepository
  *
@@ -33,13 +32,13 @@ class NecesidadMaterialRepository extends EntityRepository
                 $query->andWhere($query->expr()->eq('r.almacen', ':almacen'))
                     ->setParameter('almacen', $filter->getAlmacen());
             }
-            if ($filter->getMoneda() !== null && $filter->getMoneda() !== '') {
-                $query->andWhere($query->expr()->eq('r.moneda', ':moneda'))
-                    ->setParameter('moneda', $filter->getMoneda());
-            }
             if ($filter->getEstadoDocumento() !== null && $filter->getEstadoDocumento() !== '') {
                 $query->andWhere($query->expr()->eq('r.estado_documento', ':estado_documento'))
                     ->setParameter('estado_documento', $filter->getEstadoDocumento());
+            }
+            if ($filter->getMoneda() !== null && $filter->getMoneda() !== '') {
+                $query->andWhere($query->expr()->eq('r.moneda', ':moneda'))
+                    ->setParameter('moneda', $filter->getMoneda());
             }
             if ($filter->getFormaPago() !== null && $filter->getFormaPago() !== '') {
                 $query->andWhere($query->expr()->eq('r.forma_pago', ':forma_pago'))
@@ -59,7 +58,7 @@ class NecesidadMaterialRepository extends EntityRepository
             }
         }
 
-        $query->orderBy('r.id', 'ASC');
+        $query->orderBy('r.id', 'DESC');
 
         try {
             return $query->getQuery();
