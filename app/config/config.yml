@@ -120,7 +120,7 @@ easy_admin:
     list_actions: ['show', 'edit', 'delete']
     assets:
         css:
-            - 'bundles/busetanomenclador/css/admin.css'
+            - %nomenclator.assets.css%
     entities:
         'Aceite Caja Cambios': Buseta\NomencladorBundle\Entity\AceiteCajaCambios
         'Aceite Hidráulico': Buseta\NomencladorBundle\Entity\AceiteHidraulico
