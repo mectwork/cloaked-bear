@@ -1,0 +1,26 @@
+{% extends "BusetaBusesBundle::layout.html.twig" %}
+
+{% block title %}
+    Crear Nuevo Chofer
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Crear Nuevo Chofer
+{% endblock %}
+
+{% block area_trabajo %}
+
+    {% include '@BusetaBuses/Chofer/form_template.html.twig' with {'form': form} %}
+
+{% endblock area_trabajo %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $('#buses_chofer_fechaNacimiento').datetimepicker({
+            'format': 'DD/MM/YYYY'
+        });
+    </script>
+
+{% endblock %}

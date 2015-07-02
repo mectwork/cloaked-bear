@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Chofer
  *
  * @ORM\Table(name="d_chofer")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Buseta\BusesBundle\Entity\Repository\ChoferRepository")
  * @UniqueEntity(fields={"pin"})
  */
 class Chofer

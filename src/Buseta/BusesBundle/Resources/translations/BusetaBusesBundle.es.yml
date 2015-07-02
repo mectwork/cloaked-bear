@@ -5,6 +5,13 @@ autobus:
   modal:
     title: Crear Nuevo Autobús
 
+chofer:
+  valor: Valor
+  btn:
+    adicionar: Adicionar Chofer
+  modal:
+    title: Crear Nuevo Chofer
+
 configuracion_combustible:
   btn:
     adicionar: Adicionar Configuración de Combustible
