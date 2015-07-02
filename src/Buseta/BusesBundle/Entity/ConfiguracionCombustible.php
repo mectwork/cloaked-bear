@@ -39,10 +39,8 @@ class ConfiguracionCombustible
 
     public function __toString()
     {
-        return $this->combustible;
+        return $this->combustible->__toString();
     }
-
-
 
     /**
      * Get id
@@ -122,4 +120,5 @@ class ConfiguracionCombustible
     {
         return $this->producto;
     }
+
 }

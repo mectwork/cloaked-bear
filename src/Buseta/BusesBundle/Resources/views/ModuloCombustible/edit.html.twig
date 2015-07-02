@@ -1,0 +1,20 @@
+{% extends "BusetaBusesBundle::layout.html.twig" %}
+
+{% block title %}
+    Modificar Datos del Módulo de Combustible
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Modificar Datos del Módulo de Combustible
+{% endblock %}
+
+{% block area_trabajo %}
+
+    {% include '@BusetaBuses/ModuloCombustible/form_template.html.twig' with {'form': edit_form} %}
+
+{% endblock area_trabajo %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %}

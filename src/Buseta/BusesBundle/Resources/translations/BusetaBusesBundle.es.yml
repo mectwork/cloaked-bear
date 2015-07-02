@@ -12,6 +12,13 @@ chofer:
   modal:
     title: Crear Nuevo Chofer
 
+moduloCombustible:
+  valor: Valor
+  btn:
+    adicionar: Adicionar Módulo de Combustible
+  modal:
+    title: Crear Nuevo Módulo de Combustible
+
 configuracion_combustible:
   btn:
     adicionar: Adicionar Configuración de Combustible
