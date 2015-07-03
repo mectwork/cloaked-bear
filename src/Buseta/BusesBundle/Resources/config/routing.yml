@@ -28,3 +28,6 @@ buseta_buses_chofer:
 buseta_buses_modulo_combustible:
   resource: "@BusetaBusesBundle/Controller/ModuloCombustibleController.php"
   type:     annotation
+buseta_buses_lista_negra_combustible:
+  resource: "@BusetaBusesBundle/Controller/ListaNegraCombustibleController.php"
+  type:     annotation

@@ -19,6 +19,13 @@ moduloCombustible:
   modal:
     title: Crear Nuevo Módulo de Combustible
 
+listaNegraCombustible:
+  valor: Valor
+  btn:
+    adicionar: Adicionar Lista Negra de Combustible
+  modal:
+    title: Crear Nueva Lista Negra de Combustible
+
 configuracion_combustible:
   btn:
     adicionar: Adicionar Configuración de Combustible
