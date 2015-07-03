@@ -1,11 +1,11 @@
 {% extends "BusetaBusesBundle::layout.html.twig" %}
 
 {% block nombre_menu_superior %}
-    Datos de la Despachadora de Combustible
+    Datos del Servicio de Combustible
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Datos de la Despachadora de Combustible: "{{ entity.combustible }}"
+    Datos del Servicio de Combustible: "{{ entity.combustible }}"
 {% endblock %}
 
 {% block area_trabajo %}
@@ -36,10 +36,7 @@
     </table>
 
         <div class="form-actions">
-        <a class="btn btn-primary" href="{{ path('despachadoraCombustible_edit', { 'id': entity.id }) }}"> Editar</a>
         <a class="btn btn-primary" href="{{ path('despachadoraCombustible') }}"> Listado</a>
-        <a href="#delete" data-href="{{ path('despachadoraCombustible_delete', {'id': entity.id}) }}" class="btn btn-danger">
-            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBusesBundle') }}</a>
     </div>
 
 {% endblock %}

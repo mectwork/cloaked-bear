@@ -9,20 +9,30 @@
 
     <div class="row">
         <div class="col-md-4">
-            {{ form_row(form.chofer) }}
+            {{ form_row(form.chofer.chofer) }}
         </div>
+        <div class="col-md-4">
+            {{ form_row(form.chofer.pin) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.chofer.codigobarras) }}
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-md-4">
             {{ form_row(form.autobus) }}
         </div>
         <div class="col-md-4">
             {{ form_row(form.combustible) }}
         </div>
-    </div>
-
-    <div class="row">
         <div class="col-md-4">
             {{ form_row(form.cantidadLibros) }}
         </div>
+    </div>
+
+    <div class="row">
+
     </div>
 
     <br/>

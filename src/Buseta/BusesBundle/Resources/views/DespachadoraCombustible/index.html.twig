@@ -1,11 +1,11 @@
 {% extends "BusetaBusesBundle::layout.html.twig" %}
 
 {% block title %}
-    Listado de Despachadora de Combustibles
+    Listado de Servicios de Combustibles
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listado de Despachadora de Combustibles
+    Listado de Servicios de Combustibles
 {% endblock %}
 
 {% block area_trabajo %}
@@ -81,13 +81,6 @@
                                href="{{ path('despachadoraCombustible_show', { 'id': entity.id }) }}"><span
                                         class="glyphicon glyphicon-search"> Mostrar</span></a>
                         </div>
-                        <div class="btn-group">
-                            <a class="btn btn-danger btn-xs"
-                               href="{{ path('despachadoraCombustible_edit', { 'id': entity.id }) }}"><span
-                                        class="glyphicon glyphicon-edit"> Editar</span></a>
-                        </div>
-                        <a href="#delete" data-href="{{ path('despachadoraCombustible_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
-                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
                     </td>
                 </tr>
             {% else %}

@@ -7,6 +7,7 @@ use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Buseta\BusesBundle\Entity\DespachadoraCombustible;
 use Buseta\BusesBundle\Form\Filter\DespachadoraCombustibleFilter;
 use Buseta\BusesBundle\Form\Model\DespachadoraCombustibleFilterModel;
+use Buseta\BusesBundle\Form\Model\DespachadoraCombustibleModel;
 use Buseta\BusesBundle\Form\Type\DespachadoraCombustibleType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -67,7 +68,7 @@ class DespachadoraCombustibleController extends Controller
      */
     public function newAction()
     {
-        $entity = new DespachadoraCombustible();
+        $entity = new DespachadoraCombustibleModel();
         $form   = $this->createCreateForm($entity);
 
         return $this->render('BusetaBusesBundle:DespachadoraCombustible:new.html.twig', array(
@@ -83,7 +84,7 @@ class DespachadoraCombustibleController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(DespachadoraCombustible $entity)
+    private function createCreateForm(DespachadoraCombustibleModel $entity)
     {
         $form = $this->createForm('buses_despachadora_combustible', $entity, array(
             'action' => $this->generateUrl('despachadoraCombustible_create'),
@@ -100,25 +101,19 @@ class DespachadoraCombustibleController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new DespachadoraCombustible();
-        $form = $this->createCreateForm($entity);
+        $entityModel = new DespachadoraCombustibleModel();
+        $form = $this->createCreateForm($entityModel);
+
         $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->get('doctrine.orm.entity_manager');
+            $trans  = $this->get('translator');
+            $logger = $this->get('logger');
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $request = $this->get('request');
-            $datos = $request->request->get('buses_despachadora_combustible');
             //Comparar la existencia de cantidadLibros disponibles para el nomenclador seleccionado
-
-            $idNomencladorCombustible = $datos['combustible'];
-
-            $nomencladorCombustible = $em->getRepository('BusetaBusesBundle:ConfiguracionCombustible')
-                ->find($idNomencladorCombustible);
-
-            $producto           = $em->getRepository('BusetaBodegaBundle:Producto')->find($nomencladorCombustible->getProducto()->getId());
-            $bodega             = $em->getRepository('BusetaBodegaBundle:Bodega')->find($nomencladorCombustible->getBodega()->getId());
-            $cantidadProducto   = $datos['cantidadLibros'];
+            $producto           = $entityModel->getCombustible()->getProducto();
+            $bodega             = $entityModel->getCombustible()->getBodega();
+            $cantidadProducto   = $entityModel->getCantidadLibros();
 
             $fe = new FuncionesExtras();
             $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $bodega, $cantidadProducto, $em);
@@ -127,48 +122,67 @@ class DespachadoraCombustibleController extends Controller
             if ($cantidadDisponible == 'No existe') {
                 //Volver al menu de de crear nuevo DespachadoraCombustible
 
-                $form   = $this->createCreateForm($entity);
+                $form   = $this->createCreateForm($entityModel);
 
                 $form->addError(new FormError("El producto '".$producto->getNombre()."' no existe en la bodega del combustible seleccionado"));
 
                 return $this->render('BusetaBusesBundle:DespachadoraCombustible:new.html.twig', array(
-                    'entity' => $entity,
+                    'entity' => $entityModel,
                     'form'   => $form->createView(),
                 ));
             }
             //Si no existe la cantidad solicitada en el almacen del producto seleccionado
             elseif ($cantidadDisponible < 0) {
                 //Volver al menu de de crear nuevo DespachadoraCombustible
-                $form   = $this->createCreateForm($entity);
+                $form   = $this->createCreateForm($entityModel);
 
                 $form->addError(new FormError("No existe en la bodega '".$bodega->getNombre()."' la cantidad de productos solicitados para el producto: ".$producto->getNombre()));
 
                 return $this->render('BusetaBusesBundle:DespachadoraCombustible:new.html.twig', array(
-                    'entity' => $entity,
+                    'entity' => $entityModel,
                     'form'   => $form->createView(),
                 ));
             }
             //Si sí existe la cantidad del producto en la bodega seleccionada
             else {
-                //Actualizar Bitácora - AlmacenOrigen
-                $bitacora = new BitacoraAlmacen();
-                $bitacora->setProducto($producto);
-                $bitacora->setFechaMovimiento(new \DateTime());
-                $bitacora->setAlmacen($bodega);
-                $bitacora->setCantMovida($datos['cantidadLibros']);
-                $bitacora->setTipoMovimiento('M-');
-                $em->persist($bitacora);
-                $em->flush();
 
-                $em->persist($entity);
-                $em->flush();
+                try
+                {
+                    //Actualizar Bitácora - AlmacenOrigen
+                    $bitacora = new BitacoraAlmacen();
+                    $bitacora->setProducto($producto);
+                    $bitacora->setFechaMovimiento(new \DateTime());
+                    $bitacora->setAlmacen($bodega);
+                    $bitacora->setCantMovida($entityModel->getCantidadLibros());
+                    $bitacora->setTipoMovimiento('M-');
+                    $em->persist($bitacora);
+
+                    $despachoCombustible = $entityModel->getEntityData();
+
+                    $em->persist($despachoCombustible);
+                    $em->flush();
+
+                    return $this->redirect($this->generateUrl('despachadoraCombustible_show', array('id' => $despachoCombustible->getId())));
+
+                }
+                catch (\Exception $e) {
+                    $logger->addCritical(sprintf(
+                        $trans->trans('', array(), 'BusetaBusesBundle') . '. Detalles: %s',
+                        $e->getMessage()
+                    ));
+
+                    return new JsonResponse(array(
+                        'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Servicio de Combustible'), 'BusetaBusesBundle')
+                    ), 500);
+                }
+
             }
 
-            return $this->redirect($this->generateUrl('despachadoraCombustible_show', array('id' => $entity->getId())));
+            //return $this->redirect($this->generateUrl('despachadoraCombustible_show', array('id' => $despachoCombustible->getId())));
         }
 
         return $this->render('BusetaBusesBundle:DespachadoraCombustible:new.html.twig', array(
-            'entity' => $entity,
+            'entity' => $entityModel,
             'form'   => $form->createView(),
         ));
     }
