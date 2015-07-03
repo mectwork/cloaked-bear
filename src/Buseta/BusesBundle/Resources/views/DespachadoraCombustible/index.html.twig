@@ -1,11 +1,11 @@
 {% extends "BusetaBusesBundle::layout.html.twig" %}
 
 {% block title %}
-    Listado de Módulo de Combustibles
+    Listado de Despachadora de Combustibles
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listado de Módulo de Combustibles
+    Listado de Despachadora de Combustibles
 {% endblock %}
 
 {% block area_trabajo %}
@@ -49,14 +49,14 @@
 
     <hr/>
     <div class="btn-group" style="margin-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('moduloCombustible_new') }}">
-            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'moduloCombustible.btn.adicionar'|trans({}, 'BusetaBusesBundle') }}
+        <a class="btn btn-primary" href="{{ path('despachadoraCombustible_new') }}">
+            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'despachadoraCombustible.btn.adicionar'|trans({}, 'BusetaBusesBundle') }}
         </a>
     </div>
 
-    <div id="moduloCombustibles_results_container">
+    <div id="despachadoraCombustibles_results_container">
         <div class="row"><div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div></div>
-        <table class="moduloCombustibles_records_list table table-striped table-bordered table-condensed table-hover">
+        <table class="despachadoraCombustibles_records_list table table-striped table-bordered table-condensed table-hover">
             <thead>
             <tr>
                 {#<th>{{ knp_pagination_sortable(entities, 'Nacionalidad', 'a.nacionalidad') }}</th>#}
@@ -78,15 +78,15 @@
                     <td style="width: 24% !important; text-align: center;">
                         <div class="btn-group">
                             <a class="btn btn-success btn-xs"
-                               href="{{ path('moduloCombustible_show', { 'id': entity.id }) }}"><span
+                               href="{{ path('despachadoraCombustible_show', { 'id': entity.id }) }}"><span
                                         class="glyphicon glyphicon-search"> Mostrar</span></a>
                         </div>
                         <div class="btn-group">
                             <a class="btn btn-danger btn-xs"
-                               href="{{ path('moduloCombustible_edit', { 'id': entity.id }) }}"><span
+                               href="{{ path('despachadoraCombustible_edit', { 'id': entity.id }) }}"><span
                                         class="glyphicon glyphicon-edit"> Editar</span></a>
                         </div>
-                        <a href="#delete" data-href="{{ path('moduloCombustible_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
+                        <a href="#delete" data-href="{{ path('despachadoraCombustible_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
                             <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
                     </td>
                 </tr>
@@ -98,7 +98,7 @@
             </tbody>
         </table>
 
-        <div class="moduloCombustibles-paginator row">
+        <div class="despachadoraCombustibles-paginator row">
             <div class="col-lg-12 text-center">{{ knp_pagination_render(entities) }}</div>
         </div>
     </div>
@@ -141,39 +141,39 @@
     </script>
 
     <script type="text/javascript">
-        var moduloCombustibles = {
+        var despachadoraCombustibles = {
             activeblock: false,
             _start_events: function (){
                 // Paginator sort
-                $('table.moduloCombustibles_records_list').find('a.sortable, a.asc, a.desc').on('click', moduloCombustibles._load);
+                $('table.despachadoraCombustibles_records_list').find('a.sortable, a.asc, a.desc').on('click', despachadoraCombustibles._load);
                 // Paginator navigation
-                $('div.moduloCombustibles-paginator.row ul.pagination').find('a.paginator-link').on('click', moduloCombustibles._load);
+                $('div.despachadoraCombustibles-paginator.row ul.pagination').find('a.paginator-link').on('click', despachadoraCombustibles._load);
             },
             _load: function(event) {
                 if(event !== undefined) {
                     event.preventDefault();
                 }
 
-                moduloCombustibles.toggle();
+                despachadoraCombustibles.toggle();
 
                 url = $(this).attr('href');
 
                 $.get(url).done(function (response, textStatus, jqXHR) {
-                    moduloCombustibles.toggle();
-                    $('div#moduloCombustibles_results_container').replaceWith($(response).find('div#moduloCombustibles_results_container'));
+                    despachadoraCombustibles.toggle();
+                    $('div#despachadoraCombustibles_results_container').replaceWith($(response).find('div#despachadoraCombustibles_results_container'));
 
-                    moduloCombustibles._start_events();
+                    despachadoraCombustibles._start_events();
                 }).fail(utils._fail).always(function(){
                     //on complete function
                 });
             },
             toggle: function() {
-                if(moduloCombustibles.activeblock) {
-                    $('div#moduloCombustibles_results_container').unblock();
-                    moduloCombustibles.activeblock = false;
+                if(despachadoraCombustibles.activeblock) {
+                    $('div#despachadoraCombustibles_results_container').unblock();
+                    despachadoraCombustibles.activeblock = false;
                 } else {
-                    $('div#moduloCombustibles_results_container').block();
-                    moduloCombustibles.activeblock = true;
+                    $('div#despachadoraCombustibles_results_container').block();
+                    despachadoraCombustibles.activeblock = true;
                 }
             }
         };
@@ -190,7 +190,7 @@
     </script>
 
     <script type="text/javascript">
-        var deleteevent = new DeleteEvent('{{ path('moduloCombustible') }}', 'div#records_list');
+        var deleteevent = new DeleteEvent('{{ path('despachadoraCombustible') }}', 'div#records_list');
         deleteevent.start_events();
     </script>
 

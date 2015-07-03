@@ -2,13 +2,13 @@
 
 namespace Buseta\BusesBundle\Form\Type;
 
-use Buseta\BusesBundle\Form\EventListener\AddModuloCombustibleCodigobarrasFieldSubcriber;
-use Buseta\BusesBundle\Form\EventListener\AddModuloCombustiblePinFieldSubcriber;
+use Buseta\BusesBundle\Form\EventListener\AddDespachadoraCombustibleCodigobarrasFieldSubcriber;
+use Buseta\BusesBundle\Form\EventListener\AddDespachadoraCombustiblePinFieldSubcriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ModuloCombustibleType extends AbstractType
+class DespachadoraCombustibleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -53,12 +53,12 @@ class ModuloCombustibleType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BusesBundle\Entity\ModuloCombustible'
+            'data_class' => 'Buseta\BusesBundle\Entity\DespachadoraCombustible'
         ));
     }
 
     public function getName()
     {
-        return 'buses_modulo_combustible';
+        return 'buses_despachadora_combustible';
     }
 }

@@ -1,16 +1,16 @@
 {% extends "BusetaBusesBundle::layout.html.twig" %}
 
 {% block title %}
-    Crear Nuevo Módulo de Combustible
+    Modificar Datos de la Despachadora de Combustible
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Crear Nuevo Módulo de Combustible
+    Modificar Datos de la Despachadora de Combustible
 {% endblock %}
 
 {% block area_trabajo %}
 
-    {% include '@BusetaBuses/ModuloCombustible/form_template.html.twig' with {'form': form} %}
+    {% include '@BusetaBuses/DespachadoraCombustible/form_template.html.twig' with {'form': edit_form} %}
 
 {% endblock area_trabajo %}
 

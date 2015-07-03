@@ -5,7 +5,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ModuloCombustibleFilter extends AbstractType
+class DespachadoraCombustibleFilter extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -47,7 +47,7 @@ class ModuloCombustibleFilter extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BusesBundle\Form\Model\ModuloCombustibleFilterModel',
+            'data_class' => 'Buseta\BusesBundle\Form\Model\DespachadoraCombustibleFilterModel',
             'method' => 'GET',
         ));
     }
@@ -57,6 +57,6 @@ class ModuloCombustibleFilter extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_modulo_combustible_filter';
+        return 'buseta_despachadora_combustible_filter';
     }
 } 

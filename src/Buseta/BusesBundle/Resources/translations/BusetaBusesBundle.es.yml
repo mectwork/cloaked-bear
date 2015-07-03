@@ -12,12 +12,12 @@ chofer:
   modal:
     title: Crear Nuevo Chofer
 
-moduloCombustible:
+despachadoraCombustible:
   valor: Valor
   btn:
-    adicionar: Adicionar Módulo de Combustible
+    adicionar: Adicionar Despachadora de Combustible
   modal:
-    title: Crear Nuevo Módulo de Combustible
+    title: Crear Nueva Despachadora de Combustible
 
 listaNegraCombustible:
   valor: Valor

@@ -3,13 +3,13 @@
 namespace Buseta\BusesBundle\Form\Model;
 
 use Buseta\BusesBundle\Entity\Autobus;
-use Buseta\BusesBundle\Entity\ModuloCombustible;
+use Buseta\BusesBundle\Entity\DespachadoraCombustible;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * ModuloCombustibleFilterModel.
+ * DespachadoraCombustibleFilterModel.
  */
-class ModuloCombustibleFilterModel
+class DespachadoraCombustibleFilterModel
 {
     /**
      * @var integer
@@ -34,41 +34,41 @@ class ModuloCombustibleFilterModel
     /**
      * Constructor
      */
-    public function __construct(ModuloCombustible $moduloCombustible = null)
+    public function __construct(DespachadoraCombustible $despachadoraCombustible = null)
     {
-        if ($moduloCombustible !== null) {
-            $this->id = $moduloCombustible->getId();
+        if ($despachadoraCombustible !== null) {
+            $this->id = $despachadoraCombustible->getId();
 
-            if ($moduloCombustible->getAutobus()) {
-                $this->estadoCivil  = $moduloCombustible->getAutobus();
+            if ($despachadoraCombustible->getAutobus()) {
+                $this->estadoCivil  = $despachadoraCombustible->getAutobus();
             }
-            if ($moduloCombustible->getChofer()) {
-                $this->nacionalidad  = $moduloCombustible->getChofer();
+            if ($despachadoraCombustible->getChofer()) {
+                $this->nacionalidad  = $despachadoraCombustible->getChofer();
             }
-            if ($moduloCombustible->getCombustible()) {
-                $this->nacionalidad  = $moduloCombustible->getCombustible();
+            if ($despachadoraCombustible->getCombustible()) {
+                $this->nacionalidad  = $despachadoraCombustible->getCombustible();
             }
         }
     }
 
     /**
-     * @return ModuloCombustible
+     * @return DespachadoraCombustible
      */
     public function getEntityData()
     {
-        $moduloCombustible = new ModuloCombustible();
+        $despachadoraCombustible = new DespachadoraCombustible();
 
         if ($this->getAutobus() !== null) {
-            $moduloCombustible->setAutobus($this->getAutobus());
+            $despachadoraCombustible->setAutobus($this->getAutobus());
         }
         if ($this->getChofer() !== null) {
-            $moduloCombustible->setChofer($this->getChofer());
+            $despachadoraCombustible->setChofer($this->getChofer());
         }
         if ($this->getCombustible() !== null) {
-            $moduloCombustible->setCombustible($this->getCombustible());
+            $despachadoraCombustible->setCombustible($this->getCombustible());
         }
 
-        return $moduloCombustible;
+        return $despachadoraCombustible;
     }
 
     /**

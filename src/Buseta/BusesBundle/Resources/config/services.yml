@@ -35,11 +35,11 @@ services:
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'buses_chofer'}
-    buses.buses_modulo_combustible.type:
-        class: Buseta\BusesBundle\Form\Type\ModuloCombustibleType
+    buses.buses_despachadora_combustible.type:
+        class: Buseta\BusesBundle\Form\Type\DespachadoraCombustibleType
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
-            - {name: form.type, alias: 'buses_modulo_combustible'}
+            - {name: form.type, alias: 'buses_despachadora_combustible'}
     buses.buses_lista_negra_combustible.type:
         class: Buseta\BusesBundle\Form\Type\ListaNegraCombustibleType
         arguments: [@doctrine.orm.entity_manager, @service_container]

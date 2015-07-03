@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * ModuloCombustible.
+ * DespachadoraCombustible.
  *
- * @ORM\Table(name="d_modulo_combustible")
- * @ORM\Entity(repositoryClass="Buseta\BusesBundle\Entity\Repository\ModuloCombustibleRepository")
+ * @ORM\Table(name="d_despachadora_combustible")
+ * @ORM\Entity(repositoryClass="Buseta\BusesBundle\Entity\Repository\DespachadoraCombustibleRepository")
  */
-class ModuloCombustible
+class DespachadoraCombustible
 {
     /**
      * @var integer
@@ -59,7 +59,7 @@ class ModuloCombustible
      * Set cantidadLibros
      *
      * @param integer $cantidadLibros
-     * @return ModuloCombustible
+     * @return DespachadoraCombustible
      */
     public function setCantidadLibros($cantidadLibros)
     {
@@ -82,7 +82,7 @@ class ModuloCombustible
      * Set combustible
      *
      * @param \Buseta\BusesBundle\Entity\ConfiguracionCombustible $combustible
-     * @return ModuloCombustible
+     * @return DespachadoraCombustible
      */
     public function setCombustible(\Buseta\BusesBundle\Entity\ConfiguracionCombustible $combustible = null)
     {
@@ -105,7 +105,7 @@ class ModuloCombustible
      * Set chofer
      *
      * @param \Buseta\BusesBundle\Entity\Chofer $chofer
-     * @return ModuloCombustible
+     * @return DespachadoraCombustible
      */
     public function setChofer(\Buseta\BusesBundle\Entity\Chofer $chofer = null)
     {
@@ -128,7 +128,7 @@ class ModuloCombustible
      * Set autobus
      *
      * @param \Buseta\BusesBundle\Entity\Autobus $autobus
-     * @return ModuloCombustible
+     * @return DespachadoraCombustible
      */
     public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
     {
