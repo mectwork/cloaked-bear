@@ -2,6 +2,8 @@
 
 namespace Buseta\BusesBundle\Form\Type;
 
+use Buseta\BusesBundle\Form\EventListener\AddBodegaFieldSubscriber;
+use Buseta\BusesBundle\Form\EventListener\AddProductoFieldSubscriber;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,25 +19,13 @@ class ConfiguracionCombustibleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $objeto = $builder->getFormFactory();
+        $producto = new AddProductoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($producto);
+        $bodega = new AddBodegaFieldSubscriber($objeto);
+        $builder->addEventSubscriber($bodega);
+
         $builder
-            ->add('bodega', 'entity', array(
-                'class' => 'BusetaBodegaBundle:Bodega',
-                'label' => 'Bodega',
-                'empty_value' => '---Seleccione---',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('producto', 'entity', array(
-                'class' => 'BusetaBodegaBundle:Producto',
-                'label' => 'Producto',
-                'empty_value' => '---Seleccione---',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control'
-                ),
-            ))
             ->add('combustible', 'entity', array(
                 'required' => false,
                 'class' => 'BusetaNomencladorBundle:Combustible',

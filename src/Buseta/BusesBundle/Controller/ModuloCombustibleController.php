@@ -2,10 +2,13 @@
 
 namespace Buseta\BusesBundle\Controller;
 
+use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
+use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Buseta\BusesBundle\Entity\ModuloCombustible;
 use Buseta\BusesBundle\Form\Filter\ModuloCombustibleFilter;
 use Buseta\BusesBundle\Form\Model\ModuloCombustibleFilterModel;
 use Buseta\BusesBundle\Form\Type\ModuloCombustibleType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -103,8 +106,63 @@ class ModuloCombustibleController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+
+            $request = $this->get('request');
+            $datos = $request->request->get('buses_modulo_combustible');
+            //Comparar la existencia de cantidadLibros disponibles para el nomenclador seleccionado
+
+            $idNomencladorCombustible = $datos['combustible'];
+
+            $nomencladorCombustible = $em->getRepository('BusetaBusesBundle:ConfiguracionCombustible')
+                ->find($idNomencladorCombustible);
+
+            $producto           = $em->getRepository('BusetaBodegaBundle:Producto')->find($nomencladorCombustible->getProducto()->getId());
+            $bodega             = $em->getRepository('BusetaBodegaBundle:Bodega')->find($nomencladorCombustible->getBodega()->getId());
+            $cantidadProducto   = $datos['cantidadLibros'];
+
+            $fe = new FuncionesExtras();
+            $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $bodega, $cantidadProducto, $em);
+
+            //Comprobar la existencia del producto en la bodega seleccionada
+            if ($cantidadDisponible == 'No existe') {
+                //Volver al menu de de crear nuevo ModuloCombustible
+
+                $form   = $this->createCreateForm($entity);
+
+                $form->addError(new FormError("El producto '".$producto->getNombre()."' no existe en la bodega del combustible seleccionado"));
+
+                return $this->render('BusetaBusesBundle:ModuloCombustible:new.html.twig', array(
+                    'entity' => $entity,
+                    'form'   => $form->createView(),
+                ));
+            }
+            //Si no existe la cantidad solicitada en el almacen del producto seleccionado
+            elseif ($cantidadDisponible < 0) {
+                //Volver al menu de de crear nuevo ModuloCombustible
+                $form   = $this->createCreateForm($entity);
+
+                $form->addError(new FormError("No existe en la bodega '".$bodega->getNombre()."' la cantidad de productos solicitados para el producto: ".$producto->getNombre()));
+
+                return $this->render('BusetaBusesBundle:ModuloCombustible:new.html.twig', array(
+                    'entity' => $entity,
+                    'form'   => $form->createView(),
+                ));
+            }
+            //Si sí existe la cantidad del producto en la bodega seleccionada
+            else {
+                //Actualizar Bitácora - AlmacenOrigen
+                $bitacora = new BitacoraAlmacen();
+                $bitacora->setProducto($producto);
+                $bitacora->setFechaMovimiento(new \DateTime());
+                $bitacora->setAlmacen($bodega);
+                $bitacora->setCantMovida($datos['cantidadLibros']);
+                $bitacora->setTipoMovimiento('M-');
+                $em->persist($bitacora);
+                $em->flush();
+
+                $em->persist($entity);
+                $em->flush();
+            }
 
             return $this->redirect($this->generateUrl('moduloCombustible_show', array('id' => $entity->getId())));
         }
