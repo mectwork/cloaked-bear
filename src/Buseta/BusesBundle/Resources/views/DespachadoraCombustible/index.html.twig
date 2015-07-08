@@ -1,11 +1,11 @@
 {% extends "BusetaBusesBundle::layout.html.twig" %}
 
 {% block title %}
-    Listado de Autobuses
+    Listado de Servicios de Combustibles
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listado de Autobuses
+    Listado de Servicios de Combustibles
 {% endblock %}
 
 {% block area_trabajo %}
@@ -13,12 +13,9 @@
 <div id="records_list">
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
-    {% if (filter_form.vars.value.matricula is null or filter_form.vars.value.matricula is empty)
-    and (filter_form.vars.value.numero is null or filter_form.vars.value.numero is empty)
-    and (filter_form.vars.value.marca is null or filter_form.vars.value.marca is empty)
-    and (filter_form.vars.value.estilo is null or filter_form.vars.value.estilo is empty)
-    and (filter_form.vars.value.color is null or filter_form.vars.value.color is empty)
-    and (filter_form.vars.value.marcaMotor is null or filter_form.vars.value.marcaMotor is empty)
+    {% if (filter_form.vars.value.combustible is null or filter_form.vars.value.combustible is empty)
+    and (filter_form.vars.value.chofer is null or filter_form.vars.value.chofer is empty)
+    and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
     %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
@@ -33,12 +30,9 @@
     <div id="filter_form_component" style="{{ display }}">
         <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
             <div class="row">
-                <div class="col-lg-4">{{ form_row(filter_form.matricula) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.numero) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.marca) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.estilo) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.color) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.marca_motor) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.combustible) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.chofer) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.autobus) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -55,54 +49,38 @@
 
     <hr/>
     <div class="btn-group" style="margin-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('autobus_new') }}">
-            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'autobus.btn.adicionar'|trans({}, 'BusetaBusesBundle') }}
+        <a class="btn btn-primary" href="{{ path('despachadoraCombustible_new') }}">
+            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'despachadoraCombustible.btn.adicionar'|trans({}, 'BusetaBusesBundle') }}
         </a>
     </div>
 
-    <div id="autobuses_results_container">
+    <div id="despachadoraCombustibles_results_container">
         <div class="row"><div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div></div>
-        <table class="autobuses_records_list table table-striped table-bordered table-condensed table-hover">
+        <table class="despachadoraCombustibles_records_list table table-striped table-bordered table-condensed table-hover">
             <thead>
             <tr>
-                <th>{{ knp_pagination_sortable(entities, 'Matrícula', 'a.matricula') }}</th>
-                <th>Número</th>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th>Color</th>
-                <th>Potencia</th>
-                <th>Fecha Ingreso</th>
-                <th>Válido Hasta</th>
-                <th>Kilometraje</th>
+                {#<th>{{ knp_pagination_sortable(entities, 'Nacionalidad', 'a.nacionalidad') }}</th>#}
+                <th>Nomenclador de Combustible</th>
+                <th>Chofer</th>
+                <th>Autobús</th>
+                <th>Cantidad de Libros</th>
                 <th style="text-align: center">Acciones</th>
             </tr>
             </thead>
             <tbody>
             {% for entity in entities %}
                 <tr>
-                    <td>{{ entity.matricula }}</td>
-                    <td>{{ entity.numero }}</td>
-                    <td>{{ entity.marca }}</td>
-                    <td>{{ entity.modelo }}</td>
-                    <td>{{ entity.color }}</td>
-                    <td>{{ entity.potencia }}</td>
-                    <td>{{ entity.fechaIngreso|date('d/m/Y') }}</td>
-                    <td>{{ entity.validoHasta|date('d/m/Y') }}</td>
-                    <td>{{ entity.kilometraje }}</td>
+                    <td>{{ entity.combustible }}</td>
+                    <td>{{ entity.chofer }}</td>
+                    <td>{{ entity.autobus }}</td>
+                    <td>{{ entity.cantidadLibros }}</td>
 
                     <td style="width: 24% !important; text-align: center;">
                         <div class="btn-group">
                             <a class="btn btn-success btn-xs"
-                               href="{{ path('autobus_show', { 'id': entity.id }) }}"><span
+                               href="{{ path('despachadoraCombustible_show', { 'id': entity.id }) }}"><span
                                         class="glyphicon glyphicon-search"> Mostrar</span></a>
                         </div>
-                        <div class="btn-group">
-                            <a class="btn btn-danger btn-xs"
-                               href="{{ path('autobus_edit', { 'id': entity.id }) }}"><span
-                                        class="glyphicon glyphicon-edit"> Editar</span></a>
-                        </div>
-                        <a href="#delete" data-href="{{ path('autobus_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
-                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
                     </td>
                 </tr>
             {% else %}
@@ -113,7 +91,7 @@
             </tbody>
         </table>
 
-        <div class="autobuses-paginator row">
+        <div class="despachadoraCombustibles-paginator row">
             <div class="col-lg-12 text-center">{{ knp_pagination_render(entities) }}</div>
         </div>
     </div>
@@ -156,39 +134,39 @@
     </script>
 
     <script type="text/javascript">
-        var autobuses = {
+        var despachadoraCombustibles = {
             activeblock: false,
             _start_events: function (){
                 // Paginator sort
-                $('table.autobuses_records_list').find('a.sortable, a.asc, a.desc').on('click', autobuses._load);
+                $('table.despachadoraCombustibles_records_list').find('a.sortable, a.asc, a.desc').on('click', despachadoraCombustibles._load);
                 // Paginator navigation
-                $('div.autobuses-paginator.row ul.pagination').find('a.paginator-link').on('click', autobuses._load);
+                $('div.despachadoraCombustibles-paginator.row ul.pagination').find('a.paginator-link').on('click', despachadoraCombustibles._load);
             },
             _load: function(event) {
                 if(event !== undefined) {
                     event.preventDefault();
                 }
 
-                autobuses.toggle();
+                despachadoraCombustibles.toggle();
 
                 url = $(this).attr('href');
 
                 $.get(url).done(function (response, textStatus, jqXHR) {
-                    autobuses.toggle();
-                    $('div#autobuses_results_container').replaceWith($(response).find('div#autobuses_results_container'));
+                    despachadoraCombustibles.toggle();
+                    $('div#despachadoraCombustibles_results_container').replaceWith($(response).find('div#despachadoraCombustibles_results_container'));
 
-                    autobuses._start_events();
+                    despachadoraCombustibles._start_events();
                 }).fail(utils._fail).always(function(){
                     //on complete function
                 });
             },
             toggle: function() {
-                if(autobuses.activeblock) {
-                    $('div#autobuses_results_container').unblock();
-                    autobuses.activeblock = false;
+                if(despachadoraCombustibles.activeblock) {
+                    $('div#despachadoraCombustibles_results_container').unblock();
+                    despachadoraCombustibles.activeblock = false;
                 } else {
-                    $('div#autobuses_results_container').block();
-                    autobuses.activeblock = true;
+                    $('div#despachadoraCombustibles_results_container').block();
+                    despachadoraCombustibles.activeblock = true;
                 }
             }
         };
@@ -205,7 +183,7 @@
     </script>
 
     <script type="text/javascript">
-        var deleteevent = new DeleteEvent('{{ path('autobus') }}', 'div#records_list');
+        var deleteevent = new DeleteEvent('{{ path('despachadoraCombustible') }}', 'div#records_list');
         deleteevent.start_events();
     </script>
 

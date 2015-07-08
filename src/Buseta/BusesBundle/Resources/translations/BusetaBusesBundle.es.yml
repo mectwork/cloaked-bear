@@ -5,6 +5,33 @@ autobus:
   modal:
     title: Crear Nuevo Autobús
 
+chofer:
+  valor: Valor
+  btn:
+    adicionar: Adicionar Chofer
+  modal:
+    title: Crear Nuevo Chofer
+
+despachadoraCombustible:
+  valor: Valor
+  btn:
+    adicionar: Adicionar Servicio de Combustible
+  modal:
+    title: Crear Nuevo Servicio de Combustible
+
+listaNegraCombustible:
+  valor: Valor
+  btn:
+    adicionar: Adicionar Lista Negra de Combustible
+  modal:
+    title: Crear Nueva Lista Negra de Combustible
+
+configuracion_combustible:
+  btn:
+    adicionar: Adicionar Configuración de Combustible
+  modal:
+    title: Crear Nueva Configuración de Combustible
+
 messages:
   no_results: No existen elementos que mostrar.
   unexpected_error: Ha ocurrido un error inesperado.
@@ -12,6 +39,9 @@ messages:
   create.error.%key%: Ha ocurrido un error al crear una nueva entidad "key".
   update.success: Se han actualizado los datos de forma satisfactoria.
   update.error.%key%: Ha ocurrido un error al actualizar los datos de la entidad "key"
+  delete.success: Se ha eliminado la entidad de forma satisfactoria.
+  delete.error.%key%: Ha ocurrido un error intentando eliminar la entidad "key".
+  danger: Peligro
 
 actions:
   confirm: Aceptar

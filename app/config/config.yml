@@ -131,6 +131,7 @@ easy_admin:
         'Combustible': Buseta\NomencladorBundle\Entity\Combustible
         'Condición': Buseta\NomencladorBundle\Entity\Condicion
         'Estilo': Buseta\NomencladorBundle\Entity\Estilo
+        'EstadoCivil': Buseta\NomencladorBundle\Entity\EstadoCivil
         'Forma Pago': Buseta\NomencladorBundle\Entity\FormaPago
         'Garantía Tarea': Buseta\NomencladorBundle\Entity\GarantiaTarea
         'Grupo': Buseta\NomencladorBundle\Entity\Grupo
@@ -140,6 +141,7 @@ easy_admin:
         'Modelo': Buseta\NomencladorBundle\Entity\Modelo
         'Marca Motor': Buseta\NomencladorBundle\Entity\MarcaMotor
         'Moneda': Buseta\NomencladorBundle\Entity\Moneda
+        'Nacionalidad': Buseta\NomencladorBundle\Entity\Nacionalidad
         'Tipo Compra': Buseta\NomencladorBundle\Entity\TipoCompra
         'Tipo Contacto': Buseta\NomencladorBundle\Entity\TipoContacto
         'Tarea': Buseta\NomencladorBundle\Entity\Tarea

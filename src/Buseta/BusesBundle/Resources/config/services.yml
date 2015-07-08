@@ -27,3 +27,32 @@ services:
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'buses_autobus_imagenes'}
+    buses.buses_configuracion_combustible.type:
+        class: Buseta\BusesBundle\Form\Type\ConfiguracionCombustibleType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'buses_configuracion_combustible'}
+    buses.buses_chofer.type:
+        class: Buseta\BusesBundle\Form\Type\ChoferType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'buses_chofer'}
+    buses.buses_despachadora_combustible.type:
+        class: Buseta\BusesBundle\Form\Type\DespachadoraCombustibleType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'buses_despachadora_combustible'}
+    buses.buses_lista_negra_combustible.type:
+        class: Buseta\BusesBundle\Form\Type\ListaNegraCombustibleType
+        arguments: [@doctrine.orm.entity_manager, @service_container]
+        tags:
+            - {name: form.type, alias: 'buses_lista_negra_combustible'}
+
+#VALIDATORS
+    buses.capacidad_tanque.validador:
+        class: Buseta\BusesBundle\Validator\Constraints\CapacidadTanqueValidoValidator
+        arguments:
+            - @security.context
+            - @doctrine.orm.entity_manager
+        tags:
+            - {name: validator.constraint_validator, alias: capacidadTanque_validador}

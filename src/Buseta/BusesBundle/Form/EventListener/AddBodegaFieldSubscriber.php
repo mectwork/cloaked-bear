@@ -7,8 +7,9 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Doctrine\ORM\EntityRepository;
+use Buseta\BodegaBundle\Entity\Bodega;
 
-class AddMarcaFieldSubscriber implements EventSubscriberInterface
+class AddBodegaFieldSubscriber implements EventSubscriberInterface
 {
     private $factory;
 
@@ -25,18 +26,18 @@ class AddMarcaFieldSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function addMarcaForm($form, $marca = null)
+    private function addBodegaForm($form, $bodega = null)
     {
-        $form->add('marca', 'entity', array(
-            'class'         => 'BusetaNomencladorBundle:Marca',
+        $form->add('bodega', 'entity', array(
+            'class'         => 'BusetaBodegaBundle:Bodega',
             'auto_initialize' => false,
             'empty_value'   => '---Seleccione---',
-            'data' => $marca,
+            'data' => $bodega,
             'attr' => array(
                 'class' => 'form-control',
             ),
             'query_builder' => function (EntityRepository $repository) {
-                    $qb = $repository->createQueryBuilder('marca');
+                    $qb = $repository->createQueryBuilder('bodega');
 
                     return $qb;
                 }
@@ -49,10 +50,10 @@ class AddMarcaFieldSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
 
         if (null === $data) {
-            $this->addMarcaForm($form);
+            $this->addBodegaForm($form);
         } else {
-            $marca = ($data->getMarca()) ? $data->getMarca() : null ;
-            $this->addMarcaForm($form, $marca);
+            $bodega = ($data->getBodega()) ? $data->getBodega() : null ;
+            $this->addBodegaForm($form, $bodega);
         }
     }
 
@@ -65,7 +66,7 @@ class AddMarcaFieldSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $marca = array_key_exists('marca', $data) ? $data['marca'] : null;
-        $this->addMarcaForm($form, $marca);
+        $bodega = array_key_exists('bodega', $data) ? $data['bodega'] : null;
+        $this->addBodegaForm($form, $bodega);
     }
 }

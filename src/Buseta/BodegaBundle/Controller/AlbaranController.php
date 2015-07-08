@@ -89,6 +89,7 @@ class AlbaranController extends Controller
             'albaran' => $albaran,
         ));
 
+
         foreach ($albaranLineas as $linea) {
 
             //Actualizar Bitácora
