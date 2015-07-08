@@ -34,11 +34,11 @@ class AddProductoFieldSubscriber implements EventSubscriberInterface
                 'empty_value'   => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
-                ), 
+                ),
             ));
         } else {
             $form->add('producto','entity', array(
-                'class'         => 'BusetaBusesBundle:Producto',
+                'class'         => 'BusetaBodegaBundle:Producto',
                 'empty_value'   => '---Seleccione---',
                 'auto_initialize' => false,
                 'data'          => $producto,
