@@ -136,26 +136,35 @@ class PedidoCompraController extends Controller
             $albaran->setTercero($tercero);
             $albaran->setCreated(new \DateTime());
 
-            $em->persist($albaran);
-            $em->flush();
+            try {
+                $em->persist($albaran);
 
-            //registro los datos de las líneas del albarán
-            foreach ($pedidoCompra->getPedidoCompraLineas() as $linea) {
-                $albaranLinea = new AlbaranLinea();
-                $albaranLinea->setAlbaran($albaran);
-                $albaranLinea->setLinea($linea->getLinea());
-                $albaranLinea->setCantidadMovida($linea->getCantidadPedido());
+                //registro los datos de las líneas del albarán
+                foreach ($pedidoCompra->getPedidoCompraLineas() as $linea) {
+                    /** @var \Buseta\BodegaBundle\Entity\PedidoCompraLinea $linea */
+                    $albaranLinea = new AlbaranLinea();
+                    $albaranLinea->setAlbaran($albaran);
+                    $albaranLinea->setCantidadMovida($linea->getCantidadPedido());
+                    $albaranLinea->setProducto($linea->getProducto());
+                    $albaranLinea->setAlmacen($almacen);
+                    $albaranLinea->setUom($linea->getUom());
 
-                $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($linea->getProducto());
-                $albaranLinea->setProducto($producto);
+                    $em->persist($albaranLinea);
+                }
 
-                $albaranLinea->setAlmacen($almacen);
-
-                $uom = $em->getRepository('BusetaNomencladorBundle:UOM')->find($linea->getUOM());
-                $albaranLinea->setUom($uom);
-
-                $em->persist($albaranLinea);
                 $em->flush();
+
+                $session->getFlashBag()->add('success', sprintf('Se ha creado el Albarán para el Registro de Compra "%s".',
+                        $pedidoCompra->getNumeroDocumento()
+                ));
+            } catch (\Exception $e) {
+                $logger->addCritical(sprintf('Ha ocurrido un error intentando crear el albarán para Registro de Compra "%s". Detalles: %s',
+                    $pedidoCompra->getNumeroDocumento(),
+                    $e->getMessage()
+                ));
+                $session->getFlashBag()->add('danger', sprintf('Ha ocurrido un error intentando crear el Albarán para Registro de Compra "%s".',
+                    $pedidoCompra->getNumeroDocumento()
+                ));
             }
         }
 
