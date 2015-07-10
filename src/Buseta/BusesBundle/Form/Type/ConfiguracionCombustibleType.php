@@ -19,16 +19,32 @@ class ConfiguracionCombustibleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $objeto = $builder->getFormFactory();
+        /*$objeto = $builder->getFormFactory();
         $producto = new AddProductoFieldSubscriber($objeto);
         $builder->addEventSubscriber($producto);
         $bodega = new AddBodegaFieldSubscriber($objeto);
-        $builder->addEventSubscriber($bodega);
+        $builder->addEventSubscriber($bodega);*/
 
         $builder
             ->add('combustible', 'entity', array(
                 'required' => false,
                 'class' => 'BusetaNomencladorBundle:Combustible',
+                'empty_value' => '.:Seleccione:.',
+                'attr' => array(
+                    'class' => 'form-control'
+                ),
+            ))
+            ->add('producto', 'entity', array(
+                'required' => false,
+                'class' => 'BusetaBodegaBundle:Producto',
+                'empty_value' => '.:Seleccione:.',
+                'attr' => array(
+                    'class' => 'form-control'
+                ),
+            ))
+            ->add('bodega', 'entity', array(
+                'required' => false,
+                'class' => 'BusetaBodegaBundle:Bodega',
                 'empty_value' => '.:Seleccione:.',
                 'attr' => array(
                     'class' => 'form-control'
