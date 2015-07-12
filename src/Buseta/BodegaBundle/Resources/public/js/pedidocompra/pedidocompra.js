@@ -5,7 +5,8 @@ var pedidocompra = {
     id: '',
     _start_evens: function () {
         $('#bodega_pedido_compra_fecha_pedido').datetimepicker({
-            'format': 'DD/MM/YYYY'
+            'format': 'DD/MM/YYYY',
+            pickTime: false
         });
         $('#bodega_pedido_compra_tercero').chosen();
 
