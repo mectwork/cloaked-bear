@@ -5,7 +5,8 @@ var necesidadmaterial = {
     id: '',
     _start_evens: function () {
         $('#bodega_necesidad_material_fecha_pedido').datetimepicker({
-            'format': 'DD/MM/YYYY'
+            'format': 'DD/MM/YYYY',
+            pickTime: false
         });
         $('#bodega_necesidad_material_tercero').chosen();
 
