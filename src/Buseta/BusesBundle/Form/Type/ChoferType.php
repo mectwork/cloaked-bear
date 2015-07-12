@@ -50,9 +50,22 @@ class ChoferType extends AbstractType
             ->addEventSubscriber($codigobarrasFieldSubcriber);
 
         $builder
-            ->add('direccion','textarea',array())
-            ->add('telefono')
+            ->add('direccion', 'textarea', array(
+                'required' => true,
+                'label' => 'Dirección',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('telefono', 'text', array(
+                'required' => true,
+                'label' => 'Teléfono',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('genero','choice',array(
+                    'label' => 'Género',
                     'choices' => array(
                         'm' => 'Masculino',
                         'f' => 'Femenino'
@@ -77,6 +90,7 @@ class ChoferType extends AbstractType
             ))
             ->add('fechaNacimiento', 'date', array(
                 'widget' => 'single_text',
+                'label' => 'Fecha de Nacimiento',
                 'required' => false,
                 'format'  => 'dd/MM/yyyy',
                 'attr'   => array(
