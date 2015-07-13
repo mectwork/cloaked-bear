@@ -16,18 +16,9 @@ buseta_buses_autobus_extra:
 buseta_buses_autobus_filtro:
   resource: "@BusetaBusesBundle/Controller/AutobusFiltroController.php"
   type:     annotation
-buseta_buses_autobus_imagen:
-  resource: "@BusetaBusesBundle/Controller/AutobusImagenController.php"
-  type:     annotation
-buseta_buses_configuracion_combustible:
-  resource: "@BusetaBusesBundle/Controller/ConfiguracionCombustibleController.php"
-  type:     annotation
 buseta_buses_chofer:
   resource: "@BusetaBusesBundle/Controller/ChoferController.php"
   type:     annotation
-buseta_buses_despachadora_combustible:
-  resource: "@BusetaBusesBundle/Controller/DespachadoraCombustibleController.php"
-  type:     annotation
-buseta_buses_lista_negra_combustible:
-  resource: "@BusetaBusesBundle/Controller/ListaNegraCombustibleController.php"
+buseta_buses_autobus_imagen:
+  resource: "@BusetaBusesBundle/Controller/AutobusImagenController.php"
   type:     annotation

@@ -1,0 +1,54 @@
+{% extends "BusetaCombustibleBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+    Datos de la Configuración de Combustible
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Datos de la Configuración de Combustible: "{{ entity.combustible }}"
+{% endblock %}
+
+{% block area_trabajo %}
+    <table class="table table-striped" style="font-size: 16px;">
+        <tbody>
+
+        <tr>
+            <th>Combustible</th>
+            <td>{{ entity.combustible }}</td>
+        </tr>
+
+        <tr>
+            <th>Bodega</th>
+            <td>{{ entity.bodega }}</td>
+        </tr>
+
+        <tr>
+            <th>Producto</th>
+            <td>{{ entity.producto }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+        <div class="form-actions">
+        <a class="btn btn-primary" href="{{ path('configuracion_combustible_edit', { 'id': entity.id }) }}"> Editar</a>
+        <a class="btn btn-primary" href="{{ path('configuracion_combustible') }}"> Listado</a>
+        <a href="#delete" data-href="{{ path('configuracion_combustible_delete', {'id': entity.id}) }}" class="btn btn-danger">
+            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaCombustibleBundle') }}</a>
+    </div>
+
+    {% include 'BusetaCombustibleBundle:ConfiguracionCombustible:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var deleteevent = new DeleteEvent('{{ path('configuracion_combustible') }}', 'div#configuracion_combustible_records_list', false);
+        deleteevent.start_events();
+    </script>
+{% endblock %}

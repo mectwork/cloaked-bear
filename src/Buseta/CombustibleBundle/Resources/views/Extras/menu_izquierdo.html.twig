@@ -18,17 +18,27 @@
 
 
             <li>
-                <a href="#"><i class="fa fa-wrench fa-fw"></i> Gestión de Autobuses<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-fire fa-fw"></i> Gestión de Combustible<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ path('autobus') }}">Autobuses</a>
+                        <a href="{{ path('listaNegraCombustible') }}">Lista Negra de Combustible</a>
                     </li>
                     <li>
-                        <a href="{{ path('chofer') }}">Choferes</a>
+                        <a href="{{ path('servicioCombustible') }}">Servicios de Combustible</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+
+            <li>
+                <a href="#"><i class="fa fa-gear fa-fw"></i> Configuración <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ path('configuracion_combustible') }}"> Nomenclador Combustible </a>
+                    </li>
+                </ul>
+            </li>
+
 
         </ul>
         <!-- /#side-menu -->

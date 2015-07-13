@@ -1,16 +1,22 @@
-autobus:
+servicioCombustible:
   valor: Valor
   btn:
-    adicionar: Adicionar Autobús
+    adicionar: Adicionar Servicio de Combustible
   modal:
-    title: Crear Nuevo Autobús
+    title: Crear Nuevo Servicio de Combustible
 
-chofer:
+listaNegraCombustible:
   valor: Valor
   btn:
-    adicionar: Adicionar Chofer
+    adicionar: Adicionar Lista Negra de Combustible
   modal:
-    title: Crear Nuevo Chofer
+    title: Crear Nueva Lista Negra de Combustible
+
+configuracion_combustible:
+  btn:
+    adicionar: Adicionar Configuración de Combustible
+  modal:
+    title: Crear Nueva Configuración de Combustible
 
 messages:
   no_results: No existen elementos que mostrar.
