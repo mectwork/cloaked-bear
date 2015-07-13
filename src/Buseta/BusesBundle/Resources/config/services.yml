@@ -12,6 +12,11 @@ services:
         arguments: [@security.context]
         tags:
             - {name: form.type, alias: 'buses_autobus_basico'}
+    buses.buses_vehiculo.type:
+        class: Buseta\BusesBundle\Form\Type\VehiculoType
+        arguments: [@security.context]
+        tags:
+            - {name: form.type, alias: 'buses_vehiculo'}
     buses.buses_autobus_extra.type:
         class: Buseta\BusesBundle\Form\Type\InformacionExtraType
         arguments: [@doctrine.orm.entity_manager, @service_container]

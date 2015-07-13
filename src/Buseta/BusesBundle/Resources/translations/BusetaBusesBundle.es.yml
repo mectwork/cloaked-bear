@@ -5,6 +5,13 @@ autobus:
   modal:
     title: Crear Nuevo Autobús
 
+vehiculo:
+  valor: Valor
+  btn:
+    adicionar: Adicionar Vehículo
+  modal:
+    title: Crear Nuevo Vehículo
+
 chofer:
   valor: Valor
   btn:
