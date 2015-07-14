@@ -1,0 +1,13 @@
+buseta_combustible_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: BusetaCombustibleBundle:Default:index }
+
+buseta_buses_configuracion_combustible:
+  resource: "@BusetaCombustibleBundle/Controller/ConfiguracionCombustibleController.php"
+  type:     annotation
+buseta_buses_servicio_combustible:
+  resource: "@BusetaCombustibleBundle/Controller/ServicioCombustibleController.php"
+  type:     annotation
+buseta_buses_lista_negra_combustible:
+  resource: "@BusetaCombustibleBundle/Controller/ListaNegraCombustibleController.php"
+  type:     annotation

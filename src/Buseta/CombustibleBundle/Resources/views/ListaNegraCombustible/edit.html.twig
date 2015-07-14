@@ -1,0 +1,45 @@
+{% extends "BusetaCombustibleBundle::layout.html.twig" %}
+
+{% block title %}
+    Modificar Datos de la Lista Negra de Combustible
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Modificar Datos de la Lista Negra de Combustible
+{% endblock %}
+
+{% block area_trabajo %}
+
+    {% include '@BusetaCombustible/ListaNegraCombustible/form_template.html.twig' with {'form': edit_form} %}
+
+{% endblock area_trabajo %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $('#combustible_lista_negra_combustible_fechaInicio').datetimepicker({
+            'format': 'DD/MM/YYYY',
+            pickTime: false
+        });
+
+        var fechaInicio = $('#combustible_lista_negra_combustible_fechaInicio').val();
+        $('input:hidden[name^="buses_lista_negra_combustible[fechaInicio]_submit"]').val(fechaInicio);
+
+        $('#combustible_lista_negra_combustible_fechaFinal').datetimepicker({
+            'format': 'DD/MM/YYYY',
+            pickTime: false
+        });
+
+        var fechaFinal = $('#buses_lista_negra_combustible_fechaFinal').val();
+        $('input:hidden[name^="buses_lista_negra_combustible[fechaFinal]_submit"]').val(fechaFinal);
+
+        $("#buses_lista_negra_combustible_fechaInicio").on("dp.change", function (e) {
+            $('#buses_lista_negra_combustible_fechaFinal').data("DateTimePicker").setMinDate(e.date);
+        });
+        $("#buses_lista_negra_combustible_fechaFinal").on("dp.change", function (e) {
+            $('#buses_lista_negra_combustible_fechaInicio').data("DateTimePicker").setMaxDate(e.date);
+        });
+    </script>
+
+{% endblock %}

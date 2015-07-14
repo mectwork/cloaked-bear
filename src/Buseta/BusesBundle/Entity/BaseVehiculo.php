@@ -57,7 +57,6 @@ abstract class BaseVehiculo
      */
     protected $estilo;
 
-
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Color")
      */
@@ -70,7 +69,6 @@ abstract class BaseVehiculo
      * @Assert\Type("integer", groups={"web", "console", "Autobus"})
      */
     protected $numeroPlazas;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\MarcaMotor")
@@ -122,12 +120,10 @@ abstract class BaseVehiculo
      */
     protected $cilindrada;
 
-
     /**
      * @ORM\Column(name="activo", type="boolean", nullable=true)
      */
     protected $activo;
-
 
     /**
      * @var integer
@@ -135,7 +131,6 @@ abstract class BaseVehiculo
      * @ORM\Column(name="kilometraje", type="integer", nullable=true)
      */
     protected $kilometraje;
-
 
     /**
      * @var integer

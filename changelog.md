@@ -1,3 +1,21 @@
+beta6:
+  - [Add] Entidad Vehículo y la gestión de sus funcionalidades
+  - [Update] Módulo Combustible y cambiado el nombre de la entidad DespachadoraCombustible por ServicioCombustible
+  - [Update] Eliminado el campo Impuesto de las entidades NecesidadCompra y RegistroCompra
+  - [Hotfix] Faltas de tildes en el formulario de la entidad Chofer
+  - [Hotfix] Formato de tiempo no válido en fechaNacimiento de entidad Chofer
+  - [Hotfix] Mensaje autenticación del sistema
+  - [Update] Funcionalidades de entidad Autobus
+  - [Update] Procesamiento de la entidad Autobus
+  - [Add] Botones Editar Producto y Actualizar Líneas de Registros de Compras, en el modal de las líneas de Registros de Compras
+  - [New] Validación que no permite echar combustible al autobús más de una vez al día
+  - [New] Validación que no permite echar más combustible que la capacidadTanque en la entidad ServicioCombustible
+  - [Update] Validación para autobuses que no estén en ListaNegraCombustible
+  - [Update] Funcionalidades de entidad ServicioCombustible
+  - [New] Funcionalidades de gestión de ListaNegraCombustible
+  - [New] Funcionalidades de gestión de entidad Chofer
+  - [New] Nomencladores Nacionalidad y EstadoCivil. Entidad Chofer
+  - [New] Funcionalidades de ConfiguracionCombustible
 beta5:
   - [Update] Filtro de búsqueda de Inventario Físico.
   - [New] Filtro de búsqueda de Orden de Trabajo.

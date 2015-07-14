@@ -1,0 +1,113 @@
+{% form_theme form '@BusetaBodega/Form/fields.twig' %}
+
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data">
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+    {{ form_errors(form) }}
+    {{ form_row(form.id) }}
+    {{ form_row(form._token) }}
+
+    <div class="row">
+        <div class="col-lg-4">
+            {{ form_row(form.matricula) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.numero) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.color) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            {{ form_row(form.potencia) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.combustible) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.capacidadTanque) }}
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            {{ form_row(form.marcaCajacambio) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.tipoCajacambio) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.anno) }}
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            {{ form_row(form.numeroPlazas) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.numeroCilindros) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.cilindrada) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            {{ form_row(form.estilo) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.marca) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.modelo) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            {{ form_row(form.marcaMotor) }}
+        </div>
+
+        {% if form.offsetExists('kilometraje') %}
+        <div class="col-lg-4">
+            {{ form_row(form.kilometraje) }}
+        </div>
+        {% endif %}
+
+        {% if form.offsetExists('horas') %}
+        <div class="col-lg-4">
+            {{ form_row(form.horas) }}
+        </div>
+        {% endif %}
+    </div>
+
+    <br/>
+
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <a class="btn btn-primary" id="btn_vehiculo_save" href="#"><span class="glyphicon glyphicon-save"></span>
+                {{ 'actions.save' | trans({}, 'BusetaBusesBundle') }}</a>
+            <a class="btn btn-default" id="btn_vehiculo_cancel" href="{{ path('vehiculo') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+                {{ 'actions.list' | trans({}, 'BusetaBusesBundle') }}</a>
+        </div>
+    </div>
+
+</form>

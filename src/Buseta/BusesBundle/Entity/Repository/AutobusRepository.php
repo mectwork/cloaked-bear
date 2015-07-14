@@ -41,8 +41,8 @@ class AutobusRepository extends EntityRepository
                     ->setParameter('color', $filter->getColor());
             }
             if ($filter->getMarcaMotor() !== null && $filter->getMarcaMotor() !== '') {
-                $query->andWhere($query->expr()->eq('a.marca_motor', ':marca_motor'))
-                    ->setParameter('marca_motor', $filter->getMarcaMotor());
+                $query->andWhere($query->expr()->eq('a.marcaMotor', ':marcaMotor'))
+                    ->setParameter('marcaMotor', $filter->getMarcaMotor());
             }
         }
 
