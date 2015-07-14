@@ -35,7 +35,7 @@
                         <span class="icon icon-bus"/>
                     </div>
                     <div class="column-text">
-                        <div class="text-header3">Gestión de Buses</div>
+                        <div class="text-header3">Vehículos</div>
                     </div>
                 </a>
             </div>
@@ -46,7 +46,7 @@
                         <span class="icon icon-home-2"/>
                     </div>
                     <div class="column-text">
-                        <div class="text-header3">Gestión de Bodega</div>
+                        <div class="text-header3">Bodega</div>
                     </div>
                 </a>
             </div>
@@ -57,7 +57,7 @@
                         <span class="icon icon-wrench" />
                     </div>
                     <div class="column-text">
-                        <div class="text-header3">Gestión de Taller</div>
+                        <div class="text-header3">Taller</div>
                     </div>
                 </a>
             </div>
@@ -68,32 +68,32 @@
     <div id="home-tiles" class="container-fluid metro" style="margin-top: 30px">
         <div class="row-fluid">
             <div class="span4">
+                <a class="tile wide imagetext bg-color-blueDark middle" href="{{ path('configuracion_combustible') }}">
+                    <div class="image-wrapper">
+                        <i class="fa fa-dashboard" style="padding-left: 8px; font-size: 80px; height: 80px; line-height: 80px; width: 80px;"></i>
+                    </div>
+                    <div class="column-text">
+                        <div class="text-header3">Combustible</div>
+                    </div>
+                </a>
+            </div>
+            <div class="span4">
                 <a class="tile wide imagetext bg-color-brown middle" href="{{ path('admin') }}">
                     <div class="image-wrapper">
                         <span class="icon icon-cog-2"/>
                     </div>
                     <div class="column-text">
-                        <div class="text-header3">Configuración del Sistema</div>
+                        <div class="text-header3">Módulo Nomenclador</div>
                     </div>
                 </a>
             </div>
             <div class="span4">
                 <a class="tile wide imagetext bg-color-red middle" href="{{ path('security_user') }}">
                     <div class="image-wrapper">
-                        <span class="icon icon-fire"/>
+                        <i class="fa fa-shield" style="padding-left: 8px; font-size: 80px; height: 80px; line-height: 80px; width: 80px;"></i>
                     </div>
                     <div class="column-text">
-                        <div class="text-header3">Módulo de Seguridad</div>
-                    </div>
-                </a>
-            </div>
-            <div class="span4">
-                <a class="tile wide imagetext bg-color-blueDark middle" href="{{ path('configuracion_combustible') }}">
-                    <div class="image-wrapper">
-                        <span class="icon icon-fire"/>
-                    </div>
-                    <div class="column-text">
-                        <div class="text-header3">Módulo de Combustible</div>
+                        <div class="text-header3">Módulo Seguridad</div>
                     </div>
                 </a>
             </div>

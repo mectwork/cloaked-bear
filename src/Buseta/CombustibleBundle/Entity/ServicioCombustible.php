@@ -23,6 +23,7 @@ class ServicioCombustible
     private $id;
 
     /**
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\CombustibleBundle\Entity\ConfiguracionCombustible")
      */
     private $combustible;
@@ -30,17 +31,21 @@ class ServicioCombustible
     /**
      * @var integer
      *
-     * @ORM\Column(name="cantidadLibros", type="integer")
+     * @ORM\Column(name="cantidad_libros", type="integer")
      * @Assert\NotBlank()
      */
     private $cantidadLibros;
 
     /**
+     * @var \Buseta\BusesBundle\Entity\Chofer
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Chofer")
      */
     private $chofer;
 
     /**
+     * @var \Buseta\BusesBundle\Entity\Autobus
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus")
      */
     private $autobus;
@@ -53,6 +58,7 @@ class ServicioCombustible
     private $created;
 
     /**
+     * @var \Buseta\SecurityBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
      */
@@ -66,6 +72,7 @@ class ServicioCombustible
     private $updated;
 
     /**
+     * @var \Buseta\SecurityBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
      */
@@ -79,25 +86,17 @@ class ServicioCombustible
     private $deleted;
 
     /**
+     * @var \Buseta\SecurityBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
      */
     private $deletedby;
 
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->created = new \DateTime();
-        $this->deleted = false;
-    }
-
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -251,14 +250,14 @@ class ServicioCombustible
     public function setCantidadLibros($cantidadLibros)
     {
         $this->cantidadLibros = $cantidadLibros;
-    
+
         return $this;
     }
 
     /**
      * Get cantidadLibros
      *
-     * @return integer 
+     * @return integer
      */
     public function getCantidadLibros()
     {
@@ -274,7 +273,7 @@ class ServicioCombustible
     public function setCombustible(\Buseta\CombustibleBundle\Entity\ConfiguracionCombustible $combustible = null)
     {
         $this->combustible = $combustible;
-    
+
         return $this;
     }
 
@@ -297,14 +296,14 @@ class ServicioCombustible
     public function setChofer(\Buseta\BusesBundle\Entity\Chofer $chofer = null)
     {
         $this->chofer = $chofer;
-    
+
         return $this;
     }
 
     /**
      * Get chofer
      *
-     * @return \Buseta\BusesBundle\Entity\Chofer 
+     * @return \Buseta\BusesBundle\Entity\Chofer
      */
     public function getChofer()
     {
@@ -320,14 +319,14 @@ class ServicioCombustible
     public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
     {
         $this->autobus = $autobus;
-    
+
         return $this;
     }
 
     /**
      * Get autobus
      *
-     * @return \Buseta\BusesBundle\Entity\Autobus 
+     * @return \Buseta\BusesBundle\Entity\Autobus
      */
     public function getAutobus()
     {

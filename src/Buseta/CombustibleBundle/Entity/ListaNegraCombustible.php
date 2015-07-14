@@ -28,7 +28,7 @@ class ListaNegraCombustible
     private $autobus;
 
     /**
-     * @var datetime
+     * @var \DateTime
      *
      * @ORM\Column(name="fechaInicio", type="datetime")
      * @Assert\Date()
@@ -37,7 +37,7 @@ class ListaNegraCombustible
     private $fechaInicio;
 
     /**
-     * @var datetime
+     * @var \DateTime
      *
      * @ORM\Column(name="fechaFinal", type="datetime")
      * @Assert\Date()
@@ -48,7 +48,7 @@ class ListaNegraCombustible
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -68,14 +68,14 @@ class ListaNegraCombustible
         if($this->fechaInicio !== null){
             $this->fechaInicio->setTime(3,0);
         }
-    
+
         return $this;
     }
 
     /**
      * Get fechaInicio
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaInicio()
     {
@@ -95,14 +95,14 @@ class ListaNegraCombustible
         if($this->fechaFinal !== null){
             $this->fechaFinal->setTime(3,0);
         }
-    
+
         return $this;
     }
 
     /**
      * Get fechaFinal
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaFinal()
     {
@@ -118,14 +118,14 @@ class ListaNegraCombustible
     public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
     {
         $this->autobus = $autobus;
-    
+
         return $this;
     }
 
     /**
      * Get autobus
      *
-     * @return \Buseta\BusesBundle\Entity\Autobus 
+     * @return \Buseta\BusesBundle\Entity\Autobus
      */
     public function getAutobus()
     {
