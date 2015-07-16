@@ -1,0 +1,28 @@
+<!-- Initialize script -->
+<script type="text/javascript">
+    $(function (){
+
+        //Actualiza los Modelos a partir de las Marcas seleccionados con peticiones AJAX
+        $('#{{ form.marca.vars.id }}').change(function(){
+            var data = {
+                marca_id: $(this).val()
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("vehiculo_ajax_marca_modelo") }}',
+                data: data,
+                success: function(data) {
+                    var values = $.parseJSON(data);
+                    var $modelo_selector = $('#{{ form.modelo.vars.id }}');
+
+                    $modelo_selector.html('<option>---Seleccione---</option>');
+
+                    for (var i=0, total = values.length; i < total; i++) {
+                        $modelo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                    }
+                }
+            });
+        });
+    });
+</script>
