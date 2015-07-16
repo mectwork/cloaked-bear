@@ -227,7 +227,7 @@ class AutobusController extends Controller
             $logger = $this->get('logger');
 
             try {
-                $autobus->setModelData($autobusModel);
+                $autobus->setModelDatas($autobusModel);
                 $em->flush();
 
                 $editForm = $this->createEditForm(new AutobusBasicoModel($autobus));

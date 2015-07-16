@@ -16,37 +16,37 @@ class VehiculoRepository extends EntityRepository
 {
     public function filter(VehiculoFilterModel $filter = null)
     {
-        $qb = $this->createQueryBuilder('a');
+        $qb = $this->createQueryBuilder('v');
         $query = $qb->where($qb->expr()->eq(true,true));
 
         if($filter) {
             if ($filter->getMatricula() !== null && $filter->getMatricula() !== '') {
-                $query->andWhere($qb->expr()->like('a.matricula',':matricula'))
+                $query->andWhere($qb->expr()->like('v.matricula',':matricula'))
                     ->setParameter('matricula', '%' . $filter->getMatricula() . '%');
             }
             if ($filter->getNumero() !== null && $filter->getNumero() !== '') {
-                $query->andWhere($qb->expr()->like('a.numero',':numero'))
+                $query->andWhere($qb->expr()->like('v.numero',':numero'))
                     ->setParameter('numero', '%' . $filter->getNumero() . '%');
             }
             if ($filter->getMarca() !== null && $filter->getMarca() !== '') {
-                $query->andWhere($query->expr()->eq('a.marca', ':marca'))
+                $query->andWhere($query->expr()->eq('v.marca', ':marca'))
                     ->setParameter('marca', $filter->getMarca());
             }
             if ($filter->getEstilo() !== null && $filter->getEstilo() !== '') {
-                $query->andWhere($query->expr()->eq('a.estilo', ':estilo'))
+                $query->andWhere($query->expr()->eq('v.estilo', ':estilo'))
                     ->setParameter('estilo', $filter->getEstilo());
             }
             if ($filter->getColor() !== null && $filter->getColor() !== '') {
-                $query->andWhere($query->expr()->eq('a.color', ':color'))
+                $query->andWhere($query->expr()->eq('v.color', ':color'))
                     ->setParameter('color', $filter->getColor());
             }
             if ($filter->getMarcaMotor() !== null && $filter->getMarcaMotor() !== '') {
-                $query->andWhere($query->expr()->eq('a.marcaMotor', ':marcaMotor'))
+                $query->andWhere($query->expr()->eq('v.marcaMotor', ':marcaMotor'))
                     ->setParameter('marcaMotor', $filter->getMarcaMotor());
             }
         }
 
-        $query->orderBy('a.id', 'ASC');
+        $query->orderBy('v.id', 'ASC');
 
         try {
             return $query->getQuery();

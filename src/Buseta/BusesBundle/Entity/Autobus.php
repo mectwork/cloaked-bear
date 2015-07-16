@@ -9,22 +9,17 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Buseta\BusesBundle\Form\Model\AutobusBasicoModel;
+use Doctrine\ORM\Mapping\Entity;
 
 /**
  * Autobus.
  *
+ * @Entity
  * @ORM\Table(name="d_autobus")
  * @ORM\Entity(repositoryClass="Buseta\BusesBundle\Entity\Repository\AutobusRepository")
  */
-class Autobus extends BaseVehiculo
+class Autobus extends Vehiculo
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
     protected $id;
 
     /**
@@ -286,7 +281,7 @@ class Autobus extends BaseVehiculo
      * @param AutobusBasicoModel $model
      * @return Autobus
      */
-    public function setModelData(AutobusBasicoModel $model)
+    public function setModelDatas(AutobusBasicoModel $model)
     {
         $this->matricula = $model->getMatricula();
         $this->numero = $model->getNumero();
