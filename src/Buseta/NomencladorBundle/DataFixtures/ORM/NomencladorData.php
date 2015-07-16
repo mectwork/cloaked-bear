@@ -242,10 +242,6 @@ class NomencladorData extends AbstractFixture
             $objeto = new Tarea();
             $codigo = uniqid();
             $objeto->setValor($this->tareas[$i]);
-            $objeto->setGrupo($this->getReference('grupo' . $i));
-            $objeto->setSubgrupo($this->getReference('subgrupo' . $i));
-            $objeto->setKilometros($this->kilometros[$i]);
-            $objeto->setHoras($this->horas[$i]);
             $manager->persist($objeto);
             $manager->flush();
             $manager->clear();
