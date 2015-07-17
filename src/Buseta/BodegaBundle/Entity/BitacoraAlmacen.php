@@ -23,9 +23,26 @@ class BitacoraAlmacen
     private $id;
 
     /**
+     * The allowed values for this list are:
+     * C+ (Customer Returns)
+     * C- (Customer Shipment)
+     * D+ (Internal Consumption +)
+     * D- (Internal Consumption -)
+     * I+ (Inventory In)
+     * I- (Inventory Out)
+     * M+ (Movement To)
+     * M- (Movement From)
+     * P+ (Production +)
+     * P- (Production -)
+     * V+ (Vendor Receipts)
+     * V- (Vendor Returns)
+     * W+ (Work Order +)
+     * W- (Work Order -)
+     *
      * @var string
      *
      * @ORM\Column(name="tipoMovimiento", type="string", nullable=true)
+     * @Assert\Choice(choices={"C+","C-","D+","D-","I+","I-","M+","M-","P+","P-","V+","V-","W+","W-"})
      */
     private $tipoMovimiento;
 
@@ -45,7 +62,7 @@ class BitacoraAlmacen
     private $categoriaProducto;
 
     /**
-     * @var date
+     * @var \DateTime
      *
      * @ORM\Column(name="fechaMovimiento", type="date")
      * @Assert\Date()
@@ -104,7 +121,7 @@ class BitacoraAlmacen
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created", type="datetime", nullable=true)
+     * @ORM\Column(name="created", type="datetime")
      */
     private $created;
 
@@ -140,7 +157,6 @@ class BitacoraAlmacen
     public function __construct()
     {
         $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     /**

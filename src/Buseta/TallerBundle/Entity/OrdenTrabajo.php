@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Linea.
+ * Orden Trabajo.
  *
  * @ORM\Table(name="d_orden_trabajo")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\OrdenTrabajoRepository")
@@ -204,7 +204,7 @@ class OrdenTrabajo
      * Set diagnosticadoPor.
      *
      * @param string $diagnosticadoPor
-     * 
+     *
      * @return OrdenTrabajo
      */
     public function setDiagnosticadoPor($diagnosticadoPor)
@@ -607,14 +607,14 @@ class OrdenTrabajo
     public function setDiagnostico(\Buseta\TallerBundle\Entity\Diagnostico $diagnostico = null)
     {
         $this->diagnostico = $diagnostico;
-    
+
         return $this;
     }
 
     /**
      * Get diagnostico
      *
-     * @return \Buseta\TallerBundle\Entity\Diagnostico 
+     * @return \Buseta\TallerBundle\Entity\Diagnostico
      */
     public function getDiagnostico()
     {
