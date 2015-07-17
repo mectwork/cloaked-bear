@@ -2,7 +2,7 @@
 
 namespace Buseta\CombustibleBundle\Form\Model;
 
-use Buseta\BusesBundle\Entity\Autobus;
+use Buseta\BusesBundle\Entity\Vehiculo;
 use Buseta\CombustibleBundle\Entity\ServicioCombustible;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,9 +22,9 @@ class ServicioCombustibleFilterModel
     private $combustible;
 
     /**
-     * @var \Buseta\BusesBundle\Entity\Autobus
+     * @var \Buseta\BusesBundle\Entity\Vehiculo
      */
-    private $autobus;
+    private $vehiculo;
 
     /**
      * @var \Buseta\BusesBundle\Entity\Chofer
@@ -39,8 +39,8 @@ class ServicioCombustibleFilterModel
         if ($servicioCombustible !== null) {
             $this->id = $servicioCombustible->getId();
 
-            if ($servicioCombustible->getAutobus()) {
-                $this->estadoCivil  = $servicioCombustible->getAutobus();
+            if ($servicioCombustible->getVehiculo()) {
+                $this->estadoCivil  = $servicioCombustible->getVehiculo();
             }
             if ($servicioCombustible->getChofer()) {
                 $this->nacionalidad  = $servicioCombustible->getChofer();
@@ -58,8 +58,8 @@ class ServicioCombustibleFilterModel
     {
         $servicioCombustible = new ServicioCombustible();
 
-        if ($this->getAutobus() !== null) {
-            $servicioCombustible->setAutobus($this->getAutobus());
+        if ($this->getVehiculo() !== null) {
+            $servicioCombustible->setVehiculo($this->getVehiculo());
         }
         if ($this->getChofer() !== null) {
             $servicioCombustible->setChofer($this->getChofer());
@@ -104,19 +104,19 @@ class ServicioCombustibleFilterModel
     }
 
     /**
-     * @return Autobus
+     * @return Vehiculo
      */
-    public function getAutobus()
+    public function getVehiculo()
     {
-        return $this->autobus;
+        return $this->vehiculo;
     }
 
     /**
-     * @param Autobus $autobus
+     * @param Vehiculo $vehiculo
      */
-    public function setAutobus($autobus)
+    public function setVehiculo($vehiculo)
     {
-        $this->autobus = $autobus;
+        $this->vehiculo = $vehiculo;
     }
 
     /**

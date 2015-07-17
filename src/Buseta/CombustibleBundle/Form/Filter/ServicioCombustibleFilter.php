@@ -30,10 +30,10 @@ class ServicioCombustibleFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('autobus','entity',array(
-                'class' => 'BusetaBusesBundle:Autobus',
+            ->add('vehiculo','entity',array(
+                'class' => 'BusetaBusesBundle:Vehiculo',
                 'empty_value' => '---Seleccione---',
-                'label' => 'Autobús',
+                'label' => 'Vehículo',
                 'attr' => array(
                     'class' => 'form-control',
                 )

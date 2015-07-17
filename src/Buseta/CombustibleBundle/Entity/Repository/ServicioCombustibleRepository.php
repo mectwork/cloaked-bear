@@ -16,26 +16,26 @@ class ServicioCombustibleRepository extends EntityRepository
 {
     public function filter(ServicioCombustibleFilterModel $filter = null)
     {
-        $qb = $this->createQueryBuilder('d');
+        $qb = $this->createQueryBuilder('s');
         $query = $qb->where($qb->expr()->eq(true,true));
 
         if($filter) {
 
             if ($filter->getCombustible() !== null && $filter->getCombustible() !== '') {
-                $query->andWhere($query->expr()->eq('d.combustible', ':combustible'))
+                $query->andWhere($query->expr()->eq('s.combustible', ':combustible'))
                     ->setParameter('combustible', $filter->getCombustible());
             }
-            if ($filter->getAutobus() !== null && $filter->getAutobus() !== '') {
-                $query->andWhere($query->expr()->eq('d.autobus', ':autobus'))
-                    ->setParameter('autobus', $filter->getAutobus());
+            if ($filter->getVehiculo() !== null && $filter->getVehiculo() !== '') {
+                $query->andWhere($query->expr()->eq('s.vehiculo', ':vehiculo'))
+                    ->setParameter('vehiculo', $filter->getVehiculo());
             }
             if ($filter->getChofer() !== null && $filter->getChofer() !== '') {
-                $query->andWhere($query->expr()->eq('d.chofer', ':chofer'))
+                $query->andWhere($query->expr()->eq('s.chofer', ':chofer'))
                     ->setParameter('chofer', $filter->getChofer());
             }
         }
 
-        $query->orderBy('d.id', 'ASC');
+        $query->orderBy('s.id', 'ASC');
 
         try {
             return $query->getQuery();

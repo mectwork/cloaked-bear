@@ -15,7 +15,7 @@
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.combustible is null or filter_form.vars.value.combustible is empty)
     and (filter_form.vars.value.chofer is null or filter_form.vars.value.chofer is empty)
-    and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
+    and (filter_form.vars.value.vehiculo is null or filter_form.vars.value.vehiculo is empty)
     %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="col-lg-4">{{ form_row(filter_form.combustible) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.chofer) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.autobus) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.vehiculo) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -62,7 +62,7 @@
                 {#<th>{{ knp_pagination_sortable(entities, 'Nacionalidad', 'a.nacionalidad') }}</th>#}
                 <th>Nomenclador de Combustible</th>
                 <th>Chofer</th>
-                <th>Autobús</th>
+                <th>Vehículo</th>
                 <th>Cantidad de Libros</th>
                 <th style="text-align: center">Acciones</th>
             </tr>
@@ -72,7 +72,7 @@
                 <tr>
                     <td>{{ entity.combustible }}</td>
                     <td>{{ entity.chofer }}</td>
-                    <td>{{ entity.autobus }}</td>
+                    <td>{{ entity.vehiculo }}</td>
                     <td>{{ entity.cantidadLibros }}</td>
 
                     <td style="width: 24% !important; text-align: center;">

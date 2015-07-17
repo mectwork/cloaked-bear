@@ -32,10 +32,10 @@ class CapacidadTanqueValidoValidator extends ConstraintValidator
      */
     public function validate($data, Constraint $constraint)
     {
-        //capacidad de combustible del autobus
-        $capacidadCombustible = $data->getAutobus()->getCapacidadTanque();
+        //capacidad de combustible del vehiculo
+        $capacidadCombustible = $data->getVehiculo()->getCapacidadTanque();
 
-        //Validando que la capacidadTanque del Autobus sea mayor o igual la cantidadLibros entrada
+        //Validando que la capacidadTanque del Vehiculo sea mayor o igual la cantidadLibros entrada
         if ($capacidadCombustible <= $data->getCantidadLibros()) {
             $this->context->addViolationAt('cantidadLibros', $constraint->messageCantidadLibros, array());
         }

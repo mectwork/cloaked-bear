@@ -5,6 +5,7 @@ namespace Buseta\CombustibleBundle\Form\Model;
 use Buseta\BusesBundle\Entity\Chofer;
 use Buseta\CombustibleBundle\Entity\ServicioCombustible;
 use Buseta\CombustibleBundle\Form\Model\ChoferInServicioCombustible;
+use Buseta\NomencladorBundle\Entity\Combustible;
 use Doctrine\ORM\Mapping as ORM;
 
 use Buseta\BusesBundle\Validator\Constraints as BusetaBusesAssert;
@@ -23,7 +24,7 @@ class ServicioCombustibleModel
     private $id;
 
     /**
-     * @var \Buseta\CombustibleBundle\Entity\ConfiguracionCombustible
+     * @var \Buseta\NomencladorBundle\Entity\Combustible
      */
     private $combustible;
 
@@ -220,7 +221,7 @@ class ServicioCombustibleModel
     }
 
     /**
-     * @return ConfiguracionCombustible
+     * @return Combustible
      */
     public function getCombustible()
     {
@@ -228,7 +229,7 @@ class ServicioCombustibleModel
     }
 
     /**
-     * @param ConfiguracionCombustible $combustible
+     * @param Combustible $combustible
      */
     public function setCombustible($combustible)
     {
