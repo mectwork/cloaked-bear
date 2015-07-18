@@ -7,13 +7,22 @@ services:
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'combustible_configuracion_combustible'}
+
     buses.combustible_servicio_combustible.type:
         class: Buseta\CombustibleBundle\Form\Type\ServicioCombustibleType
-        arguments: [@doctrine.orm.entity_manager, @service_container]
+        arguments: [@doctrine.orm.entity_manager, @service_container, @core.fecha_sistema, @core.cambiohora_sistema]
         tags:
             - {name: form.type, alias: 'combustible_servicio_combustible'}
+
     buses.combustible_lista_negra_combustible.type:
         class: Buseta\CombustibleBundle\Form\Type\ListaNegraCombustibleType
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'combustible_lista_negra_combustible'}
+
+    core.twig.fecha_sistema_extension:
+        class: Buseta\CoreBundle\Twig\FechaSistemaExtension
+        arguments:
+            - @core.fecha_sistema
+        tags:
+            - { name: twig.extension }

@@ -21,7 +21,6 @@ services:
         class: Buseta\BusesBundle\Form\Type\ChoferType
         arguments: [@security.context]
         tags:
-        tags:
             - {name: form.type, alias: 'buses_chofer'}
     buses.buses_autobus_extra.type:
         class: Buseta\BusesBundle\Form\Type\InformacionExtraType

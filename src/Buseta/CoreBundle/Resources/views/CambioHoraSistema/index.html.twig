@@ -1,0 +1,58 @@
+{% extends "BusetaBusesBundle::layout.html.twig" %}
+
+{% block title %}
+    Cambio de Hora del Sistema
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Cambio de Hora del Sistema
+{% endblock %}
+
+{% block area_trabajo %}
+
+{% form_theme form '@BusetaBodega/Form/fields.twig' %}
+
+<form action="{{ path('cambiohora_update') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_errors(form) }}
+    {{ form_row(form._token) }}
+
+    <div class="row">
+        <div class="col-md-2">
+            {{ form_row(form.hora) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.activo) }}
+        </div>
+    </div>
+
+    <br/>
+
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <input type="submit" class="btn btn-primary" value="Salvar" />
+        </div>
+    </div>
+
+</form>
+
+{% endblock area_trabajo %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            var horaSistema = $('#buseta_corebundle_horacambiosistematype_hora').datetimepicker({
+                'format': 'H:m',
+                'formatSubmit': 'H:m',
+                pickDate: false
+            });
+
+            var horaSistema = $('#buseta_corebundle_horacambiosistematype_hora').val();
+            $('input:hidden[name^="buseta_corebundle_horacambiosistematype[hora]_submit"]').val(horaSistema);
+
+        });
+    </script>
+{% endblock %}

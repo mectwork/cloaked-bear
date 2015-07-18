@@ -1,0 +1,59 @@
+{% extends "BusetaBusesBundle::layout.html.twig" %}
+
+{% block title %}
+    Cambio de Fecha del Sistema
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Cambio de Fecha del Sistema
+{% endblock %}
+
+{% block area_trabajo %}
+
+    {% form_theme form '@BusetaBodega/Form/fields.twig' %}
+
+    <form action="{{ path('fecha_sistema_edit') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_errors(form) }}
+        {{ form_row(form._token) }}
+
+        <div class="row">
+            <div class="col-md-2">
+                {{ form_row(form.fecha) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.activo) }}
+            </div>
+        </div>
+
+        <br/>
+
+        {# buttons group #}
+        <div class="row">
+            <div class="col-md-4">
+                <input type="submit" class="btn btn-primary" value="Salvar" />
+            </div>
+        </div>
+
+    </form>
+
+{% endblock area_trabajo %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            var horaSistema = $('#buseta_corebundle_fechasistematype_fecha').datetimepicker({
+                today: 'Hoy',
+                format: 'DD/MM/YYYY',
+                formatSubmit: 'DD/MM/YYYY',
+                pickTime: false
+            });
+
+            var horaSistema = $('#buseta_corebundle_fechasistematype_fecha').val();
+            $('input:hidden[name^="buseta_corebundle_fechasistematype[fecha]_submit"]').val(horaSistema);
+
+        });
+    </script>
+{% endblock %}
