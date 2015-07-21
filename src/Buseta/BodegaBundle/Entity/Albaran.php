@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Entity;
 
 use Buseta\BodegaBundle\Form\Model\AlbaranModel;
+use Buseta\BodegaBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,7 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="d_albaran")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\AlbaranRepository")
  */
-class Albaran
+class Albaran implements DateTimeAwareInterface
 {
     /**
      * @var integer
@@ -67,11 +68,36 @@ class Albaran
     private $almacen;
 
     /**
+     * The Document Status indicates the status of a document at this time. To change the status of a document,
+     * use one of the buttons usually located at the bottom of the document window.
+     *
+     * The allowed values for this list are:
+     * ?? (Unknown)
+     * AP (Accepted)
+     * CH (Modified)
+     * CL (Closed)
+     * CO (Completed)
+     * DR (Draft)
+     * IN (Inactive)
+     * IP (Under Way)
+     * NA (Not Accepted)
+     * PE (Accounting Error)
+     * PO (Posted)
+     * PR (Printed)
+     * RE (Re-Opened)
+     * TE (Transfer Error)
+     * TR (Transferred)
+     * VO (Voided)
+     * WP (Not Paid)
+     * XX (Procesando)
+     *
      * @var string
      *
      * @ORM\Column(name="estadoDocumento", type="string", nullable=false)
+     * @Assert\Choice(choices={"??","AP","CH","CL","CO","DR","IN","IP","NA","PE","PO","PR","RE","TE","TR","VO","WP","XX"})
+     *
      */
-    private $estadoDocumento = 'BO';
+    private $estadoDocumento;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\PedidoCompra")
@@ -81,21 +107,51 @@ class Albaran
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\AlbaranLinea", mappedBy="albaran", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\AlbaranLinea", mappedBy="albaran", cascade={"persist", "remove"})
+     * @Assert\Valid()
      */
-    private $albaranLinea;
+    private $albaranLineas;
+
+    /**
+     * The allowed values for this list are:
+     * C+ (Customer Returns)
+     * C- (Customer Shipment)
+     * D+ (Internal Consumption +)
+     * D- (Internal Consumption -)
+     * I+ (Inventory In)
+     * I- (Inventory Out)
+     * M+ (Movement To)
+     * M- (Movement From)
+     * P+ (Production +)
+     * P- (Production -)
+     * V+ (Vendor Receipts)
+     * V- (Vendor Returns)
+     * W+ (Work Order +)
+     * W- (Work Order -)
+     *
+     * @var string
+     *
+     * @ORM\Column(name="movement_type", type="string")
+     *
+     * @Assert\NotNull()
+     * @Assert\Choice(choices={"C+","C-","D+","D-","I+","I-","M+","M-","P+","P-","V+","V-","W+","W-"})
+     */
+    private $tipoMovimiento;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created", type="datetime", nullable=true)
+     * @ORM\Column(name="created", type="datetime")
      */
     private $created;
 
     /**
+     * @var \Buseta\SecurityBundle\Entity\User
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\JoinColumn(name="createdby_id")
      */
-    private $createdby;
+    private $createdBy;
 
     /**
      * @var \DateTime
@@ -105,30 +161,34 @@ class Albaran
     private $updated;
 
     /**
+     * @var \Buseta\SecurityBundle\Entity\User
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\JoinColumn(name="updatedby_id")
      */
-    private $updatedby;
+    private $updatedBy;
 
     /**
-     * @var boolean
+     * @var \DateTime
      *
-     * @ORM\Column(name="deleted", type="boolean", nullable=true)
+     * @ORM\Column(name="deleted", type="datetime", nullable=true)
      */
     private $deleted;
 
     /**
+     * @var \Buseta\SecurityBundle\Entity\User
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\JoinColumn(name="deletedby_id")
      */
-    private $deletedby;
+    private $deletedBy;
 
     /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->albaranLinea = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->updated = new \DateTime();
-        $this->deleted = false;
+        $this->albaranLineas = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -378,47 +438,11 @@ class Albaran
      *
      * @return Albaran
      */
-    public function addAlbaranLineon(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
-    {
-        $albaranLinea->setAlbaran($this);
-
-        $this->albaranLinea[] = $albaranLinea;
-
-        return $this;
-    }
-
-    /**
-     * Remove albaranLinea.
-     *
-     * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
-     */
-    public function removeAlbaranLineon(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
-    {
-        $this->albaranLinea->removeElement($albaranLinea);
-    }
-
-    /**
-     * Get albaranLinea.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAlbaranLineon()
-    {
-        return $this->albaranLinea;
-    }
-
-    /**
-     * Add albaranLinea.
-     *
-     * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
-     *
-     * @return Albaran
-     */
     public function addAlbaranLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
     {
         $albaranLinea->setAlbaran($this);
 
-        $this->albaranLinea[] = $albaranLinea;
+        $this->albaranLineas[] = $albaranLinea;
 
         return $this;
     }
@@ -430,7 +454,7 @@ class Albaran
      */
     public function removeAlbaranLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea)
     {
-        $this->albaranLinea->removeElement($albaranLinea);
+        $this->albaranLineas->removeElement($albaranLinea);
     }
 
     /**
@@ -438,9 +462,9 @@ class Albaran
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAlbaranLinea()
+    public function getAlbaranLineas()
     {
-        return $this->albaranLinea;
+        return $this->albaranLineas;
     }
 
     /**
@@ -450,7 +474,7 @@ class Albaran
      *
      * @return Albaran
      */
-    public function setCreated($created)
+    public function setCreated(\DateTime $created)
     {
         $this->created = $created;
 
@@ -474,7 +498,7 @@ class Albaran
      *
      * @return Albaran
      */
-    public function setUpdated($updated)
+    public function setUpdated(\DateTime $updated)
     {
         $this->updated = $updated;
 

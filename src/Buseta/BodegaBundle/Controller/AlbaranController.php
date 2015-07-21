@@ -2,9 +2,11 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\BusetaBodegaBitacoraEvents;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\Movimiento;
+use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Buseta\BodegaBundle\Form\Filter\AlbaranFilter;
 use Buseta\BodegaBundle\Form\Model\AlbaranFilterModel;
 use Buseta\BodegaBundle\Form\Model\AlbaranModel;
@@ -61,68 +63,76 @@ class AlbaranController extends Controller
         ));
     }
 
-    public function procesarAlbaranAction($id)
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route('/{id}/procesar', name="procesarAlbaran")
+     * @Method("GET")
+     */
+    public function procesarAlbaranAction(Albaran $albaran)
     {
-        $em = $this->getDoctrine()->getManager();
+        $albaranManager = $this->get('buseta.bodega.albaran.manager');
 
-        $albaran = $em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
+        try {
+            if ($albaranManager->process($albaran)) {
+                $this->get('session')->getFlashBag()->add('success', 'Se ha procesado el Albarán de forma correcta.');
 
-        if (!$albaran) {
-            throw $this->createNotFoundException('Unable to find Albaran entity.');
+                return $this->redirect($this->generateUrl('albaran'));
+            }
+        } catch (\Exception $e) {
+
         }
 
-        //Cambia el estado de Borrador a Procesado
-        $albaran->setEstadoDocumento('PR');
-        $em->persist($albaran);
-        $em->flush();
+        $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar Albarán.');
 
-        return $this->redirect($this->generateUrl('albaran'));
+        return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
     }
 
-    public function completarAlbaranAction($id)
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{id}/completar", name="completarAlbaran")
+     * @Method("GET")
+     */
+    public function completarAlbaranAction(Albaran $albaran)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $albaran = $em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
 
         $albaranLineas = $em->getRepository('BusetaBodegaBundle:AlbaranLinea')->findBy(array(
             'albaran' => $albaran,
         ));
 
-
+        $eventDispatcher = $this->get('event_dispatcher');
         foreach ($albaranLineas as $linea) {
-
             //Actualizar Bitácora
-            $bitacora = new BitacoraAlmacen();
-            $bitacora->setProducto($linea->getProducto());
-            $bitacora->setCategoriaProducto($linea->getProducto()->getCategoriaProducto());
-            $bitacora->setFechaMovimiento($albaran->getFechaMovimiento());
-            $bitacora->setAlmacen($linea->getAlmacen());
-            $bitacora->setCantMovida($linea->getCantidadMovida());
-            $bitacora->setTipoMovimiento('V+');
-
-            //Cambia el estado de Procesado a Completado
-            $albaran->setEstadoDocumento('CO');
-
-            $em->persist($bitacora);
-            $em->flush();
+            $event = new FilterBitacoraEvent($linea);
+            $eventDispatcher->dispatch(BusetaBodegaBitacoraEvents::VENDOR_RECEIPTS, $event);
         }
 
-        //Cambia el estado de Procesado a Completado
+       //Cambia el estado de Procesado a Completado
         $albaran->setEstadoDocumento('CO');
+
         $em->persist($albaran);
         $em->flush();
 
         return $this->redirect($this->generateUrl('albaran'));
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/{id}/guardar", name="guardarAlbaran", options={"expose": true})
+     * @Method("GET")
+     */
     public function guardarAlbaranAction(Request $request)
     {
         if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 
-        $request = $this->getRequest();
         if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
         }
@@ -198,13 +208,19 @@ class AlbaranController extends Controller
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/select_albaran_ajax", name="albaran_ajax", options={"expose": true})
+     * @Method("GET")
+     */
     public function select_albaran_ajaxAction(Request $request)
     {
         if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 
-        $request = $this->getRequest();
         if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
         }
@@ -222,6 +238,9 @@ class AlbaranController extends Controller
 
     /**
      * Finds and displays a Albaran entity.
+     *
+     * @Route("/{id}/show", name="albaran_show")
+     * @Method("GET")
      */
     public function showAction($id)
     {
@@ -245,7 +264,8 @@ class AlbaranController extends Controller
     /**
      * Displays a form to edit an existing Albaran entity.
      *
-     * @Route("/{id}/edit", name="albarans_albaran_edit", methods={"GET"}, options={"expose":true})
+     * @Route("/{id}/edit", name="albarans_albaran_edit", options={"expose":true})
+     * @Method("GET")
      */
     public function editAction(Albaran $albaran)
     {
@@ -279,7 +299,8 @@ class AlbaranController extends Controller
     /**
      * Edits an existing Albaran entity.
      *
-     * @Route("/{id}/update", name="albarans_albaran_update", methods={"POST","PUT"}, options={"expose":true})
+     * @Route("/{id}/update", name="albarans_albaran_update", options={"expose":true})
+     * @Method({"POST","PUT"})
      */
     public function updateAction(Request $request, Albaran $albaran)
     {
@@ -326,7 +347,8 @@ class AlbaranController extends Controller
     /**
      * Creates a new Albaran entity.
      *
-     * @Route("/create", name="albarans_albaran_create", methods={"POST"}, options={"expose":true})
+     * @Route("/create", name="albarans_albaran_create", options={"expose":true})
+     * @Method("POST")
      */
     public function createAction(Request $request)
     {
@@ -394,7 +416,8 @@ class AlbaranController extends Controller
     /**
      * Displays a form to create a new Albaran entity.
      *
-     * @Route("/new", name="albarans_albaran_new", methods={"GET"}, options={"expose":true})
+     * @Route("/new", name="albarans_albaran_new", options={"expose":true})
+     * @Method("GET")
      */
     public function newAction()
     {

@@ -74,11 +74,38 @@ services:
       class: Buseta\BodegaBundle\Form\Handler\CostoProductoHandler
       arguments:
         - @service_container
+
     # MANAGERS
     buseta.bodega.terceros_manager:
-      class: Buseta\BodegaBundle\Manager\TerceroManager
-      arguments:
-        - @doctrine.orm.entity_manager
-        - @session
-        - @translator
-        - @logger
+        class: Buseta\BodegaBundle\Manager\TerceroManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @session
+            - @translator
+            - @logger
+
+    buseta.bodega.bitacora_almacen.manager:
+        class: Buseta\BodegaBundle\Manager\BitacoraAlmacenManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @logger
+            - @validator
+
+    buseta.bodega.albaran.manager:
+        class: Buseta\BodegaBundle\Manager\AlbaranManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @logger
+
+    # EVENT LISTENERS
+    buseta.bodega.bitacora_almacen.subscriber:
+        class: Buseta\BodegaBundle\EventListener\BitacoraSubscriber
+        arguments:
+            - @buseta.bodega.bitacora_almacen.manager
+        tags:
+            - {name: kernel.event_subscriber}
+
+    buseta.bodega.doctrine_subscriber.datetime_aware:
+        class: Buseta\BodegaBundle\Doctrine\DateTimeSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }

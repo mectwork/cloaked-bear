@@ -164,13 +164,6 @@ class Autobus extends BaseVehiculo
     private $aceitetransmision;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\Compra", mappedBy="centro_costo", cascade={"all"})
-     */
-    private $compras;
-
-    /**
      * @var integer
      *
      * @ORM\Column(name="pesoTara", type="integer")
@@ -1322,42 +1315,6 @@ class Autobus extends BaseVehiculo
     public function __toString()
     {
         return sprintf('%d (%s)', $this->getNumero(), $this->getMatricula());
-    }
-
-    /**
-     * Add compras.
-     *
-     * @param \Buseta\TallerBundle\Entity\Compra $compras
-     *
-     * @return Autobus
-     */
-    public function addCompra(\Buseta\TallerBundle\Entity\Compra $compras)
-    {
-        $compras->setCentroCosto($this);
-
-        $this->compras[] = $compras;
-
-        return $this;
-    }
-
-    /**
-     * Remove compras.
-     *
-     * @param \Buseta\TallerBundle\Entity\Compra $compras
-     */
-    public function removeCompra(\Buseta\TallerBundle\Entity\Compra $compras)
-    {
-        $this->compras->removeElement($compras);
-    }
-
-    /**
-     * Get compras.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCompras()
-    {
-        return $this->compras;
     }
 
     /**

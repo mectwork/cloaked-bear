@@ -26,11 +26,10 @@
         <tbody>
         {% for bitacora in bitacora %}
             <tr style="text-align: center;">
-                <td>{{ bitacora.created|date('d/m/Y H:m:s') }}</td>
+                <td>{{ bitacora.fechaMovimiento | date('d/m/Y') }}</td>
                 <td>{{ bitacora.almacen }}</td>
-                <td>{{ bitacora.cantMovida }}</td>
+                <td>{{ bitacora.cantidadMovida }}</td>
                 <td>{{ bitacora.tipoMovimiento }}</td>
-
             </tr>
         {% else %}
             <tr>

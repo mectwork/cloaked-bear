@@ -143,6 +143,12 @@ class AlbaranLineaController extends Controller
         return new JsonResponse(array('view' => $renderView));
     }
 
+    /**
+     * @param Request $request
+     *
+     * @Route("/create", name="albaran_linea_compra_create")
+     * @Method("POST")
+     */
     public function create_compraAction(Request $request)
     {
         $entity = new AlbaranLinea();
@@ -158,6 +164,9 @@ class AlbaranLineaController extends Controller
 
     /**
      * Finds and displays a AlbaranLinea entity.
+     *
+     * @Route("/{id}/show", name="albaran_linea_show")
+     * @Method("GET")
      */
     public function showAction($id)
     {
@@ -178,29 +187,10 @@ class AlbaranLineaController extends Controller
     }
 
     /**
-     * Lists all AlbaranLinea entities.
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('BusetaBodegaBundle:AlbaranLinea')->findAll();
-
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-            $entities,
-            $this->get('request')->query->get('page', 1),
-            5,
-            array('pageParameterName' => 'page')
-        );
-
-        return $this->render('BusetaBodegaBundle:AlbaranLinea:index.html.twig', array(
-            'entities' => $entities,
-        ));
-    }
-
-    /**
      * Displays a form to edit an existing AlbaranLinea entity.
+     *
+     * @Route("/{id}/edit", name="albaran_linea_edit")
+     * @Method("GET")
      */
     public function editAction($id)
     {
@@ -244,6 +234,9 @@ class AlbaranLineaController extends Controller
 
     /**
      * Edits an existing AlbaranLinea entity.
+     *
+     * @Route("/{id}/update", name="albaran_linea_update")
+     * @Method({"POST", "PUT"})
      */
     public function updateAction(Request $request, $id)
     {
