@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Listados de Productos
+    Listado de Productos
 {% endblock %}
 
 {% block area_trabajo %}
@@ -15,8 +15,8 @@
     {% if (filter_form.vars.value.codigo is null or filter_form.vars.value.codigo is empty)
     and (filter_form.vars.value.codigoAlternativo is null or filter_form.vars.value.codigoAlternativo is empty)
     and (filter_form.vars.value.nombre is null or filter_form.vars.value.nombre is empty)
-    and (filter_form.vars.value.categoriaProducto is null or filter_form.vars.value.categoriaProducto is empty)
-    and (filter_form.vars.value.uom is null or filter_form.vars.value.uom is empty)
+    and (filter_form.vars.value.grupo is null or filter_form.vars.value.grupo is empty)
+    and (filter_form.vars.value.subgrupo is null or filter_form.vars.value.subgrupo is empty)
     and (filter_form.vars.value.condicion is null or filter_form.vars.value.condicion is empty)
     and (filter_form.vars.value.proveedor is null or filter_form.vars.value.proveedor is empty)
     %}
@@ -36,8 +36,8 @@
                 <div class="col-lg-4">{{ form_row(filter_form.codigo) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.codigoAlternativo) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.nombre) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.categoriaProducto) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.uom) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.grupo) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.subgrupo) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.condicion) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.proveedor) }}</div>
             </div>
@@ -125,7 +125,9 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('a#filter_form_header').click(function () {
+            $('a#filter_form_header').on('click', function (e) {
+                e.preventDefault();
+
                 if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
                     $('a#filter_form_header span')
                             .removeClass('glyphicon-chevron-right')
@@ -139,17 +141,45 @@
                 $('div#filter_form_component').slideToggle(500);
             });
 
-            $('a#filter_form_submit_btn').click(function () {
+            $('a#filter_form_submit_btn').on('click', function (e) {
+                e.preventDefault();
+
                 $('form#filter_form').submit();
             });
 
-            $('a#filter_form_reset_btn').click(function () {
+            $('a#filter_form_reset_btn').on('click', function (e) {
+                e.preventDefault();
+
                 $('form#filter_form').find('input').each(function () {
                     $(this).val(null);
                 });
                 $('form#filter_form').find('select').each(function () {
                     $(this).val(null);
                 })
+            });
+
+            $('select#buseta_producto_filter_grupo').on('change', function (e) {
+                var data = {
+                    grupo_id: $(this).val()
+                };
+
+                //Select dependientes entre Grupos y Subgrupos
+                $.ajax({
+                    type: 'GET',
+                    url: Routing.generate('producto_ajax_grupos_subgrupos'),
+                    data: data,
+                    dataType: 'JSON',
+                    success: function(data) {
+                        var values = data;
+                        var $subgrupo = $('select#buseta_producto_filter_subgrupo');
+
+                        $subgrupo.html('<option value="">---Seleccione---</option>');
+
+                        for (var i=0, total = values.length; i < total; i++) {
+                            $subgrupo.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                        }
+                    }
+                });
             });
         });
     </script>

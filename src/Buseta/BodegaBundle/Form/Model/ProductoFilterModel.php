@@ -24,24 +24,24 @@ class ProductoFilterModel
     private $descripcion;
 
     /**
-     * @var \Buseta\BodegaBundle\Entity\CategoriaProducto
-     */
-    private $categoriaProducto;
-
-    /**
      * @var \Buseta\BodegaBundle\Entity\Proveedor
      */
     private $proveedor;
 
     /**
-     * @var \Buseta\NomencladorBundle\Entity\UOM
-     */
-    private $uom;
-
-    /**
      * @var \Buseta\NomencladorBundle\Entity\Condicion
      */
     private $condicion;
+
+    /**
+     * @var \Buseta\NomencladorBundle\Entity\Grupo
+     */
+    private $grupo;
+
+    /**
+     * @var \Buseta\NomencladorBundle\Entity\Subgrupo
+     */
+    private $subgrupo;
 
     /**
      * @return string
@@ -73,22 +73,6 @@ class ProductoFilterModel
     public function setProveedor($proveedor)
     {
         $this->proveedor = $proveedor;
-    }
-
-    /**
-     * @return \Buseta\BodegaBundle\Entity\CategoriaProducto
-     */
-    public function getCategoriaProducto()
-    {
-        return $this->categoriaProducto;
-    }
-
-    /**
-     * @param \Buseta\BodegaBundle\Entity\CategoriaProducto $categoriaProducto
-     */
-    public function setCategoriaProducto($categoriaProducto)
-    {
-        $this->categoriaProducto = $categoriaProducto;
     }
 
     /**
@@ -156,19 +140,37 @@ class ProductoFilterModel
     }
 
     /**
-     * @return \Buseta\NomencladorBundle\Entity\UOM
+     * @return \Buseta\NomencladorBundle\Entity\Grupo
      */
-    public function getUom()
+    public function getGrupo()
     {
-        return $this->uom;
+        return $this->grupo;
     }
 
     /**
-     * @param \Buseta\NomencladorBundle\Entity\UOM $uom
+     * @param \Buseta\NomencladorBundle\Entity\Grupo $grupo
      */
-    public function setUom($uom)
+    public function setGrupo($grupo)
     {
-        $this->uom = $uom;
+        $this->grupo = $grupo;
     }
 
-} 
+    /**
+     * @return \Buseta\NomencladorBundle\Entity\Subgrupo
+     */
+    public function getSubgrupo()
+    {
+        return $this->subgrupo;
+    }
+
+    /**
+     * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupo
+     * @return ProductoFilterModel
+     */
+    public function setSubgrupo($subgrupo)
+    {
+        $this->subgrupo = $subgrupo;
+
+        return $this;
+    }
+}

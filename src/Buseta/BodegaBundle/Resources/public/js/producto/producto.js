@@ -46,7 +46,7 @@ var producto = {
                     var values = $.parseJSON(data);
                     var $subgrupo_selector = $('#' + producto.form_id + '_subgrupo');
 
-                    $subgrupo_selector.html('<option>---Seleccione---</option>');
+                    $subgrupo_selector.html('<option value="">---Seleccione---</option>');
 
                     for (var i=0, total = values.length; i < total; i++) {
                         $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');

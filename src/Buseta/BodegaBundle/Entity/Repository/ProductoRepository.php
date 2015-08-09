@@ -112,17 +112,17 @@ class ProductoRepository extends EntityRepository
                 $query->andWhere($qb->expr()->like('p.nombre',':nombre'))
                     ->setParameter('nombre', '%' . $filter->getNombre() . '%');
             }
-            if ($filter->getUOM() !== null && $filter->getUOM() !== '') {
-                $query->andWhere($query->expr()->eq('p.uom', ':uom'))
-                    ->setParameter('uom', $filter->getUOM());
-            }
             if ($filter->getCondicion() !== null && $filter->getCondicion() !== '') {
                 $query->andWhere($query->expr()->eq('p.condicion', ':condicion'))
                     ->setParameter('condicion', $filter->getCondicion());
             }
-            if ($filter->getCategoriaProducto() !== null && $filter->getCategoriaProducto() !== '') {
-                $query->andWhere($query->expr()->eq('p.categoriaProducto', ':categoriaProducto'))
-                    ->setParameter('categoriaProducto', $filter->getCategoriaProducto());
+            if ($filter->getGrupo() !== null && $filter->getGrupo() !== '') {
+                $query->andWhere($query->expr()->eq('p.grupo', ':grupo'))
+                    ->setParameter('grupo', $filter->getGrupo());
+            }
+            if ($filter->getSubgrupo() !== null && $filter->getSubgrupo() !== '') {
+                $query->andWhere($query->expr()->eq('p.subgrupo', ':subgrupo'))
+                    ->setParameter('subgrupo', $filter->getSubgrupo());
             }
         }
 

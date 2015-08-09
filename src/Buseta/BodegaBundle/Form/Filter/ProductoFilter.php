@@ -1,6 +1,8 @@
 <?php
 namespace Buseta\BodegaBundle\Form\Filter;
 
+use Buseta\BodegaBundle\Form\EventListener\AddGrupoFieldSubscriber;
+use Buseta\BodegaBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -13,6 +15,8 @@ class ProductoFilter extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addEventSubscriber(new AddGrupoFieldSubscriber($builder->getFormFactory()));
+        $builder->addEventSubscriber(new AddSubgrupoFieldSubscriber($builder->getFormFactory()));
         $builder
             ->add('codigo', 'text', array(
                 'required' => false,
@@ -28,29 +32,11 @@ class ProductoFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('uom', 'entity', array(
-                'class' => 'BusetaNomencladorBundle:UOM',
-                'empty_value' => '---Seleccione---',
-                'label' => 'Unidad de Medida (UOM)',
-                'required' => false,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
             ->add('condicion', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Condicion',
                 'empty_value' => '---Seleccione---',
                 'label' => 'Condición',
                 'required' => false,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
-            ->add('categoriaProducto', 'entity', array(
-                'class' => 'BusetaBodegaBundle:CategoriaProducto',
-                'label' => 'Categoría de Producto',
-                'required' => false,
-                'empty_value' => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 )
@@ -92,4 +78,4 @@ class ProductoFilter extends AbstractType
     {
         return 'buseta_producto_filter';
     }
-} 
+}
