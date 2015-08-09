@@ -56,6 +56,7 @@
             <table class="table table-striped" style="font-size: 16px;">
                 <th>Costo</th>
                 <th>Proveedor</th>
+                <th>Código Alternativo</th>
                 <th>Activo</th>
 
                 {% for costo in entity.costoproducto %}
@@ -63,13 +64,8 @@
                 <tr>
                     <td>{{ costo.costo }}</td>
                     <td>{{ costo.proveedor }}</td>
-                    <td>
-                        {% if costo.activo %}
-                            Sí
-                        {% else %}
-                            No
-                        {% endif %}
-                    </td>
+                    <td>{{ costo.codigoAlternativo }}</td>
+                    <td>{{ costo.activo ? '<span class="glyphicon glyphicon-ok" title="Activo"></span>' : '<span class="glyphicon glyphicon-remove" title="Inactivo"></span>' }}</td>
                 </tr>
                 {% else %}
                     <tr>
@@ -84,13 +80,7 @@
 
     <tr>
         <th>Activo</th>
-        <td>
-            {% if entity.activo == 1 %}
-                Sí
-            {% else %}
-                No
-            {% endif %}
-        </td>
+        <td>{{ entity.activo ? '<span class="glyphicon glyphicon-ok" title="Activo"></span>' : '<span class="glyphicon glyphicon-remove" title="Inactivo"></span>' }}</td>
     </tr>
 
     </tbody>
