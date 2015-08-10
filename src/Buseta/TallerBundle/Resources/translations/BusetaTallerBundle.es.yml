@@ -14,7 +14,7 @@ forma_pago:
 
 estado:
   CO: Completado
-  BO: Borrador
+  BO: Pendiente
   PR: Procesado
 
 prioridad:
