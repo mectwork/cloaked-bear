@@ -35,7 +35,7 @@ class DiagnosticoType extends AbstractType
                     return $qb;
                 },
                 'empty_value' => '---Seleccione---',
-                'label' => 'Reporte',
+                'label' => 'Solicitud',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -60,7 +60,7 @@ class DiagnosticoType extends AbstractType
             ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
