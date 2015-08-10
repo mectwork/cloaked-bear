@@ -13,7 +13,7 @@ forma_pago:
   W: Retención
 
 estado:
-  CO: Completado
+  CO: Cerrado
   BO: Pendiente
   PR: Procesado
 
