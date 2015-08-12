@@ -2,6 +2,8 @@
 
 namespace Buseta\TallerBundle\Entity;
 
+use Buseta\CoreBundle\Doctrine\DateTimeAwareTrait;
+use Buseta\CoreBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,8 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="d_orden_trabajo")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\OrdenTrabajoRepository")
  */
-class OrdenTrabajo
+class OrdenTrabajo implements DateTimeAwareInterface
 {
+    use DateTimeAwareTrait;
+
     /**
      * @var integer
      *
@@ -204,7 +208,7 @@ class OrdenTrabajo
      * Set diagnosticadoPor.
      *
      * @param string $diagnosticadoPor
-     * 
+     *
      * @return OrdenTrabajo
      */
     public function setDiagnosticadoPor($diagnosticadoPor)
@@ -607,14 +611,14 @@ class OrdenTrabajo
     public function setDiagnostico(\Buseta\TallerBundle\Entity\Diagnostico $diagnostico = null)
     {
         $this->diagnostico = $diagnostico;
-    
+
         return $this;
     }
 
     /**
      * Get diagnostico
      *
-     * @return \Buseta\TallerBundle\Entity\Diagnostico 
+     * @return \Buseta\TallerBundle\Entity\Diagnostico
      */
     public function getDiagnostico()
     {

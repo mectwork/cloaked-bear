@@ -2,6 +2,8 @@
 
 namespace Buseta\TallerBundle\Entity;
 
+use Buseta\CoreBundle\Doctrine\DateTimeAwareTrait;
+use Buseta\CoreBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,8 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="d_reporte")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\ReporteRepository")
  */
-class Reporte
+class Reporte implements DateTimeAwareInterface
 {
+    use DateTimeAwareTrait;
+
     /**
      * @var integer
      *
@@ -110,7 +114,7 @@ class Reporte
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -126,14 +130,14 @@ class Reporte
     public function setNumero($numero)
     {
         $this->numero = $numero;
-    
+
         return $this;
     }
 
     /**
      * Get numero
      *
-     * @return string 
+     * @return string
      */
     public function getNumero()
     {
@@ -149,14 +153,14 @@ class Reporte
     public function setEsUsuario($esUsuario)
     {
         $this->esUsuario = $esUsuario;
-    
+
         return $this;
     }
 
     /**
      * Get esUsuario
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEsUsuario()
     {
@@ -172,14 +176,14 @@ class Reporte
     public function setNombrePersona($nombrePersona)
     {
         $this->nombrePersona = $nombrePersona;
-    
+
         return $this;
     }
 
     /**
      * Get nombrePersona
      *
-     * @return string 
+     * @return string
      */
     public function getNombrePersona()
     {
@@ -195,14 +199,14 @@ class Reporte
     public function setEmailPersona($emailPersona)
     {
         $this->emailPersona = $emailPersona;
-    
+
         return $this;
     }
 
     /**
      * Get emailPersona
      *
-     * @return string 
+     * @return string
      */
     public function getEmailPersona()
     {
@@ -218,14 +222,14 @@ class Reporte
     public function setTelefonoPersona($telefonoPersona)
     {
         $this->telefonoPersona = $telefonoPersona;
-    
+
         return $this;
     }
 
     /**
      * Get telefonoPersona
      *
-     * @return string 
+     * @return string
      */
     public function getTelefonoPersona()
     {
@@ -241,14 +245,14 @@ class Reporte
     public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
     {
         $this->autobus = $autobus;
-    
+
         return $this;
     }
 
     /**
      * Get autobus
      *
-     * @return \Buseta\BusesBundle\Entity\Autobus 
+     * @return \Buseta\BusesBundle\Entity\Autobus
      */
     public function getAutobus()
     {
@@ -264,7 +268,7 @@ class Reporte
     public function setMedioReporte(\Buseta\NomencladorBundle\Entity\MedioReporte $medioReporte = null)
     {
         $this->medioReporte = $medioReporte;
-    
+
         return $this;
     }
 
@@ -287,14 +291,14 @@ class Reporte
     public function setReporta(\Buseta\BodegaBundle\Entity\Tercero $reporta = null)
     {
         $this->reporta = $reporta;
-    
+
         return $this;
     }
 
     /**
      * Get reporta
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getReporta()
     {
@@ -333,7 +337,7 @@ class Reporte
     /**
      * Get observaciones
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getObservaciones()
     {
@@ -349,14 +353,14 @@ class Reporte
     public function setDiagnostico(\Buseta\TallerBundle\Entity\Diagnostico $diagnostico = null)
     {
         $this->diagnostico = $diagnostico;
-    
+
         return $this;
     }
 
     /**
      * Get diagnostico
      *
-     * @return \Buseta\TallerBundle\Entity\Diagnostico 
+     * @return \Buseta\TallerBundle\Entity\Diagnostico
      */
     public function getDiagnostico()
     {
@@ -372,14 +376,14 @@ class Reporte
     public function setEstado($estado)
     {
         $this->estado = $estado;
-    
+
         return $this;
     }
 
     /**
      * Get estadoDocumento
      *
-     * @return string 
+     * @return string
      */
     public function getEstado()
     {

@@ -8,6 +8,8 @@
 
 namespace Buseta\TallerBundle\Entity;
 
+use Buseta\CoreBundle\Doctrine\DateTimeAwareTrait;
+use Buseta\CoreBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,8 +19,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="d_diagnostico")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\DiagnosticoRepository")
  */
-class Diagnostico
+class Diagnostico implements DateTimeAwareInterface
 {
+    use DateTimeAwareTrait;
+
     /**
      * @var integer
      *
@@ -80,11 +84,11 @@ class Diagnostico
     {
         $this->observaciones = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -100,14 +104,14 @@ class Diagnostico
     public function setAutobus(\Buseta\BusesBundle\Entity\Autobus $autobus = null)
     {
         $this->autobus = $autobus;
-    
+
         return $this;
     }
 
     /**
      * Get autobus
      *
-     * @return \Buseta\BusesBundle\Entity\Autobus 
+     * @return \Buseta\BusesBundle\Entity\Autobus
      */
     public function getAutobus()
     {
@@ -124,7 +128,7 @@ class Diagnostico
     {
         $observaciones->setDiagnostico($this);
         $this->observaciones[] = $observaciones;
-    
+
         return $this;
     }
 
@@ -157,7 +161,7 @@ class Diagnostico
     /**
      * Get observaciones
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getObservaciones()
     {
@@ -178,14 +182,14 @@ class Diagnostico
     public function setReporte(\Buseta\TallerBundle\Entity\Reporte $reporte = null)
     {
         $this->reporte = $reporte;
-    
+
         return $this;
     }
 
     /**
      * Get reporte
      *
-     * @return \Buseta\TallerBundle\Entity\Reporte 
+     * @return \Buseta\TallerBundle\Entity\Reporte
      */
     public function getReporte()
     {
@@ -203,14 +207,14 @@ class Diagnostico
     public function setOrdenTrabajo(\Buseta\TallerBundle\Entity\OrdenTrabajo $ordenTrabajo = null)
     {
         $this->ordenTrabajo = $ordenTrabajo;
-    
+
         return $this;
     }
 
     /**
      * Get ordenTrabajo
      *
-     * @return \Buseta\TallerBundle\Entity\OrdenTrabajo 
+     * @return \Buseta\TallerBundle\Entity\OrdenTrabajo
      */
     public function getOrdenTrabajo()
     {
@@ -226,14 +230,14 @@ class Diagnostico
     public function setEstado($estado)
     {
         $this->estado = $estado;
-    
+
         return $this;
     }
 
     /**
      * Get estado
      *
-     * @return string 
+     * @return string
      */
     public function getEstado()
     {
