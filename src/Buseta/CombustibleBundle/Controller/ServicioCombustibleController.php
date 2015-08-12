@@ -52,7 +52,7 @@ class ServicioCombustibleController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            5
+            10
         );
 
         return $this->render('BusetaCombustibleBundle:ServicioCombustible:index.html.twig', array(

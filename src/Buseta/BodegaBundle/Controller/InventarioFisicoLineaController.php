@@ -39,7 +39,7 @@ class InventarioFisicoLineaController extends Controller
             ->paginate(
                 $entities,
                 $request->query->get('page', 1),
-                5
+                10
             );
 
 

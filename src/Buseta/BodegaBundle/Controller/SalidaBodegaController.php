@@ -236,7 +236,7 @@ class SalidaBodegaController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            5
+            10
         );
 
         return $this->render('BusetaBodegaBundle:SalidaBodega:index.html.twig', array(
@@ -414,7 +414,7 @@ class SalidaBodegaController extends Controller
         $productos = $paginator->paginate(
             $productos,
             $this->get('request')->query->get('page', 1),
-            5,
+            10,
             array('pageParameterName' => 'page')
         );
 

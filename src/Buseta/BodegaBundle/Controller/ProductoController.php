@@ -187,7 +187,7 @@ class ProductoController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            5
+            10
         );
 
         return $this->render('BusetaBodegaBundle:Producto:index.html.twig', array(

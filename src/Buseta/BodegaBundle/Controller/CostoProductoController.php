@@ -42,7 +42,7 @@ class CostoProductoController extends Controller
             ->paginate(
                 $entities,
                 $request->query->get('page', 1),
-                5
+                10
             );
 
         return $this->render('@BusetaBodega/Producto/Costo/list_template.html.twig', array(

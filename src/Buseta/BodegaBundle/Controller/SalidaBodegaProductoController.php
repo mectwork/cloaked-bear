@@ -41,7 +41,7 @@ class SalidaBodegaProductoController extends Controller
             ->paginate(
                 $entities,
                 $request->query->get('page', 1),
-                5
+                10
             );
 
         return $this->render('@BusetaBodega/Movimiento/MovimientosProductos/list_template.html.twig', array(
@@ -78,7 +78,7 @@ class SalidaBodegaProductoController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            5
+            10
         );
 
         $renderView = $this->renderView('@BusetaBodega/Movimiento/modal_form.html.twig', array(

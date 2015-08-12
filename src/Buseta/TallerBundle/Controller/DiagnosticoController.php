@@ -89,7 +89,7 @@ class DiagnosticoController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            5
+            10
         );
 
 

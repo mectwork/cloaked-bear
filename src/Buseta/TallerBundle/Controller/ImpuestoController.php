@@ -101,7 +101,7 @@ class ImpuestoController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            5
+            10
         );
 
         return $this->render('BusetaTallerBundle:Impuesto:index.html.twig', array(

@@ -38,7 +38,7 @@ class AlbaranLineaController extends Controller
             ->paginate(
                 $entities,
                 $request->query->get('page', 1),
-                5
+                10
             );
 
         return $this->render('@BusetaBodega/Albaran/Linea/list_template.html.twig', array(
@@ -190,7 +190,7 @@ class AlbaranLineaController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $this->get('request')->query->get('page', 1),
-            5,
+            10,
             array('pageParameterName' => 'page')
         );
 

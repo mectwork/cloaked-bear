@@ -49,7 +49,7 @@ class InventarioFisicoController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            5
+            10
         );
 
         return $this->render('BusetaBodegaBundle:InventarioFisico:index.html.twig', array(

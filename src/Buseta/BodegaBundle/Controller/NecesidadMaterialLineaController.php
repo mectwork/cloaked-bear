@@ -39,7 +39,7 @@ class NecesidadMaterialLineaController extends Controller
             ->paginate(
                 $entities,
                 $request->query->get('page', 1),
-                5
+                10
             );
 
         return $this->render('@BusetaBodega/NecesidadMaterial/Linea/list_template.html.twig', array(

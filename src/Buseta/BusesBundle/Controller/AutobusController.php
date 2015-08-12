@@ -57,7 +57,7 @@ class AutobusController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            5
+            10
         );
 
         return $this->render('BusetaBusesBundle:Autobus:index.html.twig', array(

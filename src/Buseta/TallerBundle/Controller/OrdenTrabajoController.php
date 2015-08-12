@@ -44,7 +44,7 @@ class OrdenTrabajoController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            5
+            10
         );
 
         return $this->render('BusetaTallerBundle:OrdenTrabajo:index.html.twig', array(

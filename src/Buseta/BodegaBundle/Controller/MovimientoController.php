@@ -92,7 +92,7 @@ class MovimientoController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            5
+            10
         );
 
         return $this->render('BusetaBodegaBundle:Movimiento:index.html.twig', array(
@@ -251,7 +251,7 @@ class MovimientoController extends Controller
         $productos = $paginator->paginate(
             $productos,
             $this->get('request')->query->get('page', 1),
-            5,
+            10,
             array('pageParameterName' => 'page')
         );
 
