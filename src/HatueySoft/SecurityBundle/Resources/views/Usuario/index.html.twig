@@ -1,0 +1,39 @@
+{% extends '::base.html.twig' %}
+
+{% block title 'Usuario list' %}
+
+{% block headline block('title') %}
+
+{% block content -%}
+
+    <a href="{{ path('usuario_new') }}" class="btn btn-primary" style="margin-bottom: 8px;"><span class="glyphicon glyphicon-plus"></span> Adicionar</a>
+    
+    <table class="records_list table table-hover table-striped table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Nombre</th>
+                <th>Estado</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('usuario_show', { 'id': entity.id }) }}">{{ entity.username }}</a></td>
+                <td>{{ entity.nombre | default('-') }}</td>
+                <td>{{ entity.enabled ? '<span class="glyphicon glyphicon-ok" title="Activo"></span>' : '<span class="glyphicon glyphicon-remove" title="Deshabilitado"></span>' }}</td>
+                <td>
+                    <a href="{{ path('usuario_show', { 'id': entity.id }) }}" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-eye-open"></span> Ver</a>
+                    <a href="{#{{ path('usuario_edit', { 'id': entity.id }) }}#}" class="btn btn-primary btn-sm disabled">
+                        <span class="glyphicon glyphicon-pencil"></span> Editar</a>
+                </td>
+            </tr>
+        {% else %}
+        <tr><td colspan="8">No se encontraron elementos que mostrar.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

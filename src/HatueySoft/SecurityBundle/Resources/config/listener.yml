@@ -1,0 +1,10 @@
+# the yml style configuration data
+parameters:
+# parameters
+
+services:
+    role.event.listener:
+        class: HatueySoft\SecurityBundle\EventListener\RoleListener
+        arguments: [ %command_scope%, @service_container ]
+        tags:
+            - { name: role.event.listener,  event: 'hatuey_soft_security.role_save', method: 'onRoleSave'}

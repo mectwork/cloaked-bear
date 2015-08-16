@@ -1,0 +1,13 @@
+aclrules:
+  pattern: /
+  defaults: { _controller: "HatueySoftSecurityBundle:AclRule:index" }
+
+aclrules_edit:
+  pattern: /{entity}/edit
+  defaults: { _controller: "HatueySoftSecurityBundle:AclRule:edit"}
+
+aclrules_toggle:
+  pattern: /{entity}/toggle
+  defaults: { _controller: "HatueySoftSecurityBundle:AclRule:togglePermision" }
+  options:
+    expose: true

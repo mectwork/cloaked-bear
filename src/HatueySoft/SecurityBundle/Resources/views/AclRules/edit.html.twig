@@ -1,0 +1,155 @@
+{% extends '::base.html.twig' %}
+
+{% block title 'Listas Control de Acceso para entidad: ' ~ entity|capitalize  %}
+
+{% block headline block('title') %}
+
+{% block content -%}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Usuarios</h3>
+        </div>
+        <table id="acl_users_list" class="table table-hover table-striped table-bordered table-condensed">
+            <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Nombre</th>
+                <th style="width: 20%;">Permisos</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for u in users %}
+                <tr data-content="{{ u.username }}" data-target="users">
+                    <td>{{ u.username }}</td>
+                    <td>{{ u.nombre }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="#" class="btn btn-primary" title="CREATE" data-content="CREATE">
+                                <span class="glyphicon glyphicon-plus"></span></a>
+                            <a href="#" class="btn btn-primary" title="VIEW" data-content="VIEW">
+                                <span class="glyphicon glyphicon-eye-open"></span></a>
+                            <a href="#" class="btn btn-primary" title="EDIT" data-content="EDIT">
+                                <span class="glyphicon glyphicon-pencil"></span></a>
+                            <a href="#" class="btn btn-primary" title="DELETE" data-content="DELETE">
+                                <span class="glyphicon glyphicon-trash"></span></a>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="8">No se encontraron elementos que mostrar.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Roles</h3>
+        </div>
+        <table id="acl_roles_list" class="table table-hover table-striped table-bordered table-condensed">
+            <thead>
+            <tr>
+                <th>Rol</th>
+                <th style="width: 20%;">Permisos</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for r in roles %}
+                <tr data-content="{{ r }}" data-target="roles">
+                    <td>{{ r }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="#" class="btn btn-primary" title="CREATE" data-content="CREATE">
+                                <span class="glyphicon glyphicon-plus"></span></a>
+                            <a href="#" class="btn btn-primary" title="VIEW" data-content="VIEW">
+                                <span class="glyphicon glyphicon-eye-open"></span></a>
+                            <a href="#" class="btn btn-primary" title="EDIT" data-content="EDIT">
+                                <span class="glyphicon glyphicon-pencil"></span></a>
+                            <a href="#" class="btn btn-primary" title="DELETE" data-content="DELETE">
+                                <span class="glyphicon glyphicon-trash"></span></a>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="8">No se encontraron elementos que mostrar.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock content %}
+
+{% block foot_script %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var $users_rules = {{ users_rules|raw }};
+        var $roles_rules = {{ roles_rules|raw }};
+        var $entity      = '{{ entity }}';
+
+        $(function(){
+            $('table#acl_roles_list tbody tr').each(function(key, value) {
+                var content = $(value).data('content');
+
+                setacl(content, $roles_rules[content]);
+            });
+
+            $('table#acl_users_list tbody tr').each(function(key, value) {
+                var content = $(value).data('content');
+
+                setacl(content, $users_rules[content]);
+            });
+
+            $('div.btn-group a.btn.btn-primary').on('click', function(event){
+                event.preventDefault();
+
+                var content = $(this).parent().parent().parent().data('content');
+                var target  = $(this).parent().parent().parent().data('target');
+                var action  = $(this).data('content');
+
+                toggleacl(target, content, action);
+            })
+        });
+
+        function setacl(content, rules) {
+            if (rules == undefined) {
+                rules = [];
+            }
+
+            $('tr[data-content="' + content +'"] div.btn-group a').each(function(key, value) {
+                var action = $(value).data('content');
+                if ($.inArray(action, rules) != -1) {
+                    $(value).removeClass('disabled');
+                } else {
+                    $(value).addClass('disabled');
+                    $(value).css({
+                        "cursor": "pointer"
+                    });
+                }
+            });
+        }
+
+        function toggleacl(target, content, action) {
+            // bloqueando la interfaz
+            $('table[id="acl_' + target + '_list"]').block();
+
+            $.ajax({
+                url: Routing.generate('aclrules_toggle',{'entity': $entity }),
+                data: {
+                    target: target,
+                    content: content,
+                    action: action
+                }
+            }).done(function(response){
+                if($('tr[data-content="'+ content +'"] div.btn-group a.btn.btn-primary[data-content="'+ action +'"]').hasClass('disabled')) {
+                    $('tr[data-content="'+ content +'"] div.btn-group a.btn.btn-primary[data-content="'+ action +'"]').removeClass('disabled')
+                } else {
+                    $('tr[data-content="'+ content +'"] div.btn-group a.btn.btn-primary[data-content="'+ action +'"]').addClass('disabled')
+                }
+                // desbloqueando la interfaz
+                $('table[id="acl_' + target + '_list"]').unblock();
+            })
+        }
+
+        //$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+    </script>
+{% endblock foot_script %}

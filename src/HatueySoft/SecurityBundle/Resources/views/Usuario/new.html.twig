@@ -1,0 +1,9 @@
+{% extends '::base.html.twig' %}
+
+{% block title 'Usuario creation' %}
+
+{% block headline block('title') %}
+
+{% block content -%}
+    {% include '@HatueySoftSecurity/Usuario/_form.html.twig' with {'form': form} %}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends '::base.html.twig' %}
+
+{% block title 'Reglas de Listas Control de Acceso' %}
+
+{% block headline block('title') %}
+
+{% block content -%}
+    <table class="table table-hover table-striped table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Entidad</th>
+                <th>Path</th>
+                <th style="width: 20%;"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for e in entities %}
+            <tr>
+                <td>{{ e.name|capitalize }}</td>
+                <td>{{ e.path }}</td>
+                <td>
+                    <a href="{{ path('aclrules_edit', {'entity':e.name}) }}" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-pencil"></span> Editar</a>
+                    {#<a href="#" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-trash"></span> Eliminar</a>#}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="8">No se encontraron elementos que mostrar.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}
+
+{% block foot_script %}
+    {{ parent() }}
+{% endblock foot_script %}

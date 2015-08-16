@@ -1,0 +1,58 @@
+parameters:
+# parameters
+
+services:
+    security.systemuser.registration.type:
+        class: HatueySoft\SecurityBundle\Form\Type\UsuarioType
+        arguments: [@configuration.reader]
+        tags:
+            - { name: form.type, alias: hatueysoft_security_usuario_type }
+
+    # VALIDATIONS
+    security.unique_systemuser_username.validator:
+        class: HatueySoft\SecurityBundle\Validator\Constraints\UniqueSystemUserUsernameValidator
+        arguments:
+            - @fos_user.user_manager
+        tags:
+            - {name: validator.constraint_validator, alias: unique_systemuser_username_validator}
+
+    security.unique_systemuser_email.validator:
+        class: HatueySoft\SecurityBundle\Validator\Constraints\UniqueSystemUserEmailValidator
+        arguments:
+            - @fos_user.user_manager
+        tags:
+            - {name: validator.constraint_validator, alias: unique_systemuser_email_validator}
+
+    #SECURITY MANAGERS
+    security.manager:
+         class: HatueySoft\SecurityBundle\Utils\SecurityManager
+         arguments: [ %security_config% ]
+
+    configuration.reader:
+         class: HatueySoft\SecurityBundle\Utils\ConfigurationReader
+         arguments: [ @service_container, %security_config% ]
+
+    hatuey_soft.security.acl_manager:
+        class: HatueySoft\SecurityBundle\Utils\AclManager
+        arguments: [@service_container]
+
+    hatuey_soft.security.acl_rules_manager:
+        class: HatueySoft\SecurityBundle\Utils\AclRulesManager
+        arguments: [@service_container]
+
+    #SUBSCRIBERS
+    hatuey_soft.doctrine_subscriber.acl_aware:
+        class: HatueySoft\SecurityBundle\Doctrine\AclSubscriber
+        arguments:
+            - @hatuey_soft.security.acl_manager
+            - @hatuey_soft.security.acl_rules_manager
+        tags:
+            - { name: doctrine.event_subscriber }
+    hatuey_soft.user_callable:
+        class: HatueySoft\SecurityBundle\Doctrine\UserCallable
+        arguments:
+                - @service_container
+    hatuey_soft.acl_provider_callable:
+        class: HatueySoft\SecurityBundle\Doctrine\AclProviderCallable
+        arguments:
+            - @service_container

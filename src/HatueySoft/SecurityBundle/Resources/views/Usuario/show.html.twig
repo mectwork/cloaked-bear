@@ -1,0 +1,50 @@
+{% extends '::base.html.twig' %}
+
+{% block title 'Usuario' %}
+
+{% block headline block('title') %}
+
+{% block content -%}
+    <table class="record_properties table table-striped">
+        <tbody>
+            <tr>
+                <th>Uusario</th>
+                <td>{{ entity.username }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ entity.nombre | default('-') }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ entity.email }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{% for rol in entity.roles %}{{ rol }}|{% endfor %}</td>
+            </tr>
+            {#<tr>
+                <th>Grupos</th>
+                <td>{% for group in entity.groups %}{{ group }}|{% endfor %}</td>
+            </tr>#}
+        </tbody>
+    </table>
+
+        <div class="btn-actions">
+        {{ form_start(delete_form) }}
+
+
+        <a href="{{ path('usuario') }}" class="btn btn-default">
+            <span class="glyphicon glyphicon-arrow-left"></span> Volver
+        </a>
+
+        <a href="{#{{ path('usuario_edit', { 'id': entity.id }) }}#}" class="btn btn-default disabled">
+            <span class="glyphicon glyphicon-pencil"></span> Editar
+        </a>
+
+
+        <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+            {{ form_widget(delete_form._token) }}
+        {{ form_end(delete_form) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends '::base.html.twig' %}
+
+{% block title 'Usuario edit' %}
+
+{% block headline block('title') %}
+
+{% block content -%}
+    {% include '@HatueySoftSecurity/Usuario/_form.html.twig' with {'form': edit_form} %}
+{% endblock %}

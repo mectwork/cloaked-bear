@@ -1,0 +1,18 @@
+role_manager:
+    path:     /
+    defaults: { _controller: "HatueySoftSecurityBundle:Role:index" }
+
+route_delete:
+    path: /route/delete
+    defaults: { _controller: "HatueySoftSecurityBundle:Role:delRoute"  }
+
+fetch_route_role:
+    path: /fetch/route/role
+    defaults: { _controller: "HatueySoftSecurityBundle:Role:fetchRouteRole" }
+
+fetch_route_new:
+    path: /fetch/route/new
+    defaults: { _controller: "HatueySoftSecurityBundle:Role:fetchRouteNew" }
+flush_route:
+    path: /flush/route
+    defaults: { _controller: "HatueySoftSecurityBundle:Role:generalFlush" }

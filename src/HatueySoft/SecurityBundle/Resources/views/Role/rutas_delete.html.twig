@@ -1,0 +1,109 @@
+{% extends '::base.html.twig' %}
+
+{% block title 'Editar permisos' %}
+
+    {% block headline block('title') %}
+
+        {% block content -%}
+            <h2 class="role">{{ role }}</h2>
+            <table class="records_list table table-hover table-striped table-bordered table-condensed">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" class="select-all"> </th>
+                    <th>Ruta</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ruta in rutas %}
+                    <tr>
+                        <td><input type="checkbox"  data-path="{{ ruta.path }}" class="selected"></td>
+                        <td><a href="#" class="rutas" data-toggle="tooltip" title="{{ ruta.path }}">{{ ruta.path }}</a></td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="8">No se encontraron elementos que mostrar.</td></tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td><button type="button" class="btn btn-primary remove"> Remover</button></td>
+                    <td><button type="button" class="btn btn-primary list" data-url="{{ path('role_grants') }}"> Atrás</button></td>
+                </tr>
+                </tfoot>
+            </table>
+
+
+        {% endblock %}
+        {% block foot_script %}
+            {{ parent() }}
+            <script type="text/javascript" >
+                $(function(){
+                    $('a.rutas').tooltip();
+                    $('.btn.btn-primary.remove').click(function(){
+                        var checked = $('.selected:checked');
+                        var role = $('h2.role').text();
+                        var object = {
+                            role:role,
+                            routes:[]
+                        };
+
+                        checked.each(function(){
+                            object.routes.push({"path":$(this).data('path')});
+
+                        });
+
+                        /*Preparando los parámetros*/
+                        var parameters = [
+                            {
+                                'name':'data',
+                                'value': JSON.stringify(object)
+                            }
+                        ];
+
+
+                        $ventana = $('<div class="modal fade" id="jModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">Modal title</h4></div><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div></div></div></div>');
+                        $($ventana).find('h4.modal-title').text('Información');
+                        $($ventana).find('div.modal-body').text('Esta acción provocará el cierre de sesión');
+                        $($ventana).find('button.btn.btn-default').text('Aceptar');
+                        $('body').append(this.window);
+                        $($ventana).modal('show');
+
+                        setTimeout(function(){document.location.reload()},300);
+                        /*Envviando los datos al controlador*/
+                        /*Envviando los datos al controlador*/
+                        $.get(
+                                '{{ path('role_delete_path') }}',
+                                $.param(parameters,true) ,
+                                function(response)
+                                {
+
+                                    if(response.statusCode==200)
+                                    {
+                                        document.location.reload();
+                                    }
+
+                                },
+                                'json'
+
+                        )
+
+
+                    });
+
+                    $('.btn.btn-primary.list').click(function(){
+                        document.location.href = $(this).data('url');
+                    });
+
+
+                    //dataTables
+                    var oTable = $('.records_list.table.table-hover.table-striped.table-bordered.table-condensed').dataTable({
+                        "oLanguage" : $language,
+                        "bJQueryUI" : true,
+                        "bLengthChange": false,
+                        "bSort":false
+
+                    });
+
+
+                });
+            </script>
+        {% endblock %}
