@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\UploadBundle\DependencyInjection;
+namespace HatueySoft\UploadBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('buseta_upload');
+        $rootNode = $treeBuilder->root('hatueysoft_upload');
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

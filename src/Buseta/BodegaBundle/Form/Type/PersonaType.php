@@ -2,7 +2,7 @@
 
 namespace Buseta\BodegaBundle\Form\Type;
 
-use Buseta\UploadBundle\Form\Type\UploadResourcesType;
+use HatueySoft\UploadBundle\Form\Type\UploadResourcesType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 

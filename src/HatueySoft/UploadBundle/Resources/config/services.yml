@@ -1,0 +1,8 @@
+parameters:
+#    buseta_upload.example.class: HatueySoft\UploadBundle\Example
+
+services:
+  buseta_upload.doctrine_subscriber.upload_aware:
+      class: HatueySoft\UploadBundle\Doctrine\UploadEventsSubscriber
+      tags:
+          - { name: doctrine.event_subscriber }

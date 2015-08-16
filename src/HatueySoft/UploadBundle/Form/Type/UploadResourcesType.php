@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\UploadBundle\Form\Type;
+namespace HatueySoft\UploadBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,7 +28,7 @@ class UploadResourcesType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\UploadBundle\Entity\UploadResources',
+            'data_class' => 'HatueySoft\UploadBundle\Entity\UploadResources',
         ));
     }
 
@@ -37,6 +37,6 @@ class UploadResourcesType extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_uploadbundle';
+        return 'hatueysoft_upload_type';
     }
 }

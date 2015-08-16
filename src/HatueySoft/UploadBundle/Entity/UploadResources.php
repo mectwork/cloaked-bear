@@ -1,50 +1,70 @@
 <?php
-namespace Buseta\UploadBundle\Model;
+
+namespace HatueySoft\UploadBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class UploadAbstract
  *
- * @ORM\MappedSuperclass
+ * UploadResources.
+ *
+ * @ORM\Table(name="uploaded_resources")
+ * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
-abstract class UploadAbstract implements UploadAwareInterface
+class UploadResources
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Id
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
     /**
      * @var string
      *
      * @ORM\Column(name="path", type="string", length=255, nullable=true)
      */
-    protected $path;
+    private $path;
 
     /**
      * @var string
      */
-    protected $temp;
+    private $temp;
 
     /**
      * @var \Symfony\Component\HttpFoundation\File\UploadedFile
+     *
+     * @Assert\File(
+     *     maxSize="6000000",
+     *     mimeTypes={"image/jpeg", "image/png"},
+     *     mimeTypesMessage="Por favor seleccione una imagen jpg ó png"
+     * )
+     *
+     * @Assert\NotNull()
      */
-    protected $file;
+    private $file;
 
     /**
-     * @var string
+     * Get id.
      *
-     * @ORM\Column(name="extension", type="string", length=32, nullable=true)
+     * @return integer
      */
-    protected $extension;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="original_name", type="string", length=255, nullable=true)
-     */
-    protected $originalName;
-
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set path.
+     *
+     * @param string $path
+     *
+     * @return UploadResources
      */
     public function setPath($path)
     {
@@ -78,9 +98,6 @@ abstract class UploadAbstract implements UploadAwareInterface
         } else {
             $this->path = 'initial';
         }
-
-        $this->extension = $file->guessExtension();
-        $this->originalName = $file->getClientOriginalName();
     }
 
     /**
@@ -91,38 +108,6 @@ abstract class UploadAbstract implements UploadAwareInterface
     public function getFile()
     {
         return $this->file;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOriginalName()
-    {
-        return $this->originalName;
-    }
-
-    /**
-     * @param string $originalName
-     */
-    public function setOriginalName($originalName)
-    {
-        $this->originalName = $originalName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExtension()
-    {
-        return $this->extension;
-    }
-
-    /**
-     * @param string $extension
-     */
-    public function setExtension($extension)
-    {
-        $this->extension = $extension;
     }
 
     /**
@@ -172,7 +157,8 @@ abstract class UploadAbstract implements UploadAwareInterface
     }
 
     /**
-     * Pre-upload action(set hash name)
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
      */
     public function preUpload()
     {
@@ -183,7 +169,8 @@ abstract class UploadAbstract implements UploadAwareInterface
     }
 
     /**
-     * Upload action, save file into resources upload dir
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
      */
     public function upload()
     {
@@ -202,7 +189,7 @@ abstract class UploadAbstract implements UploadAwareInterface
     }
 
     /**
-     * Remove from file system
+     * @ORM\PostRemove()
      */
     public function removeUpload()
     {

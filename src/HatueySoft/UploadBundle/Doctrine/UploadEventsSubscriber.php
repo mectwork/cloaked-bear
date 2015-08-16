@@ -1,8 +1,8 @@
 <?php
 
-namespace Buseta\UploadBundle\Doctrine;
+namespace HatueySoft\UploadBundle\Doctrine;
 
-use Buseta\UploadBundle\Model\UploadAwareInterface;
+use HatueySoft\UploadBundle\Model\UploadAwareInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;

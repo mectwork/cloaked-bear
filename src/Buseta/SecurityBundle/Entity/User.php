@@ -34,9 +34,9 @@ class User extends BaseUser
     private $apellidos;
 
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      *
-     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"persist", "remove"})
      */
     private $foto;
 

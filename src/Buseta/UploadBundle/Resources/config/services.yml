@@ -1,8 +1,0 @@
-parameters:
-#    buseta_upload.example.class: Buseta\UploadBundle\Example
-
-services:
-  buseta_upload.doctrine_subscriber.upload_aware:
-      class: Buseta\UploadBundle\Doctrine\UploadEventsSubscriber
-      tags:
-          - { name: doctrine.event_subscriber }

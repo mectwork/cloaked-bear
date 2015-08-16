@@ -2,7 +2,7 @@
 
 namespace Buseta\BusesBundle\Entity;
 
-use Buseta\UploadBundle\Model\UploadAbstract;
+use HatueySoft\UploadBundle\Model\UploadAbstract;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 

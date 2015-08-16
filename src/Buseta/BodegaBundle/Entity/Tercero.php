@@ -24,9 +24,9 @@ class Tercero
     private $id;
 
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      *
-     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"})
      */
     private $foto;
 
@@ -623,10 +623,10 @@ class Tercero
     /**
      * Set foto
      *
-     * @param \Buseta\UploadBundle\Entity\UploadResources $foto
+     * @param \HatueySoft\UploadBundle\Entity\UploadResources $foto
      * @return Tercero
      */
-    public function setFoto(\Buseta\UploadBundle\Entity\UploadResources $foto = null)
+    public function setFoto(\HatueySoft\UploadBundle\Entity\UploadResources $foto = null)
     {
         $this->foto = $foto;
 
@@ -636,7 +636,7 @@ class Tercero
     /**
      * Get foto
      *
-     * @return \Buseta\UploadBundle\Entity\UploadResources
+     * @return \HatueySoft\UploadBundle\Entity\UploadResources
      */
     public function getFoto()
     {
@@ -713,14 +713,14 @@ class Tercero
     public function setEmail($email)
     {
         $this->email = $email;
-    
+
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -736,14 +736,14 @@ class Tercero
     public function setWeb($web)
     {
         $this->web = $web;
-    
+
         return $this;
     }
 
     /**
      * Get web
      *
-     * @return string 
+     * @return string
      */
     public function getWeb()
     {
@@ -759,7 +759,7 @@ class Tercero
     public function addPersonaContacto(\Buseta\BodegaBundle\Entity\PersonaContacto $personaContacto)
     {
         $this->personaContacto[] = $personaContacto;
-    
+
         return $this;
     }
 
@@ -776,7 +776,7 @@ class Tercero
     /**
      * Get personaContacto
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPersonaContacto()
     {

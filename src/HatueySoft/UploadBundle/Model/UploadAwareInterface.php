@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\UploadBundle\Model;
+namespace HatueySoft\UploadBundle\Model;
 
 
 interface UploadAwareInterface

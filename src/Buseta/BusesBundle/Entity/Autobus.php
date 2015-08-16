@@ -23,44 +23,44 @@ class Autobus extends Vehiculo
     protected $id;
 
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      *
-     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"})
      */
     private $imagenFrontal;
 
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      *
-     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"})
      */
     private $imagenFrontalInterior;
 
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      *
-     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"})
      */
     private $imagenLateralD;
 
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      *
-     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"})
      */
     private $imagenLateralI;
 
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      *
-     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"})
      */
     private $imagenTrasera;
 
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      *
-     * @ORM\OneToOne(targetEntity="Buseta\UploadBundle\Entity\UploadResources", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"})
      */
     private $imagenTraseraInterior;
 
@@ -458,7 +458,7 @@ class Autobus extends Vehiculo
     /**
      * Set imagenFrontal
      *
-     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenFrontal
+     * @param \HatueySoft\UploadBundle\Entity\UploadResources $imagenFrontal
      * @return Autobus
      */
     public function setImagenFrontal($imagenFrontal)
@@ -471,7 +471,7 @@ class Autobus extends Vehiculo
     /**
      * Get imagenFrontal
      *
-     * @return \Buseta\UploadBundle\Entity\UploadResources
+     * @return \HatueySoft\UploadBundle\Entity\UploadResources
      */
     public function getImagenFrontal()
     {
@@ -481,7 +481,7 @@ class Autobus extends Vehiculo
     /**
      * Set imagenLateralD
      *
-     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenLateralD
+     * @param \HatueySoft\UploadBundle\Entity\UploadResources $imagenLateralD
      * @return Autobus
      */
     public function setImagenLateralD($imagenLateralD)
@@ -494,7 +494,7 @@ class Autobus extends Vehiculo
     /**
      * Get imagenLateralD
      *
-     * @return \Buseta\UploadBundle\Entity\UploadResources
+     * @return \HatueySoft\UploadBundle\Entity\UploadResources
      */
     public function getImagenLateralD()
     {
@@ -504,7 +504,7 @@ class Autobus extends Vehiculo
     /**
      * Set imagenLateralI
      *
-     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenLateralI
+     * @param \HatueySoft\UploadBundle\Entity\UploadResources $imagenLateralI
      * @return Autobus
      */
     public function setImagenLateralI($imagenLateralI)
@@ -517,7 +517,7 @@ class Autobus extends Vehiculo
     /**
      * Get imagenLateralI
      *
-     * @return \Buseta\UploadBundle\Entity\UploadResources
+     * @return \HatueySoft\UploadBundle\Entity\UploadResources
      */
     public function getImagenLateralI()
     {
@@ -527,7 +527,7 @@ class Autobus extends Vehiculo
     /**
      * Set imagenTrasera
      *
-     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenTrasera
+     * @param \HatueySoft\UploadBundle\Entity\UploadResources $imagenTrasera
      * @return Autobus
      */
     public function setImagenTrasera($imagenTrasera)
@@ -540,7 +540,7 @@ class Autobus extends Vehiculo
     /**
      * Get imagenTrasera
      *
-     * @return \Buseta\UploadBundle\Entity\UploadResources
+     * @return \HatueySoft\UploadBundle\Entity\UploadResources
      */
     public function getImagenTrasera()
     {
@@ -550,7 +550,7 @@ class Autobus extends Vehiculo
     /**
      * Set imagenTraseraInterior
      *
-     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenTraseraInterior
+     * @param \HatueySoft\UploadBundle\Entity\UploadResources $imagenTraseraInterior
      * @return Autobus
      */
     public function setImagenTraseraInterior($imagenTraseraInterior)
@@ -563,7 +563,7 @@ class Autobus extends Vehiculo
     /**
      * Get imagenTraseraInterior
      *
-     * @return \Buseta\UploadBundle\Entity\UploadResources
+     * @return \HatueySoft\UploadBundle\Entity\UploadResources
      */
     public function getImagenTraseraInterior()
     {
@@ -573,7 +573,7 @@ class Autobus extends Vehiculo
     /**
      * Set imagenFrontalInterior
      *
-     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenFrontalInterior
+     * @param \HatueySoft\UploadBundle\Entity\UploadResources $imagenFrontalInterior
      * @return Autobus
      */
     public function setImagenFrontalInterior($imagenFrontalInterior)
@@ -586,7 +586,7 @@ class Autobus extends Vehiculo
     /**
      * Get imagenFrontalInterior
      *
-     * @return \Buseta\UploadBundle\Entity\UploadResources
+     * @return \HatueySoft\UploadBundle\Entity\UploadResources
      */
     public function getImagenFrontalInterior()
     {

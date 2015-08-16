@@ -30,7 +30,7 @@ class TerceroModel implements TerceroModelInterface
     private $cifNif;
 
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      * @Assert\Valid()
      */
     private $foto;
@@ -210,7 +210,7 @@ class TerceroModel implements TerceroModelInterface
     }
 
     /**
-     * @return \Buseta\UploadBundle\Entity\UploadResources
+     * @return \HatueySoft\UploadBundle\Entity\UploadResources
      */
     public function getFoto()
     {
@@ -218,7 +218,7 @@ class TerceroModel implements TerceroModelInterface
     }
 
     /**
-     * @param \Buseta\UploadBundle\Entity\UploadResources $foto
+     * @param \HatueySoft\UploadBundle\Entity\UploadResources $foto
      */
     public function setFoto($foto)
     {

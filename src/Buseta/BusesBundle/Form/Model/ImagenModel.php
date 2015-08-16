@@ -11,37 +11,37 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ImagenModel
 {
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      * @Assert\Valid()
      */
     private $imagenFrontal;
 
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      * @Assert\Valid()
      */
     private $imagenFrontalInterior;
 
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      * @Assert\Valid()
      */
     private $imagenLateralD;
 
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      * @Assert\Valid()
      */
     private $imagenLateralI;
 
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      * @Assert\Valid()
      */
     private $imagenTrasera;
 
     /**
-     * @var \Buseta\UploadBundle\Entity\UploadResources
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
      * @Assert\Valid()
      */
     private $imagenTraseraInterior;
@@ -71,7 +71,7 @@ class ImagenModel
     }
 
     /**
-     * @return \Buseta\UploadBundle\Entity\UploadResources
+     * @return \HatueySoft\UploadBundle\Entity\UploadResources
      */
     public function getImagenFrontal()
     {
@@ -79,7 +79,7 @@ class ImagenModel
     }
 
     /**
-     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenFrontal
+     * @param \HatueySoft\UploadBundle\Entity\UploadResources $imagenFrontal
      */
     public function setImagenFrontal($imagenFrontal)
     {
@@ -87,7 +87,7 @@ class ImagenModel
     }
 
     /**
-     * @return \Buseta\UploadBundle\Entity\UploadResources
+     * @return \HatueySoft\UploadBundle\Entity\UploadResources
      */
     public function getImagenLateralD()
     {
@@ -95,7 +95,7 @@ class ImagenModel
     }
 
     /**
-     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenLateralD
+     * @param \HatueySoft\UploadBundle\Entity\UploadResources $imagenLateralD
      */
     public function setImagenLateralD($imagenLateralD)
     {
@@ -103,7 +103,7 @@ class ImagenModel
     }
 
     /**
-     * @return \Buseta\UploadBundle\Entity\UploadResources
+     * @return \HatueySoft\UploadBundle\Entity\UploadResources
      */
     public function getImagenLateralI()
     {
@@ -111,7 +111,7 @@ class ImagenModel
     }
 
     /**
-     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenLateralI
+     * @param \HatueySoft\UploadBundle\Entity\UploadResources $imagenLateralI
      */
     public function setImagenLateralI($imagenLateralI)
     {
@@ -119,7 +119,7 @@ class ImagenModel
     }
 
     /**
-     * @return \Buseta\UploadBundle\Entity\UploadResources
+     * @return \HatueySoft\UploadBundle\Entity\UploadResources
      */
     public function getImagenTrasera()
     {
@@ -127,7 +127,7 @@ class ImagenModel
     }
 
     /**
-     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenTrasera
+     * @param \HatueySoft\UploadBundle\Entity\UploadResources $imagenTrasera
      */
     public function setImagenTrasera($imagenTrasera)
     {
@@ -135,7 +135,7 @@ class ImagenModel
     }
 
     /**
-     * @return \Buseta\UploadBundle\Entity\UploadResources
+     * @return \HatueySoft\UploadBundle\Entity\UploadResources
      */
     public function getImagenFrontalInterior()
     {
@@ -143,7 +143,7 @@ class ImagenModel
     }
 
     /**
-     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenFrontalInterior
+     * @param \HatueySoft\UploadBundle\Entity\UploadResources $imagenFrontalInterior
      */
     public function setImagenFrontalInterior($imagenFrontalInterior)
     {
@@ -151,7 +151,7 @@ class ImagenModel
     }
 
     /**
-     * @return \Buseta\UploadBundle\Entity\UploadResources
+     * @return \HatueySoft\UploadBundle\Entity\UploadResources
      */
     public function getImagenTraseraInterior()
     {
@@ -159,7 +159,7 @@ class ImagenModel
     }
 
     /**
-     * @param \Buseta\UploadBundle\Entity\UploadResources $imagenTraseraInterior
+     * @param \HatueySoft\UploadBundle\Entity\UploadResources $imagenTraseraInterior
      */
     public function setImagenTraseraInterior($imagenTraseraInterior)
     {
