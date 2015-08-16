@@ -48,9 +48,33 @@ class EUsuario extends BaseUser
     protected $groups;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @var string
+     *
+     * @ORM\Column(name="nombres", type="string", length=64)
+     * @Assert\NotBlank
      */
-    protected $nombre;
+    private $nombres;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="apellidos", type="string", length=64, nullable=true)
+     */
+    private $apellidos;
+
+    /**
+     * @var \HatueySoft\UploadBundle\Entity\UploadResources
+     *
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"persist", "remove"})
+     */
+    private $foto;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="pin", type="string", length=4, nullable=true)
+     */
+    private $pin;
 
     function __construct()
     {
@@ -76,18 +100,66 @@ class EUsuario extends BaseUser
     }
 
     /**
-     * @param mixed $nombre
+     * @return mixed
      */
-    public function setNombre($nombre)
+    public function getNombres()
     {
-        $this->nombre = $nombre;
+        return $this->nombres;
+    }
+
+    /**
+     * @param mixed $nombres
+     */
+    public function setNombres($nombres)
+    {
+        $this->nombres = $nombres;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApellidos()
+    {
+        return $this->apellidos;
+    }
+
+    /**
+     * @param string $apellidos
+     */
+    public function setApellidos($apellidos)
+    {
+        $this->apellidos = $apellidos;
     }
 
     /**
      * @return mixed
      */
-    public function getNombre()
+    public function getFoto()
     {
-        return $this->nombre;
+        return $this->foto;
     }
-} 
+
+    /**
+     * @param mixed $foto
+     */
+    public function setFoto($foto)
+    {
+        $this->foto = $foto;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPin()
+    {
+        return $this->pin;
+    }
+
+    /**
+     * @param string $pin
+     */
+    public function setPin($pin)
+    {
+        $this->pin = $pin;
+    }
+}
