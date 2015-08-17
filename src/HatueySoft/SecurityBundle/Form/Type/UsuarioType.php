@@ -31,20 +31,19 @@ class UsuarioType extends AbstractType
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetDataUsername'));
         $builder
-            ->add('nombre', 'text', array(
-                    'label' => 'Nombre',
+            ->add('nombres', 'text', array(
+                    'label' => 'Nombres',
                     'required' => false,
                     'translation_domain' => 'HatueySoftSecurityBundle',
-                    'attr' => array(
-                        'class' => 'form-control',
-                    )
                 ))
+            ->add('apellidos', 'text', array(
+                'label' => 'Apellidos',
+                'required' => false,
+                'translation_domain' => 'HatueySoftSecurityBundle',
+            ))
             ->add('email', 'email', array(
                     'label' => 'form.email',
                     'translation_domain' => 'FOSUserBundle',
-                    'attr' => array(
-                        'class' => 'form-control',
-                    )
                 ))
             ->add('plainPassword', 'repeated', array(
                     'type' => 'password',
@@ -71,14 +70,14 @@ class UsuarioType extends AbstractType
             ))*/
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'HatueySoft\SecurityBundle\Entity\EUsuario'
+            'data_class' => 'HatueySoft\SecurityBundle\Entity\User'
         ));
     }
 
@@ -100,9 +99,6 @@ class UsuarioType extends AbstractType
                 ->add('username', null, array(
                         'label' => 'form.username',
                         'translation_domain' => 'FOSUserBundle',
-                        'attr' => array(
-                            'class' => 'form-control',
-                        )
                     ));
         } else {
             $form
@@ -110,7 +106,6 @@ class UsuarioType extends AbstractType
                         'label' => 'form.username',
                         'translation_domain' => 'FOSUserBundle',
                         'attr' => array(
-                            'class' => 'form-control',
                             'readonly' => true,
                         )
                     ));

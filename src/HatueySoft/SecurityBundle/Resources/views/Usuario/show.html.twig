@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends '@HatueySoftSecurity/layout.html.twig' %}
 
 {% block title 'Usuario' %}
 
@@ -13,7 +13,11 @@
             </tr>
             <tr>
                 <th>Nombre</th>
-                <td>{{ entity.nombre | default('-') }}</td>
+                <td>{{ entity.nombres | default('-') }}</td>
+            </tr>
+            <tr>
+                <th>Apellidos</th>
+                <td>{{ entity.apellidos | default('-') }}</td>
             </tr>
             <tr>
                 <th>Email</th>
@@ -34,7 +38,7 @@
         {{ form_start(delete_form) }}
 
 
-        <a href="{{ path('usuario') }}" class="btn btn-default">
+        <a href="{{ path('security_usuario') }}" class="btn btn-default">
             <span class="glyphicon glyphicon-arrow-left"></span> Volver
         </a>
 

@@ -20,12 +20,13 @@ class AppKernel extends Kernel
             new Buseta\CoreBundle\CoreBundle(),
             new Buseta\DataBundle\DataBundle(),
             new Buseta\NomencladorBundle\BusetaNomencladorBundle(),
-            new Buseta\SecurityBundle\BusetaSecurityBundle(),
             new Buseta\BusesBundle\BusetaBusesBundle(),
             new Buseta\TallerBundle\BusetaTallerBundle(),
             new Buseta\BodegaBundle\BusetaBodegaBundle(),
-            new Buseta\UploadBundle\BusetaUploadBundle(),
             new Buseta\TemplateBundle\BusetaTemplateBundle(),
+            new HatueySoft\SecurityBundle\HatueySoftSecurityBundle(),
+            new HatueySoft\UploadBundle\HatueySoftUploadBundle(),
+
             // extra bundles
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
@@ -36,7 +37,7 @@ class AppKernel extends Kernel
             new Buseta\CombustibleBundle\BusetaCombustibleBundle(),
         );
 
-        if (in_array($this->getEnvironment(), array('dev', 'test'))) {            
+        if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();

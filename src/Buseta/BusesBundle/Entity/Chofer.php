@@ -113,7 +113,7 @@ class Chofer
 
     /**
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */
     private $createdby;
 
@@ -126,7 +126,7 @@ class Chofer
 
     /**
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */
     private $updatedby;
 
@@ -139,10 +139,10 @@ class Chofer
 
     /**
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */
     private $deletedby;
-    
+
     /**
      * Get id
      *
@@ -444,10 +444,10 @@ class Chofer
     /**
      * Set createdby
      *
-     * @param \Buseta\SecurityBundle\Entity\User $createdby
+     * @param \HatueySoft\SecurityBundle\Entity\User $createdby
      * @return Chofer
      */
-    public function setCreatedby(\Buseta\SecurityBundle\Entity\User $createdby = null)
+    public function setCreatedby(\HatueySoft\SecurityBundle\Entity\User $createdby = null)
     {
         $this->createdby = $createdby;
 
@@ -457,7 +457,7 @@ class Chofer
     /**
      * Get createdby
      *
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getCreatedby()
     {
@@ -467,10 +467,10 @@ class Chofer
     /**
      * Set updatedby
      *
-     * @param \Buseta\SecurityBundle\Entity\User $updatedby
+     * @param \HatueySoft\SecurityBundle\Entity\User $updatedby
      * @return Chofer
      */
-    public function setUpdatedby(\Buseta\SecurityBundle\Entity\User $updatedby = null)
+    public function setUpdatedby(\HatueySoft\SecurityBundle\Entity\User $updatedby = null)
     {
         $this->updatedby = $updatedby;
 
@@ -480,7 +480,7 @@ class Chofer
     /**
      * Get updatedby
      *
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getUpdatedby()
     {
@@ -490,10 +490,10 @@ class Chofer
     /**
      * Set deletedby
      *
-     * @param \Buseta\SecurityBundle\Entity\User $deletedby
+     * @param \HatueySoft\SecurityBundle\Entity\User $deletedby
      * @return Chofer
      */
-    public function setDeletedby(\Buseta\SecurityBundle\Entity\User $deletedby = null)
+    public function setDeletedby(\HatueySoft\SecurityBundle\Entity\User $deletedby = null)
     {
         $this->deletedby = $deletedby;
 
@@ -503,7 +503,7 @@ class Chofer
     /**
      * Get deletedby
      *
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getDeletedby()
     {

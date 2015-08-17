@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use HatueySoft\SecurityBundle\Entity\EUsuario as Usuario;
+use HatueySoft\SecurityBundle\Entity\User as Usuario;
 use HatueySoft\SecurityBundle\Form\Type\UsuarioType as UsuarioType;
 
 /**
@@ -24,7 +24,7 @@ class UsuarioController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('HatueySoftSecurityBundle:EUsuario')->findAll();
+        $entities = $em->getRepository('HatueySoftSecurityBundle:User')->findAll();
 
         return $this->render('HatueySoftSecurityBundle:Usuario:index.html.twig', array(
             'entities' => $entities,
@@ -44,7 +44,7 @@ class UsuarioController extends Controller
             $userManager    = $this->get('fos_user.user_manager');
             $userManager->updateUser($entity);
 
-            return $this->redirect($this->generateUrl('usuario_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('security_usuario_show', array('id' => $entity->getId())));
         }
 
         return $this->render('HatueySoftSecurityBundle:Usuario:new.html.twig', array(
@@ -63,7 +63,7 @@ class UsuarioController extends Controller
     private function createCreateForm(Usuario $entity)
     {
         $form = $this->createForm('hatueysoft_security_usuario_type', $entity, array(
-            'action' => $this->generateUrl('usuario_create'),
+            'action' => $this->generateUrl('security_usuario_create'),
             'method' => 'POST',
         ));
 
@@ -93,7 +93,7 @@ class UsuarioController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('HatueySoftSecurityBundle:EUsuario')->find($id);
+        $entity = $em->getRepository('HatueySoftSecurityBundle:User')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Usuario entity.');
@@ -115,7 +115,7 @@ class UsuarioController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('HatueySoftSecurityBundle:EUsuario')->find($id);
+        $entity = $em->getRepository('HatueySoftSecurityBundle:User')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Usuario entity.');
@@ -141,7 +141,7 @@ class UsuarioController extends Controller
     private function createEditForm(Usuario $entity)
     {
         $form = $this->createForm('hatueysoft_security_usuario_type', $entity, array(
-            'action' => $this->generateUrl('usuario_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('security_usuario_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -155,7 +155,7 @@ class UsuarioController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('HatueySoftSecurityBundle:EUsuario')->find($id);
+        $entity = $em->getRepository('HatueySoftSecurityBundle:User')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Usuario entity.');
@@ -168,7 +168,7 @@ class UsuarioController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('usuario_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('security_usuario_edit', array('id' => $id)));
         }
 
         return $this->render('HatueySoftSecurityBundle:Usuario:edit.html.twig', array(
@@ -188,7 +188,7 @@ class UsuarioController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('HatueySoftSecurityBundle:EUsuario')->find($id);
+            $entity = $em->getRepository('HatueySoftSecurityBundle:User')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Usuario entity.');
@@ -198,7 +198,7 @@ class UsuarioController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('usuario'));
+        return $this->redirect($this->generateUrl('security_usuario'));
     }
 
     /**
@@ -211,7 +211,7 @@ class UsuarioController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('usuario_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('security_usuario_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->getForm()
         ;

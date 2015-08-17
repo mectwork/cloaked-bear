@@ -79,7 +79,7 @@ class AlbaranModel
     private $created;
 
     /**
-     * @var \Buseta\SecurityBundle\Entity\User
+     * @var \HatueySoft\SecurityBundle\Entity\User
      *
      */
     private $createdby;
@@ -91,7 +91,7 @@ class AlbaranModel
     private $updated;
 
     /**
-     * @var \Buseta\SecurityBundle\Entity\User
+     * @var \HatueySoft\SecurityBundle\Entity\User
      *
      */
     private $updatedby;
@@ -103,7 +103,7 @@ class AlbaranModel
     private $deleted;
 
     /**
-     * @var \Buseta\SecurityBundle\Entity\User
+     * @var \HatueySoft\SecurityBundle\Entity\User
      *
      */
     private $deletedby;
@@ -249,7 +249,7 @@ class AlbaranModel
     }
 
     /**
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getCreatedby()
     {
@@ -257,7 +257,7 @@ class AlbaranModel
     }
 
     /**
-     * @param \Buseta\SecurityBundle\Entity\User $createdby
+     * @param \HatueySoft\SecurityBundle\Entity\User $createdby
      */
     public function setCreatedby($createdby)
     {
@@ -281,7 +281,7 @@ class AlbaranModel
     }
 
     /**
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getDeletedby()
     {
@@ -289,7 +289,7 @@ class AlbaranModel
     }
 
     /**
-     * @param \Buseta\SecurityBundle\Entity\User $deletedby
+     * @param \HatueySoft\SecurityBundle\Entity\User $deletedby
      */
     public function setDeletedby($deletedby)
     {
@@ -425,7 +425,7 @@ class AlbaranModel
     }
 
     /**
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getUpdatedby()
     {
@@ -433,7 +433,7 @@ class AlbaranModel
     }
 
     /**
-     * @param \Buseta\SecurityBundle\Entity\User $updatedby
+     * @param \HatueySoft\SecurityBundle\Entity\User $updatedby
      */
     public function setUpdatedby($updatedby)
     {

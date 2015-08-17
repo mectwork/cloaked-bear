@@ -1,6 +1,6 @@
 <?php
 
-namespace HatueySoft\SecurityBundle\Doctrine;
+namespace HatueySoft\SecurityBundle\Doctrine\Subscribers;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -35,7 +35,7 @@ class AclSubscriber implements EventSubscriber
     public function postPersist(LifecycleEventArgs $args)
     {
         $object = $args->getEntity();
-        if($object instanceof AclAwareInterface) {
+        if ($object instanceof AclAwareInterface) {
             $rules = $this->aclRulesManager->getEntityRule(ClassUtils::getRealClass($object));
             $this->aclManager->setAcl($object, $rules);
         }
@@ -47,4 +47,4 @@ class AclSubscriber implements EventSubscriber
             Events::postPersist,
         );
     }
-} 
+}

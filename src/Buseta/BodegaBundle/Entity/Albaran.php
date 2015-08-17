@@ -93,7 +93,7 @@ class Albaran
     private $created;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */
     private $createdby;
 
@@ -105,7 +105,7 @@ class Albaran
     private $updated;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */
     private $updatedby;
 
@@ -117,7 +117,7 @@ class Albaran
     private $deleted;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */
     private $deletedby;
 
@@ -518,11 +518,11 @@ class Albaran
     /**
      * Set createdby.
      *
-     * @param \Buseta\SecurityBundle\Entity\User $createdby
+     * @param \HatueySoft\SecurityBundle\Entity\User $createdby
      *
      * @return Albaran
      */
-    public function setCreatedby(\Buseta\SecurityBundle\Entity\User $createdby = null)
+    public function setCreatedby(\HatueySoft\SecurityBundle\Entity\User $createdby = null)
     {
         $this->createdby = $createdby;
 
@@ -532,7 +532,7 @@ class Albaran
     /**
      * Get createdby.
      *
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getCreatedby()
     {
@@ -542,11 +542,11 @@ class Albaran
     /**
      * Set updatedby.
      *
-     * @param \Buseta\SecurityBundle\Entity\User $updatedby
+     * @param \HatueySoft\SecurityBundle\Entity\User $updatedby
      *
      * @return Albaran
      */
-    public function setUpdatedby(\Buseta\SecurityBundle\Entity\User $updatedby = null)
+    public function setUpdatedby(\HatueySoft\SecurityBundle\Entity\User $updatedby = null)
     {
         $this->updatedby = $updatedby;
 
@@ -556,7 +556,7 @@ class Albaran
     /**
      * Get updatedby.
      *
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getUpdatedby()
     {

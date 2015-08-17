@@ -1,30 +1,30 @@
-usuario:
+security_usuario:
     path:     /
     defaults: { _controller: "HatueySoftSecurityBundle:Usuario:index" }
 
-usuario_show:
+security_usuario_show:
     path:     /{id}/show
     defaults: { _controller: "HatueySoftSecurityBundle:Usuario:show" }
 
-usuario_new:
+security_usuario_new:
     path:     /new
     defaults: { _controller: "HatueySoftSecurityBundle:Usuario:new" }
 
-usuario_create:
+security_usuario_create:
     path:     /create
     defaults: { _controller: "HatueySoftSecurityBundle:Usuario:create" }
     requirements: { _method: post }
 
-usuario_edit:
+security_usuario_edit:
     path:     /{id}/edit
     defaults: { _controller: "HatueySoftSecurityBundle:Usuario:edit" }
 
-usuario_update:
+security_usuario_update:
     path:     /{id}/update
     defaults: { _controller: "HatueySoftSecurityBundle:Usuario:update" }
     requirements: { _method: post|put }
 
-usuario_delete:
+security_usuario_delete:
     path:     /{id}/delete
     defaults: { _controller: "HatueySoftSecurityBundle:Usuario:delete" }
     requirements: { _method: post|delete }

@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @author: dundivet <dundivet@emailn.de>
  *
  * @ORM\Entity
- * @ORM\Table(name="security_fos_group")
+ * @ORM\Table(name="sec_group")
  */
-class EGrupo extends BaseGroup
+class Group extends BaseGroup
 {
     /**
      * @ORM\Id
@@ -20,4 +20,4 @@ class EGrupo extends BaseGroup
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-} 
+}

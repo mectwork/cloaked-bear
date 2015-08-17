@@ -8,8 +8,8 @@
 
 namespace Buseta\TallerBundle\Entity;
 
-use Buseta\CoreBundle\Doctrine\DateTimeAwareTrait;
-use Buseta\CoreBundle\Interfaces\DateTimeAwareInterface;
+use HatueySoft\SecurityBundle\Doctrine\DateTimeAwareTrait;
+use HatueySoft\SecurityBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 

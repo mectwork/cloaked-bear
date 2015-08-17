@@ -126,7 +126,7 @@ class NecesidadMaterialModel
     private $created;
 
     /**
-     * @var \Buseta\SecurityBundle\Entity\User
+     * @var \HatueySoft\SecurityBundle\Entity\User
      *
      */
     private $createdby;
@@ -138,7 +138,7 @@ class NecesidadMaterialModel
     private $updated;
 
     /**
-     * @var \Buseta\SecurityBundle\Entity\User
+     * @var \HatueySoft\SecurityBundle\Entity\User
      *
      */
     private $updatedby;
@@ -150,7 +150,7 @@ class NecesidadMaterialModel
     private $deleted;
 
     /**
-     * @var \Buseta\SecurityBundle\Entity\User
+     * @var \HatueySoft\SecurityBundle\Entity\User
      *
      */
     private $deletedby;
@@ -357,7 +357,7 @@ class NecesidadMaterialModel
     }
 
     /**
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getCreatedby()
     {
@@ -365,7 +365,7 @@ class NecesidadMaterialModel
     }
 
     /**
-     * @param \Buseta\SecurityBundle\Entity\User $createdby
+     * @param \HatueySoft\SecurityBundle\Entity\User $createdby
      */
     public function setCreatedby($createdby)
     {

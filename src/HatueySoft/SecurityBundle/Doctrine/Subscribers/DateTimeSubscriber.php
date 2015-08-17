@@ -1,9 +1,9 @@
 <?php
 
-namespace Buseta\CoreBundle\Doctrine;
+namespace HatueySoft\SecurityBundle\Doctrine\Subscribers;
 
 
-use Buseta\CoreBundle\Interfaces\DateTimeAwareInterface;
+use HatueySoft\SecurityBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\Common\EventSubscriber;

@@ -56,7 +56,7 @@ class TerceroModel implements TerceroModelInterface
     private $alias;
 
     /**
-     * @var \Buseta\SecurityBundle\Entity\User
+     * @var \HatueySoft\SecurityBundle\Entity\User
      */
     private $usuario;
 
@@ -258,7 +258,7 @@ class TerceroModel implements TerceroModelInterface
     }
 
     /**
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getUsuario()
     {
@@ -266,7 +266,7 @@ class TerceroModel implements TerceroModelInterface
     }
 
     /**
-     * @param \Buseta\SecurityBundle\Entity\User $usuario
+     * @param \HatueySoft\SecurityBundle\Entity\User $usuario
      */
     public function setUsuario($usuario)
     {

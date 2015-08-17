@@ -1,7 +1,8 @@
 {{ form_start(form) }}
 {{ form_row(form.username) }}
-{{ form_row(form.nombre) }}
 {{ form_row(form.email) }}
+{{ form_row(form.nombres) }}
+{{ form_row(form.apellidos) }}
 {{ form_row(form.plainPassword) }}
 {{ form_row(form.roles) }}
 {#{{ form_row(form.groups) }}#}
@@ -10,7 +11,7 @@
 <div class="btn-actions">
     <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Aceptar</button>
 
-    <a href="{{ path('usuario') }}" class="btn btn-default">
+    <a href="{{ path('security_usuario') }}" class="btn btn-default">
         <span class="glyphicon glyphicon-arrow-left"></span> Volver
     </a>
 </div>

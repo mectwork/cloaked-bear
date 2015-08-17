@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\CoreBundle\Interfaces;
+namespace HatueySoft\SecurityBundle\Interfaces;
 
 
 interface DateTimeAwareInterface

@@ -1,0 +1,16 @@
+security:
+    role_hierarchy:
+            ROLE_SYSTEM_USER:   ROLE_USER
+            ROLE_ADMIN:         [ROLE_USER, ROLE_SYSTEM_USER, ROLE_THIRD_PERSON]
+            ROLE_SUPER_ADMIN:   [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+    access_control:
+        #USERS AREA
+        #    - { path: ^/site, role: ROLE_THIRD_PERSON }
+        #ADMIN AREA
+        #    - { path: ^/admin/, role: ROLE_ADMIN }
+        #    - { path: ^/register, role: ROLE_ADMIN }
+        #    - { path: ^/resetting, role: ROLE_ADMIN }
+        #    - { path: ^/usuario, role: ROLE_ADMIN }
+
+            - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/, roles: ROLE_USER   }

@@ -1,0 +1,48 @@
+{% from 'BusetaTemplateBundle::flash.html.twig' import session_flash %}
+
+{% extends "::base.html.twig" %}
+
+{% block header %}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/busetatemplate/css/g_configuracion.css') }}" media="screen">
+{% endblock %}
+
+
+{% block body %}
+    {# Header Superior y logo #}
+    {% include '@HatueySoftSecurity/Extras/header.html.twig' %}
+
+    {# Header Superior y logo #}
+    {% include '@HatueySoftSecurity/Extras/menu_izquierdo.html.twig' %}
+
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header">
+                    {% block title %}
+                        Título encabezado
+                    {% endblock %}
+                </h3>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        {# Session flashes #}
+        {% block flashes %}
+            {% if app.session.flashbag.peekAll|length > 0 %}
+                <div class="row">
+                    <div class="col-sm-12 global-messages">
+                        {{ session_flash() }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endblock flashes %}
+
+        {% block content %}
+            Área de Trabajo
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}{% endblock javascripts %}

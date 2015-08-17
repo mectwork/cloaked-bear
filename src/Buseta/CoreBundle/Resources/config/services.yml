@@ -24,9 +24,3 @@ services:
         class: Buseta\CoreBundle\Managers\CambioHoraSistemaManager
         arguments:
             - @doctrine.orm.entity_manager
-
-#SUBSCRIBER
-    core.doctrine_subscriber.datetime_aware:
-        class: Buseta\CoreBundle\Doctrine\DateTimeSubscriber
-        tags:
-            - { name: doctrine.event_subscriber }

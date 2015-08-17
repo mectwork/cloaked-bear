@@ -42,17 +42,31 @@ services:
 
     #SUBSCRIBERS
     hatuey_soft.doctrine_subscriber.acl_aware:
-        class: HatueySoft\SecurityBundle\Doctrine\AclSubscriber
+        class: HatueySoft\SecurityBundle\Doctrine\Subscribers\AclSubscriber
         arguments:
             - @hatuey_soft.security.acl_manager
             - @hatuey_soft.security.acl_rules_manager
         tags:
             - { name: doctrine.event_subscriber }
-    hatuey_soft.user_callable:
+
+    hatuey_soft.security.user_callable:
         class: HatueySoft\SecurityBundle\Doctrine\UserCallable
         arguments:
                 - @service_container
+
     hatuey_soft.acl_provider_callable:
         class: HatueySoft\SecurityBundle\Doctrine\AclProviderCallable
         arguments:
             - @service_container
+
+    hatuey_soft.doctrine_subscriber.datetime_aware:
+        class: HatueySoft\SecurityBundle\Doctrine\Subscribers\DateTimeSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    hatuey_soft.doctrine_subscriber.user_aware:
+        class: HatueySoft\SecurityBundle\Doctrine\Subscribers\UserSubscriber
+        arguments:
+            - @hatuey_soft.security.user_callable
+        tags:
+            - { name: doctrine.event_subscriber }

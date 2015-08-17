@@ -55,7 +55,7 @@ class CodigoYPinValidoValidator extends ConstraintValidator
             try {
                 $admins = $this->em->createQueryBuilder()
                     ->select('u')
-                    ->from('BusetaSecurityBundle:User','u')
+                    ->from('HatueySoftSecurityBundle:User','u')
                     //->leftJoin('u.groups','g')
                     //->where('(u.roles LIKE :roleadmin OR g.roles LIKE :roleadmin OR u.roles LIKE :roleasuperdmin OR g.roles LIKE :roleasuperdmin) AND u.pin = :dataPin')
                     ->where('u.pin = :dataPin')

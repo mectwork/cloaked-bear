@@ -109,7 +109,7 @@ class BitacoraAlmacen
     private $created;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */
     private $createdby;
 
@@ -121,7 +121,7 @@ class BitacoraAlmacen
     private $updated;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */
     private $updatedby;
 
@@ -133,7 +133,7 @@ class BitacoraAlmacen
     private $deleted;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */
     private $deletedby;
 
@@ -492,11 +492,11 @@ class BitacoraAlmacen
     /**
      * Set createdby.
      *
-     * @param \Buseta\SecurityBundle\Entity\User $createdby
+     * @param \HatueySoft\SecurityBundle\Entity\User $createdby
      *
      * @return BitacoraAlmacen
      */
-    public function setCreatedby(\Buseta\SecurityBundle\Entity\User $createdby = null)
+    public function setCreatedby(\HatueySoft\SecurityBundle\Entity\User $createdby = null)
     {
         $this->createdby = $createdby;
 
@@ -506,7 +506,7 @@ class BitacoraAlmacen
     /**
      * Get createdby.
      *
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getCreatedby()
     {
@@ -516,11 +516,11 @@ class BitacoraAlmacen
     /**
      * Set updatedby.
      *
-     * @param \Buseta\SecurityBundle\Entity\User $updatedby
+     * @param \HatueySoft\SecurityBundle\Entity\User $updatedby
      *
      * @return BitacoraAlmacen
      */
-    public function setUpdatedby(\Buseta\SecurityBundle\Entity\User $updatedby = null)
+    public function setUpdatedby(\HatueySoft\SecurityBundle\Entity\User $updatedby = null)
     {
         $this->updatedby = $updatedby;
 
@@ -530,7 +530,7 @@ class BitacoraAlmacen
     /**
      * Get updatedby.
      *
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getUpdatedby()
     {
@@ -540,11 +540,11 @@ class BitacoraAlmacen
     /**
      * Set deletedby.
      *
-     * @param \Buseta\SecurityBundle\Entity\User $deletedby
+     * @param \HatueySoft\SecurityBundle\Entity\User $deletedby
      *
      * @return BitacoraAlmacen
      */
-    public function setDeletedby(\Buseta\SecurityBundle\Entity\User $deletedby = null)
+    public function setDeletedby(\HatueySoft\SecurityBundle\Entity\User $deletedby = null)
     {
         $this->deletedby = $deletedby;
 
@@ -554,7 +554,7 @@ class BitacoraAlmacen
     /**
      * Get deletedby.
      *
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getDeletedby()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\CoreBundle\Doctrine;
+namespace HatueySoft\SecurityBundle\Doctrine;
 
 use Doctrine\ORM\Mapping as ORM;
 

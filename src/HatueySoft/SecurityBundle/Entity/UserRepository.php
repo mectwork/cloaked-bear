@@ -5,7 +5,7 @@ namespace HatueySoft\SecurityBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 
-class EUsuarioRepository extends EntityRepository
+class UserRepository extends EntityRepository
 {
     public function getAllUsers()
     {
@@ -13,7 +13,7 @@ class EUsuarioRepository extends EntityRepository
 
         $query = $qb
             ->select('u')
-            ->from('HatueySoftSecurityBundle:EUsuario', 'u')
+            ->from('HatueySoftSecurityBundle:User', 'u')
             ->where($qb->expr()->eq('u.enabled',':enabled'))
             ->setParameter('enabled', true)
             ->getQuery();
@@ -25,4 +25,4 @@ class EUsuarioRepository extends EntityRepository
             return array();
         }
     }
-} 
+}

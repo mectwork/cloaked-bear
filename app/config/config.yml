@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: security_conf.yml }
 
 framework:
     #esi:             ~
@@ -27,6 +28,8 @@ twig:
     strict_variables: %kernel.debug%
     globals:
         version_sistema: beta4
+    form:
+        resources: ['BusetaBodegaBundle:Form:fields.html.twig']
 
 # Assetic Configuration
 assetic:
@@ -85,8 +88,8 @@ knp_menu:
 
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
-    firewall_name: main
-    user_class: Buseta\SecurityBundle\Entity\User
+    firewall_name: secured_area
+    user_class: HatueySoft\SecurityBundle\Entity\User
 
 knp_paginator:
     page_range: 10                      # default page range used in pagination control
@@ -147,3 +150,8 @@ easy_admin:
         'Tarea': Buseta\NomencladorBundle\Entity\Tarea
         'Unidad de Medida': Buseta\NomencladorBundle\Entity\UOM
         'Medio Reporte': Buseta\NomencladorBundle\Entity\MedioReporte
+
+#HATUEY SOFT SECURITY CONFIGURATION
+hatuey_soft_security:
+    security_config: "%kernel.root_dir%/config/security_conf.yml"
+    command_scope: "%kernel.root_dir%"

@@ -26,7 +26,7 @@ class AclRuleController extends Controller
         $roles = $usersManager->getRoleList();
 
         $users = $this->get('doctrine.orm.entity_manager')
-            ->getRepository('HatueySoftSecurityBundle:EUsuario')
+            ->getRepository('HatueySoftSecurityBundle:User')
             ->getAllUsers();
 
         return $this->render('@HatueySoftSecurity/AclRules/edit.html.twig', array(
@@ -71,4 +71,4 @@ class AclRuleController extends Controller
 
         return new Response();
     }
-} 
+}

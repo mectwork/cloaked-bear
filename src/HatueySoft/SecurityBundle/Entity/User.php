@@ -13,11 +13,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @author: firomero <firomerorom4@gmail.com>
  * @author: dundivet <dundivet@emailn.de>
  *
- * @ORM\Entity(repositoryClass="HatueySoft\SecurityBundle\Entity\EUsuarioRepository")
- * @ORM\Table(name="security_fos_user")
+ * @ORM\Entity(repositoryClass="HatueySoft\SecurityBundle\Entity\UserRepository")
+ * @ORM\Table(name="sec_user")
  * @UniqueEntity(fields={"username", "email"})
  */
-class EUsuario extends BaseUser
+class User extends BaseUser
 {
     /**
      * @ORM\Id
@@ -39,8 +39,8 @@ class EUsuario extends BaseUser
     protected $email;
 
     /**
-     * @ORM\ManyToMany(targetEntity="HatueySoft\SecurityBundle\Entity\EGrupo")
-     * @ORM\JoinTable(name="security_fos_users_groups",
+     * @ORM\ManyToMany(targetEntity="HatueySoft\SecurityBundle\Entity\Group")
+     * @ORM\JoinTable(name="sec_users_groups",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
      * )
@@ -161,5 +161,10 @@ class EUsuario extends BaseUser
     public function setPin($pin)
     {
         $this->pin = $pin;
+    }
+
+    public function getNombreCompleto()
+    {
+        return sprintf('%s %s', $this->getNombres(), $this->getApellidos());
     }
 }

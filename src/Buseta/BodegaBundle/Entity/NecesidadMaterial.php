@@ -159,7 +159,7 @@ class NecesidadMaterial
     private $created;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */
     private $createdby;
 
@@ -171,7 +171,7 @@ class NecesidadMaterial
     private $updated;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */
     private $updatedby;
 
@@ -183,7 +183,7 @@ class NecesidadMaterial
     private $deleted;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\SecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */
     private $deletedby;
 
@@ -699,11 +699,11 @@ class NecesidadMaterial
     /**
      * Set createdby.
      *
-     * @param \Buseta\SecurityBundle\Entity\User $createdby
+     * @param \HatueySoft\SecurityBundle\Entity\User $createdby
      *
      * @return NecesidadMaterial
      */
-    public function setCreatedby(\Buseta\SecurityBundle\Entity\User $createdby = null)
+    public function setCreatedby(\HatueySoft\SecurityBundle\Entity\User $createdby = null)
     {
         $this->createdby = $createdby;
 
@@ -713,7 +713,7 @@ class NecesidadMaterial
     /**
      * Get createdby.
      *
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getCreatedby()
     {
@@ -723,11 +723,11 @@ class NecesidadMaterial
     /**
      * Set updatedby.
      *
-     * @param \Buseta\SecurityBundle\Entity\User $updatedby
+     * @param \HatueySoft\SecurityBundle\Entity\User $updatedby
      *
      * @return NecesidadMaterial
      */
-    public function setUpdatedby(\Buseta\SecurityBundle\Entity\User $updatedby = null)
+    public function setUpdatedby(\HatueySoft\SecurityBundle\Entity\User $updatedby = null)
     {
         $this->updatedby = $updatedby;
 
@@ -737,7 +737,7 @@ class NecesidadMaterial
     /**
      * Get updatedby.
      *
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getUpdatedby()
     {
@@ -747,11 +747,11 @@ class NecesidadMaterial
     /**
      * Set deletedby.
      *
-     * @param \Buseta\SecurityBundle\Entity\User $deletedby
+     * @param \HatueySoft\SecurityBundle\Entity\User $deletedby
      *
      * @return NecesidadMaterial
      */
-    public function setDeletedby(\Buseta\SecurityBundle\Entity\User $deletedby = null)
+    public function setDeletedby(\HatueySoft\SecurityBundle\Entity\User $deletedby = null)
     {
         $this->deletedby = $deletedby;
 
@@ -761,7 +761,7 @@ class NecesidadMaterial
     /**
      * Get deletedby.
      *
-     * @return \Buseta\SecurityBundle\Entity\User
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getDeletedby()
     {

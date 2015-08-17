@@ -32,7 +32,7 @@ class AclManager
     {
         $this->aclProviderCallable  = $container->get('hatuey_soft.acl_provider_callable');
         $this->logger               = $container->get('logger');
-        $this->userCallable         = $container->get('hatuey_soft.user_callable');
+        $this->userCallable         = $container->get('hatuey_soft.security.user_callable');
     }
 
     /**
@@ -123,12 +123,12 @@ class AclManager
      * Devuelve el usuario dado el nombre de usuario
      *
      * @param $username
-     * @return bool|\HatueySoft\SecurityBundle\Entity\EUsuario
+     * @return bool|\HatueySoft\SecurityBundle\Entity\User
      */
     private function findUserByUsername($username)
     {
         $userCallable = $this->userCallable;
 
-        return $userCallable($username);
+        return $userCallable->findByUsername($username);
     }
-} 
+}

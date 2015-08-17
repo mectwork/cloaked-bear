@@ -11,7 +11,8 @@ namespace HatueySoft\SecurityBundle\Utils;
 use HatueySoft\SecurityBundle\Utils\SecurityManager;
 
 
-class ConfigurationReader {
+class ConfigurationReader
+{
 
     /**
      * @var container Contenedor de servicios
@@ -31,21 +32,22 @@ class ConfigurationReader {
 
     }
 
-    /*
+    /**
      * Obtiene la jerarquía de roles como árbol
-     * */
-
+     *
+     * @return mixed
+     */
     public function getHierarchy()
     {
         return $this->container->getParameter('security.role_hierarchy.roles');
     }
 
 
-    /*
+    /**
      * Obtiene una lista de los roles disponible
      *
-     * */
-
+     * @return array
+     */
     public function getRoleList()
     {
         $roles = $this->getHierarchy();
@@ -57,10 +59,11 @@ class ConfigurationReader {
         return $rl;
     }
 
-    /*
+    /**
      * Devuelve el access control
-     * */
-
+     *
+     * @return mixed
+     */
     public function getAccessControl()
     {
         $sm = new SecurityManager($this->security_config);
@@ -70,17 +73,19 @@ class ConfigurationReader {
     }
 
 
-    /*
- *
- * Limpia las rutas por un patrón
- * */
+    /**
+     * Limpia las rutas por un patrón
+     *
+     * @param $rutas
+     * @param $pattern
+     * @param $pos
+     * @return array
+     */
     public function filter_route($rutas, $pattern, $pos)
     {
         $result = array();
-        foreach ($rutas as $ruta)
-        {
-            if($ruta['name'][$pos]!=$pattern)
-            {
+        foreach ($rutas as $ruta) {
+            if ($ruta['name'][$pos]!=$pattern) {
                 $result[] = $ruta;
             }
         }
@@ -89,83 +94,76 @@ class ConfigurationReader {
     }
 
 
-    /*
-   * Obtiene una entrada AC x Rol
-   * */
+    /**
+     * Obtiene una entrada AC x Rol
+     *
+     * @param $access
+     * @param $role
+     * @return array
+     */
     public function queryRole($access,$role)
     {
         $query = array();
-        foreach($access as $ac)
-        {
-            if(array_key_exists('role',$ac))
-            {
-
-                if($ac['role']==$role)
-                {
+        foreach ($access as $ac) {
+            if (array_key_exists('role',$ac)) {
+                if ($ac['role']==$role) {
                     array_push($query,$ac);
                 }
             }
 
-            if(array_key_exists('roles',$ac))
-            {
-
-                if($ac['roles']==$role)
-                {
+            if (array_key_exists('roles',$ac)) {
+                if ($ac['roles']==$role) {
                     array_push($query,$ac);
                 }
             }
-
         }
 
         return $query;
-
     }
 
 
-    /*
-    * Devuelve la diferencia entre dos objetos de access_control, según la teoría de conjuntos
-    *
-    *
-    * Again, the function's description is misleading right now. I sought a function, which (mathematically) computes A - B, or, written differently, A \ B. Or, again in other words, suppose
-
-       A := {a1, ..., an} and B:= {a1, b1, ... , bm}
-
-       => array_diff(A,B) = {a2, ..., an}
-
-       array_diff(A,B) returns all elements from A, which are not elements of B (= A without B).
-
-    *
-    *
-    * */
-
+    /**
+     * Devuelve la diferencia entre dos objetos de access_control, según la teoría de conjuntos
+     *
+     *
+     * Again, the function's description is misleading right now.
+     * I sought a function, which (mathematically) computes A - B, or, written differently, A \ B.
+     * Or, again in other words, suppose:
+     *    A := {a1, ..., an} and B:= {a1, b1, ... , bm}
+     *    => array_diff(A,B) = {a2, ..., an}
+     * array_diff(A,B) returns all elements from A, which are not elements of B (= A without B).
+     *
+     * @param $ac1
+     * @param $ac2
+     * @return array
+     */
     public function routeDiff($ac1,$ac2)
     {
         $result = array();
-        foreach($ac1 as $ac)
-        {
+        foreach ($ac1 as $ac) {
             $value = $ac['path'];
-            if($this->therePath($value,$ac2,'path')==-1)
-            {
+            if ($this->therePath($value,$ac2,'path')==-1) {
                 array_push($result,$ac);
             }
         }
-        return $result;
 
+        return $result;
     }
 
-    /*
-   * routeDiff auxiliar
-   * */
-
+    /**
+     * routeDiff auxiliar
+     *
+     * @param $needle
+     * @param $haystack
+     * @param $key
+     * @return int
+     */
     private function therePath($needle, $haystack,$key)
     {
         $position = -1;
         $cursor = 0;
-        foreach($haystack as $element)
-        {
-            if($element[$key]==$needle)
-            {
-
+        foreach ($haystack as $element) {
+            if ($element[$key]==$needle) {
                 $position = $cursor;
                 return $position;
             }
@@ -173,9 +171,5 @@ class ConfigurationReader {
         }
 
         return $position;
-
     }
-
-
-
-} 
+}

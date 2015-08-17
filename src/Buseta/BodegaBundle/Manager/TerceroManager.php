@@ -3,7 +3,7 @@ namespace Buseta\BodegaBundle\Manager;
 
 use Buseta\BodegaBundle\Entity\Persona;
 use Buseta\BodegaBundle\Entity\Tercero;
-use Buseta\SecurityBundle\Entity\User;
+use HatueySoft\SecurityBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Session\Session;
