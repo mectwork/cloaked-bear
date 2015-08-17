@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends '@HatueySoftSecurity/layout.html.twig' %}
 
 {% block title 'Listas Control de Acceso para entidad: ' ~ entity|capitalize  %}
 
@@ -21,7 +21,7 @@
             {% for u in users %}
                 <tr data-content="{{ u.username }}" data-target="users">
                     <td>{{ u.username }}</td>
-                    <td>{{ u.nombre }}</td>
+                    <td>{{ u.nombreCompleto }}</td>
                     <td>
                         <div class="btn-group">
                             <a href="#" class="btn btn-primary" title="CREATE" data-content="CREATE">
@@ -79,8 +79,7 @@
 
 {% endblock content %}
 
-{% block foot_script %}
-    {{ parent() }}
+{% block javascripts %}
     <script type="text/javascript">
         var $users_rules = {{ users_rules|raw }};
         var $roles_rules = {{ roles_rules|raw }};
@@ -152,4 +151,4 @@
 
         //$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
     </script>
-{% endblock foot_script %}
+{% endblock javascripts %}
