@@ -1,9 +1,0 @@
-parameters:
-#    buseta_security.example.class: Buseta\SecurityBundle\Example
-
-services:
-    security_user.profile.form.type:
-        class: Buseta\SecurityBundle\Form\Type\UserType
-        arguments: [%fos_user.model.user.class%]
-        tags:
-            - { name: form.type, alias: security_user_profile_type }

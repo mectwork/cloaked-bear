@@ -1,3 +1,0 @@
-buseta_security_user:
-    resource: '@BusetaSecurityBundle/Controller/UserController.php'
-    type: annotation
