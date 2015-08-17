@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends '@HatueySoftSecurity/layout.html.twig' %}
 
 {% block title 'Lista' %}
 
@@ -417,7 +417,6 @@
         //dataTables
         var oTable = $('.records_list.table.table-hover.table-striped.table-bordered.table-condensed').dataTable({
             "oLanguage" : $language,
-            "bJQueryUI" : true,
             "bLengthChange": false,
             "bSort":false
 
