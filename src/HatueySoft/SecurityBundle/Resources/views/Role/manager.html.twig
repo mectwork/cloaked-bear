@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends '@HatueySoftSecurity/layout.html.twig' %}
 
 {% block title 'Listado de Roles' %}
 
@@ -68,8 +68,7 @@
 
 
 {% endblock %}
-{% block foot_script %}
-    {{ parent() }}
+{% block javascripts %}
 <script type="text/javascript" >
     $(function(){
         $('.doaction').click(function(){
@@ -207,7 +206,6 @@
         //dataTables
         var oTable = $('.records_list.table.table-hover.table-striped.table-bordered.table-condensed').dataTable({
             "oLanguage" : $language,
-            "bJQueryUI" : true,
             "bLengthChange": false,
             "bSort":false
         });
