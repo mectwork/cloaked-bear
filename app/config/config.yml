@@ -29,7 +29,7 @@ twig:
     globals:
         version_sistema: beta4
     form:
-        resources: ['BusetaBodegaBundle:Form:fields.html.twig']
+        resources: ['BusetaTemplateBundle:Form:fields.html.twig']
 
 # Assetic Configuration
 assetic:
