@@ -10,8 +10,6 @@
 
 {% block area_trabajo %}
 
-{% form_theme form '@BusetaBodega/Form/fields.twig' %}
-
 <form action="{{ path('cambiohora_update') }}" method="post" {{ form_enctype(form) }}>
     {{ form_errors(form) }}
     {{ form_row(form._token) }}

@@ -1,5 +1,3 @@
-{% form_theme form '@BusetaBodega/Form/fields.twig' %}
-
 <form name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" action="{{ form.vars.action }}" method="post"
         enctype="multipart/form-data">
     {% if form.vars.method == 'PUT' %}
