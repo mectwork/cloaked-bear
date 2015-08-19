@@ -14,10 +14,15 @@ use Doctrine\ORM\NoResultException;
  */
 class ReporteRepository extends EntityRepository
 {
-    public function filter(ReporteFilterModel $filter = null)
+    public function filter($status = null, ReporteFilterModel $filter = null)
     {
         $qb = $this->createQueryBuilder('r');
         $query = $qb->where($qb->expr()->eq(true,true));
+
+        if ($status !== null && $status !== '') {
+            $query->andWhere($query->expr()->eq('r.estado', ':estado'))
+                ->setParameter('estado', $status);
+        }
 
         if($filter) {
             if ($filter->getNumero() !== null && $filter->getNumero() !== '') {
@@ -27,10 +32,6 @@ class ReporteRepository extends EntityRepository
             if ($filter->getAutobus() !== null && $filter->getAutobus() !== '') {
                 $query->andWhere($query->expr()->eq('r.autobus', ':autobus'))
                     ->setParameter('autobus', $filter->getAutobus());
-            }
-            if ($filter->getEstado() !== null && $filter->getEstado() !== '') {
-                $query->andWhere($query->expr()->eq('r.estado', ':estado'))
-                    ->setParameter('estado', $filter->getEstado());
             }
         }
 

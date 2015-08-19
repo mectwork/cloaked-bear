@@ -22,7 +22,7 @@ class ReporteFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('autobus','entity',array(
+            ->add('autobus', 'entity', array(
                 'class' => 'BusetaBusesBundle:Autobus',
                 'empty_value' => '---Seleccione---',
                 'label' => 'Autobús',
@@ -31,18 +31,13 @@ class ReporteFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('estado', 'choice', array(
-                'required' => false,
-                'empty_value' => '---Seleccione---',
-                'translation_domain' => 'BusetaTallerBundle',
-                'choices' => array(
-                    'CO' => 'estado.CO',
-                    'BO' => 'estado.BO',
-                    'PR' => 'estado.PR',
-                ),
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
+            ->add('fechaInicio', 'date', array(
+                'widget' => 'single_text',
+                'format' => 'dd/MM/yyyy',
+            ))
+            ->add('fechaFin', 'date', array(
+                'widget' => 'single_text',
+                'format' => 'dd/MM/yyyy',
             ))
         ;
 
@@ -66,4 +61,4 @@ class ReporteFilter extends AbstractType
     {
         return 'buseta_reporte_filter';
     }
-} 
+}

@@ -18,7 +18,7 @@
 
 {% block area_trabajo %}
 
-    <form action="{{ path('reporte_create') }}" method="post" {{ form_enctype(form) }}>
+    <form action="{{ path('reporte_create', {'status': status}) }}" method="post" {{ form_enctype(form) }}>
         {{ form_errors(form) }}
 
         <div class="row">
@@ -82,7 +82,7 @@
             <div class="col-md-4">
                 <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
                 <div class="btn-group">
-                    <a class="btn btn-primary" href="{{ path('reporte') }}"> Cancelar</a>
+                    <a class="btn btn-primary" href="{{ path('reporte_index', {'status': status}) }}"> Cancelar</a>
                 </div>
             </div>
         </div>

@@ -42,25 +42,25 @@
         <div class="col-md-4">
 
             {% if entity.diagnostico == null and entity.estado == 'PR'%}
-                    <a class="btn btn-primary" href="{{ path('reporte_generar_diagnostico', { 'id': entity.id }) }}">
+                    <a class="btn btn-primary" href="{{ path('reporte_generar_diagnostico', { 'id': entity.id, 'status': status }) }}">
                         <span class="glyphicon glyphicon-save"></span>
                          Generar Diagnóstico
                     </a>
                 {% elseif entity.diagnostico != null and entity.estado == 'CO' %}
-                    <a class="btn btn-primary disabled" href="{{ path('reporte_generar_diagnostico', { 'id': entity.id }) }}">
+                    <a class="btn btn-primary disabled" href="{{ path('reporte_generar_diagnostico', { 'id': entity.id, 'status': status }) }}">
                         <span class="glyphicon glyphicon-save"></span>
                         Generar Diagnóstico
                     </a>
             {% endif %}
 
             {% if entity.estado == 'BO' %}
-                <a class="btn btn-primary" href="{{ path('procesarReporte', { 'id': entity.id }) }}">
+                <a class="btn btn-primary" href="{{ path('procesarReporte', { 'id': entity.id, 'status': status }) }}">
                     <span class="glyphicon glyphicon-primary"></span>
                     Procesar Solicitud
                 </a>
             {% endif %}
 
-            <a class="btn btn-default" id="btn_reporte_cancel" href="{{ path('reporte') }}"><span
+            <a class="btn btn-default" id="btn_reporte_cancel" href="{{ path('reporte_index', {'status': status}) }}"><span
                         class="glyphicon glyphicon-chevron-left"></span>
                 {{ 'actions.list' | trans({}, 'BusetaTallerBundle') }}
             </a>

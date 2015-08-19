@@ -1,5 +1,9 @@
 reporte:
-    pattern:  /
+    pattern: /
+    defaults: { _controller: "BusetaTallerBundle:Reporte:principal" }
+
+reporte_index:
+    pattern:  /index
     defaults: { _controller: "BusetaTallerBundle:Reporte:index" }
 
 reporte_show:

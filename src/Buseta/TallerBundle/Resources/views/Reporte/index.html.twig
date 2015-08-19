@@ -1,11 +1,28 @@
 {% extends "BusetaTallerBundle::layout.html.twig" %}
 
-{% block title %}
-    Listado de Solicitudes
-{% endblock %}
+{% block title 'Listado de Solicitudes'%}
 
 {% block titulo_encabezado %}
-    Listado de Solicitudes
+    {% set label = 'completadas' | upper %}
+    {% set panel_type = 'success' %}
+    {% if status == 'BO' %}
+        {% set label = 'abiertas' | upper %}
+        {% set panel_type = 'danger' %}
+    {% elseif status == 'PR' %}
+        {% set label = 'pendientes' | upper %}
+        {% set panel_type = 'primary' %}
+    {% endif %}
+
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="panel panel-{{ panel_type }}" style="margin: 0;">
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center">{{ label }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9" style="padding-top: 8px;">Listado de Solicitudes</div>
+    </div>
 {% endblock %}
 
 {% block area_trabajo %}
@@ -14,7 +31,6 @@
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.numero is null or filter_form.vars.value.numero is empty)
         and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
-        and (filter_form.vars.value.estado is null or filter_form.vars.value.estado is empty)
     %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
@@ -31,7 +47,8 @@
             <div class="row">
                 <div class="col-lg-4">{{ form_row(filter_form.numero) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.autobus) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.estado) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -47,11 +64,13 @@
     </div>
 
     <hr/>
+    {% if status == 'BO' %}
     <div class="btn-group" style="margin-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('reporte_new') }}">
+        <a class="btn btn-primary" href="{{ path('reporte_new', {'status': status}) }}">
             <span class="glyphicon glyphicon-plus-sign"></span> {{ 'reporte.btn.adicionar'|trans({}, 'BusetaTallerBundle') }}
         </a>
     </div>
+    {% endif %}
 
     <div class="paginator row">
         <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
@@ -73,26 +92,13 @@
                 <td>{{ entity.numero }}</td>
                 <td>{{ entity.autobus }}</td>
                 <td>{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
-                <td>{{ ('estado.'~entity.estado) | trans({}, 'BusetaTallerBundle') }}</td>
-                {#<td>
-                    {% if entity.ispersona %}
-                        <span class="glyphicon glyphicon-ok"></span>
-                    {% else %}
-                        <span class="glyphicon glyphicon-remove"></span>
-                    {% endif %}
-                </td>#}
+                <td>{{ ('estado.' ~ entity.estado) | trans({}, 'BusetaTallerBundle') }}</td>
                 <td style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"
-                           href="{{ path('reporte_show', { 'id': entity.id }) }}"><span
+                           href="{{ path('reporte_show', { 'id': entity.id, 'status': status }) }}"><span
                                     class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </div>
-
-                    {#<div class="btn-group">
-                        <a class="btn btn-danger btn-xs"
-                           href="{{ path('reporte_edit', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-edit"> Editar</span></a>
-                    </div>#}
                 </td>
             </tr>
         {% else %}

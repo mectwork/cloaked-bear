@@ -14,9 +14,14 @@ class ReporteFilterModel
     private $autobus;
 
     /**
-     * @var string
+     * @var \DateTime
      */
-    private $estado;
+    private $fechaInicio;
+
+    /**
+     * @var \DateTime
+     */
+    private $fechaFin;
 
     /**
      * @return \Buseta\BusesBundle\Entity\Autobus
@@ -51,18 +56,34 @@ class ReporteFilterModel
     }
 
     /**
-     * @return string
+     * @return \DateTime
      */
-    public function getEstado()
+    public function getFechaInicio()
     {
-        return $this->estado;
+        return $this->fechaInicio;
     }
 
     /**
-     * @param string $estado
+     * @param \DateTime $fechaInicio
      */
-    public function setEstado($estado)
+    public function setFechaInicio($fechaInicio)
     {
-        $this->estado = $estado;
+        $this->fechaInicio = $fechaInicio;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getFechaFin()
+    {
+        return $this->fechaFin;
+    }
+
+    /**
+     * @param \DateTime $fechaFin
+     */
+    public function setFechaFin($fechaFin)
+    {
+        $this->fechaFin = $fechaFin;
     }
 }

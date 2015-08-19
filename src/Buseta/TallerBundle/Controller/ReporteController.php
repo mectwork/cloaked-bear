@@ -21,6 +21,12 @@ use Buseta\TallerBundle\Form\Filter\ReporteFilter;
  */
 class ReporteController extends Controller
 {
+    const DEFAULT_STATUS = 'BO';
+
+    public function principalAction()
+    {
+        return $this->render('@BusetaTaller/Reporte/principal.html.twig');
+    }
 
     public function procesarReporteAction($id)
     {
@@ -70,6 +76,7 @@ class ReporteController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $status = $request->query->get('status', self::DEFAULT_STATUS);
         $filter = new ReporteFilterModel();
 
         $form = $this->createForm(new ReporteFilter(), $filter, array(
@@ -79,10 +86,10 @@ class ReporteController extends Controller
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $entities = $this->get('doctrine.orm.entity_manager')
-                ->getRepository('BusetaTallerBundle:Reporte')->filter($filter);
+                ->getRepository('BusetaTallerBundle:Reporte')->filter($status, $filter);
         } else {
             $entities = $this->get('doctrine.orm.entity_manager')
-                ->getRepository('BusetaTallerBundle:Reporte')->filter();
+                ->getRepository('BusetaTallerBundle:Reporte')->filter($status);
         }
 
         $paginator = $this->get('knp_paginator');
@@ -92,10 +99,10 @@ class ReporteController extends Controller
             10
         );
 
-
         return $this->render('BusetaTallerBundle:Reporte:index.html.twig', array(
             'entities'      => $entities,
             'filter_form'   => $form->createView(),
+            'status' => $status
         ));
     }
 
@@ -105,11 +112,12 @@ class ReporteController extends Controller
      */
     public function createAction(Request $request)
     {
+        $status = $request->query->get('status', self::DEFAULT_STATUS);
+
         $entity = new Reporte();
         $form = $this->createCreateForm($entity);
 
         $form->handleRequest($request);
-
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
             try {
@@ -119,7 +127,10 @@ class ReporteController extends Controller
                 $this->get('session')->getFlashBag()
                     ->add('success', 'Se ha creado el Reporte de forma satisfactoria.');
 
-                return $this->redirect($this->generateUrl('reporte_show', array('id' => $entity->getId())));
+                return $this->redirect($this->generateUrl('reporte_show', array(
+                    'id' => $entity->getId(),
+                    'status' => $status,
+                )));
             } catch(\Exception $e) {
                 $this->get('logger')
                     ->addCritical(sprintf('Ha ocurrido un error creando el Reporte. Detalles: %s', $e->getMessage()));
@@ -132,6 +143,7 @@ class ReporteController extends Controller
         return $this->render('BusetaTallerBundle:Reporte:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'status' => $status,
         ));
     }
 
@@ -156,8 +168,9 @@ class ReporteController extends Controller
      * Displays a form to create a new Reporte entity.
      *
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
+        $status = $request->query->get('status', self::DEFAULT_STATUS);
         $entity = new Reporte();
 
         $observacion = $this->createForm(new ObservacionType());
@@ -168,6 +181,7 @@ class ReporteController extends Controller
             'entity' => $entity,
             'form'   => $form->createView(),
             'observacion'  => $observacion->createView(),
+            'status' => $status,
         ));
     }
 
@@ -175,8 +189,10 @@ class ReporteController extends Controller
      * Finds and displays a Reporte entity.
      *
      */
-    public function showAction($id)
+    public function showAction(Request $request, $id)
     {
+        $status = $request->query->get('status', self::DEFAULT_STATUS);
+
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('BusetaTallerBundle:Reporte')->find($id);
@@ -190,7 +206,9 @@ class ReporteController extends Controller
         return $this->render('BusetaTallerBundle:Reporte:show.html.twig', array(
             'entity'      => $entity,
             'id' => $id,
-            'delete_form' => $deleteForm->createView(),));
+            'delete_form' => $deleteForm->createView(),
+            'status' => $status,
+        ));
     }
 
     /**

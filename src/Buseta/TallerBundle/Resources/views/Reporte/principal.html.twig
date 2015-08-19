@@ -1,0 +1,31 @@
+{% extends "BusetaTallerBundle::layout.html.twig" %}
+
+{% block title 'Listado de Solicitudes' %}
+
+{% block titulo_encabezado 'Listado de Solicitudes' %}
+
+{% block area_trabajo %}
+<div class="row">
+    <div class="col-lg-4">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center"><a href="{{ path('reporte_index', {'status': 'BO'}) }}">{{ 'abiertas' | upper }}</a></h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center"><a href="{{ path('reporte_index', {'status': 'PR'}) }}">{{ 'pendientes' | upper }}</a></h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center"><a href="{{ path('reporte_index', {'status': 'CO'}) }}">{{ 'completadas' | upper }}</a></h3>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
