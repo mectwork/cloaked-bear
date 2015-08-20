@@ -89,7 +89,6 @@ class ReporteType extends AbstractType
             ))
             ->add('estado', 'choice', array(
                 'required' => false,
-                'read_only' => true,
                 'empty_value' => '---Seleccione---',
                 'translation_domain' => 'BusetaTallerBundle',
                 'choices' => array(
@@ -99,6 +98,7 @@ class ReporteType extends AbstractType
                 ),
                 'attr'   => array(
                     'class' => 'form-control',
+                    'disabled' => 'disabled',
                 ),
             ))
         ;

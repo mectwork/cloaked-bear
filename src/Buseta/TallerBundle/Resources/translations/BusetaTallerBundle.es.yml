@@ -14,7 +14,7 @@ forma_pago:
 
 estado:
   CO: Cerrado
-  BO: Pendiente
+  BO: Abierta
   PR: Procesado
 
 prioridad:
