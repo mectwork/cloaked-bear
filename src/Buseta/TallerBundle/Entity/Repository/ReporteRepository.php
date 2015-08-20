@@ -33,6 +33,16 @@ class ReporteRepository extends EntityRepository
                 $query->andWhere($query->expr()->eq('r.autobus', ':autobus'))
                     ->setParameter('autobus', $filter->getAutobus());
             }
+            if ($filter->getFechaInicio() !== null && $filter->getFechaInicio() !== '') {
+                $fechaInicio = date_create_from_format('Y-m-d H:i:s', sprintf('%s 00:00:00', $filter->getFechaInicio()->format('Y-m-d')));
+                $query->andWhere($query->expr()->gte('r.created', ':fechaInicio'))
+                    ->setParameter('fechaInicio', $fechaInicio);
+            }
+            if ($filter->getFechaFin() !== null && $filter->getFechaFin() !== '') {
+                $fechaFin = date_create_from_format('Y-m-d H:i:s', sprintf('%s 23:59:59', $filter->getFechaFin()->format('Y-m-d')));
+                $query->andWhere($query->expr()->lte('r.created', ':fechaFin'))
+                    ->setParameter('fechaFin', $fechaFin);
+            }
         }
 
         $query->orderBy('r.id', 'ASC');

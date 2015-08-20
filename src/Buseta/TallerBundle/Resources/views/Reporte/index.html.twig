@@ -1,6 +1,6 @@
 {% extends "BusetaTallerBundle::layout.html.twig" %}
 
-{% block title 'Listado de Solicitudes'%}
+{% block title 'Solicitudes de Servicio de Mantenimiento'%}
 
 {% block titulo_encabezado %}
     {% set label = 'completadas' | upper %}
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-9" style="padding-top: 8px;">Listado de Solicitudes</div>
+        <div class="col-lg-9" style="padding-top: 8px;">Solicitudes de Servicio de Mantenimiento</div>
     </div>
 {% endblock %}
 
@@ -146,6 +146,23 @@
                 $('form#filter_form').find('select').each(function () {
                     $(this).val(null);
                 })
+            });
+
+            var fechaInicio = $('input#buseta_reporte_filter_fechaInicio'),
+                fechaFin = $('input#buseta_reporte_filter_fechaFin');
+            fechaInicio.datetimepicker({
+                format: 'DD/MM/YYYY',
+                useCurrent: false
+            });
+            fechaFin.datetimepicker({
+                format: 'DD/MM/YYYY'
+            });
+
+            fechaInicio.on('dp.change', function(e){
+                fechaFin.data("DateTimePicker").minDate(e.date);
+            });
+            fechaFin.on('dp.change', function (e) {
+                fechaInicio.data("DateTimePicker").maxDate(e.date);
             });
         });
     </script>

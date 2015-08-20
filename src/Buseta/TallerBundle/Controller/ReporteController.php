@@ -43,7 +43,7 @@ class ReporteController extends Controller
         $em->persist($reporte);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('reporte'));
+        return $this->redirect($this->generateUrl('reporte_index'));
     }
 
     public function generarDiagnosticoAction($id)
@@ -68,7 +68,7 @@ class ReporteController extends Controller
 
         $em->flush();
 
-        return $this->redirect($this->generateUrl('reporte'));
+        return $this->redirect($this->generateUrl('reporte_index'));
     }
 
     /**
@@ -80,7 +80,7 @@ class ReporteController extends Controller
         $filter = new ReporteFilterModel();
 
         $form = $this->createForm(new ReporteFilter(), $filter, array(
-            'action' => $this->generateUrl('reporte'),
+            'action' => $this->generateUrl('reporte_index'),
         ));
 
         $form->handleRequest($request);
