@@ -45,7 +45,7 @@ class ReporteRepository extends EntityRepository
             }
         }
 
-        $query->orderBy('r.id', 'ASC');
+        $query->orderBy('r.created', 'DESC');
 
         try {
             return $query->getQuery();
