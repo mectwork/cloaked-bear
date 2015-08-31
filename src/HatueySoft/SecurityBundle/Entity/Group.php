@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author: dundivet <dundivet@emailn.de>
  *
  * @ORM\Entity
- * @ORM\Table(name="sec_group")
+ * @ORM\Table(name="hatueysoft_security_group")
  */
 class Group extends BaseGroup
 {

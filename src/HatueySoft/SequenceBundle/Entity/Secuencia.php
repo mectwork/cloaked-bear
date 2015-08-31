@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Secuencia.
  *
- * @ORM\Table(name="d_secuencia")
+ * @ORM\Table(name="hatueysoft_sequence")
  * @ORM\Entity(repositoryClass="HatueySoft\SequenceBundle\Entity\Repository\SecuenciaRepository")
  */
 class Secuencia
@@ -99,7 +99,7 @@ class Secuencia
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -115,14 +115,14 @@ class Secuencia
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-    
+
         return $this;
     }
 
     /**
      * Get nombre
      *
-     * @return string 
+     * @return string
      */
     public function getNombre()
     {
@@ -138,14 +138,14 @@ class Secuencia
     public function setTipo($tipo)
     {
         $this->tipo = $tipo;
-    
+
         return $this;
     }
 
     /**
      * Get tipo
      *
-     * @return string 
+     * @return string
      */
     public function getTipo()
     {
@@ -161,14 +161,14 @@ class Secuencia
     public function setPrefijo($prefijo)
     {
         $this->prefijo = $prefijo;
-    
+
         return $this;
     }
 
     /**
      * Get prefijo
      *
-     * @return string 
+     * @return string
      */
     public function getPrefijo()
     {
@@ -184,14 +184,14 @@ class Secuencia
     public function setSufijo($sufijo)
     {
         $this->sufijo = $sufijo;
-    
+
         return $this;
     }
 
     /**
      * Get sufijo
      *
-     * @return string 
+     * @return string
      */
     public function getSufijo()
     {
@@ -207,14 +207,14 @@ class Secuencia
     public function setSiguienteValor($siguienteValor)
     {
         $this->siguienteValor = $siguienteValor;
-    
+
         return $this;
     }
 
     /**
      * Get siguienteValor
      *
-     * @return string 
+     * @return string
      */
     public function getSiguienteValor()
     {
@@ -230,14 +230,14 @@ class Secuencia
     public function setCantidadIncrementar($cantidadIncrementar)
     {
         $this->cantidadIncrementar = $cantidadIncrementar;
-    
+
         return $this;
     }
 
     /**
      * Get cantidadIncrementar
      *
-     * @return integer 
+     * @return integer
      */
     public function getCantidadIncrementar()
     {
@@ -253,14 +253,14 @@ class Secuencia
     public function setRelleno($relleno)
     {
         $this->relleno = $relleno;
-    
+
         return $this;
     }
 
     /**
      * Get relleno
      *
-     * @return string 
+     * @return string
      */
     public function getRelleno()
     {
@@ -276,14 +276,14 @@ class Secuencia
     public function setCodigo($codigo)
     {
         $this->codigo = $codigo;
-    
+
         return $this;
     }
 
     /**
      * Get codigo
      *
-     * @return string 
+     * @return string
      */
     public function getCodigo()
     {
@@ -315,14 +315,14 @@ class Secuencia
     public function setActivo($activo)
     {
         $this->activo = $activo;
-    
+
         return $this;
     }
 
     /**
      * Get activo
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActivo()
     {

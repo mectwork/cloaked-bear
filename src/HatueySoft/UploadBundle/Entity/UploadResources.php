@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * UploadResources.
  *
- * @ORM\Table(name="uploaded_resources")
+ * @ORM\Table(name="hatueysoft_uploaded_resources")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */

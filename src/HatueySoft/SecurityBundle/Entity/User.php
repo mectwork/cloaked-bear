@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @author: dundivet <dundivet@emailn.de>
  *
  * @ORM\Entity(repositoryClass="HatueySoft\SecurityBundle\Entity\UserRepository")
- * @ORM\Table(name="sec_user")
+ * @ORM\Table(name="hatueysoft_security_user")
  * @UniqueEntity(fields={"username", "email"})
  */
 class User extends BaseUser
@@ -40,7 +40,7 @@ class User extends BaseUser
 
     /**
      * @ORM\ManyToMany(targetEntity="HatueySoft\SecurityBundle\Entity\Group")
-     * @ORM\JoinTable(name="sec_users_groups",
+     * @ORM\JoinTable(name="hatueysoft_security_users_groups",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
      * )
