@@ -28,20 +28,20 @@ class SecuenciaController extends Controller
     {
         //Obteniendo los valores definidos en el archivo "config.yml" para las secuencias
         $sequences_values = $this->get('service_container')->getParameter('hatuey_soft_sequence');
-
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
         //Recorrer arreglo bidimensional
         foreach($sequences_values as $nombre=>$seq) {
             $secuencia = new Secuencia();
 
-            $sec_existentes = $this->get('doctrine.orm.entity_manager')
+            $sec_existentes = $em
                 ->getRepository('HatueySoftSequenceBundle:Secuencia')->findBy(
                     array('nombre' => $nombre)
                 );
 
             if(count($sec_existentes) == 0) {
                 $secuencia->setNombre($nombre);
+
                 $em->persist($secuencia);
                 $em->flush();
             }
@@ -66,7 +66,7 @@ class SecuenciaController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            5
+            10
         );
 
         return $this->render('@HatueySoftSequence/Secuencia/index.html.twig', array(
