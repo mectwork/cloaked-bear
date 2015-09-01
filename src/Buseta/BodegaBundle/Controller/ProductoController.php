@@ -7,6 +7,7 @@ use Buseta\BodegaBundle\Form\Filter\ProductoFilter;
 use Buseta\BodegaBundle\Form\Model\ProductoFilterModel;
 use Buseta\BodegaBundle\Form\Model\ProductoModel;
 use Buseta\BodegaBundle\Form\Type\PrecioProductoType;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\Producto;

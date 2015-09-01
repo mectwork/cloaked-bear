@@ -2,6 +2,10 @@ buseta_combustible:
     resource: "@BusetaCombustibleBundle/Resources/config/routing.yml"
     prefix:   /
 
+hatuey_soft_sequence:
+    resource: "@HatueySoftSequenceBundle/Resources/config/routing.yml"
+    prefix:   /
+
 buseta_template:
     resource: "@BusetaTemplateBundle/Resources/config/routing.yml"
     prefix:   /
@@ -18,6 +22,9 @@ buseta_buses:
 hatueysoft_security:
     resource: "@HatueySoftSecurityBundle/Resources/config/routing.yml"
     prefix:   /security
+
+buseta_configuration:
+    resource: "@HatueySoftSequenceBundle/Resources/config/routing.yml"
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"

@@ -1,0 +1,162 @@
+{% extends "HatueySoftSequenceBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block title %}
+    Listado de Secuencias
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Listado de Secuencias
+{% endblock %}
+
+{% block area_trabajo %}
+
+<div id="records_list">
+    {% set display = '' %}
+    {% set headericon = 'glyphicon-chevron-down' %}
+    {% if (filter_form.vars.value.nombre is null or filter_form.vars.value.nombre is empty)
+    and (filter_form.vars.value.tipo is null or filter_form.vars.value.tipo is empty)
+    and (filter_form.vars.value.prefijo is null or filter_form.vars.value.prefijo is empty)
+    and (filter_form.vars.value.sufijo is null or filter_form.vars.value.sufijo is empty)
+    %}
+        {% set display = 'display: none;' %}
+        {% set headericon = 'glyphicon-chevron-right' %}
+    {% endif %}
+
+    <h4>
+        <a id="filter_form_header" style="cursor: pointer;">
+            <span class="glyphicon {{ headericon }}"></span>
+            Búsqueda
+        </a>
+    </h4>
+    <div id="filter_form_component" style="{{ display }}">
+        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+            <div class="row">
+                <div class="col-lg-4">{{ form_row(filter_form.nombre) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.tipo) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.prefijo) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.sufijo) }}</div>
+            </div>
+            {{ form_widget(filter_form._token) }}
+
+            <div class="filter-actions" style="margin-top: 8px;">
+                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                    <span class="glyphicon glyphicon-filter"></span> Filtrar
+                </a>
+                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <hr/>
+    {#<div class="btn-group" style="margin-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('secuencia_new') }}">
+            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'secuencia.btn.adicionar'|trans({}, 'HatueySoftSequenceBundle') }}
+        </a>
+    </div>#}
+
+    <div class="paginator row">
+        <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+    </div>
+
+    <table class="records_list table table-striped table-bordered table-condensed table-hover">
+        <thead>
+        <tr>
+            <th>Nombre{#{{ knp_pagination_sortable(entities, 'No.Documento', 't.numero_documento') }}#}</th>
+            <th>Tipo{#{{ knp_pagination_sortable(entities, 'Nombre del Proveedor', 't.tercero') }}#}</th>
+            <th>Prefijo{#{{ knp_pagination_sortable(entities, 'Almacén', 't.almacen') }}#}</th>
+            <th>Sufijo{#{{ knp_pagination_sortable(entities, 'Moneda', 't.moneda') }}#}</th>
+            <th>Activo{#{{ knp_pagination_sortable(entities, 'Activo', 't.activo') }}#}</th>
+            <th style="text-align: center">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.tipo }}</td>
+                <td>{{ entity.prefijo }}</td>
+                <td>{{ entity.sufijo }}</td>
+                <td class="text-center">{{ entity.activo ? '<i class="fa fa-circle text-success" title="Sí"></i>' : '<i class="fa fa-circle-o text-danger" title="No"></i>' }}</td>
+
+                <td style="width: 24% !important; text-align: center;">
+                    <div class="btn-group">
+
+                        {% if entity.tipo == null %}
+                            <a class="btn btn-success btn-xs"
+                               href="{{ path('secuencia_edit', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-edit"> Crear</span></a>
+                        {% else %}
+                            <a class="btn btn-success btn-xs"
+                               href="{{ path('secuencia_show', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-search"> Mostrar</span></a>
+                        {% endif %}
+
+                        <a class="btn btn-danger btn-xs"
+                           href="{{ path('secuencia_edit', { 'id': entity.id }) }}"><span
+                                    class="glyphicon glyphicon-edit"> Editar</span></a>
+                        <a href="#delete" data-href="{{ path('secuencia_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs disabled">
+                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="paginator row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-12" style="text-align: center">{{ knp_pagination_render(entities) }}</div>
+    </div>
+</div>
+    <!-- Delete modal -->
+    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
+
+{% endblock area_trabajo %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a#filter_form_header').click(function () {
+                if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-right')
+                            .addClass('glyphicon-chevron-down');
+                } else {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-down')
+                            .addClass('glyphicon-chevron-right');
+                }
+
+                $('div#filter_form_component').slideToggle(500);
+            });
+
+            $('a#filter_form_submit_btn').click(function () {
+                $('form#filter_form').submit();
+            });
+
+            $('a#filter_form_reset_btn').click(function () {
+                $('form#filter_form').find('input').each(function () {
+                    $(this).val(null);
+                });
+                $('form#filter_form').find('select').each(function () {
+                    $(this).val(null);
+                })
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        var deleteevent = new DeleteEvent('{{ path('secuencia') }}', 'div#records_list');
+        deleteevent.start_events();
+    </script>
+{% endblock javascripts %}

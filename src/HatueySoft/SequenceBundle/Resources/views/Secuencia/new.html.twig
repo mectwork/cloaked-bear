@@ -1,0 +1,29 @@
+{% extends "HatueySoftSequenceBundle::layout.html.twig" %}
+
+{% block title %}
+    Adicionar Nueva Secuencia
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Adicionar Nueva Secuencia
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="tab-pane fade in active" id="basicos">
+                {% include '@HatueySoftSequence/Secuencia/form_template.html.twig' with {'form': form} %}
+            </div>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+
+{% endblock area_trabajo %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/hatueysoftsequence/js/checkClick.js') }}"></script>
+{% endblock javascripts %}

@@ -1,0 +1,66 @@
+{% form_theme form '@BusetaBodega/Form/fields.twig' %}
+
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data">
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+    {{ form_errors(form) }}
+    {{ form_row(form._token) }}
+
+    <div class="row show-grid">
+        <div class="col-md-3">
+            {{ form_row(form.nombre) }}
+        </div>
+
+        <div class="col-md-3">
+            {{ form_row(form.tipo) }}
+        </div>
+
+        <div class="col-md-3">
+            {{ form_row(form.prefijo) }}
+        </div>
+
+        <div class="col-md-3">
+            {{ form_row(form.sufijo) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div id="fija" class="col-md-6">
+            {{ form_row(form.codigo) }}
+        </div>
+    </div>
+
+    <div id="incremental" class="row show-grid">
+        <div class="col-md-3">
+            {{ form_row(form.relleno) }}
+        </div>
+
+        <div class="col-md-3">
+            {{ form_row(form.siguienteValor) }}
+        </div>
+
+        <div class="col-md-3">
+            {{ form_row(form.cantidadIncrementar) }}
+        </div>
+
+        <div class="col-md-3">
+            {{ form_row(form.cantidadRelleno) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            {{ form_row(form.activo) }}
+        </div>
+    </div>
+
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <input class="btn btn-primary" style="height: 34px" type="submit" value="Salvar">
+            <a class="btn btn-default" id="btn_secuencia_cancel" href="{{ path('secuencia') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+                {{ 'actions.cancel' | trans({}, 'HatueySoftSequenceBundle') }}</a>
+        </div>
+    </div>
+</form>

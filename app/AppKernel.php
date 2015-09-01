@@ -24,8 +24,10 @@ class AppKernel extends Kernel
             new Buseta\TallerBundle\BusetaTallerBundle(),
             new Buseta\BodegaBundle\BusetaBodegaBundle(),
             new Buseta\TemplateBundle\BusetaTemplateBundle(),
+            new Buseta\CombustibleBundle\BusetaCombustibleBundle(),
             new HatueySoft\SecurityBundle\HatueySoftSecurityBundle(),
             new HatueySoft\UploadBundle\HatueySoftUploadBundle(),
+            new HatueySoft\SequenceBundle\HatueySoftSequenceBundle(),
 
             // extra bundles
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
@@ -34,7 +36,6 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
-            new Buseta\CombustibleBundle\BusetaCombustibleBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

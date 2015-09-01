@@ -155,3 +155,15 @@ easy_admin:
 hatuey_soft_security:
     security_config: "%kernel.root_dir%/config/security_conf.yml"
     command_scope: "%kernel.root_dir%"
+
+
+#EJEMPLO DE COMO OBTENER LOS VALORES DEL ARCHIVO "CONFIG.YML"
+    #$sequences_values = $this->get('service_container')->getParameter('hatuey_soft_sequence');
+        #var_dump($sequences_values['producto_seq']);
+        #var_dump($sequences_values['bodega_seq']);
+
+hatuey_soft_sequence:
+    sequences:
+        'producto_seq': Buseta\BodegaBundle\Entity\Producto
+        'bodega_seq': Buseta\BodegaBundle\Entity\Bodega
+        'tercero_seq': Buseta\BodegaBundle\Entity\Tercero
