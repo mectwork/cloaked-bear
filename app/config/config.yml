@@ -164,6 +164,7 @@ hatuey_soft_security:
 
 hatuey_soft_sequence:
     sequences:
-        'producto_seq': Buseta\BodegaBundle\Entity\Producto
-        'bodega_seq': Buseta\BodegaBundle\Entity\Bodega
-        'tercero_seq': Buseta\BodegaBundle\Entity\Tercero
+        producto_seq:   Buseta\BodegaBundle\Entity\Producto
+        bodega_seq:     Buseta\BodegaBundle\Entity\Bodega
+        tercero_seq:    Buseta\BodegaBundle\Entity\Tercero
+        reporte_seq:    Buseta\TallerBundle\Entity\Reporte
