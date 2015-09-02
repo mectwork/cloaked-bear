@@ -1,4 +1,13 @@
-secuencia:
+sequence:
+  name: Nombre
+  type: Tipo
+  prefix: Prefijo
+  suffix: Sufijo
+  numberNextInterval: Siguiente número
+  numberIncrement: Cantidad incrementar
+  padding: Relleno número
+  active: Activo
+
   btn:
     adicionar: Adicionar Secuencia
 
@@ -25,3 +34,4 @@ actions:
   cancel: Cancelar
   back: Volver
   list: Listar
+  cancel: Cancelar

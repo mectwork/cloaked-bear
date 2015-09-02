@@ -7,57 +7,45 @@
 
     <div class="row show-grid">
         <div class="col-md-3">
-            {{ form_row(form.nombre) }}
+            {{ form_row(form.name) }}
         </div>
 
         <div class="col-md-3">
-            {{ form_row(form.tipo) }}
+            {{ form_row(form.type) }}
         </div>
 
         <div class="col-md-3">
-            {{ form_row(form.prefijo) }}
+            {{ form_row(form.prefix) }}
         </div>
 
         <div class="col-md-3">
-            {{ form_row(form.sufijo) }}
-        </div>
-    </div>
-
-    <div class="row show-grid">
-        <div id="fija" class="col-md-6">
-            {{ form_row(form.codigo) }}
-        </div>
-    </div>
-
-    <div id="incremental" class="row show-grid">
-        <div class="col-md-3">
-            {{ form_row(form.relleno) }}
+            {{ form_row(form.suffix) }}
         </div>
 
         <div class="col-md-3">
-            {{ form_row(form.siguienteValor) }}
+            {{ form_row(form.padding) }}
         </div>
 
         <div class="col-md-3">
-            {{ form_row(form.cantidadIncrementar) }}
+            {{ form_row(form.numberNextInterval) }}
         </div>
 
         <div class="col-md-3">
-            {{ form_row(form.cantidadRelleno) }}
+            {{ form_row(form.numberIncrement) }}
         </div>
     </div>
 
     <div class="row show-grid">
         <div class="col-md-4">
-            {{ form_row(form.activo) }}
+            {{ form_row(form.active) }}
         </div>
     </div>
 
     {# buttons group #}
     <div class="row">
         <div class="col-md-4">
-            <input class="btn btn-primary" style="height: 34px" type="submit" value="Salvar">
-            <a class="btn btn-default" id="btn_secuencia_cancel" href="{{ path('secuencia') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+            <input class="btn btn-primary" style="height: 34px" type="submit" value="{{ 'actions.save' | trans({}, 'HatueySoftSequenceBundle') }}">
+            <a class="btn btn-default" id="btn_sequence_cancel" href="{{ path('sequence') }}"><span class="glyphicon glyphicon-chevron-left"></span>
                 {{ 'actions.cancel' | trans({}, 'HatueySoftSequenceBundle') }}</a>
         </div>
     </div>

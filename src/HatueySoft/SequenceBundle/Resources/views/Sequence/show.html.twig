@@ -1,0 +1,62 @@
+{% extends "HatueySoftSecurityBundle::layout.html.twig" %}
+
+
+{% block titulo_encabezado %}
+    Datos de la Secuencia: {{ entity.nombre }}
+{% endblock %}
+
+{% block content -%}
+    <table class="table table-striped" style="font-size: 16px;">
+        <tbody>
+            <tr>
+                <th>{{ 'sequence.name' | trans({}, 'HatueySoftSequenceBundle') }}</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'sequence.type' | trans({}, 'HatueySoftSequenceBundle') }}</th>
+                <td>{{ entity.type }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'sequence.prefix' | trans({}, 'HatueySoftSequenceBundle') }}</th>
+                <td>
+                    {{ entity.prefix | default('-') }}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'sequence.suffix' | trans({}, 'HatueySoftSequenceBundle') }}</th>
+                <td>
+                    {{ entity.suffix | default('-') }}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'sequence.numberNextInterval' | trans({}, 'HatueySoftSequenceBundle') }}</th>
+                <td>
+                    {{ entity.numberNextInterval | default('-') }}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'sequence.numberIncrement' | trans({}, 'HatueySoftSequenceBundle') }}</th>
+                <td>
+                    {{ entity.numberIncrement | default('-') }}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'sequence.padding' | trans({}, 'HatueySoftSequenceBundle') }}</th>
+                <td>
+                    {{ entity.padding | default('-') }}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'sequence.active' | trans({}, 'HatueySoftSequenceBundle') }}</th>
+                <td>
+                    {{ entity.active ? 'Sí' : 'No' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="form-actions">
+        <a class="btn btn-primary" href="{{ path('sequence_edit', { 'id': entity.id }) }}"> {{ 'actions.edit' | trans({}, 'HatueySoftSequenceBundle') }}</a>
+        <a class="btn btn-primary" href="{{ path('sequence') }}"> {{ 'actions.back' | trans({}, 'HatueySoftSequenceBundle') }}</a>
+    </div>
+{% endblock %}

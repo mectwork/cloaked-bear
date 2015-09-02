@@ -1,11 +1,11 @@
 {% extends "HatueySoftSecurityBundle::layout.html.twig" %}
 
 {% block title %}
-    Modificar datos de la secuencia: {{ entity.nombre }}
+    Modificar datos de la secuencia: {{ entity.name }}
 {% endblock %}
 
 {% block titulo_encabezado %}
-    Modificar datos de la secuencia: {{ entity.nombre }}
+    Modificar datos de la secuencia: {{ entity.name }}
 {% endblock %}
 
 
@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="tab-pane fade in active" id="basicos">
-                {% include '@HatueySoftSequence/Secuencia/form_template.html.twig' with {'form': edit_form} %}
+                {% include '@HatueySoftSequence/Sequence/form_template.html.twig' with {'form': edit_form} %}
             </div>
         </div>
         <!-- /.panel-body -->
