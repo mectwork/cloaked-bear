@@ -1,11 +1,11 @@
-{% extends "HatueySoftSequenceBundle::layout.html.twig" %}
+{% extends "HatueySoftSecurityBundle::layout.html.twig" %}
 
 
 {% block titulo_encabezado %}
     Datos de la Secuencia: {{ entity.nombre }}
 {% endblock %}
 
-{% block area_trabajo -%}
+{% block content -%}
     <table class="table table-striped" style="font-size: 16px;">
         <tbody>
             <tr>
@@ -110,14 +110,7 @@
 
 {% endblock %}
 
-
-{% block contenido %}
-
-{% endblock %}
-
 {% block javascripts %}
-    {{ parent() }}
-
     <script type="text/javascript">
         var deleteevent = new DeleteEvent('{{ path('secuencia') }}', 'div#records_list', false);
         deleteevent.start_events();

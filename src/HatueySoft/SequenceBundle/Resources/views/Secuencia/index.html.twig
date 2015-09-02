@@ -1,4 +1,4 @@
-{% extends "HatueySoftSequenceBundle::layout.html.twig" %}
+{% extends "HatueySoftSecurityBundle::layout.html.twig" %}
 
 {% block nombre_menu_superior %}
 
@@ -12,7 +12,7 @@
     Listado de Secuencias
 {% endblock %}
 
-{% block area_trabajo %}
+{% block content %}
 
 <div id="records_list">
     {% set display = '' %}
@@ -121,7 +121,7 @@
     <!-- Delete modal -->
     <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
 
-{% endblock area_trabajo %}
+{% endblock %}
 
 {% block javascripts %}
     <script type="text/javascript">
