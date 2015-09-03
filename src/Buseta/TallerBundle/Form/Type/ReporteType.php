@@ -20,17 +20,21 @@ class ReporteType extends AbstractType
             ->add('numero', 'text', array(
                 'required' => false,
                 'label'  => 'Número',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
             ))
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
                 'empty_value' => '---Seleccione autobus---',
                 'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
+            ))
+            ->add('prioridad', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:PrioridadSolicitud',
+                'empty_value' => '---Seleccione prioridad---',
+                'required' => false,
+            ))
+            ->add('grupo', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:Grupo',
+                'empty_value' => '---Seleccione grupo---',
+                'required' => false,
             ))
             ->add('observaciones','collection',array(
                 'type' => new ObservacionType(),
@@ -44,17 +48,11 @@ class ReporteType extends AbstractType
                 'class' => 'BusetaNomencladorBundle:MedioReporte',
                 'empty_value' => '---Seleccione medio reporte---',
                 'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
             ))
             ->add('reporta', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'required' => false,
                 'label'  => 'Reporta',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
                 'query_builder' => function(EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('reporta');
                     $qb->join('reporta.persona', 'p')
@@ -69,23 +67,14 @@ class ReporteType extends AbstractType
             ->add('nombrePersona', 'text', array(
                 'required' => false,
                 'label'  => 'Nombre Persona',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
             ))
             ->add('emailPersona', 'text', array(
                 'required' => false,
                 'label'  => 'Email Persona',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
             ))
             ->add('telefonoPersona', 'text', array(
                 'required' => false,
                 'label'  => 'Teléfono Persona',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
             ))
 //            ->add('estado', 'choice', array(
 //                'required' => false,

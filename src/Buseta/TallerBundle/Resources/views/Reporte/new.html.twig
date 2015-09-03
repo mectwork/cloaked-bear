@@ -31,15 +31,14 @@
             <div class="col-md-4">
                 {{ form_row(form.medioReporte) }}
             </div>
-        </div>
-
-        <br/>
-        <div class="row">
             <div class="col-md-4">
                 {{ form_row(form.reporta) }}
             </div>
             <div class="col-md-4">
-                {{ form_row(form.estado) }}
+                {{ form_row(form.grupo) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.prioridad) }}
             </div>
         </div>
 
@@ -176,8 +175,7 @@
             },
             _load: function () {
                 $('a.add_observacion_link').on('click', observacion._insert_new);
-            },
-
+            }
         };
 
     </script>

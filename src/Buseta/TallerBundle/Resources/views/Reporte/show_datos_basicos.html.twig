@@ -1,6 +1,9 @@
     <ul class="list-group">
         <li class="list-group-item"><b>Número:</b>    {{ entity.numero }}</li>
-        <li class="list-group-item"><b>Autobús:</b>   {{ entity.autobus }}</li>
+        <li class="list-group-item"><b>Unidad:</b>   {{ entity.autobus }}</li>
+        <li class="list-group-item"><b>Fecha/Hora:</b>   {{ entity.created | date('d/m/Y h:i a') }}</li>
+        <li class="list-group-item"><b>Prioridad:</b>   {{ entity.prioridad | default('-') }}</li>
+        <li class="list-group-item"><b>Grupo:</b>   {{ entity.grupo | default('-') }}</li>
         <li class="list-group-item"><b>Medio:</b>     {{ entity.medioReporte }}</li>
         <li class="list-group-item"><b>Reporta:</b>   {{ entity.reporta }}</li>
 

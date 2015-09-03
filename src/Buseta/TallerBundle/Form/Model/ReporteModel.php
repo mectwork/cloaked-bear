@@ -30,6 +30,16 @@ class ReporteModel
     private $autobus;
 
     /**
+     * @var \Buseta\NomencladorBundle\Entity\PrioridadSolicitud
+     */
+    private $prioridad;
+
+    /**
+     * @var \Buseta\NomencladorBundle\Entity\Grupo
+     */
+    private $grupo;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      */

@@ -80,8 +80,10 @@
         <thead>
         <tr>
             <th>Número{#{{ knp_pagination_sortable(entities, 'Número', 't.numero') }}#}</th>
-            <th>Autobus{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
-            <th>Creado{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
+            <th>Fecha/Hora{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
+            <th>Unidad{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
+            <th>Prioridad{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
+            <th>Grupo{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
@@ -95,6 +97,8 @@
                 <td class="text-{{ text_color }}">{{ entity.numero }}</td>
                 <td class="text-{{ text_color }}">{{ entity.autobus }}</td>
                 <td class="text-{{ text_color }}">{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
+                <td class="text-{{ text_color }}">{{ entity.prioridad | default('-') }}</td>
+                <td class="text-{{ text_color }}">{{ entity.grupo | default('-') }}</td>
                 <td style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"

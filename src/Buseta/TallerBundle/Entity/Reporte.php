@@ -42,6 +42,20 @@ class Reporte implements DateTimeAwareInterface
     private $autobus;
 
     /**
+     * @var \Buseta\NomencladorBundle\Entity\PrioridadSolicitud
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\PrioridadSolicitud")
+     */
+    private $prioridad;
+
+    /**
+     * @var \Buseta\NomencladorBundle\Entity\Grupo
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Grupo")
+     */
+    private $grupo;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\Observacion", mappedBy="reporte", cascade={"all"})
@@ -388,5 +402,51 @@ class Reporte implements DateTimeAwareInterface
     public function getEstado()
     {
         return $this->estado;
+    }
+
+    /**
+     * Set prioridad
+     *
+     * @param \Buseta\NomencladorBundle\Entity\PrioridadSolicitud $prioridad
+     * @return Reporte
+     */
+    public function setPrioridad(\Buseta\NomencladorBundle\Entity\PrioridadSolicitud $prioridad = null)
+    {
+        $this->prioridad = $prioridad;
+
+        return $this;
+    }
+
+    /**
+     * Get prioridad
+     *
+     * @return \Buseta\NomencladorBundle\Entity\PrioridadSolicitud
+     */
+    public function getPrioridad()
+    {
+        return $this->prioridad;
+    }
+
+    /**
+     * Set grupo
+     *
+     * @param \Buseta\NomencladorBundle\Entity\Grupo $grupo
+     * @return Reporte
+     */
+    public function setGrupo(\Buseta\NomencladorBundle\Entity\Grupo $grupo = null)
+    {
+        $this->grupo = $grupo;
+
+        return $this;
+    }
+
+    /**
+     * Get grupo
+     *
+     * @return \Buseta\NomencladorBundle\Entity\Grupo
+     */
+    public function getGrupo()
+    {
+        return $this->grupo;
     }
 }

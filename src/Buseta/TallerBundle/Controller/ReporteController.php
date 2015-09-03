@@ -125,7 +125,7 @@ class ReporteController extends Controller
                 $em->flush();
 
                 $this->get('session')->getFlashBag()
-                    ->add('success', 'Se ha creado el Reporte de forma satisfactoria.');
+                    ->add('success', 'Se ha creado la Solicitud de forma satisfactoria.');
 
                 return $this->redirect($this->generateUrl('reporte_show', array(
                     'id' => $entity->getId(),
@@ -133,10 +133,10 @@ class ReporteController extends Controller
                 )));
             } catch(\Exception $e) {
                 $this->get('logger')
-                    ->addCritical(sprintf('Ha ocurrido un error creando el Reporte. Detalles: %s', $e->getMessage()));
+                    ->addCritical(sprintf('Ha ocurrido un error creando la Solicitud. Detalles: %s', $e->getMessage()));
 
                 $this->get('session')->getFlashBag()
-                    ->add('danger', 'Ha ocurrido un error creando el Reporte.');
+                    ->add('danger', 'Ha ocurrido un error creando la Solicitud.');
             }
         }
 
