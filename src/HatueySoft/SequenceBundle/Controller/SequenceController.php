@@ -41,6 +41,10 @@ class SequenceController extends Controller
 
             if(count($seq_existentes) == 0) {
                 $sequence->setName($name);
+                $sequence->setType('incremental');
+                $sequence->setNumberIncrement(1);
+                $sequence->setNumberNextInterval(1);
+                $sequence->setPadding(0);
 
                 $em->persist($sequence);
                 $em->flush();
