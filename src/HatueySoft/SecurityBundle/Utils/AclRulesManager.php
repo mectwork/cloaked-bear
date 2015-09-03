@@ -23,12 +23,18 @@ class AclRulesManager
 
     private $aclManager;
 
+    /**
+     * @var array
+     */
+    private $aclEntities;
+
     const ACL_CONFIG_FILE = '/../Resources/config/security_acl.yml';
 
     function __construct(ContainerInterface $container)
     {
         $this->aclConfigFile    = __DIR__.AclRulesManager::ACL_CONFIG_FILE;
         $this->logger           = $container->get('logger');
+        $this->aclEntities      = $container->getParameter('hatuey_soft_security.config')['acl']['entities'];
     }
 
     /**
@@ -83,18 +89,16 @@ class AclRulesManager
      *
      * @return array
      */
-    static final function getEntities()
+    public function getEntities()
     {
-        return array(
-            array('name' => 'empleado', 'path' => 'Planillas\CoreBundle\Entity\CEmpleado'),
-        );
+        return $this->aclEntities;
     }
 
     public function getEntity($entity)
     {
-        foreach ($this->getEntities() as $value) {
-            if ($value['name'] === $entity || $value['path'] === $entity) {
-                return $value;
+        foreach ($this->getEntities() as $name => $path) {
+            if ($name === $entity || $path === $entity) {
+                return $path;
             }
         }
 
@@ -139,7 +143,7 @@ class AclRulesManager
 
         foreach ($rules as $value) {
             $entityData = $this->getEntity($entity);
-            if ($value['entity'] === $entity || $value['entity'] === $entityData['path']) {
+            if ($value['entity'] === $entity || $value['entity'] === $entityData) {
                 return $value;
             }
         }
@@ -167,7 +171,7 @@ class AclRulesManager
         $flag = false;
         foreach ($allRules as $key => $value) {
             $entityData = $this->getEntity($entity);
-            if ($value['entity'] === $entity || $value['entity'] === $entityData['path']) {
+            if ($value['entity'] === $entity || $value['entity'] === $entityData) {
                 $allRules[$key] = $rule;
                 $flag = true;
                 break;
@@ -180,4 +184,4 @@ class AclRulesManager
 
         $this->setSecurityAcl($allRules);
     }
-} 
+}

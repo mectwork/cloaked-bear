@@ -30,5 +30,6 @@ class HatueySoftSecurityExtension extends Extension
         $scope = $config['command_scope'];
         $container->setParameter('security_config',$mappings);
         $container->setParameter('command_scope',$scope);
+        $container->setParameter('hatuey_soft_security.config', $config);
     }
 }

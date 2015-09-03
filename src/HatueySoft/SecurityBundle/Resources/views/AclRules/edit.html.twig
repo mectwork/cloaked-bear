@@ -121,7 +121,8 @@
                 } else {
                     $(value).addClass('disabled');
                     $(value).css({
-                        "cursor": "pointer"
+                        "cursor": "pointer",
+                        "pointer-events": "auto"
                     });
                 }
             });
@@ -129,7 +130,7 @@
 
         function toggleacl(target, content, action) {
             // bloqueando la interfaz
-            $('table[id="acl_' + target + '_list"]').block();
+//            $('table[id="acl_' + target + '_list"]').block();
 
             $.ajax({
                 url: Routing.generate('aclrules_toggle',{'entity': $entity }),
@@ -139,13 +140,19 @@
                     action: action
                 }
             }).done(function(response){
-                if($('tr[data-content="'+ content +'"] div.btn-group a.btn.btn-primary[data-content="'+ action +'"]').hasClass('disabled')) {
-                    $('tr[data-content="'+ content +'"] div.btn-group a.btn.btn-primary[data-content="'+ action +'"]').removeClass('disabled')
+                var value = 'tr[data-content="'+ content +'"] div.btn-group a.btn.btn-primary[data-content="'+ action +'"]';
+
+                if($(value).hasClass('disabled')) {
+                    $(value).removeClass('disabled')
                 } else {
-                    $('tr[data-content="'+ content +'"] div.btn-group a.btn.btn-primary[data-content="'+ action +'"]').addClass('disabled')
+                    $(value).addClass('disabled');
+                    $(value).css({
+                        "cursor": "pointer",
+                        "pointer-events": "auto"
+                    });
                 }
                 // desbloqueando la interfaz
-                $('table[id="acl_' + target + '_list"]').unblock();
+//                $('table[id="acl_' + target + '_list"]').unblock();
             })
         }
 

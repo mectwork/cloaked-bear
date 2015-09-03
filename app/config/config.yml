@@ -156,6 +156,9 @@ easy_admin:
 hatuey_soft_security:
     security_config: "%kernel.root_dir%/config/security_conf.yml"
     command_scope: "%kernel.root_dir%"
+    acl:
+        entities:
+            reporte: Buseta\TallerBundle\Entity\Reporte
 
 
 #EJEMPLO DE COMO OBTENER LOS VALORES DEL ARCHIVO "CONFIG.YML"

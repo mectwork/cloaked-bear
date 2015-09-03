@@ -14,12 +14,12 @@
             </tr>
         </thead>
         <tbody>
-        {% for e in entities %}
+        {% for name,path in entities %}
             <tr>
-                <td>{{ e.name|capitalize }}</td>
-                <td>{{ e.path }}</td>
+                <td>{{ name|capitalize }}</td>
+                <td>{{ path }}</td>
                 <td>
-                    <a href="{{ path('aclrules_edit', {'entity':e.name}) }}" class="btn btn-primary">
+                    <a href="{{ path('aclrules_edit', {'entity':name}) }}" class="btn btn-primary">
                         <span class="glyphicon glyphicon-pencil"></span> Editar</a>
                     {#<a href="#" class="btn btn-danger">
                         <span class="glyphicon glyphicon-trash"></span> Eliminar</a>#}

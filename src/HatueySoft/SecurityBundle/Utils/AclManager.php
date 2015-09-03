@@ -2,7 +2,7 @@
 
 namespace HatueySoft\SecurityBundle\Utils;
 
-use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;

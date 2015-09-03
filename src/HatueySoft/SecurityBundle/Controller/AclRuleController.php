@@ -53,6 +53,13 @@ class AclRuleController extends Controller
 
         if (($index = array_search($action, $rules[$target][$content])) || $index !== false) {
             unset($rules[$target][$content][$index]);
+
+            $rulesaux = array();
+            foreach ($rules[$target][$content] as $value) {
+                $rulesaux[] = $value;
+            }
+
+            $rules[$target][$content] = $rulesaux;
         } else {
             $rules[$target][$content][] = $action;
         }
@@ -61,7 +68,7 @@ class AclRuleController extends Controller
 
         $entityDir = $rulesManager->getEntity($entity);
         $allEntities = $this->get('doctrine.orm.entity_manager')
-            ->getRepository($entityDir['path'])
+            ->getRepository($entityDir)
             ->findAll();
 
         $aclManager = $this->get('hatuey_soft.security.acl_manager');
