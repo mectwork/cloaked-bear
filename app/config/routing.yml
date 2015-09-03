@@ -23,6 +23,9 @@ hatueysoft_security:
     resource: "@HatueySoftSecurityBundle/Resources/config/routing.yml"
     prefix:   /security
 
+hatueysoft_menu:
+    resource: "@HatueySoftMenuBundle/Resources/config/routing.yml"
+
 buseta_configuration:
     resource: "@HatueySoftSequenceBundle/Resources/config/routing.yml"
 
