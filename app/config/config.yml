@@ -145,6 +145,7 @@ easy_admin:
         'Marca Motor': Buseta\NomencladorBundle\Entity\MarcaMotor
         'Moneda': Buseta\NomencladorBundle\Entity\Moneda
         'Nacionalidad': Buseta\NomencladorBundle\Entity\Nacionalidad
+        'Prioridad solicitud': Buseta\NomencladorBundle\Entity\PrioridadSolicitud
         'Tipo Compra': Buseta\NomencladorBundle\Entity\TipoCompra
         'Tipo Contacto': Buseta\NomencladorBundle\Entity\TipoContacto
         'Tarea': Buseta\NomencladorBundle\Entity\Tarea
