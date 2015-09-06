@@ -172,3 +172,6 @@ hatuey_soft_sequence:
         bodega_seq:     Buseta\BodegaBundle\Entity\Bodega
         tercero_seq:    Buseta\BodegaBundle\Entity\Tercero
         reporte_seq:    Buseta\TallerBundle\Entity\Reporte
+
+hatuey_soft_menu:
+    menu_conf: "%kernel.root_dir%/config/menu_conf.yml"

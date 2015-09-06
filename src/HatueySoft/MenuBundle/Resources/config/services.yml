@@ -1,0 +1,7 @@
+parameters:
+# parameters
+
+services:
+  hatuey_soft.menu.manager:
+    class: HatueySoft\MenuBundle\Managers\MenuManager
+    arguments: [%hatuey_soft_menu.config%]

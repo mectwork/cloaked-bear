@@ -20,6 +20,11 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('hatuey_soft_menu');
 
+        $rootNode->children()
+            ->variableNode('menu_conf')
+            ->defaultValue(__DIR__ . '/../../../../app/config/menu_conf.yml')
+        ->end();
+
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.

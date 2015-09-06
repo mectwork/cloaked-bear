@@ -1,0 +1,74 @@
+menu_tree:
+  id: menu_tree
+  childrens:
+    firstlv_menu_vehiculos:
+      id: firstlv_menu_vehiculos
+      label: Vehículos
+      route: ~
+      attributes:
+        icon: ~
+      roles: []
+      childrens:
+        secondlv_menu_vehiculos_main:
+          id: secondlv_menu_vehiculos_main
+          label: Página principal
+          route: ~
+          attributes:
+            icon: ~
+          roles: []
+        secondlv_menu_vehiculos_vehiculos:
+          id: secondlv_menu_vehiculos_vehiculos
+          label: Gestión de vehículos
+          route: ~
+          attributes:
+            icon: ~
+          roles: []
+          childrens:
+            thirdlv_menu_vehiculos_vehiculos_autobuses:
+              id: thirdlv_menu_vehiculos_vehiculos_autobuses
+              label: Autobuses
+              route: ~
+              attributes:
+                icon: ~
+              roles: []
+            thirdlv_menu_vehiculos_vehiculos_choferes:
+              id: thirdlv_menu_vehiculos_vehiculos_choferes
+              label: Choferes
+              route: ~
+              attributes:
+                icon: ~
+              roles: []
+            thirdlv_menu_vehiculos_vehiculos_vehiculos:
+              id: thirdlv_menu_vehiculos_vehiculos_vehiculos
+              label: Vehículos
+              route: ~
+              attributes:
+                icon: ~
+              roles: []
+        secondlv_menu_vehiculos_configuracion:
+          id: secondlv_menu_vehiculos_configuracion
+          label: Configuración
+          route: ~
+          attributes:
+            icon: ~
+          roles: []
+          childrens:
+            thirdlv_menu_vehiculos_vehiculos_cambio_hora_sistema:
+              id: thirdlv_menu_vehiculos_vehiculos_cambio_hora_sistema
+              label: Cambio hora del sistema
+              route: ~
+              attributes:
+                icon: ~
+              roles: []
+            thirdlv_menu_vehiculos_vehiculos_cambio_fecha_sistema:
+              id: thirdlv_menu_vehiculos_vehiculos_cambio_fecha_sistema
+              label: Cambio fecha del sistema
+              route: ~
+              attributes:
+                icon: ~
+              roles: []
+    #firstlv_menu_bodega: ~
+    #firstlv_menu_taller: ~
+    #firstlv_menu_combustible: ~
+    #firstlv_menu_nomenclador: ~
+    #firstlv_menu_seguridad: ~

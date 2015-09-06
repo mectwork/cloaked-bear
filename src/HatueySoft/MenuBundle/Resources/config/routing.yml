@@ -1,4 +1,3 @@
 hatuey_soft_menu:
     resource: "@HatueySoftMenuBundle/Controller/"
     type:     annotation
-    prefix:   /
