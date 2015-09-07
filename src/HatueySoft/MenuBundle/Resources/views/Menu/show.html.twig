@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>Label</th>
+                    <th>Type</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for n in node.childrens %}
+                    <tr>
+                        <td>
+                            {% if n.type == 'folder' %}
+                                <a href="#show" data-content="{{ n.id }}" data-type="{{ n.type }}">{{ n.label }}</a>
+                            {% else %}
+                                {{ n.label }}
+                            {% endif %}
+                        </td>
+                        <td>{{ n.type == 'folder' ? '<span class="label label-primary">folder</span>' : '<span class="label label-warning">item</span>' }}</td>
+                        <td>
+                            <a class="btn btn-link btn-sm" href="#edit" data-content="{{ n.id }}" data-type="{{ n.type }}"><i class="fa fa-edit"></i> edit</a>
+                            <a class="btn btn-link btn-sm" href="#delete" data-content="{{ n.id }}" data-type="{{ n.type }}" data-label="{{ n.label }}"><i class="fa fa-trash"></i> delete</a>
+                        </td>
+                    </tr>
+                {% else %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

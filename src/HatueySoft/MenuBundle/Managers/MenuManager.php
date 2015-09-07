@@ -3,6 +3,7 @@
 namespace HatueySoft\MenuBundle\Managers;
 
 
+use HatueySoft\MenuBundle\Model\MenuNode;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -14,7 +15,7 @@ class MenuManager
     private $menuConf;
 
     /**
-     * @var array
+     * @var \HatueySoft\MenuBundle\Model\MenuNode
      */
     private $menuTree;
 
@@ -22,7 +23,7 @@ class MenuManager
     function __construct($config)
     {
         $this->menuConf = $config['menu_conf'];
-        $this->menuTree = Yaml::parse(file_get_contents($this->menuConf));
+        $this->load();
     }
 
     public function getRoot()
@@ -30,19 +31,72 @@ class MenuManager
         return $this->menuTree;
     }
 
+    public function insertNode(MenuNode $node, $parentId)
+    {
+        $treeNode = $this->findTreeNode($parentId);
+        $treeNode->addChildren($node);
+
+        $this->save();
+    }
+
+    public function removeNode(MenuNode $child)
+    {
+        $parent = $this->findParentNode($child->getId());
+        $parent->removeChildren($child);
+
+        $this->save();
+    }
+
+    public function updateNode(MenuNode $node)
+    {
+        $treeNode = $this->findTreeNode($node->getId());
+        $treeNode->setLabel($node->getLabel());
+        $treeNode->setRoute($node->getRoute());
+        $treeNode->setRoles($node->getRoles());
+
+        $this->save();
+    }
+
+    private function load()
+    {
+        $array = Yaml::parse(file_get_contents($this->menuConf));
+        $this->menuTree = new MenuNode($array['root'], true);
+    }
+
+    private function save()
+    {
+        $menuInArray = $this->menuTree->toArray();
+        $rootMenu = array('root' => $menuInArray);
+        file_put_contents($this->menuConf, Yaml::dump($rootMenu, 10, 2));
+    }
+
+    public function findParentNode($childId)
+    {
+        $treenode = null;
+        $queue = new \SplQueue();
+        $queue->push($this->menuTree);
+        while(!$queue->isEmpty()) {
+            /** @var \HatueySoft\MenuBundle\Model\MenuNode $node */
+            $node = $queue->pop();
+
+            if (!$node->getChildrens()->isEmpty()) {
+                foreach ($node->getChildrens() as $child) {
+                    if ($child->getId() === $childId) {
+                        $treenode = $node;
+                        break;
+                    } else {
+                        $queue->push($child);
+                    }
+                }
+            }
+        }
+
+        return $treenode;
+    }
     /**
      * @param $id
+     * @return \HatueySoft\MenuBundle\Model\MenuNode|null
      */
-    public function getMenu($id)
-    {
-
-    }
-
-    public function getChildrens($parent)
-    {
-
-    }
-
     public function findTreeNode($id)
     {
         /**
@@ -63,15 +117,17 @@ class MenuManager
          */
         $treenode = null;
         $queue = new \SplQueue();
-        $queue->push($this->menuTree['menu_tree']);
+        $queue->push($this->menuTree);
         while(!$queue->isEmpty()) {
+            /** @var \HatueySoft\MenuBundle\Model\MenuNode $node */
             $node = $queue->pop();
 
-            if ($node['id'] === $id) {
+            if ($node->getId() === $id) {
                 $treenode = $node;
+                break;
             } else {
-                if (isset($node['childrens'])) {
-                    foreach ($node['childrens'] as $child) {
+                if (!$node->getChildrens()->isEmpty()) {
+                    foreach ($node->getChildrens() as $child) {
                         $queue->push($child);
                     }
                 }

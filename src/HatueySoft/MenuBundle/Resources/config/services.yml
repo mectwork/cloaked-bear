@@ -2,6 +2,12 @@ parameters:
 # parameters
 
 services:
+  hatuey_soft.menu_node.type:
+    class: HatueySoft\MenuBundle\Form\Type\MenuNodeType
+    arguments: [@configuration.reader]
+    tags:
+      - { name: form.type, alias: hatueysoft_menu_node_type }
+
   hatuey_soft.menu.manager:
     class: HatueySoft\MenuBundle\Managers\MenuManager
     arguments: [%hatuey_soft_menu.config%]

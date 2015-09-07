@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h3 class="page-header">
-                            {% block title %}
+                            {% block header %}
                                 Título encabezado
                             {% endblock %}
                         </h3>
@@ -36,13 +36,13 @@
 
                 {# Session flashes #}
                 {% block flashes %}
-                    {% if app.session.flashbag.peekAll|length > 0 %}
-                        <div class="row">
-                            <div id="global-messages" class="col-sm-12">
-                                {{ session_flash() }}
-                            </div>
+                    <div class="row">
+                        <div id="global-messages" class="col-sm-12">
+                        {% if app.session.flashbag.peekAll|length > 0 %}
+                            {{ session_flash() }}
+                        {% endif %}
                         </div>
-                    {% endif %}
+                    </div>
                 {% endblock flashes %}
 
                 {% block content %}

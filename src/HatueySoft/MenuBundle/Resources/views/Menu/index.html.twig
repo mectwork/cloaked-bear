@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/hatueysoftmenu/vendors/fuelux/css/treeview.css') }}" media="screen">
+    <link rel="stylesheet" href="{{ asset('bundles/hatueysoftmenu/vendors/fuelux/css/tree.css') }}" media="screen">
 {% endblock %}
 
 {% block title 'Menu tree' %}
@@ -10,73 +10,254 @@
 {% block headline block('title') %}
 
 {% block content -%}
-    <div id="MyTree" class="tree">
-        <div class="tree-folder" style="display: none;">
-            <div class="tree-folder-header">
-                <i class="fa fa-folder"></i>
-                <div class="tree-folder-name"></div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Menú Sistema</div>
+                <div class="panel-body">
+                    <ul class="tree tree-folder-select" role="tree" id="menuTree">
+                        <li class="tree-branch hide" data-template="treebranch" role="treeitem" aria-expanded="false">
+                            <div class="tree-branch-header">
+                                <button type="button" class="glyphicon icon-caret glyphicon-play"><span class="sr-only">Open</span></button>
+                                <button type="button" class="tree-branch-name">
+                                    <span class="glyphicon icon-folder glyphicon-folder-close"></span>
+                                    <span class="tree-label"></span>
+                                </button>
+                            </div>
+                            <ul class="tree-branch-children" role="group"></ul>
+                            <div class="tree-loader" role="alert"><i class="fa fa-rotate-right fa-spin"></i></div>
+                        </li>
+                        <li class="tree-item hide" data-template="treeitem" role="treeitem">
+                            <button type="button" class="tree-item-name">
+                                <span class="glyphicon icon-item fueluxicon-bullet"></span>
+                                <span class="tree-label"></span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="tree-folder-content">
-            </div>
-            <div class="tree-loader" style="display: none;"></div>
         </div>
-        <div class="tree-item" style="display: none;">
-            <i class="tree-dot"></i>
-            <div class="tree-item-name"></div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <div class="pull-left" id="menu_node_heading"></div>
+                    <div class="pull-right">
+                        <a href="#add"><i class="fa fa-plus green"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body" id="menu_node_body">
+
+                </div>
+            </div>
         </div>
     </div>
+
+    <div id="modal-danger" class="modal modal-darkorange fade" style="display: none;" aria-hidden="true"></div>
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('bundles/hatueysoftmenu/vendors/fuelux/js/treeview/tree-custom.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/hatueysoftmenu/vendors/fuelux/js/tree.js') }}" type="text/javascript"></script>
 
     <script type="text/javascript">
         $(function () {
-            var DataSourceTree = function (options) {
-                this._data = options.data;
-                this._delay = options.delay;
+            var TreeManager = function (menuId) {
+                this.menuId = menuId;
             };
 
-            DataSourceTree.prototype = {
-                data: function (options, callback) {
-                    var self = this,
-                        id, url;
-                    if (typeof options.additionalParameters !== 'undefined') {
-                        id = options.additionalParameters.id;
-                        url = Routing.generate('hatueysoft_menu_getmenu', {id: id});
+            TreeManager.prototype = {
+                init: function () {
+                    var self = this;
+                    $(this.menuId).tree({
+                        dataSource: this.dataSourceTree,
+                        multiSelect: false,
+                        cacheItems: false
+                    });
+                    $(this.menuId).on('selected.fu.tree', { instance: this }, this.onSelected);
+                    $('a[href="#add"]').off('click').on('click', function (event) {
+                        event.preventDefault();
+
+                        var selected = $(self.menuId).tree('selectedItems'),
+                            parent;
+                        if (selected.length == 0) {
+                            alert('Debe tener seleccionado al menos un elemento del árbol.');
+                            return;
+                        }
+
+                        parent = selected[0];
+                        $.get(Routing.generate('hatueysoft_menu_new', {parent: parent.attr.id}), function (html) {
+                            $('#menu_node_body').html(html);
+
+                            self.onEditEvents();
+                        })
+                    });
+                },
+
+                dataSourceTree: function (options, callback) {
+                    var id, url;
+                    if (typeof options.attr !== 'undefined') {
+                        id = options.attr.id;
+                        url = Routing.generate('hatueysoft_menu_getmenu', {id: id, _format: 'json'});
                     } else {
-                        url = Routing.generate('hatueysoft_menu_getmenu')
+                        url = Routing.generate('hatueysoft_menu_getmenu',{id: 'root', _format: 'json'});
                     }
 
                     $.getJSON(url, function (json) {
                         var data = $.extend(true, [], json);
                         callback({data: data});
                     });
+                },
 
-//                    setTimeout(function () {
-//                        var data = $.extend(true, [], self._data);
-//                        console.log(data);
-//                        callback({ data: data });
-//
-//                    }, this._delay)
+                show: function (id) {
+                    var self = this,
+                        itemid,
+                        url = Routing.generate('hatueysoft_menu_show', {id: id}),
+                        selected = $(self.menuId).tree('selectedItems');
+
+                    $.getJSON(url, function (json) {
+                        $('#menu_node_body').html(json.view).unblock();
+                        itemid = json.id;
+
+                        if (selected[0].attr.id != itemid) {
+                            $(self.menuId).tree('selectFolder', $('#' + id));
+                        } else {
+                            $(self.menuId).tree('openFolder', $('#' + id));
+                        }
+
+                        self.onShowEvents();
+                    });
+                },
+
+                edit: function (id, type) {
+                    var self = this,
+                        url = Routing.generate('hatueysoft_menu_edit', {id: id}),
+                        selected = $(self.menuId).tree('selectedItems');
+
+                    if (selected[0].attr.id != id && type != "folder") {
+                        $(self.menuId).tree('select' + String.capitalize(type), $('#' + id));
+                    } else {
+                        $.get(url, function (html) {
+                            $('#menu_node_body').html(html).unblock();
+
+                            self.onEditEvents(id);
+                        });
+                    }
+                },
+
+                confirmDel: function (id) {
+                    var self = this,
+                        modal;
+                    $.get(Routing.generate('hatueysoft_menu_delete', {id: id}), function (html) {
+                        $('#modal-danger').replaceWith(html);
+                        modal = $('#modal-danger');
+                        modal.modal('show');
+
+                        modal.find('.btn.btn-danger').on('click', function (event){
+                            event.preventDefault();
+
+                            var form = $(this).parent().find('form');
+                            form.ajaxSubmit({
+                                success: function (data, statusText, jqXHR) {
+                                    if (jqXHR.status == 202) {
+                                        modal.modal('hide');
+                                        modal.html('');
+
+                                        $btalerts.addSuccess(data);
+                                        self.show(id);
+                                    }
+                                },
+                                error: function (jqXHR, statusText, errorThrown) {
+                                    modal.modal('hide');
+                                    modal.html('');
+
+                                    $btalerts.addDanger(jqXHR.responseText);
+                                    self.show(id);
+                                }
+                            });
+                        });
+                    });
+                },
+
+                onSelected: function (event, data) {
+                    var self = event.data.instance,
+                        text = data.target.text,
+                        type = data.target.type;
+
+                    $('#menu_node_heading').html(text);
+                    $('#menu_node_heading').data('current', data.target.attr.id);
+
+                    $('#menu_node_body').html('').block();
+
+                    if (type == 'folder') {
+                        self.show(data.target.attr.id);
+                    } else {
+                        self.edit(data.target.attr.id);
+                    }
+                },
+
+                onShowEvents: function () {
+                    var self = this;
+
+                    $('#menu_node_body').find('a[href="#show"]').each(function (index, element) {
+                        var id = $(element).data('content'),
+                            type = $(element).data('type');
+                        $(element).off('click').on('click', function (event) {
+                            event.preventDefault();
+
+                            self.show(id);
+                        });
+                    });
+                    $('#menu_node_body').find('a[href="#edit"]').each(function (index, element) {
+                        var id = $(element).data('content'),
+                            type = $(element).data('type');
+                        $(element).off('click').on('click', function (event) {
+                            event.preventDefault();
+
+                            self.edit(id, type);
+                        });
+                    });
+                    $('#menu_node_body').find('a[href="#delete"]').each(function (index, element) {
+                        var id = $(element).data('content'),
+                            type = $(element).data('type'),
+                            label = $(element).data('label');
+                        $(element).off('click').on('click', function (event) {
+                            event.preventDefault();
+
+                            self.confirmDel(id, label);
+                        });
+                    });
+                },
+
+                onEditEvents: function (id) {
+                    var self = this;
+                    if (typeof id == 'undefined') {
+                        id = $('#menu_node_heading').data('current');
+                    }
+
+                    $('#menu_node_body').find('a#menu_node_submit').first().on('click', function (event){
+                        event.preventDefault();
+
+                        var form = $(this).closest('form');
+                        form.ajaxSubmit({
+                            success: function (data, statusText, jqXHR) {
+                                if (jqXHR.status == 200) {
+                                    $('#menu_node_body').html(data);
+                                    self.onEditEvents(id);
+                                } else {
+                                    $btalerts.addSuccess(data);
+                                    self.show(id)
+                                }
+                            },
+                            error: function (jqXHR, statusText, errorThrown) {
+                                $btalerts.addSuccess(jqXHR.responseText);
+                                self.show(id)
+                            }
+                        });
+                    });
                 }
             };
 
-            var treeDataSource = new DataSourceTree({
-                data: [
-                    { name: 'Sales', type: 'folder', 'icon-class':'blue', additionalParameters: { id: 'F1' } },
-                    { name: 'Projects', type: 'folder', 'icon-class': 'success', additionalParameters: { id: 'F2' } },
-                    { name: 'Reports', type: 'item', additionalParameters: { id: 'I1' } },
-                    { name: 'Finance', type: 'item', additionalParameters: { id: 'I2' } }
-                ],
-                delay: 400
-            });
-
-            $('#MyTree').tree({
-                dataSource: treeDataSource,
-                multiSelect: true,
-                loadingHTML: '<div class="tree-loading"><i class="fa fa-rotate-right fa-spin"></i></div>'
-            });
+            var tree = new TreeManager('#menuTree');
+            tree.init();
         });
     </script>
 {% endblock %}

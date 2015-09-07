@@ -1,0 +1,13 @@
+<form name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" action="{{ form.vars.action }}" method="post" enctype="multipart/form-data">
+    {{ form_errors(form) }}
+
+    {% if form.offsetExists('name') %}
+    {{ form_row(form.name) }}
+    {% endif %}
+
+    {{ form_widget(form) }}
+
+    <a class="btn btn-primary" href="#" id="menu_node_submit"> Aceptar</a>
+    {#<a class="btn btn-default" href="#" id="menu_node_cancel"> Cancelar</a>#}
+</form>
+

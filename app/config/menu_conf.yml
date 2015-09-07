@@ -1,74 +1,148 @@
-menu_tree:
-  id: menu_tree
+root:
+  id: root
+  name: null
+  label: null
+  route: null
+  roles: null
+  type: folder
+  attributes: {  }
   childrens:
-    firstlv_menu_vehiculos:
-      id: firstlv_menu_vehiculos
-      label: Vehículos
-      route: ~
-      attributes:
-        icon: ~
-      roles: []
+    menu:
+      id: menu
+      name: null
+      label: 'Menú sistema'
+      route: null
+      roles: null
+      type: folder
+      attributes: {  }
       childrens:
-        secondlv_menu_vehiculos_main:
-          id: secondlv_menu_vehiculos_main
-          label: Página principal
-          route: ~
+        menu_A:
+          id: menu_A
+          name: menu_vehiculos
+          label: Vehículos
+          route: autobus_principal
+          roles: {  }
+          type: folder
           attributes:
-            icon: ~
-          roles: []
-        secondlv_menu_vehiculos_vehiculos:
-          id: secondlv_menu_vehiculos_vehiculos
-          label: Gestión de vehículos
-          route: ~
-          attributes:
-            icon: ~
-          roles: []
+            icon: null
           childrens:
-            thirdlv_menu_vehiculos_vehiculos_autobuses:
-              id: thirdlv_menu_vehiculos_vehiculos_autobuses
-              label: Autobuses
-              route: ~
+            menu_A_A:
+              id: menu_A_A
+              name: null
+              label: 'Página principal'
+              route: autobus_principal
+              roles: {  }
+              type: item
               attributes:
-                icon: ~
-              roles: []
-            thirdlv_menu_vehiculos_vehiculos_choferes:
-              id: thirdlv_menu_vehiculos_vehiculos_choferes
-              label: Choferes
-              route: ~
+                icon: null
+              childrens: {  }
+            menu_A_B:
+              id: menu_A_B
+              name: null
+              label: 'Gestión de vehículos'
+              route: null
+              roles: {  }
+              type: folder
               attributes:
-                icon: ~
-              roles: []
-            thirdlv_menu_vehiculos_vehiculos_vehiculos:
-              id: thirdlv_menu_vehiculos_vehiculos_vehiculos
-              label: Vehículos
-              route: ~
+                icon: null
+              childrens:
+                menu_A_B_A:
+                  id: menu_A_B_A
+                  name: null
+                  label: Autobuses
+                  route: null
+                  roles: {  }
+                  type: item
+                  attributes: { icon: null }
+                  childrens: {  }
+                menu_A_B_B:
+                  id: menu_A_B_B
+                  name: null
+                  label: Choferes
+                  route: null
+                  roles: {  }
+                  type: item
+                  attributes: { icon: null }
+                  childrens: {  }
+                menu_A_B_C:
+                  id: menu_A_B_C
+                  name: null
+                  label: Vehículos
+                  route: null
+                  roles: {  }
+                  type: item
+                  attributes: { icon: null }
+                  childrens: {  }
+            menu_A_C:
+              id: menu_A_C
+              name: null
+              label: Configuración
+              route: null
+              roles: {  }
+              type: folder
               attributes:
-                icon: ~
-              roles: []
-        secondlv_menu_vehiculos_configuracion:
-          id: secondlv_menu_vehiculos_configuracion
-          label: Configuración
-          route: ~
-          attributes:
-            icon: ~
-          roles: []
-          childrens:
-            thirdlv_menu_vehiculos_vehiculos_cambio_hora_sistema:
-              id: thirdlv_menu_vehiculos_vehiculos_cambio_hora_sistema
-              label: Cambio hora del sistema
-              route: ~
-              attributes:
-                icon: ~
-              roles: []
-            thirdlv_menu_vehiculos_vehiculos_cambio_fecha_sistema:
-              id: thirdlv_menu_vehiculos_vehiculos_cambio_fecha_sistema
-              label: Cambio fecha del sistema
-              route: ~
-              attributes:
-                icon: ~
-              roles: []
-    #firstlv_menu_bodega: ~
-    #firstlv_menu_taller: ~
-    #firstlv_menu_combustible: ~
-    #firstlv_menu_nomenclador: ~
-    #firstlv_menu_seguridad: ~
+                icon: null
+              childrens:
+                menu_A_C_A:
+                  id: menu_A_C_A
+                  name: null
+                  label: 'Cambio hora del sistema'
+                  route: null
+                  roles: {  }
+                  type: item
+                  attributes: { icon: null }
+                  childrens: {  }
+                menu_A_C_B:
+                  id: menu_A_C_B
+                  name: null
+                  label: 'Cambio fecha del sistema'
+                  route: null
+                  roles: {  }
+                  type: item
+                  attributes: { icon: null }
+                  childrens: {  }
+        menu_B:
+          id: menu_B
+          name: menu_bodega
+          label: Bodega
+          route: bodega_principal
+          roles: {  }
+          type: folder
+          attributes: {  }
+          childrens: {  }
+        menu_C:
+          id: menu_C
+          name: menu_taller
+          label: Taller
+          route: taller_principal
+          roles: {  }
+          type: folder
+          attributes: {  }
+          childrens: {  }
+        menu_D:
+          id: menu_D
+          name: menu_combustible
+          label: Combustible
+          route: configuracion_combustible
+          roles: {  }
+          type: folder
+          attributes: {  }
+          childrens: {  }
+        menu_E:
+          id: menu_E
+          name: menu_nomenclador
+          label: 'Módulo Nomenclador'
+          route: admin
+          roles: {  }
+          type: item
+          attributes: {  }
+          childrens: {  }
+        menu_F:
+          id: menu_F
+          name: menu_seguridad
+          label: 'Módulo Seguridad'
+          route: security_usuario
+          roles: {  }
+          type: folder
+          attributes: {  }
+          childrens: {  }
