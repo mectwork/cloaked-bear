@@ -70,4 +70,4 @@ var BtAlerts = function (selector, sticky) {
     }
 };
 
-var $btalerts = new BtAlerts('div.global-messages');
+var $btalerts = new BtAlerts('div#global-messages');

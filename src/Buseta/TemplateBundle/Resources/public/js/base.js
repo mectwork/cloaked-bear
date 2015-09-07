@@ -1,3 +1,6 @@
+$.blockUI.defaults.css = {};
+$.blockUI.defaults.message = '<i class="fa fa-refresh fa-spin fa-lg" style="color: #fff;"></i>';
+
 var $switchconfig = {
     'onText': 'Sí',
     'offText': 'No'
