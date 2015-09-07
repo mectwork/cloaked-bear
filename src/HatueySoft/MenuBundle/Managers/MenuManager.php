@@ -93,6 +93,7 @@ class MenuManager
 
         return $treenode;
     }
+
     /**
      * @param $id
      * @return \HatueySoft\MenuBundle\Model\MenuNode|null
@@ -123,6 +124,34 @@ class MenuManager
             $node = $queue->pop();
 
             if ($node->getId() === $id) {
+                $treenode = $node;
+                break;
+            } else {
+                if (!$node->getChildrens()->isEmpty()) {
+                    foreach ($node->getChildrens() as $child) {
+                        $queue->push($child);
+                    }
+                }
+            }
+        }
+
+        return $treenode;
+    }
+
+    /**
+     * @param $name
+     * @return MenuNode|null
+     */
+    public function findTreeNodeByName($name)
+    {
+        $treenode = null;
+        $queue = new \SplQueue();
+        $queue->push($this->menuTree);
+        while(!$queue->isEmpty()) {
+            /** @var \HatueySoft\MenuBundle\Model\MenuNode $node */
+            $node = $queue->pop();
+
+            if ($node->getName() === $name) {
                 $treenode = $node;
                 break;
             } else {

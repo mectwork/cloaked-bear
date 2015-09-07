@@ -25,6 +25,11 @@ class Configuration implements ConfigurationInterface
             ->defaultValue(__DIR__ . '/../../../../app/config/menu_conf.yml')
         ->end();
 
+        $rootNode->children()
+            ->variableNode('menu_name')
+            ->defaultValue('menu')
+        ->end();
+
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.

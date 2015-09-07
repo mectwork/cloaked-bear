@@ -3,6 +3,7 @@
 namespace HatueySoft\MenuBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Knp\Menu\NodeInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class MenuNode
@@ -191,6 +192,19 @@ class MenuNode
     public function addAttribute($attribute)
     {
         $this->attributes->add($attribute);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributesToArray()
+    {
+        $array = array();
+        foreach ($this->getAttributes() as $attr) {
+            $array[$attr->getKey()] = $attr->getValue();
+        }
+
+        return $array;
     }
 
     /**

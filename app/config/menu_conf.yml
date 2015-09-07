@@ -24,7 +24,8 @@ root:
           roles: {  }
           type: folder
           attributes:
-            icon: null
+            icon: 'icon icon-bus'
+            color: bg-color-blue
           childrens:
             menu_A_A:
               id: menu_A_A
@@ -108,7 +109,9 @@ root:
           route: bodega_principal
           roles: {  }
           type: folder
-          attributes: {  }
+          attributes:
+            icon: 'fa fa-cubes'
+            color: bg-color-orange
           childrens: {  }
         menu_C:
           id: menu_C
@@ -117,7 +120,9 @@ root:
           route: taller_principal
           roles: {  }
           type: folder
-          attributes: {  }
+          attributes:
+            icon: 'fa fa-cogs'
+            color: bg-color-green
           childrens: {  }
         menu_D:
           id: menu_D
@@ -126,7 +131,9 @@ root:
           route: configuracion_combustible
           roles: {  }
           type: folder
-          attributes: {  }
+          attributes:
+            icon: 'fa fa-dashboard'
+            color: bg-color-blueDark
           childrens: {  }
         menu_E:
           id: menu_E
@@ -135,7 +142,9 @@ root:
           route: admin
           roles: {  }
           type: item
-          attributes: {  }
+          attributes:
+            icon: 'fa fa-cog'
+            color: bg-color-brown
           childrens: {  }
         menu_F:
           id: menu_F
@@ -144,5 +153,7 @@ root:
           route: security_usuario
           roles: {  }
           type: folder
-          attributes: {  }
+          attributes:
+            icon: 'fa fa-shield'
+            color: bg-color-red
           childrens: {  }

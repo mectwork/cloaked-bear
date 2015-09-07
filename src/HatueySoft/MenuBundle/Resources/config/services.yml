@@ -11,3 +11,7 @@ services:
   hatuey_soft.menu.manager:
     class: HatueySoft\MenuBundle\Managers\MenuManager
     arguments: [%hatuey_soft_menu.config%]
+
+  hatuey_soft.menu_builder.service:
+    class: HatueySoft\MenuBundle\Menu\BuilderService
+    arguments: [@hatuey_soft.menu.manager, %hatuey_soft_menu.config%]
