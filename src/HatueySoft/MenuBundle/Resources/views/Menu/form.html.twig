@@ -10,10 +10,12 @@
     {% if form.offsetExists('name') %}
         {{ form_row(form.name) }}
     {% endif %}
-
     {{ form_row(form.label) }}
     {{ form_row(form.route) }}
     {{ form_row(form.roles) }}
+    {% if form.offsetExists('applyInChain') %}
+        {{ form_row(form.applyInChain) }}
+    {% endif %}
     {{ form_row(form.type) }}
 
     <div class="row">

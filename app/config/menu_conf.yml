@@ -114,7 +114,8 @@ root:
           label: Bodega
           route: bodega_principal
           roles:
-            - ROLE_USER
+            - ROLE_ADMIN
+            - ROLE_SUPER_ADMIN
           type: folder
           attributes:
             icon: 'fa fa-cubes'
@@ -126,7 +127,8 @@ root:
               label: 'Página principal'
               route: core_homepage
               roles:
-                - ROLE_USER
+                - ROLE_ADMIN
+                - ROLE_SUPER_ADMIN
               type: item
               attributes:
                 icon: 'fa fa-dashboard'

@@ -42,6 +42,17 @@ class MenuNodeType extends AbstractType
             }
         });
 
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
+            $form = $formEvent->getForm();
+            $data = $formEvent->getData();
+
+            $accesor = PropertyAccess::createPropertyAccessor();
+            $id = $accesor->getValue($data, 'id');
+            if ($id !== null) {
+                $form->add('applyInChain', 'checkbox');
+            }
+        });
+
         $builder
             ->add('label')
             ->add('route')

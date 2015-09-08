@@ -232,6 +232,7 @@ class MenuController extends Controller
 
         $menu = $menuManager->findTreeNode($id);
         $form = $this->createEditForm($menu);
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {

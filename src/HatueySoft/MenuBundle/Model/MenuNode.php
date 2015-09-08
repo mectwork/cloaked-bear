@@ -53,6 +53,12 @@ class MenuNode
      */
     private $childrens;
 
+    /**
+     * Virtual
+     * @var boolean
+     */
+    private $applyInChain = false;
+
 
     function __construct($menuNode = null, $loadChildrens = false)
     {
@@ -324,5 +330,21 @@ class MenuNode
         foreach ($this->childrens as $child) {
             $child->setId(sprintf('%s_%s', $this->getId(), substr(self::ALPHABET, $counter++, 1)));
         }
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isApplyInChain()
+    {
+        return $this->applyInChain;
+    }
+
+    /**
+     * @param boolean $applyInChain
+     */
+    public function setApplyInChain($applyInChain)
+    {
+        $this->applyInChain = $applyInChain;
     }
 }

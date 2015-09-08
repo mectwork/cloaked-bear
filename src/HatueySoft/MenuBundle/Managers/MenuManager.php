@@ -54,7 +54,20 @@ class MenuManager
         $treeNode->setRoute($node->getRoute());
         $treeNode->setRoles($node->getRoles());
 
+        if ($node->isApplyInChain()) {
+            $this->updateChildrensRoles($treeNode);
+        }
+
         $this->save();
+    }
+
+    private function updateChildrensRoles(MenuNode $node)
+    {
+        foreach ($node->getChildrens() as $children) {
+            $children->setRoles($node->getRoles());
+
+            $this->updateChildrensRoles($children);
+        }
     }
 
     private function load()
