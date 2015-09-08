@@ -64,6 +64,13 @@ class MenuBuilder extends ContainerAware
         $menu->setChildrenAttribute('class', 'nav');
         $menu->setChildrenAttribute('id', 'side-menu');
 
+        /** add principal page into all menus */
+        $menu->addChild('pagina_principal', array(
+            'label' => sprintf('<i class="fa fa-dashboard"></i> %s', 'Página principal'),
+            'route' => 'core_homepage',
+        ));
+        $menu['pagina_principal']->setExtra('safe_label', true);
+
         if (!$item->getChildrens()->isEmpty()) {
             $this->renderChildrens($menu, $item, $securityContext);
         }
@@ -85,16 +92,7 @@ class MenuBuilder extends ContainerAware
                 }
 
                 $menu->addChild($children->getId(), $options);
-
-                $attributes = $children->getAttributesToArray();
-                $icon = isset($attributes['icon']) ? $attributes['icon'] : null;
-                $label = $children->getLabel();
-                if($icon !== null) {
-                    $label = sprintf('<i class="%s"></i> %s', $icon, $label);
-                    $menu[$children->getId()]->setExtra('safe_label', true);
-                }
-
-                $menu[$children->getId()]->setLabel($label);
+                $this->setLabel($menu[$children->getId()], $children);
 
                 if (!$children->getChildrens()->isEmpty()) {
                     $menu[$children->getId()]->setChildrenAttribute('class', 'nav nav-second-level');
@@ -102,6 +100,23 @@ class MenuBuilder extends ContainerAware
                 }
             }
         }
+    }
+
+    private function setLabel(ItemInterface $menu, MenuNode $item)
+    {
+        $attributes = $item->getAttributesToArray();
+        $label = $item->getLabel();
+        $icon = isset($attributes['icon']) ? $attributes['icon'] : null;
+        if($icon !== null) {
+            $label = sprintf('<i class="%s"></i> %s', $icon, $label);
+            $menu->setExtra('safe_label', true);
+        }
+
+        if (!$item->getChildrens()->isEmpty()) {
+            $label = sprintf('%s%s', $label, '<span class="fa arrow"></span>');
+        }
+
+        $menu->setLabel($label);
     }
 
     /**

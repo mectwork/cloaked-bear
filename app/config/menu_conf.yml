@@ -28,25 +28,13 @@ root:
           roles:
             - ROLE_USER
           type: folder
-          disabled: true
+          disabled: false
           attributes:
             icon: 'fa fa-bus'
             color: bg-color-blue
           childrens:
             menu_A_A:
               id: menu_A_A
-              name: null
-              label: 'Página principal'
-              route: core_homepage
-              roles:
-                - ROLE_USER
-              type: item
-              disabled: false
-              attributes:
-                icon: 'fa fa-dashboard'
-              childrens: {  }
-            menu_A_B:
-              id: menu_A_B
               name: null
               label: 'Gestión de vehículos'
               route: null
@@ -57,8 +45,8 @@ root:
               attributes:
                 icon: 'fa fa-wrench'
               childrens:
-                menu_A_B_A:
-                  id: menu_A_B_A
+                menu_A_A_A:
+                  id: menu_A_A_A
                   name: null
                   label: Autobuses
                   route: null
@@ -67,8 +55,8 @@ root:
                   disabled: false
                   attributes: { icon: null }
                   childrens: {  }
-                menu_A_B_B:
-                  id: menu_A_B_B
+                menu_A_A_B:
+                  id: menu_A_A_B
                   name: null
                   label: Choferes
                   route: null
@@ -77,8 +65,8 @@ root:
                   disabled: false
                   attributes: { icon: null }
                   childrens: {  }
-                menu_A_B_C:
-                  id: menu_A_B_C
+                menu_A_A_C:
+                  id: menu_A_A_C
                   name: null
                   label: Vehículos
                   route: null
@@ -87,8 +75,8 @@ root:
                   disabled: false
                   attributes: { icon: null }
                   childrens: {  }
-            menu_A_C:
-              id: menu_A_C
+            menu_A_B:
+              id: menu_A_B
               name: null
               label: Configuración
               route: null
@@ -99,8 +87,8 @@ root:
               attributes:
                 icon: 'fa fa-gear'
               childrens:
-                menu_A_C_A:
-                  id: menu_A_C_A
+                menu_A_B_A:
+                  id: menu_A_B_A
                   name: null
                   label: 'Cambio hora del sistema'
                   route: null
@@ -109,8 +97,8 @@ root:
                   disabled: false
                   attributes: { icon: null }
                   childrens: {  }
-                menu_A_C_B:
-                  id: menu_A_C_B
+                menu_A_B_B:
+                  id: menu_A_B_B
                   name: null
                   label: 'Cambio fecha del sistema'
                   route: null
@@ -136,19 +124,6 @@ root:
             menu_B_A:
               id: menu_B_A
               name: null
-              label: 'Página principal'
-              route: core_homepage
-              roles:
-                - ROLE_ADMIN
-                - ROLE_SUPER_ADMIN
-              type: item
-              disabled: false
-              attributes:
-                icon: 'fa fa-dashboard'
-              childrens: {  }
-            menu_B_B:
-              id: menu_B_B
-              name: null
               label: 'Gestión de Terceros'
               route: null
               roles:
@@ -158,8 +133,8 @@ root:
               attributes:
                 icon: 'fa fa-users'
               childrens:
-                menu_B_B_A:
-                  id: menu_B_B_A
+                menu_B_A_A:
+                  id: menu_B_A_A
                   name: null
                   label: Terceros
                   route: tercero
@@ -168,8 +143,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-                menu_B_B_B:
-                  id: menu_B_B_B
+                menu_B_A_B:
+                  id: menu_B_A_B
                   name: null
                   label: Proveedor
                   route: proveedor
@@ -178,8 +153,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-            menu_B_C:
-              id: menu_B_C
+            menu_B_B:
+              id: menu_B_B
               name: null
               label: 'Gestión de Productos'
               route: null
@@ -190,8 +165,8 @@ root:
               attributes:
                 icon: 'fa fa-coffee'
               childrens:
-                menu_B_C_A:
-                  id: menu_B_C_A
+                menu_B_B_A:
+                  id: menu_B_B_A
                   name: null
                   label: Productos
                   route: producto
@@ -200,8 +175,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-            menu_B_D:
-              id: menu_B_D
+            menu_B_C:
+              id: menu_B_C
               name: null
               label: 'Gestión de Compras'
               route: null
@@ -212,8 +187,8 @@ root:
               attributes:
                 icon: 'fa fa-money'
               childrens:
-                menu_B_D_A:
-                  id: menu_B_D_A
+                menu_B_C_A:
+                  id: menu_B_C_A
                   name: null
                   label: 'Necesidad de Material'
                   route: necesidadmaterial
@@ -222,8 +197,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-                menu_B_D_B:
-                  id: menu_B_D_B
+                menu_B_C_B:
+                  id: menu_B_C_B
                   name: null
                   label: 'Registro de Compra'
                   route: pedidocompra
@@ -232,8 +207,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-                menu_B_D_C:
-                  id: menu_B_D_C
+                menu_B_C_C:
+                  id: menu_B_C_C
                   name: null
                   label: Albarán
                   route: albaran
@@ -242,8 +217,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-            menu_B_E:
-              id: menu_B_E
+            menu_B_D:
+              id: menu_B_D
               name: null
               label: 'Gestión de Bodega'
               route: null
@@ -254,8 +229,8 @@ root:
               attributes:
                 icon: 'fa fa-archive'
               childrens:
-                menu_B_E_A:
-                  id: menu_B_E_A
+                menu_B_D_A:
+                  id: menu_B_D_A
                   name: null
                   label: Bodegas
                   route: bodega
@@ -264,8 +239,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-                menu_B_E_B:
-                  id: menu_B_E_B
+                menu_B_D_B:
+                  id: menu_B_D_B
                   name: null
                   label: 'Movimiento entre Bodegas'
                   route: movimiento
@@ -274,8 +249,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-                menu_B_E_C:
-                  id: menu_B_E_C
+                menu_B_D_C:
+                  id: menu_B_D_C
                   name: null
                   label: 'Salida de Bodegas'
                   route: salidabodega
@@ -284,8 +259,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-                menu_B_E_D:
-                  id: menu_B_E_D
+                menu_B_D_D:
+                  id: menu_B_D_D
                   name: null
                   label: 'Inventario Físico'
                   route: inventariofisico
@@ -294,8 +269,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-            menu_B_F:
-              id: menu_B_F
+            menu_B_E:
+              id: menu_B_E
               name: null
               label: Informes
               route: null
@@ -306,8 +281,8 @@ root:
               attributes:
                 icon: 'fa fa-file'
               childrens:
-                menu_B_F_A:
-                  id: menu_B_F_A
+                menu_B_E_A:
+                  id: menu_B_E_A
                   name: null
                   label: 'Informe de Stock'
                   route: bodega_informe_stock
@@ -316,8 +291,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-                menu_B_F_B:
-                  id: menu_B_F_B
+                menu_B_E_B:
+                  id: menu_B_E_B
                   name: null
                   label: 'Informe de Movimientos'
                   route: movimiento_informe
@@ -326,8 +301,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-                menu_B_F_C:
-                  id: menu_B_F_C
+                menu_B_E_C:
+                  id: menu_B_E_C
                   name: null
                   label: 'Informe de Costos'
                   route: bodega_informe_costos
@@ -336,8 +311,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-            menu_B_G:
-              id: menu_B_G
+            menu_B_F:
+              id: menu_B_F
               name: null
               label: Configuración
               route: null
@@ -348,8 +323,8 @@ root:
               attributes:
                 icon: 'fa fa-gear'
               childrens:
-                menu_B_G_A:
-                  id: menu_B_G_A
+                menu_B_F_A:
+                  id: menu_B_F_A
                   name: null
                   label: 'Categoría de Productos'
                   route: categoria_producto
@@ -358,8 +333,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-                menu_B_G_B:
-                  id: menu_B_G_B
+                menu_B_F_B:
+                  id: menu_B_F_B
                   name: null
                   label: 'Condiciones de Pago'
                   route: condicionespago
@@ -368,8 +343,8 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-                menu_B_G_C:
-                  id: menu_B_G_C
+                menu_B_F_C:
+                  id: menu_B_F_C
                   name: null
                   label: Impuesto
                   route: impuesto
