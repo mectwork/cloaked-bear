@@ -12,6 +12,9 @@
                 {% for n in node.childrens %}
                     <tr>
                         <td>
+                            {% if n.hasAttribute('icon') %}
+                                <i class="{{ n.getAttribute('icon') }}"></i>
+                            {% endif %}
                             {% if n.type == 'folder' %}
                                 <a href="#show" data-content="{{ n.id }}" data-type="{{ n.type }}">{{ n.label }}</a>
                             {% else %}

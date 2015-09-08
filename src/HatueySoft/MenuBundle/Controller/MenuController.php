@@ -78,14 +78,19 @@ class MenuController extends Controller
 
             foreach ($childrens as $child) {
                 /** @var \HatueySoft\MenuBundle\Model\MenuNode $child */
+                $attr = array(
+                    'id' => $child->getId(),
+                );
+
+                $childAttributes = $child->getAttributesToArray();
+                if (array_key_exists('icon', $childAttributes)) {
+                    $attr['data-icon'] = $childAttributes['icon'];
+                }
+
                 $render[] = array(
                     'text' => $child->getLabel(),
                     'type' => $child->getType(),
-                    'attr' => array(
-//                        'cssClass' => $child['attributes']['icon'],
-//                        'data-icon' => $child['attributes']['icon'],
-                        'id' => $child->getId(),
-                    ),
+                    'attr' => $attr,
                 );
             }
         }

@@ -27,7 +27,7 @@ root:
             - ROLE_USER
           type: folder
           attributes:
-            icon: 'icon icon-bus'
+            icon: 'fa fa-bus'
             color: bg-color-blue
           childrens:
             menu_A_A:
@@ -128,7 +128,8 @@ root:
               roles:
                 - ROLE_USER
               type: item
-              attributes: {  }
+              attributes:
+                icon: 'fa fa-dashboard'
               childrens: {  }
         menu_C:
           id: menu_C

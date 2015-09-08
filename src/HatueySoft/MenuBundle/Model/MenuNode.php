@@ -194,9 +194,42 @@ class MenuNode
         $this->attributes->add($attribute);
     }
 
+    /**
+     * @param $attribute
+     */
     public function removeAttribute($attribute)
     {
         $this->attributes->removeElement($attribute);
+    }
+
+    /**
+     * @param $key
+     * @return bool
+     */
+    public function hasAttribute($key)
+    {
+        foreach ($this->attributes as $attr) {
+            if ($attr->getKey() === $key) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $key
+     * @return bool
+     */
+    public function getAttribute($key)
+    {
+        foreach ($this->attributes as $attr) {
+            if ($attr->getKey() === $key) {
+                return $attr->getValue();
+            }
+        }
+
+        return false;
     }
 
     /**
