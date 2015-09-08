@@ -365,7 +365,83 @@ root:
           attributes:
             icon: 'fa fa-cogs'
             color: bg-color-green
-          childrens: {  }
+          childrens:
+            menu_C_A:
+              id: menu_C_A
+              name: null
+              label: Solicitudes
+              route: reporte
+              roles:
+                - ROLE_USER
+              type: item
+              disabled: false
+              attributes:
+                icon: 'fa fa-book'
+              childrens: {  }
+            menu_C_B:
+              id: menu_C_B
+              name: null
+              label: Diagnósticos
+              route: diagnostico
+              roles:
+                - ROLE_USER
+              type: item
+              disabled: false
+              attributes:
+                icon: 'fa fa-newspaper-o'
+              childrens: {  }
+            menu_C_C:
+              id: menu_C_C
+              name: null
+              label: 'Gestionar Orden de trabajo'
+              route: null
+              roles:
+                - ROLE_USER
+              type: folder
+              disabled: false
+              attributes:
+                icon: 'fa fa-share-square'
+              childrens:
+                menu_C_C_A:
+                  id: menu_C_C_A
+                  name: null
+                  label: 'Orden de Trabajo'
+                  route: ordentrabajo
+                  roles: [ROLE_USER]
+                  type: item
+                  disabled: false
+                  attributes: {  }
+                  childrens: {  }
+                menu_C_C_B:
+                  id: menu_C_C_B
+                  name: null
+                  label: 'Tarea de Mantenimiento'
+                  route: tareamantenimiento
+                  roles: [ROLE_USER]
+                  type: item
+                  disabled: false
+                  attributes: {  }
+                  childrens: {  }
+                menu_C_C_C:
+                  id: menu_C_C_C
+                  name: null
+                  label: 'Mantenimiento Preventivo'
+                  route: mantenimientopreventivo
+                  roles: [ROLE_USER]
+                  type: item
+                  disabled: false
+                  attributes: {  }
+                  childrens: {  }
+                menu_C_C_D:
+                  id: menu_C_C_D
+                  name: null
+                  label: 'Histórico de Mantenimientos'
+                  route: historicomantenimientos
+                  roles: [ROLE_USER]
+                  type: item
+                  disabled: false
+                  attributes: {  }
+                  childrens: {  }
         menu_D:
           id: menu_D
           name: menu_combustible

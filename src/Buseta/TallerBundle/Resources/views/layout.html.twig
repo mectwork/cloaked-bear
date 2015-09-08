@@ -17,7 +17,14 @@
 
 {% block left_menu_items %}
     {# Left menu items #}
-    {% include 'BusetaTallerBundle:Extras:menu_izquierdo.html.twig'  %}
+    {#{% include 'BusetaTallerBundle:Extras:menu_izquierdo.html.twig'  %}#}
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            {{ knp_menu_render('BusetaTallerBundle:MenuBuilder:mainMenu',{'currentClass': 'active', 'allow_safe_labels': true}) }}
+            <!-- /#side-menu -->
+        </div>
+        <!-- /.sidebar-collapse -->
+    </nav>
 {% endblock %}
 
 {% block content %}
