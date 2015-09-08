@@ -534,4 +534,71 @@ root:
           attributes:
             icon: 'fa fa-shield'
             color: bg-color-red
-          childrens: {  }
+          childrens:
+            menu_F_A:
+              id: menu_F_A
+              name: null
+              label: Usuarios
+              route: security_usuario
+              roles:
+                - ROLE_USER
+              type: item
+              disabled: false
+              attributes:
+                icon: null
+              childrens: {  }
+            menu_F_B:
+              id: menu_F_B
+              name: null
+              label: Roles
+              route: role_manager
+              roles:
+                - ROLE_USER
+              type: item
+              disabled: false
+              attributes: {  }
+              childrens: {  }
+            menu_F_C:
+              id: menu_F_C
+              name: null
+              label: Rutas
+              route: role_grants
+              roles:
+                - ROLE_USER
+              type: item
+              disabled: false
+              attributes: {  }
+              childrens: {  }
+            menu_F_D:
+              id: menu_F_D
+              name: null
+              label: 'Reglas ACL'
+              route: aclrules
+              roles:
+                - ROLE_USER
+              type: item
+              disabled: false
+              attributes: {  }
+              childrens: {  }
+            menu_F_E:
+              id: menu_F_E
+              name: null
+              label: Secuencia
+              route: sequence
+              roles:
+                - ROLE_USER
+              type: item
+              disabled: false
+              attributes: {  }
+              childrens: {  }
+            menu_F_F:
+              id: menu_F_F
+              name: null
+              label: Menú
+              route: hatueysoft_menu
+              roles:
+                - ROLE_USER
+              type: item
+              disabled: false
+              attributes: {  }
+              childrens: {  }

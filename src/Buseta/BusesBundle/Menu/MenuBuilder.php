@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: cinfante
- * Date: 7/09/15
- * Time: 13:05
- */
 
 namespace Buseta\BusesBundle\Menu;
 
