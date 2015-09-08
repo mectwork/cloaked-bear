@@ -5,6 +5,7 @@
                 <tr>
                     <th>Label</th>
                     <th>Type</th>
+                    <th>Status</th>
                     <th></th>
                 </tr>
             </thead>
@@ -22,6 +23,7 @@
                             {% endif %}
                         </td>
                         <td>{{ n.type == 'folder' ? '<span class="label label-primary">folder</span>' : '<span class="label label-warning">item</span>' }}</td>
+                        <td class="text-center">{{ n.disabled ? '<i class="fa fa-circle-o red" title="disabled"></i>' : '<i class="fa fa-circle green" title="active"></i>' }}</td>
                         <td>
                             <a class="btn btn-link btn-sm" href="#edit" data-content="{{ n.id }}" data-type="{{ n.type }}"><i class="fa fa-edit"></i> edit</a>
                             <a class="btn btn-link btn-sm" href="#delete" data-content="{{ n.id }}" data-type="{{ n.type }}" data-label="{{ n.label }}"><i class="fa fa-trash"></i> delete</a>

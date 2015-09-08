@@ -6,6 +6,7 @@ root:
   roles:
     - ROLE_USER
   type: folder
+  disabled: false
   attributes: {  }
   childrens:
     menu:
@@ -16,6 +17,7 @@ root:
       roles:
         - ROLE_USER
       type: folder
+      disabled: false
       attributes: {  }
       childrens:
         menu_A:
@@ -26,6 +28,7 @@ root:
           roles:
             - ROLE_USER
           type: folder
+          disabled: true
           attributes:
             icon: 'fa fa-bus'
             color: bg-color-blue
@@ -38,6 +41,7 @@ root:
               roles:
                 - ROLE_USER
               type: item
+              disabled: false
               attributes:
                 icon: 'fa fa-dashboard'
               childrens: {  }
@@ -49,6 +53,7 @@ root:
               roles:
                 - ROLE_USER
               type: folder
+              disabled: false
               attributes:
                 icon: 'fa fa-wrench'
               childrens:
@@ -59,6 +64,7 @@ root:
                   route: null
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: { icon: null }
                   childrens: {  }
                 menu_A_B_B:
@@ -68,6 +74,7 @@ root:
                   route: null
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: { icon: null }
                   childrens: {  }
                 menu_A_B_C:
@@ -77,6 +84,7 @@ root:
                   route: null
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: { icon: null }
                   childrens: {  }
             menu_A_C:
@@ -87,6 +95,7 @@ root:
               roles:
                 - ROLE_USER
               type: folder
+              disabled: false
               attributes:
                 icon: 'fa fa-gear'
               childrens:
@@ -97,6 +106,7 @@ root:
                   route: null
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: { icon: null }
                   childrens: {  }
                 menu_A_C_B:
@@ -106,6 +116,7 @@ root:
                   route: null
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: { icon: null }
                   childrens: {  }
         menu_B:
@@ -117,6 +128,7 @@ root:
             - ROLE_ADMIN
             - ROLE_SUPER_ADMIN
           type: folder
+          disabled: false
           attributes:
             icon: 'fa fa-cubes'
             color: bg-color-orange
@@ -130,6 +142,7 @@ root:
                 - ROLE_ADMIN
                 - ROLE_SUPER_ADMIN
               type: item
+              disabled: false
               attributes:
                 icon: 'fa fa-dashboard'
               childrens: {  }
@@ -141,6 +154,7 @@ root:
               roles:
                 - ROLE_USER
               type: folder
+              disabled: false
               attributes:
                 icon: 'fa fa-users'
               childrens:
@@ -151,6 +165,7 @@ root:
                   route: tercero
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
                 menu_B_B_B:
@@ -160,6 +175,7 @@ root:
                   route: proveedor
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
             menu_B_C:
@@ -170,6 +186,7 @@ root:
               roles:
                 - ROLE_USER
               type: folder
+              disabled: false
               attributes:
                 icon: 'fa fa-coffee'
               childrens:
@@ -180,6 +197,7 @@ root:
                   route: producto
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
             menu_B_D:
@@ -190,6 +208,7 @@ root:
               roles:
                 - ROLE_USER
               type: folder
+              disabled: false
               attributes:
                 icon: 'fa fa-money'
               childrens:
@@ -200,6 +219,7 @@ root:
                   route: necesidadmaterial
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
                 menu_B_D_B:
@@ -209,6 +229,7 @@ root:
                   route: pedidocompra
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
                 menu_B_D_C:
@@ -218,6 +239,7 @@ root:
                   route: albaran
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
             menu_B_E:
@@ -228,6 +250,7 @@ root:
               roles:
                 - ROLE_USER
               type: folder
+              disabled: false
               attributes:
                 icon: 'fa fa-archive'
               childrens:
@@ -238,6 +261,7 @@ root:
                   route: bodega
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
                 menu_B_E_B:
@@ -247,6 +271,7 @@ root:
                   route: movimiento
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
                 menu_B_E_C:
@@ -256,6 +281,7 @@ root:
                   route: salidabodega
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
                 menu_B_E_D:
@@ -265,6 +291,7 @@ root:
                   route: inventariofisico
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
             menu_B_F:
@@ -275,6 +302,7 @@ root:
               roles:
                 - ROLE_USER
               type: folder
+              disabled: false
               attributes:
                 icon: 'fa fa-file'
               childrens:
@@ -285,6 +313,7 @@ root:
                   route: bodega_informe_stock
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
                 menu_B_F_B:
@@ -294,6 +323,7 @@ root:
                   route: movimiento_informe
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
                 menu_B_F_C:
@@ -303,6 +333,7 @@ root:
                   route: bodega_informe_costos
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
             menu_B_G:
@@ -313,6 +344,7 @@ root:
               roles:
                 - ROLE_USER
               type: folder
+              disabled: false
               attributes:
                 icon: 'fa fa-gear'
               childrens:
@@ -323,6 +355,7 @@ root:
                   route: categoria_producto
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
                 menu_B_G_B:
@@ -332,6 +365,7 @@ root:
                   route: condicionespago
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
                 menu_B_G_C:
@@ -341,6 +375,7 @@ root:
                   route: impuesto
                   roles: [ROLE_USER]
                   type: item
+                  disabled: false
                   attributes: {  }
                   childrens: {  }
         menu_C:
@@ -351,6 +386,7 @@ root:
           roles:
             - ROLE_USER
           type: folder
+          disabled: false
           attributes:
             icon: 'fa fa-cogs'
             color: bg-color-green
@@ -363,6 +399,7 @@ root:
           roles:
             - ROLE_USER
           type: folder
+          disabled: false
           attributes:
             icon: 'fa fa-dashboard'
             color: bg-color-blueDark
@@ -375,6 +412,7 @@ root:
           roles:
             - ROLE_USER
           type: item
+          disabled: false
           attributes:
             icon: 'fa fa-cog'
             color: bg-color-brown
@@ -387,6 +425,7 @@ root:
           roles:
             - ROLE_USER
           type: folder
+          disabled: false
           attributes:
             icon: 'fa fa-shield'
             color: bg-color-red

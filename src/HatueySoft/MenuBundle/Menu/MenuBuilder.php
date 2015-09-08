@@ -25,8 +25,8 @@ class MenuBuilder extends ContainerAware
         if (!$modules->getChildrens()->isEmpty()) {
             $counter = 0;
             foreach ($modules->getChildrens() as $children) {
-                // check roles permision
-                if (count($modules->getRoles()) && $securityContext->isGranted($modules->getRoles())) {
+                // check roles permission
+                if (count($children->getRoles()) && $securityContext->isGranted($children->getRoles()) && !$children->isDisabled()) {
                     $attributes = array(
                         'class' => 'span4',
                     );
@@ -74,7 +74,8 @@ class MenuBuilder extends ContainerAware
     private function renderChildrens(ItemInterface $menu, MenuNode $item, SecurityContextInterface $securityContext)
     {
         foreach ($item->getChildrens() as $children) {
-            if (count($children->getRoles()) && $securityContext->isGranted($children->getRoles())) {
+            // check roles permission
+            if (count($children->getRoles()) && $securityContext->isGranted($children->getRoles()) && !$children->isDisabled()) {
                 /** @var \HatueySoft\MenuBundle\Model\MenuNode $children */
                 $options = array();
                 if ($children->getRoute() !== null) {

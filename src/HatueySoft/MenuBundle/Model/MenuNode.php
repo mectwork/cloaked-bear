@@ -60,6 +60,11 @@ class MenuNode
     private $childrens;
 
     /**
+     * @var boolean
+     */
+    private $disabled;
+
+    /**
      * Virtual
      * @var boolean
      */
@@ -78,6 +83,7 @@ class MenuNode
             $this->route    = $menuNode['route'];
             $this->roles    = $menuNode['roles'];
             $this->type     = $menuNode['type'];
+            $this->disabled = isset($menuNode['disabled']) ? $menuNode['disabled'] : false;
 
             if (isset($menuNode['attributes']) && count($menuNode['attributes'])) {
                 foreach ($menuNode['attributes'] as $key => $value) {
@@ -102,6 +108,7 @@ class MenuNode
         $array['route'] = $this->getRoute();
         $array['roles'] = $this->getRoles();
         $array['type']  = $this->getType();
+        $array['disabled'] = $this->isDisabled();
 
         $array['attributes'] = array();
         foreach ($this->attributes as $attr) {
@@ -365,5 +372,21 @@ class MenuNode
     public function setApplyInChain($applyInChain)
     {
         $this->applyInChain = $applyInChain;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDisabled()
+    {
+        return $this->disabled;
+    }
+
+    /**
+     * @param boolean $disabled
+     */
+    public function setDisabled($disabled)
+    {
+        $this->disabled = $disabled;
     }
 }

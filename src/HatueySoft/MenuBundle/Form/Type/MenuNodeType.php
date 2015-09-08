@@ -73,6 +73,9 @@ class MenuNodeType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
             ))
+            ->add('disabled', 'checkbox', array(
+                'required' => false,
+            ))
         ;
     }
 
