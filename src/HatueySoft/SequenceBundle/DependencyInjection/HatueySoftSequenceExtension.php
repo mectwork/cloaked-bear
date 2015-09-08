@@ -25,7 +25,7 @@ class HatueySoftSequenceExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('hatuey_soft_sequence', $config['sequences']);
+        $container->setParameter('hatuey_soft_sequence.config', $config);
     }
 
 

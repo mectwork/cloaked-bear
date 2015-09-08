@@ -6,7 +6,10 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ReporteType extends AbstractType
 {
@@ -16,11 +19,24 @@ class ReporteType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('numero', 'text', array(
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $formEvent) {
+            $form = $formEvent->getForm();
+            $data = $formEvent->getData();
+
+            $propertyAccesor = PropertyAccess::createPropertyAccessor();
+            $numero = $propertyAccesor->getValue($data, 'numero');
+            $attr = array();
+            if ($numero !== null) {
+                $attr['readonly'] = true;
+            }
+
+            $form->add('numero', 'text', array(
                 'required' => false,
                 'label'  => 'Número',
-            ))
+                'attr' => $attr,
+            ));
+        });
+        $builder
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
                 'empty_value' => '---Seleccione autobus---',

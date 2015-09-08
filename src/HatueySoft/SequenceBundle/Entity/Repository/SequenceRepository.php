@@ -46,4 +46,21 @@ class SequenceRepository extends EntityRepository
             return array();
         }
     }
+
+    public function isActive($name)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $query = $qb->select('s.active')
+            ->where($qb->expr()->eq('s.name', ':name'))
+            ->setParameter('name', $name)
+            ->getQuery();
+
+        try {
+            $result = $query->getSingleResult();
+
+            return $result['active'];
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 }

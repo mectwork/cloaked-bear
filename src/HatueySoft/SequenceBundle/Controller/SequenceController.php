@@ -27,27 +27,31 @@ class SequenceController extends Controller
     public function indexAction(Request $request)
     {
         //Obteniendo los valores definidos en el archivo "config.yml" para las secuencias
-        $sequences_values = $this->get('service_container')->getParameter('hatuey_soft_sequence');
+        $sequenceConfig = $this->get('service_container')->getParameter('hatuey_soft_sequence.config');
+        $sequences_values = $sequenceConfig['sequences'];
         $em = $this->get('doctrine.orm.entity_manager');
+        $sequenceManager = $this->get('hatuey_soft.sequence.manager');
 
         //Recorrer arreglo bidimensional
         foreach($sequences_values as $name => $seq) {
-            $sequence = new Sequence();
-
             $seq_existentes = $em
                 ->getRepository('HatueySoftSequenceBundle:Sequence')->findBy(
                     array('name' => $name)
                 );
 
             if(count($seq_existentes) == 0) {
+                $sequence = $sequenceManager->getDefaultInstance();
                 $sequence->setName($name);
-                $sequence->setType('incremental');
-                $sequence->setNumberIncrement(1);
-                $sequence->setNumberNextInterval(1);
-                $sequence->setPadding(0);
 
-                $em->persist($sequence);
-                $em->flush();
+                try {
+                    $em->persist($sequence);
+                    $em->flush();
+                } catch (\Exception $e) {
+                    $this->get('logger')->critical(sprintf('Ha ocurrido un error al intentar crear las secuencias definidas. Detalles: %s', $e->getMessage()));
+                    $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al intentar crear las secuencias definidas.');
+
+                    break;
+                }
             }
         }
 
@@ -200,7 +204,6 @@ class SequenceController extends Controller
             throw $this->createNotFoundException('Unable to find Sequence entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->submit($request);
 
@@ -213,7 +216,6 @@ class SequenceController extends Controller
         return $this->render('@HatueySoftSequence/Sequence/edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 }

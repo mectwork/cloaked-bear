@@ -14,6 +14,7 @@ use Buseta\TallerBundle\Entity\Reporte;
 use Buseta\TallerBundle\Form\Type\ReporteType;
 use Buseta\TallerBundle\Form\Model\ReporteFilterModel;
 use Buseta\TallerBundle\Form\Filter\ReporteFilter;
+use Symfony\Component\Security\Core\Util\ClassUtils;
 
 /**
  * Reporte controller.
@@ -171,7 +172,12 @@ class ReporteController extends Controller
     public function newAction(Request $request)
     {
         $status = $request->query->get('status', self::DEFAULT_STATUS);
+        $sequenceManager = $this->get('hatuey_soft.sequence.manager');
         $entity = new Reporte();
+
+        if ($sequenceManager->hasSequence(ClassUtils::getRealClass($entity))) {
+            $entity->setNumero($sequenceManager->getNextValue('reporte_seq'));
+        }
 
         $observacion = $this->createForm(new ObservacionType());
 
