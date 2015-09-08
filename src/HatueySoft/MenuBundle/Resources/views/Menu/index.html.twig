@@ -43,6 +43,7 @@
                     <div class="pull-left" id="menu_node_heading"></div>
                     <div class="pull-right">
                         <a href="#add"><i class="fa fa-plus green"></i></a>
+                        <a href="#editCurrent"><i class="fa fa-edit red"></i></a>
                     </div>
                 </div>
                 <div class="panel-body" id="menu_node_body">
@@ -89,6 +90,17 @@
 
                             self.onEditEvents();
                         })
+                    });
+
+                    $('a[href="#editCurrent"]').off('click').on('click', function (event) {
+                        event.preventDefault();
+
+                        var current = $('#menu_node_heading').data('current');
+                        if (typeof current == 'undefined' || current == 'menu') {
+                            return;
+                        }
+
+                        self.edit(current);
                     });
                 },
 

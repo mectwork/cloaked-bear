@@ -212,6 +212,10 @@ class MenuNode
      */
     public function getRoles()
     {
+        if ($this->roles === null || count($this->roles) === 0) {
+            $this->roles = array('ROLE_USER');
+        }
+
         return $this->roles;
     }
 

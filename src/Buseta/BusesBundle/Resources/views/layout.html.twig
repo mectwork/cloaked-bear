@@ -13,7 +13,15 @@
 
 {% block left_menu_items %}
     {# Left menu items #}
-    {% include 'BusetaBusesBundle:Extras:menu_izquierdo.html.twig'  %}
+    {#{% include 'BusetaBusesBundle:Extras:menu_izquierdo.html.twig'  %}#}
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            {{ knp_menu_render('BusetaBusesBundle:MenuBuilder:mainMenu',{'currentClass': 'active', 'allow_safe_labels': true}) }}
+            <!-- /#side-menu -->
+        </div>
+        <!-- /.sidebar-collapse -->
+    </nav>
+    <!-- /.navbar-static-side -->
 {% endblock %}
 
 {% block content %}

@@ -3,7 +3,8 @@ root:
   name: null
   label: null
   route: null
-  roles: null
+  roles:
+    - ROLE_USER
   type: folder
   attributes: {  }
   childrens:
@@ -12,7 +13,8 @@ root:
       name: null
       label: 'Menú sistema'
       route: null
-      roles: null
+      roles:
+        - ROLE_USER
       type: folder
       attributes: {  }
       childrens:
@@ -21,7 +23,8 @@ root:
           name: menu_vehiculos
           label: Vehículos
           route: autobus_principal
-          roles: {  }
+          roles:
+            - ROLE_USER
           type: folder
           attributes:
             icon: 'icon icon-bus'
@@ -31,28 +34,30 @@ root:
               id: menu_A_A
               name: null
               label: 'Página principal'
-              route: autobus_principal
-              roles: {  }
+              route: core_homepage
+              roles:
+                - ROLE_USER
               type: item
               attributes:
-                icon: null
+                icon: 'fa fa-dashboard'
               childrens: {  }
             menu_A_B:
               id: menu_A_B
               name: null
               label: 'Gestión de vehículos'
               route: null
-              roles: {  }
+              roles:
+                - ROLE_USER
               type: folder
               attributes:
-                icon: null
+                icon: 'fa fa-wrench'
               childrens:
                 menu_A_B_A:
                   id: menu_A_B_A
                   name: null
                   label: Autobuses
                   route: null
-                  roles: {  }
+                  roles: [ROLE_USER]
                   type: item
                   attributes: { icon: null }
                   childrens: {  }
@@ -61,7 +66,7 @@ root:
                   name: null
                   label: Choferes
                   route: null
-                  roles: {  }
+                  roles: [ROLE_USER]
                   type: item
                   attributes: { icon: null }
                   childrens: {  }
@@ -70,7 +75,7 @@ root:
                   name: null
                   label: Vehículos
                   route: null
-                  roles: {  }
+                  roles: [ROLE_USER]
                   type: item
                   attributes: { icon: null }
                   childrens: {  }
@@ -79,17 +84,18 @@ root:
               name: null
               label: Configuración
               route: null
-              roles: {  }
+              roles:
+                - ROLE_USER
               type: folder
               attributes:
-                icon: null
+                icon: 'fa fa-gear'
               childrens:
                 menu_A_C_A:
                   id: menu_A_C_A
                   name: null
                   label: 'Cambio hora del sistema'
                   route: null
-                  roles: {  }
+                  roles: [ROLE_USER]
                   type: item
                   attributes: { icon: null }
                   childrens: {  }
@@ -98,7 +104,7 @@ root:
                   name: null
                   label: 'Cambio fecha del sistema'
                   route: null
-                  roles: {  }
+                  roles: [ROLE_USER]
                   type: item
                   attributes: { icon: null }
                   childrens: {  }
@@ -107,18 +113,30 @@ root:
           name: menu_bodega
           label: Bodega
           route: bodega_principal
-          roles: {  }
+          roles:
+            - ROLE_USER
           type: folder
           attributes:
             icon: 'fa fa-cubes'
             color: bg-color-orange
-          childrens: {  }
+          childrens:
+            menu_B_A:
+              id: menu_B_A
+              name: null
+              label: 'Página principal'
+              route: core_homepage
+              roles:
+                - ROLE_USER
+              type: item
+              attributes: {  }
+              childrens: {  }
         menu_C:
           id: menu_C
           name: menu_taller
           label: Taller
           route: taller_principal
-          roles: {  }
+          roles:
+            - ROLE_USER
           type: folder
           attributes:
             icon: 'fa fa-cogs'
@@ -129,7 +147,8 @@ root:
           name: menu_combustible
           label: Combustible
           route: configuracion_combustible
-          roles: {  }
+          roles:
+            - ROLE_USER
           type: folder
           attributes:
             icon: 'fa fa-dashboard'
@@ -140,7 +159,8 @@ root:
           name: menu_nomenclador
           label: 'Módulo Nomenclador'
           route: admin
-          roles: {  }
+          roles:
+            - ROLE_USER
           type: item
           attributes:
             icon: 'fa fa-cog'
@@ -151,7 +171,8 @@ root:
           name: menu_seguridad
           label: 'Módulo Seguridad'
           route: security_usuario
-          roles: {  }
+          roles:
+            - ROLE_USER
           type: folder
           attributes:
             icon: 'fa fa-shield'
