@@ -1,0 +1,51 @@
+{% block collection_widget %}
+{% spaceless %}
+<div class="collection">
+    {% if prototype is defined %}
+        {% set attr = attr | merge({'data-prototype': block('collection_item_widget') }) %}
+    {% endif %}
+    {{ form_errors(form) }}
+
+    <div  {{ block('widget_container_attributes') }}>
+        <div class="row" >
+            <div class="col-lg-5" style="text-align: center;"><strong>Key</strong></div>
+            <div class="col-lg-5" style="text-align: center;"><strong>Value</strong></div>
+        </div>
+
+        <div id="tbody">
+            {% set counter = form | length %}
+            {% for rows in form %}
+                {{ _self.template(rows) }}
+            {% else %}
+                <div id="no-elements-tr">No existen elementos. Presione "Adicionar" para agregar nuevos elementos.</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+    {{ form_rest(form) }}
+{% endspaceless %}
+{% endblock collection_widget %}
+
+{% block collection_item_widget %}
+{% spaceless %}
+    {{ _self.template(prototype) }}
+{% endspaceless %}
+{% endblock collection_item_widget %}
+
+{% macro template(prototype) %}
+<div class="row">
+    <div class="col-lg-5 form-group">
+        {{ form_widget(prototype.key) }}
+        {{ form_errors(prototype.key) }}
+    </div>
+
+    <div class="col-lg-5 form-group">
+        {{ form_widget(prototype.value) }}
+        {{ form_errors(prototype.value) }}
+    </div>
+
+    <div class="col-lg-2 form-group">
+        <a class="btn btn-primary delete_attribute_link" href="#"><i class="fa fa-minus-circle"></i></a>
+    </div>
+</div>
+{% endmacro %}

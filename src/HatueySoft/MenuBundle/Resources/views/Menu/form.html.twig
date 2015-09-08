@@ -1,0 +1,38 @@
+{% form_theme form.attributes '@HatueySoftMenu/Menu/widget/collection_node_attributes.html.twig' %}
+
+<form name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" action="{{ form.vars.action }}" method="post" enctype="multipart/form-data">
+    {% if form.vars.method == 'PUT' %}
+    <input type="hidden" name="_method" value="PUT">
+    {% endif %}
+
+    {{ form_errors(form) }}
+
+    {% if form.offsetExists('name') %}
+        {{ form_row(form.name) }}
+    {% endif %}
+
+    {{ form_row(form.label) }}
+    {{ form_row(form.route) }}
+    {{ form_row(form.roles) }}
+    {{ form_row(form.type) }}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <span class="pull-left">Attributes</span>
+                    <a href="#" class="pull-right add_attribute_link"><i class="fa fa-plus green"></i> Add</a>
+                </div>
+                <div class="panel-body">
+                    {{ form_widget(form.attributes) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+
+    <a class="btn btn-primary" href="#" id="menu_node_submit"> Editar</a>
+    {#<a class="btn btn-default" href="#" id="menu_node_cancel"> Cancelar</a>#}
+</form>
+

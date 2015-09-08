@@ -56,12 +56,12 @@ class MenuNodeType extends AbstractType
                     'item'   => 'item'
                 )
             ))
-//            ->add('attributes', 'collection', array(
-//                'type' => new MenuNodeAttributeType(),
-//                'allow_add' => true,
-//                'allow_delete' => true,
-//                'by_reference' => false,
-//            ))
+            ->add('attributes', 'collection', array(
+                'type' => new MenuNodeAttributeType(),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ))
         ;
     }
 

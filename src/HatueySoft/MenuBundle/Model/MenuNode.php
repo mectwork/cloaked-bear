@@ -194,6 +194,11 @@ class MenuNode
         $this->attributes->add($attribute);
     }
 
+    public function removeAttribute($attribute)
+    {
+        $this->attributes->removeElement($attribute);
+    }
+
     /**
      * @return array
      */
