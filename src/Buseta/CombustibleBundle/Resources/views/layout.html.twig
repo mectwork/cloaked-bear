@@ -13,7 +13,14 @@
 
 {% block left_menu_items %}
     {# Left menu items #}
-    {% include 'BusetaCombustibleBundle:Extras:menu_izquierdo.html.twig'  %}
+    {#{% include 'BusetaCombustibleBundle:Extras:menu_izquierdo.html.twig'  %}#}
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            {{ knp_menu_render('BusetaCombustibleBundle:MenuBuilder:mainMenu',{'currentClass': 'active', 'allow_safe_labels': true}) }}
+            <!-- /#side-menu -->
+        </div>
+        <!-- /.sidebar-collapse -->
+    </nav>
 {% endblock %}
 
 {% block content %}

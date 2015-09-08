@@ -454,7 +454,61 @@ root:
           attributes:
             icon: 'fa fa-dashboard'
             color: bg-color-blueDark
-          childrens: {  }
+          childrens:
+            menu_D_A:
+              id: menu_D_A
+              name: null
+              label: 'Gestión de Combustible'
+              route: null
+              roles:
+                - ROLE_USER
+              type: folder
+              disabled: false
+              attributes:
+                icon: 'fa fa-fire'
+              childrens:
+                menu_D_A_A:
+                  id: menu_D_A_A
+                  name: null
+                  label: 'Lista Negra de Combustible'
+                  route: listaNegraCombustible
+                  roles: [ROLE_USER]
+                  type: item
+                  disabled: false
+                  attributes: {  }
+                  childrens: {  }
+                menu_D_A_B:
+                  id: menu_D_A_B
+                  name: null
+                  label: 'Servicios de Combustible'
+                  route: servicioCombustible
+                  roles: [ROLE_USER]
+                  type: item
+                  disabled: false
+                  attributes: {  }
+                  childrens: {  }
+            menu_D_B:
+              id: menu_D_B
+              name: null
+              label: Configuración
+              route: null
+              roles:
+                - ROLE_USER
+              type: folder
+              disabled: false
+              attributes:
+                icon: 'fa fa-gear'
+              childrens:
+                menu_D_B_A:
+                  id: menu_D_B_A
+                  name: null
+                  label: 'Nomenclador Combustible'
+                  route: configuracion_combustible
+                  roles: [ROLE_USER]
+                  type: item
+                  disabled: false
+                  attributes: {  }
+                  childrens: {  }
         menu_E:
           id: menu_E
           name: menu_nomenclador
