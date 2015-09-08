@@ -5,7 +5,14 @@ namespace HatueySoft\MenuBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Knp\Menu\NodeInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
+/**
+ * Class MenuNode
+ * @package HatueySoft\MenuBundle\Model
+ *
+ * @Assert\Callback(callback="isRequiredRoute")
+ */
 class MenuNode
 {
     const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -28,7 +35,6 @@ class MenuNode
 
     /**
      * @var string
-     * @Assert\NotBlank
      */
     private $route;
 
@@ -108,6 +114,19 @@ class MenuNode
         }
 
         return $array;
+    }
+
+    public function isRequiredRoute(ExecutionContextInterface $context)
+    {
+        if ($this->type === 'item' && ($this->route === null || $this->route === '')) {
+            $context->addViolationAt('route', 'Debe definir una ruta para el enlace.', array(), null);
+        }
+    }
+
+    public function isValidRoute(ExecutionContextInterface $context)
+    {
+        /** TODO: Crear validación para comprobar que sea una ruta válida. */
+        $context->addViolationAt('route', 'message', array(), null);
     }
 
     /**

@@ -133,6 +133,216 @@ root:
               attributes:
                 icon: 'fa fa-dashboard'
               childrens: {  }
+            menu_B_B:
+              id: menu_B_B
+              name: null
+              label: 'Gestión de Terceros'
+              route: null
+              roles:
+                - ROLE_USER
+              type: folder
+              attributes:
+                icon: 'fa fa-users'
+              childrens:
+                menu_B_B_A:
+                  id: menu_B_B_A
+                  name: null
+                  label: Terceros
+                  route: tercero
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+                menu_B_B_B:
+                  id: menu_B_B_B
+                  name: null
+                  label: Proveedor
+                  route: proveedor
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+            menu_B_C:
+              id: menu_B_C
+              name: null
+              label: 'Gestión de Productos'
+              route: null
+              roles:
+                - ROLE_USER
+              type: folder
+              attributes:
+                icon: 'fa fa-coffee'
+              childrens:
+                menu_B_C_A:
+                  id: menu_B_C_A
+                  name: null
+                  label: Productos
+                  route: producto
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+            menu_B_D:
+              id: menu_B_D
+              name: null
+              label: 'Gestión de Compras'
+              route: null
+              roles:
+                - ROLE_USER
+              type: folder
+              attributes:
+                icon: 'fa fa-money'
+              childrens:
+                menu_B_D_A:
+                  id: menu_B_D_A
+                  name: null
+                  label: 'Necesidad de Material'
+                  route: necesidadmaterial
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+                menu_B_D_B:
+                  id: menu_B_D_B
+                  name: null
+                  label: 'Registro de Compra'
+                  route: pedidocompra
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+                menu_B_D_C:
+                  id: menu_B_D_C
+                  name: null
+                  label: Albarán
+                  route: albaran
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+            menu_B_E:
+              id: menu_B_E
+              name: null
+              label: 'Gestión de Bodega'
+              route: null
+              roles:
+                - ROLE_USER
+              type: folder
+              attributes:
+                icon: 'fa fa-archive'
+              childrens:
+                menu_B_E_A:
+                  id: menu_B_E_A
+                  name: null
+                  label: Bodegas
+                  route: bodega
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+                menu_B_E_B:
+                  id: menu_B_E_B
+                  name: null
+                  label: 'Movimiento entre Bodegas'
+                  route: movimiento
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+                menu_B_E_C:
+                  id: menu_B_E_C
+                  name: null
+                  label: 'Salida de Bodegas'
+                  route: salidabodega
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+                menu_B_E_D:
+                  id: menu_B_E_D
+                  name: null
+                  label: 'Inventario Físico'
+                  route: inventariofisico
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+            menu_B_F:
+              id: menu_B_F
+              name: null
+              label: Informes
+              route: null
+              roles:
+                - ROLE_USER
+              type: folder
+              attributes:
+                icon: 'fa fa-file'
+              childrens:
+                menu_B_F_A:
+                  id: menu_B_F_A
+                  name: null
+                  label: 'Informe de Stock'
+                  route: bodega_informe_stock
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+                menu_B_F_B:
+                  id: menu_B_F_B
+                  name: null
+                  label: 'Informe de Movimientos'
+                  route: movimiento_informe
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+                menu_B_F_C:
+                  id: menu_B_F_C
+                  name: null
+                  label: 'Informe de Costos'
+                  route: bodega_informe_costos
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+            menu_B_G:
+              id: menu_B_G
+              name: null
+              label: Configuración
+              route: null
+              roles:
+                - ROLE_USER
+              type: folder
+              attributes:
+                icon: 'fa fa-gear'
+              childrens:
+                menu_B_G_A:
+                  id: menu_B_G_A
+                  name: null
+                  label: 'Categoría de Productos'
+                  route: categoria_producto
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+                menu_B_G_B:
+                  id: menu_B_G_B
+                  name: null
+                  label: 'Condiciones de Pago'
+                  route: condicionespago
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
+                menu_B_G_C:
+                  id: menu_B_G_C
+                  name: null
+                  label: Impuesto
+                  route: impuesto
+                  roles: [ROLE_USER]
+                  type: item
+                  attributes: {  }
+                  childrens: {  }
         menu_C:
           id: menu_C
           name: menu_taller
