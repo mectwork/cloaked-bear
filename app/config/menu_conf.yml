@@ -49,7 +49,7 @@ root:
                   id: menu_A_A_A
                   name: null
                   label: Autobuses
-                  route: null
+                  route: autobus
                   roles: [ROLE_USER]
                   type: item
                   disabled: false
@@ -59,7 +59,7 @@ root:
                   id: menu_A_A_B
                   name: null
                   label: Choferes
-                  route: null
+                  route: chofer
                   roles: [ROLE_USER]
                   type: item
                   disabled: false
@@ -69,7 +69,7 @@ root:
                   id: menu_A_A_C
                   name: null
                   label: Vehículos
-                  route: null
+                  route: vehiculo
                   roles: [ROLE_USER]
                   type: item
                   disabled: false

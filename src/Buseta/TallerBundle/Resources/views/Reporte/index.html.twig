@@ -64,7 +64,7 @@
     </div>
 
     <hr/>
-    {% if status == 'BO' %}
+    {% if status == 'BO' and is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\Reporte') %}
     <div class="btn-group" style="margin-bottom: 8px;">
         <a class="btn btn-primary" href="{{ path('reporte_new', {'status': status}) }}">
             <span class="glyphicon glyphicon-plus-sign"></span> {{ 'reporte.btn.adicionar'|trans({}, 'BusetaTallerBundle') }}
@@ -101,9 +101,11 @@
                 <td class="text-{{ text_color }}">{{ entity.grupo | default('-') }}</td>
                 <td style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
+                        {% if is_granted('VIEW', entity) %}
                         <a class="btn btn-success btn-xs"
                            href="{{ path('reporte_show', { 'id': entity.id, 'status': status }) }}"><span
                                     class="glyphicon glyphicon-search"> Mostrar</span></a>
+                        {% endif %}
                     </div>
                 </td>
             </tr>

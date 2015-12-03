@@ -20,14 +20,6 @@ services:
         tags:
             - { name: twig.extension }
 
-    # hidden_entity Form Type
-    form.type.hidden_entity:
-        class: HatueyERP\TercerosBundle\Form\Type\HiddenEntityType
-        arguments:
-            - @doctrine.orm.entity_manager
-        tags:
-            - { name: form.type, alias: hidden_entity }
-
     hatueyerp.direccion_ajax_type.form:
         class: HatueyERP\TercerosBundle\Form\Type\DireccionAjaxType
         arguments:

@@ -5,10 +5,11 @@ namespace Buseta\TallerBundle\Controller;
 use Buseta\TallerBundle\Entity\Diagnostico;
 use Buseta\TallerBundle\Entity\Observacion;
 use Buseta\TallerBundle\Entity\ObservacionDiagnostico;
-use Buseta\TallerBundle\Form\Type\ObservacionReporteType;
 use Buseta\TallerBundle\Form\Type\ObservacionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use Buseta\TallerBundle\Entity\Reporte;
 use Buseta\TallerBundle\Form\Type\ReporteType;
@@ -110,6 +111,7 @@ class ReporteController extends Controller
     /**
      * Creates a new Reporte entity.
      *
+     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\Reporte')")
      */
     public function createAction(Request $request)
     {
@@ -168,6 +170,7 @@ class ReporteController extends Controller
     /**
      * Displays a form to create a new Reporte entity.
      *
+     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\Reporte')")
      */
     public function newAction(Request $request)
     {
@@ -194,24 +197,16 @@ class ReporteController extends Controller
     /**
      * Finds and displays a Reporte entity.
      *
+     * @Security("is_granted('VIEW', reporte)")
      */
-    public function showAction(Request $request, $id)
+    public function showAction(Request $request, Reporte $reporte)
     {
         $status = $request->query->get('status', self::DEFAULT_STATUS);
-
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BusetaTallerBundle:Reporte')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Reporte entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($reporte->getId());
 
         return $this->render('BusetaTallerBundle:Reporte:show.html.twig', array(
-            'entity'      => $entity,
-            'id' => $id,
+            'entity' => $reporte,
+            'id' => $reporte->getId(),
             'delete_form' => $deleteForm->createView(),
             'status' => $status,
         ));
