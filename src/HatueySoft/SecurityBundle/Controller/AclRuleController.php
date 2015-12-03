@@ -5,9 +5,21 @@ namespace HatueySoft\SecurityBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+/**
+ * Class AclRuleController
+ * @package HatueySoft\SecurityBundle\Controller
+ *
+ * @Route("/aclrules")
+ */
 class AclRuleController extends Controller
 {
+    /**
+     * @return Response
+     *
+     * @Route("/", name="aclrules")
+     */
     public function indexAction()
     {
         $rulesManager = $this->get('hatuey_soft.security.acl_rules_manager');
@@ -17,6 +29,12 @@ class AclRuleController extends Controller
         ));
     }
 
+    /**
+     * @param $entity
+     * @return Response
+     *
+     * @Route("/{entity}/edit", name="aclrules_edit")
+     */
     public function editAction($entity)
     {
         $rulesManager = $this->get('hatuey_soft.security.acl_rules_manager');
@@ -38,6 +56,13 @@ class AclRuleController extends Controller
         ));
     }
 
+    /**
+     * @param $entity
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/{entity}/toggle", name="aclrules_toggle", options={"expose": true})
+     */
     public function togglePermisionAction($entity, Request $request)
     {
         $target = $request->query->get('target');

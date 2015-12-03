@@ -1,31 +1,31 @@
 hatueysoft_security_usuario:
-    resource: "@HatueySoftSecurityBundle/Resources/config/routing/usuario.yml"
-    prefix: /usuario
+    resource: "@HatueySoftSecurityBundle/Controller/UsuarioController.php"
+    type: annotation
 
 hatueysoft_security_roles:
-    resource: "@HatueySoftSecurityBundle/Resources/config/routing/roles.yml"
-    prefix: /roles
+    resource: "@HatueySoftSecurityBundle/Controller/RoleController.php"
+    type: annotation
 
 hatueysoft_security_routes:
-    resource: "@HatueySoftSecurityBundle/Resources/config/routing/routes.yml"
-    prefix: /routes
+    resource: "@HatueySoftSecurityBundle/Controller/RouteController.php"
+    type: annotation
 
 hatueysoft_aclrules:
-    resource: "@HatueySoftSecurityBundle/Resources/config/routing/aclrules.yml"
-    prefix: /aclrules
+    resource: "@HatueySoftSecurityBundle/Controller/AclRuleController.php"
+    type: annotation
 
 #friendofsymfony user bundle
 fos_user_profile:
     resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
     prefix: /profile
 
-fos_user_register:
-    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
-    prefix: /register
+#fos_user_register:
+#    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+#    prefix: /register
 
-fos_user_resetting:
-    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
-    prefix: /resetting
+#fos_user_resetting:
+#    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+#    prefix: /resetting
 
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"

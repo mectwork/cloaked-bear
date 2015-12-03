@@ -7,14 +7,25 @@ use HatueySoft\SecurityBundle\Event\RoleEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
-
+/**
+ * Class RoleController
+ * @package HatueySoft\SecurityBundle\Controller
+ *
+ * Route("/role")
+ */
 class RoleController extends Controller
 {
     /**
      * Lista los roles
      *
      * @return Response
+     *
+     * @Route("/", name="role_manager")
      */
     public function indexAction()
     {
@@ -25,6 +36,12 @@ class RoleController extends Controller
         ));
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/role/add/path", name="role_add_path")
+     */
     public function addAction(Request $request)
     {
         $action = $request->query->get('data');
@@ -58,6 +75,12 @@ class RoleController extends Controller
         return new Response($result);
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/role/delete/path", name="role_delete_path")
+     */
     public function removeAction(Request $request)
     {
         $action = $request->query->get('data');
@@ -95,6 +118,8 @@ class RoleController extends Controller
      *
      * @param Request $request
      * @return Response
+     *
+     * @Route("/role/new/path", name="role_new_el")
      */
     public function addroleAction(Request $request)
     {
@@ -133,6 +158,8 @@ class RoleController extends Controller
      *
      * @param Request $request
      * @return Response
+     *
+     * @Route("/role/del/path", name="role_del_el")
      */
     public function delroleAction(Request $request)
     {
@@ -171,39 +198,11 @@ class RoleController extends Controller
 
     }
 
-
-
-
-
-
-    /*
-     * Elimina una ruta del access control
-     *
-     */
-    public function delRouteAction(Request $request)
-    {
-        $data = $request->query->get('data');
-        $data = json_decode($data);
-        $route = $data->{'route'};
-        $manager = $this->get('security.manager');
-        $security = $manager->fileAsArray();
-        $ac = $security['security']['access_control'];
-
-        foreach($route as $r)
-        {
-            $ac = $this->removePath($ac,$r->{'name'});
-
-        }
-        $security['security']['access_control']=$ac;
-        $manager->arrayAsFile($security);
-        $this->FireCache();
-        return new Response(null,200);
-
-    }
-
-    /*
+    /**
      *
      * Dada una ruta AC devuelve sus roles
+     *
+     * @Route("/fetch/route/role", name="fetch_route_role")
      */
     public function fetchRouteRoleAction(Request $request)
     {
@@ -238,9 +237,11 @@ class RoleController extends Controller
         return new Response($result,200);
     }
 
-    /*
+    /**
      *
      * Dada una ruta AC devuelve roles no asigados
+     *
+     * @Route("/fetch/route/new", name="fetch_route_new")
      */
     public function fetchRouteNewAction(Request $request)
     {
@@ -283,38 +284,6 @@ class RoleController extends Controller
 
         return new Response($result,200);
     }
-
-    public function generalFlushAction(Request $request)
-    {
-        $data = $request->query->get('data');
-        $data = json_decode($data,true);
-        $roles = $data['roles'];
-        $prepared = array();
-        foreach($roles as $rol)
-        {
-            array_push($prepared,$rol['name']);
-        }
-        $roles = $prepared;
-        $ruta = $data['route'];
-        $access_control = $this->get('configuration.reader')->getAccessControl();
-        $manager = $this->get('security.manager');
-        $security = $manager->fileAsArray();
-        foreach( $access_control as &$ac)
-        {
-            if($ac['path']==$ruta)
-            {
-                isset($a['role'])?$index='role':$index='roles';
-                $ac[$index] = $roles;
-            }
-        }
-        $security['security']['access_control']=$access_control;
-        $manager->arrayAsFile($security);
-        $this->FireCache();
-
-        return new Response('PROCESSING', 200);
-    }
-
-
 
 #Region Auxiliares | Pueden ser desacoplados en un servicio
 
@@ -390,4 +359,4 @@ class RoleController extends Controller
             $array = array_values($array);
         return TRUE;
     }
-} 
+}

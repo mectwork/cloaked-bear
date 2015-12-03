@@ -5,6 +5,8 @@ namespace HatueySoft\SecurityBundle\Controller;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 use HatueySoft\SecurityBundle\Entity\User as Usuario;
 use HatueySoft\SecurityBundle\Form\Type\UsuarioType as UsuarioType;
@@ -12,6 +14,7 @@ use HatueySoft\SecurityBundle\Form\Type\UsuarioType as UsuarioType;
 /**
  * Usuario controller.
  *
+ * @Route("/usuario")
  */
 class UsuarioController extends Controller
 {
@@ -19,6 +22,7 @@ class UsuarioController extends Controller
     /**
      * Lists all Usuario entities.
      *
+     * @Route("/", name="security_usuario")
      */
     public function indexAction()
     {
@@ -33,6 +37,8 @@ class UsuarioController extends Controller
     /**
      * Creates a new Usuario entity.
      *
+     * @Route("/create", name="security_usuario_create")
+     * @Method("POST")
      */
     public function createAction(Request $request)
     {
@@ -73,6 +79,7 @@ class UsuarioController extends Controller
     /**
      * Displays a form to create a new Usuario entity.
      *
+     * @Route("/new", name="security_usuario_new")
      */
     public function newAction()
     {
@@ -88,6 +95,7 @@ class UsuarioController extends Controller
     /**
      * Finds and displays a Usuario entity.
      *
+     * @Route("/{id}/show", name="security_usuario_show")
      */
     public function showAction($id)
     {
@@ -110,6 +118,7 @@ class UsuarioController extends Controller
     /**
      * Displays a form to edit an existing Usuario entity.
      *
+     * @Route("/{id}/edit", name="security_usuario_edit")
      */
     public function editAction($id)
     {
@@ -150,6 +159,8 @@ class UsuarioController extends Controller
     /**
      * Edits an existing Usuario entity.
      *
+     * @Route("/{id}/update", name="security_usuario_update")
+     * @Method({"POST", "PUT"})
      */
     public function updateAction(Request $request, $id)
     {
@@ -180,6 +191,8 @@ class UsuarioController extends Controller
     /**
      * Deletes a Usuario entity.
      *
+     * @Route("/{id}/delete", name="security_usuario_delete")
+     * @Method({"POST", "DELETE"})
      */
     public function deleteAction(Request $request, $id)
     {
