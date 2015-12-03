@@ -66,6 +66,19 @@ class AclRuleController extends Controller
 
         $rulesManager->setEntityRule($entity, $rules['roles'], $rules['users']);
 
+        // Elimina la llave 'CREATE_ENTITY' que no existe dentro de las reglas ACL.
+        foreach ($rules['roles'] as $key => $rules_rol) {
+            if (($index = array_search('CREATE_ENTITY', $rules_rol)) && $key !== false) {
+                unset($rules['roles'][$key][$index]);
+            }
+        }
+        // Elimina la llave 'CREATE_ENTITY' que no existe dentro de las reglas ACL.
+        foreach ($rules['users'] as $key => $rules_user) {
+            if (($index = array_search('CREATE_ENTITY', $rules_user)) && $key !== false) {
+                unset($rules['users'][$key][$index]);
+            }
+        }
+
         $entityDir = $rulesManager->getEntity($entity);
         $allEntities = $this->get('doctrine.orm.entity_manager')
             ->getRepository($entityDir)
@@ -76,6 +89,6 @@ class AclRuleController extends Controller
             $aclManager->updateAcl($e, $rules);
         }
 
-        return new Response();
+        return new Response('Se han editado las reglas satisfactoriamente.');
     }
 }

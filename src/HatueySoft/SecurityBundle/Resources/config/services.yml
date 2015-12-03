@@ -70,3 +70,12 @@ services:
             - @hatuey_soft.security.user_callable
         tags:
             - { name: doctrine.event_subscriber }
+
+    #Voters
+    security.access.create_entity_voter:
+        class: HatueySoft\SecurityBundle\Voter\CreateEntityVoter
+        arguments:
+            - @hatuey_soft.security.acl_rules_manager
+        public: false
+        tags:
+            - {name: security.voter}

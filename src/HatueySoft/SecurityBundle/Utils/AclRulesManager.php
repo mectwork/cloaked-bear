@@ -184,4 +184,41 @@ class AclRulesManager
 
         $this->setSecurityAcl($allRules);
     }
+
+    /**
+     * Check if the given role has the attribute for entity
+     * @param $entity
+     * @param $roles
+     * @param $attribute
+     * @return bool
+     */
+    public function checkEntityRolePermission($entity, $roles, $attribute)
+    {
+        $rules = $this->getEntityRule($entity);
+        foreach ($roles as $role) {
+            if (isset($rules['roles'][$role]) && in_array($attribute, $rules['roles'][$role])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the given user has the attribute for entity
+     *
+     * @param $entity
+     * @param $user
+     * @param $attribute
+     * @return bool
+     */
+    public function checkEntityUserPermission($entity, $user, $attribute)
+    {
+        $rules = $this->getEntityRule($entity);
+        if (isset($rules['users'][$user]) && in_array($attribute, $rules['users'][$user])) {
+            return true;
+        }
+
+        return false;
+    }
 }

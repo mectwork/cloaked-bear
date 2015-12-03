@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: firomero
- * Date: 21/10/14
- * Time: 20:25
- */
 
 namespace HatueySoft\SecurityBundle\Utils;
 

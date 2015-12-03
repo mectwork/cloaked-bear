@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: firomero
- * Date: 4/10/14
- * Time: 13:52
- */
 
 namespace HatueySoft\SecurityBundle\Utils;
 use Symfony\Component\Yaml\Yaml;
@@ -32,4 +26,4 @@ class SecurityManager {
           return file_put_contents($this->security_config,$dump);
       }
 
-} 
+}
