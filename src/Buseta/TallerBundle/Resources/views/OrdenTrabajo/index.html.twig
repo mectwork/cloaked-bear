@@ -60,10 +60,11 @@
     <hr/>
 
     <!-- OT, Autobus, Grupo, Autobus, Tarea, Realizado por, Fecha estimada-->
-
+    {% if is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo') %}
     <div class="btn-group" style="padding-bottom: 8px;">
         <a class="btn btn-primary" href="{{ path('ordentrabajo_new') }}"><i class="fa fa-plus-circle"></i> Adicionar Orden de Trabajo</a>
     </div>
+    {% endif %}
 
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
@@ -95,14 +96,17 @@
                     <td>{{ tarea.fechaestimada |date('d/m/Y')  }}</td>
 
                     <td  style="width: 18% !important; text-align: center;">
+                        {% if is_granted('VIEW', entity) %}
                         <div class="btn-group">
                             <a class="btn btn-success btn-xs" href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
                         </div>
+                        {% endif %}
 
+                        {% if is_granted('EDIT', entity) %}
                         <div class="btn-group">
                             <a class="btn btn-danger btn-xs" href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
                         </div>
-
+                        {% endif %}
                     </td>
                 </tr>
 

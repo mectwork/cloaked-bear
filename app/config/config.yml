@@ -160,6 +160,7 @@ hatuey_soft_security:
         entities:
             reporte: Buseta\TallerBundle\Entity\Reporte
             diagnostico: Buseta\TallerBundle\Entity\Diagnostico
+            ordentrabajo: Buseta\TallerBundle\Entity\OrdenTrabajo
 
 
 #EJEMPLO DE COMO OBTENER LOS VALORES DEL ARCHIVO "CONFIG.YML"

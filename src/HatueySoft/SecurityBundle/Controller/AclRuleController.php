@@ -97,13 +97,13 @@ class AclRuleController extends Controller
 
         // Elimina la llave 'CREATE_ENTITY' que no existe dentro de las reglas ACL.
         foreach ($rules['roles'] as $key => $rules_rol) {
-            if (($index = array_search('CREATE_ENTITY', $rules_rol)) && $key !== false) {
+            if (false !== $index = array_search('CREATE_ENTITY', $rules_rol)) {
                 unset($rules['roles'][$key][$index]);
             }
         }
         // Elimina la llave 'CREATE_ENTITY' que no existe dentro de las reglas ACL.
         foreach ($rules['users'] as $key => $rules_user) {
-            if (($index = array_search('CREATE_ENTITY', $rules_user)) && $key !== false) {
+            if (false !== $index = array_search('CREATE_ENTITY', $rules_user)) {
                 unset($rules['users'][$key][$index]);
             }
         }

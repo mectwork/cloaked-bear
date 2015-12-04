@@ -55,6 +55,8 @@ class OrdenTrabajoController extends Controller
 
     /**
      * Creates a new OrdenTrabajo entity.
+     *
+     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\OrdenTrabajo')")
      */
     public function createAction(Request $request)
     {
@@ -109,6 +111,8 @@ class OrdenTrabajoController extends Controller
 
     /**
      * Displays a form to create a new OrdenTrabajo entity.
+     *
+     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\OrdenTrabajo')")
      */
     public function newAction()
     {
@@ -129,46 +133,37 @@ class OrdenTrabajoController extends Controller
 
     /**
      * Finds and displays a OrdenTrabajo entity.
+     *
+     * @Security("is_granted('VIEW', ordenTrabajo)")
      */
-    public function showAction($id)
+    public function showAction(OrdenTrabajo $ordenTrabajo)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BusetaTallerBundle:OrdenTrabajo')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find OrdenTrabajo entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($ordenTrabajo->getId());
 
         return $this->render('BusetaTallerBundle:OrdenTrabajo:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        ));
+            'entity'      => $ordenTrabajo,
+            'delete_form' => $deleteForm->createView(),
+        ));
     }
 
     /**
      * Displays a form to edit an existing OrdenTrabajo entity.
+     *
+     * @Security("is_granted('EDIT', ordenTrabajo)")
      */
-    public function editAction($id)
+    public function editAction(OrdenTrabajo $ordenTrabajo)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BusetaTallerBundle:OrdenTrabajo')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find OrdenTrabajo entity.');
-        }
+        $em = $this->get('doctrine.orm.entity_manager');
 
         $tarea_adicional = $this->createForm(new TareaAdicionalType());
 
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createEditForm($ordenTrabajo);
+        $deleteForm = $this->createDeleteForm($ordenTrabajo->getId());
 
         return $this->render('BusetaTallerBundle:OrdenTrabajo:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'tarea_adicional'       => $tarea_adicional->createView(),
+            'entity' => $ordenTrabajo,
+            'edit_form' => $editForm->createView(),
+            'tarea_adicional' => $tarea_adicional->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -193,51 +188,52 @@ class OrdenTrabajoController extends Controller
     }
     /**
      * Edits an existing OrdenTrabajo entity.
+     *
+     * @Security("is_granted('EDIT', ordenTrabajo)")
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, OrdenTrabajo $ordenTrabajo)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
-        $entity = $em->getRepository('BusetaTallerBundle:OrdenTrabajo')->find($id);
+        $deleteForm = $this->createDeleteForm($ordenTrabajo->getId());
+        $editForm = $this->createEditForm($ordenTrabajo);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find OrdenTrabajo entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
-
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('ordentrabajo_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('ordentrabajo_show', array('id' => $ordenTrabajo->getId())));
         }
 
         return $this->render('BusetaTallerBundle:OrdenTrabajo:edit.html.twig', array(
-            'entity'      => $entity,
+            'entity'      => $ordenTrabajo,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a OrdenTrabajo entity.
+     *
+     * @Security("is_granted("DELETE", ordenTrabajo)")
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, OrdenTrabajo $ordenTrabajo)
     {
-        $form = $this->createDeleteForm($id);
+        $form = $this->createDeleteForm($ordenTrabajo->getId());
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaTallerBundle:OrdenTrabajo')->find($id);
+            $em = $this->get('doctrine.orm.entity_manager');
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find OrdenTrabajo entity.');
+            try {
+                $em->remove($ordenTrabajo);
+                $em->flush();
+
+                $this->get('session')->getFlashBag()->add('success', 'Se ha eliminado la Orden de Trabajo de forma satisfactoria.');
+            } catch (\Exception $e) {
+                $this->get('logger')->critical(sprintf('Ha ocurrido un error eliminando Orden de Trabajo. Detalles: %s.', $e->getMessage()));
+                $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error eliminando Orden de Trabajo.');
             }
-
-            $em->remove($entity);
-            $em->flush();
         }
 
         return $this->redirect($this->generateUrl('ordentrabajo'));
