@@ -8,6 +8,13 @@ services:
         tags:
             - { name: form.type, alias: hatueysoft_security_usuario_type }
 
+    security.role.type:
+        class: HatueySoft\SecurityBundle\Form\Type\RoleType
+        arguments:
+            - @configuration.reader
+        tags:
+            - { name: form.type, alias: hatueysoft_security_role_type }
+
     # VALIDATIONS
     security.unique_systemuser_username.validator:
         class: HatueySoft\SecurityBundle\Validator\Constraints\UniqueSystemUserUsernameValidator

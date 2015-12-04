@@ -5,6 +5,11 @@
 {% block headline block('title') %}
 
 {% block content -%}
+    <div class="alert alert-warning alert-dismissable" role="alert">
+        <b>Atención</b>
+        Al aplicar cambios en la estructura debe generarse nuevamente la cache del sistema, esto provocará un cierre de sesión al completar la acción.
+    </div>
+
     <div class="control-group table">
         <a class="btn btn-primary" data-toggle="modal" href="#modaldiv">
             <span class="glyphicon glyphicon-plus"></span> Adicionar Rol</a>
@@ -15,6 +20,7 @@
         <tr>
             <th class="center"><input type="checkbox" class="selectable"></th>
             <th class="hidden-phone">Usuario</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -22,6 +28,7 @@
             <tr>
                 <td class="center"><input type="checkbox" class="to-delete" id="{{ entity }}"></td>
                 <td class="hidden-phone">{{ entity }}</td>
+                <td><a href="#edit" class="btn btn-primary btn-xs" data-content="{{ entity }}"><i class="fa fa-edit"></i> Edit</a></td>
             </tr>
         {% else %}
             <tr><td colspan="8">No se encontraron elementos que mostrar.</td></tr>
@@ -202,6 +209,33 @@
 
         });
 
+        $('a[href="#edit"]').on('click', function (event) {
+            event.preventDefault();
+
+            var role = $(this).data('content'),
+                form_name = "hatueysoft_security_role_type";
+
+            $.get(Routing.generate('role_edit', {role: role}), function (response) {
+                $('body').append($(response));
+                var modal = $('.modal#editModal');
+                modal.modal();
+
+                $('button#btn_update_aceptar').on('click', function (e) {
+                    $('form#' + form_name).ajaxSubmit({
+                        success: function (response) {
+                            document.location.reload();
+                        },
+                        error: function (jqXHR) {
+                            console.log(jqXHR);
+                        }
+                    });
+                });
+
+                modal.on('hidden.bs.modal', function () {
+                    modal.remove();
+                })
+            });
+        });
 
         //dataTables
         var oTable = $('.records_list.table.table-hover.table-striped.table-bordered.table-condensed').dataTable({
