@@ -11,6 +11,7 @@ use Buseta\TallerBundle\Form\Type\ObservacionType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use Buseta\TallerBundle\Form\Type\DiagnosticoType;
 use Buseta\TallerBundle\Form\Model\DiagnosticoFilterModel;
@@ -24,6 +25,10 @@ use Symfony\Component\HttpFoundation\Response;
 class DiagnosticoController extends Controller
 {
 
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function procesarDiagnosticoAction($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -102,36 +107,29 @@ class DiagnosticoController extends Controller
     /**
      * Finds and displays a Diagnostico entity.
      *
+     * @Security("is_granted('VIEW', diagnostico)")
      */
-    public function showAction($id)
+    public function showAction(Diagnostico $diagnostico)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
 
-        $entity = $em->getRepository('BusetaTallerBundle:Diagnostico')->find($id);
-
-        if($entity->getReporte())
-        {
-            $reportes = $em->getRepository('BusetaTallerBundle:Reporte')->find($entity->getReporte()->getId());
-        }
-        else
-        {
+        if ($diagnostico->getReporte()) {
+            $reportes = $em->getRepository('BusetaTallerBundle:Reporte')->find($diagnostico->getReporte()->getId());
+        } else {
             $reportes = null;
         }
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Diagnostico entity.');
-        }
-
         return $this->render('BusetaTallerBundle:Diagnostico:show.html.twig', array(
-            'entity' => $entity,
+            'entity' => $diagnostico,
             'reportes' => $reportes,
-            'id' => $id
+            'id' => $diagnostico->getId(),
         ));
     }
 
     /**
      * Displays a form to create a new Diagnostico entity.
      *
+     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\Diagnostico')")
      */
     public function newAction()
     {
@@ -139,12 +137,12 @@ class DiagnosticoController extends Controller
 
         $observacion = $this->createForm(new ObservacionDiagnosticoType());
 
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return $this->render('BusetaTallerBundle:Diagnostico:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
-            'observacion'  => $observacion->createView(),
+            'form' => $form->createView(),
+            'observacion' => $observacion->createView(),
         ));
     }
 
@@ -168,6 +166,7 @@ class DiagnosticoController extends Controller
     /**
      * Creates a new Diagnostico entity.
      *
+     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\Diagnostico')")
      */
     public function createAction(Request $request)
     {
@@ -186,9 +185,10 @@ class DiagnosticoController extends Controller
                     ->add('success', 'Se ha creado el Diagnóstico de forma satisfactoria.');
 
                 return $this->redirect($this->generateUrl('diagnostico_show', array('id' => $entity->getId())));
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $this->get('logger')
-                    ->addCritical(sprintf('Ha ocurrido un error creando el Diagnóstico. Detalles: %s', $e->getMessage()));
+                    ->addCritical(sprintf('Ha ocurrido un error creando el Diagnóstico. Detalles: %s',
+                        $e->getMessage()));
 
                 $this->get('session')->getFlashBag()
                     ->add('danger', 'Ha ocurrido un error creando el Diagnóstico.');
@@ -197,7 +197,7 @@ class DiagnosticoController extends Controller
 
         return $this->render('BusetaTallerBundle:Diagnostico:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -205,12 +205,15 @@ class DiagnosticoController extends Controller
      * Updated automatically select Autobus when change select Reporte
      *
      */
-    public function select_reporte_autobusAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function select_reporte_autobusAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new Response('Acceso Denegado', 403);
+        }
 
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new Response('No es una petición Ajax', 500);
+        }
 
         $em = $this->get('doctrine.orm.entity_manager');
         $reportes = $em->find('BusetaTallerBundle:Reporte', $request->query->get('reporte_id'));
@@ -219,27 +222,21 @@ class DiagnosticoController extends Controller
         $medio = $reportes->getMedioReporte()->getValor();
         //$bus = $reportes->getAutobus()->getMatricula().'-'.$reportes->getAutobus()->getNumero();
 
-        if($reportes->getReporta())
-        {
+        if ($reportes->getReporta()) {
             $reporta = $reportes->getReporta();
-        }
-        else
-        {
+        } else {
             $reporta = '-';
         }
 
-        if($reportes->getEsUsuario())
-        {
+        if ($reportes->getEsUsuario()) {
             $esUsuario = 'Sí';
-            $nombrePersona   = $reportes->getNombrePersona();
-            $emailPersona    = $reportes->getEmailPersona();
+            $nombrePersona = $reportes->getNombrePersona();
+            $emailPersona = $reportes->getEmailPersona();
             $telefonoPersona = $reportes->getTelefonoPersona();
-        }
-        else
-        {
+        } else {
             $esUsuario = 'No';
-            $nombrePersona   = '-';
-            $emailPersona    = '-';
+            $nombrePersona = '-';
+            $emailPersona = '-';
             $telefonoPersona = '-';
         }
 
@@ -260,12 +257,15 @@ class DiagnosticoController extends Controller
      * Updated automatically select Autobus y DiagnosticadoPor when change select Diagnostico
      *
      */
-    public function select_diagnostico_ordentrabajoAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function select_diagnostico_ordentrabajoAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new Response('Acceso Denegado', 403);
+        }
 
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new Response('No es una petición Ajax', 500);
+        }
 
         $em = $this->get('doctrine.orm.entity_manager');
         $diagnostico = $em->find('BusetaTallerBundle:Diagnostico', $request->query->get('diagnostico_id'));

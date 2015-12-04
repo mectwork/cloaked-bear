@@ -49,11 +49,13 @@
     </div>
 
     <hr/>
+    {% if is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\Diagnostico') %}
     <div class="btn-group" style="margin-bottom: 8px;">
         <a class="btn btn-primary" href="{{ path('diagnostico_new') }}">
             <span class="glyphicon glyphicon-plus-sign"></span> {{ 'diagnostico.btn.adicionar'|trans({}, 'BusetaTallerBundle') }}
         </a>
     </div>
+    {% endif %}
 
     <div class="paginator row">
         <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
@@ -79,17 +81,13 @@
                 <td>{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
                 <td>{{ ('estado.'~entity.estado) | trans({}, 'BusetaTallerBundle') }}</td>
                 <td style="width: 18% !important; text-align: center;">
+                    {% if is_granted('VIEW', entity) %}
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"
                            href="{{ path('diagnostico_show', { 'id': entity.id }) }}"><span
                                     class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </div>
-
-                    {#<div class="btn-group">
-                        <a class="btn btn-danger btn-xs"
-                           href="{{ path('diagnostico_edit', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-edit"> Editar</span></a>
-                    </div>#}
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

@@ -159,6 +159,7 @@ hatuey_soft_security:
     acl:
         entities:
             reporte: Buseta\TallerBundle\Entity\Reporte
+            diagnostico: Buseta\TallerBundle\Entity\Diagnostico
 
 
 #EJEMPLO DE COMO OBTENER LOS VALORES DEL ARCHIVO "CONFIG.YML"

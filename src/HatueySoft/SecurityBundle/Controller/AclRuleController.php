@@ -39,6 +39,10 @@ class AclRuleController extends Controller
     {
         $rulesManager = $this->get('hatuey_soft.security.acl_rules_manager');
         $rules = $rulesManager->getEntityRule($entity);
+        if ($rules === false) {
+            $rulesManager->setEntityRule($entity);
+            $rules = array('roles' => array(), 'users' => array());
+        }
 
         $usersManager   = $this->get('configuration.reader');
         $roles = $usersManager->getRoleList();
