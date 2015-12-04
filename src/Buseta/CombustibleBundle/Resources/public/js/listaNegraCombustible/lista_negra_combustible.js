@@ -1,14 +1,12 @@
 $('#combustible_lista_negra_combustible_fechaInicio').datetimepicker({
-    'format': 'DD/MM/YYYY',
-    pickTime: false
+    'format': 'DD/MM/YYYY'
 });
 
 var fechaInicio = $('#combustible_lista_negra_combustible_fechaInicio').val();
 $('input:hidden[name^="combustible_lista_negra_combustible[fechaInicio]_submit"]').val(fechaInicio);
 
 $('#combustible_lista_negra_combustible_fechaFinal').datetimepicker({
-    'format': 'DD/MM/YYYY',
-    pickTime: false
+    'format': 'DD/MM/YYYY'
 });
 
 var fechaFinal = $('#combustible_lista_negra_combustible_fechaFinal').val();
