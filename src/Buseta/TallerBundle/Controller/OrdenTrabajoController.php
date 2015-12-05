@@ -8,6 +8,7 @@ use Buseta\TallerBundle\Form\Type\TareaAdicionalType;
 use Buseta\TallerBundle\Manager\MantenimientoPreventivoManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Buseta\TallerBundle\Entity\OrdenTrabajo;
 use Buseta\TallerBundle\Form\Type\OrdenTrabajoType;
 
@@ -112,7 +113,7 @@ class OrdenTrabajoController extends Controller
     /**
      * Displays a form to create a new OrdenTrabajo entity.
      *
-     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\OrdenTrabajo')")
+     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo')")
      */
     public function newAction()
     {
