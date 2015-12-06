@@ -8,3 +8,11 @@ services:
         arguments: [ %command_scope%, @service_container ]
         tags:
             - { name: role.event.listener,  event: 'hatuey_soft_security.role_save', method: 'onRoleSave'}
+
+    doctrine.acl.listener:
+        class: HatueySoft\SecurityBundle\EventListener\AccessControlListListener
+        arguments:
+            - @hatuey_soft.security.acl_rules_manager
+            - @hatuey_soft.security.acl_manager
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }

@@ -151,6 +151,13 @@ class AclRulesManager
         return false;
     }
 
+    /**
+     * Establece para la entidad las reglas ACL para roles y usuarios
+     *
+     * @param $entity
+     * @param array $roles
+     * @param array $users
+     */
     public function setEntityRule($entity, $roles = array(), $users = array())
     {
         $rule = $this->getEntityRule($entity);
@@ -220,5 +227,30 @@ class AclRulesManager
         }
 
         return false;
+    }
+
+    /**
+     * Clear rules array from CREATE_ENTITY permissions that not exist in ACL mask.
+     *
+     * @param $rules
+     * @return mixed
+     */
+    public function clearCreateEntityPermissions(&$rules)
+    {
+        // Elimina la llave 'CREATE_ENTITY' que no existe dentro de las reglas ACL.
+        foreach ($rules['roles'] as $key => $rules_rol) {
+            if (false !== $index = array_search('CREATE_ENTITY', $rules_rol)) {
+                unset($rules['roles'][$key][$index]);
+            }
+        }
+
+        // Elimina la llave 'CREATE_ENTITY' que no existe dentro de las reglas ACL.
+        foreach ($rules['users'] as $key => $rules_user) {
+            if (false !== $index = array_search('CREATE_ENTITY', $rules_user)) {
+                unset($rules['users'][$key][$index]);
+            }
+        }
+
+        return $rules;
     }
 }

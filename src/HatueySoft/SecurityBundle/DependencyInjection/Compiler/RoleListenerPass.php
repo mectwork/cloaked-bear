@@ -1,12 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: firomero
- * Date: 10/10/14
- * Time: 15:02
- */
 
 namespace HatueySoft\SecurityBundle\DependencyInjection\Compiler;
+
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
@@ -50,4 +45,4 @@ class RoleListenerPass implements CompilerPassInterface {
         }
     }
 
-} 
+}
