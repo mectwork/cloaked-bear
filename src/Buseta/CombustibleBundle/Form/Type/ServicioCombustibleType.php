@@ -77,10 +77,11 @@ class ServicioCombustibleType extends AbstractType
             $form = $event->getForm();
 
             //$hora = $this->horaSistema->getHoraCambio()->format('H:i:s');
-            $hora = '00:00:00';
+            $hora = explode(':', '00:00:00');
+
 //            $fechaActualInicial = $this->fechaSistema->getFechaSistema();
             $fechaActualInicial = new \DateTime();
-            $fechaActualInicial->setTime($hora[0],$hora[1],$hora[2]);
+            $fechaActualInicial->setTime($hora[0], $hora[1], $hora[2]);
 
             $fechaActualFinal = new \DateTime();
             $fechaActualFinal->modify('+1 days');
