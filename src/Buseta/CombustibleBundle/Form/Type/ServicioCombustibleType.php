@@ -76,8 +76,8 @@ class ServicioCombustibleType extends AbstractType
             $data = $event->getData();
             $form = $event->getForm();
 
-            $hora = $this->horaSistema->getHoraCambio()->format('H:i:s');
-
+            //$hora = $this->horaSistema->getHoraCambio()->format('H:i:s');
+            $hora = '00:00:00';
             $fechaActualInicial = $this->fechaSistema->getFechaSistema();
             $fechaActualInicial->setTime($hora[0],$hora[1],$hora[2]);
 
