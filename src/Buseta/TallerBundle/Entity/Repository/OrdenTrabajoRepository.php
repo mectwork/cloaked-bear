@@ -49,10 +49,6 @@ class OrdenTrabajoRepository extends EntityRepository
 
         $query->orderBy('o.id', 'ASC');
 
-        try {
-            return $query->getQuery();
-        } catch (NoResultException $e) {
-            return array();
-        }
+        return $query->getQuery();
     }
 }

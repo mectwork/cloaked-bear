@@ -18,22 +18,17 @@ class CambioHoraSistemaManager
      */
     public function getHoraCambio()
     {
-        $horaCambioConfig = $this->em->getRepository('CoreBundle:CambioHoraSistema')->findAll();
+        $horaCambioConfig = $this->em->getRepository('CoreBundle:CambioHoraSistema')
+            ->findOneBy(array('activo', true));
 
-        if(count($horaCambioConfig) == 1)
-        {
-            $horaCambioConfig = $horaCambioConfig[0];
-            if($horaCambioConfig->getActivo())
-                $horaCambio = $horaCambioConfig->getHora();
+        if ($horaCambioConfig !== null) {
+            $horaCambio = $horaCambioConfig->getHora();
+        } else {
+            $horaCambio = date_create_from_format('H:i:s', '00:00:00');
         }
-
-        if(!isset($horaCambio) || $horaCambio==null)
-            $horaCambio = false;
 
         return $horaCambio;
     }
 
 
-
-
-} 
+}

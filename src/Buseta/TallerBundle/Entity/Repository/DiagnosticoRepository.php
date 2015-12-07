@@ -35,10 +35,6 @@ class DiagnosticoRepository extends EntityRepository
 
         $query->orderBy('d.id', 'ASC');
 
-        try {
-            return $query->getQuery();
-        } catch (NoResultException $e) {
-            return array();
-        }
+        return $query->getQuery();
     }
 }
