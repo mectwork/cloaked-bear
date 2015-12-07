@@ -91,6 +91,7 @@ class Chofer
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_nacimiento", type="date")
+     * @Assert\NotBlank
      */
     private $fechaNacimiento;
 
