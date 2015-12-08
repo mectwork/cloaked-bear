@@ -11,32 +11,34 @@
 {% block area_trabajo %}
     <table class="table table-striped" style="font-size: 16px;">
         <tbody>
-
         <tr>
             <th>Nomenclador de Combustible</th>
             <td>{{ entity.combustible }}</td>
         </tr>
-
         <tr>
             <th>Chofer</th>
             <td>{{ entity.chofer }}</td>
         </tr>
-
         <tr>
             <th>Vehículo</th>
             <td>{{ entity.vehiculo }}</td>
         </tr>
-
         <tr>
             <th>Cantidad de Libros</th>
             <td>{{ entity.cantidadLibros }}</td>
         </tr>
-
         <tr>
             <th>Fecha de Creación</th>
             <td>{{ entity.created | date('d/m/Y h:i') }}</td>
         </tr>
-
+        <tr>
+            <th>Marchamo 1</th>
+            <td>{{ entity.marchamo1 }}</td>
+        </tr>
+        <tr>
+            <th>Marchamo 2</th>
+            <td>{{ entity.marchamo2 }}</td>
+        </tr>
         </tbody>
     </table>
 
