@@ -51,6 +51,20 @@ class ServicioCombustible
     private $vehiculo;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="marchamo_1", type="integer")
+     */
+    private $marchamo1;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="marchamo_2", type="integer")
+     */
+    private $marchamo2;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created", type="datetime", nullable=true)
@@ -331,5 +345,51 @@ class ServicioCombustible
     public function getVehiculo()
     {
         return $this->vehiculo;
+    }
+
+    /**
+     * Set marchamo1
+     *
+     * @param integer $marchamo1
+     * @return ServicioCombustible
+     */
+    public function setMarchamo1($marchamo1)
+    {
+        $this->marchamo1 = $marchamo1;
+    
+        return $this;
+    }
+
+    /**
+     * Get marchamo1
+     *
+     * @return integer 
+     */
+    public function getMarchamo1()
+    {
+        return $this->marchamo1;
+    }
+
+    /**
+     * Set marchamo2
+     *
+     * @param integer $marchamo2
+     * @return ServicioCombustible
+     */
+    public function setMarchamo2($marchamo2)
+    {
+        $this->marchamo2 = $marchamo2;
+    
+        return $this;
+    }
+
+    /**
+     * Get marchamo2
+     *
+     * @return integer 
+     */
+    public function getMarchamo2()
+    {
+        return $this->marchamo2;
     }
 }

@@ -53,23 +53,18 @@ class ServicioCombustibleType extends AbstractType
                     'label' => ' ',
                 )
             )
-
             ->add('combustible','entity',array(
                 'class' => 'BusetaCombustibleBundle:ConfiguracionCombustible',
                 'empty_value' => '---Seleccione---',
                 'label' => 'Nomenclador de Combustible',
                 'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
             ))
             ->add('cantidadLibros', 'integer', array(
                 'required' => true,
                 'label' => 'Cantidad de Libros',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
             ))
+            ->add('marchamo1')
+            ->add('marchamo2')
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {

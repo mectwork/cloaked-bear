@@ -151,8 +151,9 @@ class ServicioCombustibleController extends Controller
                     $em->persist($servicioCombustible);
                     $em->flush();
 
-                    return $this->redirect($this->generateUrl('servicioCombustible_show', array('id' => $servicioCombustible->getId())));
+                    $this->get('session')->getFlashBag()->add('success', 'Se ha creado el Servicio de Combustible satisfactoriamente.');
 
+                    return $this->redirect($this->generateUrl('servicioCombustible_show', array('id' => $servicioCombustible->getId())));
                 }
                 catch (\Exception $e) {
                     $logger->addCritical(sprintf(
@@ -160,14 +161,9 @@ class ServicioCombustibleController extends Controller
                         $e->getMessage()
                     ));
 
-                    return new JsonResponse(array(
-                        'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Servicio de Combustible'), 'BusetaCombustibleBundle')
-                    ), 500);
+                    $this->get('session')->getFlashBag()->add('danger', $trans->trans('messages.create.error.%key%', array('key' => 'Servicio de Combustible'), 'BusetaCombustibleBundle'));
                 }
-
             }
-
-            //return $this->redirect($this->generateUrl('servicioCombustible_show', array('id' => $servicioCombustible->getId())));
         }
 
         return $this->render('BusetaCombustibleBundle:ServicioCombustible:new.html.twig', array(

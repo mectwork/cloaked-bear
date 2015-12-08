@@ -30,12 +30,14 @@ class ServicioCombustibleModel
 
     /**
      * @var integer
+     *
      * @Assert\NotBlank()
      */
     private $cantidadLibros;
 
     /**
      * @var ChoferInServicioCombustible
+     *
      * @Assert\Valid
      */
     private $chofer;
@@ -46,40 +48,18 @@ class ServicioCombustibleModel
     private $vehiculo;
 
     /**
-     * @var \DateTime
+     * @var integer
      *
+     * @Assert\NotBlank
      */
-    private $created;
+    private $marchamo1;
 
     /**
-     * @var \HatueySoft\SecurityBundle\Entity\User
+     * @var integer
      *
+     * @Assert\NotBlank
      */
-    private $createdby;
-
-    /**
-     * @var \DateTime
-     *
-     */
-    private $updated;
-
-    /**
-     * @var \HatueySoft\SecurityBundle\Entity\User
-     *
-     */
-    private $updatedby;
-
-    /**
-     * @var boolean
-     *
-     */
-    private $deleted;
-
-    /**
-     * @var \HatueySoft\SecurityBundle\Entity\User
-     *
-     */
-    private $deletedby;
+    private $marchamo2;
 
     /**
      * @return ServicioCombustible
@@ -88,12 +68,8 @@ class ServicioCombustibleModel
     {
         $servicioCombustible = new ServicioCombustible();
         $servicioCombustible->setCantidadLibros($this->getCantidadLibros());
-        $servicioCombustible->setCreated($this->getCreated());
-        $servicioCombustible->setCreatedby($this->getCreatedby());
-        $servicioCombustible->setDeleted($this->getDeleted());
-        $servicioCombustible->setDeletedby($this->getDeletedby());
-        $servicioCombustible->setUpdated($this->getUpdated());
-        $servicioCombustible->setUpdatedby($this->getUpdatedby());
+        $servicioCombustible->setMarchamo1($this->getMarchamo1());
+        $servicioCombustible->setMarchamo2($this->getMarchamo2());
 
         if ($this->getCombustible() !== null) {
             $servicioCombustible->setCombustible($this->getCombustible());
@@ -114,102 +90,6 @@ class ServicioCombustibleModel
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @param \DateTime $created
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-    }
-
-    /**
-     * @return \HatueySoft\SecurityBundle\Entity\User
-     */
-    public function getCreatedby()
-    {
-        return $this->createdby;
-    }
-
-    /**
-     * @param \HatueySoft\SecurityBundle\Entity\User $createdby
-     */
-    public function setCreatedby($createdby)
-    {
-        $this->createdby = $createdby;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * @param \DateTime $updated
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-    }
-
-    /**
-     * @return \HatueySoft\SecurityBundle\Entity\User
-     */
-    public function getUpdatedby()
-    {
-        return $this->updatedby;
-    }
-
-    /**
-     * @param \HatueySoft\SecurityBundle\Entity\User $updatedby
-     */
-    public function setUpdatedby($updatedby)
-    {
-        $this->updatedby = $updatedby;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getDeleted()
-    {
-        return $this->deleted;
-    }
-
-    /**
-     * @param boolean $deleted
-     */
-    public function setDeleted($deleted)
-    {
-        $this->deleted = $deleted;
-    }
-
-    /**
-     * @return \HatueySoft\SecurityBundle\Entity\User
-     */
-    public function getDeletedby()
-    {
-        return $this->deletedby;
-    }
-
-    /**
-     * @param \HatueySoft\SecurityBundle\Entity\User $deletedby
-     */
-    public function setDeletedby($deletedby)
-    {
-        $this->deletedby = $deletedby;
     }
 
     /**
@@ -290,4 +170,35 @@ class ServicioCombustibleModel
         $this->vehiculo = $vehiculo;
     }
 
+    /**
+     * @return int
+     */
+    public function getMarchamo1()
+    {
+        return $this->marchamo1;
+    }
+
+    /**
+     * @param int $marchamo1
+     */
+    public function setMarchamo1($marchamo1)
+    {
+        $this->marchamo1 = $marchamo1;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMarchamo2()
+    {
+        return $this->marchamo2;
+    }
+
+    /**
+     * @param int $marchamo2
+     */
+    public function setMarchamo2($marchamo2)
+    {
+        $this->marchamo2 = $marchamo2;
+    }
 }
