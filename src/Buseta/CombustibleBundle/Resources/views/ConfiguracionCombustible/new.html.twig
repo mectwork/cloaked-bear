@@ -20,33 +20,31 @@
     <!-- Initialize script -->
     <script type="text/javascript">
         $(function (){
-            $('#buses_configuracion_combustible_bodega').chosen();
-            $('#buses_configuracion_combustible_producto').chosen();
+            $('#combustible_configuracion_combustible_bodega').chosen();
+//            $('#buses_configuracion_combustible_producto').chosen();
         });
 
         //Actualiza los almacenes de destino a partir de los almacenes de origen seleccionados con peticiones AJAX
-        {#$({{ form.bodega.vars.id }}).change(function(){#}
-            {#var data = {#}
-                {#bodega_id: $(this).val()#}
-            {#};#}
+        $({{ form.bodega.vars.id }}).change(function(){
+            var data = {
+                bodega_id: $(this).val()
+            };
 
-            {#$.ajax({#}
-                {#type: 'GET',#}
-                {#url: '{{ path("obtener_producto_de_bodega") }}',#}
-                {#data: data,#}
-                {#success: function(data) {#}
-                    {#var values = $.parseJSON(data);#}
-                    {#var $producto_selector = $({{ form.producto.vars.id }});#}
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("obtener_producto_de_bodega") }}',
+                data: data,
+                success: function(data) {
+                    var values = $.parseJSON(data);
+                    var $producto_selector = $({{ form.producto.vars.id }});
 
-                    {#$producto_selector.html('<option>---Seleccione---</option>');#}
+                    $producto_selector.html('<option>---Seleccione---</option>');
 
-                    {#for (var i=0, total = values.length; i < total; i++) {#}
-                        {#$producto_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');#}
-                    {#}#}
-
-                    {#$('#buses_configuracion_combustible_producto').trigger('chosen:updated');#}
-                {#}#}
-            {#});#}
-        {#});#}
+                    for (var i=0, total = values.length; i < total; i++) {
+                        $producto_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                    }
+                }
+            });
+        });
     </script>
 {% endblock javascripts %}
