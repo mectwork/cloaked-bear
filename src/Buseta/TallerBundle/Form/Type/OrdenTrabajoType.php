@@ -104,10 +104,13 @@ class OrdenTrabajoType extends AbstractType
             ))
             ->add('diagnostico','entity',array(
                 'class' => 'BusetaTallerBundle:Diagnostico',
-                'query_builder' => function (EntityRepository $er) {
-                    $qb = $er->createQueryBuilder('d');
-                    return $qb->leftJoin('d.ordenTrabajo', 'ot')
-                        ->where($qb->expr()->isNull('ot'));
+                'query_builder' => function (EntityRepository $er)   {
+                     $qb = $er->createQueryBuilder('d');
+                     $qb->leftJoin('d.ordenTrabajo','ot')
+                        ->where($qb->expr()->isNull('ot'))
+                        ->andWhere($qb->expr()->eq('d.estado', ':estado'));
+                     $qb->setParameter('estado','PR');
+                    return $qb;
                 },
                 'empty_value' => '---Seleccione---',
                 'label' => 'Diagnóstico',
