@@ -369,8 +369,8 @@ class ProductoController extends Controller
                     $e->getMessage()
                 ));
 
-                new JsonResponse(array(
-                    'message' => $trans->trans('messages.update.error.%entidad%', array('entidad' => 'Producto'), 'BusetaBodegaBundle')
+                return new JsonResponse(array(
+                    'message' => $trans->trans('messages.update.error.%key%', array('key' => 'Producto'), 'BusetaBodegaBundle')
                 ), 500);
             }
         }

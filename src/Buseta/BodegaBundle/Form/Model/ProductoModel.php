@@ -3,12 +3,13 @@
 namespace Buseta\BodegaBundle\Form\Model;
 
 use Buseta\BodegaBundle\Entity\Producto;
+use Buseta\BodegaBundle\Validator\Constraints\ContainsCodigo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Producto Model
- *
+ * ProductoModel
+ * @ContainsCodigo()
  */
 class ProductoModel
 {
@@ -172,6 +173,21 @@ class ProductoModel
     }
 
     /**
+     * Set codigo
+     *
+     * @param string $codigo
+     * @return ProductoModel
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get codigo
+     *
      * @return string
      */
     public function getCodigo()
@@ -179,14 +195,10 @@ class ProductoModel
         return $this->codigo;
     }
 
-    /**
-     * @param string $codigo
-     */
-    public function setCodigo($codigo)
+    public function __toString()
     {
-        $this->codigo = $codigo;
+        return $this->codigo;
     }
-
     /**
      * @return string
      */

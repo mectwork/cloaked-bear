@@ -82,3 +82,11 @@ services:
         - @session
         - @translator
         - @logger
+    #VALIDATORS
+    bodega.constains_codigo.validador:
+        class: Buseta\BodegaBundle\Validator\Constraints\ContainsCodigoValidator
+        arguments:
+            - @security.context
+            - @doctrine.orm.entity_manager
+        tags:
+            - {name: validator.constraint_validator, alias: contains_codigo_validator}

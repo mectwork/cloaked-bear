@@ -88,7 +88,7 @@ var producto = {
         $('form#' + producto.form_id).replaceWith(response.view);
 
         if(jqXHR.status == 201 || jqXHR.status == 202) {
-            addGlobalMessage('success', response.message);
+            $btalerts.addSuccess(response.message);
         }
         producto._load();
     },
