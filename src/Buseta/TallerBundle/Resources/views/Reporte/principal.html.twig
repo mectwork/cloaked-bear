@@ -11,6 +11,10 @@
             <div class="panel-heading">
                 <h3 class="panel-title text-center"><a href="{{ path('reporte_index', {'status': 'BO'}) }}">{{ 'abiertas' | upper }}</a></h3>
             </div>
+
+            <h3 class="panel-title text-center">Total: {{ resumentotalBO.total  }}</h3>
+            <h3 class="panel-title text-center">Atrasados: {{ resumentotalBO.atrasados  }}</h3>
+
         </div>
     </div>
     <div class="col-lg-4">
@@ -18,6 +22,10 @@
             <div class="panel-heading">
                 <h3 class="panel-title text-center"><a href="{{ path('reporte_index', {'status': 'PR'}) }}">{{ 'pendientes' | upper }}</a></h3>
             </div>
+
+            <h3 class="panel-title text-center">Total: {{ resumentotalPR.total  }}</h3>
+            <h3 class="panel-title text-center">Atrasados: {{ resumentotalPR.atrasados  }}</h3>
+
         </div>
     </div>
     <div class="col-lg-4">

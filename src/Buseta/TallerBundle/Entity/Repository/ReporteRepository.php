@@ -19,15 +19,11 @@ class ReporteRepository extends EntityRepository
         $qb = $this->createQueryBuilder('r');
         $query = $qb->where($qb->expr()->eq(true,true));
 
-        if ($status !== null && $status !== '') {
-            $query->andWhere($query->expr()->eq('r.estado', ':estado'))
-                ->setParameter('estado', $status);
-        }
 
         if($filter) {
             if ($filter->getNumero() !== null && $filter->getNumero() !== '') {
-                $query->andWhere($qb->expr()->like('r.numero',':numero'))
-                    ->setParameter('numero', '%' . $filter->getNumero() . '%');
+                $query->andWhere($query->expr()->like('r.numero',':numero'))
+                    ->setParameter('numero',  sprintf('%%%s%%', $filter->getNumero()));
             }
             if ($filter->getAutobus() !== null && $filter->getAutobus() !== '') {
                 $query->andWhere($query->expr()->eq('r.autobus', ':autobus'))
@@ -43,6 +39,9 @@ class ReporteRepository extends EntityRepository
                 $query->andWhere($query->expr()->lte('r.created', ':fechaFin'))
                     ->setParameter('fechaFin', $fechaFin);
             }
+        } else if ($status !== null && $status !== '') {
+            $query->andWhere($query->expr()->eq('r.estado', ':estado'))
+                ->setParameter('estado', $status);
         }
 
         $query->orderBy('r.created', 'DESC');
@@ -53,4 +52,53 @@ class ReporteRepository extends EntityRepository
             return array();
         }
     }
+
+    /*
+     *
+     *
+     *
+     * */
+
+    /**
+     * Devuelve un array con el total de elementos y el total de elementos atrasados
+     * de un estado pasado por parametro
+     *
+     * @param $estado El estado del reporte(solicitud)
+     *
+     * @return Array (['total']  ['atrasados'])
+     */
+    public function findTotalAtrasadas($estado = null)
+    {
+        $em = $this->getEntityManager();
+        $consulta = $em->createQuery('
+            SELECT   r.created AS fechahoracreado, r.estado, tp.minutos
+            FROM     BusetaTallerBundle:Reporte r LEFT JOIN r.prioridad p LEFT JOIN p.tiempoPrioridad tp
+            WHERE      r.estado = :estado');
+           $consulta->setParameter('estado', $estado);
+
+        $filas =  $consulta->getArrayResult();
+        $num_atrasadas = 0;
+
+        foreach ($filas as $fila) {
+            $minutos     = $fila['minutos'];
+            $fechacreado = $fila['fechahoracreado'];
+            if ($minutos !== null)  {
+                $fechavence  = $fechacreado->modify('+'.$minutos.' minutes');
+                $fechaahora  = new \DateTime('now');
+
+                if ($fechavence < $fechaahora ) {
+                    $num_atrasadas++;
+                }
+            }
+        }
+
+        //para devolver el total de filas
+        $valor['total']= count($consulta->getResult());
+        //para devolver el total de atrasadas
+        $valor['atrasados']=   $estado != 'CO' ? $num_atrasadas:0;
+
+        return $valor ;
+    }
+
+
 }

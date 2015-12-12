@@ -97,10 +97,13 @@ class DiagnosticoController extends Controller
             10
         );
 
+        $em = $this->getDoctrine()->getManager();
+        $resumentotal = $em->getRepository('BusetaTallerBundle:Diagnostico')->findTotalAtrasadas();
 
         return $this->render('BusetaTallerBundle:Diagnostico:index.html.twig', array(
             'entities' => $entities,
             'filter_form' => $form->createView(),
+            'resumentotal' => $resumentotal
         ));
     }
 

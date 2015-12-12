@@ -146,6 +146,7 @@ easy_admin:
         'Moneda': Buseta\NomencladorBundle\Entity\Moneda
         'Nacionalidad': Buseta\NomencladorBundle\Entity\Nacionalidad
         'Prioridad solicitud': Buseta\NomencladorBundle\Entity\PrioridadSolicitud
+        'Tiempo de Prioridad': Buseta\NomencladorBundle\Entity\TiempoPrioridad
         'Tipo Compra': Buseta\NomencladorBundle\Entity\TipoCompra
         'Tipo Contacto': Buseta\NomencladorBundle\Entity\TipoContacto
         'Tarea': Buseta\NomencladorBundle\Entity\Tarea

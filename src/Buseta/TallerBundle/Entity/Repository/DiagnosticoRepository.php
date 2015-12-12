@@ -19,6 +19,10 @@ class DiagnosticoRepository extends EntityRepository
         $query = $qb->where($qb->expr()->eq(true,true));
 
         if($filter) {
+            if ($filter->getNumero() !== null && $filter->getNumero() !== '') {
+                $query->andWhere($query->expr()->eq('d.numero',':numero'))
+                    ->setParameter('numero',  $filter->getNumero());
+            }
             if ($filter->getReporte() !== null && $filter->getReporte() !== '') {
                 $query->andWhere($query->expr()->eq('d.reporte', ':reporte'))
                     ->setParameter('reporte', $filter->getReporte());
@@ -37,4 +41,51 @@ class DiagnosticoRepository extends EntityRepository
 
         return $query->getQuery();
     }
+
+
+    /**
+     * Devuelve un array con el total de elementos y el total de elementos atrasados
+     * de un estado pasado por parametro
+     *
+     * @param $estado El estado deldiagnostico
+     *
+     * @return Array (['total']  ['atrasados'])
+     */
+    public function findTotalAtrasadas($estado = null)
+    {
+        $em = $this->getEntityManager();
+
+        $qry= '
+            SELECT   d.created AS fechahoracreado, d.estado, tp.minutos
+            FROM     BusetaTallerBundle:Diagnostico d JOIN d.prioridad p JOIN p.tiempoPrioridad tp';
+        $qry.=$estado == null? '': ' WHERE d.estado = :estado';
+
+        $consulta = $em->createQuery($qry);
+
+        if ($estado != null) {
+            $consulta->setParameter('estado', $estado);
+        }
+
+        $filas =  $consulta->getArrayResult();
+        $num_atrasadas = 0;
+
+        foreach ($filas as $fila) {
+            $minutos     = $fila['minutos'];
+            $fechacreado = $fila['fechahoracreado'];
+            $fechavence  = $fechacreado->modify('+'.$minutos.' minutes');
+            $fechaahora  = new \DateTime('now');
+
+            if (($fechavence < $fechaahora ) && ($fila['estado']!='PR'))  {
+                $num_atrasadas++;
+            }
+        }
+
+        //para devolver el total de filas
+        $valor['total']= count($consulta->getResult());
+        //para devolver el total de atrasadas
+        $valor['atrasados']=   $estado != 'CO' ? $num_atrasadas:0;
+
+        return $valor ;
+    }
+
 }

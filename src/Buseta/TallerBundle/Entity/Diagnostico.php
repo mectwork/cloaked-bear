@@ -63,6 +63,13 @@ class Diagnostico implements DateTimeAwareInterface
     private $autobus;
 
     /**
+     * @var \Buseta\NomencladorBundle\Entity\PrioridadSolicitud
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\PrioridadSolicitud")
+     */
+    private $prioridad;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\ObservacionDiagnostico", mappedBy="diagnostico", cascade={"all"})
@@ -242,5 +249,28 @@ class Diagnostico implements DateTimeAwareInterface
     public function getEstado()
     {
         return $this->estado;
+    }
+
+    /**
+     * Set prioridad
+     *
+     * @param \Buseta\NomencladorBundle\Entity\PrioridadSolicitud $prioridad
+     * @return Reporte
+     */
+    public function setPrioridad(\Buseta\NomencladorBundle\Entity\PrioridadSolicitud $prioridad = null)
+    {
+        $this->prioridad = $prioridad;
+
+        return $this;
+    }
+
+    /**
+     * Get prioridad
+     *
+     * @return \Buseta\NomencladorBundle\Entity\PrioridadSolicitud
+     */
+    public function getPrioridad()
+    {
+        return $this->prioridad;
     }
 }

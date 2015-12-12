@@ -27,7 +27,16 @@ class ReporteController extends Controller
 
     public function principalAction()
     {
-        return $this->render('@BusetaTaller/Reporte/principal.html.twig');
+
+        $em = $this->getDoctrine()->getManager();
+        $resumentotalBO = $em->getRepository('BusetaTallerBundle:Reporte')->findTotalAtrasadas('BO');
+
+        $resumentotalPR = $em->getRepository('BusetaTallerBundle:Reporte')->findTotalAtrasadas('PR');
+
+        return $this->render('@BusetaTaller/Reporte/principal.html.twig', array(
+            'resumentotalBO' => $resumentotalBO,
+            'resumentotalPR' => $resumentotalPR
+        ));
     }
 
     public function procesarReporteAction($id)
@@ -101,10 +110,14 @@ class ReporteController extends Controller
             10
         );
 
+        $em = $this->getDoctrine()->getManager();
+        $resumentotal = $em->getRepository('BusetaTallerBundle:Reporte')->findTotalAtrasadas($status);
+
         return $this->render('BusetaTallerBundle:Reporte:index.html.twig', array(
             'entities'      => $entities,
             'filter_form'   => $form->createView(),
-            'status' => $status
+            'status' => $status,
+            'resumentotal' => $resumentotal
         ));
     }
 

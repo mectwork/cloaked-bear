@@ -50,6 +50,11 @@ class DiagnosticoType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
+            ->add('prioridad', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:PrioridadSolicitud',
+                'empty_value' => '---Seleccione prioridad---',
+                'required' => false,
+            ))
             ->add('observaciones','collection',array(
                 'type' => new ObservacionDiagnosticoType(),
                 'label'  => false,

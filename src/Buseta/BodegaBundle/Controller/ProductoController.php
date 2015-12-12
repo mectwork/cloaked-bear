@@ -204,7 +204,9 @@ class ProductoController extends Controller
      */
     public function createAction(Request $request)
     {
+        //nuevo modelo vacio de producto
         $productoModel = new ProductoModel();
+        //creacion del formulario para esto
         $form = $this->createCreateForm($productoModel);
 
         $form->handleRequest($request);
