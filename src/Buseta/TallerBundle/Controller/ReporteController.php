@@ -111,7 +111,7 @@ class ReporteController extends Controller
         );
 
         $em = $this->getDoctrine()->getManager();
-        $resumentotal = $em->getRepository('BusetaTallerBundle:Reporte')->findTotalAtrasadas($status);
+        $resumentotal = $em->getRepository('BusetaTallerBundle:Reporte')->findTotalAtrasadasFilter($entities);
 
         return $this->render('BusetaTallerBundle:Reporte:index.html.twig', array(
             'entities'      => $entities,

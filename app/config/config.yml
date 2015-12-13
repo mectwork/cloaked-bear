@@ -145,8 +145,17 @@ easy_admin:
         'Marca Motor': Buseta\NomencladorBundle\Entity\MarcaMotor
         'Moneda': Buseta\NomencladorBundle\Entity\Moneda
         'Nacionalidad': Buseta\NomencladorBundle\Entity\Nacionalidad
-        'Prioridad solicitud': Buseta\NomencladorBundle\Entity\PrioridadSolicitud
-        'Tiempo de Prioridad': Buseta\NomencladorBundle\Entity\TiempoPrioridad
+        'Prioridad Solicitud': Buseta\NomencladorBundle\Entity\PrioridadSolicitud
+        TiempodePrioridad:
+            class: Buseta\NomencladorBundle\Entity\TiempoPrioridad
+            label: 'Tiempo de Prioridad'
+            list:
+                fields:
+                    - 'id'
+                    - 'valor'
+                    - 'minutos'
+                    - { property: 'colorentiempo', label: 'Color en Tiempo' }
+                    - { property: 'coloratrasado', label: 'Color si Atrasado' }
         'Tipo Compra': Buseta\NomencladorBundle\Entity\TipoCompra
         'Tipo Contacto': Buseta\NomencladorBundle\Entity\TipoContacto
         'Tarea': Buseta\NomencladorBundle\Entity\Tarea
