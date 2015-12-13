@@ -20,8 +20,8 @@ class DiagnosticoRepository extends EntityRepository
 
         if($filter) {
             if ($filter->getNumero() !== null && $filter->getNumero() !== '') {
-                $query->andWhere($query->expr()->eq('d.numero',':numero'))
-                    ->setParameter('numero',  $filter->getNumero());
+                $query->andWhere($query->expr()->like('d.numero',':numero'))
+                    ->setParameter('numero',  sprintf('%%%s%%', $filter->getNumero()));
             }
             if ($filter->getReporte() !== null && $filter->getReporte() !== '') {
                 $query->andWhere($query->expr()->eq('d.reporte', ':reporte'))
@@ -47,7 +47,7 @@ class DiagnosticoRepository extends EntityRepository
      * Devuelve un array con el total de elementos y el total de elementos atrasados
      * de un estado pasado por parametro
      *
-     * @param $estado El estado deldiagnostico
+     * @param $estado El estado del diagnostico
      *
      * @return Array (['total']  ['atrasados'])
      */
@@ -57,7 +57,7 @@ class DiagnosticoRepository extends EntityRepository
 
         $qry= '
             SELECT   d.created AS fechahoracreado, d.estado, tp.minutos
-            FROM     BusetaTallerBundle:Diagnostico d JOIN d.prioridad p JOIN p.tiempoPrioridad tp';
+            FROM     BusetaTallerBundle:Diagnostico d LEFT JOIN d.prioridad p LEFT JOIN p.tiempoPrioridad tp';
         $qry.=$estado == null? '': ' WHERE d.estado = :estado';
 
         $consulta = $em->createQuery($qry);
@@ -84,6 +84,46 @@ class DiagnosticoRepository extends EntityRepository
         $valor['total']= count($consulta->getResult());
         //para devolver el total de atrasadas
         $valor['atrasados']=   $estado != 'CO' ? $num_atrasadas:0;
+
+        return $valor ;
+    }
+
+    /**
+     * Devuelve un array con el total de elementos y el total de elementos atrasados
+     * de un array de entidades pasado por parametro desde la consulta de filtro del formulario
+     *
+     * @param $estado El estado del Diagnostico
+     *
+     * @return Array (['total']  ['atrasados'])
+     */
+    public function findTotalAtrasadasFilter($entities = null)
+    {
+
+        $num_atrasadas = 0;
+
+        foreach ($entities as $entity) {
+            //si ocurre error no se cuenta como atrasada
+            try {
+                if ($entity->getPrioridad()) {
+                    $minutos = $entity->getPrioridad()->getTiempoPrioridad()->getMinutos();
+                    $fechacreado = $entity->getCreated();
+                    if (($minutos != null) && ($minutos != null)) {
+                        $fechavence = $fechacreado->modify('+' . $minutos . ' minutes');
+                        $fechaahora = new \DateTime('now');
+                        if (($fechavence < $fechaahora) && ($entity->getEstado() != 'PR')) {
+                            $num_atrasadas++;
+                        }
+                    }
+                }
+            } catch (Exception $e) {
+                continue;
+            }
+        }
+
+        //para devolver el total de filas
+        $valor['total']= count($entities);
+        //para devolver el total de atrasadas
+        $valor['atrasados']= $num_atrasadas ;
 
         return $valor ;
     }
