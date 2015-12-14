@@ -24,3 +24,19 @@ services:
         class: Buseta\CoreBundle\Managers\CambioHoraSistemaManager
         arguments:
             - @doctrine.orm.entity_manager
+
+    #TWIG EXTENSIONS
+    core.twig.moneda_simbolo_extension:
+        class: Buseta\CoreBundle\Twig\MonedaSimboloExtension
+        arguments:
+            - @doctrine.orm.default_entity_manager
+            - @session
+        tags:
+            - { name: twig.extension }
+    core.twig.fecha_formato_extension:
+        class: Buseta\CoreBundle\Twig\FechaFormatoExtension
+        arguments:
+            - @doctrine.orm.default_entity_manager
+            - @session
+        tags:
+            - { name: twig.extension }
