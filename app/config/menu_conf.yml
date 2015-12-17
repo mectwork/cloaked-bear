@@ -311,6 +311,16 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
+                menu_B_E_D:
+                  id: menu_B_E_D
+                  name: null
+                  label: 'Bitacora general'
+                  route: bitacoraalmacen
+                  roles: [ROLE_ADMIN]
+                  type: item
+                  disabled: false
+                  attributes: {  }
+                  childrens: {  }
             menu_B_F:
               id: menu_B_F
               name: null

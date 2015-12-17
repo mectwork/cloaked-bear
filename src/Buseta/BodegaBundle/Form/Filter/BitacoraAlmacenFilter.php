@@ -1,13 +1,11 @@
 <?php
 namespace Buseta\BodegaBundle\Form\Filter;
 
-use Buseta\BodegaBundle\Form\EventListener\AddGrupoFieldSubscriber;
-use Buseta\BodegaBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ProductoFilter extends AbstractType
+class BitacoraAlmacenFilter extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,49 +13,61 @@ class ProductoFilter extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventSubscriber(new AddGrupoFieldSubscriber($builder->getFormFactory()));
-        $builder->addEventSubscriber(new AddSubgrupoFieldSubscriber($builder->getFormFactory()));
         $builder
-            ->add('codigo', 'text', array(
+            ->add('fechaMovimiento', 'text', array(
                 'required' => false,
-                'label' => 'Código',
+                'label' => 'Fecha Movimiento',
                 'attr' => array(
                     'class' => 'form-control',
                 )
             ))
-            ->add('nombre', 'text', array(
-                'required' => false,
-                'label' => 'Nombre',
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
-            ->add('condicion', 'entity', array(
-                'class' => 'BusetaNomencladorBundle:Condicion',
+            ->add('alma', 'entity', array(
+                'class' => 'BusetaBodegaBundle:Bodega',
                 'empty_value' => '---Seleccione---',
-                'label' => 'Condición',
+                'label' => 'Almacen',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 )
             ))
-            ->add('proveedor', 'entity', array(
-                'class' => 'BusetaBodegaBundle:Proveedor',
+            ->add('categoriaProd', 'entity', array(
+                'class' => 'BusetaBodegaBundle:CategoriaProducto',
                 'empty_value' => '---Seleccione---',
-                'label' => 'Proveedor',
+                'label' => 'Categoria del producto',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 )
             ))
-            ->add('codigoAlternativo', 'text', array(
+            ->add('producto', 'entity', array(
+                'class' => 'BusetaBodegaBundle:Producto',
+                'empty_value' => '---Seleccione---',
+                'label' => 'Producto',
                 'required' => false,
-                'label' => 'Código Alternativo',
                 'attr' => array(
                     'class' => 'form-control',
                 )
             ))
-        ;
+            ->add('fechaInicio', 'date', array(
+                'widget' => 'single_text',
+                'label'  => 'Fecha Inicial',
+                'format'  => 'dd/MM/yyyy',
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('fechaFin', 'date', array(
+                'widget' => 'single_text',
+                'label'  => 'Fecha Final',
+                'format'  => 'dd/MM/yyyy',
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            )) ;
+
+
     }
 
     /**
@@ -66,7 +76,7 @@ class ProductoFilter extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Form\Model\ProductoFilterModel',
+            'data_class' => 'Buseta\BodegaBundle\Form\Model\BitacoraAlmacenFilterModel',
             'method' => 'GET',
         ));
     }
@@ -76,6 +86,6 @@ class ProductoFilter extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_producto_filter';
+        return 'buseta_bitacoraalmacen_filter';
     }
 }

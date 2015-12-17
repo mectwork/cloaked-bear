@@ -1,36 +1,25 @@
 <?php
-
 namespace Buseta\BodegaBundle\Form\Model;
-use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
-use Symfony\Component\Validator\Constraints as Assert;
 
+use Buseta\BodegaBundle\Entity\Producto;
 
-/**
- * BitacoraAlmacenModel
- *
- */
-class BitacoraAlmacenModel
+class BitacoraAlmacenFilterModel
 {
-    /**
-     * @var integer
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $cantMovida;
-
-    /**
-     * @var string
-     * @Assert\NotBlank()
-     */
-    private $fechaMovimiento;
-
     /**
      * @var \Buseta\BodegaBundle\Entity\Bodega
      */
-    private $bodega;
+    private $alma;
+
+    /**
+     * @var \Buseta\BodegaBundle\Entity\CategoriaProducto
+     */
+    private $categoriaProd;
+
+    /**
+     * @var string
+     */
+    private $fechaMovimiento;
+
 
     /**
      * @var \Buseta\BodegaBundle\Entity\Producto
@@ -48,54 +37,44 @@ class BitacoraAlmacenModel
     private $fechaFin;
 
 
-    /**
-     * Constructor
-     */
-    public function __construct(BitacoraAlmacen $bitacoraalmacen = null)
-    {
-        if ($bitacoraalmacen !== null) {
-            $this->id = $bitacoraalmacen->getId();
-            $this->cantMovida =      $bitacoraalmacen->getCantMovida();
-            $this->fechaMovimiento = $bitacoraalmacen->getFechaMovimiento();
-            $this->producto = $bitacoraalmacen->getProducto();
-
-        }
-    }
-
-    /**
-     * @return BitacoraAlmacen
-     */
-    public function getEntityData()
-    {
-        $bitacoraalmacen = new BitacoraAlmacen();
-        $bitacoraalmacen->setCantMovida($this->getCantMovida());
-        $bitacoraalmacen->setFechaMovimiento($this->getFechaMovimiento());
-        $bitacoraalmacen->setProducto($this->getProducto());
-
-
-        return $bitacoraalmacen;
-    }
 
     /**
      * @return string
      */
-    public function getCantMovida()
+    public function getAlma()
     {
-        return $this->cantMovida;
+        return $this->alma;
     }
 
     /**
      * @param string
      */
-    public function setCantMovida($cantMovida)
+    public function setAlma($alma)
     {
-        $this->cantMovida = $cantMovida;
+        $this->alma = $alma;
     }
 
     /**
-     * @var date
-     * @Assert\NotBlank()
-     * @Assert\DateTime()
+     * @return string
+     */
+    public function getCategoriaProd()
+    {
+        return $this->categoriaProd;
+    }
+
+    /**
+     * @param string
+     */
+    public function setCategoriaProd($categoriaProd)
+    {
+        $this->categoriaProd = $categoriaProd;
+    }
+
+
+
+
+    /**
+     * @return string
      */
     public function getFechaMovimiento()
     {
@@ -109,6 +88,7 @@ class BitacoraAlmacenModel
     {
         $this->fechaMovimiento = $fechaMovimiento;
     }
+
 
 
     /**

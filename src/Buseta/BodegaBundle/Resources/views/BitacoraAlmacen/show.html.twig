@@ -1,0 +1,58 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block title %}
+    Datos del Producto
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Datos de la Bitacora de Almacen: "{{ entity.nombre }}"
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <table class="table table-striped" style="font-size: 16px;">
+    <tbody>
+
+    <tr>
+        <th>Producto</th>
+        <td>{{ entity.producto }}</td>
+    </tr>
+
+    <tr>
+        <th>Cantidad Movida</th>
+        <td>{{ entity.cantMovida }}</td>
+    </tr>
+    <tr>
+        <th>Fecha Movimiento</th>
+        <td>{{ entity.fechaMovimiento  | date('d/m/Y h:i a') }}</td>
+    </tr>
+    <tr>
+        <th>Tipo Movimiento</th>
+        <td>{{ entity.tipoMovimiento }}</td>
+    </tr>
+
+
+
+    </tbody>
+    </table>
+
+    <div class="form-actions">
+        <a class="btn btn-primary" href="{{ path('bitacoraalmacen') }}"> Listado</a>
+        <a class="btn btn-primary" href="{{ path('producto_bitacora', { 'id': entity.id }) }}"> Bitácora del producto</a>
+    </div>
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %}
+
