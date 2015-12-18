@@ -62,11 +62,7 @@
     </div>
 
     <div class="paginator row">
-        <div class="col-lg-4"><strong>Diagnosticos Totales: </strong> {{ resumentotal.total  }}</div>
-    </div>
-
-    <div class="paginator row">
-        <div class="col-lg-4"><strong>Diagnosticos Atrasadas: </strong> {{ resumentotal.atrasados  }}</div>
+        <div class="col-lg-4"><strong>Diagnosticos Atrasados: </strong> {{ resumentotal.atrasados  }}</div>
     </div>
 
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
@@ -75,13 +71,11 @@
             <th>Número {#{{ knp_pagination_sortable(entities, 'Número', 'd.numero') }}#}</th>
             <th>Reporte {#{{ knp_pagination_sortable(entities, 'Reporte', 'd.diagnostico') }}#}</th>
             <th>Autobús {#{{ knp_pagination_sortable(entities, 'Autobús', 'd.autobus') }}#}</th>
-            <th>Prioridad{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
-
-            <th>TiempoPrioridad{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
-            <th>TiempoVence{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
-            <th>ATRASADA{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
-
             <th>Creado</th>
+            <th>Prioridad{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
+            <th>Minutos{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
+            <th>Vence{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
+            <th>Atraso{#{{ knp_pagination_sortable(entities, 'Autobús', 't.autobus') }}#}</th>
             <th>Estado {#{{ knp_pagination_sortable(entities, 'Autobús', 'd.autobus') }}#}</th>
             <th style="text-align: center">Acciones</th>
         </tr>
@@ -89,13 +83,20 @@
         <tbody>
         {% for entity in entities %}
 
-            {% set minutos    =  "+%s minutes" | format( entity.prioridad.tiempoPrioridad.minutos )   %}
-            {% set fechavence =  entity.created | date_modify( minutos  ) | date('d/m/Y h:i a')       %}
-            {% set fechavenceF =  entity.created | date_modify( minutos  ) | date('YmdHis')  %}
-            {% set solicitudatrasada = fechavenceF < 'now'|date('YmdHis') %}
+            {% if entity.prioridad is not null and entity.prioridad.tiempoPrioridad is not null %}
+                {% set minutos    =  "+%s minutes" | format( entity.prioridad.tiempoPrioridad.minutos )   %}
+                {% set fechavence =  entity.created | date_modify( minutos  ) | date('d/m/Y h:i a')       %}
+                {% set fechavenceF =  entity.created | date_modify( minutos  ) | date('YmdHis')  %}
+                {% set solicitudatrasada = fechavenceF < 'now'|date('YmdHis') %}
+            {% else %}
+                {% set minutos    =  '-'   %}
+                {% set fechavence =  '-'   %}
+                {% set fechavenceF = '-'  %}
+                {% set solicitudatrasada = null %}
+            {% endif %}
 
             {% set text_color = 'default' %}
-            {% if  solicitudatrasada and entity.estado != 'PR' %}
+            {% if solicitudatrasada is defined and solicitudatrasada and entity.estado != 'CO' %}
                 {% set text_color = 'danger' %}
             {% endif %}
 
@@ -103,23 +104,26 @@
                 <td class="text-{{ text_color }}">{{ entity.numero|default('-') }}</td>
                 <td class="text-{{ text_color }}">{{ entity.reporte | default('-') }}</td>
                 <td class="text-{{ text_color }}">{{ entity.autobus }}</td>
+                <td class="text-{{ text_color }}">{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
                 <td class="text-{{ text_color }}">{{ entity.prioridad | default('-') }}</td>
                 <td class="text-{{ text_color }}">{{ entity.prioridad.tiempoPrioridad.minutos | default('-') }}</td>
-                <td class="text-{{ text_color }}">{{ fechavence }}</td>
+                <td class="text-{{ text_color }}">{{ fechavence is defined ? fechavence : '-' }}</td>
 
-                {% if  entity.estado != 'PR' %}
-                    {% if  solicitudatrasada %}
-                        <td class="text-{{ text_color }}">ATRASADA</td>
-                    {% else %}
-                        <td class="text-{{ text_color }}">EN TIEMPO</td>
-                    {% endif %}
+                {% if  solicitudatrasada is defined and solicitudatrasada and entity.estado != 'CO' %}
+                    <td class="text-{{ text_color }}"><span class="label label-danger">Atraso</span></td>
                 {% else %}
-                    <td class="text-{{ text_color }}">PROCESADA</td>
+                    <td class="text-{{ text_color }}"></td>
                 {% endif %}
 
+                {% if entity.estado == 'CO' %}
+                    {% set badge = 'success' %}
+                {% elseif entity.estado == 'PR' %}
+                    {% set badge = 'primary' %}
+                {% else %}
+                    {% set badge = 'warning' %}
+                {% endif %}
+                <td class="text-{{ text_color }}"><span class="label label-{{ badge }}">{{ ('estado.' ~ entity.estado)  | trans({}, 'BusetaTallerBundle')  }}</span></td>
 
-                <td class="text-{{ text_color }}">{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
-                <td class="text-{{ text_color }}">{{ ('estado.'~entity.estado) | trans({}, 'BusetaTallerBundle') }}</td>
                 <td style="width: 18% !important; text-align: center;">
                     {% if is_granted('VIEW', entity) %}
                     <div class="btn-group">

@@ -74,7 +74,7 @@ class ReporteRepository extends EntityRepository
             SELECT   r.created AS fechahoracreado, r.estado, tp.minutos
             FROM     BusetaTallerBundle:Reporte r LEFT JOIN r.prioridad p LEFT JOIN p.tiempoPrioridad tp
             WHERE      r.estado = :estado');
-           $consulta->setParameter('estado', $estado);
+        $consulta->setParameter('estado', $estado);
 
         $filas =  $consulta->getArrayResult();
         $num_atrasadas = 0;
@@ -82,7 +82,7 @@ class ReporteRepository extends EntityRepository
         foreach ($filas as $fila) {
             $minutos     = $fila['minutos'];
             $fechacreado = $fila['fechahoracreado'];
-            if ($minutos !== null)  {
+            if (($minutos != null) && ($minutos != null))  {
                 $fechavence  = $fechacreado->modify('+'.$minutos.' minutes');
                 $fechaahora  = new \DateTime('now');
 
@@ -93,9 +93,49 @@ class ReporteRepository extends EntityRepository
         }
 
         //para devolver el total de filas
-        $valor['total']= count($consulta->getResult());
+        $valor['total']= count($filas);
         //para devolver el total de atrasadas
-        $valor['atrasados']=   $estado != 'CO' ? $num_atrasadas:0;
+        $valor['atrasados']=   $estado != 'CO' ? $num_atrasadas : 0;
+
+        return $valor ;
+    }
+
+    /**
+     * Devuelve un array con el total de elementos y el total de elementos atrasados
+     * de un array de entidades pasado por parametro desde la consulta de filtro del formulario
+     *
+     * @param $estado El estado del reporte(solicitud)
+     *
+     * @return Array (['total']  ['atrasados'])
+     */
+    public function findTotalAtrasadasFilter($entities = null)
+    {
+
+        $num_atrasadas = 0;
+
+        foreach ($entities as $entity) {
+            //si ocurre error no se cuenta como atrasada
+            try {
+                if ($entity->getPrioridad()) {
+                    $minutos = $entity->getPrioridad()->getTiempoPrioridad()->getMinutos();
+                    $fechacreado = $entity->getCreated();
+                    if (($minutos != null) && ($minutos != null)) {
+                        $fechavence = $fechacreado->modify('+' . $minutos . ' minutes');
+                        $fechaahora = new \DateTime('now');
+                        if (($fechavence < $fechaahora) && ($entity->getEstado() != 'CO')) {
+                            $num_atrasadas++;
+                        }
+                    }
+                }
+            } catch (Exception $e) {
+                continue;
+            }
+        }
+
+        //para devolver el total de filas
+        $valor['total']= count($entities);
+        //para devolver el total de atrasadas
+        $valor['atrasados']= $num_atrasadas ;
 
         return $valor ;
     }
