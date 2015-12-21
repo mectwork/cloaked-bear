@@ -241,10 +241,11 @@
         }
 
         function dinamicSelects(){
-            $('#{{ form.autobus.vars.id }}').change(function() {
+            //Aqui es donde lleno el campo del kilometraje a partir de ajax
+            $('#{{ form.diagnostico.vars.id }}').change(function() {
 
                 var $data = {
-                    autobus_id: $(this).val()
+                    diagnostico_id: $(this).val()
                 };
 
                 $.ajax({
@@ -253,11 +254,14 @@
                     data: $data,
                     success: function (data) {
                         var values = $.parseJSON(data);
+                        var $kilometraje_selector = $('#{{ form.kilometraje.vars.id }}');
 
-                        if (!values.empty) {
-                            $('#{{ form.kilometraje.vars.id }}').val(values.kilometraje);
-                        } else {
-                            $('#{{ form.kilometraje.vars.id }}').html();
+                        $kilometraje_selector.val('');
+
+
+
+                        for (var i = 0, total = values.length; i < total; i++) {
+                            $kilometraje_selector.val(values[i].kilometraje);
                         }
                     }
                 });
@@ -688,32 +692,60 @@
             ordenTrabajo._load();
         });
 
-        //Al seleccionar el Diagnostico de la OT, automaticamente selecciona el Autobus y Diagnosticado Por
-        // correspondiente y muestra los datos del Diagnostico y Reporte en los tabs correspondientes
-        $('#{{ form.diagnostico.vars.id }}').change(function(){
-            var autobus_text = $('#{{ form.autobus.vars.id }}');
-            var diagnosticadoPor_text = $('#{{ form.diagnosticadoPor.vars.id }}');
+        //Al seleccionar el Diagnostico de la OT, automaticamente selecciona el Autobus
 
+        $('#{{ form.diagnostico.vars.id }}').change(function () {
             var data = {
                 diagnostico_id: $(this).val()
             };
 
-            $.get('{{ path("diagnostico_ajax_ordentrabajo_autobus") }}', data, function(data){
-                //Selecciona automática el Autobus segun el Diagnostico seleccionado
-                autobus_text.val(data['autobus']);
-                autobus_text.css('display','none');
-                var text = autobus_text.find('option[value="'+autobus_text.val()+'"]').html();
-                autobus_text.parent().find('input').remove();
-                autobus_text
-                        .parent()
-                        .append($('<input class="form-control" type="text" disabled> ').val(text));
-            }, 'json').fail(function(error) {
-                autobus_text.parent().find('input').remove();
-                autobus_text.css('display','block');
-            }).always(function(){
-                autobus_text.trigger('change');
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("diagnostico_ajax_ordentrabajo_autobus") }}',
+                data: data,
+                success: function (data) {
+                    var values = $.parseJSON(data);
+                    var $autobus_selector = $('#{{ form.autobus.vars.id }}');
+
+                    $autobus_selector.html('<option>---Seleccione---</option>');
+                    $autobus_selector.addClass("disabled");
+
+                    for (var i = 0, total = values.length; i < total; i++) {
+                        $autobus_selector.append('<option selected value="' + values[i].id + '">' + values[i].matricula + '</option>');
+                    }
+                }
             });
         });
+
+
+
+        //Al seleccionar el Diagnostico de la OT, automaticamente selecciona el Diagnosticado Por
+
+        $('#{{ form.diagnostico.vars.id }}').change(function () {
+            var data = {
+                diagnostico_id: $(this).val()
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("diagnostico_ajax_diag_diagpor") }}',
+                data: data,
+                success: function (data) {
+                    var values = $.parseJSON(data);
+                    var $diagnosticadopor_selector = $('#{{ form.diagnosticadoPor.vars.id }}');
+
+                    $diagnosticadopor_selector.html('<option>---Seleccione---</option>');
+
+
+                    for (var i = 0, total = values.length; i < total; i++) {
+                        $diagnosticadopor_selector.append('<option selected value="' + values[i].id + '">' + values[i].nombre + '</option>');
+                    }
+                }
+            });
+        });
+
+
+
     </script>
 
 {% endblock javascripts %}

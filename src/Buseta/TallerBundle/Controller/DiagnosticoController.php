@@ -271,11 +271,22 @@ class DiagnosticoController extends Controller
         }
 
         $em = $this->get('doctrine.orm.entity_manager');
-        $diagnostico = $em->find('BusetaTallerBundle:Diagnostico', $request->query->get('diagnostico_id'));
+        $diagnostico_id = $request->query->get('diagnostico_id');
 
-        return new JsonResponse(array(
-            'autobus' => $diagnostico->getReporte()->getAutobus()->getId(),
-        ), 200);
+        $diagnostico = $em->getRepository('BusetaTallerBundle:Diagnostico')->findBy(array(
+            'id' => $diagnostico_id,
+        ));
+
+        $json = array();
+        foreach ($diagnostico as $diag) {
+            $json[] = array(
+                'id' => $diag->getAutobus()->getId(),
+                'matricula' => $diag->getAutobus()->getMatricula(),
+            );
+        }
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
+
 
 }

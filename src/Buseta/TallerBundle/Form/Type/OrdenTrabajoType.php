@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Buseta\TallerBundle\Form\EventListener\AddAutobusFieldSubscriber;
+
 
 class OrdenTrabajoType extends AbstractType
 {
@@ -15,6 +17,9 @@ class OrdenTrabajoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addEventSubscriber(new AddAutobusFieldSubscriber());
+//        $builder->addEventSubscriber(new AddDiagnosticadoporFieldSubscriber());
+
         $builder
             ->add('numero', 'text', array(
                 'required' => false,
@@ -48,6 +53,7 @@ class OrdenTrabajoType extends AbstractType
             ->add('diagnosticadoPor', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'required' => false,
+
                 'label'  => 'Diagnosticado por',
                 'attr'   => array(
                     'class' => 'form-control',
@@ -93,15 +99,7 @@ class OrdenTrabajoType extends AbstractType
                     return $qb;
                 },
             ))
-            ->add('autobus', 'entity', array(
-                'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione---',
-                'label' => 'Autobús',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
+
             ->add('diagnostico','entity',array(
                 'class' => 'BusetaTallerBundle:Diagnostico',
                 'query_builder' => function (EntityRepository $er)   {

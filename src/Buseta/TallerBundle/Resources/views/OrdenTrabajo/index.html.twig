@@ -39,10 +39,10 @@
             <div class="row">
                 <div class="col-lg-4">{{ form_row(filter_form.numero) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.requisionMateriales) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.diagnostico) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.autobus) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.diagnosticadoPor) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.ayudante) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.autobus) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.diagnostico) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -158,6 +158,31 @@
                     $(this).val(null);
                 })
             });
+
+
+            //Aqui hago el ajax para el select dependiente del autobus
+            $('#{{ filter_form.diagnostico.vars.id }}').change(function () {
+                var data = {
+                    diagnostico_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("ordentrabajo_ajax_diagnostico_autobus") }}',
+                    data: data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+                        var $autobus_selector = $('#{{ filter_form.autobus.vars.id }}');
+
+                        $autobus_selector.html('<option>---Seleccione---</option>');
+
+                        for (var i = 0, total = values.length; i < total; i++) {
+                            $autobus_selector.append('<option selected value="' + values[i].id + '">' + values[i].matricula + '</option>');
+                        }
+                    }
+                });
+            });
+
         });
     </script>
 {% endblock javascripts %}

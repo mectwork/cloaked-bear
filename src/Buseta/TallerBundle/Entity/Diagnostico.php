@@ -55,7 +55,7 @@ class Diagnostico implements DateTimeAwareInterface
     private $reporte;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
      *
      * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus")
      * @Assert\NotNull

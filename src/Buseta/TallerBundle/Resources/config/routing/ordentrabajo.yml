@@ -43,9 +43,28 @@ ajax_select_autobus_kilometraje:
     options:
         expose: true
 
+diagnostico_ajax_diag_diagpor:
+    pattern: /select_diag_diagpor
+    defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:selectdiagdiagpor" }
+    requirements: { _method: "GET" }
+    options:
+        expose: true
+
 ordentrabajo_ajax_salidabodega:
   pattern: /select_salidadbodega_ordentrabajo
   defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:select_salidabodega_ordentrabajo" }
   requirements: { _method: "GET" }
   options:
       expose: true
+
+ordentrabajo_ajax_diagnostico_autobus:
+  pattern: /select_filter_diagnostico_autobus
+  defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:select_diagnostico_autobus" }
+  requirements: { _method: "GET" }
+  options:
+      expose: true
+
+
+
+
+

@@ -320,18 +320,21 @@ class OrdenTrabajoController extends Controller
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
         }
 
-        $id = $request->query->get('autobus_id');
-        if (!is_numeric($id)) {
-            return new \Symfony\Component\HttpFoundation\Response(json_encode(array()), 200);
-        }
+        $diagnostico_id = $request->query->get('diagnostico_id');
 
         $em = $this->get('doctrine.orm.entity_manager');
 
-        $autobus = $em->getRepository('BusetaBusesBundle:Autobus')->find($id);
+        $diagnostico = $em->getRepository('BusetaTallerBundle:Diagnostico')->findBy(array(
+            'id' => $diagnostico_id,
+        ));
 
-        $json = array(
-            'kilometraje' => $autobus->getKilometraje(),
-        );
+        $json = array();
+        foreach ($diagnostico as $diag) {
+            $json[] = array(
+                'id' => $diag->getAutobus()->getId(),
+                'kilometraje' => $diag->getAutobus()->getKilometraje(),
+            );
+        }
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
@@ -356,6 +359,66 @@ class OrdenTrabajoController extends Controller
             'responsable' => $ordenTrabajo->getRealizadaPor()->getId(),
             'tipo_ot' => $ordenTrabajo->getPrioridad(),
         ), 200);
+    }
+
+
+    /**
+     * recibe por get el iddiagnostico y devuelve el autobus al que se le hizo el diagnostico
+     */
+    public function select_diagnostico_autobusAction(Request $request)
+    {
+
+        if (!$request->isXmlHttpRequest()) {
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $diagnostico_id = $request->query->get('diagnostico_id');
+
+        $diagnostico = $em->getRepository('BusetaTallerBundle:Reporte')->findBy(array(
+            'id' => $diagnostico_id,
+        ));
+
+        $json = array();
+        foreach ($diagnostico as $diag) {
+            $json[] = array(
+                'id' => $diag->getAutobus()->getId(),
+                'matricula' => $diag->getAutobus()->getMatricula(),
+            );
+        }
+
+
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
+
+
+
+    public function selectdiagdiagporAction(Request $request)
+    {
+
+        if (!$request->isXmlHttpRequest()) {
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+        }
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $diagnostico_id = $request->query->get('diagnostico_id');
+
+        $diagnostico = $em->getRepository('BusetaTallerBundle:Diagnostico')->findBy(array(
+            'id' => $diagnostico_id,
+        ));
+
+        $json = array();
+        foreach ($diagnostico as $diag) {
+            $json[] = array(
+                'id' => $diag->getReporte()->getReporta()->getId(),
+                'nombre' => $diag->getReporte()->getReporta()->getNombres(),
+            );
+        }
+
+
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
 
 }

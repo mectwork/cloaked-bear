@@ -277,6 +277,7 @@ class Autobus extends Vehiculo
      */
     private $wifi;
 
+
     /**
      * @param AutobusBasicoModel $model
      * @return Autobus
