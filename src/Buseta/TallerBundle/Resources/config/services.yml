@@ -1,4 +1,19 @@
 services:
+# MANAGERS
+    buseta.taller.reporte.manager:
+        class: Buseta\TallerBundle\Manager\ReporteManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @logger
+
+# EVENT SUBSCRIBER
+    buseta.taller.reporte.subscriber:
+        class: Buseta\TallerBundle\EventListener\ReporteSubscriber
+        arguments:
+             - @buseta.taller.reporte.manager
+        tags:
+             - {name: kernel.event_subscriber}
+
     # MantenimientoPreventivo Manager
     buseta.manager.mantenimiento_preventivo:
         class: Buseta\TallerBundle\Manager\MantenimientoPreventivoManager
