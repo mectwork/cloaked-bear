@@ -2,6 +2,10 @@
 
 namespace Buseta\TallerBundle\Controller;
 
+use Buseta\TallerBundle\Event\FilterOrdenTrabajoEvent;
+use Buseta\TallerBundle\Event\FilterReporteEvent;
+use Buseta\TallerBundle\Event\ReporteEvents;
+use Buseta\TallerBundle\Event\OrdenTrabajoEvents;
 use Buseta\TallerBundle\Form\Filter\OrdenTrabajoFilter;
 use Buseta\TallerBundle\Form\Model\OrdenTrabajoFilterModel;
 use Buseta\TallerBundle\Form\Type\TareaAdicionalType;
@@ -57,7 +61,7 @@ class OrdenTrabajoController extends Controller
     /**
      * Creates a new OrdenTrabajo entity.
      *
-     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\OrdenTrabajo')")
+
      */
     public function createAction(Request $request)
     {
@@ -113,13 +117,11 @@ class OrdenTrabajoController extends Controller
     /**
      * Displays a form to create a new OrdenTrabajo entity.
      *
-     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo')")
+
      */
     public function newAction()
     {
         $entity = new OrdenTrabajo();
-
-        //$entity->addTareaAdicional(new TareaAdicional());
 
         $tarea_adicional = $this->createForm(new TareaAdicionalType());
 
@@ -135,7 +137,7 @@ class OrdenTrabajoController extends Controller
     /**
      * Finds and displays a OrdenTrabajo entity.
      *
-     * @Security("is_granted('VIEW', ordenTrabajo)")
+
      */
     public function showAction(OrdenTrabajo $ordenTrabajo)
     {
@@ -150,7 +152,7 @@ class OrdenTrabajoController extends Controller
     /**
      * Displays a form to edit an existing OrdenTrabajo entity.
      *
-     * @Security("is_granted('EDIT', ordenTrabajo)")
+
      */
     public function editAction(OrdenTrabajo $ordenTrabajo)
     {
@@ -190,7 +192,7 @@ class OrdenTrabajoController extends Controller
     /**
      * Edits an existing OrdenTrabajo entity.
      *
-     * @Security("is_granted('EDIT', ordenTrabajo)")
+
      */
     public function updateAction(Request $request, OrdenTrabajo $ordenTrabajo)
     {
@@ -216,7 +218,7 @@ class OrdenTrabajoController extends Controller
     /**
      * Deletes a OrdenTrabajo entity.
      *
-     * @Security("is_granted("DELETE", ordenTrabajo)")
+
      */
     public function deleteAction(Request $request, OrdenTrabajo $ordenTrabajo)
     {
@@ -419,6 +421,75 @@ class OrdenTrabajoController extends Controller
 
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
+
+
+    public function cancelarOrdenAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $ordenTrabajo = $em->getRepository('BusetaTallerBundle:OrdenTrabajo')->find($id);
+
+        if (!$ordenTrabajo) {
+            throw $this->createNotFoundException('Unable to find OrdenTrabajo entity.');
+        }
+
+        $report = $ordenTrabajo->getDiagnostico()->getReporte();
+
+        //Se llama al EventDispatcher
+        $eventDispatcher = $this->get('event_dispatcher');
+
+        //Crear Eventos para el EventDispatcher
+
+        $evento = new FilterReporteEvent($report);
+        $evento->setReporte($report);
+
+        $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
+        $ordenTrabajoEvent->setOrden($ordenTrabajo);
+
+
+
+        //Lanzo los Eventos donde se pasa la solicitud que esta en pendiente a completada
+        // y el evento que pasa la orden de trabajo a completada
+
+
+        $eventDispatcher->dispatch( ReporteEvents::CAMBIAR_ESTADO_COMPLETADO, $evento );
+        $eventDispatcher->dispatch( OrdenTrabajoEvents::CAMBIAR_ESTADO_CERRADO, $ordenTrabajoEvent );
+        $eventDispatcher->dispatch( OrdenTrabajoEvents::CAMBIAR_CANCELADO, $ordenTrabajoEvent );
+
+        return $this->redirect($this->generateUrl('ordentrabajo'));
+    }
+
+    public function procesarOrdenAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $ordenTrabajo = $em->getRepository('BusetaTallerBundle:OrdenTrabajo')->find($id);
+
+        if (!$ordenTrabajo) {
+            throw $this->createNotFoundException('Unable to find OrdenTrabajo entity.');
+        }
+
+        $report = $ordenTrabajo->getDiagnostico()->getReporte();
+
+        //Se llama al EventDispatcher
+        $eventDispatcher = $this->get('event_dispatcher');
+
+        //Crear Eventos para el EventDispatcher
+        $evento = new FilterReporteEvent($report);
+        $evento->setReporte($report);
+
+        $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
+        $ordenTrabajoEvent->setOrden($ordenTrabajo);
+
+
+
+        //Lanzo los Eventos donde se pasa la solicitud que esta en pendiente a completada
+        // y el evento que pasa la orden de trabajo a completada
+        $eventDispatcher->dispatch( ReporteEvents::CAMBIAR_ESTADO_COMPLETADO, $evento );
+        $eventDispatcher->dispatch( OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO, $ordenTrabajoEvent );
+
+        return $this->redirect($this->generateUrl('ordentrabajo'));
     }
 
 }
