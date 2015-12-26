@@ -73,7 +73,7 @@ class TareaDiagnostico
      *
      * @param \Buseta\NomencladorBundle\Entity\Grupo $grupo
      *
-     * @return TareaAdicional
+     * @return TareaDiagnostico
      */
     public function setGrupo(\Buseta\NomencladorBundle\Entity\Grupo $grupo = null)
     {
@@ -97,7 +97,7 @@ class TareaDiagnostico
      *
      * @param \Buseta\NomencladorBundle\Entity\Subgrupo $subgrupo
      *
-     * @return TareaAdicional
+     * @return TareaDiagnostico
      */
     public function setSubgrupo(\Buseta\NomencladorBundle\Entity\Subgrupo $subgrupo = null)
     {
@@ -121,7 +121,7 @@ class TareaDiagnostico
      *
      * @param \Buseta\TallerBundle\Entity\TareaMantenimiento $tareamantenimiento
      *
-     * @return TareaAdicional
+     * @return TareaDiagnostico
      */
     public function setTareaMantenimiento(\Buseta\TallerBundle\Entity\TareaMantenimiento $tareamantenimiento = null)
     {

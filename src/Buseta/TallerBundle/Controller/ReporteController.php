@@ -10,12 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-
 use Buseta\TallerBundle\Entity\Reporte;
 use Buseta\TallerBundle\Form\Type\ReporteType;
 use Buseta\TallerBundle\Form\Model\ReporteFilterModel;
 use Buseta\TallerBundle\Form\Filter\ReporteFilter;
 use Symfony\Component\Security\Core\Util\ClassUtils;
+use Buseta\TallerBundle\Event\FilterReporteEvent;
+use Buseta\TallerBundle\Event\ReporteEvents;
 
 /**
  * Reporte controller.
@@ -49,39 +50,21 @@ class ReporteController extends Controller
             throw $this->createNotFoundException('Unable to find Reporte entity.');
         }
 
-        //Cambia el estado de Borrador a Procesado
-        $reporte->setEstado('PR');
-        $em->persist($reporte);
-        $em->flush();
+        //Se llama al EventDispatcher
+        $eventDispatcher = $this->get('event_dispatcher');
+
+        //Crear Eventos para el EventDispatcher
+        $evento = new FilterReporteEvent($reporte)  ;
+        $evento->setReporte($reporte);
+
+        //Lanzo los Evento donde se crea el diagnostico y
+        //cambio el estado de la solicitud de Abierto a Pendiente
+
+        $eventDispatcher->dispatch( ReporteEvents::PROCESAR_SOLICITUD, $evento );
+        $eventDispatcher->dispatch( ReporteEvents::CAMBIAR_ESTADO_PENDIENTE, $evento );
 
         return $this->redirect($this->generateUrl('reporte_index'));
     }
-
-    public function generarDiagnosticoAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $reporte = $em->getRepository('BusetaTallerBundle:Reporte')->find($id);
-
-        if (!$reporte) {
-            throw $this->createNotFoundException('Unable to find Reporte entity.');
-        }
-
-        //Crear nuevo Diagnostico a partir del Reporte seleccionado
-        $diagnostico = new Diagnostico();
-        $diagnostico->setNumero($reporte->getNumero());
-        $diagnostico->setReporte($reporte);
-        $diagnostico->setAutobus($reporte->getAutobus());
-        $em->persist($diagnostico);
-
-        $reporte->setEstado('CO');
-        $em->persist($reporte);
-
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('reporte_index'));
-    }
-
     /**
      * Lists all Reporte entities.
      */
@@ -128,9 +111,10 @@ class ReporteController extends Controller
      */
     public function createAction(Request $request)
     {
-        $status = $request->query->get('status', self::DEFAULT_STATUS);
+        $status = $request->query->get('status', self::DEFAULT_STATUS );
 
         $entity = new Reporte();
+
         $form = $this->createCreateForm($entity);
 
         $form->handleRequest($request);
@@ -187,7 +171,7 @@ class ReporteController extends Controller
      */
     public function newAction(Request $request)
     {
-        $status = $request->query->get('status', self::DEFAULT_STATUS);
+        $status = $request->query->get('status', self::DEFAULT_STATUS );
         $sequenceManager = $this->get('hatuey_soft.sequence.manager');
         $entity = new Reporte();
 

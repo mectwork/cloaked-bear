@@ -313,4 +313,5 @@ class TareaAdicional
     {
         return $this->garantiaTarea;
     }
+
 }

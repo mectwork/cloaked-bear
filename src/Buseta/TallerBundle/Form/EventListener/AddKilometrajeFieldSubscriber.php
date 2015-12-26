@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
-class AddDiagnosticadoporFieldSubscriber implements EventSubscriberInterface
+class AddKilometrajeFieldSubscriber implements EventSubscriberInterface
 {
 
     /**
@@ -42,27 +42,47 @@ class AddDiagnosticadoporFieldSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function addDiagnosticadoporForm(FormInterface $form, $diagnostico = null)
+    private function addKilometrajeForm(FormInterface $form, $diagnostico = null)
     {
+
+
+       /* $form->add('kilometraje', 'number', array(
+            'required' => false,
+            'read_only' => true,
+            'label' => 'Kilometraje',
+            'attr' => array(
+                'class' => 'form-control',
+            ),
+        ));*/
+
+
+
         //Aqui creo el form de municipio
-        $form->add('diagnosticadoPor', 'entity', array(
-            'class'         => 'BusetaBodegaBundle:Tercero',
+        $form->add('kilometraje', 'number', array(
+
+            'required' => false,
+            'read_only' => true,
+            'label' => 'Kilometraje',
+            'attr' => array(
+                'class' => 'form-control',
+            ),
+
             'auto_initialize' => false,
             'empty_value'   => '.:Seleccione:.',
             //Con el query builder obtengo el repositorio de la provincia
             'query_builder' => function (EntityRepository $re) use ($diagnostico) {
-               /* $qb = $re->createQueryBuilder('diag');
-                $query = $qb->where($qb->expr()->eq(true,true));
-                $query->select('diag.autobus')
-                    ->from('Diagnostico','d')
-                    ->where($qb->expr()->eq('diag.id',':id'))
+
+
+                /*$qb = $re->_em->createQueryBuilder('diag');
+
+                $qb->select('d.autobus')
+                    ->from('BusetaTallerBundle:Diagnostico', 'd')
+                    ->where($qb->expr()->eq('d.id',':id'))
                     ->setParameter('id', $diagnostico);
 
 
-
-
                 try {
-                    return $query->getQuery();
+                    return $qb->getQuery();
                 } catch (NoResultException $e) {
                     return array();
                 }*/
@@ -78,16 +98,19 @@ class AddDiagnosticadoporFieldSubscriber implements EventSubscriberInterface
         $propertyAccessor = new PropertyAccessor();
 
         if ($data === null || $propertyAccessor->getValue($data, 'diagnostico') === null) {
-            $form->add('diagnosticadoPor', 'choice', array(
-                'choices' => array(),
-                'empty_value' => '......:Seleccione un diagnostico:......',
-                'disabled' => 'true',
+            $form->add('kilometraje', 'number', array(
                 'required' => false,
+                'read_only' => true,
+                'label' => 'Kilometraje',
+
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
             ));
         } else {
 
             $diagnostico = $propertyAccessor->getValue($data, 'diagnostico');
-            $this->addDiagnosticadoporForm($form, $diagnostico);
+            $this->addKilometrajeForm($form, $diagnostico);
         }
     }
 
@@ -102,7 +125,7 @@ class AddDiagnosticadoporFieldSubscriber implements EventSubscriberInterface
         } else {
 
             $diagnostico = $data['diagnostico'];
-            $this->addDiagnosticadoporForm($form, $diagnostico);
+            $this->addKilometrajeForm($form, $diagnostico);
         }
     }
 }

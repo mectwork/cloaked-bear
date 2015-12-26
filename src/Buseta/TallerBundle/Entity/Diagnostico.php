@@ -219,7 +219,6 @@ class Diagnostico implements DateTimeAwareInterface
     }
 
 
-
     /**
      * Set ordenTrabajo
      *
@@ -297,6 +296,8 @@ class Diagnostico implements DateTimeAwareInterface
      */
     public function addTareaDiagnostico(\Buseta\TallerBundle\Entity\TareaDiagnostico $tareaDiagnostico)
     {
+        $tareaDiagnostico->setDiagnostico($this);
+
         $this->tareaDiagnostico[] = $tareaDiagnostico;
 
         return $this;
@@ -309,6 +310,8 @@ class Diagnostico implements DateTimeAwareInterface
      */
     public function removeTareaDiagnostico(\Buseta\TallerBundle\Entity\TareaDiagnostico $tareaDiagnostico)
     {
+        $tareaDiagnostico->setDiagnostico(null);
+
         $this->tareaDiagnostico->removeElement($tareaDiagnostico);
     }
 

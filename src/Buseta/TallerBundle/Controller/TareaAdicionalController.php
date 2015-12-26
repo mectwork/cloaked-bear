@@ -26,8 +26,8 @@ class TareaAdicionalController extends Controller
 
         $entity = new TareaAdicional();
 
+        //Desde aqui hasta donde termina el comentario no se usa , debe ser de una vieja funcionalidad
         $mpreventivo_id = $request->query->get('mpreventivo_id');
-
         if ($mpreventivo_id !== null) {
             $mpreventivo = $em->getRepository('BusetaTallerBundle:MantenimientoPreventivo')->find($mpreventivo_id);
 
@@ -43,12 +43,15 @@ class TareaAdicionalController extends Controller
                 $entity->setGarantiaTarea($garantia);
             }
         }
+        //Hasta aqui
 
         $form = $this->createForm(new TareaAdicionalType(), $entity, array(
             'method' => 'POST',
             'action' => $this->generateUrl('tareaadicional_new_modal'),
         ));
 
+        //Aqui la plantilla que renderizo es la del modal y envio completamente el modal de respuesta
+        //a la peticion, y se crean con los campos que hacen falta que estan en el TareaAdicionalType
         return $this->render('@BusetaTaller/OrdenTrabajo/modal/modal_tarea_adicional.html.twig', array(
             'form' => $form->createView(),
         ));
@@ -274,7 +277,7 @@ class TareaAdicionalController extends Controller
     public function create_orden_trabajoAction(Request $request)
     {
         $entity = new TareaAdicional();
-        $form = $this->createCreateCompraForm($entity);
+        $form = $this->createCreateComprForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

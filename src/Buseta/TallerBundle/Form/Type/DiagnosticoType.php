@@ -27,7 +27,8 @@ class DiagnosticoType extends AbstractType
             ))
             ->add('reporte','entity',array(
                 'class' => 'BusetaTallerBundle:Reporte',
-
+                //Obtiene todos los reportes que no tengan asociados un diagnostico
+                //para no asociarle dos diagnosticos a una misma solicitud
                 'query_builder' => function(EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('r');
                     $qb

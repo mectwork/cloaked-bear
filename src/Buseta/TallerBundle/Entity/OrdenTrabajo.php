@@ -158,6 +158,12 @@ class OrdenTrabajo implements DateTimeAwareInterface
     private $kilometraje;
 
     /**
+     * @var boolean
+     * @ORM\Column(name="cancelado", type="boolean")
+     */
+    private $cancelado;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -594,6 +600,7 @@ class OrdenTrabajo implements DateTimeAwareInterface
      * Set kilometraje.
      *
      * @param int $kilometraje
+     * @return OrdenTrabajo
      */
     public function setKilometraje($kilometraje)
     {
@@ -623,5 +630,30 @@ class OrdenTrabajo implements DateTimeAwareInterface
     public function getDiagnostico()
     {
         return $this->diagnostico;
+    }
+
+
+    /**
+     * Get cancelado.
+     *
+     * @return boolean
+     */
+    public function getCancelado()
+    {
+        return $this->cancelado;
+    }
+
+    /**
+     * Set cancelado
+     *
+     * @param boolean $cancelado
+     * @return OrdenTrabajo
+     *
+     */
+    public function setCancelado($cancelado)
+    {
+        $this->cancelado = $cancelado;
+
+        return $this;
     }
 }

@@ -2,7 +2,10 @@
 
 namespace Buseta\TallerBundle\Form\Type;
 
-use Buseta\TallerBundle\Entity\TareaMantenimiento;
+use Buseta\TallerBundle\Form\EventListener\AddGrupoFieldSubscriber;
+use Buseta\TallerBundle\Form\EventListener\AddSubgrupoFieldSubscriber;
+use Buseta\TallerBundle\Form\EventListener\AddTareaMantenimientoFieldSubscriber;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -15,6 +18,20 @@ class TareaDiagnosticoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $objeto = $builder->getFormFactory();
+
+        $grupos = new AddGrupoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($grupos);
+
+        $subgrupos = new AddSubgrupoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($subgrupos);
+
+        $tareamantenimiento = new AddTareaMantenimientoFieldSubscriber($objeto);
+        $builder->addEventSubscriber($tareamantenimiento);
+
+
+
         $builder
             ->add('descripcion', 'textarea', array(
                 'required' => true,
@@ -24,34 +41,7 @@ class TareaDiagnosticoType extends AbstractType
                     'style' => 'height: 120px',
                 ),
             ))
-            ->add('grupo')
-            ->add('subgrupo')
-//            ->add('tareamantenimiento', 'collection', array(
-//                'type' => new TareaMantenimiento(),
-//                'label'  => false,
-//                'required' => true,
-//                'by_reference' => false,
-//                'allow_add' => true,
-//                'allow_delete' => true,
-//            ))
 
-            ->add('tareamantenimiento', 'entity', array(
-                'class'         => 'BusetaTallerBundle:TareaMantenimiento',
-                'empty_value'   => '---Seleccione---',
-                'auto_initialize' => false,
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
-
-//            ->add('tareamantenimiento', 'text', array(
-//                'required' => true,
-//                'label'  => 'Tarea de Mantenimiento',
-//                'attr'   => array(
-//                    'class' => 'form-control',
-//                ),
-//            ))
-//            ->add('diagnostico')
         ;
     }
     

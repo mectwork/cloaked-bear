@@ -53,7 +53,7 @@ class AddAutobusFieldSubscriber implements EventSubscriberInterface
             'query_builder' => function (EntityRepository $re) use ($diagnostico) {
 
 
-                $qb = $re->_em->createQueryBuilder('diag');
+                /*$qb = $re->_em->createQueryBuilder('diag');
 
                 $qb->select('d.autobus')
                     ->from('BusetaTallerBundle:Diagnostico', 'd')
@@ -65,7 +65,7 @@ class AddAutobusFieldSubscriber implements EventSubscriberInterface
                     return $qb->getQuery();
                 } catch (NoResultException $e) {
                     return array();
-                }
+                }*/
             },
         ));
 

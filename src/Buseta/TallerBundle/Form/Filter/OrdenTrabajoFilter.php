@@ -17,7 +17,7 @@ class OrdenTrabajoFilter extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $builder->addEventSubscriber(new AddAutobusFieldSubscriber());
+        //$builder->addEventSubscriber(new AddAutobusFieldSubscriber());
 
         $builder
             ->add('numero', 'text', array(
@@ -65,6 +65,16 @@ class OrdenTrabajoFilter extends AbstractType
 
                     return $qb;
                 },
+            ))
+
+            ->add('autobus', 'entity', array(
+                'class' => 'BusetaBusesBundle:Autobus',
+                'empty_value' => '---Seleccione---',
+                'label' => 'Autobús',
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
             ))
 
             ->add('diagnostico','entity',array(

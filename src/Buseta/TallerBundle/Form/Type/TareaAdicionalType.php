@@ -41,19 +41,19 @@ class TareaAdicionalType extends AbstractType
             ->add('fechaEstimada', 'date', array(
                 'widget' => 'single_text',
                 'format'  => 'dd/MM/yyyy',
+                'required' => false,
                 'attr'   => array(
                     'class' => 'form-control',
                 ),
             ))
             ->add('horaInicio', 'text', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Hora inicio',
                 'attr'   => array(
                     'class' => 'form-control',
                 ),
             ))
             ->add('horaFinal', 'text', array(
-                'required' => true,
                 'label'  => 'Hora final',
                 'attr'   => array(
                     'class' => 'form-control',

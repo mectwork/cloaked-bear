@@ -1,0 +1,67 @@
+{% block collection_widget %}
+    {% spaceless %}
+        <div class="collection">
+            {% if prototype is defined %}
+                {% set attr = attr | merge({'data-prototype': block('collection_item_widget') }) %}
+            {% endif %}
+            {{ form_errors(form) }}
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div  {{ block('widget_container_attributes') }}>
+                        <h4>Listado de tareas adicionales insertadas:</h4>
+
+                        <div id="tareas-collection">
+                            {% set counter = form | length %}
+                            {% for rows in form %}
+                                {{ _self.template(rows) }}
+                            {% endfor %}
+                            {% if counter == 0 %}
+                                <div id="no-elements-tr-diag">No existen elementos. Presione "Adicionar" para agregar nuevos elementos.</div>
+                            {% else %}
+                                <div id="no-elements-tr-diag">No existen elementos. Presione "Adicionar" para agregar nuevos elementos.</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{ form_rest(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock collection_widget %}
+
+{% block collection_item_widget %}
+    {% spaceless %}
+        {{ _self.template(prototype) }}
+    {% endspaceless %}
+{% endblock collection_item_widget %}
+
+{% macro template(prototype) %}
+    <div class="well well-small">
+        <div class="row">
+            <div class="col-lg-4 form-group">
+                {{ form_row(prototype.grupo) }}
+            </div>
+            <div class="col-lg-4 form-group">
+                {{ form_row(prototype.subgrupo) }}
+            </div>
+            <div class="col-lg-4 form-group">
+                {{ form_row(prototype.tareamantenimiento) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 form-group">
+                {{ form_row(prototype.descripcion) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-2">
+                <a class="btn btn-link delete_tag_link_diag" href="#"><i class="fa fa-remove"></i> Eliminar Tarea</a>
+            </div>
+        </div>
+    </div>
+
+{% endmacro %}

@@ -264,4 +264,5 @@ class TareaDiagnosticoController extends Controller
             ->getForm()
         ;
     }
+
 }

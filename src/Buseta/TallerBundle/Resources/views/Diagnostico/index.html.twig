@@ -132,6 +132,14 @@
                                     class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </div>
                     {% endif %}
+
+                    {% if is_granted('EDIT', entity) %}
+                        <div class="btn-group">
+                            <a class="btn btn-danger btn-xs"
+                               href="{{ path('diagnostico_edit', { 'id': entity.id }) }}"><i
+                                        class="fa fa-edit"> Editar</i></a>
+                        </div>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

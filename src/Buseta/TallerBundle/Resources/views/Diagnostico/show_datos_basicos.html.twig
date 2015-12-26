@@ -16,9 +16,11 @@
         {% set badge = 'warning' %}
     {% endif %}
 
-    <li class="list-group-item">Estado: <span class="label label-{{ badge }}"> {{ ('estado.' ~ entity.estado)  | trans({}, 'BusetaTallerBundle')  }}</li>
+    <li class="list-group-item">Estado: <span
+                class="label label-{{ badge }}"> {{ ('estado.' ~ entity.estado)  | trans({}, 'BusetaTallerBundle') }}
+    </li>
 
-    <li class="list-group-item"><b>Medio:</b>   Sin medio reporte</li>
+    <li class="list-group-item"><b>Medio:</b> Sin medio reporte</li>
     <li class="list-group-item"><b>Reporta:</b> Sin reporte</li>
 
     {% if cancelado == 1 %}
@@ -56,10 +58,11 @@
             {% else %}
                 <li class="list-group-item"><b>¿Es Usuario de la Empresa?:</b> No</li>
             {% endif %}
+
             {% if cancelado == 1 %}
-                <li class="list-group-item"><b>¿Cancelado?:</b> Cancelado</li>
+                <li class="list-group-item"><b>¿Cancelado?:</b> Si</li>
             {% else %}
-                <li class="list-group-item"><b>¿Cancelado?:</b> Sin Cancelar</li>
+                <li class="list-group-item"><b>¿Cancelado?:</b> No</li>
             {% endif %}
 
             <li class="list-group-item">
@@ -80,6 +83,11 @@
 
                 </div>
             </li>
+
+
+
+
+
         </ul>
     {% else %}
         <!-- Resumen Reporte -->
@@ -92,15 +100,11 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Observaciones del Reporte</h3>
                     </div>
-
-                    <!-- Observaciones del Reporte -->
                     <ul class="list-group">
-                        {% for reporte in entity.observaciones %}
-                            <li class="list-group-item">{{ entity.valor }}</li>
-                        {% else %}
-                            <li class="list-group-item">No existen observaciones de diagnostico disponibles</li>
-                        {% endfor %}
+                        <li class="list-group-item"> No fueron asociados reportes al diagnóstico.</li>
                     </ul>
+                    <!-- Observaciones del Reporte -->
+
 
                 </div>
             </li>
@@ -108,9 +112,51 @@
 
 
 
-        <ul class="list-group">
-            <li class="list-group-item"> No fueron asociados reportes al diagnóstico.</li>
-        </ul>
+
     {% endif %}
+
+    <li class="list-group-item">
+
+        <div class="panel panel-default" style="margin: 10px">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <h3 class="panel-title">Tareas del diagnostico</h3>
+            </div>
+
+
+            <ul class="list-group">
+
+
+                <table class="table table-bordered" style="font-size: 16px;">
+                    <thead>
+                    <tr>
+                        <th>Grupo</th>
+                        <th>Subgrupo</th>
+                        <th>Tarea</th>
+                        <th>Observaciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for tarea in entity.tareaDiagnostico %}
+                        <tr>
+                            <td align="center">{{ tarea.grupo }}</td>
+                            <td align="center">{{ tarea.subgrupo }}</td>
+                            <td align="center">{{ tarea.tareamantenimiento }}</td>
+                            <td align="center">{{ tarea.descripcion }}</td>
+
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">
+                                <span class="label label-danger">No existen tareas de mantenimiento disponibles</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+            </ul>
+
+        </div>
+    </li>
 
 </div>
