@@ -1,56 +1,44 @@
 <?php
 
 namespace Buseta\BodegaBundle\Event;
-
-
-use Buseta\BodegaBundle\Entity\AlbaranLinea;
-use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
+use Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class FilterBitacoraEvent extends Event
 {
     /**
-     * @var \Buseta\BodegaBundle\Entity\AlbaranLinea
+     * @var \Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface
      */
-    private $albaranLinea;
+    private $generadorbitacora;
 
+    private $valorretorno;
 
     /**
-     * @param $albaranLinea
+     * @param \Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface $generadorbitacora
      */
-    function __construct(AlbaranLinea $albaranLinea)
+    function __construct( GeneradorBitacoraInterface $generadorbitacora )
     {
-        $this->albaranLinea = $albaranLinea;
+        $this->generadorbitacora = $generadorbitacora;
+        $this->valorretorno = true;
     }
 
+    /**
+     * @return \Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface $generadorbitacora
+     */
     public function getEntityData()
     {
-        $bitacora = new BitacoraAlmacen();
-        $bitacora->setProducto($this->albaranLinea->getProducto());
-        $bitacora->setAlmacen($this->albaranLinea->getAlmacen());
-        $bitacora->setCantidadMovida($this->albaranLinea->getCantidadMovida());
-        $bitacora->setFechaMovimiento($this->albaranLinea->getAlbaran()->getFechaMovimiento());
-
-        return $bitacora;
+        return $this->generadorbitacora;
     }
 
-    /**
-     * @return \Buseta\BodegaBundle\Entity\AlbaranLinea
-     */
-    public function getAlbaranLinea()
+    public function setReturnValue($valorretorno)
     {
-        return $this->albaranLinea;
+        $this->valorretorno = $valorretorno;
     }
 
-    /**
-     * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $albaranLinea
-     *
-     * @return $this
-     */
-    public function setAlbaranLinea($albaranLinea)
+
+    public function getReturnValue()
     {
-        $this->albaranLinea = $albaranLinea;
-
-        return $this;
+       return $this->valorretorno ;
     }
+
 }

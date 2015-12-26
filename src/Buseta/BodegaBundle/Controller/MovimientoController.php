@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Controller;
 
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
+use Buseta\BodegaBundle\Entity\Repository\BitacoraAlmacenRepository;
 use Buseta\BodegaBundle\Form\Filter\MovimientoFilter;
 use Buseta\BodegaBundle\Form\Model\MovimientoFilterModel;
 use Symfony\Component\Form\FormError;
@@ -92,7 +93,7 @@ class MovimientoController extends Controller
         $entities = $paginator->paginate(
             $entities,
             $request->query->get('page', 1),
-            5
+            10
         );
 
         return $this->render('BusetaBodegaBundle:Movimiento:index.html.twig', array(
@@ -251,7 +252,7 @@ class MovimientoController extends Controller
         $productos = $paginator->paginate(
             $productos,
             $this->get('request')->query->get('page', 1),
-            5,
+            10,
             array('pageParameterName' => 'page')
         );
 

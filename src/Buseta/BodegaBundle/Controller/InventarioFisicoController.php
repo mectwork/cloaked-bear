@@ -18,6 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
+use Buseta\BodegaBundle\BusetaBodegaBitacoraEvents;
+use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
+
 /**
  * InventarioFisico controller.
  *
@@ -60,60 +63,28 @@ class InventarioFisicoController extends Controller
 
     public function procesarInventarioFisicoAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+       $manager = $this->get('buseta.bodega.inventariofisico.manager');
 
-        $inventarioFisico = $em->getRepository('BusetaBodegaBundle:InventarioFisico')->find($id);
-
-        if (!$inventarioFisico) {
-            throw $this->createNotFoundException('Unable to find InventarioFisico entity.');
-        }
-
-        //Cambia el estado de Borrador a Procesado
-        $inventarioFisico->setEstado('PR');
-
-        $em->persist($inventarioFisico);
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('inventariofisico'));
+       if ($manager->procesar($id)){
+           $this->get('session')->getFlashBag()->add('success', 'Se ha procesado el Inventario Fisico de forma correcta.');
+           return $this->redirect( $this->generateUrl('inventariofisico_show', array( 'id' => $id ) ) );
+       } else {
+           $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar Inventario Fisico.');
+           return $this->redirect( $this->generateUrl('inventariofisico_show', array( 'id' => $id ) ) );
+       }
     }
 
     public function completarInventarioFisicoAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $manager = $this->get('buseta.bodega.inventariofisico.manager');
 
-        $inventarioFisico = $em->getRepository('BusetaBodegaBundle:InventarioFisico')->find($id);
-
-        if (!$inventarioFisico) {
-            throw $this->createNotFoundException('Unable to find InventarioFisico entity.');
+        if ($manager->completar($id)){
+            $this->get('session')->getFlashBag()->add('success', 'Se ha completado el Inventario Fisico de forma correcta.');
+            return $this->redirect( $this->generateUrl('inventariofisico_show', array( 'id' => $id ) ) );
+        } else {
+            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar Inventario Fisico.');
+            return $this->redirect( $this->generateUrl('inventariofisico_show', array( 'id' => $id ) ) );
         }
-
-        $inventarioFisicoLineas = $em->getRepository('BusetaBodegaBundle:InventarioFisicoLinea')->findBy(array(
-            'inventarioFisico' => $inventarioFisico,
-        ));
-
-        if($inventarioFisicoLineas != null)
-        {
-            foreach ($inventarioFisicoLineas as $linea) {
-                //Actualizar Bitácora
-                $bitacora = new BitacoraAlmacen();
-                $bitacora->setProducto($linea->getProducto());
-                $bitacora->setCategoriaProducto($linea->getProducto()->getCategoriaProducto());
-                $bitacora->setAlmacen($inventarioFisico->getAlmacen());
-                $bitacora->setFechaMovimiento($inventarioFisico->getFecha());
-                $bitacora->setCantMovida($linea->getCantidadReal() - $linea->getCantidadTeorica());
-                $bitacora->setTipoMovimiento('I+');
-
-                $em->persist($bitacora);
-                $em->flush();
-            }
-        }
-
-        //Cambia el estado de Procesado a Completado
-        $inventarioFisico->setEstado('CO');
-        $em->persist($inventarioFisico);
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('inventariofisico'));
     }
 
     /**

@@ -1,9 +1,9 @@
 <?php
 
-namespace Buseta\BodegaBundle;
+namespace Buseta\BodegaBundle\Event;
 
 
-final class BusetaBodegaAlbaranEvents
+final class AlbaranEvents
 {
     const PRE_CREATE = 'buseta.bodega.albaran.pre_create';
 
