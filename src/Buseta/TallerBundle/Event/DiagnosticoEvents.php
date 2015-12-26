@@ -5,11 +5,13 @@ namespace Buseta\TallerBundle\Event;
 
 final class DiagnosticoEvents
 {
-    const DCREAR = 'buseta.taller.diagnostico.crear';
 
-    const DCAMBIAR_ESTADO_BO = 'buseta.taller.diagnostico.cambiarestadobo';
 
-    const DCAMBIAR_ESTADO_CO = 'buseta.taller.diagnostico.cambiarestadoco';
+    const CAMBIAR_CANCELADO = 'buseta.taller.diagnostico.cambiarcancelado';
 
-    const DCAMBIAR_ESTADO_PR = 'buseta.taller.diagnostico.cambiarestadopr';
+    const PROCESAR_DIAGNOSTICO = 'buseta.taller.diagnostico.crear';
+
+    const CAMBIAR_ESTADO_CO = 'buseta.taller.diagnostico.cambiarestadoco';
+
+    const CAMBIAR_ESTADO_PR = 'buseta.taller.diagnostico.cambiarestadopr';
 }

@@ -4,6 +4,7 @@ namespace Buseta\TallerBundle\EventListener;
 
 use Buseta\TallerBundle\Event\FilterReporteEvent;
 use Buseta\TallerBundle\Event\ReporteEvents;
+use Buseta\TallerBundle\Manager\DiagnosticoManager;
 use Buseta\TallerBundle\Manager\ReporteManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -14,13 +15,20 @@ class ReporteSubscriber implements EventSubscriberInterface
      */
     private $reporteManager;
 
+    /**
+     * @var \Buseta\TallerBundle\Manager\DiagnosticoManager
+     */
+    private $diagnosticoManager;
+
 
     /**
      * @param \Buseta\TallerBundle\Manager\ReporteManager $reporteManager
+     * @param \Buseta\TallerBundle\Manager\DiagnosticoManager $diagnosticoManager
      */
-    function __construct(ReporteManager $reporteManager)
+    function __construct(ReporteManager $reporteManager, DiagnosticoManager $diagnosticoManager)
     {
         $this->reporteManager = $reporteManager;
+        $this->diagnosticoManager = $diagnosticoManager;
     }
 
     /**
@@ -30,41 +38,34 @@ class ReporteSubscriber implements EventSubscriberInterface
     {
         return array(
             ReporteEvents::PROCESAR_SOLICITUD         => 'crearDiagnostico',
-            ReporteEvents::CAMBIAR_ESTADO_ABIERTO     => 'cambioEstadoDiagnosticoAbierto',
-            ReporteEvents::CAMBIAR_ESTADO_PENDIENTE   => 'cambioEstadoDiagnosticoPendiente',
-            ReporteEvents::CAMBIAR_ESTADO_COMPLETADO  => 'cambioEstadoDiagnosticoCompletado',
+            ReporteEvents::CAMBIAR_ESTADO_PENDIENTE   => 'cambioEstadoReportePendiente',
+            ReporteEvents::CAMBIAR_ESTADO_COMPLETADO  => 'cambioEstadoReporteCompletado',
         );
     }
 
-    //Llamada a los Eventos
-    public function cambioEstadoDiagnosticoAbierto(FilterReporteEvent $event)
-    {
-        $this->cambioEstado($event, 'BO');
-    }
 
-    public function cambioEstadoDiagnosticoPendiente(FilterReporteEvent $event)
+
+    public function cambioEstadoReportePendiente(FilterReporteEvent $event)
     {
         $this->cambioEstado($event,'PR' );
     }
 
-    public function cambioEstadoDiagnosticoCompletado(FilterReporteEvent $event)
+    public function cambioEstadoReporteCompletado(FilterReporteEvent $event)
     {
         $this->cambioEstado($event, 'CO');
     }
 
-    //Llamo al Manager para Cambiar Estado
     public function cambioEstado(FilterReporteEvent $event, $estado)
     {
         $reporte = $event->getReporte();
         $this->reporteManager->cambiarEstado($reporte,$estado);
     }
 
-    //Llamo al Manager para Crear Diagnostico
     public function crearDiagnostico(FilterReporteEvent $event)
     {
         $reporte = $event->getReporte();
 
-        $this->reporteManager->crearDiagnostico($reporte);
+        $this->diagnosticoManager->crearDiagnostico($reporte);
     }
 
 }

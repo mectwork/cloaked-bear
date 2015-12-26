@@ -7,10 +7,9 @@ final class ReporteEvents
 {
     const PROCESAR_SOLICITUD = 'buseta.taller.reporte.procesar';
 
-    const CAMBIAR_ESTADO_ABIERTO = 'buseta.taller.reporte.cambiarestadoabierto';
-
     const CAMBIAR_ESTADO_PENDIENTE = 'buseta.taller.reporte.cambiarestadopendiente';
 
     const CAMBIAR_ESTADO_COMPLETADO = 'buseta.taller.reporte.cambiarestadocompletado';
-    
+
+
 }

@@ -17,7 +17,7 @@ class FilterReporteEvent extends Event
      */
     function __construct(Reporte $reporte)
     {
-        $this->reporte = $reporte;
+        $this->$reporte = $reporte;
     }
 
     /**
@@ -28,8 +28,10 @@ class FilterReporteEvent extends Event
         return $this->reporte;
     }
 
+    /**
+     */
     public function setReporte(Reporte $reporte)
     {
-         $this->reporte=$reporte;
+        $this->reporte=$reporte;
     }
 }

@@ -1,18 +1,50 @@
 services:
-# MANAGERS
+    # MANAGERS
+    buseta.taller.ordentrabajo.manager:
+        class: Buseta\TallerBundle\Manager\OrdenTrabajoManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @logger
+
+    # EVENT SUBSCRIBER
+    buseta.taller.ordentrabajo.subscriber:
+        class: Buseta\TallerBundle\EventListener\OrdenTrabajoSubscriber
+        arguments:
+            - @buseta.taller.ordentrabajo.manager
+        tags:
+            - {name: kernel.event_subscriber}
+
+    # MANAGERS
+    buseta.taller.diagnostico.manager:
+        class: Buseta\TallerBundle\Manager\DiagnosticoManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @logger
+
+    # EVENT SUBSCRIBER
+    buseta.taller.diagnostico.subscriber:
+        class: Buseta\TallerBundle\EventListener\DiagnosticoSubscriber
+        arguments:
+            - @buseta.taller.diagnostico.manager
+            - @buseta.taller.ordentrabajo.manager
+        tags:
+            - {name: kernel.event_subscriber}
+
+    # MANAGERS
     buseta.taller.reporte.manager:
         class: Buseta\TallerBundle\Manager\ReporteManager
         arguments:
             - @doctrine.orm.entity_manager
             - @logger
 
-# EVENT SUBSCRIBER
+    # EVENT SUBSCRIBER
     buseta.taller.reporte.subscriber:
         class: Buseta\TallerBundle\EventListener\ReporteSubscriber
         arguments:
-             - @buseta.taller.reporte.manager
+            - @buseta.taller.reporte.manager
+            - @buseta.taller.diagnostico.manager
         tags:
-             - {name: kernel.event_subscriber}
+            - {name: kernel.event_subscriber}
 
     # MantenimientoPreventivo Manager
     buseta.manager.mantenimiento_preventivo:

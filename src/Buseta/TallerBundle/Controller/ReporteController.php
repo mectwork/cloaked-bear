@@ -55,10 +55,11 @@ class ReporteController extends Controller
 
         //Crear Eventos para el EventDispatcher
         $evento = new FilterReporteEvent($reporte)  ;
-        //$evento->setReporte($reporte);
+        $evento->setReporte($reporte);
 
         //Lanzo los Evento donde se crea el diagnostico y
         //cambio el estado de la solicitud de Abierto a Pendiente
+
         $eventDispatcher->dispatch( ReporteEvents::PROCESAR_SOLICITUD, $evento );
         $eventDispatcher->dispatch( ReporteEvents::CAMBIAR_ESTADO_PENDIENTE, $evento );
 
