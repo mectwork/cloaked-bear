@@ -2,6 +2,11 @@ BusetaTallerBundle_tareaadicional:
     resource: "@BusetaTallerBundle/Resources/config/routing/tareaadicional.yml"
     prefix:   /tareaadicional
 
+BusetaTallerBundle_tareadiagnostico:
+    resource: "@BusetaTallerBundle/Resources/config/routing/tareadiagnostico.yml"
+    prefix:   /tareadiagnostico
+
+
 BusetaTallerBundle_ordentrabajo:
     resource: "@BusetaTallerBundle/Resources/config/routing/ordentrabajo.yml"
     prefix:   /ordentrabajo

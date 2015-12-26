@@ -2,6 +2,7 @@
 
 namespace Buseta\TallerBundle\Form\Type;
 
+use Buseta\TallerBundle\Form\Type\TareaDiagnostico;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\Form\AbstractType;
@@ -55,6 +56,19 @@ class DiagnosticoType extends AbstractType
                 'empty_value' => '---Seleccione prioridad---',
                 'required' => false,
             ))
+
+
+
+
+            ->add('tareaDiagnostico', 'collection', array(
+                'type' => new TareaDiagnosticoType(),
+                'label'  => false,
+                'required' => true,
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ))
+
             ->add('observaciones','collection',array(
                 'type' => new ObservacionDiagnosticoType(),
                 'label'  => false,

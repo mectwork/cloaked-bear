@@ -2,6 +2,11 @@
 
 namespace Buseta\TallerBundle\Controller;
 
+use Buseta\TallerBundle\Event\FilterDiagnosticoEvent;
+use Buseta\TallerBundle\Event\FilterReporteEvent;
+use Buseta\TallerBundle\Event\OrdenTrabajoEvents;
+use Buseta\TallerBundle\Event\ReporteEvents;
+use Buseta\TallerBundle\Event\DiagnosticoEvents;
 use Buseta\TallerBundle\Entity\Diagnostico;
 use Buseta\TallerBundle\Entity\Observacion;
 use Buseta\TallerBundle\Entity\ObservacionDiagnostico;
@@ -17,6 +22,7 @@ use Buseta\TallerBundle\Form\Type\DiagnosticoType;
 use Buseta\TallerBundle\Form\Model\DiagnosticoFilterModel;
 use Buseta\TallerBundle\Form\Filter\DiagnosticoFilter;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\Null;
 
 /**
  * Diagnostico controller.
@@ -35,38 +41,67 @@ class DiagnosticoController extends Controller
 
         $diagnostico = $em->getRepository('BusetaTallerBundle:Diagnostico')->find($id);
 
+
         if (!$diagnostico) {
             throw $this->createNotFoundException('Unable to find Diagnostico entity.');
         }
 
-        //Cambia el estado de Borrador a Procesado
-        $diagnostico->setEstado('PR');
-        $em->persist($diagnostico);
-        $em->flush();
+        //Se llama al EventDispatcher
+        $eventDispatcher = $this->get('event_dispatcher');
+
+        //Crear Eventos para el EventDispatcher
+        $evento = new FilterDiagnosticoEvent($diagnostico);
+        $evento->setDiagnostico($diagnostico);
+
+        //Lanzo los Evento donde se crea el diagnostico y
+        //cambio el estado de la solicitud de Abierto a Pendiente
+        $eventDispatcher->dispatch( DiagnosticoEvents::PROCESAR_DIAGNOSTICO, $evento );
+        $eventDispatcher->dispatch( DiagnosticoEvents::CAMBIAR_ESTADO_PR, $evento );
+        //$eventDispatcher->dispatch(  OrdenTrabajoEvents::CAMBIAR_ESTADO_ABIERTO , $evento );
 
         return $this->redirect($this->generateUrl('diagnostico'));
     }
 
-    public function generarOrdenTrabajoAction($id)
+    public function cancelarDiagnosticoAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
         $diagnostico = $em->getRepository('BusetaTallerBundle:Diagnostico')->find($id);
 
         if (!$diagnostico) {
-            throw $this->createNotFoundException('Unable to find Diagnóstico entity.');
+            throw $this->createNotFoundException('Unable to find Diagnostico entity.');
         }
 
-        //Crear nueva Orden de Trabajo a partir del Diagnóstico seleccionado
-        $ordenTrabajo = new OrdenTrabajo();
-        $ordenTrabajo->setNumero($diagnostico->getNumero());
-        $ordenTrabajo->setDiagnostico($diagnostico);
-        $ordenTrabajo->setAutobus($diagnostico->getAutobus());
-        $em->persist($ordenTrabajo);
+        $report = $diagnostico->getReporte();
 
-        $diagnostico->setEstado('CO');
-        $em->persist($diagnostico);
-        $em->flush();
+        //Se llama al EventDispatcher
+        $eventDispatcher = $this->get('event_dispatcher');
+
+        //Crear Eventos para el EventDispatcher
+
+
+        $diagEvent = new FilterDiagnosticoEvent($diagnostico);
+        $diagEvent->setDiagnostico($diagnostico);
+
+
+        //Lanzo los Eventos donde se pasa la solicitud que esta en pendiente a completada
+        // y el evento que pasa la orden de trabajo a completada
+
+        if(!($report === null)){
+            $evento = new FilterReporteEvent($report);
+            $evento->setReporte($report);
+            $eventDispatcher->dispatch( ReporteEvents::CAMBIAR_ESTADO_COMPLETADO, $evento );
+        }
+
+
+
+
+
+        $eventDispatcher->dispatch( DiagnosticoEvents::CAMBIAR_ESTADO_CO, $diagEvent );
+        $eventDispatcher->dispatch( DiagnosticoEvents::CAMBIAR_CANCELADO, $diagEvent );
+
+
+
         return $this->redirect($this->generateUrl('diagnostico'));
     }
 
@@ -124,8 +159,111 @@ class DiagnosticoController extends Controller
 
         return $this->render('BusetaTallerBundle:Diagnostico:show.html.twig', array(
             'entity' => $diagnostico,
-            'reportes' => $reportes,
+            'reportes' => $reportes,git add
             'id' => $diagnostico->getId(),
+        ));
+    }
+
+    /**
+     * Displays a form to edit an existing TareaDiagnostico entity.
+     */
+    public function editAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('BusetaTallerBundle:Diagnostico')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Diagnostico entity.');
+        }
+
+        $editForm = $this->createEditForm($entity);
+        $deleteForm = $this->createDeleteForm($id);
+
+        return $this->render('BusetaTallerBundle:Diagnostico:edit.html.twig', array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Creates a form to edit a Diagnostico entity.
+     *
+     * @param Diagnostico $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Diagnostico $entity)
+    {
+        $form = $this->createForm(new DiagnosticoType(), $entity, array(
+            'action' => $this->generateUrl('diagnostico_update', array('id' => $entity->getId())),
+            'method' => 'PUT',
+        ));
+
+//        $form->add('submit', 'submit', array('label' => 'Update'));
+
+        return $form;
+    }
+
+    /**
+     * Creates a form to delete a Diagnostico entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('diagnostico_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->getForm()
+            ;
+    }
+
+    /**
+     * Deletes a TareaDiagnostico entity.
+     */
+    public function deleteAction(Request $request, $id)
+    {
+        $form = $this->createDeleteForm($id);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('BusetaTallerBundle:Diagnostico')->find($id);
+
+            if (!$entity) {
+                throw $this->createNotFoundException('Unable to find Diagnostico entity.');
+            }
+
+            $em->remove($entity);
+            $em->flush();
+        }
+
+        return $this->redirect($this->generateUrl('diagnostico'));
+    }
+
+    public function updateAction(Request $request, Diagnostico $diagnostico)
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        $deleteForm = $this->createDeleteForm($diagnostico->getId());
+        $editForm = $this->createEditForm($diagnostico);
+
+        $editForm->handleRequest($request);
+        if ($editForm->isValid()) {
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('diagnostico_show', array('id' => $diagnostico->getId())));
+        }
+
+        return $this->render('BusetaTallerBundle:Diagnostico:edit.html.twig', array(
+            'entity'      => $diagnostico,
+            'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -133,6 +271,7 @@ class DiagnosticoController extends Controller
      * Displays a form to create a new Diagnostico entity.
      *
      * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\Diagnostico')")
+     *
      */
     public function newAction()
     {

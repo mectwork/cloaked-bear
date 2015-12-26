@@ -50,3 +50,7 @@ diagnostico_ajax_ordentrabajo_autobus:
 procesarDiagnostico:
     pattern:  /{id}/procesarDiagnostico
     defaults: { _controller: "BusetaTallerBundle:Diagnostico:procesarDiagnostico" }
+
+cancelarDiagnostico:
+    pattern:  /{id}/cancelarDiagnostico
+    defaults: { _controller: "BusetaTallerBundle:Diagnostico:cancelarDiagnostico" }
