@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Controller;
 
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
+use Buseta\BodegaBundle\Entity\Repository\BitacoraAlmacenRepository;
 use Buseta\BodegaBundle\Form\Filter\MovimientoFilter;
 use Buseta\BodegaBundle\Form\Model\MovimientoFilterModel;
 use Symfony\Component\Form\FormError;

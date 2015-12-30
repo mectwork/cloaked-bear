@@ -2,9 +2,12 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\BusetaBodegaBitacoraEvents;
+use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\Movimiento;
+
 use Buseta\BodegaBundle\Form\Filter\AlbaranFilter;
 use Buseta\BodegaBundle\Form\Model\AlbaranFilterModel;
 use Buseta\BodegaBundle\Form\Model\AlbaranModel;
@@ -33,10 +36,11 @@ class AlbaranController extends Controller
      */
     public function indexAction(Request $request)
     {
+
         $filter = new AlbaranFilterModel();
 
         $form = $this->createForm(new AlbaranFilter(), $filter, array(
-            'action' => $this->generateUrl('albaran'),
+            'action' => $this->generateUrl('bodega'),
         ));
 
         $form->handleRequest($request);
@@ -61,59 +65,42 @@ class AlbaranController extends Controller
         ));
     }
 
+
+    /**
+     *
+     *
+     * @Route("/{id}/procesarAlbaran", name="procesarAlbaran", methods={"GET"}, options={"expose":true})
+     */
     public function procesarAlbaranAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $manager = $this->get('buseta.bodega.albaran.manager');
 
-        $albaran = $em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
-
-        if (!$albaran) {
-            throw $this->createNotFoundException('Unable to find Albaran entity.');
+        if ($manager->procesar($id)){
+            $this->get('session')->getFlashBag()->add('success', 'Se ha procesado el Albaran de forma correcta.');
+            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
+        } else {
+            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar el Albaran.');
+            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
         }
-
-        //Cambia el estado de Borrador a Procesado
-        $albaran->setEstadoDocumento('PR');
-        $em->persist($albaran);
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('albaran'));
     }
 
+
+    /**
+     *
+     *
+     * @Route("/{id}/completarAlbaran", name="completarAlbaran", methods={"GET"}, options={"expose":true})
+     */
     public function completarAlbaranAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $manager = $this->get('buseta.bodega.albaran.manager');
 
-        $albaran = $em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
-
-        $albaranLineas = $em->getRepository('BusetaBodegaBundle:AlbaranLinea')->findBy(array(
-            'albaran' => $albaran,
-        ));
-
-
-        foreach ($albaranLineas as $linea) {
-
-            //Actualizar Bitácora
-            $bitacora = new BitacoraAlmacen();
-            $bitacora->setProducto($linea->getProducto());
-            $bitacora->setCategoriaProducto($linea->getProducto()->getCategoriaProducto());
-            $bitacora->setFechaMovimiento($albaran->getFechaMovimiento());
-            $bitacora->setAlmacen($linea->getAlmacen());
-            $bitacora->setCantMovida($linea->getCantidadMovida());
-            $bitacora->setTipoMovimiento('V+');
-
-            //Cambia el estado de Procesado a Completado
-            $albaran->setEstadoDocumento('CO');
-
-            $em->persist($bitacora);
-            $em->flush();
+        if ($manager->completar($id)){
+            $this->get('session')->getFlashBag()->add('success', 'Se ha completado el Albaran de forma correcta.');
+            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
+        } else {
+            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar el Albaran');
+            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
         }
-
-        //Cambia el estado de Procesado a Completado
-        $albaran->setEstadoDocumento('CO');
-        $em->persist($albaran);
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('albaran'));
     }
 
     public function guardarAlbaranAction(Request $request)
@@ -220,8 +207,12 @@ class AlbaranController extends Controller
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
 
+
+
     /**
-     * Finds and displays a Albaran entity.
+     * Displays a form to edit an existing Albaran entity.
+     *
+     * @Route("/{id}/edit", name="albaran_show", methods={"GET"}, options={"expose":true})
      */
     public function showAction($id)
     {
@@ -394,7 +385,7 @@ class AlbaranController extends Controller
     /**
      * Displays a form to create a new Albaran entity.
      *
-     * @Route("/new", name="albarans_albaran_new", methods={"GET"}, options={"expose":true})
+     * @Route("/new", name="albaran_new", methods={"GET"}, options={"expose":true})
      */
     public function newAction()
     {

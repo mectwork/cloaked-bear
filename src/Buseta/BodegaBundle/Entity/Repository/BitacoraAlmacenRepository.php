@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\BodegaBundle\Entity;
+namespace Buseta\BodegaBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;

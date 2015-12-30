@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\BusetaBodegaBundle;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\SalidaBodegaProducto;
 use Buseta\BodegaBundle\Form\Filter\SalidaBodegaFilter;
@@ -17,6 +18,8 @@ use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Buseta\BodegaBundle\BusetaBodegaBitacoraEvents;
+use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 
 /**
  * SalidaBodega controller.
@@ -28,20 +31,18 @@ class SalidaBodegaController extends Controller
 
     public function procesarSalidaBodegaAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
 
-        $salidaBodega = $em->getRepository('BusetaBodegaBundle:SalidaBodega')->find($id);
+        $manager = $this->get('buseta.bodega.salidabodega.manager');
 
-        if (!$salidaBodega) {
-            throw $this->createNotFoundException('Unable to find SalidaBodega entity.');
+        if ($manager->procesar($id)){
+            $this->get('session')->getFlashBag()->add('success', 'Se ha procesado la salida de bodega de forma correcta.');
+            return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $id ) ) );
         }
 
-        //Cambia el estado de Borrador a Procesado
-        $salidaBodega->setEstadoDocumento('PR');
-        $em->persist($salidaBodega);
-        $em->flush();
+        $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar la salida de bodega.');
 
-        return $this->redirect($this->generateUrl('salidabodega'));
+        return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $id ) ) );
+
     }
 
     /**
@@ -63,6 +64,10 @@ class SalidaBodegaController extends Controller
         //Comparar la existencia de cantidad de productos disponibles en el almacen
         //a partir de la solicitud de salidabodega de productos entre almacenes
 
+        /*  @var  \Buseta\BodegaBundle\Entity\SalidaBodega  $entity */
+        /*  @var  \Buseta\BodegaBundle\Entity\Producto  $producto*/
+        /*  @var  \Buseta\BodegaBundle\Entity\Bodega  $bodega*/
+
         $idAlmacenOrigen  = $entity->getAlmacenOrigen();
         $idAlmacenDestino = $entity->getAlmacenDestino();
 
@@ -70,7 +75,6 @@ class SalidaBodegaController extends Controller
 
         foreach ($entity->getSalidasProductos() as $salidabodega) {
             $idProducto = $salidabodega->getProducto();
-
             $producto           = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
             $almacen            = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
             $cantidadProducto   = $salidabodega->getCantidad();
@@ -120,10 +124,16 @@ class SalidaBodegaController extends Controller
                 $bitacora->setFechaMovimiento($fechaSalidaBodega);
                 $origen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
                 $bitacora->setAlmacen($origen);
-                $bitacora->setCantMovida($salidabodega->getCantidad());
-                $bitacora->setTipoMovimiento('M-');
+                $bitacora->setCantidadMovida($salidabodega->getCantidad());
+              /*$bitacora->setTipoMovimiento('M-');
                 $em->persist($bitacora);
-                $em->flush();
+                $em->flush();*/
+
+                // Buseta\BodegaBundle\BusetaBodegaBitacoraEvents;
+                //use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
+                $eventDispatcher = $this->get('event_dispatcher');
+                $event = new FilterBitacoraEvent($bitacora);
+                $eventDispatcher->dispatch(BusetaBodegaBitacoraEvents::MOVEMENT_FROM /*M-*/, $event);
 
                 //Actualizar Bitácora - AlmacenDestino
                 $bitacora = new BitacoraAlmacen();
@@ -131,10 +141,14 @@ class SalidaBodegaController extends Controller
                 $bitacora->setFechaMovimiento($fechaSalidaBodega);
                 $destino = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
                 $bitacora->setAlmacen($destino);
-                $bitacora->setCantMovida($salidabodega->getCantidad());
-                $bitacora->setTipoMovimiento('M+');
+                $bitacora->setCantidadMovida($salidabodega->getCantidad());
+               /*$bitacora->setTipoMovimiento('M+');
                 $em->persist($bitacora);
-                $em->flush();
+                $em->flush();*/
+
+                $eventDispatcher = $this->get('event_dispatcher');
+                $event = new FilterBitacoraEvent($bitacora);
+                $eventDispatcher->dispatch(BusetaBodegaBitacoraEvents::MOVEMENT_TO /*M+*/, $event);
 
                 $almacenOrigen    = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
                 $almacenDestino   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Linea.
+ * Orden Trabajo.
  *
  * @ORM\Table(name="d_orden_trabajo")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\OrdenTrabajoRepository")

@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Linea.
+ * Tarea Adicional.
  *
  * @ORM\Table(name="d_tarea_adicional")
- * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\TareaAdicionalRepository")
+ * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\TareaAdicionalRepository")
  */
 class TareaAdicional
 {

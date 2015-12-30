@@ -30,18 +30,24 @@ class AlbaranLinea
     private $valorAtributos;
 
     /**
+     * @var \Buseta\BodegaBundle\Entity\Producto
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto", inversedBy="albaranLinea")
      * @Assert\NotBlank()
      */
     private $producto;
 
     /**
+     * @var \Buseta\BodegaBundle\Entity\Bodega
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="albaranLinea")
      * @Assert\NotBlank()
      */
     private $almacen;
 
     /**
+     * @var \Buseta\NomencladorBundle\Entity\UOM
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\UOM")
      * @Assert\NotBlank()
      */
@@ -56,9 +62,12 @@ class AlbaranLinea
     private $cantidadMovida;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Albaran", inversedBy="albaranLinea")
+     * @var \Buseta\BodegaBundle\Entity\Albaran
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Albaran", inversedBy="albaranLineas")
      */
     private $albaran;
+
 
     /**
      * Get id.
