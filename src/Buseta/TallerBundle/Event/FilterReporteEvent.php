@@ -17,7 +17,6 @@ class FilterReporteEvent extends Event
      */
     function __construct(Reporte $reporte)
     {
-
         $this->$reporte = $reporte;
     }
 

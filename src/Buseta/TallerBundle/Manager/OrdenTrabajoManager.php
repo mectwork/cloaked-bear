@@ -40,13 +40,13 @@ class OrdenTrabajoManager
             //ver si necesito el persist ya que el elemento ya esta en la base de datos
             $this->em->persist($orden);
             $this->em->flush();
+
             return true;
         } catch (\Exception $e) {
             $this->logger->error(sprintf('OrdenTrabajo.Persist: %s', $e->getMessage()));
+
             return false;
         }
-
-
     }
 
     public function cambiarCancelado(OrdenTrabajo $orden)
@@ -58,13 +58,13 @@ class OrdenTrabajoManager
                 $this->em->persist($orden);
                 $this->em->flush();
             }
+
             return true;
         } catch (\Exception $e) {
             $this->logger->error(sprintf('OrdenTrabajo.Persist: %s', $e->getMessage()));
+
             return false;
         }
-
-
     }
 
     /**
@@ -85,9 +85,9 @@ class OrdenTrabajoManager
             $ordenTrabajo->setEstado('BO');
             $ordenTrabajo->setDiagnostico($diagnostico);
 
+            $this->em->persist($ordenTrabajo);
+
             $tareasDiag = $diagnostico->getTareaDiagnostico();
-
-
             /** @var TareaDiagnostico $taDiag */
             /** @var TareaAdicional $taAdic */
             foreach($tareasDiag as $taDiag){
@@ -98,23 +98,15 @@ class OrdenTrabajoManager
                 $taAdic->setTareaMantenimiento($taDiag->getTareaMantenimiento());
                 $taAdic->setDescripcion($taDiag->getDescripcion());
                 $this->em->persist($taAdic);
-
-
-
             }
 
             $this->em->flush();
 
-            $this->em->persist($ordenTrabajo);
-
-
-
             return true;
-
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Diagnostico.Persist: %s', $e->getMessage()));
+
             return false;
         }
     }
-
 }
