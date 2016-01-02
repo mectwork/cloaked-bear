@@ -102,7 +102,7 @@ class OrdenTrabajo implements DateTimeAwareInterface
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\TareaAdicional", mappedBy="ordenTrabajo", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\TareaAdicional", mappedBy="ordenTrabajo", cascade={"persist"})
      */
     private $tareasAdicionales;
 
@@ -169,6 +169,7 @@ class OrdenTrabajo implements DateTimeAwareInterface
     public function __construct()
     {
         $this->tareasAdicionales = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->cancelado = false;
     }
 
     public function __toString()

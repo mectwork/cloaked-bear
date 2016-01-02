@@ -38,8 +38,7 @@ class TareaAdicional
 
     /**
      * @var \Buseta\TallerBundle\Entity\OrdenTrabajo
-     *
-     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\OrdenTrabajo", inversedBy="tareasAdicionales")
+     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\OrdenTrabajo", inversedBy="tareasAdicionales", cascade={"persist"})
      */
     private $ordenTrabajo;
 
@@ -69,7 +68,6 @@ class TareaAdicional
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_estimada", type="date")
-     * @Assert\NotBlank
      * @Assert\Date
      */
     private $fechaEstimada;

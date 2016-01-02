@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block area_trabajo %}
-    {% set cancelado = entity.cancelado %}
+    {#{% set cancelado = entity.cancelado %}#}
 
 
 
@@ -70,18 +70,18 @@
             <td>{{ entity.prioridad }}</td>
         </tr>
 
-        <tr>
+        {#<tr>#}
 
-            <th>Cancelado</th>
+            {#<th>Cancelado</th>#}
 
-            {% if cancelado == 1 %}
-               <td>Cancelado</td>
-            {% else %}
-                <td>Sin cancelar</td>
-            {% endif %}
+            {#{% if cancelado == 1 %}#}
+               {#<td>Cancelado</td>#}
+            {#{% else %}#}
+                {#<td>Sin cancelar</td>#}
+            {#{% endif %}#}
 
 
-        </tr>
+        {#</tr>#}
 
         <tr>
             <th>Observaciones</th>

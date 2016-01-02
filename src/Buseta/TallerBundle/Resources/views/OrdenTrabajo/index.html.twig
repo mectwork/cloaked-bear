@@ -33,7 +33,6 @@
         </a>
 
 
-
     </h4>
 
     <div id="filter_form_component" style="{{ display }}">
@@ -71,14 +70,25 @@
 
         </div>
 
-        <div id="switch_view" class="btn-group col-lg-offset-7 offset4" style="padding-bottom: 8px;">
-            <a id="switch_view_a" class="btn btn-info" ><i class="fa fa-plus-circle"></i> Cambiar vista a ordenes</a>
+        {#<div id="switch_view" class="btn-group col-lg-offset-7 offset4" style="padding-bottom: 8px;">#}
+        {#<a id="switch_view_a" class="btn btn-info"><i class="fa fa-plus-circle"></i> Cambiar vista a ordenes</a>#}
+        {#</div>#}
+
+        <div class="btn-group pull-right" data-toggle="buttons">
+            <label class="btn btn-default active" id="vistatareas" title="Vista Tareas OT">
+                <input type="radio" name="options"> <i class="fa fa-tags"></i>
+            </label>
+            <label class="btn btn-default" id="vistaordenes" title="Vista Orden Trabajo">
+                <input type="radio" name="options"> <i class="fa fa-tag"></i>
+            </label>
         </div>
+
+
 
         {# Boton para cambiar la vista #}
         {#<a id="switch_view" style="cursor: pointer;">#}
-            {#<span class="glyphicon}"></span>#}
-            {#Cambiar vista a ordenes#}
+        {#<span class="glyphicon}"></span>#}
+        {#Cambiar vista a ordenes#}
         {#</a>#}
     {% endif %}
     <div id="lista_tareas_ordenes" style="display: block">
@@ -141,12 +151,11 @@
     </div>
 
 
-    <div id="lista_ordenes" class="prueba1" style="display: none">
+    <div id="lista_ordenes" style="display: none">
         <table class="records_list table table-striped table-bordered table-condensed table-hover">
             <thead>
             <tr>
                 <th>OT</th>
-                <th>Diagnostico</th>
                 <th>Diagnosticado por</th>
                 <th>Autobus</th>
                 <th>Ayudante</th>
@@ -157,32 +166,31 @@
             <tbody>
             {% for entity in entities %}
 
-                    <tr>
-                        <td>OT #{{ entity.numero }}</td>
-                        <td>{{ entity.diagnostico }}</td>
-                        <td>{{ entity.diagnosticadoPor }}</td>
-                        <td>{{ entity.autobus }}</td>
-                        <td>{{ entity.ayudante }}</td>
-                        <td>{{ entity.prioridad }}</td>
+                <tr>
+                    <td>OT #{{ entity.numero }}</td>
+                    <td>{{ entity.diagnosticadoPor | default('-')}}</td>
+                    <td>{{ entity.autobus }}</td>
+                    <td>{{ entity.ayudante }}</td>
+                    <td>{{ entity.prioridad }}</td>
 
-                        <td style="width: 18% !important; text-align: center;">
-                            {% if is_granted('VIEW', entity) %}
-                                <div class="btn-group">
-                                    <a class="btn btn-success btn-xs"
-                                       href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
-                                                class="fa fa-search"> Mostrar</i></a>
-                                </div>
-                            {% endif %}
+                    <td style="width: 18% !important; text-align: center;">
+                        {% if is_granted('VIEW', entity) %}
+                            <div class="btn-group">
+                                <a class="btn btn-success btn-xs"
+                                   href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
+                                            class="fa fa-search"> Mostrar</i></a>
+                            </div>
+                        {% endif %}
 
-                            {% if is_granted('EDIT', entity) %}
-                                <div class="btn-group">
-                                    <a class="btn btn-danger btn-xs"
-                                       href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i
-                                                class="fa fa-edit"> Editar</i></a>
-                                </div>
-                            {% endif %}
-                        </td>
-                    </tr>
+                        {% if is_granted('EDIT', entity) %}
+                            <div class="btn-group">
+                                <a class="btn btn-danger btn-xs"
+                                   href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i
+                                            class="fa fa-edit"> Editar</i></a>
+                            </div>
+                        {% endif %}
+                    </td>
+                </tr>
 
 
             {% else %}
@@ -263,72 +271,27 @@
 
         });
 
-
         // Aqui switcheo con js las vistas
 
-        $( "#switch_view" ).click(function() {
-            var display = $( 'div#lista_tareas_ordenes' ).css( "display" );
-            if (display == 'block') {
-
-                $('div#lista_tareas_ordenes').slideUp(500);
-
-                $('div#lista_tareas_ordenes').css('display', 'none');
-
-                $('div#lista_ordenes').slideDown(700);
-
-                $('div#lista_ordenes').css('display', 'block');
-
-                $('a#switch_view_a').text('Cambiar vista a tareas');
-                $('a#switch_view_a').addClass('fa fa-plus-circle');
-
-
-
-            }else{
-
+        $("#vistatareas").click(function () {
+            var display = $('div#lista_tareas_ordenes').css("display");
+            if (display == 'none') {
                 $('div#lista_ordenes').slideUp(500);
                 $('div#lista_ordenes').css('display', 'none');
                 $('div#lista_tareas_ordenes').slideDown(500);
                 $('div#lista_tareas_ordenes').css('display', 'block');
-
-                $('a#switch_view_a').text('Cambiar vista a ordenes');
-                $('a#switch_view_a').addClass('fa fa-plus-circle');
-
             }
         });
 
 
-//       $('#switch_view').click(function () {
-//            if ($('div#lista_tareas_ordenes').hasClass('prueba')) {
-//
-//                $('div#lista_tareas_ordenes').slideUp(500);
-//
-//                $('div#lista_tareas_ordenes').css('display', 'none');
-//
-//                $('div#lista_ordenes').slideDown(700);
-//
-//                $('div#lista_ordenes').css('display', 'block');
-//
-//                $('a#switch_view_a').text('Cambiar vista a tareas');
-//                $('a#switch_view_a').addClass('fa fa-plus-circle');
-//
-//            }else{
-//
-//
-//                $('div#lista_ordenes').slideUp(500);
-//                $('div#lista_ordenes').css('display', 'none');
-//                $('div#lista_tareas_ordenes').slideDown(500);
-//                $('div#lista_tareas_ordenes').css('display', 'block');
-//
-//                $('a#switch_view_a').text('Cambiar vista a ordenes');
-//                $('a#switch_view_a').addClass('fa fa-plus-circle');
-//
-//            }
-//
-//            if ($('div#lista_tareas_ordenes').css('display', 'none')) {
-//
-//
-//            }
-//
-//        });
+        $("#vistaordenes").click(function () {
+            var display = $('div#lista_tareas_ordenes').css("display");
+            if (display == 'block') {
+                $('div#lista_tareas_ordenes').slideUp(500);
+                $('div#lista_tareas_ordenes').css('display', 'none');
+                $('div#lista_ordenes').slideDown(700);
+                $('div#lista_ordenes').css('display', 'block');
+            }
+        });
     </script>
 {% endblock javascripts %}

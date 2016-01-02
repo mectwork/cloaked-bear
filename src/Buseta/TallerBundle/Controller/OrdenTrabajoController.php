@@ -37,7 +37,7 @@ class OrdenTrabajoController extends Controller
         ));
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entities = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('BusetaTallerBundle:OrdenTrabajo')->filter($filter);
         } else {
@@ -53,8 +53,8 @@ class OrdenTrabajoController extends Controller
         );
 
         return $this->render('BusetaTallerBundle:OrdenTrabajo:index.html.twig', array(
-            'entities'      => $entities,
-            'filter_form'   => $form->createView(),
+            'entities' => $entities,
+            'filter_form' => $form->createView(),
         ));
     }
 
@@ -82,7 +82,8 @@ class OrdenTrabajoController extends Controller
                 return $this->redirect($this->generateUrl('ordentrabajo_show', array('id' => $entity->getId())));
             } catch (\Exception $e) {
                 $this->get('logger')
-                    ->addCritical(sprintf('Ha ocurrido un error creando la Orden de Trabajo. Detalles: %s', $e->getMessage()));
+                    ->addCritical(sprintf('Ha ocurrido un error creando la Orden de Trabajo. Detalles: %s',
+                        $e->getMessage()));
 
                 $this->get('session')->getFlashBag()
                     ->add('danger', 'Ha ocurrido un error creando la Orden de Trabajo.');
@@ -91,7 +92,7 @@ class OrdenTrabajoController extends Controller
 
         return $this->render('BusetaTallerBundle:OrdenTrabajo:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -125,12 +126,12 @@ class OrdenTrabajoController extends Controller
 
         $tarea_adicional = $this->createForm(new TareaAdicionalType());
 
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return $this->render('BusetaTallerBundle:OrdenTrabajo:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
-            'tarea_adicional'  => $tarea_adicional->createView(),
+            'form' => $form->createView(),
+            'tarea_adicional' => $tarea_adicional->createView(),
         ));
     }
 
@@ -144,7 +145,7 @@ class OrdenTrabajoController extends Controller
         $deleteForm = $this->createDeleteForm($ordenTrabajo->getId());
 
         return $this->render('BusetaTallerBundle:OrdenTrabajo:show.html.twig', array(
-            'entity'      => $ordenTrabajo,
+            'entity' => $ordenTrabajo,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -189,6 +190,7 @@ class OrdenTrabajoController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing OrdenTrabajo entity.
      *
@@ -209,8 +211,8 @@ class OrdenTrabajoController extends Controller
         }
 
         return $this->render('BusetaTallerBundle:OrdenTrabajo:edit.html.twig', array(
-            'entity'      => $ordenTrabajo,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $ordenTrabajo,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -232,10 +234,13 @@ class OrdenTrabajoController extends Controller
                 $em->remove($ordenTrabajo);
                 $em->flush();
 
-                $this->get('session')->getFlashBag()->add('success', 'Se ha eliminado la Orden de Trabajo de forma satisfactoria.');
+                $this->get('session')->getFlashBag()->add('success',
+                    'Se ha eliminado la Orden de Trabajo de forma satisfactoria.');
             } catch (\Exception $e) {
-                $this->get('logger')->critical(sprintf('Ha ocurrido un error eliminando Orden de Trabajo. Detalles: %s.', $e->getMessage()));
-                $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error eliminando Orden de Trabajo.');
+                $this->get('logger')->critical(sprintf('Ha ocurrido un error eliminando Orden de Trabajo. Detalles: %s.',
+                    $e->getMessage()));
+                $this->get('session')->getFlashBag()->add('danger',
+                    'Ha ocurrido un error eliminando Orden de Trabajo.');
             }
         }
 
@@ -255,8 +260,7 @@ class OrdenTrabajoController extends Controller
             ->setAction($this->generateUrl('ordentrabajo_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
+            ->getForm();
     }
 
     /**
@@ -345,12 +349,15 @@ class OrdenTrabajoController extends Controller
      * Updated automatically select CentroCosto, Responsable y TipoOT when change select OrdenTrabajo
      *
      */
-    public function select_salidabodega_ordentrabajoAction(Request $request) {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY'))
+    public function select_salidabodega_ordentrabajoAction(Request $request)
+    {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new Response('Acceso Denegado', 403);
+        }
 
-        if (!$request->isXmlHttpRequest())
+        if (!$request->isXmlHttpRequest()) {
             return new Response('No es una petición Ajax', 500);
+        }
 
         $em = $this->get('doctrine.orm.entity_manager');
 
@@ -390,10 +397,8 @@ class OrdenTrabajoController extends Controller
         }
 
 
-
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
-
 
 
     public function selectdiagdiagporAction(Request $request)
@@ -417,7 +422,6 @@ class OrdenTrabajoController extends Controller
                 'nombre' => $diag->getReporte()->getReporta()->getNombres(),
             );
         }
-
 
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
@@ -448,14 +452,13 @@ class OrdenTrabajoController extends Controller
         $ordenTrabajoEvent->setOrden($ordenTrabajo);
 
 
-
         //Lanzo los Eventos donde se pasa la solicitud que esta en pendiente a completada
         // y el evento que pasa la orden de trabajo a completada
 
 
-        $eventDispatcher->dispatch( ReporteEvents::CAMBIAR_ESTADO_COMPLETADO, $evento );
-        $eventDispatcher->dispatch( OrdenTrabajoEvents::CAMBIAR_ESTADO_CERRADO, $ordenTrabajoEvent );
-        $eventDispatcher->dispatch( OrdenTrabajoEvents::CAMBIAR_CANCELADO, $ordenTrabajoEvent );
+        $eventDispatcher->dispatch(ReporteEvents::CAMBIAR_ESTADO_COMPLETADO, $evento);
+        $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_CERRADO, $ordenTrabajoEvent);
+        $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_CANCELADO, $ordenTrabajoEvent);
 
         return $this->redirect($this->generateUrl('ordentrabajo'));
     }
@@ -470,24 +473,31 @@ class OrdenTrabajoController extends Controller
             throw $this->createNotFoundException('Unable to find OrdenTrabajo entity.');
         }
 
-        $report = $ordenTrabajo->getDiagnostico()->getReporte();
-
         //Se llama al EventDispatcher
         $eventDispatcher = $this->get('event_dispatcher');
 
-        //Crear Eventos para el EventDispatcher
-        $evento = new FilterReporteEvent($report);
-        $evento->setReporte($report);
+        $report = $ordenTrabajo->getDiagnostico()->getReporte();
 
-        $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
-        $ordenTrabajoEvent->setOrden($ordenTrabajo);
+        if ($report === null) {
 
+            $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
+            $ordenTrabajoEvent->setOrden($ordenTrabajo);
 
+            $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO, $ordenTrabajoEvent);
 
-        //Lanzo los Eventos donde se pasa la solicitud que esta en pendiente a completada
-        // y el evento que pasa la orden de trabajo a completada
-        $eventDispatcher->dispatch( ReporteEvents::CAMBIAR_ESTADO_COMPLETADO, $evento );
-        $eventDispatcher->dispatch( OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO, $ordenTrabajoEvent );
+        } else {
+
+            //Crear Eventos para el EventDispatcher
+            $reporteEvent = new FilterReporteEvent($report);
+            $reporteEvent->setReporte($report);
+
+            $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
+            $ordenTrabajoEvent->setOrden($ordenTrabajo);
+
+            $eventDispatcher->dispatch(ReporteEvents::CAMBIAR_ESTADO_COMPLETADO, $reporteEvent);
+            $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO, $ordenTrabajoEvent);
+
+        }
 
         return $this->redirect($this->generateUrl('ordentrabajo'));
     }

@@ -4,6 +4,7 @@ namespace Buseta\TallerBundle\Manager;
 
 use Buseta\TallerBundle\Entity\Diagnostico;
 use Buseta\TallerBundle\Entity\OrdenTrabajo;
+use Buseta\TallerBundle\Entity\TareaAdicional;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Monolog\Logger;
 
@@ -84,24 +85,28 @@ class OrdenTrabajoManager
             $ordenTrabajo->setEstado('BO');
             $ordenTrabajo->setDiagnostico($diagnostico);
 
-//            $tareasDiag = $diagnostico->getTareaDiagnostico();
-//            $taAdic = new TareaAdicional();
+            $tareasDiag = $diagnostico->getTareaDiagnostico();
+
+
             /** @var TareaDiagnostico $taDiag */
             /** @var TareaAdicional $taAdic */
-//            foreach($tareasDiag as $taDiag){
-//
-//                $taAdic->setGrupo($taDiag->getGrupo());
-//                $taAdic->setSubgrupo($taDiag->getSubgrupo());
-//                $taAdic->setTareaMantenimiento($taDiag->getTareaMantenimiento());
-//                $taAdic->setDescripcion($taDiag->getDescripcion());
-//
-//
-//            }
-//
-//
-//            $this->em->persist($taAdic);
-            $this->em->persist($ordenTrabajo);
+            foreach($tareasDiag as $taDiag){
+                $taAdic = new TareaAdicional();
+                $taAdic->setOrdenTrabajo($ordenTrabajo);
+                $taAdic->setGrupo($taDiag->getGrupo());
+                $taAdic->setSubgrupo($taDiag->getSubgrupo());
+                $taAdic->setTareaMantenimiento($taDiag->getTareaMantenimiento());
+                $taAdic->setDescripcion($taDiag->getDescripcion());
+                $this->em->persist($taAdic);
+
+
+
+            }
+
             $this->em->flush();
+
+            $this->em->persist($ordenTrabajo);
+
 
 
             return true;

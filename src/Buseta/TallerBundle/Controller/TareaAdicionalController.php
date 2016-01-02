@@ -277,7 +277,7 @@ class TareaAdicionalController extends Controller
     public function create_orden_trabajoAction(Request $request)
     {
         $entity = new TareaAdicional();
-        $form = $this->createCreateComprForm($entity);
+        $form = $this->createCreateCompraForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
