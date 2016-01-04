@@ -116,10 +116,11 @@ class ReporteRepository extends EntityRepository
         foreach ($entities as $entity) {
             //si ocurre error no se cuenta como atrasada
             try {
-                if ($entity->getPrioridad()) {
+                if ($entity->getPrioridad() !== null && $entity->getPrioridad()->getTiempoPrioridad() !== null) {
                     $minutos = $entity->getPrioridad()->getTiempoPrioridad()->getMinutos();
                     $fechacreado = $entity->getCreated();
-                    if (($minutos != null) && ($minutos != null)) {
+
+                    if ($minutos !== null) {
                         $fechavence = $fechacreado->modify('+' . $minutos . ' minutes');
                         $fechaahora = new \DateTime('now');
                         if (($fechavence < $fechaahora) && ($entity->getEstado() != 'CO')) {
@@ -127,7 +128,7 @@ class ReporteRepository extends EntityRepository
                         }
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 continue;
             }
         }
