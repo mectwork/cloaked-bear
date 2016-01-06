@@ -2,14 +2,9 @@
 
 namespace Buseta\TallerBundle\Controller;
 
-use Buseta\TallerBundle\Entity\Diagnostico;
-use Buseta\TallerBundle\Entity\Observacion;
-use Buseta\TallerBundle\Entity\ObservacionDiagnostico;
 use Buseta\TallerBundle\Form\Type\ObservacionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Buseta\TallerBundle\Entity\Reporte;
 use Buseta\TallerBundle\Form\Type\ReporteType;
 use Buseta\TallerBundle\Form\Model\ReporteFilterModel;
@@ -17,10 +12,10 @@ use Buseta\TallerBundle\Form\Filter\ReporteFilter;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 use Buseta\TallerBundle\Event\FilterReporteEvent;
 use Buseta\TallerBundle\Event\ReporteEvents;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Reporte controller.
- *
  */
 class ReporteController extends Controller
 {
@@ -28,8 +23,8 @@ class ReporteController extends Controller
 
     public function principalAction()
     {
+        $em = $this->get('doctrine.orm.entity_manager');
 
-        $em = $this->getDoctrine()->getManager();
         $resumentotalBO = $em->getRepository('BusetaTallerBundle:Reporte')->findTotalAtrasadas('BO');
 
         $resumentotalPR = $em->getRepository('BusetaTallerBundle:Reporte')->findTotalAtrasadas('PR');
@@ -40,21 +35,13 @@ class ReporteController extends Controller
         ));
     }
 
-    public function procesarReporteAction($id)
+    public function procesarReporteAction(Reporte $reporte)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $reporte = $em->getRepository('BusetaTallerBundle:Reporte')->find($id);
-
-        if (!$reporte) {
-            throw $this->createNotFoundException('Unable to find Reporte entity.');
-        }
-
         //Se llama al EventDispatcher
         $eventDispatcher = $this->get('event_dispatcher');
 
         //Crear Eventos para el EventDispatcher
-        $evento = new FilterReporteEvent($reporte)  ;
+        $evento = new FilterReporteEvent($reporte);
         $evento->setReporte($reporte);
 
         //Lanzo los Evento donde se crea el diagnostico y

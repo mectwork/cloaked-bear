@@ -61,7 +61,7 @@ class OrdenTrabajoController extends Controller
     /**
      * Creates a new OrdenTrabajo entity.
      *
-
+     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo')")
      */
     public function createAction(Request $request)
     {
@@ -118,7 +118,7 @@ class OrdenTrabajoController extends Controller
     /**
      * Displays a form to create a new OrdenTrabajo entity.
      *
-
+     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo')")
      */
     public function newAction()
     {
@@ -138,7 +138,7 @@ class OrdenTrabajoController extends Controller
     /**
      * Finds and displays a OrdenTrabajo entity.
      *
-
+     * @Security("is_granted('VIEW', ordenTrabajo)")
      */
     public function showAction(OrdenTrabajo $ordenTrabajo)
     {
@@ -153,7 +153,7 @@ class OrdenTrabajoController extends Controller
     /**
      * Displays a form to edit an existing OrdenTrabajo entity.
      *
-
+     * @Security("is_granted('EDIT', ordenTrabajo)")
      */
     public function editAction(OrdenTrabajo $ordenTrabajo)
     {
@@ -194,7 +194,7 @@ class OrdenTrabajoController extends Controller
     /**
      * Edits an existing OrdenTrabajo entity.
      *
-
+     * @Security("is_granted('EDIT', ordenTrabajo)")
      */
     public function updateAction(Request $request, OrdenTrabajo $ordenTrabajo)
     {
@@ -220,7 +220,7 @@ class OrdenTrabajoController extends Controller
     /**
      * Deletes a OrdenTrabajo entity.
      *
-
+     * @Security("is_granted("DELETE", ordenTrabajo)")
      */
     public function deleteAction(Request $request, OrdenTrabajo $ordenTrabajo)
     {

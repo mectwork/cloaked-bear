@@ -9,7 +9,12 @@ use Buseta\TallerBundle\Entity\Diagnostico;
 use Buseta\TallerBundle\Entity\OrdenTrabajo;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Monolog\Logger;
+use Symfony\Component\HttpFoundation\Session\Session;
 
+/**
+ * Class DiagnosticoManager
+ * @package Buseta\TallerBundle\Manager
+ */
 class DiagnosticoManager
 {
     /**
@@ -17,26 +22,32 @@ class DiagnosticoManager
      */
     private $em;
 
-
     /**
      * @var \Symfony\Bridge\Monolog\Logger
      */
     private $logger;
 
+    /**
+     * @var \Symfony\Component\HttpFoundation\Session\Session
+     */
+    private $session;
+
 
     /**
      * @param ObjectManager $em
      * @param Logger $logger
+     * @param Session $session
      */
-    function __construct(ObjectManager $em, Logger $logger)
+    function __construct(ObjectManager $em, Logger $logger, Session $session)
     {
-        $this->em               = $em;
-        $this->logger           = $logger;
+        $this->em = $em;
+        $this->logger = $logger;
+        $this->session = $session;
     }
-
 
     /**
      * Crea un diagnostico a partir de un reporte
+     *
      * @param Reporte $reporte
      * @return Boolean resultado
      */
@@ -53,10 +64,12 @@ class DiagnosticoManager
             $this->em->persist($diagnostico);
             $this->em->flush();
 
-            return true;
+            $this->session->getFlashBag()->add('success', sprintf('Se ha creado el Diagnóstico %s de forma satisfactoria.', $diagnostico->getNumero()));
 
+            return true;
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Diagnostico.Persist: %s', $e->getMessage()));
+
             return false;
         }
     }

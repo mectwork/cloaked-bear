@@ -4,15 +4,11 @@ namespace Buseta\TallerBundle\Controller;
 
 use Buseta\TallerBundle\Event\FilterDiagnosticoEvent;
 use Buseta\TallerBundle\Event\FilterReporteEvent;
-use Buseta\TallerBundle\Event\OrdenTrabajoEvents;
 use Buseta\TallerBundle\Event\ReporteEvents;
 use Buseta\TallerBundle\Event\DiagnosticoEvents;
 use Buseta\TallerBundle\Entity\Diagnostico;
-use Buseta\TallerBundle\Entity\Observacion;
-use Buseta\TallerBundle\Entity\ObservacionDiagnostico;
 use Buseta\TallerBundle\Entity\TareaDiagnostico;
 use Buseta\TallerBundle\Form\Type\ObservacionDiagnosticoType;
-use Buseta\TallerBundle\Form\Type\ObservacionType;
 use Buseta\TallerBundle\Form\Type\TareaDiagnosticoType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +19,6 @@ use Buseta\TallerBundle\Form\Type\DiagnosticoType;
 use Buseta\TallerBundle\Form\Model\DiagnosticoFilterModel;
 use Buseta\TallerBundle\Form\Filter\DiagnosticoFilter;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraints\Null;
 
 /**
  * Diagnostico controller.

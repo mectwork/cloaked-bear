@@ -8,6 +8,10 @@ use Buseta\TallerBundle\Manager\DiagnosticoManager;
 use Buseta\TallerBundle\Manager\ReporteManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Class ReporteSubscriber
+ * @package Buseta\TallerBundle\EventListener
+ */
 class ReporteSubscriber implements EventSubscriberInterface
 {
     /**
@@ -43,11 +47,9 @@ class ReporteSubscriber implements EventSubscriberInterface
         );
     }
 
-
-
     public function cambioEstadoReportePendiente(FilterReporteEvent $event)
     {
-        $this->cambioEstado($event,'PR' );
+        $this->cambioEstado($event, 'PR');
     }
 
     public function cambioEstadoReporteCompletado(FilterReporteEvent $event)
@@ -58,13 +60,12 @@ class ReporteSubscriber implements EventSubscriberInterface
     public function cambioEstado(FilterReporteEvent $event, $estado)
     {
         $reporte = $event->getReporte();
-        $this->reporteManager->cambiarEstado($reporte,$estado);
+        $this->reporteManager->cambiarEstado($reporte, $estado);
     }
 
     public function crearDiagnostico(FilterReporteEvent $event)
     {
         $reporte = $event->getReporte();
-
         $this->diagnosticoManager->crearDiagnostico($reporte);
     }
 

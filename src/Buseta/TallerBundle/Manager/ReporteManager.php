@@ -14,7 +14,6 @@ class ReporteManager
      */
     private $em;
 
-
     /**
      * @var \Symfony\Bridge\Monolog\Logger
      */
@@ -31,20 +30,28 @@ class ReporteManager
         $this->logger           = $logger;
     }
 
-
-
-
     /**
      * Cambia es estado de un reporte
+     *
      * @param Reporte $reporte
      * @param string $estado
+     *
+     * @return boolean
      */
     public function cambiarEstado( Reporte $reporte , $estado = 'BO' )
     {
         //Cambia el estado
         $reporte->setEstado( $estado);
-        $this->em->persist($reporte);
-        $this->em->flush();
-    }
 
+        try {
+            $this->em->persist($reporte);
+            $this->em->flush();
+
+            return true;
+        } catch (\Exception $e) {
+            $this->logger->critical(sprintf('Ha ocurrido un error al cambiar estado de Solicitud. Detalles: %s', $e->getMessage()));
+
+            return false;
+        }
+    }
 }
