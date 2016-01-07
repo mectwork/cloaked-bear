@@ -207,9 +207,22 @@ class BitacoraSubscriber implements EventSubscriberInterface
                 case 'Buseta\BodegaBundle\Entity\SalidaBodegaProducto': {
                     /* @var  $entity \Buseta\BodegaBundle\Entity\SalidaBodegaProducto */
                     $nuevabitacora
+                        //->setAlmacen($entity->getSalida()->get)
                         ->setProducto($entity->getProducto())
                         ->setCantidadMovida($entity->getCantidad())
                         ->setFechaMovimiento($entity->getSalida()->getFecha())
+                        ->setProduccionLinea(sprintf('%s,%d', ClassUtils::getRealClass($entity), $entity->getId()));
+
+                    break;
+                }
+
+                case 'Buseta\CombustibleBundle\Entity\ServicioCombustible': {
+                    /* @var  $entity \Buseta\CombustibleBundle\Entity\ServicioCombustible */
+                    $nuevabitacora
+                        ->setAlmacen($entity->getCombustible()->getBodega())
+                        ->setProducto($entity->getCombustible()->getProducto())
+                        ->setCantidadMovida($entity->getCantidadLibros())
+                        ->setFechaMovimiento($entity->getCreated())
                         ->setProduccionLinea(sprintf('%s,%d', ClassUtils::getRealClass($entity), $entity->getId()));
 
                     break;

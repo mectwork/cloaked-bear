@@ -3,6 +3,8 @@
 namespace Buseta\CombustibleBundle\Controller;
 
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
+use Buseta\BodegaBundle\Event\BitacoraEvents;
+use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Buseta\CombustibleBundle\Entity\ServicioCombustible;
 use Buseta\CombustibleBundle\Form\Filter\ServicioCombustibleFilter;
@@ -40,7 +42,7 @@ class ServicioCombustibleController extends Controller
         ));
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entities = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('BusetaCombustibleBundle:ServicioCombustible')->filter($filter);
         } else {
@@ -56,8 +58,8 @@ class ServicioCombustibleController extends Controller
         );
 
         return $this->render('BusetaCombustibleBundle:ServicioCombustible:index.html.twig', array(
-            'entities'      => $entities,
-            'filter_form'   => $form->createView(),
+            'entities' => $entities,
+            'filter_form' => $form->createView(),
         ));
     }
 
@@ -69,11 +71,11 @@ class ServicioCombustibleController extends Controller
     public function newAction()
     {
         $entity = new ServicioCombustibleModel();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return $this->render('BusetaCombustibleBundle:ServicioCombustible:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -107,13 +109,13 @@ class ServicioCombustibleController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
-            $trans  = $this->get('translator');
+            $trans = $this->get('translator');
             $logger = $this->get('logger');
 
             //Comparar la existencia de cantidadLibros disponibles para el nomenclador seleccionado
-            $producto           = $entityModel->getCombustible()->getProducto();
-            $bodega             = $entityModel->getCombustible()->getBodega();
-            $cantidadProducto   = $entityModel->getCantidadLibros();
+            $producto = $entityModel->getCombustible()->getProducto();
+            $bodega = $entityModel->getCombustible()->getBodega();
+            $cantidadProducto = $entityModel->getCantidadLibros();
 
             $fe = new FuncionesExtras();
             $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $bodega, $cantidadProducto, $em);
@@ -122,53 +124,53 @@ class ServicioCombustibleController extends Controller
             if ($cantidadDisponible == 'No existe') {
                 //Volver al menu de de crear nuevo ServicioCombustible
 
-                $form   = $this->createCreateForm($entityModel);
+                $form = $this->createCreateForm($entityModel);
 
-                $form->addError(new FormError("El producto '".$producto->getNombre()."' no existe en la bodega del combustible seleccionado"));
+                $form->addError(new FormError("El producto '" . $producto->getNombre() . "' no existe en la bodega del combustible seleccionado"));
 
                 return $this->render('BusetaCombustibleBundle:ServicioCombustible:new.html.twig', array(
                     'entity' => $entityModel,
-                    'form'   => $form->createView(),
+                    'form' => $form->createView(),
                 ));
-            }
+            } else { //Si sí existe la cantidad del producto en la bodega seleccionada
 
-            //Si sí existe la cantidad del producto en la bodega seleccionada
-            else {
-
-                try
-                {
+                try {
                     //Actualizar Bitácora - AlmacenOrigen
-                    $bitacora = new BitacoraAlmacen();
-                    $bitacora->setProducto($producto);
-                    $bitacora->setFechaMovimiento(new \DateTime());
-                    $bitacora->setAlmacen($bodega);
-                    $bitacora->setCantMovida($entityModel->getCantidadLibros());
-                    $bitacora->setTipoMovimiento('M-');
-                    $em->persist($bitacora);
+//                    $bitacora = new BitacoraAlmacen();
+//                    $bitacora->setProducto($producto);
+//                    $bitacora->setFechaMovimiento(new \DateTime());
+//                    $bitacora->setAlmacen($bodega);
+//                    $bitacora->setCantMovida($entityModel->getCantidadLibros());
+//                    $bitacora->setTipoMovimiento('M-');
+//                    $em->persist($bitacora);
 
                     $servicioCombustible = $entityModel->getEntityData();
 
                     $em->persist($servicioCombustible);
                     $em->flush();
 
+                    $dispatcher = $this->get('event_dispatcher');
+                    $dispatcher->dispatch(BitacoraEvents::PRODUCTION_NEGATIVE, new FilterBitacoraEvent($servicioCombustible));
+
                     $this->get('session')->getFlashBag()->add('success', 'Se ha creado el Servicio de Combustible satisfactoriamente.');
 
                     return $this->redirect($this->generateUrl('servicioCombustible_show', array('id' => $servicioCombustible->getId())));
-                }
-                catch (\Exception $e) {
+                } catch (\Exception $e) {
                     $logger->addCritical(sprintf(
                         $trans->trans('', array(), 'BusetaCombustibleBundle') . '. Detalles: %s',
                         $e->getMessage()
                     ));
 
-                    $this->get('session')->getFlashBag()->add('danger', $trans->trans('messages.create.error.%key%', array('key' => 'Servicio de Combustible'), 'BusetaCombustibleBundle'));
+                    $this->get('session')->getFlashBag()->add('danger',
+                        $trans->trans('messages.create.error.%key%', array('key' => 'Servicio de Combustible'),
+                            'BusetaCombustibleBundle'));
                 }
             }
         }
 
         return $this->render('BusetaCombustibleBundle:ServicioCombustible:new.html.twig', array(
             'entity' => $entityModel,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -191,7 +193,7 @@ class ServicioCombustibleController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('BusetaCombustibleBundle:ServicioCombustible:show.html.twig', array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -208,7 +210,7 @@ class ServicioCombustibleController extends Controller
         $deleteForm = $this->createDeleteForm($servicioCombustible->getId());
 
         $deleteForm->handleRequest($request);
-        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+        if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             try {
                 $em = $this->get('doctrine.orm.entity_manager');
 
@@ -217,19 +219,19 @@ class ServicioCombustibleController extends Controller
 
                 $message = $trans->trans('messages.delete.success', array(), 'BusetaCombustibleBundle');
 
-                if($request->isXmlHttpRequest()) {
+                if ($request->isXmlHttpRequest()) {
                     return new JsonResponse(array(
                         'message' => $message,
                     ), 202);
-                }
-                else {
+                } else {
                     $this->get('session')->getFlashBag()->add('success', $message);
                 }
             } catch (\Exception $e) {
-                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'ServicioCombustible'), 'BusetaBodegaBundle');
-                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'ServicioCombustible'),
+                    'BusetaBodegaBundle');
+                $this->get('logger')->addCritical(sprintf($message . ' Detalles: %s', $e->getMessage()));
 
-                if($request->isXmlHttpRequest()) {
+                if ($request->isXmlHttpRequest()) {
                     return new JsonResponse(array(
                         'message' => $message,
                     ), 500);
@@ -237,12 +239,12 @@ class ServicioCombustibleController extends Controller
             }
         }
 
-        $renderView =  $this->renderView('@BusetaBuses/ServicioCombustible/delete_modal.html.twig', array(
+        $renderView = $this->renderView('@BusetaBuses/ServicioCombustible/delete_modal.html.twig', array(
             'entity' => $servicioCombustible,
             'form' => $deleteForm->createView(),
         ));
 
-        if($request->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             return new JsonResponse(array('view' => $renderView));
         }
         return $this->redirect($this->generateUrl('servicioCombustible'));
@@ -261,8 +263,7 @@ class ServicioCombustibleController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('servicioCombustible_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->getForm()
-            ;
+            ->getForm();
     }
 
     /**
@@ -289,8 +290,8 @@ class ServicioCombustibleController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('BusetaCombustibleBundle:ServicioCombustible:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -339,8 +340,8 @@ class ServicioCombustibleController extends Controller
         }
 
         return $this->render('BusetaCombustibleBundle:ServicioCombustible:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }

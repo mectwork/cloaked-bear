@@ -2,7 +2,9 @@
 
 namespace Buseta\CombustibleBundle\Entity;
 
+use Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface;
 use Doctrine\ORM\Mapping as ORM;
+use HatueySoft\SecurityBundle\Interfaces\DateTimeAwareInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -11,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="d_servicio_combustible")
  * @ORM\Entity(repositoryClass="Buseta\CombustibleBundle\Entity\Repository\ServicioCombustibleRepository")
  */
-class ServicioCombustible
+class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareInterface
 {
     /**
      * @var integer
@@ -51,16 +53,16 @@ class ServicioCombustible
     private $vehiculo;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="marchamo_1", type="integer")
+     * @ORM\Column(name="marchamo_1", type="string")
      */
     private $marchamo1;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="marchamo_2", type="integer")
+     * @ORM\Column(name="marchamo_2", type="string")
      */
     private $marchamo2;
 
@@ -192,7 +194,7 @@ class ServicioCombustible
      * @param \DateTime $created
      * @return Chofer
      */
-    public function setCreated($created)
+    public function setCreated(\DateTime $created = null)
     {
         $this->created = $created;
 
@@ -215,7 +217,7 @@ class ServicioCombustible
      * @param \DateTime $updated
      * @return Chofer
      */
-    public function setUpdated($updated)
+    public function setUpdated(\DateTime $updated = null)
     {
         $this->updated = $updated;
 
@@ -356,14 +358,14 @@ class ServicioCombustible
     public function setMarchamo1($marchamo1)
     {
         $this->marchamo1 = $marchamo1;
-    
+
         return $this;
     }
 
     /**
      * Get marchamo1
      *
-     * @return integer 
+     * @return integer
      */
     public function getMarchamo1()
     {
@@ -379,14 +381,14 @@ class ServicioCombustible
     public function setMarchamo2($marchamo2)
     {
         $this->marchamo2 = $marchamo2;
-    
+
         return $this;
     }
 
     /**
      * Get marchamo2
      *
-     * @return integer 
+     * @return integer
      */
     public function getMarchamo2()
     {

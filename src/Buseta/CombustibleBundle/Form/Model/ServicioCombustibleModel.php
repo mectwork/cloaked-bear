@@ -10,11 +10,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Buseta\BusesBundle\Validator\Constraints as BusetaBusesAssert;
 use Symfony\Component\Validator\Constraints as Assert;
+use Buseta\CombustibleBundle\Validator\Constraints\Marchamo1Valido;
 
 
 /**
  * ServicioCombustibleModel
  * @BusetaBusesAssert\CapacidadTanqueValido
+ * @Marchamo1Valido()
  */
 class ServicioCombustibleModel
 {

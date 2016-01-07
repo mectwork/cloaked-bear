@@ -26,3 +26,12 @@ services:
             - @core.fecha_sistema
         tags:
             - { name: twig.extension }
+
+    #VALIDATOR
+    buses.marchamo1.validador:
+        class: Buseta\CombustibleBundle\Validator\Constraints\Marchamo1ValidoValidator
+        arguments:
+            - @security.context
+            - @doctrine.orm.entity_manager
+        tags:
+            - {name: validator.constraint_validator, alias: marchamo1_validador}
