@@ -131,7 +131,7 @@ class Albaran implements DateTimeAwareInterface
      *
      * @var string
      *
-     * @ORM\Column(name="movement_type", type="string")
+     * @ORM\Column(name="movement_type", type="string", nullable=true)
      *
      * @Assert\NotNull()
      * @Assert\Choice(choices={"C+","C-","D+","D-","I+","I-","M+","M-","P+","P-","V+","V-","W+","W-"})

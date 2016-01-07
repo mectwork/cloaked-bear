@@ -174,7 +174,6 @@ class Autobus extends Vehiculo
      */
     private $pesoBruto;
 
-
     /**
      * @var integer
      *
@@ -269,6 +268,7 @@ class Autobus extends Vehiculo
      * @ORM\Column(name="wifi", type="string", nullable=true)
      */
     private $wifi;
+
 
     /**
      * @param AutobusBasicoModel $model
@@ -1343,6 +1343,4 @@ class Autobus extends Vehiculo
     {
         $this->aceitetransmision = $aceitetransmision;
     }
-
-
 }

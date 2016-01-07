@@ -1,0 +1,37 @@
+tareadiagnostico:
+    path:     /
+    defaults: { _controller: "BusetaTallerBundle:TareaDiagnostico:index" }
+
+tareadiagnostico_show:
+    path:     /{id}/show
+    defaults: { _controller: "BusetaTallerBundle:TareaDiagnostico:show" }
+
+tareadiagnostico_new:
+    path:     /new
+    defaults: { _controller: "BusetaTallerBundle:TareaDiagnostico:new" }
+
+tareadiagnostico_create:
+    path:     /create
+    defaults: { _controller: "BusetaTallerBundle:TareaDiagnostico:create" }
+    requirements: { _method: post }
+
+tareadiagnostico_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BusetaTallerBundle:TareaDiagnostico:edit" }
+
+tareadiagnostico_update:
+    path:     /{id}/update
+    defaults: { _controller: "BusetaTallerBundle:TareaDiagnostico:update" }
+    requirements: { _method: post|put }
+
+tareadiagnostico_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BusetaTallerBundle:TareaDiagnostico:delete" }
+    requirements: { _method: post|delete }
+
+tareadiagnostico_new_modal:
+    pattern: /modal/new
+    defaults: { _controller: "BusetaTallerBundle:TareaDiagnostico:newModal" }
+    requirements: { _method: get }
+    options:
+      expose: true

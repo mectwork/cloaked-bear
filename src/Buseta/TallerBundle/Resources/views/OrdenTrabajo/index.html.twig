@@ -17,12 +17,11 @@
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.numero is null or filter_form.vars.value.numero is empty)
-        and (filter_form.vars.value.requisionMateriales is null or filter_form.vars.value.requisionMateriales is empty)
-        and (filter_form.vars.value.diagnosticadoPor is null or filter_form.vars.value.diagnosticadoPor is empty)
-        and (filter_form.vars.value.ayudante is null or filter_form.vars.value.ayudante is empty)
-        and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
-        and (filter_form.vars.value.diagnostico is null or filter_form.vars.value.diagnostico is empty)
-    %}
+    and (filter_form.vars.value.requisionMateriales is null or filter_form.vars.value.requisionMateriales is empty)
+    and (filter_form.vars.value.diagnosticadoPor is null or filter_form.vars.value.diagnosticadoPor is empty)
+    and (filter_form.vars.value.ayudante is null or filter_form.vars.value.ayudante is empty)
+    and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
+    and (filter_form.vars.value.diagnostico is null or filter_form.vars.value.diagnostico is empty) %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
     {% endif %}
@@ -32,6 +31,8 @@
             <span class="glyphicon {{ headericon }}"></span>
             Búsqueda
         </a>
+
+
     </h4>
 
     <div id="filter_form_component" style="{{ display }}">
@@ -39,10 +40,10 @@
             <div class="row">
                 <div class="col-lg-4">{{ form_row(filter_form.numero) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.requisionMateriales) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.diagnostico) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.autobus) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.diagnosticadoPor) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.ayudante) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.autobus) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.diagnostico) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -61,63 +62,148 @@
 
     <!-- OT, Autobus, Grupo, Autobus, Tarea, Realizado por, Fecha estimada-->
     {% if is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo') %}
-    <div class="btn-group" style="padding-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('ordentrabajo_new') }}"><i class="fa fa-plus-circle"></i> Adicionar Orden de Trabajo</a>
-    </div>
-    {% endif %}
+        <div class="btn-group" style="padding-bottom: 8px;">
+            <a class="btn btn-primary" href="{{ path('ordentrabajo_new') }}"><i class="fa fa-plus-circle"></i> Adicionar
+                Orden de Trabajo</a>
 
-    <table class="records_list table table-striped table-bordered table-condensed table-hover">
-        <thead>
-        <tr>
-            <th>OT</th>
-            <th>Autobus</th>
-            <th>Grupo</th>
-            <th>Subgrupo</th>
-            <th>Tarea</th>
-            <th>Kilometraje</th>
-            <th>Creado</th>
-            <th>Responsable</th>
-            <th>Fecha estimada</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            {% for tarea in entity.tareasAdicionales %}
+            {# Boton para cambiar la vista #}
+
+        </div>
+
+        {#<div id="switch_view" class="btn-group col-lg-offset-7 offset4" style="padding-bottom: 8px;">#}
+        {#<a id="switch_view_a" class="btn btn-info"><i class="fa fa-plus-circle"></i> Cambiar vista a ordenes</a>#}
+        {#</div>#}
+
+        <div class="btn-group pull-right" data-toggle="buttons">
+            <label class="btn btn-default active" id="vistatareas" title="Vista Tareas OT">
+                <input type="radio" name="options"> <i class="fa fa-tags"></i>
+            </label>
+            <label class="btn btn-default" id="vistaordenes" title="Vista Orden Trabajo">
+                <input type="radio" name="options"> <i class="fa fa-tag"></i>
+            </label>
+        </div>
+
+
+
+        {# Boton para cambiar la vista #}
+        {#<a id="switch_view" style="cursor: pointer;">#}
+        {#<span class="glyphicon}"></span>#}
+        {#Cambiar vista a ordenes#}
+        {#</a>#}
+    {% endif %}
+    <div id="lista_tareas_ordenes" style="display: block">
+        <table class="records_list table table-striped table-bordered table-condensed table-hover">
+            <thead>
+            <tr>
+                <th>OT</th>
+                <th>Autobus</th>
+                <th>Grupo</th>
+                <th>Subgrupo</th>
+                <th>Tarea</th>
+                <th>Kilometraje</th>
+                <th>Creado</th>
+                <th>Responsable</th>
+                <th>Fecha estimada</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                {% for tarea in entity.tareasAdicionales %}
+                    <tr>
+                        <td>OT #{{ entity.numero }}</td>
+                        <td>{{ entity.autobus }}</td>
+                        <td>{{ tarea.grupo }}</td>
+                        <td>{{ tarea.subgrupo }}</td>
+                        <td>{{ tarea.tareamantenimiento }}</td>
+                        <td>{{ entity.kilometraje }}</td>
+                        <td>{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
+                        <td>{{ entity.realizadapor }}</td>
+                        <td>{{ tarea.fechaestimada |date('d/m/Y') }}</td>
+
+                        <td style="width: 18% !important; text-align: center;">
+                            {% if is_granted('VIEW', entity) %}
+                                <div class="btn-group">
+                                    <a class="btn btn-success btn-xs"
+                                       href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
+                                                class="fa fa-search"> Mostrar</i></a>
+                                </div>
+                            {% endif %}
+
+                            {% if is_granted('EDIT', entity) %}
+                                <div class="btn-group">
+                                    <a class="btn btn-danger btn-xs"
+                                       href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i
+                                                class="fa fa-edit"> Editar</i></a>
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="12">No se encontraron registros de tareas adicionales en el sistema.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div id="lista_ordenes" style="display: none">
+        <table class="records_list table table-striped table-bordered table-condensed table-hover">
+            <thead>
+            <tr>
+                <th>OT</th>
+                <th>Diagnosticado por</th>
+                <th>Autobus</th>
+                <th>Ayudante</th>
+                <th>Prioridad</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+
                 <tr>
                     <td>OT #{{ entity.numero }}</td>
+                    <td>{{ entity.diagnosticadoPor | default('-')}}</td>
                     <td>{{ entity.autobus }}</td>
-                    <td>{{ tarea.grupo }}</td>
-                    <td>{{ tarea.subgrupo }}</td>
-                    <td>{{ tarea.tareamantenimiento }}</td>
-                    <td>{{ entity.kilometraje}}</td>
-                    <td>{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
-                    <td>{{ entity.realizadapor }}</td>
-                    <td>{{ tarea.fechaestimada |date('d/m/Y')  }}</td>
+                    <td>{{ entity.ayudante }}</td>
+                    <td>{{ entity.prioridad }}</td>
 
-                    <td  style="width: 18% !important; text-align: center;">
+                    <td style="width: 18% !important; text-align: center;">
                         {% if is_granted('VIEW', entity) %}
-                        <div class="btn-group">
-                            <a class="btn btn-success btn-xs" href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
-                        </div>
+                            <div class="btn-group">
+                                <a class="btn btn-success btn-xs"
+                                   href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
+                                            class="fa fa-search"> Mostrar</i></a>
+                            </div>
                         {% endif %}
 
                         {% if is_granted('EDIT', entity) %}
-                        <div class="btn-group">
-                            <a class="btn btn-danger btn-xs" href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
-                        </div>
+                            <div class="btn-group">
+                                <a class="btn btn-danger btn-xs"
+                                   href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i
+                                            class="fa fa-edit"> Editar</i></a>
+                            </div>
                         {% endif %}
                     </td>
                 </tr>
 
+
+            {% else %}
+                <tr>
+                    <td colspan="12">No se encontraron registros de tareas adicionales en el sistema.</td>
+                </tr>
             {% endfor %}
-        {% else %}
-            <tr>
-                <td colspan="12">No se encontraron registros de tareas adicionales en el sistema.</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
+
+
+
 
     <div class="container">
         <div class="row">
@@ -158,6 +244,54 @@
                     $(this).val(null);
                 })
             });
+
+
+            //Aqui hago el ajax para el select dependiente del autobus
+            $('#{{ filter_form.diagnostico.vars.id }}').change(function () {
+                var data = {
+                    diagnostico_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("ordentrabajo_ajax_diagnostico_autobus") }}',
+                    data: data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+                        var $autobus_selector = $('#{{ filter_form.autobus.vars.id }}');
+
+                        $autobus_selector.html('<option>---Seleccione---</option>');
+
+                        for (var i = 0, total = values.length; i < total; i++) {
+                            $autobus_selector.append('<option selected value="' + values[i].id + '">' + values[i].matricula + '</option>');
+                        }
+                    }
+                });
+            });
+
+        });
+
+        // Aqui switcheo con js las vistas
+
+        $("#vistatareas").click(function () {
+            var display = $('div#lista_tareas_ordenes').css("display");
+            if (display == 'none') {
+                $('div#lista_ordenes').slideUp(500);
+                $('div#lista_ordenes').css('display', 'none');
+                $('div#lista_tareas_ordenes').slideDown(500);
+                $('div#lista_tareas_ordenes').css('display', 'block');
+            }
+        });
+
+
+        $("#vistaordenes").click(function () {
+            var display = $('div#lista_tareas_ordenes').css("display");
+            if (display == 'block') {
+                $('div#lista_tareas_ordenes').slideUp(500);
+                $('div#lista_tareas_ordenes').css('display', 'none');
+                $('div#lista_ordenes').slideDown(700);
+                $('div#lista_ordenes').css('display', 'block');
+            }
         });
     </script>
 {% endblock javascripts %}

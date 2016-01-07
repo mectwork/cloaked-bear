@@ -1,6 +1,8 @@
 <?php
 namespace Buseta\TallerBundle\Form\Filter;
 
+use Buseta\TallerBundle\Form\EventListener\AddAutobusFieldSubscriber;
+
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,6 +16,9 @@ class OrdenTrabajoFilter extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        //$builder->addEventSubscriber(new AddAutobusFieldSubscriber());
+
         $builder
             ->add('numero', 'text', array(
                 'required' => false,
@@ -36,6 +41,8 @@ class OrdenTrabajoFilter extends AbstractType
                 'attr'   => array(
                     'class' => 'form-control',
                 ),
+                // Esta consulta hace que en el select solo aparezcan las entradas de la tabla terceros que tengan el campo
+                // usuario no nulo, o sea muestra los terceros que tengan usuarios asignados
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('responsable');
                     $qb->join('responsable.usuario', 'usuario')
@@ -59,6 +66,7 @@ class OrdenTrabajoFilter extends AbstractType
                     return $qb;
                 },
             ))
+
             ->add('autobus', 'entity', array(
                 'class' => 'BusetaBusesBundle:Autobus',
                 'empty_value' => '---Seleccione---',
@@ -68,6 +76,7 @@ class OrdenTrabajoFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
+
             ->add('diagnostico','entity',array(
                 'class' => 'BusetaTallerBundle:Diagnostico',
                 'query_builder' => function (EntityRepository $er) {

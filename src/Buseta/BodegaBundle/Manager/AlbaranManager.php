@@ -11,6 +11,7 @@ use Symfony\Bridge\Monolog\Logger;
 use Buseta\BodegaBundle\Event\BitacoraEvents;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class AlbaranManager
@@ -28,19 +29,21 @@ class AlbaranManager
      */
     private $logger;
 
-
-    private $event_dispacher;
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     */
+    private $dispatcher;
 
     /**
      * @param ObjectManager $em
      * @param Logger $logger
-     *
+     * @param EventDispatcherInterface $dispatcher
      */
-    function __construct(ObjectManager $em, Logger $logger,  $event_dispacher)
+    function __construct(ObjectManager $em, Logger $logger,  EventDispatcherInterface $dispatcher)
     {
         $this->em = $em;
         $this->logger = $logger;
-        $this->event_dispacher =   $event_dispacher;
+        $this->dispatcher =   $dispatcher;
     }
 
     /**
@@ -69,7 +72,7 @@ class AlbaranManager
             }
 
             // Change state Borrador(BO) to Procesado(PR)
-            $eventDispatcher = $this->event_dispacher;
+            $eventDispatcher = $this->dispatcher;
             $event = new FilterAlbaranEvent($albaran);
             $eventDispatcher->dispatch(AlbaranEvents::POS_PROCESS, $event);
             $resultado = $event->getReturnValue();
@@ -88,38 +91,25 @@ class AlbaranManager
     /**
      * Completar Albaran
      *
-     * @param integer $id
+     * @param \Buseta\BodegaBundle\Entity\Albaran $albaran
      * @return bool
      */
-    public function completar($id)
+    public function completar(Albaran $albaran)
     {
         try {
+            $albaranLineas =  $albaran->getAlbaranLineas();
 
-            /** @var \Buseta\BodegaBundle\Entity\Albaran $albaran */
-
-            $albaran = $this->em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
-
-            if (!$albaran) {
-                throw new NotFoundElementException('No se encontro la entidad Albaran.');
-            }
-
-            $albaranLineas =  $this->em->getRepository('BusetaBodegaBundle:AlbaranLinea')->findBy(array(
-                'albaran' => $albaran,
-            ));
-
-            if($albaranLineas != null)
-            {
-                $eventDispatcher = $this->event_dispacher; //  get('event_dispatcher');
+            if ($albaranLineas !== null && count($albaranLineas) > 0) {
                 foreach ($albaranLineas as $linea) {
                     /** @var \Buseta\BodegaBundle\Entity\AlbaranLinea $linea */
                     $event = new FilterBitacoraEvent($linea);
-                    $eventDispatcher->dispatch(BitacoraEvents::VENDOR_RECEIPTS, $event);
+                    $this->dispatcher->dispatch(BitacoraEvents::VENDOR_RECEIPTS, $event);
                     $resultado = $event->getReturnValue();
                 }
 
                 // Change state to 'CO'
                 $event = new FilterAlbaranEvent($albaran);
-                $eventDispatcher->dispatch(AlbaranEvents::POS_COMPLETE, $event);
+                $this->dispatcher->dispatch(AlbaranEvents::POS_COMPLETE, $event);
                 $resultado = $event->getReturnValue();
             }
 

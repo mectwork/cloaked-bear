@@ -256,7 +256,7 @@ root:
                   route: salidabodega
                   roles: [ROLE_USER]
                   type: item
-                  disabled: false
+                  disabled: true
                   attributes: {  }
                   childrens: {  }
                 menu_B_D_D:
@@ -307,6 +307,16 @@ root:
                   label: 'Informe de Costos'
                   route: bodega_informe_costos
                   roles: [ROLE_USER]
+                  type: item
+                  disabled: false
+                  attributes: {  }
+                  childrens: {  }
+                menu_B_E_D:
+                  id: menu_B_E_D
+                  name: null
+                  label: 'Bitacora general'
+                  route: bitacoraalmacen
+                  roles: [ROLE_ADMIN]
                   type: item
                   disabled: false
                   attributes: {  }

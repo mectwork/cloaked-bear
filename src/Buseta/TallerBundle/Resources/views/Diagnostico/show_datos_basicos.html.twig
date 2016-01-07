@@ -1,56 +1,162 @@
 <div class="panel panel-default">
     <!-- Default panel contents -->
 
+    {% set cancelado = entity.cancelado %}
+
+
+    <li class="list-group-item"><b>Número:</b>  {{ entity.numero }}</li>
+    <li class="list-group-item"><b>Autobus:</b>  {{ entity.autobus }}</li>
+
+
+    {% if entity.estado == 'CO' %}
+        {% set badge = 'success' %}
+    {% elseif entity.estado == 'PR' %}
+        {% set badge = 'primary' %}
+    {% else %}
+        {% set badge = 'warning' %}
+    {% endif %}
+
+    <li class="list-group-item">Estado: <span
+                class="label label-{{ badge }}"> {{ ('estado.' ~ entity.estado)  | trans({}, 'BusetaTallerBundle') }}
+    </li>
+
+    <li class="list-group-item"><b>Medio:</b> Sin medio reporte</li>
+    <li class="list-group-item"><b>Reporta:</b> Sin reporte</li>
+
+    {% if cancelado == 1 %}
+        <li class="list-group-item"><b>¿Cancelado?:</b> Si</li>
+    {% else %}
+        <li class="list-group-item"><b>¿Cancelado?:</b> No</li>
+    {% endif %}
+
     {% if reportes != null %}
-            <!-- Resumen Reporte -->
-            <ul class="list-group">
-                <li class="list-group-item"><b>Número:</b>  {{ reportes.numero }}</li>
-                <li class="list-group-item"><b>Medio:</b>   {{ reportes.medioReporte }}</li>
-                <li class="list-group-item"><b>Reporta:</b> {{ reportes.reporta }}</li>
-                {% if reportes.esUsuario %}
-                    <li class="list-group-item"><b>¿Es Usuario de la Empresa?:</b> Sí </li>
-                    <li class="list-group-item">
-                        <div class="panel panel-default" style="margin: 10px">
-                            <!-- Default panel contents -->
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Datos de Persona</h3>
-                            </div>
 
-                            <!-- Datos de Persona -->
-                            <ul class="list-group">
-                                <li class="list-group-item"><b>Nombre:</b>   {{ reportes.nombrePersona }}</li>
-                                <li class="list-group-item"><b>Email:</b>    {{ reportes.emailPersona }}</li>
-                                <li class="list-group-item"><b>Teléfono:</b> {{ reportes.telefonoPersona }}</li>
-                            </ul>
 
-                        </div>
-                    </li>
-                {% else %}
-                    <li class="list-group-item"><b>¿Es Usuario de la Empresa?:</b> No </li>
-                {% endif %}
+        <!-- Resumen Reporte -->
+        <ul class="list-group">
+            <li class="list-group-item"><b>Número:</b>  {{ reportes.numero }}</li>
+            <li class="list-group-item"><b>Medio:</b>   {{ reportes.medioReporte }}</li>
+            <li class="list-group-item"><b>Reporta:</b> {{ reportes.reporta }}</li>
+            {% if reportes.esUsuario %}
+                <li class="list-group-item"><b>¿Es Usuario de la Empresa?:</b> Sí</li>
                 <li class="list-group-item">
                     <div class="panel panel-default" style="margin: 10px">
                         <!-- Default panel contents -->
                         <div class="panel-heading">
-                            <h3 class="panel-title">Observaciones del Reporte</h3>
+                            <h3 class="panel-title">Datos de Persona</h3>
                         </div>
 
-                        <!-- Observaciones del Reporte -->
+                        <!-- Datos de Persona -->
                         <ul class="list-group">
-                            {% for reporte in reportes.observaciones %}
-                                <li class="list-group-item">{{ reporte.valor }}</li>
-                            {% else %}
-                                <li class="list-group-item">No existen observaciones de reportes disponibles</li>
-                            {% endfor %}
+                            <li class="list-group-item"><b>Nombre:</b>   {{ reportes.nombrePersona }}</li>
+                            <li class="list-group-item"><b>Email:</b>    {{ reportes.emailPersona }}</li>
+                            <li class="list-group-item"><b>Teléfono:</b> {{ reportes.telefonoPersona }}</li>
                         </ul>
 
                     </div>
                 </li>
-            </ul>
-        {% else %}
-            <ul class="list-group">
-                <li class="list-group-item"> No fueron asociados reportes al diagnóstico. </li>
-            </ul>
+            {% else %}
+                <li class="list-group-item"><b>¿Es Usuario de la Empresa?:</b> No</li>
+            {% endif %}
+
+            {% if cancelado == 1 %}
+                <li class="list-group-item"><b>¿Cancelado?:</b> Si</li>
+            {% else %}
+                <li class="list-group-item"><b>¿Cancelado?:</b> No</li>
+            {% endif %}
+
+            <li class="list-group-item">
+                <div class="panel panel-default" style="margin: 10px">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Observaciones del Reporte</h3>
+                    </div>
+
+                    <!-- Observaciones del Reporte -->
+                    <ul class="list-group">
+                        {% for reporte in reportes.observaciones %}
+                            <li class="list-group-item">{{ reporte.valor }}</li>
+                        {% else %}
+                            <li class="list-group-item">No existen observaciones de reportes disponibles</li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </li>
+
+
+
+
+
+        </ul>
+    {% else %}
+        <!-- Resumen Reporte -->
+        <ul class="list-group">
+
+
+            <li class="list-group-item">
+                <div class="panel panel-default" style="margin: 10px">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Observaciones del Reporte</h3>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"> No fueron asociados reportes al diagnóstico.</li>
+                    </ul>
+                    <!-- Observaciones del Reporte -->
+
+
+                </div>
+            </li>
+        </ul>
+
+
+
+
     {% endif %}
+
+    <li class="list-group-item">
+
+        <div class="panel panel-default" style="margin: 10px">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <h3 class="panel-title">Tareas del diagnostico</h3>
+            </div>
+
+
+            <ul class="list-group">
+
+
+                <table class="table table-bordered" style="font-size: 16px;">
+                    <thead>
+                    <tr>
+                        <th>Grupo</th>
+                        <th>Subgrupo</th>
+                        <th>Tarea</th>
+                        <th>Observaciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for tarea in entity.tareaDiagnostico %}
+                        <tr>
+                            <td align="center">{{ tarea.grupo }}</td>
+                            <td align="center">{{ tarea.subgrupo }}</td>
+                            <td align="center">{{ tarea.tareamantenimiento }}</td>
+                            <td align="center">{{ tarea.descripcion }}</td>
+
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">
+                                <span class="label label-danger">No existen tareas de mantenimiento disponibles</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+            </ul>
+
+        </div>
+    </li>
 
 </div>

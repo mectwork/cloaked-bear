@@ -1,7 +1,7 @@
 {% extends "BusetaTallerBundle::layout.html.twig" %}
 
 {% form_theme form.observaciones 'BusetaTallerBundle:Reporte/widget:collection_observaciones.html.twig' %}
-
+{% form_theme form.tareaDiagnostico 'BusetaTallerBundle:Diagnostico/widget:collection_tareas_diagnostico.html.twig' %}
 {% block nombre_menu_superior %}
     {% block stylesheets %}
         {{ parent() }}
@@ -31,29 +31,55 @@
             <div class="col-md-4">
                 {{ form_row(form.autobus) }}
             </div>
+
+            <div class="col-md-4">
+                {{ form_row(form.prioridad) }}
+            </div>
         </div>
 
-        <div id="detalles_reportes"> </div>
+
+        <div id="detalles_reportes"></div>
 
         <br/>
+
         <div class="row">
             <div class="col-md-12">
                 {{ form_row(form.observaciones) }}
             </div>
         </div>
 
+
         <div class="row">
             <div class="col-md-4">
                 <div class="btn-group" style="padding-bottom: 8px;">
-                    <a id="adicionarNuevaObservacion" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar Observación</a>
+                    <a id="adicionarNuevaObservacion" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i>
+                        Adicionar Observación</a>
                 </div>
             </div>
         </div>
 
+        {# Aqui se crea el campo para las tareas de la orden de trabajo #}
+        <div class="row">
+            <div class="col-md-12">
+                {{ form_row(form.tareaDiagnostico) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="btn-group" style="padding-bottom: 8px;">
+                    <a id="adicionarNuevaTarea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i>
+                        Adicionar tarea</a>
+                </div>
+            </div>
+        </div>
+        {# Aqui finaliza la creacion del campo para las tareas de la orden de trabajo #}
+
         <br/>
+
         <div class="row">
             <div class="col-md-4">
                 <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+
                 <div class="btn-group">
                     <a class="btn btn-primary" href="{{ path('diagnostico') }}"> Cancelar</a>
                 </div>
@@ -62,7 +88,7 @@
 
         {{ form_rest(form) }}
     </form>
-
+    <div class="modal" id="nuevaTarea"></div>
 {% endblock %}
 
 {% block contenido %}
@@ -95,8 +121,8 @@
             updateDeleteLink();
             updateView();
         }
-        function updateDeleteLink(){
-            $('a.delete_tag_link').on('click', function(e) {
+        function updateDeleteLink() {
+            $('a.delete_tag_link').on('click', function (e) {
                 // prevent the link from creating a "#" on the URL
                 e.preventDefault();
 
@@ -106,11 +132,11 @@
                 updateView();
             });
         }
-        function updateView(){
+        function updateView() {
             counter = collectionHolder.find('a.delete_tag_link').length;
-            if(counter == 0){
+            if (counter == 0) {
                 $('div#no-elements-tr').show();
-            }else{
+            } else {
                 $('div#no-elements-tr').hide();
             }
         }
@@ -122,7 +148,6 @@
                 // prevent the link from creating a "#" on the URL
                 event.preventDefault();
 
-
                 var index = collectionHolder.data('index');
                 addTagForm(collectionHolder);
 
@@ -133,11 +158,125 @@
         };
     </script>
 
+
+    <script type="text/javascript">
+
+        //Con esto manejo la coleccion de objetos
+        function addTagFormD(collectionHolderD) {
+            // Get the data-prototype explained earlier
+            var prototype = collectionHolderD.data('prototype');
+
+            // get the new index
+            var index = collectionHolderD.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            //Remplazo todas las cadenas que me encuentre de la forma __name__ por el
+            //indice que le toca en ese momento
+            var newForm = prototype.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            collectionHolderD.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormDiv = $('<div></div>').append(newForm);
+            collectionHolderD.find('#tareas-collection').append($newFormDiv);
+            updateDeleteLinkD();
+            updateViewD();
+        }
+
+        function updateDeleteLinkD() {
+            $('a.delete_tag_link_diag').on('click', function (e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $(this).parent().parent().parent().parent().remove();
+
+                updateViewD();
+            });
+        }
+
+        function updateViewD() {
+            //Con esto obtengo la cantidad de objetos que machean con delete_tag_link
+            //Esto me permite saber cuantas tareas tengo agregadas ya que por cada tarea creo un elemento
+            // de este tipo para poderla eliminar si lo deseo
+            counter = collectionHolderD.find('a.delete_tag_link_diag').length;
+            if (counter == 0) {
+                //Si es igual a cero es que no hay tareas y muestro el div que contiene el mensaje de
+                //que no hay tareas
+                $('div#no-elements-tr-diag').show();
+            } else {
+                //sino lo oculto
+                $('div#no-elements-tr-diag').hide();
+            }
+        }
+
+
+        function dinamicSelects(){
+            //Aqui es donde lleno el campo del kilometraje a partir de ajax
+
+
+            $('select[id^="buseta_tallerbundle_reporte_tareaDiagnostico_"][id$="_grupo"]').change(function(){
+                var $selectGroup = $(this);
+                var data = {
+                    grupo_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('tareamantenimiento_ajax_grupos_subgrupos') }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+
+                        var $subgrupo_selector = $selectGroup.parent().parent().parent().find('select[id^="buseta_tallerbundle_reporte_tareaDiagnostico_"][id$="_subgrupo"]');
+
+                        $subgrupo_selector.html('<option>---Seleccione---</option>');
+
+                        for (var i=0, total = values.length; i < total; i++) {
+                            $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                        }
+                    }
+                });
+            });
+
+            $('select[id^="buseta_tallerbundle_reporte_tareaDiagnostico_"][id$="_subgrupo"]').change(function(){
+                var $selectGroup = $(this);
+                var data = {
+                    subgrupo_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_tarea_subgrupo') }}',
+                    data: data,
+                    success: function(data) {
+                        var values = $.parseJSON(data);
+
+                        var $tarea_selector = $selectGroup.parent().parent().parent().find('select[id^="buseta_tallerbundle_reporte_tareaDiagnostico_"][id$="_tarea"]');
+
+                        $tarea_selector.html('<option>---Seleccione---</option>');
+
+                        for (var i=0, total = values.length; i < total; i++) {
+                            $tarea_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                        }
+                    }
+                });
+            });
+
+        }
+    </script>
+
+
     <script type="text/javascript">
         var collectionHolder = $('div#buseta_tallerbundle_reporte_observaciones');
         var $addTagLink = '';
 
-        jQuery(document).ready(function() {
+        var collectionHolderD = $('div#buseta_tallerbundle_reporte_tareaDiagnostico');
+        var $addTagLinkD = '';
+
+        jQuery(document).ready(function () {
             // count the current form inputs we have (e.g. 2), use that as the new
             // index when inserting a new item (e.g. 2)
             collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
@@ -146,11 +285,26 @@
 
             $('a#adicionarNuevaObservacion').on('click', observacion._insert_new);
 
+            // Esta variable toma el div que contendra cada una de las tareas que se muestran en el new
+
+            //Con esto le creo un data al collectionHolder con una variable llamada index que contendra
+            //en un primer momento la cantidad de enlaces eliminar que hay en la vista new.html.twig
+            //Asi sabra cuantos elementos luego mostrar.
+            collectionHolderD.data('index', collectionHolder.find('a.delete_tag_link_diag').length);
+
+            //LLamo la funcion con este nombre
+            updateDeleteLinkD();
+            updateViewD();
+
+            //Cuando doy click encima del boton de anadir nueva tarea llamo un metodo
+            // que esta dentro de una variable definida
+            $('a#adicionarNuevaTarea').on('click', tareaDiagnostico._new);
+
         });
 
         //Al seleccionar el Reporte del Diagnostico, automaticamente selecciona el Autobus correspondiente
         //y muestra los datos del Reporte Seleccionado
-        $('#{{ form.reporte.vars.id }}').change(function(){
+        $('#{{ form.reporte.vars.id }}').change(function () {
             var autobus_text = $('#{{ form.autobus.vars.id }}');
             var reporte_text = $('#{{ form.reporte.vars.id }}');
             var detalles_reportes = $('#detalles_reportes');
@@ -159,11 +313,11 @@
                 reporte_id: $(this).val()
             };
 
-            $.get('{{ path("diagnostico_ajax_reporte_autobus") }}', data, function(data){
+            $.get('{{ path("diagnostico_ajax_reporte_autobus") }}', data, function (data) {
                 //Selecciona automática el Autobus segun el Reporte seleccionado
                 autobus_text.val(data['autobus']);
-                autobus_text.css('display','none');
-                var text = autobus_text.find('option[value="'+autobus_text.val()+'"]').html();
+                autobus_text.css('display', 'none');
+                var text = autobus_text.find('option[value="' + autobus_text.val() + '"]').html();
                 autobus_text.parent().find('input').remove();
                 autobus_text
                         .parent()
@@ -172,38 +326,189 @@
                 detalles_reportes.html('');
                 detalles_reportes
                         .append($(
-                                    '<div style="margin-top: 30px" id="datosreportes" class="panel panel-default">' +
-                                    '<div class="panel-heading">' +
-                                    '<h3 class="panel-title">Detalles del Reporte</h3>' +
-                                    '</div>' +
-                                    '<ul class="list-group">' +
-                                    '<li class="list-group-item"> <b>Número: </b> ' + data['numero']  +'</li>' +
-                                    '<li class="list-group-item"> <b>Reporta: </b>' + data['reporta'] +'</li>' +
-                                    '<li class="list-group-item"> <b>Medio: </b>  ' + data['medio']   +'</li>' +
-                                    '<li class="list-group-item"> <b>¿Es Usuario de la Empresa?: </b>'+data['esUsuario']+'</li>' +
-                                        '<li class="list-group-item">' +
-                                        '<div class="panel panel-default" style="margin: 10px">' +
-                                        <!-- Default panel contents -->
-                                        '<div class="panel-heading">' +
-                                        '<h3 class="panel-title">Datos de Persona</h3>' +
-                                        '</div>' +
-                                        <!-- Datos de Persona -->
-                                            '<ul class="list-group">' +
-                                            '<li class="list-group-item"> <b>Nombre:</b>   '+ data['nombrePersona'] +'</li> '+
-                                            '<li class="list-group-item"> <b>Email:</b>    '+ data['emailPersona']   +'</li>' +
-                                            '<li class="list-group-item"> <b>Teléfono:</b> '+ data['telefonoPersona'] +'</li>' +
-                                            '</ul>' +
-                                        '</div>' +
-                                        '</li>' +
-                                        '<ul class="list-group"> </ul></div>')
-                                );
+                                '<div style="margin-top: 30px" id="datosreportes" class="panel panel-default">' +
+                                '<div class="panel-heading">' +
+                                '<h3 class="panel-title">Detalles del Reporte</h3>' +
+                                '</div>' +
+                                '<ul class="list-group">' +
+                                '<li class="list-group-item"> <b>Número: </b> ' + data['numero'] + '</li>' +
+                                '<li class="list-group-item"> <b>Reporta: </b>' + data['reporta'] + '</li>' +
+                                '<li class="list-group-item"> <b>Medio: </b>  ' + data['medio'] + '</li>' +
+                                '<li class="list-group-item"> <b>¿Es Usuario de la Empresa?: </b>' + data['esUsuario'] + '</li>' +
+                                '<li class="list-group-item">' +
+                                '<div class="panel panel-default" style="margin: 10px">' +
+                                    <!-- Default panel contents -->
+                                '<div class="panel-heading">' +
+                                '<h3 class="panel-title">Datos de Persona</h3>' +
+                                '</div>' +
+                                    <!-- Datos de Persona -->
+                                '<ul class="list-group">' +
+                                '<li class="list-group-item"> <b>Nombre:</b>   ' + data['nombrePersona'] + '</li> ' +
+                                '<li class="list-group-item"> <b>Email:</b>    ' + data['emailPersona'] + '</li>' +
+                                '<li class="list-group-item"> <b>Teléfono:</b> ' + data['telefonoPersona'] + '</li>' +
+                                '</ul>' +
+                                '</div>' +
+                                '</li>' +
+                                '<ul class="list-group"> </ul></div>')
+                );
 
-            }, 'json').fail(function(error){
+            }, 'json').fail(function (error) {
                 autobus_text.parent().find('input').remove();
                 detalles_reportes.html('');
-                autobus_text.css('display','block');
+                autobus_text.css('display', 'block');
             });
         });
+    </script>
+
+
+    <script type="text/javascript">
+        var tareaDiagnostico = {
+            _new: function (event, mpreventivo) {
+                event.preventDefault();
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('tareadiagnostico_new_modal') }}',
+                    data: {
+                        mpreventivo_id: mpreventivo
+                    }
+                }).done(function (response) {
+                    //Recojo la respuesta del controlador y remplazo todo lo que hay en el div
+                    //con clase modal y con id nuevaTarea por todo el modal que viene en la respuesta
+                    //luego llamo al metodo load de la variable tareaAdicional.
+                    $('div.modal#nuevaTarea').replaceWith(response);
+                    tareaDiagnostico._load();
+
+                    $('div.modal#nuevaTarea').modal('show');
+                }).fail(function (error) {
+
+                });
+            },
+            _insert_new: function (event) {
+                // prevent the link from creating a "#" on the URL
+                event.preventDefault();
+
+                var modal = $('div.modal#nuevaTarea');
+
+                // captura de valores del modal
+                var tareadiagnostico_grupo = modal.find('#buseta_tallerbundle_tareadiagnostico_grupo');
+                var tareadiagnostico_subgrupo = modal.find('#buseta_tallerbundle_tareadiagnostico_subgrupo');
+                var tareadiagnostico_tareamantenimiento = modal.find('#buseta_tallerbundle_tareadiagnostico_tareamantenimiento');
+                var tareadiagnostico_descripcion = modal.find('#buseta_tallerbundle_tareadiagnostico_descripcion');
+
+                //Guardo en la variable index, el valor de la variable index del data de collection holder
+                //que son la cantidad de elementos que voy a tener de tipo delete_tag_link
+                var index = collectionHolderD.data('index');
+
+                addTagFormD(collectionHolderD);
+
+                $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_grupo').val(tareadiagnostico_grupo.val());
+                $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_subgrupo').val(tareadiagnostico_subgrupo.val());
+                $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_tareamantenimiento').val(tareadiagnostico_tareamantenimiento.val());
+                $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_descripcion').val(tareadiagnostico_descripcion.val());
+
+
+
+                //Actualiza los subgrupos a partir de los grupos en el listado de Tareas de diagnostico
+                //despues que son insertadas y estan en el area donde se muestran cada una por separado
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('tareamantenimiento_ajax_grupos_subgrupos') }}',
+                    data: {
+                        grupo_id: $(tareadiagnostico_grupo).val()
+                    },
+                    async: false
+                }).done(function (data, textStatus, jqXHR) {
+                    var values = $.parseJSON(data);
+
+                    //dinamicSelects();
+
+                    var subgrupo_selector = $('select[id="buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_subgrupo"]');
+                    subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
+                    for (var i = 0, total = values.length; i < total; i++) {
+                        subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                    }
+
+                    $(subgrupo_selector).val(tareadiagnostico_subgrupo.val());
+                });
+
+                //Actualiza las tareas a partir de los subgrupos en el listado de Tareas Adicionales
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_tarea_subgrupo') }}',
+                    data: {
+                        subgrupo_id: $(tareadiagnostico_subgrupo).val()
+                    },
+                    async: false
+                }).done(function (data) {
+                    var values = $.parseJSON(data);
+                    var tarea_selector = $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_tareamantenimiento');
+
+                    tarea_selector.html('<option>---Seleccione---</option>');
+                    for (var i = 0, len = values.length; i < len; i++) {
+                        tarea_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>')
+                    }
+
+                    $(tarea_selector).val(tareadiagnostico_tareamantenimiento.val());
+                });
+
+
+            },
+            _load: function () {
+
+
+                $('#buseta_tallerbundle_tareadiagnostico_grupo').on('change', tareaDiagnostico._update_subgrupos);
+                $('#buseta_tallerbundle_tareadiagnostico_subgrupo').on('change', tareaDiagnostico._update_tareas);
+
+
+                //Aqui es donde hago la insercion de los datos del modal a la orden de trabajo
+                $('a.add_tarea_link').on('click', tareaDiagnostico._insert_new);
+            },
+            //Con esta funcionalidad ajax actualizo el select de subgrupos a partir del ggrupo que escoja
+            _update_subgrupos: function () {
+                var data = {
+                    grupo_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_subgrupo_grupo') }}',
+                    data: data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+                        var subgrupo_selector = $('#buseta_tallerbundle_tareadiagnostico_subgrupo');
+
+                        subgrupo_selector.html('<option>---Seleccione---</option>');
+                        for (var i = 0, len = values.length; i < len; i++) {
+                            subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>')
+                        }
+                    }
+                });
+            },
+
+            //Con esta funcionalidad actualizo el select de tareas a partir del subgrupo escojido
+            _update_tareas: function () {
+                var data = {
+                    subgrupo_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_select_tarea_subgrupo') }}',
+                    data: data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+                        var tarea_selector = $('#buseta_tallerbundle_tareadiagnostico_tareamantenimiento');
+
+                        tarea_selector.html('<option>---Seleccione---</option>');
+                        for (var i = 0, len = values.length; i < len; i++) {
+                            tarea_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>')
+                        }
+                    }
+                });
+            }
+
+        };
     </script>
 
 

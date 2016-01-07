@@ -37,11 +37,11 @@ class InventarioFisicoManager
      * @param Logger $logger
      *
      */
-    function __construct(ObjectManager $em, Logger $logger,  $event_dispacher)
+    function __construct(ObjectManager $em, Logger $logger, $event_dispacher)
     {
         $this->em = $em;
         $this->logger = $logger;
-        $this->event_dispacher =   $event_dispacher;
+        $this->event_dispacher = $event_dispacher;
     }
 
     /**
@@ -53,31 +53,32 @@ class InventarioFisicoManager
      */
     public function procesar($id)
     {
-       try {
+        try {
 
-        $inventarioFisico = $this->em->getRepository('BusetaBodegaBundle:InventarioFisico')->find($id);
+            $inventarioFisico = $this->em->getRepository('BusetaBodegaBundle:InventarioFisico')->find($id);
 
-        if (!$inventarioFisico) {
-            //throw $this->createNotFoundException('Unable to find InventarioFisico entity.');
-        }
+            if (!$inventarioFisico) {
+                //throw $this->createNotFoundException('Unable to find InventarioFisico entity.');
+            }
 
-        if ($inventarioFisico->getEstado() !== 'BO') {
-            $this->logger->error(sprintf('El estado %s del Inventario Fisico con id %d no se corresponde con el estado previo a procesado(BO).',
-                $inventarioFisico->getEstado(),
-                $inventarioFisico->getId()
-            ));
-            throw new NotValidStateException();
-        }
+            if ($inventarioFisico->getEstado() !== 'BO') {
+                $this->logger->error(sprintf('El estado %s del Inventario Fisico con id %d no se corresponde con el estado previo a procesado(BO).',
+                    $inventarioFisico->getEstado(),
+                    $inventarioFisico->getId()
+                ));
+                throw new NotValidStateException();
+            }
 
-           // Change state Borrador(BO) to Procesado(PR)
-           $eventDispatcher = $this->event_dispacher;
-           $event = new FilterInventarioFisicoEvent($inventarioFisico);
-           $eventDispatcher->dispatch(InventarioFisicoEvents::POS_PROCESS, $event);
-           $resultado = $event->getReturnValue();
+            // Change state Borrador(BO) to Procesado(PR)
+            $eventDispatcher = $this->event_dispacher;
+            $event = new FilterInventarioFisicoEvent($inventarioFisico);
+            $eventDispatcher->dispatch(InventarioFisicoEvents::POS_PROCESS, $event);
+            $resultado = $event->getReturnValue();
 
             return true;
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error al procesar el Inventario Fisico: %s', $e->getMessage()));
+            $this->logger->error(sprintf('Ha ocurrido un error al procesar el Inventario Fisico: %s',
+                $e->getMessage()));
 
             return false;
         }
@@ -95,38 +96,38 @@ class InventarioFisicoManager
     {
         try {
 
-        /** @var \Buseta\BodegaBundle\Entity\InventarioFisico $inventarioFisico */
+            /** @var \Buseta\BodegaBundle\Entity\InventarioFisico $inventarioFisico */
 
-        $inventarioFisico = $this->em->getRepository('BusetaBodegaBundle:InventarioFisico')->find($id);
+            $inventarioFisico = $this->em->getRepository('BusetaBodegaBundle:InventarioFisico')->find($id);
 
-        if (!$inventarioFisico) {
-            throw new NotFoundElementException('No se encontro la entidad InventarioFisico.');
-        }
+            if (!$inventarioFisico) {
+                throw new NotFoundElementException('No se encontro la entidad InventarioFisico.');
+            }
 
-        $inventarioFisicoLineas =  $this->em->getRepository('BusetaBodegaBundle:InventarioFisicoLinea')->findBy(array(
-            'inventarioFisico' => $inventarioFisico,
-        ));
+            $inventarioFisicoLineas = $this->em->getRepository('BusetaBodegaBundle:InventarioFisicoLinea')->findBy(array(
+                'inventarioFisico' => $inventarioFisico,
+            ));
 
-        if($inventarioFisicoLineas != null)
-        {
-            $eventDispatcher = $this->event_dispacher; //  get('event_dispatcher');
-            foreach ($inventarioFisicoLineas as $linea) {
-                /** @var \Buseta\BodegaBundle\Entity\InventarioFisicoLinea $linea */
-                $event = new FilterBitacoraEvent($linea);
-                $eventDispatcher->dispatch(BitacoraEvents::INVENTORY_IN, $event );//I+
+            if ($inventarioFisicoLineas != null) {
+                $eventDispatcher = $this->event_dispacher; //  get('event_dispatcher');
+                foreach ($inventarioFisicoLineas as $linea) {
+                    /** @var \Buseta\BodegaBundle\Entity\InventarioFisicoLinea $linea */
+                    $event = new FilterBitacoraEvent($linea);
+                    $eventDispatcher->dispatch(BitacoraEvents::INVENTORY_IN, $event);//I+
+                    $resultado = $event->getReturnValue();
+                }
+
+                // Change state to 'CO'
+                $event = new FilterInventarioFisicoEvent($inventarioFisico);
+                $eventDispatcher->dispatch(InventarioFisicoEvents::POS_COMPLETE, $event);
                 $resultado = $event->getReturnValue();
             }
 
-            // Change state to 'CO'
-            $event = new FilterInventarioFisicoEvent($inventarioFisico);
-            $eventDispatcher->dispatch(InventarioFisicoEvents::POS_COMPLETE, $event);
-            $resultado = $event->getReturnValue();
-        }
-
-        return true;
+            return true;
 
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error al procesar el Inventario Fisico: %s', $e->getMessage()));
+            $this->logger->error(sprintf('Ha ocurrido un error al procesar el Inventario Fisico: %s',
+                $e->getMessage()));
             return false;
         }
 
@@ -144,7 +145,9 @@ class InventarioFisicoManager
     {
         try {
 
-            if (($inventarioFisico == null) || ($estado==null)) return false;
+            if (($inventarioFisico == null) || ($estado == null)) {
+                return false;
+            }
 
             /** @var \Buseta\BodegaBundle\Entity\InventarioFisico $inventarioFisico */
             $inventarioFisico->setEstado($estado);
@@ -154,7 +157,8 @@ class InventarioFisicoManager
             return true;
 
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error al cambiar estado al Inventario Fisico: %s', $e->getMessage()));
+            $this->logger->error(sprintf('Ha ocurrido un error al cambiar estado al Inventario Fisico: %s',
+                $e->getMessage()));
             return false;
         }
 

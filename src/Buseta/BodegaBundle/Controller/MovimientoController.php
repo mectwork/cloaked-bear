@@ -180,7 +180,7 @@ class MovimientoController extends Controller
                     $bitacora->setFechaMovimiento($fechaMovimiento);
                     $origen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
                     $bitacora->setAlmacen($origen);
-                    $bitacora->setCantMovida($movimiento['cantidad']);
+                    $bitacora->setCantidadMovida($movimiento['cantidad']);
                     $bitacora->setTipoMovimiento('M-');
                     $em->persist($bitacora);
                     $em->flush();
@@ -191,7 +191,7 @@ class MovimientoController extends Controller
                     $bitacora->setFechaMovimiento($fechaMovimiento);
                     $destino = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
                     $bitacora->setAlmacen($destino);
-                    $bitacora->setCantMovida($movimiento['cantidad']);
+                    $bitacora->setCantidadMovida($movimiento['cantidad']);
                     $bitacora->setTipoMovimiento('M+');
                     $em->persist($bitacora);
                     $em->flush();

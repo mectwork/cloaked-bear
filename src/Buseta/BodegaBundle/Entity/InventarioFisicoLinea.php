@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="d_inventario_fisico_linea")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\InventarioFisicoLineaRepository")
  */
-class InventarioFisicoLinea
+class InventarioFisicoLinea implements GeneradorBitacoraInterface
 {
     /**
      * @var integer
@@ -70,7 +71,7 @@ class InventarioFisicoLinea
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -86,14 +87,14 @@ class InventarioFisicoLinea
     public function setNumero($numero)
     {
         $this->numero = $numero;
-    
+
         return $this;
     }
 
     /**
      * Get numero
      *
-     * @return string 
+     * @return string
      */
     public function getNumero()
     {
@@ -109,14 +110,14 @@ class InventarioFisicoLinea
     public function setDescripcion($descripcion)
     {
         $this->descripcion = $descripcion;
-    
+
         return $this;
     }
 
     /**
      * Get descripcion
      *
-     * @return string 
+     * @return string
      */
     public function getDescripcion()
     {
@@ -132,14 +133,14 @@ class InventarioFisicoLinea
     public function setCantidadReal($cantidadReal)
     {
         $this->cantidadReal = $cantidadReal;
-    
+
         return $this;
     }
 
     /**
      * Get cantidadReal
      *
-     * @return integer 
+     * @return integer
      */
     public function getCantidadReal()
     {
@@ -155,14 +156,14 @@ class InventarioFisicoLinea
     public function setCantidadTeorica($cantidadTeorica)
     {
         $this->cantidadTeorica = $cantidadTeorica;
-    
+
         return $this;
     }
 
     /**
      * Get cantidadTeorica
      *
-     * @return integer 
+     * @return integer
      */
     public function getCantidadTeorica()
     {
@@ -178,14 +179,14 @@ class InventarioFisicoLinea
     public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
     {
         $this->producto = $producto;
-    
+
         return $this;
     }
 
     /**
      * Get producto
      *
-     * @return \Buseta\BodegaBundle\Entity\Producto 
+     * @return \Buseta\BodegaBundle\Entity\Producto
      */
     public function getProducto()
     {
@@ -201,14 +202,14 @@ class InventarioFisicoLinea
     public function setInventarioFisico(\Buseta\BodegaBundle\Entity\InventarioFisico $inventarioFisico = null)
     {
         $this->inventarioFisico = $inventarioFisico;
-    
+
         return $this;
     }
 
     /**
      * Get inventarioFisico
      *
-     * @return \Buseta\BodegaBundle\Entity\InventarioFisico 
+     * @return \Buseta\BodegaBundle\Entity\InventarioFisico
      */
     public function getInventarioFisico()
     {

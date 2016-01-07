@@ -88,6 +88,8 @@
                     </div>
 
                     <br/>
+
+                    {# Aqui se crea el campo para las tareas de la orden de trabajo #}
                     <div class="row">
                         <div class="col-md-12">
                             {{ form_row(form.tareasAdicionales) }}
@@ -100,7 +102,7 @@
                             </div>
                         </div>
                     </div>
-
+                    {# Aqui finaliza la creacion del campo para las tareas de la orden de trabajo #}
                     <div class="panel panel-default"  id="buseta_tallerbundle_ordentrabajo_mpreventivos"  style="display: none;">
                         <div class="panel-heading">
                             <h3 class="panel-title">Mantenimientos Preventivos</h3>
@@ -186,6 +188,8 @@
     {{ parent() }}
 
     <script type="text/javascript">
+
+        //Con esto manejo la coleccion de objetos
         function addTagForm(collectionHolder) {
             // Get the data-prototype explained earlier
             var prototype = collectionHolder.data('prototype');
@@ -195,6 +199,8 @@
 
             // Replace '__name__' in the prototype's HTML to
             // instead be a number based on how many items we have
+            //Remplazo todas las cadenas que me encuentre de la forma __name__ por el
+            //indice que le toca en ese momento
             var newForm = prototype.replace(/__name__/g, index);
 
             // increase the index with one for the next item
@@ -220,10 +226,16 @@
         }
 
         function updateView(){
+            //Con esto obtengo la cantidad de objetos que machean con delete_tag_link
+            //Esto me permite saber cuantas tareas tengo agregadas ya que por cada tarea creo un elemento
+            // de este tipo para poderla eliminar si lo deseo
             counter = collectionHolder.find('a.delete_tag_link').length;
             if(counter == 0){
+                //Si es igual a cero es que no hay tareas y muestro el div que contiene el mensaje de
+                //que no hay tareas
                 $('div#no-elements-tr').show();
             }else{
+                //sino lo oculto
                 $('div#no-elements-tr').hide();
             }
         }
@@ -240,11 +252,13 @@
             $('#buseta_tallerbundle_ordentrabajo_duracion_horas_laboradas').val(horastotal);
         }
 
+        //Estos son los select dependientes de toda la orden de trabajo y no del modal
         function dinamicSelects(){
-            $('#{{ form.autobus.vars.id }}').change(function() {
+            //Aqui es donde lleno el campo del kilometraje a partir de ajax
+            $('#{{ form.diagnostico.vars.id }}').change(function() {
 
                 var $data = {
-                    autobus_id: $(this).val()
+                    diagnostico_id: $(this).val()
                 };
 
                 $.ajax({
@@ -253,11 +267,14 @@
                     data: $data,
                     success: function (data) {
                         var values = $.parseJSON(data);
+                        var $kilometraje_selector = $('#{{ form.kilometraje.vars.id }}');
 
-                        if (!values.empty) {
-                            $('#{{ form.kilometraje.vars.id }}').val(values.kilometraje);
-                        } else {
-                            $('#{{ form.kilometraje.vars.id }}').html();
+                        $kilometraje_selector.val('');
+
+
+
+                        for (var i = 0, total = values.length; i < total; i++) {
+                            $kilometraje_selector.val(values[i].kilometraje);
                         }
                     }
                 });
@@ -396,6 +413,9 @@
                         mpreventivo_id: mpreventivo
                     }
                 }).done(function (response) {
+                    //Recojo la respuesta del controlador y remplazo todo lo que hay en el div
+                    //con clase modal y con id nuevaTarea por todo el modal que viene en la respuesta
+                    //luego llamo al metodo load de la variable tareaAdicional.
                     $('div.modal#nuevaTarea').replaceWith(response);
                     tareaAdicional._load();
 
@@ -420,7 +440,10 @@
                 var tareaadicional_hora_final           = modal.find('#buseta_tallerbundle_tarea_adicional_horaFinal');
                 var tareaadicional_garantias_tareas     = modal.find('#buseta_tallerbundle_tarea_adicional_garantiaTarea');
 
+                //Guardo en la variable index, el valor de la variable index del data de collection holder
+                //que son la cantidad de elementos que voy a tener de tipo delete_tag_link
                 var index = collectionHolder.data('index');
+
                 addTagForm(collectionHolder);
 
                 $('#buseta_tallerbundle_ordentrabajo_tareasAdicionales_' + index + '_grupo').val(tareaadicional_grupo.val());
@@ -499,6 +522,9 @@
                 });
             },
             _load: function () {
+
+                //Aqui construyo algunas cosas que me hacen falta en el modal para algunos campos, en
+                //este caso todos
                 $('#buseta_tallerbundle_tarea_adicional_horaInicio').datetimepicker({
                     'format': 'hh:mm A'
                 });
@@ -518,11 +544,14 @@
                     'format': 'DD/MM/YYYY'
                 });
 
-                $('a.add_tarea_link').on('click', tareaAdicional._insert_new);
                 $('#buseta_tallerbundle_tarea_adicional_grupo').on('change', tareaAdicional._update_subgrupos);
                 $('#buseta_tallerbundle_tarea_adicional_subgrupo').on('change', tareaAdicional._update_tareas);
                 $('#buseta_tallerbundle_tarea_adicional_tareamantenimiento').on('change', tareaAdicional._update_garantia);
+
+                //Aqui es donde hago la insercion de los datos del modal a la orden de trabajo
+                $('a.add_tarea_link').on('click', tareaAdicional._insert_new);
             },
+            //Con esta funcionalidad ajax actualizo el select de subgrupos a partir del ggrupo que escoja
             _update_subgrupos: function () {
                 var data = {
                     grupo_id: $(this).val()
@@ -543,6 +572,8 @@
                     }
                 });
             },
+
+            //Con esta funcionalidad actualizo el select de tareas a partir del subgrupo escojido
             _update_tareas: function () {
                 var data = {
                     subgrupo_id: $(this).val()
@@ -563,6 +594,7 @@
                     }
                 });
             },
+            //Con esta funcionalidad actualizo la garantia a partir de la tarea escojida
             _update_garantia: function () {
                 var data = {
                     tarea_id: $(this).val()
@@ -629,6 +661,8 @@
             _events: function () {
 
             },
+
+            //Este load me conforma el formulario de las ordenes de trabajo aqui conformo las fechas y demas
             _load: function () {
                 $('#buseta_tallerbundle_ordentrabajo_fechaInicio').datetimepicker({
                     'format': 'DD/MM/YYYY'
@@ -663,24 +697,30 @@
     </script>
 
     <script type="text/javascript">
+
+        // Esta variable toma el div que contendra cada una de las tareas que se muestran en el new
         var collectionHolder = $('div#buseta_tallerbundle_ordentrabajo_tareasAdicionales');
         var $addTagLink = '';
 
         jQuery(document).ready(function() {
             // count the current form inputs we have (e.g. 2), use that as the new
             // index when inserting a new item (e.g. 2)
+
+            //Con esto le creo un data al collectionHolder con una variable llamada index que contendra
+            //en un primer momento la cantidad de enlaces eliminar que hay en la vista new.html.twig
+            //Asi sabra cuantos elementos luego mostrar.
             collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
+
+            //LLamo la funcion con este nombre
             updateDeleteLink();
             updateView();
 
             dinamicSelects();
 
-            //$('buseta_tallerbundle_tarea_adicional_hora_inicio').timepicker();
-
-            //Actualiza los subgrupos a partir de los grupos seleccionados con peticiones AJAX
-            {#$('#{{ tarea_adicional.grupo.vars.id }}').change(tareaAdicional._update_subgrupo);#}
 
 
+            //Cuando doy click encima del boton de anadir nueva tarea llamo un metodo
+            // que esta dentro de una variable definida
             $('a#adicionarNuevaTarea').on('click', tareaAdicional._new);
 
             $('#{{ form.autobus.vars.id }}').trigger('change');
@@ -688,32 +728,60 @@
             ordenTrabajo._load();
         });
 
-        //Al seleccionar el Diagnostico de la OT, automaticamente selecciona el Autobus y Diagnosticado Por
-        // correspondiente y muestra los datos del Diagnostico y Reporte en los tabs correspondientes
-        $('#{{ form.diagnostico.vars.id }}').change(function(){
-            var autobus_text = $('#{{ form.autobus.vars.id }}');
-            var diagnosticadoPor_text = $('#{{ form.diagnosticadoPor.vars.id }}');
+        //Al seleccionar el Diagnostico de la OT, automaticamente selecciona el Autobus
 
+        $('#{{ form.diagnostico.vars.id }}').change(function () {
             var data = {
                 diagnostico_id: $(this).val()
             };
 
-            $.get('{{ path("diagnostico_ajax_ordentrabajo_autobus") }}', data, function(data){
-                //Selecciona automática el Autobus segun el Diagnostico seleccionado
-                autobus_text.val(data['autobus']);
-                autobus_text.css('display','none');
-                var text = autobus_text.find('option[value="'+autobus_text.val()+'"]').html();
-                autobus_text.parent().find('input').remove();
-                autobus_text
-                        .parent()
-                        .append($('<input class="form-control" type="text" disabled> ').val(text));
-            }, 'json').fail(function(error) {
-                autobus_text.parent().find('input').remove();
-                autobus_text.css('display','block');
-            }).always(function(){
-                autobus_text.trigger('change');
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("diagnostico_ajax_ordentrabajo_autobus") }}',
+                data: data,
+                success: function (data) {
+                    var values = $.parseJSON(data);
+                    var $autobus_selector = $('#{{ form.autobus.vars.id }}');
+
+                    $autobus_selector.html('<option>---Seleccione---</option>');
+                    $autobus_selector.addClass("disabled");
+
+                    for (var i = 0, total = values.length; i < total; i++) {
+                        $autobus_selector.append('<option selected value="' + values[i].id + '">' + values[i].matricula + '</option>');
+                    }
+                }
             });
         });
+
+
+
+        //Al seleccionar el Diagnostico de la OT, automaticamente selecciona el Diagnosticado Por
+
+        $('#{{ form.diagnostico.vars.id }}').change(function () {
+            var data = {
+                diagnostico_id: $(this).val()
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("diagnostico_ajax_diag_diagpor") }}',
+                data: data,
+                success: function (data) {
+                    var values = $.parseJSON(data);
+                    var $diagnosticadopor_selector = $('#{{ form.diagnosticadoPor.vars.id }}');
+
+                    $diagnosticadopor_selector.html('<option>---Seleccione---</option>');
+
+
+                    for (var i = 0, total = values.length; i < total; i++) {
+                        $diagnosticadopor_selector.append('<option selected value="' + values[i].id + '">' + values[i].nombre + '</option>');
+                    }
+                }
+            });
+        });
+
+
+
     </script>
 
 {% endblock javascripts %}

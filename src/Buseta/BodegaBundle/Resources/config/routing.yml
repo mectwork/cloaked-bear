@@ -1,3 +1,7 @@
+BusetaBodegaBundle_bitacoraalmacen:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/bitacoraalmacen.yml"
+    prefix:   /bodega/bitacoraalmacen
+
 BusetaBodegaBundle_necesidadmaterial:
     resource: "@BusetaBodegaBundle/Resources/config/routing/necesidadmaterial.yml"
     prefix:   /necesidadmaterial

@@ -1,0 +1,7 @@
+bitacoraalmacen:
+    pattern:  /
+    defaults: { _controller: "BusetaBodegaBundle:BitacoraAlmacen:index" }
+
+bitacoraalmacen_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "BusetaBodegaBundle:BitacoraAlmacen:show" }

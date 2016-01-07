@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Manager;
 
+use Buseta\BodegaBundle\Event\BitacoraEvents;
 use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Monolog\Logger;
@@ -109,7 +110,7 @@ class SalidaBodegaManager
                 foreach ($salidabodegaLineas as $linea) {
                     /** @var \Buseta\BodegaBundle\Entity\InventarioFisicoLinea $linea */
                     $event = new FilterBitacoraEvent($linea);
-                    $eventDispatcher->dispatch(BusetaBodegaBitacoraEvents::INVENTORY_IN, $event );//I+
+                    $eventDispatcher->dispatch(BitacoraEvents::PRODUCTION_NEGATIVE, $event );//P+
                 }
             }
 

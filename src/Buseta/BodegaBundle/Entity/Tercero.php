@@ -74,6 +74,7 @@ class Tercero
     private $nombres;
 
     /**
+     * @var \HatueySoft\SecurityBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */

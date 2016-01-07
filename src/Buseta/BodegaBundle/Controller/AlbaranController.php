@@ -90,16 +90,18 @@ class AlbaranController extends Controller
      *
      * @Route("/{id}/completarAlbaran", name="completarAlbaran", methods={"GET"}, options={"expose":true})
      */
-    public function completarAlbaranAction($id)
+    public function completarAlbaranAction(Albaran $albaran)
     {
         $manager = $this->get('buseta.bodega.albaran.manager');
 
-        if ($manager->completar($id)){
+        if ($manager->completar($albaran)){
             $this->get('session')->getFlashBag()->add('success', 'Se ha completado el Albaran de forma correcta.');
-            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
+
+            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
         } else {
             $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar el Albaran');
-            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
+
+            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
         }
     }
 
@@ -109,7 +111,6 @@ class AlbaranController extends Controller
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 
-        $request = $this->getRequest();
         if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
         }
@@ -212,7 +213,7 @@ class AlbaranController extends Controller
     /**
      * Displays a form to edit an existing Albaran entity.
      *
-     * @Route("/{id}/edit", name="albaran_show", methods={"GET"}, options={"expose":true})
+     * @Route("/{id}/show", name="albaran_show", methods={"GET"}, options={"expose":true})
      */
     public function showAction($id)
     {

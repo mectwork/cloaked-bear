@@ -55,7 +55,7 @@ class Diagnostico implements DateTimeAwareInterface
     private $reporte;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
      *
      * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus")
      * @Assert\NotNull
@@ -85,11 +85,26 @@ class Diagnostico implements DateTimeAwareInterface
     private $estado = 'BO';
 
     /**
+     * @var boolean
+     * @ORM\Column(name="cancelado", type="boolean")
+     */
+    private $cancelado;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\TareaDiagnostico", mappedBy="diagnostico", cascade={"all"})
+     */
+    private $tareaDiagnostico;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->observaciones = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tareaDiagnostico = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->cancelado = false;
     }
 
     /**
@@ -204,7 +219,6 @@ class Diagnostico implements DateTimeAwareInterface
     }
 
 
-
     /**
      * Set ordenTrabajo
      *
@@ -273,4 +287,68 @@ class Diagnostico implements DateTimeAwareInterface
     {
         return $this->prioridad;
     }
+
+    /**
+     * Add tareaDiagnostico
+     *
+     * @param \Buseta\TallerBundle\Entity\TareaDiagnostico $tareaDiagnostico
+     * @return Diagnostico
+     */
+    public function addTareaDiagnostico(\Buseta\TallerBundle\Entity\TareaDiagnostico $tareaDiagnostico)
+    {
+        $tareaDiagnostico->setDiagnostico($this);
+
+        $this->tareaDiagnostico[] = $tareaDiagnostico;
+
+        return $this;
+    }
+
+    /**
+     * Remove tareaDiagnostico
+     *
+     * @param \Buseta\TallerBundle\Entity\TareaDiagnostico $tareaDiagnostico
+     */
+    public function removeTareaDiagnostico(\Buseta\TallerBundle\Entity\TareaDiagnostico $tareaDiagnostico)
+    {
+        $tareaDiagnostico->setDiagnostico(null);
+
+        $this->tareaDiagnostico->removeElement($tareaDiagnostico);
+    }
+
+    /**
+     * Get tareaDiagnostico
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTareaDiagnostico()
+    {
+        return $this->tareaDiagnostico;
+    }
+
+    /**
+     * Get cancelado.
+     *
+     * @return boolean
+     *
+     */
+    public function getCancelado()
+    {
+        return $this->cancelado;
+    }
+
+    /**
+     * Set cancelado
+     *
+     * @param boolean $cancelado
+     * @return Diagnostico
+     *
+     */
+    public function setCancelado($cancelado)
+    {
+        $this->cancelado = $cancelado;
+
+        return $this;
+    }
+
+
 }

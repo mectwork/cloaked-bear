@@ -6,6 +6,9 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Buseta\TallerBundle\Form\EventListener\AddAutobusFieldSubscriber;
+use Buseta\TallerBundle\Form\EventListener\AddDiagnosticadoporFieldSubscriber;
+use Buseta\TallerBundle\Form\EventListener\AddKilometrajeFieldSubscriber;
 
 class OrdenTrabajoType extends AbstractType
 {
@@ -15,6 +18,9 @@ class OrdenTrabajoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+//        $builder->addEventSubscriber(new AddAutobusFieldSubscriber());
+//        $builder->addEventSubscriber(new AddDiagnosticadoporFieldSubscriber());
+//        $builder->addEventSubscriber(new AddKilometrajeFieldSubscriber());
         $builder
             ->add('numero', 'text', array(
                 'required' => false,
@@ -45,9 +51,30 @@ class OrdenTrabajoType extends AbstractType
                     return $qb;
                 },
             ))
+
+            ->add('autobus', 'entity', array(
+                'class' => 'BusetaBusesBundle:Autobus',
+                'empty_value' => '---Seleccione---',
+                'label' => 'Autobús',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+
+//            ->add('cancelado', null, array(
+//                'label' => 'Cancelado',
+//                'required' => false,
+//                'attr' => array(
+//                    'class' => 'form-control',
+//                )
+//            ))
+
+
             ->add('diagnosticadoPor', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'required' => false,
+
                 'label'  => 'Diagnosticado por',
                 'attr'   => array(
                     'class' => 'form-control',
@@ -61,7 +88,7 @@ class OrdenTrabajoType extends AbstractType
                 },
             ))
             ->add('observaciones', 'textarea', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Observaciones',
                 'attr'   => array(
                     'class' => 'form-control',
@@ -93,15 +120,7 @@ class OrdenTrabajoType extends AbstractType
                     return $qb;
                 },
             ))
-            ->add('autobus', 'entity', array(
-                'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione---',
-                'label' => 'Autobús',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))
+            //Revisar la regla de negocio esta
             ->add('diagnostico','entity',array(
                 'class' => 'BusetaTallerBundle:Diagnostico',
                 'query_builder' => function (EntityRepository $er)   {
@@ -109,7 +128,7 @@ class OrdenTrabajoType extends AbstractType
                      $qb->leftJoin('d.ordenTrabajo','ot')
                         ->where($qb->expr()->isNull('ot'))
                         ->andWhere($qb->expr()->eq('d.estado', ':estado'));
-                     $qb->setParameter('estado','PR');
+                     $qb->setParameter('estado','BO');
                     return $qb;
                 },
                 'empty_value' => '---Seleccione---',
@@ -122,7 +141,7 @@ class OrdenTrabajoType extends AbstractType
             ->add('tareasAdicionales', 'collection', array(
                 'type' => new TareaAdicionalType(),
                 'label'  => false,
-                'required' => true,
+                'required' => false,
                 'by_reference' => false,
                 'allow_add' => true,
                 'allow_delete' => true,

@@ -47,18 +47,12 @@ class SalidaBodegaController extends Controller
 
     /**
      * Creates a new SalidaBodega entity.
+     * @param SalidaBodega $entity
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function completarSalidaBodegaAction($id)
+    public function completarSalidaBodegaAction(SalidaBodega $entity)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BusetaBodegaBundle:SalidaBodega')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find SalidaBodega entity.');
-        }
-
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
         $fechaSalidaBodega = new \DateTime();
 
         //Comparar la existencia de cantidad de productos disponibles en el almacen
@@ -98,9 +92,7 @@ class SalidaBodegaController extends Controller
                     'salidabodegasProductos' => $salidabodegasProductos->createView(),
                     'form'   => $form->createView(),
                 ));
-            }
-            //Si no existe la cantidad solicitada en el almacen del producto seleccionado
-            elseif ($cantidadDisponible < 0) {
+            } elseif ($cantidadDisponible < 0) { //Si no existe la cantidad solicitada en el almacen del producto seleccionado
                 //Volver al menu de de crear nuevo SalidaBodega
                 $salidabodegasProductos = $this->createForm(new SalidaBodegaProductoType());
 
@@ -115,9 +107,7 @@ class SalidaBodegaController extends Controller
                     'salidabodegasProductos' => $salidabodegasProductos->createView(),
                     'form'   => $form->createView(),
                 ));
-            }
-            //Si sí existe la cantidad del producto en la bodega seleccionada
-            else {
+            } else { //Si sí existe la cantidad del producto en la bodega seleccionada
                 //Actualizar Bitácora - AlmacenOrigen
                 $bitacora = new BitacoraAlmacen();
                 $bitacora->setProducto($producto);

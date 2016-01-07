@@ -68,8 +68,7 @@ class TareaAdicional
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_estimada", type="date")
-     * @Assert\NotBlank
+     * @ORM\Column(name="fecha_estimada", type="date", nullable=true)
      * @Assert\Date
      */
     private $fechaEstimada;
@@ -87,6 +86,7 @@ class TareaAdicional
      * @ORM\Column(name="garantia", type="integer", nullable=true)
      */
     private $garantiaTarea;
+
 
     /**
      * Get id.

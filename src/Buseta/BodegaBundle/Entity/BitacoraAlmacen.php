@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="d_bitacora_almacen")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\BitacoraAlmacenRepository")
  */
-class BitacoraAlmacen
+class BitacoraAlmacen implements DateTimeAwareInterface
 {
     /**
      * @var integer
@@ -113,9 +114,16 @@ class BitacoraAlmacen
     private $entradaSalidaLinea;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="internal_consumptionline_id", type="integer", nullable=true)
+     * @ORM\Column(name="production_line", type="string", nullable=true)
+     */
+    private $produccionLinea;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="internal_consumption_line", type="string", nullable=true)
      */
     private $consumoInterno;
 
@@ -167,7 +175,7 @@ class BitacoraAlmacen
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -183,14 +191,14 @@ class BitacoraAlmacen
     public function setTipoMovimiento($tipoMovimiento)
     {
         $this->tipoMovimiento = $tipoMovimiento;
-    
+
         return $this;
     }
 
     /**
      * Get tipoMovimiento
      *
-     * @return string 
+     * @return string
      */
     public function getTipoMovimiento()
     {
@@ -206,14 +214,14 @@ class BitacoraAlmacen
     public function setFechaMovimiento($fechaMovimiento)
     {
         $this->fechaMovimiento = $fechaMovimiento;
-    
+
         return $this;
     }
 
     /**
      * Get fechaMovimiento
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFechaMovimiento()
     {
@@ -229,14 +237,14 @@ class BitacoraAlmacen
     public function setCantidadMovida($cantidadMovida)
     {
         $this->cantidadMovida = $cantidadMovida;
-    
+
         return $this;
     }
 
     /**
      * Get cantidadMovida
      *
-     * @return integer 
+     * @return integer
      */
     public function getCantidadMovida()
     {
@@ -252,14 +260,14 @@ class BitacoraAlmacen
     public function setCantidadOrden($cantidadOrden)
     {
         $this->cantidadOrden = $cantidadOrden;
-    
+
         return $this;
     }
 
     /**
      * Get cantidadOrden
      *
-     * @return integer 
+     * @return integer
      */
     public function getCantidadOrden()
     {
@@ -275,14 +283,14 @@ class BitacoraAlmacen
     public function setConsumoInterno($consumoInterno)
     {
         $this->consumoInterno = $consumoInterno;
-    
+
         return $this;
     }
 
     /**
      * Get consumoInterno
      *
-     * @return integer 
+     * @return integer
      */
     public function getConsumoInterno()
     {
@@ -295,17 +303,17 @@ class BitacoraAlmacen
      * @param \DateTime $created
      * @return BitacoraAlmacen
      */
-    public function setCreated($created)
+    public function setCreated(\DateTime $created)
     {
         $this->created = $created;
-    
+
         return $this;
     }
 
     /**
      * Get created
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -318,17 +326,17 @@ class BitacoraAlmacen
      * @param \DateTime $updated
      * @return BitacoraAlmacen
      */
-    public function setUpdated($updated)
+    public function setUpdated(\DateTime $updated)
     {
         $this->updated = $updated;
-    
+
         return $this;
     }
 
     /**
      * Get updated
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdated()
     {
@@ -344,14 +352,14 @@ class BitacoraAlmacen
     public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
-    
+
         return $this;
     }
 
     /**
      * Get deleted
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeleted()
     {
@@ -367,14 +375,14 @@ class BitacoraAlmacen
     public function setAlmacen(\Buseta\BodegaBundle\Entity\Bodega $almacen = null)
     {
         $this->almacen = $almacen;
-    
+
         return $this;
     }
 
     /**
      * Get almacen
      *
-     * @return \Buseta\BodegaBundle\Entity\Bodega 
+     * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getAlmacen()
     {
@@ -390,14 +398,14 @@ class BitacoraAlmacen
     public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
     {
         $this->producto = $producto;
-    
+
         return $this;
     }
 
     /**
      * Get producto
      *
-     * @return \Buseta\BodegaBundle\Entity\Producto 
+     * @return \Buseta\BodegaBundle\Entity\Producto
      */
     public function getProducto()
     {
@@ -413,14 +421,14 @@ class BitacoraAlmacen
     public function setInventarioLinea(\Buseta\BodegaBundle\Entity\InventarioFisicoLinea $inventarioLinea = null)
     {
         $this->inventarioLinea = $inventarioLinea;
-    
+
         return $this;
     }
 
     /**
      * Get inventarioLinea
      *
-     * @return \Buseta\BodegaBundle\Entity\InventarioFisicoLinea 
+     * @return \Buseta\BodegaBundle\Entity\InventarioFisicoLinea
      */
     public function getInventarioLinea()
     {
@@ -436,14 +444,14 @@ class BitacoraAlmacen
     public function setMovimientoLinea(\Buseta\BodegaBundle\Entity\MovimientosProductos $movimientoLinea = null)
     {
         $this->movimientoLinea = $movimientoLinea;
-    
+
         return $this;
     }
 
     /**
      * Get movimientoLinea
      *
-     * @return \Buseta\BodegaBundle\Entity\MovimientosProductos 
+     * @return \Buseta\BodegaBundle\Entity\MovimientosProductos
      */
     public function getMovimientoLinea()
     {
@@ -459,14 +467,14 @@ class BitacoraAlmacen
     public function setEntradaSalidaLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $entradaSalidaLinea = null)
     {
         $this->entradaSalidaLinea = $entradaSalidaLinea;
-    
+
         return $this;
     }
 
     /**
      * Get entradaSalidaLinea
      *
-     * @return \Buseta\BodegaBundle\Entity\AlbaranLinea 
+     * @return \Buseta\BodegaBundle\Entity\AlbaranLinea
      */
     public function getEntradaSalidaLinea()
     {
@@ -482,14 +490,14 @@ class BitacoraAlmacen
     public function setCreatedBy(\HatueySoft\SecurityBundle\Entity\User $createdBy = null)
     {
         $this->createdBy = $createdBy;
-    
+
         return $this;
     }
 
     /**
      * Get createdBy
      *
-     * @return \HatueySoft\SecurityBundle\Entity\User 
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getCreatedBy()
     {
@@ -505,14 +513,14 @@ class BitacoraAlmacen
     public function setUpdatedBy(\HatueySoft\SecurityBundle\Entity\User $updatedBy = null)
     {
         $this->updatedBy = $updatedBy;
-    
+
         return $this;
     }
 
     /**
      * Get updatedBy
      *
-     * @return \HatueySoft\SecurityBundle\Entity\User 
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getUpdatedBy()
     {
@@ -528,17 +536,40 @@ class BitacoraAlmacen
     public function setDeletedBy(\HatueySoft\SecurityBundle\Entity\User $deletedBy = null)
     {
         $this->deletedBy = $deletedBy;
-    
+
         return $this;
     }
 
     /**
      * Get deletedBy
      *
-     * @return \HatueySoft\SecurityBundle\Entity\User 
+     * @return \HatueySoft\SecurityBundle\Entity\User
      */
     public function getDeletedBy()
     {
         return $this->deletedBy;
+    }
+
+    /**
+     * Set produccionLinea
+     *
+     * @param string $produccionLinea
+     * @return BitacoraAlmacen
+     */
+    public function setProduccionLinea($produccionLinea)
+    {
+        $this->produccionLinea = $produccionLinea;
+
+        return $this;
+    }
+
+    /**
+     * Get produccionLinea
+     *
+     * @return string
+     */
+    public function getProduccionLinea()
+    {
+        return $this->produccionLinea;
     }
 }

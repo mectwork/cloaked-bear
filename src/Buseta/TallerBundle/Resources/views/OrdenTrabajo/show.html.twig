@@ -11,6 +11,9 @@
 {% endblock %}
 
 {% block area_trabajo %}
+    {#{% set cancelado = entity.cancelado %}#}
+
+
 
     <table class="table table-striped" style="font-size: 16px;">
         <tbody>
@@ -66,6 +69,20 @@
             <th>Prioridad</th>
             <td>{{ entity.prioridad }}</td>
         </tr>
+
+        {#<tr>#}
+
+            {#<th>Cancelado</th>#}
+
+            {#{% if cancelado == 1 %}#}
+               {#<td>Cancelado</td>#}
+            {#{% else %}#}
+                {#<td>Sin cancelar</td>#}
+            {#{% endif %}#}
+
+
+        {#</tr>#}
+
         <tr>
             <th>Observaciones</th>
             <td>{{ entity.observaciones }}</td>
@@ -89,6 +106,7 @@
                                         <th>Hora Inicio</th>
                                         <th>Hora Final</th>
                                         <th>Garantía Tarea</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -102,6 +120,7 @@
                                         <td>{{ tarea.horaInicio ? tarea.horaInicio | date('h:i a') : '-' }}</td>
                                         <td>{{ tarea.horaFinal ? tarea.horaFinal | date('h:i a') : '-' }}</td>
                                         <td>{{ tarea.garantiaTarea }}</td>
+
                                     </tr>
                                 {% else %}
                                     <tr>
@@ -126,6 +145,22 @@
     <div class="btn-group">
         <a class="btn btn-primary" href="{{ path('ordentrabajo') }}"> Listado</a>
     </div>
+
+
+    {% if entity.estado == 'BO' %}
+
+        <a class="btn btn-primary" href="{{ path('procesarOrden', { 'id': entity.id }) }}">
+            <span class="glyphicon glyphicon-primary"></span>
+            Procesar Orden
+        </a>
+
+        {#<a class="btn btn-primary" href="{{ path('cancelarOrden', { 'id': entity.id }) }}">#}
+            {#<span class="glyphicon glyphicon-primary"></span>#}
+            {#Cancelar Orden#}
+        {#</a>#}
+
+    {% endif %}
+
 
 
 {% endblock %}

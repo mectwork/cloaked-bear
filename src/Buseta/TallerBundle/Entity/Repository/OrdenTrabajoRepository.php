@@ -47,7 +47,7 @@ class OrdenTrabajoRepository extends EntityRepository
 
         }
 
-        $query->orderBy('o.id', 'ASC');
+        $query->orderBy('o.id', 'DESC');
 
         return $query->getQuery();
     }

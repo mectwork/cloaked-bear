@@ -1,29 +1,29 @@
 {# RESULTADOS POR PÁGINA #}
-<div class="row">
-  <div class="pull-right" style="padding: 0px 20px 5px 0px;">
-    <strong>Resultados por página: </strong>
-    {% if cantResult == 5 %}
-    <strong>5</strong>
-    {% else %}
-      <a onclick="setCantResult(5)">5</a>
-    {% endif %}
-    {% if cantResult == 10 %}
-      <strong>10</strong>
-    {% else %}
-      <a onclick="setCantResult(10)">10</a>
-    {% endif %}
-    {% if cantResult == 25 %}
-      <strong>25</strong>
-    {% else %}
-      <a onclick="setCantResult(25)">25</a>
-    {% endif %}
-    {% if cantResult == 50 %}
-      <strong>50</strong>
-    {% else %}
-      <a onclick="setCantResult(50)">50</a>
-    {% endif %}
-  </div>
-</div>
+{#<div class="row">#}
+  {#<div class="pull-right" style="padding: 0px 20px 5px 0px;">#}
+    {#<strong>Resultados por página: </strong>#}
+    {#{% if cantResult == 5 %}#}
+    {#<strong>5</strong>#}
+    {#{% else %}#}
+      {#<a onclick="setCantResult(5)">5</a>#}
+    {#{% endif %}#}
+    {#{% if cantResult == 10 %}#}
+      {#<strong>10</strong>#}
+    {#{% else %}#}
+      {#<a onclick="setCantResult(10)">10</a>#}
+    {#{% endif %}#}
+    {#{% if cantResult == 25 %}#}
+      {#<strong>25</strong>#}
+    {#{% else %}#}
+      {#<a onclick="setCantResult(25)">25</a>#}
+    {#{% endif %}#}
+    {#{% if cantResult == 50 %}#}
+      {#<strong>50</strong>#}
+    {#{% else %}#}
+      {#<a onclick="setCantResult(50)">50</a>#}
+    {#{% endif %}#}
+  {#</div>#}
+{#</div>#}
 {# END RESULTADOS POR PÁGINA #}
 
 {# TABLA DE RESULTADOS #}
@@ -35,20 +35,22 @@
         <th>Bodega Origen</th>
         <th>Bodega Destino</th>
         <th>Producto</th>
-        <th>Categoría Producto</th>
+        {#<th>Categoría Producto</th>#}
         <th>Cant.Movida</th>
         <th>Realizado por</th>
     </tr>
-    {% for entity in movimientos %}
-    <tr>
-        <td>{{ entity.created|date('d/m/Y') }}</td>
-        <td>{{ entity.almacenOrigen }}</td>
-        <td>{{ entity.almacenDestino }}</td>
-        <td>{{ entity.producto }}</td>
-        <td>{{ entity.categoriaProducto }}</td>
-        <td>{{ entity.cantidadMovida }}</td>
-        <td>{{ entity.createdBy }}</td>
-    </tr>
+    {% for movimiento in movimientos %}
+        {% for movimientoProducto in movimiento.movimientosProductos %}
+            <tr>
+                <td>{{ movimiento.created|date('d/m/Y') }}</td>
+                <td>{{ movimiento.almacenOrigen }}</td>
+                <td>{{ movimiento.almacenDestino }}</td>
+                <td>{{ movimientoProducto.producto }}</td>
+                {#<td>{{ movimientoProducto.categoriaProducto }}</td>#}
+                <td>{{ movimientoProducto.cantidad }}</td>
+                <td>{{ movimiento.createdBy }}</td>
+            </tr>
+        {% endfor %}
     {% else %}
         <tr>
             <td colspan="12">No se encontraron registros de movimientos en el sistema.</td>
@@ -59,33 +61,33 @@
 </table>{# END TABLA DE RESULTADOS #}
 
 {# PAGINACIÓN #}
-<br/>
-<div style="text-align: center;">
-{% if paginacion|length > 0 %}
-  {# Elemento first #}
-  {% if paginacion.first %}
-    <img src="{{asset('/Taller/web/images/first.gif')}}" onclick="setPage(0)" style="cursor: pointer;"/>
-  {% else %}
-    <img src="{{asset('/Taller/web/images/first.gif')}}" style="cursor: default;opacity: 0.6;"/>
-  {% endif %}
-  {# Elemento prev #}
-  {% if paginacion.prev %}
-    <img src="{{asset('/Taller/web/images/previous.gif')}}" onclick="setPage({{page}}-1)" style="cursor: pointer;"/>
-  {% else %}
-    <img src="{{asset('/Taller/web/images/previous.gif')}}" style="cursor: default;opacity: 0.6;"/>
-  {% endif %}
-  {# Elemento next #}
-  {% if paginacion.next %}
-    <img src="{{asset('/Taller/web/images/next.gif')}}" onclick="setPage({{page}}+1)" style="cursor: pointer;"/>
-  {% else %}
-    <img src="{{asset('/Taller/web/images/next.gif')}}" style="cursor: default;opacity: 0.6;"/>
-  {% endif %}
-  {# Elemento last #}
-  {% if paginacion.last and paginacion.last != page %}
-    <img src="{{asset('/Taller/web/images/last.gif')}}" onclick="setPage({{paginacion.last}})" style="cursor: pointer;"/>
-  {% else %}
-    <img src="{{asset('/Taller/web/images/last.gif')}}" style="cursor: default;opacity: 0.6;"/>
-  {% endif %}
-{% endif %}
-</div>
+{#<br/>#}
+{#<div style="text-align: center;">#}
+{#{% if paginacion|length > 0 %}#}
+  {#&#123;&#35; Elemento first &#35;&#125;#}
+  {#{% if paginacion.first %}#}
+    {#<img src="{{asset('/Taller/web/images/first.gif')}}" onclick="setPage(0)" style="cursor: pointer;"/>#}
+  {#{% else %}#}
+    {#<img src="{{asset('/Taller/web/images/first.gif')}}" style="cursor: default;opacity: 0.6;"/>#}
+  {#{% endif %}#}
+  {#&#123;&#35; Elemento prev &#35;&#125;#}
+  {#{% if paginacion.prev %}#}
+    {#<img src="{{asset('/Taller/web/images/previous.gif')}}" onclick="setPage({{page}}-1)" style="cursor: pointer;"/>#}
+  {#{% else %}#}
+    {#<img src="{{asset('/Taller/web/images/previous.gif')}}" style="cursor: default;opacity: 0.6;"/>#}
+  {#{% endif %}#}
+  {#&#123;&#35; Elemento next &#35;&#125;#}
+  {#{% if paginacion.next %}#}
+    {#<img src="{{asset('/Taller/web/images/next.gif')}}" onclick="setPage({{page}}+1)" style="cursor: pointer;"/>#}
+  {#{% else %}#}
+    {#<img src="{{asset('/Taller/web/images/next.gif')}}" style="cursor: default;opacity: 0.6;"/>#}
+  {#{% endif %}#}
+  {#&#123;&#35; Elemento last &#35;&#125;#}
+  {#{% if paginacion.last and paginacion.last != page %}#}
+    {#<img src="{{asset('/Taller/web/images/last.gif')}}" onclick="setPage({{paginacion.last}})" style="cursor: pointer;"/>#}
+  {#{% else %}#}
+    {#<img src="{{asset('/Taller/web/images/last.gif')}}" style="cursor: default;opacity: 0.6;"/>#}
+  {#{% endif %}#}
+{#{% endif %}#}
+{#</div>#}
 {# END PAGINACIÓN #}

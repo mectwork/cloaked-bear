@@ -39,7 +39,7 @@
 
     {# buttons group #}
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-8">
 
             {% if entity.ordenTrabajo == null and entity.estado == 'PR'%}
                 <a class="btn btn-primary" href="{{ path('diagnostico_generar_ordentrabajo', { 'id': entity.id }) }}">
@@ -54,7 +54,16 @@
                     <span class="glyphicon glyphicon-primary"></span>
                     Procesar Diagnóstico
                 </a>
+
+                <a class="btn btn-primary" href="{{ path('cancelarDiagnostico', { 'id': entity.id }) }}">
+                    <span class="glyphicon glyphicon-primary"></span>
+                    Cancelar Diagnóstico
+                </a>
             {% endif %}
+
+            <a class="btn btn-primary" id="btn_diagnostico_edit" href="{{ path( 'diagnostico_edit', { 'id': entity.id } ) }}"><span
+                        class="glyphicon glyphicon-edit"></span>
+                {{ 'actions.edit' | trans({}, 'BusetaTallerBundle') }}</a>
 
             <a class="btn btn-default" id="btn_diagnostico_cancel" href="{{ path('diagnostico') }}"><span
                         class="glyphicon glyphicon-chevron-left"></span>
@@ -343,7 +352,7 @@
                     url = Routing.generate('diagnosticos_observacion_edit_modal', {'diagnostico': diagnostico.id, id: id});
                 }
 
-                
+
                 $('form#' + observaciones.form_id).ajaxSubmit({
                     success: observaciones._done,
                     error: utils._fail,

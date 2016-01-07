@@ -139,8 +139,8 @@ class AlbaranModel
             if ($albaran->getPedidoCompra()) {
                 $this->pedidoCompra  = $albaran->getPedidoCompra();
             }
-            if (!$albaran->getAlbaranLinea()->isEmpty()) {
-                $this->albaranLinea = $albaran->getAlbaranLinea();
+            if (!$albaran->getAlbaranLineas()->isEmpty()) {
+                $this->albaranLinea = $albaran->getAlbaranLineas();
             } else {
                 $this->albaranLinea = new ArrayCollection();
             }

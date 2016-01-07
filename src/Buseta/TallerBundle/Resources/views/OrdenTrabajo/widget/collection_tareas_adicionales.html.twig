@@ -2,6 +2,11 @@
 {% spaceless %}
 <div class="collection">
     {% if prototype is defined %}
+        {# Con la siguiente linea creo un arreglo llamado attr que va a ser igual a la union de el mismo que
+        al principio esta nulo con un arreglo llamado data-prototype que lo que tiene es el bloque
+        collection_item_widget que a su vez trae consigo una macro con todos los elementos que van
+        en el formulario que muestro luego en el show.html.twig
+         #}
         {% set attr = attr | merge({'data-prototype': block('collection_item_widget') }) %}
     {% endif %}
     {{ form_errors(form) }}
@@ -12,6 +17,7 @@
                 <h4>Listado de tareas adicionales insertadas:</h4>
 
                 <div id="tareas-collection">
+
                     {% set counter = form | length %}
                     {% for rows in form %}
                         {{ _self.template(rows) }}
@@ -33,10 +39,13 @@
 
 {% block collection_item_widget %}
         {% spaceless %}
+            {# Cargo la macro llamada template(prototype) #}
             {{ _self.template(prototype) }}
         {% endspaceless %}
 {% endblock collection_item_widget %}
 
+{# Creo una macro llamada template(prototype)
+con todos los campos que van dentro de cada elemento tarea que muestro en la vista show #}
 {% macro template(prototype) %}
 <div class="well well-small">
     <div class="row">

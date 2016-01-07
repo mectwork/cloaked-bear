@@ -47,13 +47,14 @@ class FuncionesExtras
             //Busco cada producto existente para la bitacora actual
             foreach ($productos as $producto) {
                 foreach ($bitacoras as $bitacora) {
+                    /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
                     if ($producto == $bitacora->getProducto()) {
                         //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
                         if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+' || $bitacora->getTipoMovimiento() == 'I+' ) {
-                            $cantidadPedido += $bitacora->getCantMovida();
+                            $cantidadPedido += $bitacora->getCantidadMovida();
                         }
                         if ($bitacora->getTipoMovimiento() == 'M-') {
-                            $cantidadPedido -= $bitacora->getCantMovida();
+                            $cantidadPedido -= $bitacora->getCantidadMovida();
                         }
                     }
                 }
@@ -105,13 +106,14 @@ class FuncionesExtras
             //Busco cada producto existente para la bitacora actual
             foreach ($productos as $producto) {
                 foreach ($bitacoras as $bitacora) {
+                    /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
                     if ($producto == $bitacora->getProducto() && $bitacora->getAlmacen() == $almacen) {
                         //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
                         if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+' || $bitacora->getTipoMovimiento() == 'I+') {
-                            $cantidadPedido += $bitacora->getCantMovida();
+                            $cantidadPedido += $bitacora->getCantidadMovida();
                         }
                         if ($bitacora->getTipoMovimiento() == 'M-') {
-                            $cantidadPedido -= $bitacora->getCantMovida();
+                            $cantidadPedido -= $bitacora->getCantidadMovida();
                         }
                     }
                 }
@@ -139,16 +141,17 @@ class FuncionesExtras
         $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->findAll();
 
         foreach ($bitacoras as $bitacora) {
+            /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
             //Si se encuentra en la bitácora el almacen y producto seleccionado
             if ($bitacora->getAlmacen() == $almacen && $bitacora->getProducto() == $producto) {
                 $existe = true;
                 //Comprobar tipo de movimiento para realizar operación de sustracción o adición
                 //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
                 if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+' || $bitacora->getTipoMovimiento() == 'I+') {
-                    $cantidadPedido += $bitacora->getCantMovida();
+                    $cantidadPedido += $bitacora->getCantidadMovida();
                 }
                 if ($bitacora->getTipoMovimiento() == 'M-') {
-                    $cantidadPedido -= $bitacora->getCantMovida();
+                    $cantidadPedido -= $bitacora->getCantidadMovida();
                 }
             }
         }
@@ -180,13 +183,14 @@ class FuncionesExtras
             //Busco cada producto existente para la bitacora actual
             foreach ($productos as $producto) {
                 foreach ($bitacoras as $bitacora) {
+                    /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
                     if ($producto == $bitacora->getProducto() && $bitacora->getAlmacen() == $almacen) {
                         //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
                         if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+' || $bitacora->getTipoMovimiento() == 'I+') {
-                            $cantidadPedido += $bitacora->getCantMovida();
+                            $cantidadPedido += $bitacora->getCantidadMovida();
                         }
                         if ($bitacora->getTipoMovimiento() == 'M-') {
-                            $cantidadPedido -= $bitacora->getCantMovida();
+                            $cantidadPedido -= $bitacora->getCantidadMovida();
                         }
 
                         foreach ($producto->getCostoProducto() as $costos) {
@@ -224,16 +228,17 @@ class FuncionesExtras
         $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->findAll();
 
         foreach ($bitacoras as $bitacora) {
+            /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
             //Si se encuentra en la bitácora el almacen y producto seleccionado
             if ($bitacora->getAlmacen() == $almacen && $bitacora->getProducto() == $producto) {
                 $existe = true;
                 //Comprobar tipo de movimiento para realizar operación de sustracción o adición
                 //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
                 if ($bitacora->getTipoMovimiento() == 'V+' || $bitacora->getTipoMovimiento() == 'M+' || $bitacora->getTipoMovimiento() == 'I+') {
-                    $cantidadReal += $bitacora->getCantMovida();
+                    $cantidadReal += $bitacora->getCantidadMovida();
                 }
                 if ($bitacora->getTipoMovimiento() == 'M-') {
-                    $cantidadReal -= $bitacora->getCantMovida();
+                    $cantidadReal -= $bitacora->getCantidadMovida();
                 }
             }
         }

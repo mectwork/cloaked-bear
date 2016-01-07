@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="d_albaran_linea")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\AlbaranLineaRepository")
  */
-class AlbaranLinea
+class AlbaranLinea implements GeneradorBitacoraInterface
 {
     /**
      * @var integer

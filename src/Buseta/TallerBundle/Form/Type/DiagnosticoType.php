@@ -2,10 +2,13 @@
 
 namespace Buseta\TallerBundle\Form\Type;
 
+use Buseta\TallerBundle\Form\EventListener\AddSolicitudFieldSubscriber;
+use Buseta\TallerBundle\Form\Type\TareaDiagnostico;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class DiagnosticoType extends AbstractType
@@ -16,28 +19,13 @@ class DiagnosticoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addEventSubscriber(new AddSolicitudFieldSubscriber());
+
         $builder
             ->add('numero', 'text', array(
                 'required' => false,
                 'label'  => 'Número',
                 'attr'   => array(
-                    'class' => 'form-control',
-                )
-            ))
-            ->add('reporte','entity',array(
-                'class' => 'BusetaTallerBundle:Reporte',
-
-                'query_builder' => function(EntityRepository $repository) {
-                    $qb = $repository->createQueryBuilder('r');
-                    $qb
-                        ->leftJoin('r.diagnostico', 'd')
-                        ->andWhere($qb->expr()->isNull('d'));
-                    return $qb;
-                },
-                'empty_value' => '---Seleccione---',
-                'label' => 'Solicitud',
-                'required' => false,
-                'attr' => array(
                     'class' => 'form-control',
                 )
             ))
@@ -55,6 +43,19 @@ class DiagnosticoType extends AbstractType
                 'empty_value' => '---Seleccione prioridad---',
                 'required' => false,
             ))
+
+
+
+
+            ->add('tareaDiagnostico', 'collection', array(
+                'type' => new TareaDiagnosticoType(),
+                'label'  => false,
+                'required' => true,
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ))
+
             ->add('observaciones','collection',array(
                 'type' => new ObservacionDiagnosticoType(),
                 'label'  => false,
