@@ -11,6 +11,8 @@ use Buseta\BodegaBundle\Entity\MovimientosProductos;
 use Buseta\BodegaBundle\Entity\SalidaBodegaProducto;
 use Buseta\BodegaBundle\Event\BitacoraEvents;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
+use Buseta\BodegaBundle\Exceptions\NotValidBitacoraTypeException;
+use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use Buseta\BodegaBundle\Manager\BitacoraAlmacenManager;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -138,95 +140,99 @@ class BitacoraSubscriber implements EventSubscriberInterface
      * @param $movementType
      *
      */
-    public function createRegistry(FilterBitacoraEvent $event, $movementType )
+    public function createRegistry(FilterBitacoraEvent $event, $movementType  )
     {
 
         try {
 
-        $entity = $event->getEntityData();
+            $entity = $event->getEntityData();
 
-        $nuevabitacora= New BitacoraAlmacen();
-        $nuevabitacora->setTipoMovimiento($movementType);
+            $nuevabitacora = New BitacoraAlmacen();
+            $nuevabitacora->setTipoMovimiento($movementType);
 
-        switch ($entity) {
-            case $entity instanceof AlbaranLinea:
-            {
-                /* @var  $entity \Buseta\BodegaBundle\Entity\AlbaranLinea */
-                $nuevabitacora
-                    ->setAlmacen($entity->getAlbaran()->getAlmacen())
-                    ->setProducto($entity->getProducto())
-                    ->setCantidadMovida($entity->getCantidadMovida())
-                    ->setFechaMovimiento($entity->getAlbaran()->getFechaMovimiento())
-                    ->setMovimientoLinea(null)
-                    ->setEntradaSalidaLinea($entity->getId())
-                    ->setInventarioLinea(null)
-                    ->setProduccionLinea(null);
-            }; break;
+            switch ($entity) {
+                case $entity instanceof AlbaranLinea: {
+                    /* @var  $entity \Buseta\BodegaBundle\Entity\AlbaranLinea */
+                    $nuevabitacora
+                        ->setAlmacen($entity->getAlbaran()->getAlmacen())
+                        ->setProducto($entity->getProducto())
+                        ->setCantidadMovida($entity->getCantidadMovida())
+                        ->setFechaMovimiento($entity->getAlbaran()->getFechaMovimiento())
+                        ->setMovimientoLinea(null)
+                        ->setEntradaSalidaLinea($entity->getId())
+                        ->setInventarioLinea(null)
+                        ->setProduccionLinea(null);
+                };
+                    break;
 
-            case $entity instanceof InventarioFisicoLinea:
-            {
-                /* @var  $entity \Buseta\BodegaBundle\Entity\InventarioFisicoLinea */
-                $nuevabitacora
-                    ->setAlmacen($entity->getInventarioFisico()->getAlmacen())
-                    ->setProducto($entity->getProducto())
-                    ->setCantidadMovida($entity->getCantidadReal() - $entity->getCantidadTeorica())
-                    ->setFechaMovimiento($entity->getInventarioFisico()->getFecha())
-                    ->setMovimientoLinea(null)
-                    ->setEntradaSalidaLinea(null)
-                    ->setInventarioLinea($entity->getId())
-                    ->setProduccionLinea(null);
-            }; break;
+                case $entity instanceof InventarioFisicoLinea: {
+                    /* @var  $entity \Buseta\BodegaBundle\Entity\InventarioFisicoLinea */
+                    $cantidadAMover = $entity->getCantidadReal() - $entity->getCantidadTeorica();
+                    //establezco el tipo de movimiento
+                    $nuevabitacora->setTipoMovimiento($cantidadAMover > 0 ? 'I+' : 'I-');
+                    $nuevabitacora
+                        ->setAlmacen($entity->getInventarioFisico()->getAlmacen())
+                        ->setProducto($entity->getProducto())
+                        ->setCantidadMovida(abs($cantidadAMover)) //tomo el valor absoluto
+                        ->setFechaMovimiento($entity->getInventarioFisico()->getFecha())
+                        ->setMovimientoLinea(null)
+                        ->setEntradaSalidaLinea(null)
+                        ->setInventarioLinea($entity->getId())
+                        ->setProduccionLinea(null);
+                };
+                    break;
 
-            case $entity instanceof MovimientosProductos:
-            {
-                /* @var  $entity \Buseta\BodegaBundle\Entity\MovimientosProductos */
-                $nuevabitacora
-                    ->setProducto($entity->getProducto())
-                    ->setCantidadMovida($entity->getCantidad())
-                    ->setFechaMovimiento($entity->getMovimiento()->getFechaMovimiento())
-                    ->setMovimientoLinea($entity->getId())
-                    ->setEntradaSalidaLinea(null)
-                    ->setInventarioLinea(null)
-                    ->setProduccionLinea(null);
-                if( $movementType=='M-' )  {
-                    $nuevabitacora->setAlmacen($entity->getMovimiento()->getAlmacenOrigen());
-                }
-                else {
-                    $nuevabitacora->setAlmacen($entity->getMovimiento()->getAlmacenDestino());
-                }
-            }; break;
+                case $entity instanceof MovimientosProductos: {
+                    /* @var  $entity \Buseta\BodegaBundle\Entity\MovimientosProductos */
+                    $nuevabitacora
+                        ->setProducto($entity->getProducto())
+                        ->setCantidadMovida($entity->getCantidad())
+                        ->setFechaMovimiento($entity->getMovimiento()->getFechaMovimiento())
+                        ->setMovimientoLinea($entity->getId())
+                        ->setEntradaSalidaLinea(null)
+                        ->setInventarioLinea(null)
+                        ->setProduccionLinea(null);
+                    if ($movementType == 'M-') {
+                        $nuevabitacora->setAlmacen($entity->getMovimiento()->getAlmacenOrigen());
+                    } elseif ($movementType == 'M+') {
+                        $nuevabitacora->setAlmacen($entity->getMovimiento()->getAlmacenDestino());
+                    } else {
+                        throw new NotValidBitacoraTypeException('Tipo de Movimiento no valido' . $movementType);
+                    }
+                };
+                    break;
 
-            case $entity instanceof SalidaBodegaProducto:
-            {
-                /* @var  $entity \Buseta\BodegaBundle\Entity\SalidaBodegaProducto */
-                $nuevabitacora
-                    ->setProducto($entity->getProducto())
-                    ->setCantidadMovida($entity->getCantidad())
-                    ->setFechaMovimiento($entity->getSalida()->getFecha())
-                    ->setMovimientoLinea(null)
-                    ->setEntradaSalidaLinea(null)
-                    ->setInventarioLinea(null)
-                    ->setProduccionLinea($entity->getId());
-                if( $movementType=='M-' )  {
-                    $nuevabitacora->setAlmacen($entity->getSalida()->getAlmacenOrigen());
-                }
-                else {
-                    $nuevabitacora->setAlmacen($entity->getSalida()->getAlmacenDestino());
+                case $entity instanceof SalidaBodegaProducto: {
+                    /* @var  $entity \Buseta\BodegaBundle\Entity\SalidaBodegaProducto */
+                    $nuevabitacora
+                        ->setProducto($entity->getProducto())
+                        ->setCantidadMovida($entity->getCantidad())
+                        ->setFechaMovimiento($entity->getSalida()->getFecha())
+                        ->setMovimientoLinea(null)
+                        ->setEntradaSalidaLinea(null)
+                        ->setInventarioLinea(null)
+                        ->setProduccionLinea($entity->getId());
+                    if ($movementType == 'M-') {
+                        $nuevabitacora->setAlmacen($entity->getSalida()->getAlmacenOrigen());
+                    } elseif ($movementType == 'M+') {
+                        $nuevabitacora->setAlmacen($entity->getSalida()->getAlmacenDestino());
+                    } else {
+                        throw new NotValidBitacoraTypeException('Tipo de Movimiento no valido' . $movementType);
+                    }
                 }
             }
-        }
 
-        //Si hay error devuelve false, si to ok devuelve true
-        //llamada antigua
-        //$resultadobooleano =  $this->bitacoraManager->createRegistry( $generadorbitacora  );
+            //Si hay error devuelve false, si to ok devuelve true
+            //llamada antigua
+            //$resultadobooleano =  $this->bitacoraManager->createRegistry( $generadorbitacora  );
 
-        $resultadobooleano =  $this->bitacoraManager->createRegistry( $nuevabitacora  );
+            $resultadobooleano = $this->bitacoraManager->createRegistry($nuevabitacora);
 
-        $event->setReturnValue( $resultadobooleano );
+            $event->setReturnValue($resultadobooleano);
 
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Ha ocurrido un error al crear la Bitacora de Almacen: %s', $e->getMessage()));
-            $event->setReturnValue( false );
+            $event->setReturnValue(false);
         }
 
     }
