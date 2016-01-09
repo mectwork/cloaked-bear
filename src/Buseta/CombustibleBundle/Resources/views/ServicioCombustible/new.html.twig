@@ -15,9 +15,11 @@
 {% endblock area_trabajo %}
 
 {% block javascripts %}
-    {{ parent() }}
-
     <!-- Script -->
-    <script type="text/javascript" src="{{ asset('bundles/busetacombustible/js/servicioCombustible/script.js') }}"></script>
-
+    <script type="text/javascript" src="{{ asset('bundles/busetacombustible/js/servicioCombustible/servicioCombustible.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            TallerApp.servicioCombustible.init();
+        });
+    </script>
 {% endblock javascripts %}
