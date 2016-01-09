@@ -78,6 +78,16 @@ class ProductoModel
     private $proveedor;
 
     /**
+     * @var boolean
+     */
+    private $tieneNroSerie;
+
+    /**
+     * @var boolean
+     */
+    private $tieneRefInterna;
+
+    /**
      * Constructor
      */
     public function __construct(Producto $producto = null)
@@ -90,6 +100,8 @@ class ProductoModel
             $this->descripcion = $producto->getDescripcion();
             $this->activo = $producto->getActivo();
             $this->proveedor = $producto->getProveedor();
+            $this->tieneNroSerie = $producto->getTieneNroSerie();
+            $this->tieneRefInterna = $producto->getTieneRefInterna();
 
             if ($producto->getUom()) {
                 $this->uom  = $producto->getUom();
@@ -122,6 +134,9 @@ class ProductoModel
         $producto->setActivo($this->getActivo());
         $producto->setCategoriaProducto($this->getCategoriaProducto());
         $producto->setProveedor($this->getProveedor());
+        $producto->setTieneNroSerie($this->getTieneNroSerie());
+        $producto->setTieneRefInterna($this->getTieneRefInterna());
+
 
         if ($this->getUom() !== null) {
             $producto->setUom($this->getUom());
@@ -330,4 +345,37 @@ class ProductoModel
     {
         $this->proveedor = $proveedor;
     }
+
+    /**
+     * @return boolean
+     */
+    public function getTieneNroSerie()
+    {
+        return $this->tieneNroSerie;
+    }
+
+    /**
+     * @param boolean $tieneNroSerie
+     */
+    public function setTieneNroSerie($tieneNroSerie)
+    {
+        $this->tieneNroSerie = $tieneNroSerie;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getTieneRefInterna()
+    {
+        return $this->tieneRefInterna;
+    }
+
+    /**
+     * @param boolean $tieneRefInterna
+     */
+    public function setTieneRefInterna($tieneRefInterna)
+    {
+        $this->tieneRefInterna = $tieneRefInterna;
+    }
+
 }

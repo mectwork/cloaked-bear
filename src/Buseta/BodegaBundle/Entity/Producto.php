@@ -138,6 +138,18 @@ class Producto
      */
     private $costoProducto;
 
+
+    /**
+     * @ORM\Column(name="tieneNroSerie", type="boolean", nullable=true)
+     */
+    private $tieneNroSerie;
+
+    /**
+     * @ORM\Column(name="tieneRefInterna", type="boolean", nullable=true)
+     */
+    private $tieneRefInterna;
+
+
     /**
      * @param ProductoModel $model
      * @return Producto
@@ -150,6 +162,9 @@ class Producto
         $this->nombre = $model->getNombre();
         $this->descripcion = $model->getDescripcion();
         $this->activo = $model->getActivo();
+
+        $this->tieneNroSerie = $model->getTieneNroSerie();
+        $this->tieneRefInterna = $model->getTieneRefInterna();
 
         if ($model->getUom()) {
             $this->uom  = $model->getUom();
@@ -601,6 +616,10 @@ class Producto
         $this->albaranLinea = new \Doctrine\Common\Collections\ArrayCollection();
         $this->precioProducto = new \Doctrine\Common\Collections\ArrayCollection();
         $this->costoProducto = new \Doctrine\Common\Collections\ArrayCollection();
+
+        //establecer valores por defecto
+        $this->tieneNroSerie = false;
+        $this->tieneRefInterna = false;
     }
 
     /**
@@ -624,5 +643,41 @@ class Producto
     public function getProveedor()
     {
         return $this->proveedor;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTieneNroSerie()
+    {
+        return $this->tieneNroSerie;
+    }
+
+    /**
+     * @param mixed
+     * @return Producto
+     */
+    public function setTieneNroSerie($tieneNroSerie)
+    {
+        $this->tieneNroSerie = $tieneNroSerie;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTieneRefInterna()
+    {
+        return $this->tieneRefInterna;
+    }
+
+    /**
+     * @param mixed $tieneRefInterna
+     * @return Producto
+     */
+    public function setTieneRefInterna($tieneRefInterna)
+    {
+        $this->tieneRefInterna = $tieneRefInterna;
+        return $this;
     }
 }

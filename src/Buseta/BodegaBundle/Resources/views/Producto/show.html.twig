@@ -51,6 +51,28 @@
     </tr>
 
     <tr>
+        <th>Tiene Numero Serie</th>
+        <td>
+            {% if entity.tieneNroSerie == 1 %}
+                Sí
+            {% else %}
+                No
+            {% endif %}
+        </td>
+    </tr>
+
+    <tr>
+        <th>Tiene Ref. Interna</th>
+        <td>
+            {% if entity.tieneRefInterna == 1 %}
+                Sí
+            {% else %}
+                No
+            {% endif %}
+        </td>
+    </tr>
+
+    <tr>
         <th>Costos existentes</th>
         <td>
             <table class="table table-striped" style="font-size: 16px;">
