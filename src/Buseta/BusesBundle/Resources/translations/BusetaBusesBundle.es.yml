@@ -4,7 +4,12 @@ autobus:
     adicionar: Adicionar Autobús
   modal:
     title: Crear Nuevo Autobús
-
+grupobuses:
+  valor: Valor
+  btn:
+    adicionar: Adicionar Grupo Buses
+  modal:
+    title: Crear Nuevo Grupo Buses
 vehiculo:
   valor: Valor
   btn:

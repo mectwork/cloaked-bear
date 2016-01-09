@@ -155,6 +155,7 @@ class AutobusBasicoType extends AbstractType
                 'class' => 'BusetaNomencladorBundle:Estilo',
                 'empty_value' => '---Seleccione---',
             ))
+
             ->add('color', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Color',
                 'empty_value' => '---Seleccione---',

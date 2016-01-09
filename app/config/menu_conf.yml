@@ -107,6 +107,16 @@ root:
                   disabled: false
                   attributes: { icon: null }
                   childrens: {  }
+                menu_A_B_C:
+                  id: menu_A_B_C
+                  name: null
+                  label: 'Grupo Buses'
+                  route: grupobuses
+                  roles: [ROLE_USER]
+                  type: item
+                  disabled: false
+                  attributes: {  }
+                  childrens: {  }
         menu_B:
           id: menu_B
           name: menu_bodega

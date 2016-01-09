@@ -277,6 +277,13 @@ class Autobus extends Vehiculo
      */
     private $wifi;
 
+//    /**
+//     * @var \Buseta\BusesBundle\Entity\GrupoBuses
+//     *
+//     * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\GrupoBuses", inversedBy="autobuses")
+//     */
+//    private $grupobuses;
+
     /**
      * @param AutobusBasicoModel $model
      * @return Autobus
