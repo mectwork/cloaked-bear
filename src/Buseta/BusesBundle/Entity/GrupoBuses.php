@@ -1,8 +1,10 @@
 <?php
 
 namespace Buseta\BusesBundle\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\Mapping as ORM;
+
 
 /**
  * GrupoBuses
@@ -38,7 +40,7 @@ class GrupoBuses
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Buseta\BusesBundle\Entity\Autobus", mappedBy="Autobus", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Buseta\BusesBundle\Entity\Autobus", mappedBy="grupobuses", cascade={"all"})
      */
     private $autobuses;
 
@@ -47,7 +49,7 @@ class GrupoBuses
      */
     public function __construct()
     {
-        $this->autobuses = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->autobuses = new ArrayCollection();
     }
 
     /**
@@ -104,6 +106,37 @@ class GrupoBuses
     public function getColor()
     {
         return $this->color;
+    }
+
+
+
+    /**
+     * Set autobuses
+     *
+     * @param string $autobuses
+     * @return GrupoBuses
+     */
+    public function setAutobuses($autobuses)
+    {
+        $this->autobuses = $autobuses;
+
+        return $this;
+    }
+
+    /**
+     * Get autobuses
+     *
+     * @return string
+     */
+    public function getAutobuses()
+    {
+        return $this->autobuses;
+    }
+
+
+    public function __toString()
+    {
+        return sprintf( '%s', $this->getNombre() );
     }
 
 }

@@ -66,8 +66,6 @@
         <div class="col-lg-4">
             {{ form_row(form.estilo) }}
         </div>
-    <div class="row">
-
         <div class="col-lg-4">
             {{ form_row(form.fechaRtv1) }}
         </div>
@@ -103,7 +101,9 @@
         <div class="col-lg-4">
             {{ form_row(form.capacidadTanque) }}
         </div>
+    </div>
 
+    <div class="row">
         {% if form.offsetExists('kilometraje') %}
         <div class="col-lg-4">
             {{ form_row(form.kilometraje) }}
@@ -115,7 +115,13 @@
             {{ form_row(form.horas) }}
         </div>
         {% endif %}
+
+        <div class="col-lg-4">
+            {{ form_row(form.grupo_buses) }}
+        </div>
+
     </div>
+
 
     <div class="row">
         <div class="col-lg-4">

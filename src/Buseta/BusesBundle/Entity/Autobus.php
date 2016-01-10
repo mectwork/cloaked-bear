@@ -277,12 +277,12 @@ class Autobus extends Vehiculo
      */
     private $wifi;
 
-//    /**
-//     * @var \Buseta\BusesBundle\Entity\GrupoBuses
-//     *
-//     * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\GrupoBuses", inversedBy="autobuses")
-//     */
-//    private $grupobuses;
+    /**
+     * @var \Buseta\BusesBundle\Entity\GrupoBuses
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\GrupoBuses", inversedBy="autobuses")
+     */
+    private $grupobuses;
 
     /**
      * @param AutobusBasicoModel $model
@@ -316,6 +316,9 @@ class Autobus extends Vehiculo
         $this->kilometraje = $model->getKilometraje();
         $this->horas = $model->getHoras();
 
+        if ($model->getGrupoBuses()) {
+            $this->grupobuses  = $model->getGrupoBuses();
+        }
         if ($model->getMarca()) {
             $this->marca  = $model->getMarca();
         }
@@ -1233,6 +1236,35 @@ class Autobus extends Vehiculo
     {
         return $this->filtroCaja;
     }
+
+    /**
+     * Set grupobuses.
+     *
+     * @param string $grupobuses
+     *
+     * @return string
+     */
+    public function setGrupoBuses($grupobuses)
+    {
+        $this->grupobuses = $grupobuses;
+
+        return $this;
+    }
+
+    /**
+     * Get grupobuses.
+     *
+     * @return string
+     */
+    public function getGrupoBuses()
+    {
+        return $this->grupobuses;
+    }
+
+
+
+
+
 
     /**
      * @return mixed
