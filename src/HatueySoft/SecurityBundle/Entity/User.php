@@ -77,8 +77,10 @@ class User extends BaseUser
     private $pin;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Buseta\BusesBundle\Entity\GrupoBuses")
+     * @ORM\JoinTable(name="sec_user_grupobuses")
      */
     private $grupobuses;
 
