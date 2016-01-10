@@ -76,6 +76,11 @@ class AutobusBasicoType extends AbstractType
                 'required' => true,
                 'label' => 'Número Motor',
             ))
+            ->add('grupo_buses', 'entity', array(
+                'class' => 'BusetaBusesBundle:GrupoBuses',
+                'label' => 'Grupo Buses',
+                'empty_value' => '---Seleccione---',
+            ))
             ->add('capacidadTanque', 'number', array(
                 'required' => true,
                 'label' => 'Capacidad Tanque',
@@ -155,10 +160,13 @@ class AutobusBasicoType extends AbstractType
                 'class' => 'BusetaNomencladorBundle:Estilo',
                 'empty_value' => '---Seleccione---',
             ))
+
             ->add('color', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Color',
                 'empty_value' => '---Seleccione---',
             ))
+
+
             ->add('marcaMotor', 'entity', array(
                     'class' => 'BusetaNomencladorBundle:MarcaMotor',
                     'label' => 'Marca Motor',

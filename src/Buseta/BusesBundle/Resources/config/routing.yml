@@ -25,3 +25,6 @@ buseta_buses_autobus_imagen:
 buseta_buses_vehiculo:
   resource: "@BusetaBusesBundle/Controller/VehiculoController.php"
   type:     annotation
+buseta_buses_autobus_grupobuses:
+    resource: "@BusetaBusesBundle/Controller/GrupoBusesController.php"
+    type:     annotation

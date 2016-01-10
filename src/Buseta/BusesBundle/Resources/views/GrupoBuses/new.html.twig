@@ -1,0 +1,16 @@
+{% extends "BusetaBusesBundle::layout.html.twig" %}
+
+{% block title %}
+    Crear Nuevo Grupo de Buses
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Crear Nuevo Grupo de Buses
+{% endblock %}
+
+{% block area_trabajo %}
+
+    {% include '@BusetaBuses/GrupoBuses/form_template.html.twig' with {'form': form} %}
+
+{% endblock area_trabajo %}
+

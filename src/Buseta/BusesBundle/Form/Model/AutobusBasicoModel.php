@@ -154,6 +154,11 @@ class AutobusBasicoModel
     private $barras;
 
     /**
+     * @var \Buseta\BusesBundle\Entity\GrupoBuses
+     */
+    private $grupobuses;
+
+     /**
      * @var string
      */
     private $camaras;
@@ -229,6 +234,9 @@ class AutobusBasicoModel
             $this->kilometraje = $autobus->getKilometraje();
             $this->horas = $autobus->getHoras();
 
+            if ($autobus->getGrupoBuses()) {
+                $this->grupobuses  = $autobus->getGrupoBuses();
+            }
             if ($autobus->getMarca()) {
                 $this->marca  = $autobus->getMarca();
             }
@@ -279,6 +287,7 @@ class AutobusBasicoModel
         $autobus->setCapacidadTanque($this->getCapacidadTanque());
         $autobus->setRampas($this->getRampas());
         $autobus->setBarras($this->getBarras());
+        $autobus->setGrupoBuses($this->getGrupoBuses());
         $autobus->setWifi($this->getWifi());
         $autobus->setGps($this->getGps());
         $autobus->setLectorCedulas($this->getLectorCedulas());
@@ -286,6 +295,10 @@ class AutobusBasicoModel
         $autobus->setKilometraje($this->getKilometraje());
         $autobus->setHoras($this->getHoras());
         $autobus->setActivo($this->getActivo());
+
+        if ($this->getGrupoBuses() !== null) {
+            $autobus->setGrupoBuses($this->getGrupoBuses());
+        }
 
         if ($this->getMarca() !== null) {
             $autobus->setMarca($this->getMarca());
@@ -750,6 +763,22 @@ class AutobusBasicoModel
     public function setBarras($barras)
     {
         $this->barras = $barras;
+    }
+
+    /**
+     * @return \Buseta\BusesBundle\Entity\Autobus
+     */
+    public function getGrupoBuses()
+    {
+        return $this->grupobuses;
+    }
+
+    /**
+     * @param \Buseta\BusesBundle\Entity\Autobus $grupobuses
+     */
+    public function setGrupoBuses($grupobuses)
+    {
+        $this->grupobuses = $grupobuses;
     }
 
     /**

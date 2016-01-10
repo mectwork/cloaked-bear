@@ -2,7 +2,7 @@
 
 namespace Buseta\BusesBundle\Form\Model;
 
-use Buseta\BusesBundle\Entity\Autobus;
+
 use Buseta\BusesBundle\Entity\Chofer;
 use Symfony\Component\Validator\Constraints as Assert;
 

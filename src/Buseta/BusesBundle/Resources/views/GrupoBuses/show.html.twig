@@ -1,0 +1,52 @@
+{% extends "BusetaBusesBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+    Datos del Grupo de Buses
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Datos del Grupo de Buses: "{{ entity.nombre }} {{ entity.color }}"
+{% endblock %}
+
+{% block area_trabajo %}
+    <table class="table table-striped" style="font-size: 16px;">
+        <tbody>
+
+        <tr>
+            <th>Nombre</th>
+            <td>{{ entity.nombre }}</td>
+        </tr>
+
+        <tr>
+            <th>Color</th>
+            <td>
+                <div style="width: 50px; height: 30px; background-color: {{ entity.color }}"></div>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div class="form-actions">
+        <a class="btn btn-primary" href="{{ path('grupobuses_edit', { 'id': entity.id }) }}"> Editar</a>
+        <a class="btn btn-primary" href="{{ path('grupobuses') }}"> Listado</a>
+        <a href="#delete" data-href="{{ path('grupobuses_delete', {'id': entity.id}) }}" class="btn btn-danger">
+            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBusesBundle') }}</a>
+    </div>
+
+    {% include 'BusetaBusesBundle:GrupoBuses:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var deleteevent = new DeleteEvent('{{ path('grupobuses') }}', 'div#grupobuses_records_list', false);
+        deleteevent.start_events();
+    </script>
+{% endblock %}
