@@ -27,6 +27,12 @@
                 <th>Roles</th>
                 <td>{% for rol in entity.roles %}{{ rol }}|{% endfor %}</td>
             </tr>
+
+            <tr>
+                <th>Grupo Buses</th>
+                <td>{% for grupobuses in entity.grupobuses %}{{ grupobuses }}|{% endfor %}</td>
+            </tr>
+
             {#<tr>
                 <th>Grupos</th>
                 <td>{% for group in entity.groups %}{{ group }}|{% endfor %}</td>

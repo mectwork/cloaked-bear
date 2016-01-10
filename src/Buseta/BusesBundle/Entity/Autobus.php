@@ -1261,11 +1261,6 @@ class Autobus extends Vehiculo
         return $this->grupobuses;
     }
 
-
-
-
-
-
     /**
      * @return mixed
      */

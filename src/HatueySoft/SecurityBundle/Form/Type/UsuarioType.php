@@ -59,7 +59,14 @@ class UsuarioType extends AbstractType
                             'class' => 'form-control',
                         )),
                     'invalid_message' => 'fos_user.password.mismatch',
+                ))
+
+            ->add('grupobuses', 'entity', array(
+                'class' => 'BusetaBusesBundle:GrupoBuses',
+                'label' => 'Grupo Buses',
+                'multiple' => true,
                 ));
+
             $builder
                 ->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetDataRoles'));
             /*->add('groups', null, array(
@@ -109,6 +116,7 @@ class UsuarioType extends AbstractType
                             'readonly' => true,
                         )
                     ));
+
         }
     }
 
@@ -125,5 +133,6 @@ class UsuarioType extends AbstractType
                 'choices' => $choices,
                 'required' => false,
             ));
+
     }
 }

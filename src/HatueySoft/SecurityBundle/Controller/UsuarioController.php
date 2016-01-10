@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
 use HatueySoft\SecurityBundle\Entity\User as Usuario;
 use HatueySoft\SecurityBundle\Form\Type\UsuarioType as UsuarioType;
 

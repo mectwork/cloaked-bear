@@ -8,7 +8,7 @@ use HatueySoft\SecurityBundle\Validator\Constraints\UniqueSystemUserEmail;
 use HatueySoft\SecurityBundle\Validator\Constraints\UniqueSystemUserUsername;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
+use Buseta\BusesBundle\Entity\GrupoBuses;
 /**
  * @author: firomero <firomerorom4@gmail.com>
  * @author: dundivet <dundivet@emailn.de>
@@ -75,6 +75,14 @@ class User extends BaseUser
      * @ORM\Column(name="pin", type="string", length=4, nullable=true)
      */
     private $pin;
+
+    /**
+     *
+     * @ORM\ManyToMany(targetEntity="Buseta\BusesBundle\Entity\GrupoBuses")
+     */
+    private $grupobuses;
+
+
 
     function __construct()
     {
@@ -162,6 +170,23 @@ class User extends BaseUser
     {
         $this->pin = $pin;
     }
+
+    /**
+     * @return string
+     */
+    public function getGrupoBuses()
+    {
+        return $this->grupobuses;
+    }
+
+    /**
+     * @param string $grupobuses
+     */
+    public function setGrupoBuses($grupobuses)
+    {
+        $this->grupobuses = $grupobuses;
+    }
+
 
     public function getNombreCompleto()
     {
