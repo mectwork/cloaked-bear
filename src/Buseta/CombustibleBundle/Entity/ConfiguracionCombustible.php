@@ -23,6 +23,8 @@ class ConfiguracionCombustible
     private $id;
 
     /**
+     * @var \Buseta\NomencladorBundle\Entity\Combustible
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Combustible")
      */
     private $combustible;
@@ -45,7 +47,7 @@ class ConfiguracionCombustible
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -61,14 +63,14 @@ class ConfiguracionCombustible
     public function setCombustible(\Buseta\NomencladorBundle\Entity\Combustible $combustible = null)
     {
         $this->combustible = $combustible;
-    
+
         return $this;
     }
 
     /**
      * Get combustible
      *
-     * @return \Buseta\NomencladorBundle\Entity\Combustible 
+     * @return \Buseta\NomencladorBundle\Entity\Combustible
      */
     public function getCombustible()
     {
@@ -84,14 +86,14 @@ class ConfiguracionCombustible
     public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega = null)
     {
         $this->bodega = $bodega;
-    
+
         return $this;
     }
 
     /**
      * Get bodega
      *
-     * @return \Buseta\BodegaBundle\Entity\Bodega 
+     * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getBodega()
     {
@@ -107,14 +109,14 @@ class ConfiguracionCombustible
     public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
     {
         $this->producto = $producto;
-    
+
         return $this;
     }
 
     /**
      * Get producto
      *
-     * @return \Buseta\BodegaBundle\Entity\Producto 
+     * @return \Buseta\BodegaBundle\Entity\Producto
      */
     public function getProducto()
     {

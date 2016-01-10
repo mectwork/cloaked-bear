@@ -25,6 +25,7 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
     private $id;
 
     /**
+     * @var \Buseta\CombustibleBundle\Entity\ConfiguracionCombustible
      *
      * @ORM\ManyToOne(targetEntity="Buseta\CombustibleBundle\Entity\ConfiguracionCombustible")
      */
