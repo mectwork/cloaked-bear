@@ -132,12 +132,6 @@ class AutobusBasicoModel
     private $combustible;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     * @Assert\Valid()
-     */
-    private $archivosAdjuntos;
-
-    /**
      * @var integer
      * @Assert\NotBlank()
      */
@@ -254,11 +248,6 @@ class AutobusBasicoModel
             }
             if ($autobus->getCombustible()) {
                 $this->combustible  = $autobus->getCombustible();
-            }
-            if (!$autobus->getArchivosAdjuntos()->isEmpty()) {
-                foreach ($autobus->getArchivosAdjuntos() as $archivo) {
-                    $this->archivosAdjuntos->add(new ArchivoAdjuntoModel($archivo));
-                }
             }
         }
     }
