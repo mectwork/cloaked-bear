@@ -9,6 +9,8 @@ use Buseta\BodegaBundle\Entity\MovimientosProductos;
 use Buseta\BodegaBundle\Entity\SalidaBodegaProducto;
 use Buseta\BodegaBundle\Event\BitacoraEvents;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
+use Buseta\BodegaBundle\Exceptions\NotValidBitacoraTypeException;
+use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use Buseta\BodegaBundle\Manager\BitacoraAlmacenManager;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -177,12 +179,15 @@ class BitacoraSubscriber implements EventSubscriberInterface
 
                 case 'Buseta\BodegaBundle\Entity\InventarioFisicoLinea': {
                     /* @var  $entity \Buseta\BodegaBundle\Entity\InventarioFisicoLinea */
+                    $cantidadAMover = $entity->getCantidadReal() - $entity->getCantidadTeorica();
+                    //establezco el tipo de movimiento
                     $nuevabitacora
                         ->setAlmacen($entity->getInventarioFisico()->getAlmacen())
                         ->setProducto($entity->getProducto())
-                        ->setCantidadMovida($entity->getCantidadReal() - $entity->getCantidadTeorica())
+                        ->setCantidadMovida(abs($cantidadAMover)) //tomo el valor absoluto
                         ->setFechaMovimiento($entity->getInventarioFisico()->getFecha())
-                        ->setInventarioLinea($entity);
+                        ->setInventarioLinea($entity)
+                        ->setTipoMovimiento($cantidadAMover > 0 ? 'I+' : 'I-');;
 
                     break;
                 }
@@ -197,8 +202,10 @@ class BitacoraSubscriber implements EventSubscriberInterface
 
                     if ($movementType === 'M-') {
                         $nuevabitacora->setAlmacen($entity->getMovimiento()->getAlmacenOrigen());
-                    } else {
+                    } elseif ($movementType == 'M+') {
                         $nuevabitacora->setAlmacen($entity->getMovimiento()->getAlmacenDestino());
+                    } else {
+                        throw new NotValidBitacoraTypeException('Tipo de Movimiento no valido' . $movementType);
                     }
 
                     break;

@@ -100,6 +100,14 @@ class ProductoType extends AbstractType
             ->add('activo', 'checkbox', array(
                 'label' => 'Activo',
                 'required' => false,
+            ))
+            ->add('tieneNroSerie', 'checkbox', array(
+                'label' => 'Tiene Numero Serie',
+                'required' => false,
+            ))
+            ->add('tieneRefInterna', 'checkbox', array(
+                'label' => 'Tiene Ref. Interna',
+                'required' => false,
             ));
     }
 

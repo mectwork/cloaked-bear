@@ -73,13 +73,18 @@ class AlbaranController extends Controller
      */
     public function procesarAlbaranAction($id)
     {
+        //me di cuenta que cuando se trata de completar un albaran que no tiene lineas de albaran
+        //en realidad no se completa el proceso, hay que tratar este problema
         $manager = $this->get('buseta.bodega.albaran.manager');
 
+        $trans = $this->get('translator');
+        $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
+
         if ($manager->procesar($id)){
-            $this->get('session')->getFlashBag()->add('success', 'Se ha procesado el Albaran de forma correcta.');
+            $this->get('session')->getFlashBag()->add('success', 'Se ha procesado la '.$albaranTrans.' de forma correcta.');
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
         } else {
-            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar el Albaran.');
+            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar la '.$albaranTrans.'.');
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
         }
     }
@@ -94,12 +99,15 @@ class AlbaranController extends Controller
     {
         $manager = $this->get('buseta.bodega.albaran.manager');
 
+        $trans = $this->get('translator');
+        $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
+
         if ($manager->completar($albaran)){
-            $this->get('session')->getFlashBag()->add('success', 'Se ha completado el Albaran de forma correcta.');
+            $this->get('session')->getFlashBag()->add('success', 'Se ha completado la '.$albaranTrans.' de forma correcta.');
 
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
         } else {
-            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar el Albaran');
+            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar la '.$albaranTrans.'.');
 
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
         }

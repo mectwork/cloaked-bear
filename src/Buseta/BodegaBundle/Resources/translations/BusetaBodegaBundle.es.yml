@@ -159,10 +159,16 @@ pedidocompralinea:
   modal:
     delete: Eliminar línea de Registro de Compra
 
-# ALBARAN
+# ALBARAN DE RECEPCION
 albaran:
+  singular: Orden de Entrada
+  plural: Ordenes de Entrada
+  listado: Listado de Ordenes de Entrada
+  nuevo: Adicionar Nueva Orden de Entrada
+  datos: Datos de la Orden de Entrada
   btn:
-    adicionar: Adicionar Albarán
+    adicionar: Adicionar Orden de Entrada
+
 
 # BODEGA
 bodega:
