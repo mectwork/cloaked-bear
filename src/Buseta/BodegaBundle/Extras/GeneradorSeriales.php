@@ -1,8 +1,7 @@
 <?php
 
-/**
- * Class GeneradorSeriales
- */
+namespace Buseta\BodegaBundle\Extras;
+
 class GeneradorSeriales
 {
     const CANTIDAD_MAXIMA_SERIALES = 10000;
