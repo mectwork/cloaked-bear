@@ -28,9 +28,7 @@ class GeneradorSeriales
 
     private $car_sep_tokens_rango = ',';  //caracter separador de tokens de rango
     private $car_indic_token_fijo = '+';  //caracter indicador de token fijo
-    /**
-     * @var string
-     */
+
     private $car_separacion_rango = '-';  //caracter de separacion de rango
     private $car_separador_expres = ';';  //caracter separador de expresiones
 
@@ -40,21 +38,20 @@ class GeneradorSeriales
         $this->setStrSerial($str_serial);
     }
 
-
     /**
      * @param $str
      * @return int
      */
     public function getTipoExpresion($str)
     {
-        $pos = strpos($str, $this->car_sep_tokens_rango /*','*/);
-        if ($pos === false) {
+        $pos1 = strpos($str, $this->car_sep_tokens_rango /*','*/);
+        $pos2 = strpos($str, $this->car_separacion_rango /*'-'*/);
+        if (($pos1 === false) && ($pos2 === false)) {
             return $this::EXPRESION_UNICA;
         } else {
             return $this::EXPRESION_DERANGOS;
         }
     }
-
 
     /**
      * @return array|bool
@@ -69,6 +66,7 @@ class GeneradorSeriales
             foreach ($expresiones as $expresion) {
                 if ($this->getTipoExpresion($expresion) == $this::EXPRESION_UNICA) {
 
+
                     if ($this->validarSerialUnico($expresion)) {
                         $lista_seriales[] = $expresion;//agregar al array
                     } else {
@@ -76,6 +74,8 @@ class GeneradorSeriales
                     }
 
                 } else {
+
+
                     $listaSerialesRangos = $this->getListaDeSerialesRango($expresion);
                     if ($listaSerialesRangos) {
                         $lista_seriales = array_merge($lista_seriales, $listaSerialesRangos);
@@ -114,21 +114,21 @@ class GeneradorSeriales
         return preg_replace('/\s+/', '', strtoupper($val));
     }
 
-
     /**
      * @param $serial
      * @return bool
      */
     public function validarSerialUnico($serial)
     {
+
         $res = false;
         if (preg_match('/^([a-zA-Z0-9]+)$/', $serial)) {
             $res = true;
         }
+
         $this->setLastError($this::MSG_TOKEN_ERROR);
         return $res;
     }
-
 
     /**
      * @param $str_serial
@@ -146,7 +146,6 @@ class GeneradorSeriales
         return $this->last_error;
     }
 
-
     /**
      * @param $last_error
      */
@@ -154,7 +153,6 @@ class GeneradorSeriales
     {
         $this->last_error = $last_error;
     }
-
 
     /**
      * @param $str
@@ -213,10 +211,8 @@ class GeneradorSeriales
             }
         }
 
-
         return ($lista_tokens);
     }
-
 
     /**
      * @param $str
@@ -227,7 +223,6 @@ class GeneradorSeriales
         return explode($this->car_sep_tokens_rango/*','*/, $str);
     }
 
-
     /**
      * @return string
      */
@@ -235,7 +230,6 @@ class GeneradorSeriales
     {
         return $this->str_serial;
     }
-
 
     /**
      * @param $token
@@ -258,7 +252,6 @@ class GeneradorSeriales
         return $this::TOKEN_ERROR;
     }
 
-
     /**
      * @param $token
      * @return mixed
@@ -269,7 +262,6 @@ class GeneradorSeriales
         //return preg_replace('/\+/', '', strtoupper($token));
         return preg_replace('/\\' . $this->car_indic_token_fijo . '/', '', strtoupper($token));
     }
-
 
     /**
      * @param $token
@@ -286,7 +278,7 @@ class GeneradorSeriales
             $num_ini = $str[0];
             $num_fin = $str[1];
 
-            if  (strlen($num_fin)>= $this::LONGITUD_MAXIMA_SERIAL_NUM ) {
+            if (strlen($num_fin) >= $this::LONGITUD_MAXIMA_SERIAL_NUM) {
                 $this->setLastError($this::MSG_MAXIM_ERROR);
                 return false;
             }
