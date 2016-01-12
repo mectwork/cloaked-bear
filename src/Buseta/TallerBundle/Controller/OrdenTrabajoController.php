@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Buseta\TallerBundle\Entity\OrdenTrabajo;
 use Buseta\TallerBundle\Form\Type\OrdenTrabajoType;
-
+use Symfony\Component\Security\Core\Util\ClassUtils;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -122,7 +122,12 @@ class OrdenTrabajoController extends Controller
      */
     public function newAction()
     {
+        $sequenceManager = $this->get('hatuey_soft.sequence.manager');
         $entity = new OrdenTrabajo();
+
+        if ($sequenceManager->hasSequence(ClassUtils::getRealClass($entity))) {
+            $entity->setNumero($sequenceManager->getNextValue('ot_seq'));
+        }
 
         $tarea_adicional = $this->createForm(new TareaAdicionalType());
 

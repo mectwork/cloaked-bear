@@ -21,13 +21,12 @@ class OrdenTrabajoType extends AbstractType
 //        $builder->addEventSubscriber(new AddAutobusFieldSubscriber());
 //        $builder->addEventSubscriber(new AddDiagnosticadoporFieldSubscriber());
 //        $builder->addEventSubscriber(new AddKilometrajeFieldSubscriber());
+        $attr['readonly'] = true;
         $builder
             ->add('numero', 'text', array(
                 'required' => false,
                 'label'  => 'Número',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
+                'attr' => $attr,
             ))
             ->add('requisionMateriales', 'text', array(
                     'required' => false,
