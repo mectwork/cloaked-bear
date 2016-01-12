@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-
+use Symfony\Component\Security\Core\Util\ClassUtils;
 use Buseta\TallerBundle\Form\Type\DiagnosticoType;
 use Buseta\TallerBundle\Form\Model\DiagnosticoFilterModel;
 use Buseta\TallerBundle\Form\Filter\DiagnosticoFilter;
@@ -292,8 +292,12 @@ class DiagnosticoController extends Controller
      */
     public function newAction()
     {
+        $sequenceManager = $this->get('hatuey_soft.sequence.manager');
         $entity = new Diagnostico();
 
+        if ($sequenceManager->hasSequence(ClassUtils::getRealClass($entity))) {
+            $entity->setNumero($sequenceManager->getNextValue('diagnostico_seq'));
+        }
 
         $observacion = $this->createForm(new ObservacionDiagnosticoType());
         $tareadiagno = $this->createForm(new TareaDiagnosticoType());
