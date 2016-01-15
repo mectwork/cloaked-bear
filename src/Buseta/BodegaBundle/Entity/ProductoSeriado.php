@@ -108,12 +108,16 @@ class ProductoSeriado
         return $this->cantidad;
     }
 
+
     /**
-     * @param int $cantidad
+     * @param $cantidad
+     * @return $this
      */
     public function setCantidad($cantidad)
     {
         $this->cantidad = $cantidad;
+
+        return $this;
     }
 
 }
