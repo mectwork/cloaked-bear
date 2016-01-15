@@ -4,6 +4,7 @@ namespace Buseta\BodegaBundle\EventListener;
 
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
+
 use Buseta\BodegaBundle\Entity\InventarioFisicoLinea;
 use Buseta\BodegaBundle\Entity\MovimientosProductos;
 use Buseta\BodegaBundle\Entity\SalidaBodegaProducto;
@@ -12,6 +13,7 @@ use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidBitacoraTypeException;
 use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use Buseta\BodegaBundle\Manager\BitacoraAlmacenManager;
+use Buseta\BodegaBundle\Manager\BitacoraSerialManager;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Util\ClassUtils;
@@ -25,7 +27,13 @@ class BitacoraSubscriber implements EventSubscriberInterface
     /**
      * @var \Buseta\BodegaBundle\Manager\BitacoraAlmacenManager
      */
-    private $bitacoraManager;
+    private $bitacoraAlmacenManager;
+
+
+    /**
+     * @var \Buseta\BodegaBundle\Manager\BitacoraSerialManager
+     */
+    private $bitacoraSerialManager;
 
     /**
      * @var \Symfony\Bridge\Monolog\Logger
@@ -34,12 +42,14 @@ class BitacoraSubscriber implements EventSubscriberInterface
 
 
     /**
-     * @param \Buseta\BodegaBundle\Manager\BitacoraAlmacenManager $bitacoraManager
+     * @param \Buseta\BodegaBundle\Manager\BitacoraAlmacenManager $bitacoraAlmacenManager
+     * @param \Buseta\BodegaBundle\Manager\BitacoraSerialManager $bitacoraSerialManager
      * @param Logger $logger
      */
-    function __construct(BitacoraAlmacenManager $bitacoraManager, Logger $logger)
+    function __construct(BitacoraAlmacenManager $bitacoraAlmacenManager,BitacoraSerialManager $bitacoraSerialManager, Logger $logger)
     {
-        $this->bitacoraManager = $bitacoraManager;
+        $this->bitacoraAlmacenManager = $bitacoraAlmacenManager;
+        $this->bitacoraSerialManager  = $bitacoraSerialManager;
         $this->logger = $logger;
     }
 
@@ -174,6 +184,9 @@ class BitacoraSubscriber implements EventSubscriberInterface
                         ->setFechaMovimiento($entity->getAlbaran()->getFechaMovimiento())
                         ->setEntradaSalidaLinea($entity);
 
+                    //desde aqui llamo el metodo guardarSerialesDesdeAlbaranLinea de la Bitacora de Seriales
+                    $this->bitacoraSerialManager->guardarSerialesDesdeAlbaranLinea($entity, $movementType );
+
                     break;
                 }
 
@@ -187,7 +200,10 @@ class BitacoraSubscriber implements EventSubscriberInterface
                         ->setCantidadMovida(abs($cantidadAMover)) //tomo el valor absoluto
                         ->setFechaMovimiento($entity->getInventarioFisico()->getFecha())
                         ->setInventarioLinea($entity)
-                        ->setTipoMovimiento($cantidadAMover > 0 ? 'I+' : 'I-');;
+                        ->setTipoMovimiento($cantidadAMover >= 0 ? 'I+' : 'I-');
+
+                    //desde aqui llamo el metodo guardarSerialesDesdeInventarioFisicoLinea de la Bitacora de Seriales
+                    $this->bitacoraSerialManager->guardarSerialesDesdeInventarioFisicoLinea($entity, $movementType);
 
                     break;
                 }
@@ -241,9 +257,9 @@ class BitacoraSubscriber implements EventSubscriberInterface
 
             //Si hay error devuelve false, si to ok devuelve true
             //llamada antigua
-            //$resultadobooleano =  $this->bitacoraManager->createRegistry( $generadorbitacora  );
+            //$resultadobooleano =  $this->bitacoraAlmacenManager->createRegistry( $generadorbitacora  );
 
-            $resultadobooleano = $this->bitacoraManager->createRegistry($nuevabitacora);
+            $resultadobooleano = $this->bitacoraAlmacenManager->createRegistry($nuevabitacora);
 
             $event->setReturnValue($resultadobooleano);
 
