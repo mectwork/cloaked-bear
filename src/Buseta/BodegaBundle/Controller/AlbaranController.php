@@ -81,10 +81,10 @@ class AlbaranController extends Controller
         $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
 
         if ($manager->procesar($id)){
-            $this->get('session')->getFlashBag()->add('success', 'Se ha procesado la '.$albaranTrans.' de forma correcta.');
+            $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha procesado la %s de forma correcta.', $albaranTrans) );
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
         } else {
-            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar la '.$albaranTrans.'.');
+            $this->get('session')->getFlashBag()->add('danger',  sprintf(  'Ha ocurrido un error al procesar la %s.', $albaranTrans) );
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
         }
     }
@@ -103,11 +103,11 @@ class AlbaranController extends Controller
         $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
 
         if ($manager->completar($albaran)){
-            $this->get('session')->getFlashBag()->add('success', 'Se ha completado la '.$albaranTrans.' de forma correcta.');
+            $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha completado la %s de forma correcta.', $albaranTrans) );
 
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
         } else {
-            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar la '.$albaranTrans.'.');
+            $this->get('session')->getFlashBag()->add('danger',  sprintf(  'Ha ocurrido un error al completar la %s.', $albaranTrans)  );
 
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
         }
