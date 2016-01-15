@@ -220,7 +220,7 @@ root:
                 menu_B_C_C:
                   id: menu_B_C_C
                   name: null
-                  label: Albarán
+                  label: Orden de Entrada
                   route: albaran
                   roles: [ROLE_USER]
                   type: item
