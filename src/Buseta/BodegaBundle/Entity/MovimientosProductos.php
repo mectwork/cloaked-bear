@@ -4,10 +4,11 @@ namespace Buseta\BodegaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Buseta\BodegaBundle\Validator\Constraints\ValidarSerial;
 
 /**
  * MovimientosProductos.
- *
+ * @ValidarSerial()
  * @ORM\Table(name="d_movimiento_producto")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\MovimientosProductosRepository")
  */
@@ -39,6 +40,13 @@ class MovimientosProductos
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Movimiento", inversedBy="movimientos_productos")
      */
     private $movimiento;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="seriales", type="string", nullable=true)
+     */
+    private $seriales;
 
     /**
      * Get id.
@@ -120,5 +128,24 @@ class MovimientosProductos
     public function getMovimiento()
     {
         return $this->movimiento;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSeriales()
+    {
+        return $this->seriales;
+    }
+
+    /**
+     * @param string $seriales
+     *
+     * @return SalidaBodegaProducto
+     */
+    public function setSeriales($seriales)
+    {
+        $this->seriales = $seriales;
+        return $this;
     }
 }
