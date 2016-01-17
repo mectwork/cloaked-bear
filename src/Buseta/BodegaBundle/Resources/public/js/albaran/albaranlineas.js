@@ -169,12 +169,11 @@ var lineas = {
             addGlobalMessage('success', response.message);
 
             $('div#form_lineas_modal').modal('hide');
-
             lineas._load();
         } else {
-            $('div#form_lineas_modal').modal('hide');
             lineas._linea_start_events();
         }
+
     },
     _always: function(jqXHR, textStatus) {
         // remove spinning
