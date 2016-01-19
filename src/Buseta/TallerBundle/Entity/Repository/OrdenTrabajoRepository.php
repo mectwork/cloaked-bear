@@ -14,18 +14,32 @@ use Doctrine\ORM\NoResultException;
  */
 class OrdenTrabajoRepository extends EntityRepository
 {
+
     public function filter(OrdenTrabajoFilterModel $filter = null)
     {
         $qb = $this->createQueryBuilder('o');
-        $query = $qb->where($qb->expr()->eq(true,true));
+        $query = $qb
+            ->where($qb->expr()->eq(true, true))
+            ->innerJoin('o.autobus', 'autobus');
 
-        if($filter) {
+        if ($filter->getGrupoBuses() !== null) {
+            $grupoBuses = array();
+            foreach ($filter->getGrupoBuses() as $grupo) {
+                $grupoBuses[] = $grupo->getId();
+            }
+
+            if (count($grupoBuses) > 0) {
+                $query->andWhere(sprintf('autobus.grupobuses IN (%s)', implode(',', $grupoBuses)));
+            }
+        }
+
+        if ($filter) {
             if ($filter->getNumero() !== null && $filter->getNumero() !== '') {
-                $query->andWhere($qb->expr()->like('o.numero',':numero'))
+                $query->andWhere($qb->expr()->like('o.numero', ':numero'))
                     ->setParameter('numero', '%' . $filter->getNumero() . '%');
             }
             if ($filter->getRequisionMateriales() !== null && $filter->getRequisionMateriales() !== '') {
-                $query->andWhere($qb->expr()->like('o.requisionMateriales',':requisionMateriales'))
+                $query->andWhere($qb->expr()->like('o.requisionMateriales', ':requisionMateriales'))
                     ->setParameter('requisionMateriales', '%' . $filter->getRequisionMateriales() . '%');
             }
             if ($filter->getDiagnosticadoPor() !== null && $filter->getDiagnosticadoPor() !== '') {
@@ -44,9 +58,7 @@ class OrdenTrabajoRepository extends EntityRepository
                 $query->andWhere($query->expr()->eq('o.diagnostico', ':diagnostico'))
                     ->setParameter('diagnostico', $filter->getDiagnostico());
             }
-
         }
-
         $query->orderBy('o.id', 'DESC');
 
         return $query->getQuery();

@@ -1,6 +1,8 @@
 <?php
 namespace Buseta\TallerBundle\Form\Model;
 
+use Doctrine\ORM\Mapping as ORM;
+
 class OrdenTrabajoFilterModel
 {
     /**
@@ -32,6 +34,13 @@ class OrdenTrabajoFilterModel
      * @var \Buseta\BodegaBundle\Entity\Tercero
      */
     private $diagnosticadoPor;
+
+    /**
+     *
+     * @var \Buseta\BusesBundle\Entity\GrupoBuses
+     */
+    private $grupobuses;
+
 
     /**
      * @return \Buseta\TallerBundle\Entity\Diagnostico
@@ -129,4 +138,24 @@ class OrdenTrabajoFilterModel
         $this->diagnosticadoPor = $diagnosticadoPor;
     }
 
+
+    /**
+     * @return \Buseta\BusesBundle\Entity\GrupoBuses
+     */
+    public function getGrupoBuses()
+    {
+        return $this->grupobuses;
+    }
+
+
+    /**
+     * @param $grupobuses
+     * @return $this
+     */
+    public function setGrupoBuses($grupobuses)
+    {
+        $this->grupobuses = $grupobuses;
+
+        return $this;
+    }
 }

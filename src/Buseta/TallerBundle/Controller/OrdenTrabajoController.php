@@ -15,9 +15,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Buseta\TallerBundle\Entity\OrdenTrabajo;
 use Buseta\TallerBundle\Form\Type\OrdenTrabajoType;
-use Symfony\Component\Security\Core\Util\ClassUtils;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Util\ClassUtils;
 
 
 /**
@@ -35,14 +35,19 @@ class OrdenTrabajoController extends Controller
         $form = $this->createForm(new OrdenTrabajoFilter(), $filter, array(
             'action' => $this->generateUrl('ordentrabajo'),
         ));
+        $user = $this->get('security.context')->getToken()->getUser();
+        if (ClassUtils::getRealClass($user) === 'HatueySoft\SecurityBundle\Entity\User'){
+            $filter->setGrupoBuses($user->getGrupoBuses());
+        }
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entities = $this->get('doctrine.orm.entity_manager')
+
+                $entities = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('BusetaTallerBundle:OrdenTrabajo')->filter($filter);
         } else {
             $entities = $this->get('doctrine.orm.entity_manager')
-                ->getRepository('BusetaTallerBundle:OrdenTrabajo')->filter();
+                ->getRepository('BusetaTallerBundle:OrdenTrabajo')->filter($filter);
         }
 
         $paginator = $this->get('knp_paginator');
@@ -105,7 +110,7 @@ class OrdenTrabajoController extends Controller
      */
     private function createCreateForm(OrdenTrabajo $entity)
     {
-        $form = $this->createForm(new OrdenTrabajoType(), $entity, array(
+        $form = $this->createForm('buseta_tallerbundle_ordentrabajo', $entity, array(
             'action' => $this->generateUrl('ordentrabajo_create'),
             'method' => 'POST',
         ));
