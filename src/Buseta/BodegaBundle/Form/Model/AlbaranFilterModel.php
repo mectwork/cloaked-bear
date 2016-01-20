@@ -24,6 +24,21 @@ class AlbaranFilterModel
     private $tercero;
 
     /**
+     * @var date
+     */
+    private $fechaInicio;
+
+    /**
+     * @var date
+     */
+    private $fechaFin;
+
+    /**
+     * @var string
+     */
+    private $estado;
+
+    /**
      * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getAlmacen()
@@ -85,5 +100,53 @@ class AlbaranFilterModel
     public function setTercero($tercero)
     {
         $this->tercero = $tercero;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
+     * @param string $estado
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+    }
+
+    /**
+     * @return date
+     */
+    public function getFechaInicio()
+    {
+        return $this->fechaInicio;
+    }
+
+    /**
+     * @param date $fechaInicio
+     */
+    public function setFechaInicio($fechaInicio)
+    {
+        $this->fechaInicio = $fechaInicio;
+    }
+
+    /**
+     * @return date
+     */
+    public function getFechaFin()
+    {
+        return $this->fechaFin;
+    }
+
+    /**
+     * @param date $fechaFin
+     */
+    public function setFechaFin($fechaFin)
+    {
+        $this->fechaFin = $fechaFin;
     }
 } 

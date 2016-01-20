@@ -51,7 +51,34 @@ class AlbaranFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-        ;
+            ->add('fechaInicio', 'date', array(
+                'widget' => 'single_text',
+                'label'  => 'Fecha Inicio',
+                'format'  => 'dd/MM/yyyy',
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('fechaFin', 'date', array(
+                'widget' => 'single_text',
+                'label'  => 'Fecha Fin',
+                'format'  => 'dd/MM/yyyy',
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('estado', 'choice', array(
+                'required' => false,
+                'empty_value' => '---Seleccione---',
+                'translation_domain' => 'BusetaTallerBundle',
+                'choices' => array(
+                    'CO' => 'estado.CO',
+                    'BO' => 'estado.BO',
+                    'PR' => 'estado.PR',
+                )
+            ));
     }
 
     /**

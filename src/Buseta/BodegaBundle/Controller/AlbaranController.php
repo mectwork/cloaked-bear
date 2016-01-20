@@ -39,7 +39,7 @@ class AlbaranController extends Controller
         $filter = new AlbaranFilterModel();
 
         $form = $this->createForm(new AlbaranFilter(), $filter, array(
-            'action' => $this->generateUrl('bodega'),
+            'action' => $this->generateUrl('albaran'),
         ));
 
         $form->handleRequest($request);

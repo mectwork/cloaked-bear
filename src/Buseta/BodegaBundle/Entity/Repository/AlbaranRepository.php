@@ -36,6 +36,18 @@ class AlbaranRepository extends EntityRepository
                 $query->andWhere($query->expr()->eq('a.tercero', ':tercero'))
                     ->setParameter('tercero', $filter->getTercero());
             }
+            if ($filter->getEstado() !== null && $filter->getEstado() !== '') {
+                $query->andWhere($query->expr()->eq('a.estadoDocumento', ':estado'))
+                    ->setParameter('estado', $filter->getEstado());
+            }
+            if ($filter->getFechaInicio() !== null && $filter->getFechaInicio() !== '') {
+                $query->andWhere($qb->expr()->gte('a.fechaMovimiento',':fechaInicio'))
+                    ->setParameter('fechaInicio', $filter->getFechaInicio());
+            }
+            if ($filter->getFechaFin() !== null && $filter->getFechaFin() !== '') {
+                $query->andWhere($qb->expr()->lte('a.fechaMovimiento',':fechaFin'))
+                    ->setParameter('fechaFin', $filter->getFechaFin());
+            }
         }
 
         $query->orderBy('a.id', 'ASC');
