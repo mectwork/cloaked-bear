@@ -118,6 +118,7 @@ services:
             - @doctrine.orm.entity_manager
             - @logger
             - @event_dispatcher
+            - @security.context
 
     buseta.bodega.salidabodega.manager:
         class: Buseta\BodegaBundle\Manager\SalidaBodegaManager
@@ -125,6 +126,7 @@ services:
             - @doctrine.orm.entity_manager
             - @logger
             - @event_dispatcher
+            - @security.context
 
     #VALIDATORS
     bodega.constains_codigo.validador:

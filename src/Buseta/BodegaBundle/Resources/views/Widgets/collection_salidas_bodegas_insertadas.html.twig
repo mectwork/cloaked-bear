@@ -19,6 +19,7 @@
                                 <div class="col-lg-2" style="text-align: center;"><b>Código</b></div>
                                 <div class="col-lg-2" style="text-align: center;"><b>Descripción</b></div>
                                 <div class="col-lg-2" style="text-align: center;"><b>Cantidad</b></div>
+                                <div class="col-lg-2" style="text-align: center;"><b>Seriales</b></div>
                             </div>
                         </div>
 
@@ -74,6 +75,11 @@
     <div class="col-lg-2 form-group">
         {{ form_errors(prototype.cantidad) }}
         {{ form_widget(prototype.cantidad) }}
+    </div>
+
+    <div class="col-lg-2 form-group">
+        {{ form_errors(prototype.seriales) }}
+        {{ form_widget(prototype.seriales) }}
     </div>
 
     <div class="col-lg-4 form-group">

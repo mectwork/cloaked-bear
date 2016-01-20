@@ -49,8 +49,8 @@ class AlbaranSubscriber implements EventSubscriberInterface
     public function cambiarEstado(FilterAlbaranEvent $event, $estado )
     {
         $albaran = $event->getEntityData();
-        //Si hay error devuelve false, si to ok devuelve true
-        $resultadobooleano =  $this->albaranManager->cambiarEstado( $albaran , $estado );
-        $event->setReturnValue( $resultadobooleano );
+        //Si hay error devuelve el string del error, si todo ok devuelve true
+        $result=  $this->albaranManager->cambiarEstado( $albaran , $estado );
+        $event->setReturnValue( $result );
     }
 }

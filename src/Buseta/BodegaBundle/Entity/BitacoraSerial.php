@@ -73,7 +73,7 @@ class BitacoraSerial implements DateTimeAwareInterface
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\ProductoSeriado")
      * @ORM\JoinColumn(name="productoseriado_id")
      *
-     * @Assert\NotNull()
+     *
      */
     private $producto_seriado;
 

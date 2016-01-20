@@ -49,6 +49,7 @@
                         <th>Producto</th>
                         <th>Descripción</th>
                         <th>Cantidad Real</th>
+                        <th>Seriales Real</th>
                         <th>Cantidad Teórica</th>
 
                         {% for linea in entity.inventarioFisicoLineas %}
@@ -58,6 +59,7 @@
                                 <td>{{ linea.producto.nombre }}</td>
                                 <td>{{ linea.descripcion }}</td>
                                 <td>{{ linea.cantidadReal }}</td>
+                                <td>{{ linea.seriales }}</td>
                                 <td>{{ linea.cantidadTeorica }}</td>
                             </tr>
                         {% else %}

@@ -12,6 +12,7 @@ use Symfony\Bridge\Monolog\Logger;
 use Buseta\BodegaBundle\Entity\InventarioFisico;
 use Buseta\BodegaBundle\Entity\InventarioFisicoLinea;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class InventarioFisicoManager
@@ -29,19 +30,21 @@ class InventarioFisicoManager
      */
     private $logger;
 
-
-    private $event_dispacher;
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     */
+    private $dispatcher;
 
     /**
      * @param ObjectManager $em
      * @param Logger $logger
      *
      */
-    function __construct(ObjectManager $em, Logger $logger, $event_dispacher)
+    function __construct(ObjectManager $em, Logger $logger, $dispatcher)
     {
         $this->em = $em;
         $this->logger = $logger;
-        $this->event_dispacher = $event_dispacher;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -58,7 +61,7 @@ class InventarioFisicoManager
             $inventarioFisico = $this->em->getRepository('BusetaBodegaBundle:InventarioFisico')->find($id);
 
             if (!$inventarioFisico) {
-                //throw $this->createNotFoundException('Unable to find InventarioFisico entity.');
+                throw new NotFoundElementException('No se encontro la entidad InventarioFisico.');
             }
 
             if ($inventarioFisico->getEstado() !== 'BO') {
@@ -70,17 +73,23 @@ class InventarioFisicoManager
             }
 
             // Change state Borrador(BO) to Procesado(PR)
-            $eventDispatcher = $this->event_dispacher;
             $event = new FilterInventarioFisicoEvent($inventarioFisico);
-            $eventDispatcher->dispatch(InventarioFisicoEvents::POS_PROCESS, $event);
-            $resultado = $event->getReturnValue();
+            $this->dispatcher->dispatch(InventarioFisicoEvents::POS_PROCESS, $event);
+            $result = $event->getReturnValue();
+            if ($result !== true) {
+                //borramos los cambios en el entity manager
+                $this->em->clear();
+                return $error = $result;
+            }
 
+            $this->em->flush();
             return true;
+
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Ha ocurrido un error al procesar el Inventario Fisico: %s',
                 $e->getMessage()));
-
-            return false;
+            $this->em->clear();
+            return $error='Ha ocurrido un error al procesar el Inventario Fisico';
         }
 
     }
@@ -94,9 +103,9 @@ class InventarioFisicoManager
      */
     public function completar($id)
     {
+        /** @var \Buseta\BodegaBundle\Entity\InventarioFisico $inventarioFisico */
+        /** @var \Buseta\BodegaBundle\Entity\InventarioFisicoLinea $linea */
         try {
-
-            /** @var \Buseta\BodegaBundle\Entity\InventarioFisico $inventarioFisico */
 
             $inventarioFisico = $this->em->getRepository('BusetaBodegaBundle:InventarioFisico')->find($id);
 
@@ -104,31 +113,46 @@ class InventarioFisicoManager
                 throw new NotFoundElementException('No se encontro la entidad InventarioFisico.');
             }
 
-            $inventarioFisicoLineas = $this->em->getRepository('BusetaBodegaBundle:InventarioFisicoLinea')->findBy(array(
-                'inventarioFisico' => $inventarioFisico,
-            ));
+            $inventarioFisicoLineas = $inventarioFisico->getInventarioFisicoLineas();
 
-            if ($inventarioFisicoLineas != null) {
-                $eventDispatcher = $this->event_dispacher; //  get('event_dispatcher');
+            if ($inventarioFisicoLineas !== null && count($inventarioFisicoLineas) > 0) {
+
                 foreach ($inventarioFisicoLineas as $linea) {
                     /** @var \Buseta\BodegaBundle\Entity\InventarioFisicoLinea $linea */
                     $event = new FilterBitacoraEvent($linea);
-                    $eventDispatcher->dispatch(BitacoraEvents::INVENTORY_IN, $event);//I+
-                    $resultado = $event->getReturnValue();
+                    $this->dispatcher->dispatch(BitacoraEvents::INVENTORY_IN, $event);//I+
+                    $result = $event->getReturnValue();
+                    if ($result !== true) {
+                        //borramos los cambios en el entity manager
+                        $this->em->clear();
+                        return $error = $result;
+                    }
                 }
 
                 // Change state to 'CO'
                 $event = new FilterInventarioFisicoEvent($inventarioFisico);
-                $eventDispatcher->dispatch(InventarioFisicoEvents::POS_COMPLETE, $event);
-                $resultado = $event->getReturnValue();
+                $this->dispatcher->dispatch(InventarioFisicoEvents::POS_COMPLETE, $event);
+                $result = $event->getReturnValue();
+                if ($result !== true) {
+                    //borramos los cambios en el entity manager
+                    $this->em->clear();
+                    return $error = $result;
+                }
+            } else {
+                return $error = 'El inventario fisico debe tener al menos una linea';
             }
 
+            //finalmente le damos flush a todo para guardar en la Base de Datos
+            //tanto en la bitacora almacen como en la bitacora de seriales yel cambio de estado
+            //es el unico flush que se hace.
+            $this->em->flush();
             return true;
 
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Ha ocurrido un error al procesar el Inventario Fisico: %s',
                 $e->getMessage()));
-            return false;
+            $this->em->clear();
+            return $error = 'Ha ocurrido un error al completar Inventario Fisico';
         }
 
     }
@@ -152,7 +176,6 @@ class InventarioFisicoManager
             /** @var \Buseta\BodegaBundle\Entity\InventarioFisico $inventarioFisico */
             $inventarioFisico->setEstado($estado);
             $this->em->persist($inventarioFisico);
-            $this->em->flush();
 
             return true;
 

@@ -304,7 +304,7 @@ class BodegaController extends Controller
         ));
 
         $funcionesExtras = new FuncionesExtras();
-        $cantidadReal = $funcionesExtras->obtenerCantidaProductosAlmancen($producto, $almacen, $em);
+        $cantidadReal = $funcionesExtras->obtenerCantidadProductosAlmancen($producto, $almacen, $em);
 
         $json = array(
             'cantidadReal' => $cantidadReal,

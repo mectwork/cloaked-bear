@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidarSerial extends Constraint
 {
-    public $message = 'Error: %string%';
+    public $message = '%string%';
 
 
     /**

@@ -46,10 +46,13 @@ class BitacoraSubscriber implements EventSubscriberInterface
      * @param \Buseta\BodegaBundle\Manager\BitacoraSerialManager $bitacoraSerialManager
      * @param Logger $logger
      */
-    function __construct(BitacoraAlmacenManager $bitacoraAlmacenManager,BitacoraSerialManager $bitacoraSerialManager, Logger $logger)
-    {
+    function __construct(
+        BitacoraAlmacenManager $bitacoraAlmacenManager,
+        BitacoraSerialManager $bitacoraSerialManager,
+        Logger $logger
+    ) {
         $this->bitacoraAlmacenManager = $bitacoraAlmacenManager;
-        $this->bitacoraSerialManager  = $bitacoraSerialManager;
+        $this->bitacoraSerialManager = $bitacoraSerialManager;
         $this->logger = $logger;
     }
 
@@ -168,11 +171,9 @@ class BitacoraSubscriber implements EventSubscriberInterface
     public function createRegistry(FilterBitacoraEvent $event, $movementType)
     {
         try {
-
+            $resultSerial = true;
             $entity = $event->getEntityData();
-
             $nuevabitacora = New BitacoraAlmacen();
-            $nuevabitacora->setTipoMovimiento($movementType);
 
             switch (ClassUtils::getRealClass($entity)) {
                 case 'Buseta\BodegaBundle\Entity\AlbaranLinea': {
@@ -182,10 +183,14 @@ class BitacoraSubscriber implements EventSubscriberInterface
                         ->setProducto($entity->getProducto())
                         ->setCantidadMovida($entity->getCantidadMovida())
                         ->setFechaMovimiento($entity->getAlbaran()->getFechaMovimiento())
-                        ->setEntradaSalidaLinea($entity);
+                        ->setEntradaSalidaLinea($entity)
+                        ->setTipoMovimiento($movementType);
 
                     //desde aqui llamo el metodo guardarSerialesDesdeAlbaranLinea de la Bitacora de Seriales
-                    $this->bitacoraSerialManager->guardarSerialesDesdeAlbaranLinea($entity, $movementType );
+                    if ($entity->getProducto()->getTieneNroSerie()) {
+                        $resultSerial = $this->bitacoraSerialManager->guardarSerialesDesdeAlbaranLinea($entity,
+                            $movementType);
+                    }
 
                     break;
                 }
@@ -197,24 +202,32 @@ class BitacoraSubscriber implements EventSubscriberInterface
                     $nuevabitacora
                         ->setAlmacen($entity->getInventarioFisico()->getAlmacen())
                         ->setProducto($entity->getProducto())
-                        ->setCantidadMovida(abs($cantidadAMover)) //tomo el valor absoluto
+                        ->setCantidadMovida(abs($cantidadAMover))//tomo el valor absoluto
                         ->setFechaMovimiento($entity->getInventarioFisico()->getFecha())
                         ->setInventarioLinea($entity)
                         ->setTipoMovimiento($cantidadAMover >= 0 ? 'I+' : 'I-');
 
                     //desde aqui llamo el metodo guardarSerialesDesdeInventarioFisicoLinea de la Bitacora de Seriales
-                    $this->bitacoraSerialManager->guardarSerialesDesdeInventarioFisicoLinea($entity, $movementType);
+                    if ($entity->getProducto()->getTieneNroSerie()) {
+                        $resultSerial = $this->bitacoraSerialManager->guardarSerialesDesdeInventarioFisicoLinea($entity,
+                            $movementType);
+
+                    }
+
+
 
                     break;
                 }
 
                 case 'Buseta\BodegaBundle\Entity\MovimientosProductos': {
                     /* @var  $entity \Buseta\BodegaBundle\Entity\MovimientosProductos */
+
                     $nuevabitacora
                         ->setProducto($entity->getProducto())
                         ->setCantidadMovida($entity->getCantidad())
                         ->setFechaMovimiento($entity->getMovimiento()->getFechaMovimiento())
-                        ->setMovimientoLinea($entity);
+                        ->setMovimientoLinea($entity)
+                        ->setTipoMovimiento($movementType);
 
                     if ($movementType === 'M-') {
                         $nuevabitacora->setAlmacen($entity->getMovimiento()->getAlmacenOrigen());
@@ -222,6 +235,12 @@ class BitacoraSubscriber implements EventSubscriberInterface
                         $nuevabitacora->setAlmacen($entity->getMovimiento()->getAlmacenDestino());
                     } else {
                         throw new NotValidBitacoraTypeException('Tipo de Movimiento no valido' . $movementType);
+                    }
+
+                    //desde aqui llamo el metodo guardarSerialesDesdeMovimientoProducto de la Bitacora de Seriales
+                    if ($entity->getProducto()->getTieneNroSerie()) {
+                        $resultSerial = $this->bitacoraSerialManager->guardarSerialesDesdeMovimientoProducto($entity,
+                            $movementType);
                     }
 
                     break;
@@ -234,7 +253,22 @@ class BitacoraSubscriber implements EventSubscriberInterface
                         ->setProducto($entity->getProducto())
                         ->setCantidadMovida($entity->getCantidad())
                         ->setFechaMovimiento($entity->getSalida()->getFecha())
-                        ->setProduccionLinea(sprintf('%s,%d', ClassUtils::getRealClass($entity), $entity->getId()));
+                        ->setProduccionLinea(sprintf('%s,%d', ClassUtils::getRealClass($entity), $entity->getId()))
+                        ->setTipoMovimiento($movementType);
+
+                    if ($movementType === 'M-') {
+                        $nuevabitacora->setAlmacen($entity->getSalida()->getAlmacenOrigen());
+                    } elseif ($movementType == 'M+') {
+                        $nuevabitacora->setAlmacen($entity->getSalida()->getAlmacenDestino());
+                    } else {
+                        throw new NotValidBitacoraTypeException('Tipo de Salida de Producto no valido' . $movementType);
+                    }
+
+                    //desde aqui llamo el metodo guardarSerialesDesdeSalidaBodegaProducto de la Bitacora de Seriales
+                    if ($entity->getProducto()->getTieneNroSerie()) {
+                        $resultSerial = $this->bitacoraSerialManager->guardarSerialesDesdeSalidaBodegaProducto($entity,
+                            $movementType);
+                    }
 
                     break;
                 }
@@ -247,7 +281,6 @@ class BitacoraSubscriber implements EventSubscriberInterface
                         ->setCantidadMovida($entity->getCantidadLibros())
                         ->setFechaMovimiento($entity->getCreated())
                         ->setProduccionLinea(sprintf('%s,%d', ClassUtils::getRealClass($entity), $entity->getId()));
-
                     break;
                 }
 
@@ -255,18 +288,22 @@ class BitacoraSubscriber implements EventSubscriberInterface
                     break;
             }
 
-            //Si hay error devuelve false, si to ok devuelve true
-            //llamada antigua
-            //$resultadobooleano =  $this->bitacoraAlmacenManager->createRegistry( $generadorbitacora  );
+            //var_dump('www');die;
 
-            $resultadobooleano = $this->bitacoraAlmacenManager->createRegistry($nuevabitacora);
+            if ($resultSerial !== true) {
+                //hubo error en la validacion de los seriales
+                $event->setReturnValue($resultSerial);
+            } else {
 
-            $event->setReturnValue($resultadobooleano);
+                //llego aqui si no hay error en los seriales
+                //Si no hay error devuelve true, si hay error devuelve el codigo del error
+                $result = $this->bitacoraAlmacenManager->createRegistry($nuevabitacora);
+                $event->setReturnValue($result);
+            }
 
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Ha ocurrido un error al crear la Bitacora de Almacen: %s', $e->getMessage()));
-
-            $event->setReturnValue(false);
+            $event->setReturnValue($error = 'Ha ocurrido un error al crear la Bitacora de Almacen');
         }
 
     }

@@ -216,6 +216,7 @@ class GeneradorSeriales
 
                 $tokenSerializado = $this->generarSerialesDesdeTokenRango($tokens[$i]);
 
+                if ($tokenSerializado!==false) {
                 foreach ($tokenSerializado as $token) {
                     $lista_tokens[] = $tokenAlfaInicial . '' . $token . '' . $tokenAlfaFinal;
                     $cantidad_total++;
@@ -223,6 +224,9 @@ class GeneradorSeriales
                         $this->setLastError($this::MSG_MAXIM_ERROR);
                         return false;
                     }
+                }
+                } else {
+                    return false;
                 }
 
             } elseif ($nextToken == $this::TOKEN_FIJO) {
@@ -234,7 +238,7 @@ class GeneradorSeriales
             }
         }
 
-        return ($lista_tokens);
+        return $lista_tokens;
     }
 
     /**

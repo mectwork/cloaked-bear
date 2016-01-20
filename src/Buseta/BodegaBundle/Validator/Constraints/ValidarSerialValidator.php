@@ -32,83 +32,87 @@ class ValidarSerialValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
+        $error = false;
+        $seriales = $this->generadorSeriales->getListaDeSeriales($entity->getSeriales());
 
-        if ($entity->getSeriales() !== null) {
+        if ($entity->getProducto() !== null && ($entity->getProducto()->getTieneNroSerie() == true)) {
 
-            $ocurrioError = false;
-            $error = '';
-            $seriales = $this->generadorSeriales->getListaDeSeriales($entity->getSeriales());
-
-            //validar luego si el producto debe tener numero de serie no puede tener entonces
-            //ningun dato en el campo serial.
-            /*if ($entity->getProducto() !== null && $entity->getProducto()->getTieneNroSerie()) {
-            }*/
-
-            switch (ClassUtils::getRealClass($entity)) {
-
-                case 'Buseta\BodegaBundle\Entity\AlbaranLinea': {
-                    /* @var  $entity \Buseta\BodegaBundle\Entity\AlbaranLinea */
-                    if ($seriales) {
-                        //verificar si la cantidad movida coincide con el numero de seriales entrado
-                        if (count($seriales) !== $entity->getCantidadMovida()) {
-                            $ocurrioError = true;
-                            $error = 'La cantidad real no coincide con el numero de seriales';
-                        }
-                        //Si llega aqui todoo bien y no hay errores y termino
-                    } else {
-                        //si llega aqui es que hubo un error de validacion del serial
-                        $ocurrioError = true;
-                        $error = $this->generadorSeriales->getLasterror();
-                    }
-
-                    break;
-                }
-
-                case 'Buseta\BodegaBundle\Entity\InventarioFisicoLinea': {
-                    /* @var  $entity \Buseta\BodegaBundle\Entity\InventarioFisicoLinea */
-                    if ($seriales) {
-                        //verificar si la cantidad real coincide con el numero de seriales entrado
-                        if (count($seriales) !== $entity->getCantidadReal()) {
-                            $ocurrioError = true;
-                            $error = 'La cantidad real no coincide con el numero de seriales';
-                        }
-                        //Si llega aqui todoo bien y no hay errores y termino
-                    } else {
-                        //si llega aqui es que hubo un error de validacion del serial
-                        $ocurrioError = true;
-                        $error = $this->generadorSeriales->getLasterror();
-                    }
-                    break;
-                }
-
-                case 'Buseta\BodegaBundle\Entity\MovimientosProductos': {
-                    /* @var  $entity \Buseta\BodegaBundle\Entity\MovimientosProductos */
-                    break;
-                }
-                case 'Buseta\BodegaBundle\Entity\SalidaBodegaProducto': {
-                    /* @var  $entity \Buseta\BodegaBundle\Entity\SalidaBodegaProducto */
-                    break;
-                }
-                case 'Buseta\CombustibleBundle\Entity\ServicioCombustible': {
-                    /* @var  $entity \Buseta\CombustibleBundle\Entity\ServicioCombustible */
-                    break;
-                }
-                default:
-                    break;
+            if (($entity->getSeriales() !== null) && (trim($entity->getSeriales()) !== '')) {
+                //validacion de los seriales segun la entidad
+                $error = $this->validarSerialesSegunClase($entity, $seriales);
+            } else {
+                $error = 'Se requieren numeros de serie obligatoriamente para este producto!';
             }
 
-
-            if ($ocurrioError) {
-                $this->context->addViolationAt(
-                    'seriales',
-                    $constraint->message,
-                    array('%string%' => $error)
-                );
+        } else {
+            if (($entity->getSeriales() !== null) && (trim($entity->getSeriales()) !== '')) {
+                $error = 'Este producto no puede tener numeros de serie!';
             }
-
-
         }
 
+        if ($error) {
+            $this->context->addViolationAt(
+                'seriales',
+                $constraint->message,
+                array('%string%' => $error)
+            );
+        }
+
+    }
+
+
+    /**
+     * @param $entity
+     * @param $seriales
+     * @return bool|string
+     */
+    function validarSerialesSegunClase($entity, $seriales)
+    {
+        $error = false;
+        $cantidad = 0;
+
+        switch (ClassUtils::getRealClass($entity)) {
+
+            case 'Buseta\BodegaBundle\Entity\AlbaranLinea': {
+                /* @var  $entity \Buseta\BodegaBundle\Entity\AlbaranLinea */
+                $cantidad = $entity->getCantidadMovida();
+                break;
+            }
+            case 'Buseta\BodegaBundle\Entity\InventarioFisicoLinea': {
+                /* @var  $entity \Buseta\BodegaBundle\Entity\InventarioFisicoLinea */
+                $cantidad = $entity->getCantidadReal();
+                break;
+            }
+            case 'Buseta\BodegaBundle\Entity\MovimientosProductos': {
+                /* @var  $entity \Buseta\BodegaBundle\Entity\MovimientosProductos */
+                $cantidad = $entity->getCantidad();
+                break;
+            }
+            case 'Buseta\BodegaBundle\Entity\SalidaBodegaProducto': {
+                /* @var  $entity \Buseta\BodegaBundle\Entity\SalidaBodegaProducto */
+                $cantidad = $entity->getCantidad();
+                break;
+            }
+            case 'Buseta\CombustibleBundle\Entity\ServicioCombustible': {
+                /* @var  $entity \Buseta\CombustibleBundle\Entity\ServicioCombustible */
+                break;
+            }
+            default:
+                break;
+        }
+
+        if ($seriales) {
+            //verificar si la cantidad movida coincide con el numero de seriales entrado
+            if (count($seriales) != $cantidad) {
+                $error = 'La cantidad real no coincide con el numero de seriales';
+            }
+            //Si llega aqui todoo bien y no hay errores y termino
+        } else {
+            //si llega aqui es que hubo un error de validacion del serial
+            $error = $this->generadorSeriales->getLasterror();
+        }
+
+        return $error;
     }
 }
 

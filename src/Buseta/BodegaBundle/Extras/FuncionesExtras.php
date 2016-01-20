@@ -50,13 +50,14 @@ class FuncionesExtras
                     /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
                     if ($producto == $bitacora->getProducto()) {
                         //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                        if ($bitacora->getTipoMovimiento() == 'V+'
-                            || $bitacora->getTipoMovimiento() == 'M+'
-                            || $bitacora->getTipoMovimiento() == 'I+' ) {
+                        if ($bitacora->getTipoMovimiento() === 'V+'
+                            || $bitacora->getTipoMovimiento() === 'M+'
+                            || $bitacora->getTipoMovimiento() === 'I+' ) {
                             $cantidadPedido += $bitacora->getCantidadMovida();
                         }
-                        if ($bitacora->getTipoMovimiento() == 'M-'
-                            || $bitacora->getTipoMovimiento() === 'P-') {
+                        if ($bitacora->getTipoMovimiento() === 'M-'
+                            || $bitacora->getTipoMovimiento() === 'P-'
+                            || $bitacora->getTipoMovimiento() === 'I-') {
                             $cantidadPedido -= $bitacora->getCantidadMovida();
                         }
                     }
@@ -118,7 +119,8 @@ class FuncionesExtras
                             $cantidadPedido += $bitacora->getCantidadMovida();
                         }
                         if ($bitacora->getTipoMovimiento() === 'M-'
-                            || $bitacora->getTipoMovimiento() === 'P-') {
+                            || $bitacora->getTipoMovimiento() === 'P-'
+                            || $bitacora->getTipoMovimiento() === 'I-') {
                             $cantidadPedido -= $bitacora->getCantidadMovida();
                         }
                     }
@@ -142,35 +144,155 @@ class FuncionesExtras
 
     public function comprobarCantProductoAlmacen($producto, $almacen, $cantidad, $em)
     {
+        /**@var \Doctrine\Common\Persistence\ObjectManager $em */
+
         $cantidadPedido = 0;
         $existe = false;
-        $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->findAll();
+        // $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->findAll();
+
+        //hallar solo las lineas de bitacora del producto y almacen especificado
+        $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraSerial')->findBy(array(
+            'producto' => $producto,
+            'almacen' => $almacen,
+        ));
 
         foreach ($bitacoras as $bitacora) {
             /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
             //Si se encuentra en la bitácora el almacen y producto seleccionado
-            if ($bitacora->getAlmacen() == $almacen && $bitacora->getProducto() == $producto) {
-                $existe = true;
-                //Comprobar tipo de movimiento para realizar operación de sustracción o adición
-                //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                if ($bitacora->getTipoMovimiento() == 'V+'
-                    || $bitacora->getTipoMovimiento() == 'M+'
-                    || $bitacora->getTipoMovimiento() == 'I+') {
-                    $cantidadPedido += $bitacora->getCantidadMovida();
-                }
-                if ($bitacora->getTipoMovimiento() == 'M-'
-                    || $bitacora->getTipoMovimiento() === 'P-') {
-                    $cantidadPedido -= $bitacora->getCantidadMovida();
-                }
+            /*            if ($bitacora->getAlmacen() == $almacen && $bitacora->getProducto() == $producto) {
+                            $existe = true;*/
+            //Comprobar tipo de movimiento para realizar operación de sustracción o adición
+            //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
+            $existe = true;
+            if ($bitacora->getTipoMovimiento() === 'V+'       //V+ es Entrada desde albaran
+                || $bitacora->getTipoMovimiento() === 'M+'    //M+ es Entrada desde Movimiento % almacenes
+                || $bitacora->getTipoMovimiento() === 'I+'    //I+ es incremento por inventario fisico
+            ) {
+                $cantidadPedido += $bitacora->getCantidadMovida();
             }
+            if ($bitacora->getTipoMovimiento() === 'P-'      //P- es Salida desde SalidaProduccion
+                || $bitacora->getTipoMovimiento() === 'M-'    //M- es Salida desde Movimiento % almacenes
+                || $bitacora->getTipoMovimiento() === 'I-'   //I- es decremento por inventario fisico
+            ) {
+                $cantidadPedido -= $bitacora->getCantidadMovida();
+            }
+            //}
         }
 
         if ($existe) {
             return $cantidadPedido - $cantidad;
         }
 
+        //
         return 'No existe';
     }
+
+    public function comprobarCantProductoSeriadoAlmacen($producto, $serial, $almacen, $em)
+    {
+        /**@var \Doctrine\Common\Persistence\ObjectManager $em */
+
+        $cantidad = 0;
+        $existe = false;
+
+        $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraSerial')->findBy(array(
+            'producto' => $producto,
+            'serial' => $serial,
+            'almacen' => $almacen,
+        ));
+
+        foreach ($bitacoras as $bitacora) {
+            /** @var \Buseta\BodegaBundle\Entity\BitacoraSerial $bitacora */
+            //Si se encuentra en la bitácora el almacen y producto seleccionado
+            $existe = true;
+            //Comprobar tipo de movimiento para realizar operación de sustracción o adición
+            //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
+
+            if ($bitacora->getTipoMovimiento() === 'V+'       //V+ es Entrada desde albaran
+                || $bitacora->getTipoMovimiento() === 'M+'    //M+ es Entrada desde Movimiento % almacenes
+                || $bitacora->getTipoMovimiento() === 'I+'    //I+ es incremento por inventario fisico
+            ) {
+                $cantidad += $bitacora->getCantidadMovida();
+            }
+            if ($bitacora->getTipoMovimiento() === 'P-'      //P- es Salida desde SalidaProduccion
+                || $bitacora->getTipoMovimiento() === 'M-'    //M- es Salida desde Movimiento % almacenes
+                || $bitacora->getTipoMovimiento() === 'I-'   //I- es decremento por inventario fisico
+            ) {
+                $cantidad -= $bitacora->getCantidadMovida();
+            }
+
+        }
+
+        if ($existe) {
+            return $cantidad;
+        }
+
+        return 'No existe';
+    }
+
+    public function comprobarCantProductoSeriadoEmpresa( $producto, $serial, $em )
+    {
+        /**@var \Doctrine\Common\Persistence\ObjectManager $em */
+
+        $cantidad = 0;
+        $existe = false;
+
+        $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraSerial')->findBy(array(
+            'producto' => $producto,
+            'serial' => $serial,
+        ));
+
+        foreach ($bitacoras as $bitacora) {
+            /** @var \Buseta\BodegaBundle\Entity\BitacoraSerial $bitacora */
+            //Si se encuentra en la bitácora el almacen y producto seleccionado
+            $existe = true;
+            //Comprobar tipo de movimiento para realizar operación de sustracción o adición
+            //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
+            if ($bitacora->getTipoMovimiento() === 'V+'
+                || $bitacora->getTipoMovimiento() === 'M+'
+                || $bitacora->getTipoMovimiento() === 'I+') {
+                $cantidad += $bitacora->getCantidadMovida();
+            }
+            if ($bitacora->getTipoMovimiento() === 'M-'
+                || $bitacora->getTipoMovimiento() === 'P-'
+                || $bitacora->getTipoMovimiento() === 'I-') {
+                $cantidad -= $bitacora->getCantidadMovida();
+            }
+        }
+
+        if ($existe) {
+            return $cantidad;
+        }
+
+        return 'No existe';
+    }
+
+    public function getListaSerialesTeoricoEnAlmacen( $producto, $almacen, $em )
+    {
+        /**@var \Doctrine\Common\Persistence\ObjectManager $em */
+
+        $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraSerial')->findBy(array(
+            'producto' => $producto,
+            'almacen' => $almacen,
+        ));
+
+        $lista_seriales = array();
+
+        foreach ($bitacoras as $bitacora) {
+            /** @var \Buseta\BodegaBundle\Entity\BitacoraSerial $bitacora */
+             $serial = $bitacora->getSerial();
+             //si esta en existencia, porque puede star en 0
+             $cantidadDisponible =  $this->comprobarCantProductoSeriadoAlmacen( $producto, $serial, $almacen, $em );
+             if ($cantidadDisponible>0) {
+                 $lista_seriales[] = $serial;//agregar al array
+             }
+        }
+
+        //quitar los elementos repetidos del array de resultados
+        $lista_seriales = array_unique($lista_seriales);
+
+        return $lista_seriales;
+    }
+
 
     public function generarInformeCostos($bitacoras, $em)
     {
@@ -195,13 +317,14 @@ class FuncionesExtras
                     /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
                     if ($producto == $bitacora->getProducto() && $bitacora->getAlmacen() == $almacen) {
                         //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                        if ($bitacora->getTipoMovimiento() == 'V+'
-                            || $bitacora->getTipoMovimiento() == 'M+'
-                            || $bitacora->getTipoMovimiento() == 'I+') {
+                        if ($bitacora->getTipoMovimiento() === 'V+'
+                            || $bitacora->getTipoMovimiento() === 'M+'
+                            || $bitacora->getTipoMovimiento() === 'I+') {
                             $cantidadPedido += $bitacora->getCantidadMovida();
                         }
                         if ($bitacora->getTipoMovimiento() == 'M-'
-                            || $bitacora->getTipoMovimiento() === 'P-') {
+                            || $bitacora->getTipoMovimiento() === 'P-'
+                            || $bitacora->getTipoMovimiento() === 'I-'){
                             $cantidadPedido -= $bitacora->getCantidadMovida();
                         }
 
@@ -231,31 +354,38 @@ class FuncionesExtras
         return $almacenesArray;
     }
 
-    public function obtenerCantidaProductosAlmancen($producto, $almacen, $em)
+    public function obtenerCantidadProductosAlmancen($producto, $almacen, $em)
     {
+        /**@var \Doctrine\Common\Persistence\ObjectManager $em */
 
         $cantidadReal = 0;
-        $existe = false;
+        //$existe = false;
         //Obtengo las bitacoras
-        $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->findAll();
+        //$bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->findAll();
+        //hallar solo las lineas de bitacora del producto y almacen especificado
+        $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraSerial')->findBy(array(
+            'producto' => $producto,
+            'almacen' => $almacen,
+        ));
 
         foreach ($bitacoras as $bitacora) {
             /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
             //Si se encuentra en la bitácora el almacen y producto seleccionado
-            if ($bitacora->getAlmacen() == $almacen && $bitacora->getProducto() == $producto) {
-                $existe = true;
+            //if ($bitacora->getAlmacen() == $almacen && $bitacora->getProducto() == $producto) {
+                //$existe = true;
                 //Comprobar tipo de movimiento para realizar operación de sustracción o adición
                 //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                if ($bitacora->getTipoMovimiento() == 'V+'
-                    || $bitacora->getTipoMovimiento() == 'M+'
-                    || $bitacora->getTipoMovimiento() == 'I+') {
+                if ($bitacora->getTipoMovimiento() === 'V+'
+                    || $bitacora->getTipoMovimiento() === 'M+'
+                    || $bitacora->getTipoMovimiento() === 'I+') {
                     $cantidadReal += $bitacora->getCantidadMovida();
                 }
-                if ($bitacora->getTipoMovimiento() == 'M-'
-                    || $bitacora->getTipoMovimiento() === 'P-') {
+                if ($bitacora->getTipoMovimiento() === 'M-'
+                    || $bitacora->getTipoMovimiento() === 'P-'
+                    || $bitacora->getTipoMovimiento() === 'I-') {
                     $cantidadReal -= $bitacora->getCantidadMovida();
                 }
-            }
+            //}
         }
 
         return $cantidadReal;
