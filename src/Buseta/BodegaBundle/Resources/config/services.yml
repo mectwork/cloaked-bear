@@ -146,6 +146,14 @@ services:
         tags:
             - {name: validator.constraint_validator, alias: validar_serial_validator}
 
+    bodega.validar_maxmin.validador:
+        class: Buseta\BodegaBundle\Validator\Constraints\ValidarMaxMinValidator
+        arguments:
+            - @security.context
+            - @doctrine.orm.entity_manager
+        tags:
+            - {name: validator.constraint_validator, alias: validar_maxmin_validator}
+
     # EVENT LISTENERS
     buseta.bodega.bitacora_almacen.subscriber:
         class: Buseta\BodegaBundle\EventListener\BitacoraSubscriber

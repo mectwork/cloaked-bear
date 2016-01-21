@@ -312,4 +312,43 @@ class BodegaController extends Controller
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
+
+    public function productoTopeAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($id);
+
+
+        $productotopeList = $em->getRepository('BusetaBodegaBundle:ProductoTope')->findBy(
+            array(
+                'almacen' => $almacen,
+            )
+        );
+
+        $productotopeArray = array();
+
+        /*  @var  \Buseta\BodegaBundle\Entity\ProductoTope  $pt*/
+        $fe = new FuncionesExtras();
+        foreach ($productotopeList as $pt) {
+            $producto = $pt->getProducto();
+            $productotopeElem['prodtope']=$pt;
+            $cantidadDisponible = $fe->obtenerCantidadProductosAlmancen($producto,$almacen,$em);
+            $productotopeElem['cantidad']=$cantidadDisponible;
+            $productotopeArray[]=$productotopeElem;
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $productotopeArray = $paginator->paginate(
+            $productotopeArray,
+            $this->get('request')->query->get('page', 1),
+            10,
+            array('pageParameterName' => 'page')
+        );
+
+        return $this->render('BusetaBodegaBundle:Bodega:productotope.html.twig', array(
+            'productotope' => $productotopeArray,
+            'almacen' => $almacen,
+        ));
+    }
 }

@@ -1,0 +1,53 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Datos del producto con topes
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <table class="table table-striped" style="font-size: 16px;">
+        <tbody>
+        <tr>
+            <th>Producto</th>
+            <td>{{ entity.producto }}</td>
+        </tr>
+        <tr>
+            <th>Almacen</th>
+            <td>{{ entity.almacen }}</td>
+        </tr>
+        <tr>
+            <th>Min</th>
+            <td>{{ entity.min }}</td>
+        </tr>
+        <tr>
+            <th>Max</th>
+            <td>{{ entity.max }}</td>
+        </tr>
+        <tr>
+            <th>Comentarios</th>
+            <td>{{ entity.comentarios }}</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div class="form-actions">
+        {{ form_start(delete_form) }}
+        <a class="btn btn-primary" href="{{ path('productotope_edit', { 'id': entity.id }) }}"> Editar</a>
+        <a class="btn btn-primary" href="{{ path('productotope') }}"> Listado</a>
+        {#<button type="sumbit" class="btn btn-primary">Eliminar</button>#}
+        {{ form_end(delete_form) }}
+    </div>
+
+{% endblock %}
+
+{% block contenido %}
+
+
+{% endblock %}
+

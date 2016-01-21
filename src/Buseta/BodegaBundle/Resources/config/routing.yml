@@ -150,3 +150,11 @@ buseta_bodega_productocosto:
 buseta_bodega_categoriaproducto:
     resource: "@BusetaBodegaBundle/Controller/CategoriaProductoController.php"
     type: annotation
+
+#buseta_bodega_productotope:
+#    resource: "@BusetaBodegaBundle/Controller/ProductoTopeController.php"
+#    type: annotation
+
+BusetaBodegaBundle_productotope:
+    resource: "@BusetaBodegaBundle/Resources/config/routing/productotope.yml"
+    prefix:   /bodega/productotope

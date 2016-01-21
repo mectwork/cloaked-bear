@@ -1,0 +1,74 @@
+
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block title %}
+    Adicionar Nuevo Producto con Topes
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Adicionar Nuevo Producto con Topes
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <form action="{{ path('productotope_create') }}" method="post" {{ form_enctype(form) }}>
+
+        <div class="row show-grid">
+            <div class="col-md-6">
+                {{ form_row(form.producto) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_row(form.almacen) }}
+            </div>
+        </div>
+
+        <div class="row show-grid">
+
+            <div class="col-md-3">
+                {{ form_row(form.min) }}
+            </div>
+
+            <div class="col-md-3">
+                {{ form_row(form.max) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_row(form.comentarios) }}
+            </div>
+
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-md-4">
+
+                <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="{{ path('productotope') }}"> Cancelar</a>
+                </div>
+            </div>
+        </div>
+
+        {{ form_rest(form) }}
+    </form>
+
+{% endblock %}
+
+
+{% block contenido %}
+
+{% endblock %}
+
+
+{% block javascripts %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#buseta_bodegabundle_productotope_producto').chosen();
+        $('#buseta_bodegabundle_productotope_almacen').chosen();
+    });
+</script>
+{% endblock javascripts %}
