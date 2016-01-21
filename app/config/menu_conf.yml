@@ -519,6 +519,16 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
+                menu_D_B_B:
+                  id: menu_D_B_B
+                  name: null
+                  label: 'Configuración Marchamo'
+                  route: combustible_configuracion_marchamo
+                  roles: [ROLE_USER]
+                  type: item
+                  disabled: false
+                  attributes: {  }
+                  childrens: {  }
         menu_E:
           id: menu_E
           name: menu_nomenclador

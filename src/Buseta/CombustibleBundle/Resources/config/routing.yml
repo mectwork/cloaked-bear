@@ -2,6 +2,10 @@ buseta_buses_configuracion_combustible:
   resource: "@BusetaCombustibleBundle/Controller/ConfiguracionCombustibleController.php"
   type:     annotation
 
+buseta_buses_configuracion_marchamo:
+  resource: "@BusetaCombustibleBundle/Controller/ConfiguracionMarchamoController.php"
+  type:     annotation
+
 buseta_buses_servicio_combustible:
   resource: "@BusetaCombustibleBundle/Controller/ServicioCombustibleController.php"
   type:     annotation
