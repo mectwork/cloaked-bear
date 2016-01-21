@@ -12,22 +12,23 @@ use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Form\Type\BitacoraAlmacenType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * BitacoraAlmacen controller.
  *
- *
+ * @Route("/bodega/bitacorabodega")
  */
 class BitacoraAlmacenController extends Controller
 {
-
-
     /**
      * Lists all BitacoraAlmacen entities.
+     *
+     * @Route("/", name="bitacoraalmacen")
+     * @Method("GET")
      */
     public function indexAction(Request $request)
     {
@@ -64,6 +65,9 @@ class BitacoraAlmacenController extends Controller
 
     /**
      * Finds and displays a BitacoraAlmacen entity.
+     *
+     * @Route("/{id}/show", name="bitacoraalmacen_show")
+     * @Method("GET")
      */
     public function showAction($id)
     {
@@ -77,11 +81,8 @@ class BitacoraAlmacenController extends Controller
 
         return $this->render('BusetaBodegaBundle:BitacoraAlmacen:show.html.twig', array(
             'entity'      => $entity
-              ));
+          ));
     }
-
-
-
 
     /**
      * @param BitacoraAlmacen $bitacoraAlmacen

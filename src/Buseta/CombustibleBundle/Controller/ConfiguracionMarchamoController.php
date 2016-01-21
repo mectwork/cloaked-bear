@@ -51,6 +51,7 @@ class ConfiguracionMarchamoController extends Controller
 
     /**
      * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      *
      * @Route("/update", name="combustible_configuracion_marchamo_update")
      * @Method("PUT")
