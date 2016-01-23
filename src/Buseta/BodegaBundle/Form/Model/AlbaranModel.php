@@ -117,12 +117,12 @@ class AlbaranModel
 
         if ($albaran !== null) {
             $this->id = $albaran->getId();
-            $this->created = $albaran->getCreated();
+/*            $this->created = $albaran->getCreated();
             $this->createdby = $albaran->getCreatedby();
             $this->deleted = $albaran->getDeleted();
             $this->deletedby = $albaran->getDeletedby();
             $this->updated = $albaran->getUpdated();
-            $this->updatedby = $albaran->getUpdatedby();
+            $this->updatedby = $albaran->getUpdatedby();*/
 
             $this->consecutivoCompra = $albaran->getConsecutivoCompra();
             $this->numeroReferencia = $albaran->getNumeroReferencia();
@@ -153,12 +153,12 @@ class AlbaranModel
     public function getEntityData()
     {
         $albaran = new Albaran();
-        $albaran->setCreated($this->getCreated());
+/*        $albaran->setCreated($this->getCreated());
         $albaran->setCreatedby($this->getCreatedby());
         $albaran->setDeleted($this->getDeleted());
         $albaran->setDeletedby($this->getDeletedby());
         $albaran->setUpdated($this->getUpdated());
-        $albaran->setUpdatedby($this->getUpdatedby());
+        $albaran->setUpdatedby($this->getUpdatedby());*/
 
         $albaran->setConsecutivoCompra($this->getConsecutivoCompra());
         $albaran->setNumeroReferencia($this->getNumeroReferencia());

@@ -14,6 +14,8 @@ use Buseta\BodegaBundle\Form\Type\MovimientosProductosType;
 use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Form\Type\MovimientoType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
+use Buseta\BodegaBundle\Event\BitacoraEvents;
+use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 
 /**
  * Movimiento controller.
@@ -107,115 +109,116 @@ class MovimientoController extends Controller
      */
     public function createAction(Request $request)
     {
+        /*  @var  \Buseta\BodegaBundle\Entity\Movimiento $entity */
+        /*  @var  \Buseta\BodegaBundle\Entity\MovimientosProductos $movimiento */
+        /*  @var  \Buseta\BodegaBundle\Entity\MovimientosProductos $movimientoProducto */
+        /*  @var  \Buseta\BodegaBundle\Entity\Producto $producto */
+        /*  @var  \Buseta\BodegaBundle\Entity\Bodega $almacenOrigen */
+
+        //hay que crear un nuevo movimiento
         $entity = new Movimiento();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $fechaMovimiento = new \DateTime();
 
             $request = $this->get('request');
             $datos = $request->request->get('buseta_bodegabundle_movimiento');
 
-            //Comparar la existencia de cantidad de productos disponibles en el almacen
-            //a partir de la solicitud de movimiento de productos entre almacenes
-
-            $idAlmacenOrigen  = $datos['almacenOrigen'];
+            $idAlmacenOrigen = $datos['almacenOrigen'];
+            $almacenOrigen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
             $idAlmacenDestino = $datos['almacenDestino'];
+            $almacenDestino = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
 
             $movimientos = $datos['movimientos_productos'];
+            $fe = new FuncionesExtras();
 
-            $cantidadDisponible = 0;
+            $error = false;
 
+            //Comparar la existencia de cantidad de productos disponibles en el almacen
+            //a partir de la solicitud de movimiento de productos entre almacenes
+            //ciclo a traves de todos las salidas de bodega de productos para verificar y validar
+            //la existencia fisica en el almacen de Origen del producto
+            //Validacion del formulario
             foreach ($movimientos as $movimiento) {
+                //recojo los datos
                 $idProducto = $movimiento['producto'];
+                $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
+                $cantidadProducto = $movimiento['cantidad'];
 
-                $producto           = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
-                $almacen            = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
-                $cantidadProducto   = $movimiento['cantidad'];
 
-                $fe = new FuncionesExtras();
-                $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $almacen, $cantidadProducto, $em);
+                $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $almacenOrigen, $cantidadProducto,
+                    $em);
 
                 //Comprobar la existencia del producto en la bodega seleccionada
                 if ($cantidadDisponible == 'No existe') {
                     //Volver al menu de de crear nuevo Movimiento
                     $movimientosProductos = $this->createForm(new MovimientosProductosType());
 
-                    $form   = $this->createCreateForm($entity);
-                    $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
-                    $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
+                    $form = $this->createCreateForm($entity);
 
-                    $form->addError(new FormError("El producto '".$producto->getNombre()."' no existe en la bodega seleccionada"));
+                    $form->addError(new FormError(sprintf("El producto %s no existe en la bodega seleccionada",
+                        $producto->getNombre())));
 
                     return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
                         'entity' => $entity,
                         'movimientosProductos' => $movimientosProductos->createView(),
-                        'form'   => $form->createView(),
+                        'form' => $form->createView(),
                     ));
-                }
-                //Si no existe la cantidad solicitada en el almacen del producto seleccionado
+                } //Si no existe la cantidad solicitada en el almacen del producto seleccionado
                 elseif ($cantidadDisponible < 0) {
                     //Volver al menu de de crear nuevo Movimiento
                     $movimientosProductos = $this->createForm(new MovimientosProductosType());
 
-                    $form   = $this->createCreateForm($entity);
-                    $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
-                    $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
+                    $form = $this->createCreateForm($entity);
 
-                    $form->addError(new FormError("No existe en la bodega '".$bodega->getNombre()."' la cantidad de productos solicitados para el producto: ".$producto->getNombre()));
+                    $form->addError(new FormError(sprintf("No existe en la bodega %s la cantidad de productos solicitados para el producto: %s",
+                        $almacenOrigen->getNombre(), $producto->getNombre())));
 
                     return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
                         'entity' => $entity,
                         'movimientosProductos' => $movimientosProductos->createView(),
-                        'form'   => $form->createView(),
+                        'form' => $form->createView(),
                     ));
-                }
-                //Si sí existe la cantidad del producto en la bodega seleccionada
-                else {
-                    //Actualizar Bitácora - AlmacenOrigen
-                    $bitacora = new BitacoraAlmacen();
-                    $bitacora->setProducto($producto);
-                    $bitacora->setFechaMovimiento($fechaMovimiento);
-                    $origen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
-                    $bitacora->setAlmacen($origen);
-                    $bitacora->setCantidadMovida($movimiento['cantidad']);
-                    $bitacora->setTipoMovimiento('M-');
-                    $em->persist($bitacora);
-                    $em->flush();
-
-                    //Actualizar Bitácora - AlmacenDestino
-                    $bitacora = new BitacoraAlmacen();
-                    $bitacora->setProducto($producto);
-                    $bitacora->setFechaMovimiento($fechaMovimiento);
-                    $destino = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
-                    $bitacora->setAlmacen($destino);
-                    $bitacora->setCantidadMovida($movimiento['cantidad']);
-                    $bitacora->setTipoMovimiento('M+');
-                    $em->persist($bitacora);
-                    $em->flush();
-
-                    $almacenOrigen    = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
-                    $almacenDestino   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
-
-                    //Persistimos los movimientos
-                    $entity->setCreatedBy($this->getUser()->getUsername());
-                    $entity->setMovidoBy($this->getUser()->getUsername());
-                    $entity->setAlmacenOrigen($almacenOrigen);
-                    $entity->setAlmacenDestino($almacenDestino);
-                    $entity->setFechaMovimiento($fechaMovimiento);
-                    $em->persist($entity);
-                    $em->flush();
                 }
             }
 
-            return $this->redirect($this->generateUrl('movimiento_show', array('id' => $entity->getId())));
+            //si no hubo error de validacion
+            //Persistimos los movimientos
+            //la entity es Movimiento
+            if (!$error) {
+
+                //var_dump('www');die;
+
+                //entity es la entidad Movimiento
+                $entity->setCreatedBy($this->getUser()->getUsername());
+                $entity->setMovidoBy($this->getUser()->getUsername());
+                $entity->setAlmacenOrigen($almacenOrigen);
+                $entity->setAlmacenDestino($almacenDestino);
+                $entity->setFechaMovimiento($fechaMovimiento = new \DateTime());
+                $em->persist($entity);
+                $em->flush();
+
+                $manager = $this->get('buseta.bodega.movimiento.manager');
+
+                $result = $manager->completar($entity->getId());
+                if ($result===true){
+                    $this->get('session')->getFlashBag()->add('success', 'Se ha completado el Movimiento de forma correcta.');
+                    return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $entity->getId() ) ) );
+                } else {
+                    $this->get('session')->getFlashBag()->add('danger',  sprintf('Ha ocurrido un error al completar el Movimiento: %s',$result));
+                    return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $entity->getId() ) ) );
+                }
+
+            }
+
+           //return $this->redirect($this->generateUrl('movimiento_show', array('id' => $entity->getId())));
         }
 
         return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 

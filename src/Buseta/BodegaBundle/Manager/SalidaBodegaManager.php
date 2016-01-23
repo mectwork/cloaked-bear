@@ -7,9 +7,10 @@ use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Monolog\Logger;
 use Buseta\BodegaBundle\Entity\SalidaBodega;
-use Buseta\BodegaBundle\Entity\InventarioFisicoLinea;
-use Buseta\BodegaBundle\BusetaBodegaBitacoraEvents;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\SecurityContext;
+use Buseta\BodegaBundle\Exceptions\NotFoundElementException;
 
 /**
  * Class SalidaBodegaManager
@@ -27,19 +28,33 @@ class SalidaBodegaManager
      */
     private $logger;
 
-
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     */
     private $event_dispacher;
+
+    /**
+     * @var \Symfony\Component\Security\Core\SecurityContext
+     */
+    private $security_context;
+
 
     /**
      * @param ObjectManager $em
      * @param Logger $logger
-     *
+     * @param EventDispatcherInterface $event_dispacher
+     * @param SecurityContext $security_context
      */
-    function __construct(ObjectManager $em, Logger $logger,  $event_dispacher)
-    {
+    function __construct(
+        ObjectManager $em,
+        Logger $logger,
+        EventDispatcherInterface $event_dispacher,
+        SecurityContext $security_context
+    ) {
         $this->em = $em;
         $this->logger = $logger;
-        $this->event_dispacher =   $event_dispacher;
+        $this->event_dispacher = $event_dispacher;
+        $this->security_context = $security_context;
     }
 
     /**
@@ -56,7 +71,7 @@ class SalidaBodegaManager
             $salidaBodega = $this->em->getRepository('BusetaBodegaBundle:SalidaBodega')->find($id);
 
             if (!$salidaBodega) {
-                //throw $this->createNotFoundException('Unable to find SalidaBodega entity.');
+                throw new NotFoundElementException('Unable to find SalidaBodega entity.');
             }
 
             if ($salidaBodega->getEstadoDocumento() !== 'BO') {
@@ -66,64 +81,84 @@ class SalidaBodegaManager
                 ));
                 throw new NotValidStateException();
             }
+
             // Cambiar estado de borrador(BO) a Procesado(PR)
             $salidaBodega->setEstadoDocumento('PR');
-
             $this->em->persist($salidaBodega);
+
             $this->em->flush();
 
             return true;
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Ha ocurrido un error al procesar la Salida de Bodega: %s', $e->getMessage()));
-
-            return false;
+            return 'Ha ocurrido un error al procesar el Albaran';
         }
 
     }
 
 
     /**
-     * Completar SalidaBodega
-     *
-     * @param integer $id
-     * @return bool
+     * @param $id
+     * @return bool|string
      */
     public function completar($id)
     {
         try {
 
-            /** @var \Buseta\BodegaBundle\Entity\SalidaBodega $salidabodega */
+            /** @var \Buseta\BodegaBundle\Entity\SalidaBodega $salidaBodega */
 
-            $salidabodega = $this->em->getRepository('BusetaBodegaBundle:SalidaBodega')->find($id);
+            $salidaBodega = $this->em->getRepository('BusetaBodegaBundle:SalidaBodega')->find($id);
 
-            if (!$salidabodega) {
-               // throw $this->createNotFoundException('Unable to find SalidaBodega entity.');
+            if (!$salidaBodega) {
+                throw new NotFoundElementException('Unable to find SalidaBodega entity.');
             }
 
-            $salidabodegaLineas =  $this->em->getRepository('BusetaBodegaBundle:InventarioFisicoLinea')->findBy(array(
-                'inventarioFisico' => $salidabodega,
-            ));
+            //entonces mando a crear los movimientos en la bitacora, producto a producto, a traves de eventos
+            //sin persistir en la base de datos
+            foreach ($salidaBodega->getSalidasProductos() as $linea) {
 
-            if($salidabodegaLineas != null)
-            {
-                $eventDispatcher = $this->event_dispacher; //  get('event_dispatcher');
-                foreach ($salidabodegaLineas as $linea) {
-                    /** @var \Buseta\BodegaBundle\Entity\InventarioFisicoLinea $linea */
-                    $event = new FilterBitacoraEvent($linea);
-                    $eventDispatcher->dispatch(BitacoraEvents::PRODUCTION_NEGATIVE, $event );//P+
+                /** @var \Buseta\BodegaBundle\Entity\SalidaBodegaProducto $linea */
+                $event = new FilterBitacoraEvent($linea);
+                $this->event_dispacher->dispatch(BitacoraEvents::MOVEMENT_FROM /*M-*/, $event);
+                $result = $event->getReturnValue();
+                if ($result !== true ) {
+                    //borramos los cambios en el entity manager
+                    $this->em->clear();
+                    return $error = $result;
                 }
+
+                $event = new FilterBitacoraEvent($linea);
+                $this->event_dispacher->dispatch(BitacoraEvents::MOVEMENT_TO /*M+*/, $event);
+                $result = $event->getReturnValue();
+                if ($result !== true ) {
+                    //borramos los cambios en el entity manager
+                    $this->em->clear();
+                    return $error = $result;
+                }
+
+                //aunque debe ser de la siguiente forma
+                //$event = new FilterBitacoraEvent($linea);
+                //$eventDispatcher->dispatch(BitacoraEvents::PRODUCTION_NEGATIVE, $event);//P+
             }
 
-            //Cambia el estado de Procesado a Completado
-            $salidabodega->setEstadoDocumento('CO');
-            $this->em->persist($salidabodega);
-            $this->em->flush();
+            //Cambia el estado de Procesado a Completado e incorpora otros datos
+            $username = $this->security_context->getToken()->getUser()->getUsername();
+            $salidaBodega->setCreatedBy($username);
+            $salidaBodega->setMovidoBy($username);
+            $salidaBodega->setFecha($fechaSalidaBodega = new \DateTime());
+            $salidaBodega->setEstadoDocumento('CO');
+            $this->em->persist($salidaBodega);
 
+            //finalmentele damos flush a todo para guardar en la Base de Datos
+            //tanto en la bitacora almacen como en la bitacora de seriales
+            //es el unico flush que se hace.
+            $this->em->flush();
             return true;
 
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error al procesar la salida de bodega: %s', $e->getMessage()));
-            return false;
+            $this->logger->error(sprintf('Ha ocurrido un error al completar la salida de bodega: %s', $e->getMessage()));
+            $this->em->clear();
+            return $error = 'Ha ocurrido un error al completar la salida de bodega';
         }
 
     }

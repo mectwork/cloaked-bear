@@ -2,7 +2,6 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
-use Buseta\BodegaBundle\BusetaBodegaBitacoraEvents;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
@@ -40,7 +39,7 @@ class AlbaranController extends Controller
         $filter = new AlbaranFilterModel();
 
         $form = $this->createForm(new AlbaranFilter(), $filter, array(
-            'action' => $this->generateUrl('bodega'),
+            'action' => $this->generateUrl('albaran'),
         ));
 
         $form->handleRequest($request);
@@ -73,18 +72,17 @@ class AlbaranController extends Controller
      */
     public function procesarAlbaranAction($id)
     {
-        //me di cuenta que cuando se trata de completar un albaran que no tiene lineas de albaran
-        //en realidad no se completa el proceso, hay que tratar este problema
         $manager = $this->get('buseta.bodega.albaran.manager');
 
         $trans = $this->get('translator');
         $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
 
-        if ($manager->procesar($id)){
-            $this->get('session')->getFlashBag()->add('success', 'Se ha procesado la '.$albaranTrans.' de forma correcta.');
+        $result = $manager->procesar($id);
+        if ($result===true){
+            $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha procesado la %s de forma correcta.', $albaranTrans) );
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
         } else {
-            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar la '.$albaranTrans.'.');
+            $this->get('session')->getFlashBag()->add('danger',  sprintf(  'Ha ocurrido un error al procesar la %s: %s', $albaranTrans, $result) );
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
         }
     }
@@ -98,19 +96,18 @@ class AlbaranController extends Controller
     public function completarAlbaranAction(Albaran $albaran)
     {
         $manager = $this->get('buseta.bodega.albaran.manager');
-
         $trans = $this->get('translator');
         $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
 
-        if ($manager->completar($albaran)){
-            $this->get('session')->getFlashBag()->add('success', 'Se ha completado la '.$albaranTrans.' de forma correcta.');
-
+        $result = $manager->completar($albaran->getId());
+        if ($result===true){
+            $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha completado la %s de forma correcta.', $albaranTrans) );
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
         } else {
-            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar la '.$albaranTrans.'.');
-
+            $this->get('session')->getFlashBag()->add('danger',  sprintf(  'Ha ocurrido un error al completar la %s: %s', $albaranTrans,$result)  );
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
         }
+
     }
 
     public function guardarAlbaranAction(Request $request)

@@ -1,0 +1,178 @@
+{% extends "BusetaBodegaBundle::layout.html.twig" %}
+
+{% form_theme edit_form 'BusetaBodegaBundle:Widgets:collection_movimientos_insertados.html.twig' %}
+
+{% block nombre_menu_superior %}
+
+{% endblock %}
+
+{% block titulo_encabezado %}
+    Modificar datos de movimiento entre bodegas
+{% endblock %}
+
+{% block area_trabajo %}
+
+    {{ form_start(edit_form) }}
+    <div class="row show-grid">
+        <div class="col-lg-4">
+            <label>Bodega Origen:</label>
+            {{ form_widget(edit_form.almacenOrigen) }}
+        </div>
+
+        <div class="col-lg-4">
+            <label>Bodega Destino:</label>
+            {{ form_widget(edit_form.almacenDestino) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            {{ form_row(edit_form.movimientos_productos) }}
+        </div>
+    </div>
+
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            <div class="btn-group" style="padding-bottom: 8px;">
+                <a data-toggle="modal" data-target="#newMovimiento" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar movimiento</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-lg-4">
+
+            <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+            <div class="btn-group">
+                <a class="btn btn-primary" href="{{ path('movimiento') }}"> Cancelar</a>
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(edit_form) }}
+
+    <!-- Modal -->
+    {#<div class="modal fade" id="newMovimiento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 850px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title" id="myModalLabel">Datos de nueva línea</h3>
+                </div>
+                <div class="modal-body" style="width: 800px;">
+                    <form action="{{ path('movimientos_productos_create') }}" method="post">
+                        <div class="row show-grid">
+                            <div class="col-md-4">
+                                {{ form_row(movimientosProductos.producto) }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form_row(movimientosProductos.cantidad) }}
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
+                    <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</i></a></span>
+
+                </div>
+                {{ form_rest(movimientosProductos) }}
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>#}
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+
+        var collectionHolder = $('div#buseta_bodegabundle_movimiento_movimientos_productos');
+        var $addTagLink = $('a.add_tag_link');
+
+        jQuery(document).ready(function() {
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
+
+            updateDeleteLink();
+            updateView();
+
+            function addTagForm(collectionHolder) {
+                // Get the data-prototype explained earlier
+                var prototype = collectionHolder.data('prototype');
+
+                // get the new index
+                var index = collectionHolder.data('index');
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = prototype.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                collectionHolder.data('index', index + 1);
+
+                // Display the form in the page in an li, before the "Add a tag" link li
+                var $newFormDiv = $('<div></div>').append(newForm);
+                collectionHolder.find('#tbody').append($newFormDiv);
+                updateDeleteLink();
+                updateView();
+            }
+
+            function updateDeleteLink(){
+                $('a.delete_tag_link').on('click', function(e) {
+                    // prevent the link from creating a "#" on the URL
+                    e.preventDefault();
+
+                    // remove the li for the tag form
+                    $(this).parent().parent().remove();
+
+                    updateView();
+                });
+            }
+
+            function updateView(){
+                counter = collectionHolder.find('a.delete_tag_link').length;
+                if(counter == 0){
+                    $('div#no-elements-tr').show();
+                }else{
+                    $('div#no-elements-tr').hide();
+                }
+            }
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                var modal = $('#newMovimiento');
+
+                // captura de valores del modal
+                var movimiento_producto = modal.find('#buseta_bodegabundle_movimientosProductos_producto');
+                var movimiento_cantidad = modal.find('#buseta_bodegabundle_movimientosProductos_cantidad');
+
+                var index = collectionHolder.data('index');
+
+                addTagForm(collectionHolder);
+
+                console.log(index);
+
+                $('#buseta_bodegabundle_movimiento_movimientos_productos_' + index + '_producto').val(movimiento_producto.val()).prop('readonly','readonly');
+                $('#buseta_bodegabundle_movimiento_movimientos_productos_' + index + '_cantidad').val(movimiento_cantidad.val()).prop('readonly','readonly');
+            });
+
+
+        });
+
+
+    </script>
+
+{% endblock javascripts %}

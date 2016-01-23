@@ -53,6 +53,12 @@ class AlbaranLineaType extends AbstractType
                 'attr'   => array(
                     'class' => 'form-control',
                 ),
+            ))->add('seriales', 'textarea', array(
+                'required' => false,
+                'label'  => 'Seriales',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
             ))
         ;
     }
@@ -63,7 +69,7 @@ class AlbaranLineaType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Entity\AlbaranLinea',
+           'data_class' => 'Buseta\BodegaBundle\Entity\AlbaranLinea'
         ));
     }
 

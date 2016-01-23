@@ -49,7 +49,7 @@ class InventarioFisicoFilter extends AbstractType
             ))
             ->add('fechaFin', 'date', array(
                 'widget' => 'single_text',
-                'label'  => 'Fecha Inicio',
+                'label'  => 'Fecha Fin',
                 'format'  => 'dd/MM/yyyy',
                 'required' => false,
                 'attr'   => array(

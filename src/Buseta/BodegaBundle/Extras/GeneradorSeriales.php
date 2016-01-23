@@ -5,7 +5,7 @@ namespace Buseta\BodegaBundle\Extras;
 class GeneradorSeriales
 {
     const CANTIDAD_MAXIMA_SERIALES = 10000;
-    const LONGITUD_MAXIMA_SERIAL_NUM = 7;
+    const LONGITUD_MAXIMA_SERIAL_NUM = 10;
 
     const TOKEN_FIJO = 1;
     const TOKEN_RANGO = 2;
@@ -18,6 +18,7 @@ class GeneradorSeriales
     const MSG_ORDEN_ERROR = 'Error en el orden de los elementos';
     const MSG_COMPAR_ERROR = 'Existe un rango no valido';
     const MSG_MAXIM_ERROR = 'Fue Sobrepasado el limite maximo de seriales permitido';    //los Token de rango no son consecutivos, ej. ,58-60,+hgf5, 5-89, no puede haber alfa entre 2 rangos numericos
+    const MSG_LENGTH_ERROR = 'Fue Sobrepasado el limite de caracteres permitido para un serial';
     const MSG_OTRO_ERROR = 'Existen Errores'; //error de comparacion, dentro de un token rango,ej. 568-510
 
     //cadena entrada paraseparar en array de seriales
@@ -25,12 +26,14 @@ class GeneradorSeriales
     //para conocer el error
     private $last_error = '';
 
-    private $car_sep_tokens_rango = ',';  //caracter separador de tokens de rango
+    private $car_sep_tokens_rango = ';';  //caracter separador de tokens de rango
     private $car_indic_token_fijo = '+';  //caracter indicador de token fijo
 
     private $car_separacion_rango = '-';  //caracter de separacion de rango
-    private $car_separador_expres = ';';  //caracter separador de expresiones
+    private $car_separador_expres = ',';  //caracter separador de expresiones
 
+    private $cantidadSeriales = 0;
+    private $cantidadDuplicados = 0;
 
     public function __construct($str_serial = '')
     {
@@ -52,19 +55,28 @@ class GeneradorSeriales
         }
     }
 
+
     /**
+     * @param string $str_serial
      * @return array|bool
      */
-    public function getListaDeSeriales()
+    public function getListaDeSeriales($str_serial = '')
     {
         try {
-            $lista_seriales = array();
+            //Quito la string de los errores anteriores
+            $this->last_error = '';
+            //Quito la asignacion que tenga la variable $cantidadSeriales y $cantidadDuplicados
+            $this->cantidadSeriales = 0;
+            $this->cantidadDuplicados = 0;
 
-            $expresiones = explode($this->car_separador_expres /*';'*/, $this->str_serial);
+            $lista_seriales = array();
+            //si viene sin parametros, tomar el establecido mediante SET o el _contructor
+            $str = $str_serial !== '' ? $str_serial : $this->str_serial;
+
+            $expresiones = explode($this->car_separador_expres /*';'*/, trim($str));
 
             foreach ($expresiones as $expresion) {
                 if ($this->getTipoExpresion($expresion) == $this::EXPRESION_UNICA) {
-
 
                     if ($this->validarSerialUnico($expresion)) {
                         $lista_seriales[] = $expresion;//agregar al array
@@ -73,7 +85,6 @@ class GeneradorSeriales
                     }
 
                 } else {
-
 
                     $listaSerialesRangos = $this->getListaDeSerialesRango($expresion);
                     if ($listaSerialesRangos) {
@@ -90,11 +101,19 @@ class GeneradorSeriales
 
             }
 
+            $cantidad_seriales_sin_array_unique = count($lista_seriales);
+
             //quitar los elementos repetidos del array de resultados
             $lista_seriales = array_unique($lista_seriales);
 
             //ordeno el array
             sort($lista_seriales, SORT_NATURAL | SORT_FLAG_CASE);
+
+            //se lo asigno a la variable global para llamar al metodo getCantidadSeriales().
+            $this->cantidadSeriales = count($lista_seriales);
+
+            //establezco cantidad de duplicados
+            $this->cantidadDuplicados = $cantidad_seriales_sin_array_unique - $this->cantidadSeriales;
 
             return $lista_seriales;
 
@@ -120,13 +139,18 @@ class GeneradorSeriales
     public function validarSerialUnico($serial)
     {
 
-        $res = false;
-        if (preg_match('/^([a-zA-Z0-9]+)$/', $serial)) {
-            $res = true;
+        if (!preg_match('/^([a-zA-Z0-9]+)$/', $serial)) {
+            $this->setLastError($this::MSG_TOKEN_ERROR);
+            return false;
         }
 
-        $this->setLastError($this::MSG_TOKEN_ERROR);
-        return $res;
+        //valido la longitud de cualquier serial, sea numero entero o string
+        if (strlen($serial) >= $this::LONGITUD_MAXIMA_SERIAL_NUM) {
+            $this->setLastError($this::MSG_LENGTH_ERROR);
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -192,6 +216,7 @@ class GeneradorSeriales
 
                 $tokenSerializado = $this->generarSerialesDesdeTokenRango($tokens[$i]);
 
+                if ($tokenSerializado!==false) {
                 foreach ($tokenSerializado as $token) {
                     $lista_tokens[] = $tokenAlfaInicial . '' . $token . '' . $tokenAlfaFinal;
                     $cantidad_total++;
@@ -199,6 +224,9 @@ class GeneradorSeriales
                         $this->setLastError($this::MSG_MAXIM_ERROR);
                         return false;
                     }
+                }
+                } else {
+                    return false;
                 }
 
             } elseif ($nextToken == $this::TOKEN_FIJO) {
@@ -210,7 +238,7 @@ class GeneradorSeriales
             }
         }
 
-        return ($lista_tokens);
+        return $lista_tokens;
     }
 
     /**
@@ -238,7 +266,12 @@ class GeneradorSeriales
     {
 
         // if (preg_match('/^[\d]{1,10}[-]?[\d]{1,10}$/i', $token)) {
-        if (preg_match('/^[\d]{1,10}[' . $this->car_separacion_rango . ']?[\d]{1,10}$/i', $token)) {
+        if (preg_match('/^[\d]{1,20}[' . $this->car_separacion_rango . ']?[\d]{1,20}$/i', $token)) {
+            return $this::TOKEN_RANGO;
+        }
+
+        //un token numerico tambien lo devuelvo como rango ( un rango de uno solo )
+        if (preg_match('/^[\d]{1,20}$/i', $token)) {
             return $this::TOKEN_RANGO;
         }
 
@@ -278,7 +311,7 @@ class GeneradorSeriales
             $num_fin = $str[1];
 
             if (strlen($num_fin) >= $this::LONGITUD_MAXIMA_SERIAL_NUM) {
-                $this->setLastError($this::MSG_MAXIM_ERROR);
+                $this->setLastError($this::MSG_LENGTH_ERROR);
                 return false;
             }
 
@@ -295,23 +328,47 @@ class GeneradorSeriales
         return $result;
     }
 
+    /**
+     * @return int
+     */
+    public function getCantidadSeriales()
+    {
+        return $this->cantidadSeriales;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCantidadDuplicados()
+    {
+        return $this->cantidadDuplicados;
+    }
+
+
+    public function  getListaDeSerialesImprimir($seriales)
+    {
+        $str='';
+        foreach ($seriales as $serial){
+            $str.=$serial.',';
+        }
+        return $str;
+    }
+
 }
+
 
 /////////////////////////////////
 //Ejemplo de uso
-/*$cas = new GeneradorSeriales('501-1685, +AS ;
-                                   504PT ;
-                                   +5AP,05-06767 ;
-                                   r600W; qw3e34; qwe35;
-                                   +K, 504-509 ');
+/*$cas = new GeneradorSeriales();
 
-$seriales = $cas->getListaDeSeriales();
+$seriales = $cas->getListaDeSeriales('565-700;+aw,566-700');
 
 if ($seriales) {
     //array con listado de seriales
     echo('<pre>');
     var_dump($seriales);
-    echo 'Cantidad de elementos: ' . (count($seriales));  //para verificar coincidencias
+    echo sprintf('Cantidad de elementos: %s con: %s duplicados', $cas->getCantidadSeriales() ,$cas->getCantidadDuplicados() );  //para verificar coincidencias
+    echo $cas->getListaDeSerialesImprimir($seriales);
 } else {
     echo 'Ocurrieron Errores-> ' . $cas->getLasterror();
 }*/

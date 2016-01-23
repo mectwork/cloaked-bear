@@ -28,6 +28,13 @@ class SalidaBodegaProductoType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
+            ->add('seriales', 'textarea', array(
+                'required' => false,
+                'label'  => 'Seriales',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'nombrePreSetData'))
             ->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'codigoPreSetData'))
             ->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'descripcionPreSetData'))

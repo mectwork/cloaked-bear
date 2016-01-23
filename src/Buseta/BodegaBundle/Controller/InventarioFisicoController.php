@@ -63,28 +63,32 @@ class InventarioFisicoController extends Controller
 
     public function procesarInventarioFisicoAction($id)
     {
-       $manager = $this->get('buseta.bodega.inventariofisico.manager');
+        $manager = $this->get('buseta.bodega.inventariofisico.manager');
 
-       if ($manager->procesar($id)){
+        $result = $manager->procesar($id);
+       if ($result===true){
            $this->get('session')->getFlashBag()->add('success', 'Se ha procesado el Inventario Fisico de forma correcta.');
            return $this->redirect( $this->generateUrl('inventariofisico_show', array( 'id' => $id ) ) );
        } else {
-           $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar Inventario Fisico.');
+           $this->get('session')->getFlashBag()->add('danger',sprintf(  'Ha ocurrido un error al procesar el Inventario Fisico: %s',$result));
            return $this->redirect( $this->generateUrl('inventariofisico_show', array( 'id' => $id ) ) );
        }
+
     }
 
     public function completarInventarioFisicoAction($id)
     {
         $manager = $this->get('buseta.bodega.inventariofisico.manager');
 
-        if ($manager->completar($id)){
+        $result = $manager->completar($id);
+        if ($result===true){
             $this->get('session')->getFlashBag()->add('success', 'Se ha completado el Inventario Fisico de forma correcta.');
             return $this->redirect( $this->generateUrl('inventariofisico_show', array( 'id' => $id ) ) );
         } else {
-            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar Inventario Fisico.');
+            $this->get('session')->getFlashBag()->add('danger',  sprintf('Ha ocurrido un error al completar Inventario Fisico: %s',$result));
             return $this->redirect( $this->generateUrl('inventariofisico_show', array( 'id' => $id ) ) );
         }
+
     }
 
     /**

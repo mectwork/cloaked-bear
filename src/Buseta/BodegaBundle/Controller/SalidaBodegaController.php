@@ -14,12 +14,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\SalidaBodega;
 use Buseta\BodegaBundle\Form\Type\SalidaBodegaType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
-
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Buseta\BodegaBundle\BusetaBodegaBitacoraEvents;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Buseta\BodegaBundle\Event\BitacoraEvents;
 
 /**
  * SalidaBodega controller.
@@ -52,118 +52,74 @@ class SalidaBodegaController extends Controller
      */
     public function completarSalidaBodegaAction(SalidaBodega $entity)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
-        $fechaSalidaBodega = new \DateTime();
-
-        //Comparar la existencia de cantidad de productos disponibles en el almacen
-        //a partir de la solicitud de salidabodega de productos entre almacenes
-
         /*  @var  \Buseta\BodegaBundle\Entity\SalidaBodega  $entity */
+        /*  @var  \Buseta\BodegaBundle\Entity\SalidaBodegaProducto  $salidaBodegaProducto */
         /*  @var  \Buseta\BodegaBundle\Entity\Producto  $producto*/
         /*  @var  \Buseta\BodegaBundle\Entity\Bodega  $bodega*/
 
-        $idAlmacenOrigen  = $entity->getAlmacenOrigen();
-        $idAlmacenDestino = $entity->getAlmacenDestino();
+        $em = $this->get('doctrine.orm.entity_manager');
 
-        $cantidadDisponible = 0;
+        $fe = new FuncionesExtras();
 
-        foreach ($entity->getSalidasProductos() as $salidabodega) {
-            $idProducto = $salidabodega->getProducto();
-            $producto           = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
-            $almacen            = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
-            $cantidadProducto   = $salidabodega->getCantidad();
+        $almacenOrigen  = $entity->getAlmacenOrigen();
 
-            $fe = new FuncionesExtras();
-            $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $almacen, $cantidadProducto, $em);
+        $error=false;
+
+        //Comparar la existencia de cantidad de productos disponibles en el almacen
+        //a partir de la solicitud de salidabodega de productos entre almacenes
+        //ciclo a traves de todos las salidas de bodega de productos para verificar y validar
+        //la existencia fisica en el almacen de Origen del producto
+        foreach ($entity->getSalidasProductos() as $salidaBodegaProducto) {
+            $producto = $salidaBodegaProducto->getProducto();
+            $cantidad = $salidaBodegaProducto->getCantidad();
+            $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $almacenOrigen, $cantidad, $em);
 
             //Comprobar la existencia del producto en la bodega seleccionada
-            if ($cantidadDisponible == 'No existe') {
-                //Volver al menu de de crear nuevo SalidaBodega
-                $salidabodegasProductos = $this->createForm(new SalidaBodegaProductoType());
-
+            if ($cantidadDisponible === 'No existe') {
+                $error=true;
+                //Fallo de validacion, al no existir el producto en el almacen de origen
+                //volver al menu de de crear nuevo SalidaBodega
+                $salidaBodegasProductoFormulario = $this->createForm(new SalidaBodegaProductoType());
                 $form   = $this->createCreateForm($entity);
-                $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
-                $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
-
-                $form->addError(new FormError("El producto '".$producto->getNombre()."' no existe en la bodega seleccionada"));
-
+                $form->addError(new FormError( sprintf( "El producto %s no existe en la bodega seleccionada", $producto->getNombre()) ));
                 return $this->render('BusetaBodegaBundle:SalidaBodega:new.html.twig', array(
                     'entity' => $entity,
-                    'salidabodegasProductos' => $salidabodegasProductos->createView(),
+                    'salidabodegasProductos' => $salidaBodegasProductoFormulario->createView(),
                     'form'   => $form->createView(),
                 ));
-            } elseif ($cantidadDisponible < 0) { //Si no existe la cantidad solicitada en el almacen del producto seleccionado
-                //Volver al menu de de crear nuevo SalidaBodega
-                $salidabodegasProductos = $this->createForm(new SalidaBodegaProductoType());
 
+            } elseif ($cantidadDisponible < 0) {
+                $error=true;
+                //Fallo de validacion, al no existir la cantidad solicitada del producto seleccionado en el almacen de origen
+                //volver al menu de de crear nuevo SalidaBodega
+                $salidaBodegasProductoFormulario = $this->createForm(new SalidaBodegaProductoType());
                 $form   = $this->createCreateForm($entity);
-                $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
-                $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
-
-                $form->addError(new FormError("No existe en la bodega '".$bodega->getNombre()."' la cantidad de productos solicitados para el producto: ".$producto->getNombre()));
-
+                $form->addError(new FormError( sprintf("No existe en la bodega %s la cantidad de productos solicitados para el producto: %s", $almacenOrigen->getNombre(), $producto->getNombre()  )));
                 return $this->render('BusetaBodegaBundle:SalidaBodega:new.html.twig', array(
                     'entity' => $entity,
-                    'salidabodegasProductos' => $salidabodegasProductos->createView(),
+                    'salidabodegasProductos' => $salidaBodegasProductoFormulario->createView(),
                     'form'   => $form->createView(),
                 ));
-            } else { //Si sí existe la cantidad del producto en la bodega seleccionada
-                //Actualizar Bitácora - AlmacenOrigen
-                $bitacora = new BitacoraAlmacen();
-                $bitacora->setProducto($producto);
-                $bitacora->setFechaMovimiento($fechaSalidaBodega);
-                $origen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
-                $bitacora->setAlmacen($origen);
-                $bitacora->setCantidadMovida($salidabodega->getCantidad());
-              /*$bitacora->setTipoMovimiento('M-');
-                $em->persist($bitacora);
-                $em->flush();*/
 
-                // Buseta\BodegaBundle\BusetaBodegaBitacoraEvents;
-                //use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
-                $eventDispatcher = $this->get('event_dispatcher');
-                $event = new FilterBitacoraEvent($bitacora);
-                $eventDispatcher->dispatch(BusetaBodegaBitacoraEvents::MOVEMENT_FROM /*M-*/, $event);
-
-                //Actualizar Bitácora - AlmacenDestino
-                $bitacora = new BitacoraAlmacen();
-                $bitacora->setProducto($producto);
-                $bitacora->setFechaMovimiento($fechaSalidaBodega);
-                $destino = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
-                $bitacora->setAlmacen($destino);
-                $bitacora->setCantidadMovida($salidabodega->getCantidad());
-               /*$bitacora->setTipoMovimiento('M+');
-                $em->persist($bitacora);
-                $em->flush();*/
-
-                $eventDispatcher = $this->get('event_dispatcher');
-                $event = new FilterBitacoraEvent($bitacora);
-                $eventDispatcher->dispatch(BusetaBodegaBitacoraEvents::MOVEMENT_TO /*M+*/, $event);
-
-                $almacenOrigen    = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
-                $almacenDestino   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
-
-                $centroCosto   = $em->getRepository('BusetaBusesBundle:Autobus')->find($entity->getCentroCosto());
-                $ordenTrabajo   = $em->getRepository('BusetaTallerBundle:OrdenTrabajo')->find($entity->getOrdenTrabajo());
-
-                //Persistimos los salida de bodegas
-                $entity->setCreatedBy($this->getUser()->getUsername());
-                $entity->setMovidoBy($this->getUser()->getUsername());
-                $entity->setCentroCosto($centroCosto);
-                $entity->setControlEntregaMaterial($entity->getControlEntregaMaterial());
-                $entity->setObservaciones($entity->getObservaciones());
-                $entity->setTipoOT($entity->getTipoOT());
-                $entity->setEstadoDocumento('CO');
-                $entity->setOrdenTrabajo($ordenTrabajo);
-                $entity->setAlmacenOrigen($almacenOrigen);
-                $entity->setAlmacenDestino($almacenDestino);
-                $entity->setFecha($fechaSalidaBodega);
-                $em->persist($entity);
-                $em->flush();
             }
+            //si no hay problema con la existencia del producto en la bodega de origen
+            //ni con la cantidad de ese producto entonces sigo al siguiente producto
         }
 
-        return $this->redirect($this->generateUrl('salidabodega'));
+        //Si no hubo error en la validacion de las existencias de ninguna linea de $salidabodegaproducto
+        if (!$error) {
+            $manager = $this->get('buseta.bodega.salidabodega.manager');
+            $id = $entity->getId();
+            $result = $manager->completar($id);
+            if ($result===true){
+                $this->get('session')->getFlashBag()->add('success', 'Se ha completado la salida de bodega de forma correcta.');
+                return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $id ) ) );
+            } else {
+                $this->get('session')->getFlashBag()->add('danger',
+                    sprintf('Ha ocurrido un error al completar la salida de bodega: %s', $result));
+                return $this->redirect($this->generateUrl('salidabodega_show', array('id' => $id)));
+            }
+        }
 
     }
 
@@ -288,7 +244,8 @@ class SalidaBodegaController extends Controller
                     $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $almacen, $cantidadProducto, $em);
 
                     //Comprobar la existencia del producto en la bodega seleccionada
-                    if ($cantidadDisponible == 'No existe') {
+                    if ($cantidadDisponible === 'No existe') {
+
                         //Volver al menu de de crear nuevo SalidaBodega
                         $salidabodegasProductos = $this->createForm(new SalidaBodegaProductoType());
 

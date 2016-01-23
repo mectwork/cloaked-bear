@@ -36,6 +36,9 @@
                 <div class="col-lg-4">{{ form_row(filter_form.consecutivoCompra) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.almacen) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.tercero) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.estado) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -117,7 +120,7 @@
 
     <div class="paginator row">
         <div class="col-lg-4"></div>
-        {#<div class="col-lg-12" style="text-align: center">{{ knp_pagination_render(entities) }}</div>#}
+        <div class="col-lg-12" style="text-align: center">{{ knp_pagination_render(entities) }}</div>
     </div>
 </div>
 
@@ -155,6 +158,26 @@
                     $(this).val(null);
                 })
             });
+
+
+            //modificacion de los selectores de fecha
+            var fechaInicio = $('input#buseta_albaran_filter_fechaInicio'),
+                   fechaFin = $('input#buseta_albaran_filter_fechaFin');
+            fechaInicio.datetimepicker({
+                format: 'DD/MM/YYYY',
+                useCurrent: false
+            });
+            fechaFin.datetimepicker({
+                format: 'DD/MM/YYYY'
+            });
+            fechaInicio.on('dp.change', function(e){
+                fechaFin.data("DateTimePicker").minDate(e.date);
+            });
+            fechaFin.on('dp.change', function (e) {
+                fechaInicio.data("DateTimePicker").maxDate(e.date);
+            });
+
+
         });
     </script>
 

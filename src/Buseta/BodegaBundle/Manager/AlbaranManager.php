@@ -39,19 +39,17 @@ class AlbaranManager
      * @param Logger $logger
      * @param EventDispatcherInterface $dispatcher
      */
-    function __construct(ObjectManager $em, Logger $logger,  EventDispatcherInterface $dispatcher)
+    function __construct(ObjectManager $em, Logger $logger, EventDispatcherInterface $dispatcher)
     {
         $this->em = $em;
         $this->logger = $logger;
-        $this->dispatcher =   $dispatcher;
+        $this->dispatcher = $dispatcher;
     }
 
+
     /**
-     * Procesar Albaran
-     *
-     * @param integer $id
-     * @return bool
-     * @throws NotValidStateException
+     * @param $id
+     * @return bool|string
      */
     public function procesar($id)
     {
@@ -63,7 +61,7 @@ class AlbaranManager
                 throw new NotFoundElementException('No se encontro la entidad Albaran.');
             }
 
-            if ($albaran->getEstadoDocumento()!== 'BO') {
+            if ($albaran->getEstadoDocumento() !== 'BO') {
                 $this->logger->error(sprintf('El estado %s del Albaran con id %d no se corresponde con el estado previo a procesado(PR).',
                     $albaran->getEstadoDocumento(),
                     $albaran->getId()
@@ -72,80 +70,106 @@ class AlbaranManager
             }
 
             // Change state Borrador(BO) to Procesado(PR)
-            $eventDispatcher = $this->dispatcher;
             $event = new FilterAlbaranEvent($albaran);
-            $eventDispatcher->dispatch(AlbaranEvents::POS_PROCESS, $event);
-            $resultado = $event->getReturnValue();
+            $this->dispatcher->dispatch(AlbaranEvents::POS_PROCESS, $event);
+            $result = $event->getReturnValue();
+            if ($result !== true) {
+                //borramos los cambios en el entity manager
+                $this->em->clear();
+                return $error = $result;
+            }
 
-            return $resultado;
+            $this->em->flush();
+            return true;
 
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Ha ocurrido un error al procesar el Albaran: %s', $e->getMessage()));
-
-            return false;
+            return 'Ha ocurrido un error al procesar el Albaran';
         }
 
     }
 
-
     /**
-     * Completar Albaran
-     *
-     * @param \Buseta\BodegaBundle\Entity\Albaran $albaran
-     * @return bool
+     * @param $id
+     * @return bool|string
      */
-    public function completar(Albaran $albaran)
+    public function completar($id)
     {
+        /** @var \Buseta\BodegaBundle\Entity\Albaran $albaran */
+        /** @var \Buseta\BodegaBundle\Entity\AlbaranLinea $lineas */
         try {
-            $albaranLineas =  $albaran->getAlbaranLineas();
+
+            $albaran = $this->em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
+
+            if (!$albaran) {
+                throw new NotFoundElementException('No se encontro la entidad Albaran.');
+            }
+
+            $albaranLineas = $albaran->getAlbaranLineas();
 
             if ($albaranLineas !== null && count($albaranLineas) > 0) {
                 foreach ($albaranLineas as $linea) {
                     /** @var \Buseta\BodegaBundle\Entity\AlbaranLinea $linea */
                     $event = new FilterBitacoraEvent($linea);
                     $this->dispatcher->dispatch(BitacoraEvents::VENDOR_RECEIPTS, $event);
-                    $resultado = $event->getReturnValue();
+                    $result = $event->getReturnValue();
+                    if ($result !== true) {
+                        //borramos los cambios en el entity manager
+                        $this->em->clear();
+                        return $error = $result;
+                    }
                 }
 
                 // Change state to 'CO'
                 $event = new FilterAlbaranEvent($albaran);
                 $this->dispatcher->dispatch(AlbaranEvents::POS_COMPLETE, $event);
-                $resultado = $event->getReturnValue();
+                $result = $event->getReturnValue();
+                if ($result !== true) {
+                    //borramos los cambios en el entity manager
+                    $this->em->clear();
+                    return $error = $result;
+                }
+            } else {
+                return $error = 'La Orden de Entrega debe tener al menos una linea';
             }
 
+            //finalmente le damos flush a todo para guardar en la Base de Datos
+            //tanto en la bitacora almacen como en la bitacora de seriales yel cambio de estado
+            //es el unico flush que se hace.
+            $this->em->flush();
             return true;
 
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error al procesar el Albaran: %s', $e->getMessage()));
-            return false;
+            $this->logger->error(sprintf('Ha ocurrido un error al procesar la Orden de Entrega: %s',
+                $e->getMessage()));
+            $this->em->clear();
+            return $error = 'Ha ocurrido un error al completar la Orden de Entrega';
         }
 
     }
 
-
     /**
-     * CambiarEstado Albaran
-     *
-     * @param Albaran $albaran
-     * @param string $estado
-     * @return bool
+     * @param $albaran
+     * @param $estado
+     * @return bool|string
      */
     public function cambiarestado($albaran, $estado)
     {
         try {
 
-            if (($albaran == null) || ($estado==null)) return false;
+            if (($albaran === null) || ($estado === null)) {
+                return 'El albaran no puede ser vacio';
+            }
 
             /** @var \Buseta\BodegaBundle\Entity\Albaran $albaran */
             $albaran->setEstadoDocumento($estado);
             $this->em->persist($albaran);
-            $this->em->flush();
 
             return true;
 
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Ha ocurrido un error al cambiar estado al Albaran: %s', $e->getMessage()));
-            return false;
+            return 'Ha ocurrido un error al cambiar estado al Albaran';
         }
 
     }

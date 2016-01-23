@@ -51,7 +51,14 @@ class InventarioFisicoLineaType extends AbstractType
                 'attr' => array(
                     'class' => 'form-control',
                 ),
-            ));
+            ))
+            ->add('seriales', 'textarea', array(
+                'required' => false,
+                'label'  => 'Seriales',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+             ));
     }
 
     /**

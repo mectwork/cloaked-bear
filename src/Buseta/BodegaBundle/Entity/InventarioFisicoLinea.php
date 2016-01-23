@@ -5,10 +5,11 @@ namespace Buseta\BodegaBundle\Entity;
 use Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Buseta\BodegaBundle\Validator\Constraints\ValidarSerial;
 
 /**
  * InventarioFisicoLinea.
- *
+ * @ValidarSerial()
  * @ORM\Table(name="d_inventario_fisico_linea")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\InventarioFisicoLineaRepository")
  */
@@ -67,6 +68,13 @@ class InventarioFisicoLinea implements GeneradorBitacoraInterface
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\InventarioFisico", inversedBy="inventarioFisicoLineas")
      */
     private $inventarioFisico;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="seriales", type="string", nullable=true)
+     */
+    private $seriales;
 
     /**
      * Get id
@@ -214,5 +222,24 @@ class InventarioFisicoLinea implements GeneradorBitacoraInterface
     public function getInventarioFisico()
     {
         return $this->inventarioFisico;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSeriales()
+    {
+        return $this->seriales;
+    }
+
+    /**
+     * @param string $seriales
+     *
+     * @return InventarioFisicoLinea
+     */
+    public function setSeriales($seriales)
+    {
+        $this->seriales = $seriales;
+        return $this;
     }
 }

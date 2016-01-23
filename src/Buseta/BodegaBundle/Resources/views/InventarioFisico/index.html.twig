@@ -162,26 +162,23 @@
                 })
             });
 
-            $('#buseta_inventario_fisico_filter_fechaInicio').datetimepicker({
-                'format': 'DD/MM/YYYY'
+            //modificacion de los selectores de fecha
+            var fechaInicio = $('input#buseta_inventario_fisico_filter_fechaInicio'),
+                    fechaFin = $('input#buseta_inventario_fisico_filter_fechaFin');
+            fechaInicio.datetimepicker({
+                format: 'DD/MM/YYYY',
+                useCurrent: false
+            });
+            fechaFin.datetimepicker({
+                format: 'DD/MM/YYYY'
+            });
+            fechaInicio.on('dp.change', function(e){
+                fechaFin.data("DateTimePicker").minDate(e.date);
+            });
+            fechaFin.on('dp.change', function (e) {
+                fechaInicio.data("DateTimePicker").maxDate(e.date);
             });
 
-            var fechaInicio = $('#buseta_inventario_fisico_filter_fechaInicio').val();
-            $('input:hidden[name^="buseta_inventario_fisico_filter[fechaInicio]_submit"]').val(fechaInicio);
-
-            $('#buseta_inventario_fisico_filter_fechaFin').datetimepicker({
-                'format': 'DD/MM/YYYY'
-            });
-
-            var fechaFin = $('#buseta_inventario_fisico_filter_fechaFin').val();
-            $('input:hidden[name^="buseta_inventario_fisico_filter[fechaFin]_submit"]').val(fechaFin);
-
-            $("#buseta_inventario_fisico_filter_fechaInicio").on("dp.change", function (e) {
-                $('#buseta_inventario_fisico_filter_fechaFin').data("DateTimePicker").setMinDate(e.date);
-            });
-            $("#buseta_inventario_fisico_filter_fechaFin").on("dp.change", function (e) {
-                $('#buseta_inventario_fisico_filter_fechaInicio').data("DateTimePicker").setMaxDate(e.date);
-            });
         });
     </script>
 

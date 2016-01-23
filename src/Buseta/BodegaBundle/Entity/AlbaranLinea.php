@@ -5,10 +5,11 @@ namespace Buseta\BodegaBundle\Entity;
 use Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Buseta\BodegaBundle\Validator\Constraints\ValidarSerial;
 
 /**
  * AlbaranLinea.
- *
+ * @ValidarSerial()
  * @ORM\Table(name="d_albaran_linea")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\AlbaranLineaRepository")
  */
@@ -69,6 +70,12 @@ class AlbaranLinea implements GeneradorBitacoraInterface
      */
     private $albaran;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="seriales", type="string", nullable=true)
+     */
+    private $seriales;
 
     /**
      * Get id.
@@ -223,4 +230,25 @@ class AlbaranLinea implements GeneradorBitacoraInterface
     {
         return $this->albaran;
     }
+
+    /**
+     * @return string
+     */
+    public function getSeriales()
+    {
+        return $this->seriales;
+    }
+
+    /**
+     * @param string $seriales
+     *
+     * @return AlbaranLinea
+     */
+    public function setSeriales($seriales)
+    {
+        $this->seriales = $seriales;
+        return $this;
+    }
+
+
 }

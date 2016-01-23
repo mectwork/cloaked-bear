@@ -89,6 +89,15 @@ services:
                 - @doctrine.orm.entity_manager
                 - @logger
                 - @validator
+
+    buseta.bodega.bitacora_serial.manager:
+        class: Buseta\BodegaBundle\Manager\BitacoraSerialManager
+        arguments:
+                - @doctrine.orm.entity_manager
+                - @logger
+                - @validator
+                - @buseta.bodega.generadorseriales
+
     buseta.bodega.albaran.manager:
         class: Buseta\BodegaBundle\Manager\AlbaranManager
         arguments:
@@ -109,6 +118,7 @@ services:
             - @doctrine.orm.entity_manager
             - @logger
             - @event_dispatcher
+            - @security.context
 
     buseta.bodega.salidabodega.manager:
         class: Buseta\BodegaBundle\Manager\SalidaBodegaManager
@@ -116,6 +126,7 @@ services:
             - @doctrine.orm.entity_manager
             - @logger
             - @event_dispatcher
+            - @security.context
 
     #VALIDATORS
     bodega.constains_codigo.validador:
@@ -126,11 +137,29 @@ services:
         tags:
             - {name: validator.constraint_validator, alias: contains_codigo_validator}
 
+    bodega.validar_serial.validador:
+        class: Buseta\BodegaBundle\Validator\Constraints\ValidarSerialValidator
+        arguments:
+            - @security.context
+            - @doctrine.orm.entity_manager
+            - @buseta.bodega.generadorseriales
+        tags:
+            - {name: validator.constraint_validator, alias: validar_serial_validator}
+
+    bodega.validar_maxmin.validador:
+        class: Buseta\BodegaBundle\Validator\Constraints\ValidarMaxMinValidator
+        arguments:
+            - @security.context
+            - @doctrine.orm.entity_manager
+        tags:
+            - {name: validator.constraint_validator, alias: validar_maxmin_validator}
+
     # EVENT LISTENERS
     buseta.bodega.bitacora_almacen.subscriber:
         class: Buseta\BodegaBundle\EventListener\BitacoraSubscriber
         arguments:
             - @buseta.bodega.bitacora_almacen.manager
+            - @buseta.bodega.bitacora_serial.manager
             - @logger
         tags:
             - {name: kernel.event_subscriber}

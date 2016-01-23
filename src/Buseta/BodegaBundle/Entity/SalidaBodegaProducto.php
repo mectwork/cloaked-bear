@@ -4,14 +4,16 @@ namespace Buseta\BodegaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Buseta\BodegaBundle\Validator\Constraints\ValidarSerial;
+use Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface;
 
 /**
  * SalidaBodegaProducto.
- *
+ * @ValidarSerial()
  * @ORM\Table(name="d_salida_bodega_producto")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\SalidaBodegaProductoRepository")
  */
-class SalidaBodegaProducto
+class SalidaBodegaProducto implements GeneradorBitacoraInterface
 {
     /**
      * @var integer
@@ -39,6 +41,13 @@ class SalidaBodegaProducto
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\SalidaBodega", inversedBy="salidas_productos")
      */
     private $salida;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="seriales", type="string", nullable=true)
+     */
+    private $seriales;
 
     
 
@@ -120,4 +129,25 @@ class SalidaBodegaProducto
     {
         return $this->salida;
     }
+
+    /**
+     * @return string
+     */
+    public function getSeriales()
+    {
+        return $this->seriales;
+    }
+
+    /**
+     * @param string $seriales
+     *
+     * @return SalidaBodegaProducto
+     */
+    public function setSeriales($seriales)
+    {
+        $this->seriales = $seriales;
+        return $this;
+    }
+
+
 }

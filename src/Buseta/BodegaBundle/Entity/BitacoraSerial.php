@@ -4,6 +4,7 @@ namespace Buseta\BodegaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Buseta\BodegaBundle\Interfaces\DateTimeAwareInterface;
 
 /**
  * BitacoraSeriales.
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="d_bitacora_serial")
  * @ORM\Entity
  */
-class BitacoraSerial
+class BitacoraSerial implements DateTimeAwareInterface
 {
     /**
      * @var integer
@@ -23,26 +24,63 @@ class BitacoraSerial
     private $id;
 
     /**
+     * The allowed values for this list are:
+     * C+ (Customer Returns)
+     * C- (Customer Shipment)
+     * D+ (Internal Consumption +)
+     * D- (Internal Consumption -)
+     * I+ (Inventory In)
+     * I- (Inventory Out)
+     * M+ (Movement To)
+     * M- (Movement From)
+     * P+ (Production +)
+     * P- (Production -)
+     * V+ (Vendor Receipts)
+     * V- (Vendor Returns)
+     * W+ (Work Order +)
+     * W- (Work Order -)
+     *
      * @var string
      *
-     * @ORM\Column(name="tipoMovimiento", type="string", nullable=true)
+     * @ORM\Column(name="movement_type", type="string")
+     *
+     * @Assert\NotNull()
+     * @Assert\Choice(choices={"C+","C-","D+","D-","I+","I-","M+","M-","P+","P-","V+","V-","W+","W-"})
      */
     private $tipoMovimiento;
 
     /**
+     * @var \Buseta\BodegaBundle\Entity\Bodega
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega")
+     * @ORM\JoinColumn(name="warehouse_id")
      */
     private $almacen;
 
     /**
+     * @var \Buseta\BodegaBundle\Entity\Producto
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto")
+     * @ORM\JoinColumn(name="product_id")
+     *
+     * @Assert\NotNull()
      */
     private $producto;
 
     /**
-     * @var date
+     * @var \Buseta\BodegaBundle\Entity\ProductoSeriado
      *
-     * @ORM\Column(name="fechaMovimiento", type="date")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\ProductoSeriado")
+     * @ORM\JoinColumn(name="productoseriado_id")
+     *
+     *
+     */
+    private $producto_seriado;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="movement_date", type="date")
      * @Assert\Date()
      */
     private $fechaMovimiento;
@@ -50,54 +88,55 @@ class BitacoraSerial
     /**
      * @var integer
      *
-     * @ORM\Column(name="cantMovida", type="integer", nullable=true)
+     * @ORM\Column(name="movement_qty", type="integer", nullable=true)
      */
-    private $cantMovida;
+    private $cantidadMovida;
+
 
     /**
-     * @var integer
+     * @var \Buseta\BodegaBundle\Entity\InventarioFisicoLinea
      *
-     * @ORM\Column(name="inventarioLinea", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\InventarioFisicoLinea")
+     * @ORM\JoinColumn(name="inventoryline_id")
      */
     private $inventarioLinea;
 
     /**
-     * @var integer
+     * @var \Buseta\BodegaBundle\Entity\MovimientosProductos
      *
-     * @ORM\Column(name="movimientoLinea", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\MovimientosProductos")
+     * @ORM\JoinColumn(name="movementline_id")
      */
     private $movimientoLinea;
 
     /**
-     * @var integer
+     * @var \Buseta\BodegaBundle\Entity\AlbaranLinea
      *
-     * @ORM\Column(name="entradaSalidaLinea", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\AlbaranLinea")
+     * @ORM\JoinColumn(name="inoutline_id")
      */
     private $entradaSalidaLinea;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="produccionLinea", type="integer", nullable=true)
+     * @ORM\Column(name="production_line", type="string", nullable=true)
      */
     private $produccionLinea;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\BitacoraAlmacen")
+     * @var string
+     *
+     * @ORM\Column(name="internal_consumption_line", type="string", nullable=true)
      */
-    private $bitacoraAlmacen;
+    private $consumoInterno;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created", type="datetime", nullable=true)
+     * @ORM\Column(name="created", type="datetime")
      */
     private $created;
-
-    /**
-     * @var string
-     */
-    private $createdby;
 
     /**
      * @var \DateTime
@@ -107,11 +146,6 @@ class BitacoraSerial
     private $updated;
 
     /**
-     *
-     */
-    private $updatedby;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="deleted", type="datetime", nullable=true)
@@ -119,18 +153,14 @@ class BitacoraSerial
     private $deleted;
 
     /**
+     * @var string
      *
+     * @ORM\Column(name="serial", type="string", nullable=true)
      */
-    private $deletedby;
-
-    public function __construct()
-    {
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
-    }
+    private $serial;
 
     /**
-     * Get id.
+     * Get id
      *
      * @return integer
      */
@@ -140,10 +170,9 @@ class BitacoraSerial
     }
 
     /**
-     * Set tipoMovimiento.
+     * Set tipoMovimiento
      *
      * @param string $tipoMovimiento
-     *
      * @return BitacoraSerial
      */
     public function setTipoMovimiento($tipoMovimiento)
@@ -154,7 +183,7 @@ class BitacoraSerial
     }
 
     /**
-     * Get tipoMovimiento.
+     * Get tipoMovimiento
      *
      * @return string
      */
@@ -164,10 +193,9 @@ class BitacoraSerial
     }
 
     /**
-     * Set fechaMovimiento.
+     * Set fechaMovimiento
      *
      * @param \DateTime $fechaMovimiento
-     *
      * @return BitacoraSerial
      */
     public function setFechaMovimiento($fechaMovimiento)
@@ -178,7 +206,7 @@ class BitacoraSerial
     }
 
     /**
-     * Get fechaMovimiento.
+     * Get fechaMovimiento
      *
      * @return \DateTime
      */
@@ -188,133 +216,59 @@ class BitacoraSerial
     }
 
     /**
-     * Set cantMovida.
+     * Set cantidadMovida
      *
-     * @param integer $cantMovida
-     *
+     * @param integer $cantidadMovida
      * @return BitacoraSerial
      */
-    public function setCantidadMovida($cantMovida)
+    public function setCantidadMovida($cantidadMovida)
     {
-        $this->cantMovida = $cantMovida;
+        $this->cantidadMovida = $cantidadMovida;
 
         return $this;
     }
 
     /**
-     * Get cantMovida.
+     * Get cantidadMovida
      *
      * @return integer
      */
     public function getCantidadMovida()
     {
-        return $this->cantMovida;
+        return $this->cantidadMovida;
     }
 
+
     /**
-     * Set InventarioLinea.
+     * Set consumoInterno
      *
-     * @param integer $inventarioLinea
-     *
+     * @param integer $consumoInterno
      * @return BitacoraSerial
      */
-    public function setInventarioLinea($inventarioLinea)
+    public function setConsumoInterno($consumoInterno)
     {
-        $this->inventarioLinea = $inventarioLinea;
+        $this->consumoInterno = $consumoInterno;
 
         return $this;
     }
 
     /**
-     * Get InventarioLinea.
+     * Get consumoInterno
      *
      * @return integer
      */
-    public function getInventarioLinea()
+    public function getConsumoInterno()
     {
-        return $this->inventarioLinea;
+        return $this->consumoInterno;
     }
 
     /**
-     * Set MovimientoLinea.
-     *
-     * @param integer $movimientoLinea
-     *
-     * @return BitacoraSerial
-     */
-    public function setMovimientoLinea($movimientoLinea)
-    {
-        $this->movimientoLinea = $movimientoLinea;
-
-        return $this;
-    }
-
-    /**
-     * Get MovimientoLinea.
-     *
-     * @return integer
-     */
-    public function getMovimientoLinea()
-    {
-        return $this->movimientoLinea;
-    }
-
-    /**
-     * Set EntradaSalidaLinea.
-     *
-     * @param integer $entradaSalidaLinea
-     *
-     * @return BitacoraSerial
-     */
-    public function setEntradaSalidaLinea($entradaSalidaLinea)
-    {
-        $this->entradaSalidaLinea = $entradaSalidaLinea;
-
-        return $this;
-    }
-
-    /**
-     * Get EntradaSalidaLinea.
-     *
-     * @return integer
-     */
-    public function getEntradaSalidaLinea()
-    {
-        return $this->entradaSalidaLinea;
-    }
-
-    /**
-     * Set ProduccionLinea.
-     *
-     * @param integer $produccionLinea
-     *
-     * @return BitacoraSerial
-     */
-    public function setProduccionLinea($produccionLinea)
-    {
-        $this->produccionLinea = $produccionLinea;
-
-        return $this;
-    }
-
-    /**
-     * Get ProduccionLinea.
-     *
-     * @return integer
-     */
-    public function getProduccionLinea()
-    {
-        return $this->produccionLinea;
-    }
-
-    /**
-     * Set created.
+     * Set created
      *
      * @param \DateTime $created
-     *
-     * @return BitacoraAlmacen
+     * @return BitacoraSerial
      */
-    public function setCreated($created)
+    public function setCreated(\DateTime $created)
     {
         $this->created = $created;
 
@@ -322,7 +276,7 @@ class BitacoraSerial
     }
 
     /**
-     * Get created.
+     * Get created
      *
      * @return \DateTime
      */
@@ -332,13 +286,12 @@ class BitacoraSerial
     }
 
     /**
-     * Set updated.
+     * Set updated
      *
      * @param \DateTime $updated
-     *
-     * @return BitacoraAlmacen
+     * @return BitacoraSerial
      */
-    public function setUpdated($updated)
+    public function setUpdated(\DateTime $updated)
     {
         $this->updated = $updated;
 
@@ -346,7 +299,7 @@ class BitacoraSerial
     }
 
     /**
-     * Get updated.
+     * Get updated
      *
      * @return \DateTime
      */
@@ -356,11 +309,10 @@ class BitacoraSerial
     }
 
     /**
-     * Set deleted.
+     * Set deleted
      *
      * @param \DateTime $deleted
-     *
-     * @return BitacoraAlmacen
+     * @return BitacoraSerial
      */
     public function setDeleted($deleted)
     {
@@ -370,7 +322,7 @@ class BitacoraSerial
     }
 
     /**
-     * Get deleted.
+     * Get deleted
      *
      * @return \DateTime
      */
@@ -380,10 +332,9 @@ class BitacoraSerial
     }
 
     /**
-     * Set almacen.
+     * Set almacen
      *
      * @param \Buseta\BodegaBundle\Entity\Bodega $almacen
-     *
      * @return BitacoraSerial
      */
     public function setAlmacen(\Buseta\BodegaBundle\Entity\Bodega $almacen = null)
@@ -394,7 +345,7 @@ class BitacoraSerial
     }
 
     /**
-     * Get almacen.
+     * Get almacen
      *
      * @return \Buseta\BodegaBundle\Entity\Bodega
      */
@@ -404,10 +355,9 @@ class BitacoraSerial
     }
 
     /**
-     * Set producto.
+     * Set producto
      *
      * @param \Buseta\BodegaBundle\Entity\Producto $producto
-     *
      * @return BitacoraSerial
      */
     public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
@@ -418,7 +368,7 @@ class BitacoraSerial
     }
 
     /**
-     * Get producto.
+     * Get producto
      *
      * @return \Buseta\BodegaBundle\Entity\Producto
      */
@@ -428,97 +378,138 @@ class BitacoraSerial
     }
 
     /**
-     * Set almacen.
+     * Set producto_seriado
      *
-     * @param \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacoraAlmacen
-     *
+     * @param \Buseta\BodegaBundle\Entity\ProductoSeriado $producto_seriado
      * @return BitacoraSerial
      */
-    public function setBitacoraAlmacen(\Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacoraAlmacen = null)
+    public function setProductoSeriado(\Buseta\BodegaBundle\Entity\ProductoSeriado $producto_seriado = null)
     {
-        $this->bitacoraAlmacen = $bitacoraAlmacen;
+        $this->producto_seriado = $producto_seriado;
 
         return $this;
     }
 
     /**
-     * Get bitacoraAlmacen.
+     * Get producto_seriado
      *
-     * @return \Buseta\BodegaBundle\Entity\BitacoraAlmacen
+     * @return \Buseta\BodegaBundle\Entity\ProductoSeriado
      */
-    public function getBitacoraAlmacen()
+    public function getProductoSeriado()
     {
-        return $this->bitacoraAlmacen;
+        return $this->producto_seriado;
     }
 
+
     /**
-     * Set createdby.
+     * Set inventarioLinea
      *
-     * @param @return string
-     *
+     * @param \Buseta\BodegaBundle\Entity\InventarioFisicoLinea $inventarioLinea
      * @return BitacoraSerial
      */
-    public function setCreatedby( $createdby = null)
+    public function setInventarioLinea(\Buseta\BodegaBundle\Entity\InventarioFisicoLinea $inventarioLinea = null)
     {
-        $this->createdby = $createdby;
+        $this->inventarioLinea = $inventarioLinea;
 
         return $this;
     }
 
     /**
-     * Get createdby.
+     * Get inventarioLinea
+     *
+     * @return \Buseta\BodegaBundle\Entity\InventarioFisicoLinea
+     */
+    public function getInventarioLinea()
+    {
+        return $this->inventarioLinea;
+    }
+
+    /**
+     * Set movimientoLinea
+     *
+     * @param \Buseta\BodegaBundle\Entity\MovimientosProductos $movimientoLinea
+     * @return BitacoraSerial
+     */
+    public function setMovimientoLinea(\Buseta\BodegaBundle\Entity\MovimientosProductos $movimientoLinea = null)
+    {
+        $this->movimientoLinea = $movimientoLinea;
+
+        return $this;
+    }
+
+    /**
+     * Get movimientoLinea
+     *
+     * @return \Buseta\BodegaBundle\Entity\MovimientosProductos
+     */
+    public function getMovimientoLinea()
+    {
+        return $this->movimientoLinea;
+    }
+
+    /**
+     * Set entradaSalidaLinea
+     *
+     * @param \Buseta\BodegaBundle\Entity\AlbaranLinea $entradaSalidaLinea
+     * @return BitacoraSerial
+     */
+    public function setEntradaSalidaLinea(\Buseta\BodegaBundle\Entity\AlbaranLinea $entradaSalidaLinea = null)
+    {
+        $this->entradaSalidaLinea = $entradaSalidaLinea;
+
+        return $this;
+    }
+
+    /**
+     * Get entradaSalidaLinea
+     *
+     * @return \Buseta\BodegaBundle\Entity\AlbaranLinea
+     */
+    public function getEntradaSalidaLinea()
+    {
+        return $this->entradaSalidaLinea;
+    }
+
+    /**
+     * Set produccionLinea
+     *
+     * @param string $produccionLinea
+     * @return BitacoraSerial
+     */
+    public function setProduccionLinea($produccionLinea)
+    {
+        $this->produccionLinea = $produccionLinea;
+
+        return $this;
+    }
+
+    /**
+     * Get produccionLinea
      *
      * @return string
      */
-    public function getCreatedby()
+    public function getProduccionLinea()
     {
-        return $this->createdby;
+        return $this->produccionLinea;
     }
 
     /**
-     * Set updatedBy
-     *
-     * @param string $updatedBy
-     * @return BitacoraSerial
+     * @return string
      */
-    public function setUpdatedBy($updatedBy)
+    public function getSerial()
     {
-        $this->updatedBy = $updatedBy;
+        return $this->serial;
+    }
+
+
+    /**
+     * @param $serial
+     * @return $this
+     */
+    public function setSerial($serial)
+    {
+        $this->serial = $serial;
 
         return $this;
     }
-
-    /**
-     * Get updatedBy
-     *
-     * @return string
-     */
-    public function getUpdatedBy()
-    {
-        return $this->updatedby;
-    }
-
-    /**
-     * Set deletedBy
-     *
-     * @param string $deletedBy
-     * @return BitacoraSerial
-     */
-    public function setDeletedBy($deletedBy)
-    {
-        $this->deletedby = $deletedBy;
-
-        return $this;
-    }
-
-    /**
-     * Get deletedBy
-     *
-     * @return string
-     */
-    public function getDeletedBy()
-    {
-        return $this->deletedby;
-    }
-
 }
