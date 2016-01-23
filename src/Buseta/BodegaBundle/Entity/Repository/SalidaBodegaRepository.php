@@ -48,6 +48,17 @@ class SalidaBodegaRepository extends EntityRepository
                 $query->andWhere($qb->expr()->lte('sb.fecha',':fechaFin'))
                     ->setParameter('fechaFin', $filter->getFechaFin());
             }
+            if ($filter->getEstado() !== null && $filter->getEstado() !== '') {
+                $query->andWhere($query->expr()->eq('sb.estado_documento', ':estado'))
+                    ->setParameter('estado', $filter->getEstado());
+            }
+            if ($filter->getProducto() !== null && $filter->getProducto() !== '') {
+                $query->innerJoin('sb.salidas_productos', 'salidas_productos')
+                    ->where($qb->expr()->andX(
+                        $qb->expr()->eq('salidas_productos.producto',':producto')
+                    ))
+                    ->setParameter('producto', $filter->getProducto());
+            }
 
         }
 

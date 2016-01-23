@@ -1,6 +1,9 @@
 <?php
 namespace Buseta\BodegaBundle\Form\Model;
 
+use Buseta\BodegaBundle\Entity\Bodega;
+use Buseta\BodegaBundle\Entity\Producto;
+
 class InventarioFisicoFilterModel
 {
     /**
@@ -32,6 +35,11 @@ class InventarioFisicoFilterModel
      * @var string
      */
     private $estado;
+
+    /**
+     * @var Producto
+     */
+    private $producto;
 
     /**
      * @return \Buseta\BodegaBundle\Entity\Bodega
@@ -127,5 +135,21 @@ class InventarioFisicoFilterModel
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
+    }
+
+    /**
+     * @return Producto
+     */
+    public function getProducto()
+    {
+        return $this->producto;
+    }
+
+    /**
+     * @param Producto $producto
+     */
+    public function setProducto($producto)
+    {
+        $this->producto = $producto;
     }
 } 

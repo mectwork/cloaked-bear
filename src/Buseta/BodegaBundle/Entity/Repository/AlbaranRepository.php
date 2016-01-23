@@ -48,6 +48,13 @@ class AlbaranRepository extends EntityRepository
                 $query->andWhere($qb->expr()->lte('a.fechaMovimiento',':fechaFin'))
                     ->setParameter('fechaFin', $filter->getFechaFin());
             }
+            if ($filter->getProducto() !== null && $filter->getProducto() !== '') {
+                $query->innerJoin('a.albaranLineas', 'albaranLineas')
+                    ->where($qb->expr()->andX(
+                        $qb->expr()->eq('albaranLineas.producto',':producto')
+                    ))
+                    ->setParameter('producto', $filter->getProducto());
+            }
         }
 
         $query->orderBy('a.id', 'ASC');

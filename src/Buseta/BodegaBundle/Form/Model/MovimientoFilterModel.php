@@ -32,6 +32,11 @@ class MovimientoFilterModel
     private $producto;
 
     /**
+     * @var string
+     */
+    private $estado;
+
+    /**
      * @return Bodega
      */
     public function getAlmacenOrigen()
@@ -109,6 +114,22 @@ class MovimientoFilterModel
     public function setProducto($producto)
     {
         $this->producto = $producto;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
+     * @param string $estado
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
     }
 
 }

@@ -43,6 +43,10 @@ class MovimientoRepository extends EntityRepository
                 $query->andWhere($qb->expr()->lte('m.fechaMovimiento',':fechaFin'))
                     ->setParameter('fechaFin', $filter->getFechaFin());
             }
+            if ($filter->getEstado() !== null && $filter->getEstado() !== '') {
+                $query->andWhere($query->expr()->eq('m.estado_documento', ':estado'))
+                    ->setParameter('estado', $filter->getEstado());
+            }
 
         }
 

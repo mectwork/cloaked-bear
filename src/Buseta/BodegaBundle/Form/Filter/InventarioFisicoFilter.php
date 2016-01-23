@@ -69,6 +69,15 @@ class InventarioFisicoFilter extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
+            ->add('producto','entity',array(
+                'class' => 'BusetaBodegaBundle:Producto',
+                'label' => 'Producto',
+                'empty_value' => '---Seleccione---',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
         ;
     }
 

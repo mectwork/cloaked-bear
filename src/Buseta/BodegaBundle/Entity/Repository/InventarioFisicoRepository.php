@@ -40,6 +40,13 @@ class InventarioFisicoRepository extends EntityRepository
                 $query->andWhere($qb->expr()->lte('i.fecha',':fechaFin'))
                     ->setParameter('fechaFin', $filter->getFechaFin());
             }
+            if ($filter->getProducto() !== null && $filter->getProducto() !== '') {
+                $query->innerJoin('i.inventarioFisicoLineas', 'inventarioFisicoLineas')
+                    ->where($qb->expr()->andX(
+                        $qb->expr()->eq('inventarioFisicoLineas.producto',':producto')
+                    ))
+                    ->setParameter('producto', $filter->getProducto());
+            }
         }
 
         $query->orderBy('i.id', 'ASC');
