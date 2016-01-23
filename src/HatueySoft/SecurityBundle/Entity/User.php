@@ -9,6 +9,7 @@ use HatueySoft\SecurityBundle\Validator\Constraints\UniqueSystemUserUsername;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Buseta\BusesBundle\Entity\GrupoBuses;
+
 /**
  * @author: firomero <firomerorom4@gmail.com>
  * @author: dundivet <dundivet@emailn.de>
@@ -16,6 +17,8 @@ use Buseta\BusesBundle\Entity\GrupoBuses;
  * @ORM\Entity(repositoryClass="HatueySoft\SecurityBundle\Entity\UserRepository")
  * @ORM\Table(name="hatueysoft_security_user")
  * @UniqueEntity(fields={"username", "email"})
+ * @UniqueSystemUserUsername()
+ * @UniqueSystemUserEmail()
  */
 class User extends BaseUser
 {
@@ -28,13 +31,11 @@ class User extends BaseUser
 
     /**
      * @var string
-     * @UniqueSystemUserUsername()
      */
     protected $username;
 
     /**
      * @var string
-     * @UniqueSystemUserEmail()
      */
     protected $email;
 
@@ -80,10 +81,9 @@ class User extends BaseUser
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Buseta\BusesBundle\Entity\GrupoBuses")
-     * @ORM\JoinTable(name="sec_user_grupobuses")
+     * @ORM\JoinTable(name="hatueysoft_security_user_grupobuses")
      */
     private $grupobuses;
-
 
 
     function __construct()
@@ -104,7 +104,7 @@ class User extends BaseUser
         $this->locked = !$value;
     }
 
-    public  function getId()
+    public function getId()
     {
         return $this->id;
     }
@@ -174,7 +174,7 @@ class User extends BaseUser
     }
 
     /**
-     * @return string
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getGrupoBuses()
     {
@@ -182,13 +182,20 @@ class User extends BaseUser
     }
 
     /**
-     * @param string $grupobuses
+     * @param \Doctrine\Common\Collections\ArrayCollection $grupobuses
      */
     public function setGrupoBuses($grupobuses)
     {
         $this->grupobuses = $grupobuses;
     }
 
+    /**
+     * @param GrupoBuses $grupoBuse
+     */
+    public function addGrupoBuse(\Buseta\BusesBundle\Entity\GrupoBuses $grupoBuse)
+    {
+        $this->grupobuses->add($grupoBuse);
+    }
 
     public function getNombreCompleto()
     {

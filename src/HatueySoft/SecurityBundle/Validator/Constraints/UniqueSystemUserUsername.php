@@ -15,4 +15,9 @@ class UniqueSystemUserUsername extends Constraint
     {
         return 'unique_systemuser_username_validator';
     }
-} 
+
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
+    }
+}

@@ -27,25 +27,49 @@ class UsuarioType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-        $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetDataUsername'));
         $builder
             ->add('nombres', 'text', array(
-                    'label' => 'Nombres',
-                    'required' => false,
-                    'translation_domain' => 'HatueySoftSecurityBundle',
-                ))
+                'label' => 'usuario.data.nombres',
+                'translation_domain' => 'HatueySoftSecurityBundle',
+            ))
             ->add('apellidos', 'text', array(
-                'label' => 'Apellidos',
+                'label' => 'usuario.data.apellidos',
                 'required' => false,
                 'translation_domain' => 'HatueySoftSecurityBundle',
             ))
             ->add('email', 'email', array(
-                    'label' => 'form.email',
-                    'translation_domain' => 'FOSUserBundle',
-                ))
-            ->add('plainPassword', 'repeated', array(
+                'label' => 'form.email',
+                'translation_domain' => 'FOSUserBundle',
+            ))
+            ->add('pin', 'text', array (
+                'required' => false,
+                'label' => 'usuario.data.pin',
+                'translation_domain' => 'HatueySoftSecurityBundle',
+            ))
+            ->add('grupobuses', 'entity', array(
+                'required' => false,
+                'class' => 'BusetaBusesBundle:GrupoBuses',
+                'label' => 'usuario.data.grupoBuses',
+                'translation_domain' => 'HatueySoftSecurityBundle',
+                'multiple' => true,
+                ));
+        /*->add('groups', null, array(
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))*/
+
+        $builder
+            ->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetDataUsername'));
+        $builder
+            ->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetDataRoles'));
+        $builder
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                $data = $event->getData();
+                $form = $event->getForm();
+
+                $options = array(
                     'type' => 'password',
                     'options' => array('translation_domain' => 'FOSUserBundle'),
                     'first_options' => array(
@@ -59,43 +83,19 @@ class UsuarioType extends AbstractType
                             'class' => 'form-control',
                         )),
                     'invalid_message' => 'fos_user.password.mismatch',
-                ))
+                );
 
-            ->add('grupobuses', 'entity', array(
-                'class' => 'BusetaBusesBundle:GrupoBuses',
-                'label' => 'Grupo Buses',
-                'multiple' => true,
-                ));
+                if ($data->getId() !== null) {
+                    $options['required'] = false;
+                }
 
-            $builder
-                ->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetDataRoles'));
-            /*->add('groups', null, array(
-                'required' => false,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ))*/
-        ;
+                $form->add('plainPassword', 'repeated', $options);
+            });
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param FormEvent $event
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'HatueySoft\SecurityBundle\Entity\User'
-        ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'hatueysoft_security_usuario_type';
-    }
-
     public function onPreSetDataUsername(FormEvent $event)
     {
         $user = $event->getData();
@@ -120,6 +120,9 @@ class UsuarioType extends AbstractType
         }
     }
 
+    /**
+     * @param FormEvent $event
+     */
     public function onPreSetDataRoles(FormEvent $event)
     {
         $form = $event->getForm();
@@ -134,5 +137,23 @@ class UsuarioType extends AbstractType
                 'required' => false,
             ));
 
+    }
+
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'HatueySoft\SecurityBundle\Form\Model\UserModel'
+        ));
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'hatueysoft_security_usuario_type';
     }
 }

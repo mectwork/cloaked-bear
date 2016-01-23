@@ -15,4 +15,9 @@ class UniqueSystemUserEmail extends Constraint
     {
         return 'unique_systemuser_email_validator';
     }
-} 
+
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
+    }
+}

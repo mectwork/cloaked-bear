@@ -18,10 +18,16 @@ class UniqueSystemUserEmailValidator extends ConstraintValidator
         $this->userManager = $userManager;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($data, Constraint $constraint)
     {
-        if($this->userManager->findUserByEmail($value)) {
-            $this->context->addViolation($constraint->message, array('%email%' => $value));
+        $id = $data->getId();
+        $email = $data->getEmail();
+
+        if ($id === null && $this->userManager->findUserByEmail($email)) {
+            $this->context->addViolationAt('email', $constraint->message, array('%email%' => $email));
+        }
+        if ($id !== null && ($user = $this->userManager->findUserByEmail($email)) && $user->getId() !== $id) {
+            $this->context->addViolationAt('email', $constraint->message, array('%email%' => $email));
         }
     }
-} 
+}

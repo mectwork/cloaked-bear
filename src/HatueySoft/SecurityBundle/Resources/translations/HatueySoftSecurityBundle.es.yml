@@ -6,6 +6,7 @@ usuario:
     enabled: Habilitado
     pin: PIN
     roles: Roles
+    grupoBuses: Grupo Buses
   btn:
     create: Crear Usuario
   messages:

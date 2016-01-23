@@ -2,6 +2,8 @@
 
 namespace HatueySoft\SecurityBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use HatueySoft\SecurityBundle\Form\Model\UserModel;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,19 +43,45 @@ class UsuarioController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new Usuario();
-        $form = $this->createCreateForm($entity);
+        $model = new UserModel();
+        $form = $this->createCreateForm($model);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $userManager    = $this->get('fos_user.user_manager');
-            $userManager->updateUser($entity);
+            $user = new Usuario();
 
-            return $this->redirect($this->generateUrl('security_usuario_show', array('id' => $entity->getId())));
+            $user->setUsername($model->getUsername());
+            $user->setEmail($model->getEmail());
+            $user->setNombres($model->getNombres());
+            $user->setApellidos($model->getApellidos());
+            $user->setRoles($model->getRoles());
+            $user->setPlainPassword($model->getPlainPassword());
+
+            $gruposBuses = new ArrayCollection();
+            foreach ($model->getGrupobuses() as $group) {
+                $gruposBuses->add($group);
+            }
+            $user->setGrupoBuses($gruposBuses);
+
+            if (0 !== strlen($model->getPin())) {
+                $user->setPin($model->getPin());
+            }
+
+            $userManager    = $this->get('fos_user.user_manager');
+
+            try {
+                $this->get('session')->getFlashBag()->add('success', 'Se ha creado el usuario satisfactoriamente.');
+
+                $userManager->updateUser($user);
+
+                return $this->redirect($this->generateUrl('security_usuario_show', array('id' => $user->getId())));
+            } catch (\Exception $e) {
+                $this->get('logger')->critical(sprintf('Ha ocurrido un error al crear el usuario. Detalles: %s', $e->getMessage()));
+                $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al crear el usuario.');
+            }
         }
 
         return $this->render('HatueySoftSecurityBundle:Usuario:new.html.twig', array(
-            'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
@@ -61,13 +89,13 @@ class UsuarioController extends Controller
     /**
      * Creates a form to create a Usuario entity.
      *
-     * @param Usuario $entity The entity
+     * @param Usuario $model The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Usuario $entity)
+    private function createCreateForm(UserModel $model = null)
     {
-        $form = $this->createForm('hatueysoft_security_usuario_type', $entity, array(
+        $form = $this->createForm('hatueysoft_security_usuario_type', $model, array(
             'action' => $this->generateUrl('security_usuario_create'),
             'method' => 'POST',
         ));
@@ -82,11 +110,9 @@ class UsuarioController extends Controller
      */
     public function newAction()
     {
-        $entity = new Usuario();
-        $form   = $this->createCreateForm($entity);
+        $form   = $this->createCreateForm(new UserModel());
 
         return $this->render('HatueySoftSecurityBundle:Usuario:new.html.twig', array(
-            'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
@@ -117,23 +143,19 @@ class UsuarioController extends Controller
     /**
      * Displays a form to edit an existing Usuario entity.
      *
+     * @param Usuario $user
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @Route("/{id}/edit", name="security_usuario_edit")
      */
-    public function editAction($id)
+    public function editAction(Usuario $user)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('HatueySoftSecurityBundle:User')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Usuario entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createEditForm(new UserModel($user));
+        $deleteForm = $this->createDeleteForm($user->getId());
 
         return $this->render('HatueySoftSecurityBundle:Usuario:edit.html.twig', array(
-            'entity'      => $entity,
+            'entity'      => $user,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -142,14 +164,14 @@ class UsuarioController extends Controller
     /**
     * Creates a form to edit a Usuario entity.
     *
-    * @param Usuario $entity The entity
+    * @param UserModel $model The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Usuario $entity)
+    private function createEditForm(UserModel $model)
     {
-        $form = $this->createForm('hatueysoft_security_usuario_type', $entity, array(
-            'action' => $this->generateUrl('security_usuario_update', array('id' => $entity->getId())),
+        $form = $this->createForm('hatueysoft_security_usuario_type', $model, array(
+            'action' => $this->generateUrl('security_usuario_update', array('id' => $model->getId())),
             'method' => 'PUT',
         ));
 
@@ -161,30 +183,53 @@ class UsuarioController extends Controller
      * @Route("/{id}/update", name="security_usuario_update")
      * @Method({"POST", "PUT"})
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, Usuario $user)
     {
-        $em = $this->getDoctrine()->getManager();
+        $model = new UserModel($user);
+        //$deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createEditForm($model);
 
-        $entity = $em->getRepository('HatueySoftSecurityBundle:User')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Usuario entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
-
         if ($editForm->isValid()) {
-            $em->flush();
+            $em = $this->get('doctrine.orm.entity_manager');
+            $userManager = $this->get('fos_user.user_manager');
 
-            return $this->redirect($this->generateUrl('security_usuario_edit', array('id' => $id)));
+            $user->setNombres($model->getNombres());
+            $user->setApellidos($model->getApellidos());
+            $user->setEmail($model->getEmail());
+            $user->setRoles($model->getRoles());
+
+            $gruposBuses = new ArrayCollection();
+            foreach ($model->getGrupobuses() as $group) {
+                $gruposBuses->add($group);
+            }
+            $user->setGrupoBuses($gruposBuses);
+
+            if (0 !== strlen($model->getPlainPassword())) {
+                $user->setPlainPassword($model->getPlainPassword());
+                $userManager->updatePassword($user);
+            }
+
+            if (0 !== strlen($model->getPin())) {
+                $user->setPin($model->getPin());
+            }
+
+            try {
+                $userManager->updateUser($user);
+
+                $this->get('session')->getFlashBag()->add('success', 'Se han editado los datos del usuario satisfactoriamente.');
+
+                return $this->redirect($this->generateUrl('security_usuario_edit', array('id' => $user->getId())));
+            } catch (\Exception $e) {
+                $this->get('logger')->critical(sprintf('Ha ocurrido un error al editar los datos del usuario. Detalles: %s', $e->getMessage()));
+                $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al editar los datos del usuario.');
+            }
         }
 
         return $this->render('HatueySoftSecurityBundle:Usuario:edit.html.twig', array(
-            'entity'      => $entity,
+            'entity'      => $user,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            //'delete_form' => $deleteForm->createView(),
         ));
     }
     /**

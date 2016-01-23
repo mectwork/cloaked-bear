@@ -18,10 +18,16 @@ class UniqueSystemUserUsernameValidator extends ConstraintValidator
         $this->userManager = $userManager;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($data, Constraint $constraint)
     {
-        if($this->userManager->findUserByUsername($value)) {
-            $this->context->addViolation($constraint->message, array('%username%' => $value));
+        $id = $data->getId();
+        $username = $data->getUsername();
+
+        if ($id === null && $this->userManager->findUserByUsername($username)) {
+            $this->context->addViolationAt('username', $constraint->message, array('%username%' => $username));
+        }
+        if ($id !== null && ($user = $this->userManager->findUserByUsername($username)) && $user->getId() !== $id) {
+            $this->context->addViolationAt('username', $constraint->message, array('%username%' => $username));
         }
     }
-} 
+}
