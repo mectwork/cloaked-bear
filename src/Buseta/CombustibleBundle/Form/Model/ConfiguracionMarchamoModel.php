@@ -12,6 +12,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ConfiguracionMarchamoModel
 {
     /**
+     * @var integer
+     */
+    private $id;
+
+    /**
      * @var \Buseta\BodegaBundle\Entity\Bodega
      * @Assert\NotNull
      */
@@ -30,6 +35,7 @@ class ConfiguracionMarchamoModel
     public function __construct(ConfiguracionMarchamo $conf = null)
     {
         if ($conf) {
+            $this->id = $conf->getId();
             $this->producto = $conf->getProducto();
             $this->bodega = $conf->getBodega();
         }
@@ -65,5 +71,21 @@ class ConfiguracionMarchamoModel
     public function setProducto($producto)
     {
         $this->producto = $producto;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 }

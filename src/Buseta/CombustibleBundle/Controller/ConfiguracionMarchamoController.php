@@ -3,6 +3,7 @@
 namespace Buseta\CombustibleBundle\Controller;
 
 
+use Buseta\CombustibleBundle\Entity\ConfiguracionMarchamo;
 use Buseta\CombustibleBundle\Form\Model\ConfiguracionMarchamoModel;
 use Buseta\CombustibleBundle\Form\Type\ConfiguracionMarchamoType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -58,6 +59,34 @@ class ConfiguracionMarchamoController extends Controller
      */
     public function updateAction(Request $request)
     {
-        return array();
+        $em = $this->get('doctrine.orm.entity_manager');
+        $conf = $em->getRepository('BusetaCombustibleBundle:ConfiguracionMarchamo')
+            ->getActiveConfiguration();
+        $conf = $conf ? $conf : new ConfiguracionMarchamo();
+
+        $model = new ConfiguracionMarchamoModel($conf);
+        $form = $this->createEditForm($model);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $conf->setBodega($model->getBodega());
+            $conf->setProducto($model->getProducto());
+
+            try {
+                $em->persist($conf);
+                $em->flush();
+
+                $this->get('session')->getFlashBag()->add('success', 'Se han salvado los datos de forma satisfactoria.');
+
+                return $this->redirect($this->generateUrl('combustible_configuracion_marchamo'));
+            } catch (\Excepcion $e) {
+                $this->get('logger')->critical('Ha ocurrido un error al salvar los datos para Configuración de Marhamo. Detalles: %s', $e->getMessage());
+                $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al salvar los datos para Configuración de Marhamo.');
+            }
+        }
+
+        return $this->render('@BusetaCombustible/ConfiguracionMarchamo/edit.html.twig', array(
+            'form' => $form,
+        ));
     }
 }

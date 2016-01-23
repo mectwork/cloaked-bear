@@ -15,6 +15,7 @@ class ConfiguracionMarchamoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('id', 'hidden')
             ->add('bodega', 'entity', array(
                 'required' => false,
                 'class' => 'BusetaBodegaBundle:Bodega',
