@@ -107,3 +107,9 @@ services:
         class: HatueyERP\TercerosBundle\Form\Handler\InstitucionHandler
         arguments:
             - @service_container
+     #Form Type
+    taller.orden_trabajo.type:
+        class: Buseta\TallerBundle\Form\Type\OrdenTrabajoType
+        arguments: [@security.context]
+        tags:
+            - {name: form.type, alias: 'buseta_tallerbundle_ordentrabajo'}

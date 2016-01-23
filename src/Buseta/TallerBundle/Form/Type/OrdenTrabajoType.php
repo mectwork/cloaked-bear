@@ -9,9 +9,25 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Buseta\TallerBundle\Form\EventListener\AddAutobusFieldSubscriber;
 use Buseta\TallerBundle\Form\EventListener\AddDiagnosticadoporFieldSubscriber;
 use Buseta\TallerBundle\Form\EventListener\AddKilometrajeFieldSubscriber;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Util\ClassUtils;
 
 class OrdenTrabajoType extends AbstractType
 {
+    /**
+     * @var SecurityContextInterface
+     */
+    private $securityContext;
+    /**
+     * Constructor
+     *
+     * @param SecurityContextInterface $securityContext
+     */
+    function __construct(SecurityContextInterface $securityContext)
+    {
+        $this->securityContext = $securityContext;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -21,13 +37,12 @@ class OrdenTrabajoType extends AbstractType
 //        $builder->addEventSubscriber(new AddAutobusFieldSubscriber());
 //        $builder->addEventSubscriber(new AddDiagnosticadoporFieldSubscriber());
 //        $builder->addEventSubscriber(new AddKilometrajeFieldSubscriber());
+        $attr['readonly'] = true;
         $builder
             ->add('numero', 'text', array(
                 'required' => false,
                 'label'  => 'Número',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
+                'attr' => $attr,
             ))
             ->add('requisionMateriales', 'text', array(
                     'required' => false,
@@ -52,16 +67,34 @@ class OrdenTrabajoType extends AbstractType
                 },
             ))
 
+
             ->add('autobus', 'entity', array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione---',
-                'label' => 'Autobús',
                 'required' => false,
-                'attr' => array(
+                'label'  => 'Autobus',
+                'attr'   => array(
                     'class' => 'form-control',
-                )
-            ))
+                ),
+                'query_builder' => function (EntityRepository $repository) {
+                    $user = $this->securityContext->getToken()->getUser();
+                    if (ClassUtils::getRealClass($user) === 'HatueySoft\SecurityBundle\Entity\User'){
+                        $grupo = $user->getGrupoBuses();
+                    }
+                    $grupoBuses = array();
 
+                    foreach ($grupo as $grupos) {
+                        $grupoBuses[] = $grupos->getId();
+                    }
+                    $qb = $repository->createQueryBuilder('o');
+                    $qb->andwhere($qb->expr()->eq(true, true));
+
+                    if (count($grupoBuses)>0){
+                        $qb->andWhere(sprintf('o.grupobuses IN (%s)', implode(',', $grupoBuses)));
+                    };
+                    return $qb;
+
+                },
+            ))
 //            ->add('cancelado', null, array(
 //                'label' => 'Cancelado',
 //                'required' => false,
@@ -148,7 +181,6 @@ class OrdenTrabajoType extends AbstractType
             ))
             ->add('kilometraje', 'number', array(
                 'required' => false,
-                'read_only' => true,
                 'label' => 'Kilometraje',
                 'attr' => array(
                     'class' => 'form-control',

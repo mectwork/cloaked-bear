@@ -69,10 +69,7 @@
             {# Boton para cambiar la vista #}
 
         </div>
-
-        {#<div id="switch_view" class="btn-group col-lg-offset-7 offset4" style="padding-bottom: 8px;">#}
-        {#<a id="switch_view_a" class="btn btn-info"><i class="fa fa-plus-circle"></i> Cambiar vista a ordenes</a>#}
-        {#</div>#}
+    {% endif %}
 
         <div class="btn-group pull-right" data-toggle="buttons">
             <label class="btn btn-default active" id="vistatareas" title="Vista Tareas OT">
@@ -83,14 +80,6 @@
             </label>
         </div>
 
-
-
-        {# Boton para cambiar la vista #}
-        {#<a id="switch_view" style="cursor: pointer;">#}
-        {#<span class="glyphicon}"></span>#}
-        {#Cambiar vista a ordenes#}
-        {#</a>#}
-    {% endif %}
     <div id="lista_tareas_ordenes" style="display: block">
         <table class="records_list table table-striped table-bordered table-condensed table-hover">
             <thead>
@@ -109,25 +98,29 @@
             </thead>
             <tbody>
             {% for entity in entities %}
-                {% for tarea in entity.tareasAdicionales %}
-                    <tr>
-                        <td>OT #{{ entity.numero }}</td>
-                        <td>{{ entity.autobus }}</td>
-                        <td>{{ tarea.grupo }}</td>
-                        <td>{{ tarea.subgrupo }}</td>
-                        <td>{{ tarea.tareamantenimiento }}</td>
-                        <td>{{ entity.kilometraje }}</td>
-                        <td>{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
-                        <td>{{ entity.realizadapor }}</td>
-                        <td>{{ tarea.fechaestimada |date('d/m/Y') }}</td>
+                {% set color_fondo=entity.autobus.grupobuses is not null ?
+                "style=\"background-color: " ~ entity.autobus.grupobuses.color ~ "\"" : "" %}
 
-                        <td style="width: 18% !important; text-align: center;">
+                {% for tarea in entity.tareasAdicionales %}
+
+                    <tr>
+                        <td {{ color_fondo|raw }}>OT #{{ entity.numero }}</td>
+                        <td {{ color_fondo|raw }}>{{ entity.autobus }}</td>
+                        <td {{ color_fondo|raw }}>{{ tarea.grupo }}</td>
+                        <td {{ color_fondo|raw }}>{{ tarea.subgrupo }}</td>
+                        <td {{ color_fondo|raw }}>{{ tarea.tareamantenimiento }}</td>
+                        <td {{ color_fondo|raw }}>{{ entity.kilometraje }}</td>
+                        <td {{ color_fondo|raw }}>{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
+                        <td {{ color_fondo|raw }}>{{ entity.realizadapor }}</td>
+                        <td {{ color_fondo|raw }}>{{ tarea.fechaestimada |date('d/m/Y') }}</td>
+                        <td {{ color_fondo|raw }} style="width: 18% !important; text-align: center;">
                             {% if is_granted('VIEW', entity) %}
                                 <div class="btn-group">
                                     <a class="btn btn-success btn-xs"
                                        href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
                                                 class="fa fa-search"> Mostrar</i></a>
-                                </div>
+
+                            </div>
                             {% endif %}
 
                             {% if is_granted('EDIT', entity) %}
@@ -139,7 +132,7 @@
                             {% endif %}
                         </td>
                     </tr>
-
+                    </div>
                 {% endfor %}
             {% else %}
                 <tr>
@@ -165,15 +158,16 @@
             </thead>
             <tbody>
             {% for entity in entities %}
-
+                {% set color_fondo=entity.autobus.grupobuses is not null ?
+                "style=\"background-color: " ~ entity.autobus.grupobuses.color ~ "\"" : "" %}
                 <tr>
-                    <td>OT #{{ entity.numero }}</td>
-                    <td>{{ entity.diagnosticadoPor | default('-')}}</td>
-                    <td>{{ entity.autobus }}</td>
-                    <td>{{ entity.ayudante }}</td>
-                    <td>{{ entity.prioridad }}</td>
+                    <td {{ color_fondo|raw }}>OT #{{ entity.numero }}</td>
+                    <td {{ color_fondo|raw }}>{{ entity.diagnosticadoPor | default('-')}}</td>
+                    <td {{ color_fondo|raw }}>{{ entity.autobus }}</td>
+                    <td {{ color_fondo|raw }}>{{ entity.ayudante }}</td>
+                    <td {{ color_fondo|raw }}>{{ entity.prioridad }}</td>
 
-                    <td style="width: 18% !important; text-align: center;">
+                    <td {{ color_fondo|raw }}>
                         {% if is_granted('VIEW', entity) %}
                             <div class="btn-group">
                                 <a class="btn btn-success btn-xs"

@@ -20,14 +20,13 @@ class DiagnosticoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addEventSubscriber(new AddSolicitudFieldSubscriber());
+        $attr['readonly'] = true;
 
         $builder
             ->add('numero', 'text', array(
                 'required' => false,
                 'label'  => 'Número',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
+                'attr' => $attr,
             ))
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',

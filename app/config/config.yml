@@ -183,7 +183,9 @@ hatuey_soft_sequence:
 #        producto_seq:   Buseta\BodegaBundle\Entity\Producto
 #        bodega_seq:     Buseta\BodegaBundle\Entity\Bodega
 #        tercero_seq:    Buseta\BodegaBundle\Entity\Tercero
-        reporte_seq:    Buseta\TallerBundle\Entity\Reporte
+        reporte_seq:     Buseta\TallerBundle\Entity\Reporte
+        diagnostico_seq: Buseta\TallerBundle\Entity\Diagnostico
+        ot_seq:          Buseta\TallerBundle\Entity\OrdenTrabajo
 
 hatuey_soft_menu:
     menu_conf: "%kernel.root_dir%/config/menu_conf.yml"
