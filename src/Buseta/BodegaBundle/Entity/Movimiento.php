@@ -82,6 +82,14 @@ class Movimiento
      */
     private $updatedBy;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="estado_documento", type="string")
+     * @Assert\NotBlank()
+     */
+    private $estado_documento = 'BO';
+
     public function __construct()
     {
         $this->created = new \DateTime();
@@ -324,5 +332,28 @@ class Movimiento
     public function getMovimientosProductos()
     {
         return $this->movimientos_productos;
+    }
+
+    /**
+     * Set estado_documento
+     *
+     * @param string $estadoDocumento
+     * @return SalidaBodega
+     */
+    public function setEstadoDocumento($estadoDocumento)
+    {
+        $this->estado_documento = $estadoDocumento;
+
+        return $this;
+    }
+
+    /**
+     * Get estado_documento
+     *
+     * @return string
+     */
+    public function getEstadoDocumento()
+    {
+        return $this->estado_documento;
     }
 }

@@ -54,27 +54,36 @@
     </tr>
 
     <tr>
-        <th>Producto</th>
+        <th colspan="2">Observaciones</th>
         <td></td>
-        <th>Cantidad</th>
+        <th></th>
         <td></td>
     </tr>
 
     <tr>
-        <th colspan="2">Observaciones</th>
-        <td></td>
+        <th>Salidas de Productos Existentes</th>
+        <td>
+            <table class="table table-striped" style="font-size: 16px;">
+                <th>Producto</th>
+                <th>Cantidad Movida</th>
+                {% for linea in entity.salidasproductos %}
+                <tbody>
+                <tr>
+                    <td>{{ linea.producto.nombre }}</td>
+                    <td>{{ linea.cantidad }}</td>
+                </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">
+                            <span class="label label-danger">No existen salidas de producto disponibles</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </td>
     </tr>
-
-    {% for objeto in entity.salidasproductos %}
-
-        <tr>
-            <td>{{ objeto.producto }}</td>
-            <td></td>
-            <td>{{ objeto.cantidad }}</td>
-            <td></td>
-        </tr>
-
-    {% endfor %}
 
     </tbody>
     </table>

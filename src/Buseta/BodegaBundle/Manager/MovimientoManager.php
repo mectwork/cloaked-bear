@@ -63,6 +63,45 @@ class MovimientoManager
     }
 
     /**
+     * Procesar Movimiento
+     *
+     * @param integer $id
+     * @return bool
+     * @throws NotValidStateException
+     */
+    public function procesar($id)
+    {
+        try {
+
+            $movimiento = $this->em->getRepository('BusetaBodegaBundle:Movimiento')->find($id);
+
+            if (!$movimiento) {
+                throw new NotFoundElementException('Unable to find Movimiento entity.');
+            }
+
+            if ($movimiento->getEstadoDocumento() !== 'BO') {
+                $this->logger->error(sprintf('El estado %s del Movimiento con id %d no se corresponde con el estado previo a procesado(BO).',
+                    $movimiento->getEstadoDocumento(),
+                    $movimiento->getId()
+                ));
+                throw new NotValidStateException();
+            }
+
+            // Cambiar estado de borrador(BO) a Procesado(PR)
+            $movimiento->setEstadoDocumento('PR');
+            $this->em->persist($movimiento);
+
+            $this->em->flush();
+
+            return true;
+        } catch (\Exception $e) {
+            $this->logger->error(sprintf('Ha ocurrido un error al procesar el Movimiento: %s', $e->getMessage()));
+            return 'Ha ocurrido un error al procesar el Movimiento';
+        }
+
+    }
+
+    /**
      * Completar Movimiento
      *
      * @param integer $id
@@ -104,6 +143,14 @@ class MovimientoManager
                 }
             }
 
+            //Cambia el estado de Procesado a Completado e incorpora otros datos
+            $username = $this->security_context->getToken()->getUser()->getUsername();
+            //$movimiento->setCreatedBy($username);
+            $movimiento->setMovidoBy($username);
+            $movimiento->setFechaMovimiento($fechaSalidaBodega = new \DateTime());
+            $movimiento->setEstadoDocumento('CO');
+            $this->em->persist($movimiento);
+
             //finalmentele damos flush a todo para guardar en la Base de Datos
             //tanto en la bitacora almacen como en la bitacora de seriales
             //es el unico flush que se hace.
@@ -111,8 +158,10 @@ class MovimientoManager
             return true;
 
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error al completar el movimiento : %s', $e->getMessage()));
-            return $error = 'Ha ocurrido un error al completar el movimiento entre almacenes';
+            $this->logger->error(sprintf('Ha ocurrido un error al completar el movimiento: %s',
+                $e->getMessage()));
+            $this->em->clear();
+            return $error = 'Ha ocurrido un error al completar el movimiento';
         }
 
     }

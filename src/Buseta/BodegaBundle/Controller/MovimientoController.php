@@ -16,12 +16,108 @@ use Buseta\BodegaBundle\Form\Type\MovimientoType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Buseta\BodegaBundle\Event\BitacoraEvents;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * Movimiento controller.
  */
 class MovimientoController extends Controller
 {
+
+    public function procesarMovimientoAction($id)
+    {
+
+        $manager = $this->get('buseta.bodega.movimiento.manager');
+
+        if ($manager->procesar($id)){
+            $this->get('session')->getFlashBag()->add('success', 'Se ha procesado el Movimiento de forma correcta.');
+            return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $id ) ) );
+        }
+
+        $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar el Movimento.');
+
+        return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $id ) ) );
+
+    }
+
+    /**
+     * Creates a new Movimiento entity.
+     * @param Movimiento $entity
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function completarMovimientoAction(Movimiento $entity)
+    {
+        /*  @var  \Buseta\BodegaBundle\Entity\Movimiento  $entity */
+        /*  @var  \Buseta\BodegaBundle\Entity\MovimientosProductos  $movimientoProducto */
+        /*  @var  \Buseta\BodegaBundle\Entity\Producto  $producto*/
+        /*  @var  \Buseta\BodegaBundle\Entity\Bodega  $bodega*/
+
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        $fe = new FuncionesExtras();
+
+        $almacenOrigen  = $entity->getAlmacenOrigen();
+
+        $error=false;
+
+        //Comparar la existencia de cantidad de productos disponibles en el almacen
+        //a partir de la solicitud de movimiento de productos entre almacenes
+        //ciclo a traves de todos las Movimientos de productos para verificar y validar
+        //la existencia fisica en el almacen de Origen del producto
+        foreach ($entity->getMovimientosProductos() as $movimientoProducto) {
+            $producto = $movimientoProducto->getProducto();
+            $cantidad = $movimientoProducto->getCantidad();
+            $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $almacenOrigen, $cantidad, $em);
+
+            //Comprobar la existencia del producto en la bodega seleccionada
+            if ($cantidadDisponible === 'No existe') {
+                $error=true;
+                //Fallo de validacion, al no existir el producto en el almacen de origen
+                //volver al menu de de crear nuevo Movimiento
+                $movimientoProductoFormulario = $this->createForm(new MovimientosProductosType());
+                $form   = $this->createCreateForm($entity);
+                $form->addError(new FormError( sprintf( "El producto %s no existe en la bodega seleccionada", $producto->getNombre()) ));
+                return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
+                    'entity' => $entity,
+                    'movimientosProductos' => $movimientoProductoFormulario->createView(),
+                    'form'   => $form->createView(),
+                ));
+
+            } elseif ($cantidadDisponible < 0) {
+                $error=true;
+                //Fallo de validacion, al no existir la cantidad solicitada del producto seleccionado en el almacen de origen
+                //volver al menu de de crear nuevo Movimientos
+                $movimientoProductoFormulario = $this->createForm(new MovimientosProductosType());
+                $form   = $this->createCreateForm($entity);
+                $form->addError(new FormError( sprintf("No existe en la bodega %s la cantidad de productos solicitados para el producto: %s", $almacenOrigen->getNombre(), $producto->getNombre()  )));
+                return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
+                    'entity' => $entity,
+                    'movimientosProductos' => $movimientoProductoFormulario->createView(),
+                    'form'   => $form->createView(),
+                ));
+
+            }
+            //si no hay problema con la existencia del producto en la bodega de origen
+            //ni con la cantidad de ese producto entonces sigo al siguiente producto
+        }
+
+        //Si no hubo error en la validacion de las existencias de ninguna linea de $movimientoProducto
+        if (!$error) {
+            $manager = $this->get('buseta.bodega.movimiento.manager');
+            $result = $manager->completar($entity->getId());
+            if ($result===true){
+                $this->get('session')->getFlashBag()->add('success', 'Se ha completado el movimiento de forma correcta.');
+                return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $entity->getId() ) ) );
+            } else {
+                $this->get('session')->getFlashBag()->add('danger',
+                    sprintf('Ha ocurrido un error al completar el movimiento: %s', $result));
+                return $this->redirect($this->generateUrl('movimiento_show', array('id' => $entity->getId())));
+            }
+        }
+
+    }
     /**
      * Updated automatically select AlmacenDestino when change select AlmacenOrigen.
      */
@@ -138,7 +234,7 @@ class MovimientoController extends Controller
 
             //Comparar la existencia de cantidad de productos disponibles en el almacen
             //a partir de la solicitud de movimiento de productos entre almacenes
-            //ciclo a traves de todos las salidas de bodega de productos para verificar y validar
+            //ciclo a traves de todos las movimiento de productos para verificar y validar
             //la existencia fisica en el almacen de Origen del producto
             //Validacion del formulario
             foreach ($movimientos as $movimiento) {
@@ -187,10 +283,8 @@ class MovimientoController extends Controller
             //si no hubo error de validacion
             //Persistimos los movimientos
             //la entity es Movimiento
+
             if (!$error) {
-
-                //var_dump('www');die;
-
                 //entity es la entidad Movimiento
                 $entity->setCreatedBy($this->getUser()->getUsername());
                 $entity->setMovidoBy($this->getUser()->getUsername());
@@ -199,8 +293,8 @@ class MovimientoController extends Controller
                 $entity->setFechaMovimiento($fechaMovimiento = new \DateTime());
                 $em->persist($entity);
                 $em->flush();
-
-                $manager = $this->get('buseta.bodega.movimiento.manager');
+                //antes elcompletar era aqui
+/*                $manager = $this->get('buseta.bodega.movimiento.manager');
 
                 $result = $manager->completar($entity->getId());
                 if ($result===true){
@@ -209,11 +303,13 @@ class MovimientoController extends Controller
                 } else {
                     $this->get('session')->getFlashBag()->add('danger',  sprintf('Ha ocurrido un error al completar el Movimiento: %s',$result));
                     return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $entity->getId() ) ) );
-                }
+                }*/
+
+                $this->get('session')->getFlashBag()->add('success',  'Se ha creado el movimiento correctamente');
+                return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $entity->getId() ) ) );
 
             }
 
-           //return $this->redirect($this->generateUrl('movimiento_show', array('id' => $entity->getId())));
         }
 
         return $this->render('BusetaBodegaBundle:Movimiento:new.html.twig', array(
@@ -372,33 +468,53 @@ class MovimientoController extends Controller
 
     /**
      * Deletes a Movimiento entity.
+     *
+     * /////@Route("/{id}/delete", name="movimiento_delete")
+     * /////@Method({"DELETE", "GET"})
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Movimiento $movimiento, Request $request)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($movimiento->getId());
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BusetaBodegaBundle:Movimiento')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Movimiento entity.');
-            }
-
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             try {
-                $em->remove($entity);
+                $em = $this->get('doctrine.orm.entity_manager');
+
+                $em->remove($movimiento);
                 $em->flush();
 
-                $this->get('session')->getFlashBag()->add('success', 'Ha sido eliminado satisfactoriamente.');
+                $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 202);
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('success', $message);
+                }
             } catch (\Exception $e) {
-                $this->get('logger')->addCritical(
-                    sprintf('Ha ocurrido un error eliminando un movimiento de bodega. Detalles: %s',
-                        $e->getMessage()
-                    ));
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Movimiento'), 'BusetaTallerBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
             }
         }
 
+        $renderView =  $this->renderView('@BusetaBodega/Movimiento/delete_modal.html.twig', array(
+            'entity' => $movimiento,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
         return $this->redirect($this->generateUrl('movimiento'));
     }
 
@@ -414,7 +530,6 @@ class MovimientoController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('movimiento_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            //->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
             ;
     }

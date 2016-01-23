@@ -66,6 +66,7 @@
             <th>Bodega Origen</th>
             <th>Bodega Destino</th>
             <th>Realizado por</th>
+            <th>Estado</th>
             <th>Acciones</th>
         </tr>
         </thead>
@@ -76,6 +77,7 @@
                 <td>{{ entity.almacenOrigen }}</td>
                 <td>{{ entity.almacenDestino }}</td>
                 <td>{{ entity.createdBy }}</td>
+                <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
                 <td  style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs" href="{{ path('movimiento_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
@@ -139,7 +141,8 @@
                 useCurrent: false
             });
             fechaFin.datetimepicker({
-                format: 'DD/MM/YYYY'
+                format: 'DD/MM/YYYY',
+                useCurrent: false
             });
             fechaInicio.on('dp.change', function(e){
                 fechaFin.data("DateTimePicker").minDate(e.date);

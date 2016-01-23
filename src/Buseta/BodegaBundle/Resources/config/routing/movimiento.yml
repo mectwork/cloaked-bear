@@ -27,7 +27,7 @@ movimiento_update:
 movimiento_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "BusetaBodegaBundle:Movimiento:delete" }
-    requirements: { _method: post|delete }
+    requirements: { _method: get|post|delete }
 
 movimientos_productos_create:
     pattern:  /movimientos/create
@@ -49,3 +49,11 @@ movimiento_ajax_busqueda_avanzada:
   pattern: /busqueda-avanzada/{page}/{cantResult}
   defaults: { _controller: "BusetaBodegaBundle:Informe:busquedaAvanzada", page: 0, cantResult: 10 }
   requirements: { _method: "GET" }
+
+procesarMovimiento:
+    pattern:  /{id}/procesar
+    defaults: { _controller: "BusetaBodegaBundle:Movimiento:procesarMovimiento" }
+
+completarMovimiento:
+    pattern:  /{id}/completar
+    defaults: { _controller: "BusetaBodegaBundle:Movimiento:completarMovimiento" }

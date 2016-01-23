@@ -91,7 +91,7 @@ class SalidaBodegaManager
             return true;
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Ha ocurrido un error al procesar la Salida de Bodega: %s', $e->getMessage()));
-            return 'Ha ocurrido un error al procesar el Albaran';
+            return 'Ha ocurrido un error al procesar  la Salida de Bodega';
         }
 
     }
@@ -121,7 +121,7 @@ class SalidaBodegaManager
                 $event = new FilterBitacoraEvent($linea);
                 $this->event_dispacher->dispatch(BitacoraEvents::MOVEMENT_FROM /*M-*/, $event);
                 $result = $event->getReturnValue();
-                if ($result !== true ) {
+                if ($result !== true) {
                     //borramos los cambios en el entity manager
                     $this->em->clear();
                     return $error = $result;
@@ -130,7 +130,7 @@ class SalidaBodegaManager
                 $event = new FilterBitacoraEvent($linea);
                 $this->event_dispacher->dispatch(BitacoraEvents::MOVEMENT_TO /*M+*/, $event);
                 $result = $event->getReturnValue();
-                if ($result !== true ) {
+                if ($result !== true) {
                     //borramos los cambios en el entity manager
                     $this->em->clear();
                     return $error = $result;
@@ -143,7 +143,7 @@ class SalidaBodegaManager
 
             //Cambia el estado de Procesado a Completado e incorpora otros datos
             $username = $this->security_context->getToken()->getUser()->getUsername();
-            $salidaBodega->setCreatedBy($username);
+            //$salidaBodega->setCreatedBy($username);
             $salidaBodega->setMovidoBy($username);
             $salidaBodega->setFecha($fechaSalidaBodega = new \DateTime());
             $salidaBodega->setEstadoDocumento('CO');
@@ -156,7 +156,8 @@ class SalidaBodegaManager
             return true;
 
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error al completar la salida de bodega: %s', $e->getMessage()));
+            $this->logger->error(sprintf('Ha ocurrido un error al completar la salida de bodega: %s',
+                $e->getMessage()));
             $this->em->clear();
             return $error = 'Ha ocurrido un error al completar la salida de bodega';
         }

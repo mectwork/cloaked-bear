@@ -168,7 +168,8 @@
                 useCurrent: false
             });
             fechaFin.datetimepicker({
-                format: 'DD/MM/YYYY'
+                format: 'DD/MM/YYYY',
+                useCurrent: false
             });
             fechaInicio.on('dp.change', function(e){
                 fechaFin.data("DateTimePicker").minDate(e.date);
