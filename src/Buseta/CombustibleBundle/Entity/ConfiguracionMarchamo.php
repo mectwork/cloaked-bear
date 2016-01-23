@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Autobus.
+ * ConfiguracionMarchamo
  *
- * @ORM\Table(name="d_configuracion_combustible")
- * @ORM\Entity(repositoryClass="Buseta\CombustibleBundle\Entity\Repository\ConfiguracionCombustibleRepository")
+ * @ORM\Table(name="d_configuracion_marchamo")
+ * @ORM\Entity(repositoryClass="Buseta\CombustibleBundle\Entity\Repository\ConfiguracionMarchamoRepository")
  */
-class ConfiguracionCombustible
+class ConfiguracionMarchamo
 {
     /**
      * @var integer
@@ -23,26 +23,20 @@ class ConfiguracionCombustible
     private $id;
 
     /**
-     * @var \Buseta\NomencladorBundle\Entity\Combustible
+     * @var \Buseta\BodegaBundle\Entity\Bodega
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Combustible")
-     */
-    private $combustible;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega")
+     * @ORM\OneToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega")
+     * @Assert\NotNull
      */
     private $bodega;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto")
+     * @var \Buseta\BodegaBundle\Entity\Producto
+     *
+     * @ORM\OneToOne(targetEntity="Buseta\BodegaBundle\Entity\Producto")
+     * @Assert\NotNull
      */
     private $producto;
-
-    public function __toString()
-    {
-        return $this->combustible->__toString();
-    }
 
     /**
      * Get id
@@ -55,33 +49,10 @@ class ConfiguracionCombustible
     }
 
     /**
-     * Set combustible
-     *
-     * @param \Buseta\NomencladorBundle\Entity\Combustible $combustible
-     * @return ConfiguracionCombustible
-     */
-    public function setCombustible(\Buseta\NomencladorBundle\Entity\Combustible $combustible = null)
-    {
-        $this->combustible = $combustible;
-
-        return $this;
-    }
-
-    /**
-     * Get combustible
-     *
-     * @return \Buseta\NomencladorBundle\Entity\Combustible
-     */
-    public function getCombustible()
-    {
-        return $this->combustible;
-    }
-
-    /**
      * Set bodega
      *
      * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
-     * @return ConfiguracionCombustible
+     * @return ConfiguracionMarchamo
      */
     public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega = null)
     {
@@ -104,7 +75,7 @@ class ConfiguracionCombustible
      * Set producto
      *
      * @param \Buseta\BodegaBundle\Entity\Producto $producto
-     * @return ConfiguracionCombustible
+     * @return ConfiguracionMarchamo
      */
     public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
     {
@@ -122,5 +93,4 @@ class ConfiguracionCombustible
     {
         return $this->producto;
     }
-
 }

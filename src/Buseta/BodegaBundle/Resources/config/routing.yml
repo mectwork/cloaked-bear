@@ -1,18 +1,18 @@
-BusetaBodegaBundle_bitacoraalmacen:
-    resource: "@BusetaBodegaBundle/Resources/config/routing/bitacoraalmacen.yml"
-    prefix:   /bodega/bitacoraalmacen
-
 BusetaBodegaBundle_necesidadmaterial:
-    resource: "@BusetaBodegaBundle/Resources/config/routing/necesidadmaterial.yml"
-    prefix:   /necesidadmaterial
+    resource: "@BusetaBodegaBundle/Controller/NecesidadMaterialController.php"
+    type: annotation
+
+BusetaBodegaBundle_bitacorabodega:
+    resource: "@BusetaBodegaBundle/Controller/BitacoraAlmacenController.php"
+    type: annotation
 
 BusetaBodegaBundle_inventariofisico:
     resource: "@BusetaBodegaBundle/Resources/config/routing/inventariofisico.yml"
     prefix:   /inventariofisico
 
 BusetaBodegaBundle_necesidadmateriallinea:
-    resource: "@BusetaBodegaBundle/Resources/config/routing/necesidad_material_linea.yml"
-    prefix:   /necesidadmateriallinea
+    resource: "@BusetaBodegaBundle/Controller/NecesidadMaterialLineaController.php"
+    type: annotation
 
 BusetaBodegaBundle_producto:
     resource: "@BusetaBodegaBundle/Resources/config/routing/producto.yml"

@@ -65,7 +65,7 @@ class NecesidadMaterialController extends Controller
     }
 
     /**
-     * @param $id
+     * @param $necesidadMaterial
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @Route("/{id}/procesarNecesidad", name="procesarNecesidad")
@@ -101,7 +101,7 @@ class NecesidadMaterialController extends Controller
     }
 
     /**
-     * @param $id
+     * @param $necesidadMaterial
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @Route("/{id}/completarNecesidad", name="completarNecesidad")
