@@ -191,7 +191,7 @@ class OrdenTrabajoController extends Controller
      */
     private function createEditForm(OrdenTrabajo $entity)
     {
-        $form = $this->createForm(new OrdenTrabajoType(), $entity, array(
+        $form = $this->createForm('buseta_tallerbundle_ordentrabajo', $entity, array(
             'action' => $this->generateUrl('ordentrabajo_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));

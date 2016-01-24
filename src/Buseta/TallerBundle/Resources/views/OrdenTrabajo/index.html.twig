@@ -99,21 +99,21 @@
             <tbody>
             {% for entity in entities %}
                 {% set color_fondo=entity.autobus.grupobuses is not null ?
-                "style=\"background-color: " ~ entity.autobus.grupobuses.color ~ "\"" : "" %}
+                "background-color: " ~ entity.autobus.grupobuses.color ~ ";": "" %}
 
                 {% for tarea in entity.tareasAdicionales %}
 
                     <tr>
-                        <td {{ color_fondo|raw }}>OT #{{ entity.numero }}</td>
-                        <td {{ color_fondo|raw }}>{{ entity.autobus }}</td>
-                        <td {{ color_fondo|raw }}>{{ tarea.grupo }}</td>
-                        <td {{ color_fondo|raw }}>{{ tarea.subgrupo }}</td>
-                        <td {{ color_fondo|raw }}>{{ tarea.tareamantenimiento }}</td>
-                        <td {{ color_fondo|raw }}>{{ entity.kilometraje }}</td>
-                        <td {{ color_fondo|raw }}>{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
-                        <td {{ color_fondo|raw }}>{{ entity.realizadapor }}</td>
-                        <td {{ color_fondo|raw }}>{{ tarea.fechaestimada |date('d/m/Y') }}</td>
-                        <td {{ color_fondo|raw }} style="width: 18% !important; text-align: center;">
+                        <td style="{{ color_fondo|raw }}">OT #{{ entity.numero }}</td>
+                        <td style="{{ color_fondo|raw }}">{{ entity.autobus }}</td>
+                        <td style="{{ color_fondo|raw }}">{{ tarea.grupo }}</td>
+                        <td style="{{ color_fondo|raw }}">{{ tarea.subgrupo }}</td>
+                        <td style="{{ color_fondo|raw }}">{{ tarea.tareamantenimiento }}</td>
+                        <td style="{{ color_fondo|raw }}">{{ entity.kilometraje }}</td>
+                        <td style="{{ color_fondo|raw }}">{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
+                        <td style="{{ color_fondo|raw }}">{{ entity.realizadapor }}</td>
+                        <td style="{{ color_fondo|raw }}">{{ tarea.fechaestimada |date('d/m/Y') }}</td>
+                        <td style="width: 18% !important; text-align: center;  {{ color_fondo|raw }}">
                             {% if is_granted('VIEW', entity) %}
                                 <div class="btn-group">
                                     <a class="btn btn-success btn-xs"
@@ -132,7 +132,6 @@
                             {% endif %}
                         </td>
                     </tr>
-                    </div>
                 {% endfor %}
             {% else %}
                 <tr>
@@ -159,15 +158,15 @@
             <tbody>
             {% for entity in entities %}
                 {% set color_fondo=entity.autobus.grupobuses is not null ?
-                "style=\"background-color: " ~ entity.autobus.grupobuses.color ~ "\"" : "" %}
+                "background-color: " ~ entity.autobus.grupobuses.color ~ ";": "" %}
                 <tr>
-                    <td {{ color_fondo|raw }}>OT #{{ entity.numero }}</td>
-                    <td {{ color_fondo|raw }}>{{ entity.diagnosticadoPor | default('-')}}</td>
-                    <td {{ color_fondo|raw }}>{{ entity.autobus }}</td>
-                    <td {{ color_fondo|raw }}>{{ entity.ayudante }}</td>
-                    <td {{ color_fondo|raw }}>{{ entity.prioridad }}</td>
+                    <td style="{{ color_fondo|raw }}">OT #{{ entity.numero }}</td>
+                    <td style="{{ color_fondo|raw }}">{{ entity.diagnosticadoPor | default('-')}}</td>
+                    <td style="{{ color_fondo|raw }}">{{ entity.autobus }}</td>
+                    <td style="{{ color_fondo|raw }}">{{ entity.ayudante }}</td>
+                    <td style="{{ color_fondo|raw }}">{{ entity.prioridad }}</td>
 
-                    <td {{ color_fondo|raw }}>
+                    <td style="width: 18% !important; text-align: center; {{ color_fondo|raw }}">
                         {% if is_granted('VIEW', entity) %}
                             <div class="btn-group">
                                 <a class="btn btn-success btn-xs"
