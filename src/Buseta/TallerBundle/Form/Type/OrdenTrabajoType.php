@@ -18,6 +18,7 @@ class OrdenTrabajoType extends AbstractType
      * @var SecurityContextInterface
      */
     private $securityContext;
+
     /**
      * Constructor
      *
@@ -76,23 +77,24 @@ class OrdenTrabajoType extends AbstractType
                     'class' => 'form-control',
                 ),
                 'query_builder' => function (EntityRepository $repository) {
+                    $qb = $repository->createQueryBuilder('o');
+
                     $user = $this->securityContext->getToken()->getUser();
                     if (ClassUtils::getRealClass($user) === 'HatueySoft\SecurityBundle\Entity\User'){
                         $grupo = $user->getGrupoBuses();
-                    }
-                    $grupoBuses = array();
 
-                    foreach ($grupo as $grupos) {
-                        $grupoBuses[] = $grupos->getId();
-                    }
-                    $qb = $repository->createQueryBuilder('o');
-                    $qb->andwhere($qb->expr()->eq(true, true));
+                        $grupoBuses = array();
 
-                    if (count($grupoBuses)>0){
-                        $qb->andWhere(sprintf('o.grupobuses IN (%s)', implode(',', $grupoBuses)));
-                    };
+                        foreach ($grupo as $grupos) {
+                            $grupoBuses[] = $grupos->getId();
+                        }
+
+                        if (count($grupoBuses)>0){
+                            $qb->andWhere(sprintf('o.grupobuses IN (%s)', implode(',', $grupoBuses)));
+                        };
+                    }
+
                     return $qb;
-
                 },
             ))
 //            ->add('cancelado', null, array(

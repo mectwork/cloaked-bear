@@ -135,15 +135,6 @@ class ServicioCombustibleController extends Controller
             } else { //Si sí existe la cantidad del producto en la bodega seleccionada
 
                 try {
-                    //Actualizar Bitácora - AlmacenOrigen
-//                    $bitacora = new BitacoraAlmacen();
-//                    $bitacora->setProducto($producto);
-//                    $bitacora->setFechaMovimiento(new \DateTime());
-//                    $bitacora->setAlmacen($bodega);
-//                    $bitacora->setCantMovida($entityModel->getCantidadLibros());
-//                    $bitacora->setTipoMovimiento('M-');
-//                    $em->persist($bitacora);
-
                     $servicioCombustible = $entityModel->getEntityData();
 
                     $em->persist($servicioCombustible);
