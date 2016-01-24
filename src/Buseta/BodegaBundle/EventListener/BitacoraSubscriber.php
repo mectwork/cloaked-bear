@@ -280,6 +280,7 @@ class BitacoraSubscriber implements EventSubscriberInterface
                         ->setProducto($entity->getCombustible()->getProducto())
                         ->setCantidadMovida($entity->getCantidadLibros())
                         ->setFechaMovimiento($entity->getCreated())
+                        ->setTipoMovimiento($movementType)
                         ->setProduccionLinea(sprintf('%s,%d', ClassUtils::getRealClass($entity), $entity->getId()));
                     break;
                 }
@@ -287,8 +288,6 @@ class BitacoraSubscriber implements EventSubscriberInterface
                 default:
                     break;
             }
-
-            //var_dump('www');die;
 
             if ($resultSerial !== true) {
                 //hubo error en la validacion de los seriales

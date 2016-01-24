@@ -147,10 +147,11 @@ class ServicioCombustibleController extends Controller
                     $servicioCombustible = $entityModel->getEntityData();
 
                     $em->persist($servicioCombustible);
-                    $em->flush();
 
                     $dispatcher = $this->get('event_dispatcher');
                     $dispatcher->dispatch(BitacoraEvents::PRODUCTION_NEGATIVE, new FilterBitacoraEvent($servicioCombustible));
+
+                    $em->flush();
 
                     $this->get('session')->getFlashBag()->add('success', 'Se ha creado el Servicio de Combustible satisfactoriamente.');
 
