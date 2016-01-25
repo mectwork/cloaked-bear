@@ -8,10 +8,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class GrupoBusesType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
-    * @ORM\Column(name="color", type="string", length=7)
+     * @ORM\Column(name="color", type="string", length=7)
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -23,9 +23,17 @@ class GrupoBusesType extends AbstractType
                 )
             ))
             ->add('color')
-        ;
+
+            ->add('colorTexto', 'text', array(
+                'required' => false,
+                'label' => 'Color de texto',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ));
+
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
