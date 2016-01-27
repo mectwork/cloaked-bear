@@ -72,15 +72,15 @@
     {% endif %}
 
         <div class="btn-group pull-right" data-toggle="buttons">
-            <label class="btn btn-default active" id="vistatareas" title="Vista Tareas OT">
+            <label class="btn btn-default" id="vistatareas" title="Vista Tareas OT">
                 <input type="radio" name="options"> <i class="fa fa-tags"></i>
             </label>
-            <label class="btn btn-default" id="vistaordenes" title="Vista Orden Trabajo">
+            <label class="btn btn-default active" id="vistaordenes" title="Vista Orden Trabajo">
                 <input type="radio" name="options"> <i class="fa fa-tag"></i>
             </label>
         </div>
 
-    <div id="lista_tareas_ordenes" style="display: block">
+    <div id="lista_tareas_ordenes" style="display: none;">
         <table class="records_list table table-striped table-bordered table-condensed table-hover">
             <thead>
             <tr>
@@ -143,7 +143,7 @@
     </div>
 
 
-    <div id="lista_ordenes" style="display: none">
+    <div id="lista_ordenes" style="display: block;">
         <table class="records_list table table-striped table-bordered table-condensed table-hover">
             <thead>
             <tr>
@@ -269,10 +269,8 @@
         $("#vistatareas").click(function () {
             var display = $('div#lista_tareas_ordenes').css("display");
             if (display == 'none') {
-                $('div#lista_ordenes').slideUp(500);
                 $('div#lista_ordenes').css('display', 'none');
-                $('div#lista_tareas_ordenes').slideDown(500);
-                $('div#lista_tareas_ordenes').css('display', 'block');
+                $('div#lista_tareas_ordenes').fadeIn(500);
             }
         });
 
@@ -280,10 +278,8 @@
         $("#vistaordenes").click(function () {
             var display = $('div#lista_tareas_ordenes').css("display");
             if (display == 'block') {
-                $('div#lista_tareas_ordenes').slideUp(500);
                 $('div#lista_tareas_ordenes').css('display', 'none');
-                $('div#lista_ordenes').slideDown(700);
-                $('div#lista_ordenes').css('display', 'block');
+                $('div#lista_ordenes').fadeIn(500);
             }
         });
     </script>
