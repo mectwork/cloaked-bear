@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Condicion.
  *
- * @ORM\Table(name="n_condicion")
+ * @ORM\Table(name="n_condicion_producto")
  * @ORM\Entity(repositoryClass="Buseta\NomencladorBundle\Entity\CondicionRepository")
  */
 class Condicion extends BaseNomenclador

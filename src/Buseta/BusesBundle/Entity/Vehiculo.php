@@ -6,18 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Buseta\BusesBundle\Form\Model\VehiculoModel;
 
-
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\InheritanceType;
-use Doctrine\ORM\Mapping\DiscriminatorColumn;
-use Doctrine\ORM\Mapping\DiscriminatorMap;
-
 /**
- * @Entity
  * @ORM\Table(name="d_vehiculo")
- * @InheritanceType("SINGLE_TABLE")
- * @DiscriminatorColumn(name="discr", type="string")
- * @DiscriminatorMap({"autobus" = "Autobus", "vehiculo" = "Vehiculo"})
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"autobus" = "Autobus", "vehiculo" = "Vehiculo"})
  * @ORM\Entity(repositoryClass="Buseta\BusesBundle\Entity\Repository\VehiculoRepository")
  */
 class Vehiculo

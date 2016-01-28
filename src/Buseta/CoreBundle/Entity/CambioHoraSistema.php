@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * CambioHoraSistema
  *
- * @ORM\Table(name="d_conf_cambio_hora")
+ * @ORM\Table(name="conf_cambio_hora")
  * @ORM\Entity
  */
 class CambioHoraSistema
@@ -42,7 +42,7 @@ class CambioHoraSistema
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -58,14 +58,14 @@ class CambioHoraSistema
     public function setHora($hora)
     {
         $this->hora = $hora;
-    
+
         return $this;
     }
 
     /**
      * Get hora
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getHora()
     {
@@ -81,14 +81,14 @@ class CambioHoraSistema
     public function setActivo($activo)
     {
         $this->activo = $activo;
-    
+
         return $this;
     }
 
     /**
      * Get activo
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActivo()
     {

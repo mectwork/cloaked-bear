@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * ConfiguracionMarchamo
  *
- * @ORM\Table(name="d_configuracion_marchamo")
+ * @ORM\Table(name="conf_marchamo")
  * @ORM\Entity(repositoryClass="Buseta\CombustibleBundle\Entity\Repository\ConfiguracionMarchamoRepository")
  */
 class ConfiguracionMarchamo

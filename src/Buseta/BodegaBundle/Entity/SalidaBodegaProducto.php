@@ -10,7 +10,7 @@ use Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface;
 /**
  * SalidaBodegaProducto.
  * @ValidarSerial()
- * @ORM\Table(name="d_salida_bodega_producto")
+ * @ORM\Table(name="d_salida_bodega_linea")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\SalidaBodegaProductoRepository")
  */
 class SalidaBodegaProducto implements GeneradorBitacoraInterface
@@ -49,12 +49,12 @@ class SalidaBodegaProducto implements GeneradorBitacoraInterface
      */
     private $seriales;
 
-    
+
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -70,14 +70,14 @@ class SalidaBodegaProducto implements GeneradorBitacoraInterface
     public function setCantidad($cantidad)
     {
         $this->cantidad = $cantidad;
-    
+
         return $this;
     }
 
     /**
      * Get cantidad
      *
-     * @return integer 
+     * @return integer
      */
     public function getCantidad()
     {
@@ -93,14 +93,14 @@ class SalidaBodegaProducto implements GeneradorBitacoraInterface
     public function setProducto(\Buseta\BodegaBundle\Entity\Producto $producto = null)
     {
         $this->producto = $producto;
-    
+
         return $this;
     }
 
     /**
      * Get producto
      *
-     * @return \Buseta\BodegaBundle\Entity\Producto 
+     * @return \Buseta\BodegaBundle\Entity\Producto
      */
     public function getProducto()
     {
@@ -116,14 +116,14 @@ class SalidaBodegaProducto implements GeneradorBitacoraInterface
     public function setSalida(\Buseta\BodegaBundle\Entity\SalidaBodega $salida = null)
     {
         $this->salida = $salida;
-    
+
         return $this;
     }
 
     /**
      * Get salida
      *
-     * @return \Buseta\BodegaBundle\Entity\SalidaBodega 
+     * @return \Buseta\BodegaBundle\Entity\SalidaBodega
      */
     public function getSalida()
     {

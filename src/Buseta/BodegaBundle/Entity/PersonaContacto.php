@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * PersonaContacto
  *
- * @ORM\Table(name="d_persona_contacto")
+ * @ORM\Table(name="d_tercero_persona_contacto")
  * @ORM\Entity
  */
 class PersonaContacto
@@ -92,7 +92,7 @@ class PersonaContacto
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -108,14 +108,14 @@ class PersonaContacto
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-    
+
         return $this;
     }
 
     /**
      * Get nombre
      *
-     * @return string 
+     * @return string
      */
     public function getNombre()
     {
@@ -131,14 +131,14 @@ class PersonaContacto
     public function setApellidos($apellidos)
     {
         $this->apellidos = $apellidos;
-    
+
         return $this;
     }
 
     /**
      * Get apellidos
      *
-     * @return string 
+     * @return string
      */
     public function getApellidos()
     {
@@ -154,14 +154,14 @@ class PersonaContacto
     public function setCargo($cargo)
     {
         $this->cargo = $cargo;
-    
+
         return $this;
     }
 
     /**
      * Get cargo
      *
-     * @return string 
+     * @return string
      */
     public function getCargo()
     {
@@ -177,14 +177,14 @@ class PersonaContacto
     public function setTelefono($telefono)
     {
         $this->telefono = $telefono;
-    
+
         return $this;
     }
 
     /**
      * Get telefono
      *
-     * @return string 
+     * @return string
      */
     public function getTelefono()
     {
@@ -200,14 +200,14 @@ class PersonaContacto
     public function setTelefono2($telefono2)
     {
         $this->telefono2 = $telefono2;
-    
+
         return $this;
     }
 
     /**
      * Get telefono2
      *
-     * @return string 
+     * @return string
      */
     public function getTelefono2()
     {
@@ -223,14 +223,14 @@ class PersonaContacto
     public function setFax($fax)
     {
         $this->fax = $fax;
-    
+
         return $this;
     }
 
     /**
      * Get fax
      *
-     * @return string 
+     * @return string
      */
     public function getFax()
     {
@@ -246,14 +246,14 @@ class PersonaContacto
     public function setEmail($email)
     {
         $this->email = $email;
-    
+
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -269,14 +269,14 @@ class PersonaContacto
     public function setDireccion($direccion)
     {
         $this->direccion = $direccion;
-    
+
         return $this;
     }
 
     /**
      * Get direccion
      *
-     * @return \stdClass 
+     * @return \stdClass
      */
     public function getDireccion()
     {

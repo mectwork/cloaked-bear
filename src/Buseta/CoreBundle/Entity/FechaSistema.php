@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * FechaSistema
  *
- * @ORM\Table(name="d_conf_fecha_sistema")
+ * @ORM\Table(name="conf_fecha_sistema")
  * @ORM\Entity
  */
 class FechaSistema
@@ -39,7 +39,7 @@ class FechaSistema
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -55,14 +55,14 @@ class FechaSistema
     public function setFecha($fecha)
     {
         $this->fecha = $fecha;
-    
+
         return $this;
     }
 
     /**
      * Get fecha
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFecha()
     {
@@ -78,14 +78,14 @@ class FechaSistema
     public function setActivo($activo)
     {
         $this->activo = $activo;
-    
+
         return $this;
     }
 
     /**
      * Get activo
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActivo()
     {

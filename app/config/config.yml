@@ -126,20 +126,36 @@ easy_admin:
             - %nomenclator.assets.css%
     entities:
         'Aceite Caja Cambios': Buseta\NomencladorBundle\Entity\AceiteCajaCambios
-        'Aceite Hidráulico': Buseta\NomencladorBundle\Entity\AceiteHidraulico
+        AceiteHidraulico:
+            class: Buseta\NomencladorBundle\Entity\AceiteHidraulico
+            label: 'Aceite Hidráulico'
         'Acite Motor': Buseta\NomencladorBundle\Entity\AceiteMotor
-        'Aceite Transmisión': Buseta\NomencladorBundle\Entity\AceiteTransmision
+        AceiteTransision:
+            class: Buseta\NomencladorBundle\Entity\AceiteTransmision
+            label: 'Aceite Transmisión'
         'Caja Chica': Buseta\NomencladorBundle\Entity\CajaChica
         'Color': Buseta\NomencladorBundle\Entity\Color
+        CondicionesPago:
+            class: Buseta\TallerBundle\Entity\CondicionesPago
+            label: 'Condiciones Pago'
         'Combustible': Buseta\NomencladorBundle\Entity\Combustible
-        'Condición': Buseta\NomencladorBundle\Entity\Condicion
+        Condicion:
+            class: Buseta\NomencladorBundle\Entity\Condicion
+            label: 'Condición Producto'
         'Estilo': Buseta\NomencladorBundle\Entity\Estilo
         'EstadoCivil': Buseta\NomencladorBundle\Entity\EstadoCivil
         'Forma Pago': Buseta\NomencladorBundle\Entity\FormaPago
-        'Garantía Tarea': Buseta\NomencladorBundle\Entity\GarantiaTarea
+        GarantiaTarea:
+            class: Buseta\NomencladorBundle\Entity\GarantiaTarea
+            label: 'Garantía Tarea'
         'Grupo': Buseta\NomencladorBundle\Entity\Grupo
         'Subgrupo': Buseta\NomencladorBundle\Entity\Subgrupo
-        'Mantenimiento % Cumplido': Buseta\NomencladorBundle\Entity\MantenimientoPorcientoCumplido
+        Impuesto:
+            class: Buseta\TallerBundle\Entity\Impuesto
+            label: 'Impuesto'
+        MantenimientoPorcientoCumplido:
+            class: Buseta\NomencladorBundle\Entity\MantenimientoPorcientoCumplido
+            label: 'Mantenimiento % Cumplido'
         'Marca': Buseta\NomencladorBundle\Entity\Marca
         'Modelo': Buseta\NomencladorBundle\Entity\Modelo
         'Marca Motor': Buseta\NomencladorBundle\Entity\MarcaMotor

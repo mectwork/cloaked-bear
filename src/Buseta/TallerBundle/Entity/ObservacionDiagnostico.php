@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * ObservacionDiagnostico
  *
- * @ORM\Table(name="d_observacion_diagnostico")
+ * @ORM\Table(name="d_diagnostico_observacion")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\ObservacionDiagnosticoRepository")
  */
 class ObservacionDiagnostico
@@ -67,7 +67,7 @@ class ObservacionDiagnostico
         $this->id = $id;
     }
 
-    
+
 
     /**
      * Set diagnostico
@@ -78,14 +78,14 @@ class ObservacionDiagnostico
     public function setDiagnostico(\Buseta\TallerBundle\Entity\Diagnostico $diagnostico = null)
     {
         $this->diagnostico = $diagnostico;
-    
+
         return $this;
     }
 
     /**
      * Get diagnostico
      *
-     * @return \Buseta\TallerBundle\Entity\Diagnostico 
+     * @return \Buseta\TallerBundle\Entity\Diagnostico
      */
     public function getDiagnostico()
     {

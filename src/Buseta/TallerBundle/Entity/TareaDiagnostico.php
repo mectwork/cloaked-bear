@@ -4,10 +4,11 @@ namespace Buseta\TallerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  *
  *
- * @ORM\Table(name="d_tarea_diagnostico")
+ * @ORM\Table(name="d_diagnostico_tarea")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\TareaDiagnosticoRepository")
  */
 class TareaDiagnostico
@@ -61,7 +62,7 @@ class TareaDiagnostico
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -173,14 +174,14 @@ class TareaDiagnostico
     public function setDescripcion($descripcion)
     {
         $this->descripcion = $descripcion;
-    
+
         return $this;
     }
 
     /**
      * Get descripcion
      *
-     * @return string 
+     * @return string
      */
     public function getDescripcion()
     {

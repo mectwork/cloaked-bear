@@ -14,8 +14,6 @@ use Doctrine\ORM\Mapping\Entity;
 /**
  * Autobus.
  *
- * @Entity
- * @ORM\Table(name="d_autobus")
  * @ORM\Entity(repositoryClass="Buseta\BusesBundle\Entity\Repository\AutobusRepository")
  */
 class Autobus extends Vehiculo

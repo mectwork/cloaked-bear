@@ -55,6 +55,7 @@ class Proveedor
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Buseta\NomencladorBundle\Entity\MarcaProveedor", inversedBy="proveedores", cascade={"persist","remove"})
+     * @ORM\JoinTable(name="d_proveedor_marcas")
      */
     private $marcas;
 

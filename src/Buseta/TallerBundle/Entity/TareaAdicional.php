@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Tarea Adicional.
  *
- * @ORM\Table(name="d_tarea_adicional")
+ * @ORM\Table(name="d_orden_trabajo_tarea")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\TareaAdicionalRepository")
  */
 class TareaAdicional

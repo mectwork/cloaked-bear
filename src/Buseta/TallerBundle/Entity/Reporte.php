@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Reporte
  *
- * @ORM\Table(name="d_reporte")
+ * @ORM\Table(name="d_solicitud")
  * @ORM\Entity(repositoryClass="Buseta\TallerBundle\Entity\Repository\ReporteRepository")
  */
 class Reporte implements DateTimeAwareInterface

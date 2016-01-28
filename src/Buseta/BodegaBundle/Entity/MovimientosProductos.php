@@ -10,7 +10,7 @@ use Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface;
 /**
  * MovimientosProductos.
  * @ValidarSerial()
- * @ORM\Table(name="d_movimiento_producto")
+ * @ORM\Table(name="d_movimiento_linea")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\MovimientosProductosRepository")
  */
 class MovimientosProductos implements GeneradorBitacoraInterface

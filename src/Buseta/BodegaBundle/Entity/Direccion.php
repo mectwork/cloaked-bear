@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Direccion.
  *
- * @ORM\Table(name="d_direccion")
+ * @ORM\Table(name="d_tercero_direccion")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  */
@@ -297,7 +297,7 @@ class Direccion
     {
         $this->pcontacto = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Add pcontacto
      *
@@ -307,7 +307,7 @@ class Direccion
     public function addPcontacto(\Buseta\BodegaBundle\Entity\PersonaContacto $pcontacto)
     {
         $this->pcontacto[] = $pcontacto;
-    
+
         return $this;
     }
 
@@ -324,7 +324,7 @@ class Direccion
     /**
      * Get pcontacto
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPcontacto()
     {

@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * MecanismoContacto.
  *
- * @ORM\Table(name="d_mecanismo_contacto")
+ * @ORM\Table(name="d_tercero_mecanismo_contacto")
  * @ORM\Entity
  */
 class MecanismoContacto
@@ -82,7 +82,7 @@ class MecanismoContacto
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -98,14 +98,14 @@ class MecanismoContacto
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-    
+
         return $this;
     }
 
     /**
      * Get nombre
      *
-     * @return string 
+     * @return string
      */
     public function getNombre()
     {
@@ -121,14 +121,14 @@ class MecanismoContacto
     public function setTelefono($telefono)
     {
         $this->telefono = $telefono;
-    
+
         return $this;
     }
 
     /**
      * Get telefono
      *
-     * @return string 
+     * @return string
      */
     public function getTelefono()
     {
@@ -144,14 +144,14 @@ class MecanismoContacto
     public function setTelefono2($telefono2)
     {
         $this->telefono2 = $telefono2;
-    
+
         return $this;
     }
 
     /**
      * Get telefono2
      *
-     * @return string 
+     * @return string
      */
     public function getTelefono2()
     {
@@ -167,14 +167,14 @@ class MecanismoContacto
     public function setFax($fax)
     {
         $this->fax = $fax;
-    
+
         return $this;
     }
 
     /**
      * Get fax
      *
-     * @return string 
+     * @return string
      */
     public function getFax()
     {
@@ -190,14 +190,14 @@ class MecanismoContacto
     public function setDirEnvio($dirEnvio)
     {
         $this->dirEnvio = $dirEnvio;
-    
+
         return $this;
     }
 
     /**
      * Get dirEnvio
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDirEnvio()
     {
@@ -213,14 +213,14 @@ class MecanismoContacto
     public function setActivo($activo)
     {
         $this->activo = $activo;
-    
+
         return $this;
     }
 
     /**
      * Get activo
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActivo()
     {
@@ -236,14 +236,14 @@ class MecanismoContacto
     public function setTercero(\Buseta\BodegaBundle\Entity\Tercero $tercero = null)
     {
         $this->tercero = $tercero;
-    
+
         return $this;
     }
 
     /**
      * Get tercero
      *
-     * @return \Buseta\BodegaBundle\Entity\Tercero 
+     * @return \Buseta\BodegaBundle\Entity\Tercero
      */
     public function getTercero()
     {
@@ -259,14 +259,14 @@ class MecanismoContacto
     public function setDireccion(\Buseta\BodegaBundle\Entity\Direccion $direccion = null)
     {
         $this->direccion = $direccion;
-    
+
         return $this;
     }
 
     /**
      * Get direccion
      *
-     * @return \Buseta\BodegaBundle\Entity\Direccion 
+     * @return \Buseta\BodegaBundle\Entity\Direccion
      */
     public function getDireccion()
     {
