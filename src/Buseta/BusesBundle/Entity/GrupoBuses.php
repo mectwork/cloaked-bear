@@ -45,6 +45,13 @@ class GrupoBuses
     private $autobuses;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="colorTexto", type="string", length=7)
+     */
+    private $colorTexto;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -133,6 +140,22 @@ class GrupoBuses
         return $this->autobuses;
     }
 
+    public function setColorTexto($colorTexto)
+    {
+        $this->colorTexto = $colorTexto;
+
+        return $this;
+    }
+
+    /**
+     * Get colorTexto.
+     *
+     * @return string
+     */
+    public function getColorTexto()
+    {
+        return $this->colorTexto;
+    }
 
     public function __toString()
     {

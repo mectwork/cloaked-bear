@@ -17,14 +17,14 @@
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.numero is null or filter_form.vars.value.numero is empty)
-    and (filter_form.vars.value.requisionMateriales is null or filter_form.vars.value.requisionMateriales is empty)
-    and (filter_form.vars.value.diagnosticadoPor is null or filter_form.vars.value.diagnosticadoPor is empty)
-    and (filter_form.vars.value.ayudante is null or filter_form.vars.value.ayudante is empty)
-    and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
-    and (filter_form.vars.value.diagnostico is null or filter_form.vars.value.diagnostico is empty) %}
-        {% set display = 'display: none;' %}
-        {% set headericon = 'glyphicon-chevron-right' %}
-    {% endif %}
+and (filter_form.vars.value.requisionMateriales is null or filter_form.vars.value.requisionMateriales is empty)
+and (filter_form.vars.value.diagnosticadoPor is null or filter_form.vars.value.diagnosticadoPor is empty)
+and (filter_form.vars.value.ayudante is null or filter_form.vars.value.ayudante is empty)
+and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
+and (filter_form.vars.value.diagnostico is null or filter_form.vars.value.diagnostico is empty) %}
+    {% set display = 'display: none;' %}
+    {% set headericon = 'glyphicon-chevron-right' %}
+{% endif %}
 
     <h4>
         <a id="filter_form_header" style="cursor: pointer;">
@@ -62,14 +62,14 @@
 
     <!-- OT, Autobus, Grupo, Autobus, Tarea, Realizado por, Fecha estimada-->
     {% if is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo') %}
-        <div class="btn-group" style="padding-bottom: 8px;">
-            <a class="btn btn-primary" href="{{ path('ordentrabajo_new') }}"><i class="fa fa-plus-circle"></i> Adicionar
-                Orden de Trabajo</a>
+    <div class="btn-group" style="padding-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('ordentrabajo_new') }}"><i class="fa fa-plus-circle"></i> Adicionar
+            Orden de Trabajo</a>
 
-            {# Boton para cambiar la vista #}
+        {# Boton para cambiar la vista #}
 
-        </div>
-    {% endif %}
+    </div>
+{% endif %}
 
         <div class="btn-group pull-right" data-toggle="buttons">
             <label class="btn btn-default" id="vistatareas" title="Vista Tareas OT">
@@ -98,46 +98,48 @@
             </thead>
             <tbody>
             {% for entity in entities %}
-                {% set color_fondo=entity.autobus.grupobuses is not null ?
-                "background-color: " ~ entity.autobus.grupobuses.color ~ ";": "" %}
+            {% set color_fondo=entity.autobus.grupobuses is not null ?
+            "background-color: " ~ entity.autobus.grupobuses.color ~ ";": "" %}
+            {% set color_letra=entity.autobus.grupobuses is not null ?
+            "color: " ~ entity.autobus.grupobuses.colorTexto ~ ";": "" %}
+            {% for tarea in entity.tareasAdicionales %}
 
-                {% for tarea in entity.tareasAdicionales %}
+        <tr>
+            <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">OT #{{ entity.numero }}</td>
+            <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.autobus }}</td>
+            <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ tarea.grupo }}</td>
+            <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ tarea.subgrupo }}</td>
+            <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ tarea.tareamantenimiento }}</td>
+            <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.kilometraje }}</td>
+            <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
+            <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.realizadapor }}</td>
+            <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ tarea.fechaestimada |date('d/m/Y') }}</td>
+            <td style="width: 18% !important; text-align: center;  {{ color_fondo|raw }}">
+                {% if is_granted('VIEW', entity) %}
+                    <div class="btn-group">
+                        <a class="btn btn-success btn-xs"
+                           href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
+                                    class="fa fa-search"> Mostrar</i></a>
 
-                    <tr>
-                        <td style="{{ color_fondo|raw }}">OT #{{ entity.numero }}</td>
-                        <td style="{{ color_fondo|raw }}">{{ entity.autobus }}</td>
-                        <td style="{{ color_fondo|raw }}">{{ tarea.grupo }}</td>
-                        <td style="{{ color_fondo|raw }}">{{ tarea.subgrupo }}</td>
-                        <td style="{{ color_fondo|raw }}">{{ tarea.tareamantenimiento }}</td>
-                        <td style="{{ color_fondo|raw }}">{{ entity.kilometraje }}</td>
-                        <td style="{{ color_fondo|raw }}">{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
-                        <td style="{{ color_fondo|raw }}">{{ entity.realizadapor }}</td>
-                        <td style="{{ color_fondo|raw }}">{{ tarea.fechaestimada |date('d/m/Y') }}</td>
-                        <td style="width: 18% !important; text-align: center;  {{ color_fondo|raw }}">
-                            {% if is_granted('VIEW', entity) %}
-                                <div class="btn-group">
-                                    <a class="btn btn-success btn-xs"
-                                       href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
-                                                class="fa fa-search"> Mostrar</i></a>
+                    </div>
+                {% endif %}
 
-                            </div>
-                            {% endif %}
-
-                            {% if is_granted('EDIT', entity) %}
-                                <div class="btn-group">
-                                    <a class="btn btn-danger btn-xs"
-                                       href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i
-                                                class="fa fa-edit"> Editar</i></a>
-                                </div>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                    <td colspan="12">No se encontraron registros de tareas adicionales en el sistema.</td>
-                </tr>
-            {% endfor %}
+                {% if is_granted('EDIT', entity) %}
+                    <div class="btn-group">
+                        <a class="btn btn-danger btn-xs"
+                           href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i
+                                    class="fa fa-edit"> Editar</i></a>
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        </div>
+    {% endfor %}
+{% else %}
+    <tr>
+        <td colspan="12">No se encontraron registros de tareas adicionales en el sistema.</td>
+    </tr>
+{% endfor %}
             </tbody>
         </table>
     </div>
@@ -157,40 +159,42 @@
             </thead>
             <tbody>
             {% for entity in entities %}
-                {% set color_fondo=entity.autobus.grupobuses is not null ?
-                "background-color: " ~ entity.autobus.grupobuses.color ~ ";": "" %}
-                <tr>
-                    <td style="{{ color_fondo|raw }}">OT #{{ entity.numero }}</td>
-                    <td style="{{ color_fondo|raw }}">{{ entity.diagnosticadoPor | default('-')}}</td>
-                    <td style="{{ color_fondo|raw }}">{{ entity.autobus }}</td>
-                    <td style="{{ color_fondo|raw }}">{{ entity.ayudante }}</td>
-                    <td style="{{ color_fondo|raw }}">{{ entity.prioridad }}</td>
+    {% set color_fondo=entity.autobus.grupobuses is not null ?
+    "background-color: " ~ entity.autobus.grupobuses.color ~ ";": "" %}
+    {% set color_letra=entity.autobus.grupobuses is not null ?
+    "color: " ~ entity.autobus.grupobuses.colorTexto ~ ";": "" %}
+    <tr>
+        <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">OT #{{ entity.numero }}</td>
+        <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.diagnosticadoPor | default('-')}}</td>
+        <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.autobus }}</td>
+        <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.ayudante }}</td>
+        <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.prioridad }}</td>
 
-                    <td style="width: 18% !important; text-align: center; {{ color_fondo|raw }}">
-                        {% if is_granted('VIEW', entity) %}
-                            <div class="btn-group">
-                                <a class="btn btn-success btn-xs"
-                                   href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
-                                            class="fa fa-search"> Mostrar</i></a>
-                            </div>
-                        {% endif %}
+        <td style="width: 18% !important; text-align: center; {{ color_fondo|raw }}">
+        {% if is_granted('VIEW', entity) %}
+                <div class="btn-group">
+                    <a class="btn btn-success btn-xs"
+                       href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
+                                class="fa fa-search"> Mostrar</i></a>
+                </div>
+            {% endif %}
 
-                        {% if is_granted('EDIT', entity) %}
-                            <div class="btn-group">
-                                <a class="btn btn-danger btn-xs"
-                                   href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i
-                                            class="fa fa-edit"> Editar</i></a>
-                            </div>
-                        {% endif %}
-                    </td>
-                </tr>
+            {% if is_granted('EDIT', entity) %}
+                <div class="btn-group">
+                    <a class="btn btn-danger btn-xs"
+                       href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i
+                                class="fa fa-edit"> Editar</i></a>
+                </div>
+            {% endif %}
+        </td>
+    </tr>
 
 
-            {% else %}
-                <tr>
-                    <td colspan="12">No se encontraron registros de tareas adicionales en el sistema.</td>
-                </tr>
-            {% endfor %}
+{% else %}
+    <tr>
+        <td colspan="12">No se encontraron registros de tareas adicionales en el sistema.</td>
+    </tr>
+{% endfor %}
             </tbody>
         </table>
     </div>
