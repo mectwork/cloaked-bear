@@ -4,75 +4,189 @@
 
 {% endblock %}
 
+{% block title %}
+    Datos de la bodega "{{ entity.nombre }}"
+{% endblock %}
+
 {% block titulo_encabezado %}
     Datos de la bodega: "{{ entity.nombre }}"
 {% endblock %}
 
 {% block area_trabajo %}
 
-    <table class="table table-striped" style="font-size: 16px;">
-        <tbody>
+    <div class="row">
+        <div class="col-lg-12">
+            {# Nav tabs #}
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos de la Bodega</a></li>
+                <li><a href="#productotope" data-toggle="tab">Productos con Tope</a></li>
+            </ul>
 
-            <tr>
-                <th>Nombre</th>
-                <td>{{ entity.nombre }}</td>
-            </tr>
+            {# Tab panes #}
+            <div class="tab-content" style="padding-top: 20px;">
+                <!-- TAB BASICOS-->
+                <div class="tab-pane fade in active" id="basicos">
+                    {% include '@BusetaBodega/Bodega/show_datos_basicos.html.twig' with {'entity': entity} %}
+                    <input type="hidden" id="bodega_id" name="bodega_id" value="{{ entity.id }}"/>
+                </div>
 
-            <tr>
-                <th>Responsable</th>
-                <td>{{ entity.responsable }}</td>
-            </tr>
+                <div class="tab-pane fade" id="productotope">
+                    {# ProductosTope #}
+                </div>
+            </div>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
 
-            <tr>
-                <th>Código</th>
-                <td>
-                    {% if entity.codigo == '' %}
-                        <label style="color: red">La bodega no tiene código</label>
-                    {% else %}
-                        {{ entity.codigo }}
-                    {% endif %}
-                </td>
-            </tr>
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <a class="btn btn-primary" href="{{ path('bodega_edit', { 'id': entity.id }) }}">
+                <span class="glyphicon glyphicon-edit"></span>
+                Editar
+            </a>
 
-            <tr>
-                <th>Descripción</th>
-                <td>
-                    {% if entity.descripcion == '' %}
-                        <label style="color: red">La bodega no tiene descripción</label>
-                    {% else %}
-                        {{ entity.descripcion }}
-                    {% endif %}
-                </td>
-            </tr>
+            <a class="btn btn-primary" href="{{ path('bodega') }}">
+                <span class="glyphicon glyphicon-list"></span>
+                Listado
+            </a>
 
-            <tr>
-                <th>Dirección</th>
-                <td>
-                    {% if entity.direccion == '' %}
-                        <label style="color: red">La bodega no tiene dirección</label>
-                    {% else %}
-                        {{ entity.direccion }}
-                    {% endif %}
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-
-    <div class="form-actions">
-        {{ form_start(delete_form) }}
-            <a class="btn btn-primary" href="{{ path('bodega_edit', { 'id': entity.id }) }}"> Editar</a>
-            <a class="btn btn-primary" href="{{ path('bodega') }}"> Listado</a>
-            <a class="btn btn-primary" href="{{ path('bodega_productomaxmin', { 'id': entity.id }) }}"> Maximos y Minimos</a>
-            {#<button type="sumbit" class="btn btn-primary">Eliminar</button>#}
-        {{ form_end(delete_form) }}
+        </div>
     </div>
 
-
 {% endblock %}
-
 
 {% block contenido %}
 
-
 {% endblock %}
+
+{% block javascripts %}
+    <!-- Initialize script -->
+    <script type="text/javascript">
+        $(function () {
+
+            //Obtenemos el id de la bodega actualmente mostrado en el show
+            bodega.id = $('#bodega_id').val();
+
+            // on show tab events
+            $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+                var href = $(e.target).attr('href');
+                //var relhref = $(e.relatedTarget).attr('href');
+
+                //Si damos click en el tab "Productotope"
+                if (href === '#productotope') {
+                    productotope._load();
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        var button = {
+            _disable: function (selector) {
+                $(selector).addClass('disabled');
+            },
+            _enable: function (selector) {
+                $(selector).removeClass('disabled');
+            }
+        };
+        var tabs = {
+            loadding_image: '<i class="fa fa-spinner fa-spin"></i>',
+            _show_all_tabs: function () {
+                tabs._show_tab('productotope');
+            },
+            _show_tab: function (tabname) {
+                $('li a[href="#' + tabname + '"]').parent().show();
+            },
+            _hide_tab: function () {
+                $('li a[href="#' + tabname + '"]').parent().hide();
+            },
+            _add_loadding: function (tabname) {
+                var linktab = $('li a[href="#' + tabname + '"]');
+                linktab.prepend($(tabs.loadding_image));
+            },
+            _remove_loadding: function (tabname) {
+                var spinning = $('li a[href="#' + tabname + '"]').find('i.fa.fa-spinner.fa-spin');
+                spinning.remove();
+            },
+            _active: function (href) {
+                $('li a[href="' + href + '"]').parent().addClass('active');
+                $('div' + href).addClass('active').addClass('in');
+            },
+            _desactive: function (href) {
+                $('li a[href="' + href + '"]').parent().removeClass('active');
+                $('div' + href).removeClass('active').removeClass('in');
+            }
+        };
+        var utils = {
+            _fail: function (jqXHR, textStatus, errorThrown) {
+                $('div.modal').modal('hide').html('');
+                if (jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                    addGlobalMessage('danger', jqXHR.responseText.message);
+                } else {
+                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+                }
+            }
+        };
+        var progressBar = {
+            _add_progressBar: function (name) {
+                var progressBar = $('<div class="progress" id="' + name + '_progress_bar"></div>'),
+                        bar = $('<div>')
+                                .addClass('progress-bar')
+                                .attr('role', 'progressbar')
+                                .attr('aria-valuenow', 2)
+                                .attr('aria-valuemin', 0)
+                                .attr('aria-valuemax', 100)
+                                .css('width', '2%')
+                                .append($('<span class="sr-only"></span>'));
+
+                progressBar.append(bar);
+
+                $('div#' + name).prepend(progressBar);
+            },
+            _remove_progressBar: function (name) {
+                var progressBar = $('div#' + name + '_progress_bar');
+                progressBar.slideUp(400, function () {
+                    progressBar.remove();
+                });
+            }
+        };
+    </script>
+
+    <!-- Bodega script -->
+    <script type="text/javascript">
+        var bodega = {
+            form_id: 'buseta_bodegabundle_bodega',
+            form_name: 'buseta_bodegabundle_bodega',
+            id: ''
+        };
+    </script>
+
+    <!-- Productotope script -->
+    <script type="text/javascript" src="{{ asset('bundles/busetabodega/js/bodega/productotope.js') }}"></script>
+
+    <!-- Scripts utiles -->
+
+    <!-- Disable F5 refresh -->
+    <script type="text/javascript">
+        function disableF5(e) {
+            if ((e.which || e.keyCode) == 116) e.preventDefault();
+        }
+        ;
+        $(document).on("keydown", disableF5);
+    </script>
+
+
+    <!-- Disable go back navigation -->
+    <script type="text/javascript">
+        history.pushState(null, null, location.href);
+        function disableGoBack(e) {
+            history.go(1);
+        }
+        ;
+        $(window).on("beforeunload", disableGoBack);
+        $(window).on("popstate", disableGoBack);
+    </script>
+
+{% endblock javascripts %}

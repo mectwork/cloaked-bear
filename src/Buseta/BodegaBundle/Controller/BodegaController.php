@@ -313,12 +313,13 @@ class BodegaController extends Controller
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
 
-    public function productoTopeAction($id)
+
+    //se le pasa el almacen
+    public function listProductosTopeAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
         $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($id);
-
 
         $productotopeList = $em->getRepository('BusetaBodegaBundle:ProductoTope')->findBy(
             array(
@@ -338,17 +339,17 @@ class BodegaController extends Controller
             $productotopeArray[]=$productotopeElem;
         }
 
-        $paginator = $this->get('knp_paginator');
-        $productotopeArray = $paginator->paginate(
-            $productotopeArray,
-            $this->get('request')->query->get('page', 1),
-            10,
-            array('pageParameterName' => 'page')
-        );
+        $productotopeArray = $this->get('knp_paginator')
+            ->paginate(
+                $productotopeArray,
+                $this->get('request')->query->get('page', 1),
+                10
+            );
 
-        return $this->render('BusetaBodegaBundle:Bodega:productotope.html.twig', array(
-            'productotope' => $productotopeArray,
+        return $this->render('@BusetaBodega/Bodega/ProductoTope/list_template.html.twig', array(
+            'entities' => $productotopeArray,
             'almacen' => $almacen,
         ));
     }
+
 }

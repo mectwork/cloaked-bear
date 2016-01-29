@@ -53,6 +53,7 @@
 {% endblock collection_item_widget %}
 
 {% macro template(prototype) %}
+
     <div class="col-lg-3 form-group">
         {{ form_errors(prototype.producto) }}
         {{ form_widget(prototype.producto) }}
@@ -60,17 +61,18 @@
         {{ form_widget(prototype.nombre) }}
     </div>
 
-    <div class="col-lg-2 form-group">
+    <div class="col-lg-1 form-group">
         {{ form_errors(prototype.cantidad) }}
         {{ form_widget(prototype.cantidad) }}
     </div>
 
-    <div class="col-lg-2 form-group">
+    <div class="col-lg-7 form-group">
         {{ form_errors(prototype.seriales) }}
         {{ form_widget(prototype.seriales) }}
     </div>
 
-    <div class="col-lg-7 form-group">
+
+    <div class="col-lg-1 form-group">
         <a class="btn btn-primary delete_tag_link" href="#"><i class="fa fa-minus-circle"></i></a>
     </div>
 

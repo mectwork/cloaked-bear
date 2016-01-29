@@ -40,4 +40,22 @@ class ProductoTopeRepository extends EntityRepository
         }
     }
 
+    public function findAllByBodegaId($id)
+    {
+        $qb = $this->createQueryBuilder('pt');
+        $query = $qb
+            ->join('pt.almacen', 'a')
+            ->where($qb->expr()->eq(':id', 'a.id'))
+            ->setParameter('id', $id);
+
+        //$query->orderBy('pt.id', 'DESC');
+        $query->getQuery();
+
+        try {
+            return $query->getQuery();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
+
 }

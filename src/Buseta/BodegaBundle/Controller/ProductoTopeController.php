@@ -3,6 +3,8 @@
 namespace Buseta\BodegaBundle\Controller;
 
 
+use Buseta\BodegaBundle\Entity\Bodega;
+use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Buseta\BodegaBundle\Form\Filter\ProductoTopeFilter;
 use Buseta\BodegaBundle\Form\Model\ProductoTopeFilterModel;
 use Buseta\BodegaBundle\Entity\ProductoTope;
@@ -18,8 +20,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;*/
 
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -299,6 +303,205 @@ class ProductoTopeController extends Controller
             ->setAction($this->generateUrl('productotope_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->getForm();
+    }
+
+
+    //A partir de aqui los metodos requeridos para el AJAX que llaman desde el formulario de Bodega
+
+    /**
+     * @param Bodega $bodega
+     * @return Response
+     *
+     * /////@Route("/list/{bodega}", name="bodega_productotope_list", methods={"GET"}, options={"expose":true})
+     * /////@ParamConverter("bodega", options={"mapping":{"bodega":"id"}})
+     */
+    public function listAction(Bodega $bodega, Request $request)
+    {
+        $entities = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('BusetaBodegaBundle:ProductoTope')
+            ->findAllByBodegaId($bodega->getId());
+
+        $entities = $this->get('knp_paginator')
+            ->paginate(
+                $entities,
+                $request->query->get('page', 1),
+                10
+            );
+
+        return $this->render('@BusetaBodega/Bodega/ProductoTope/list_template.html.twig', array(
+            'entities' => $entities,
+           // 'bodega' => $bodega,
+        ));
+    }
+
+//     //se le pasa el almacen
+//    public function listAction($id)
+//    {
+//        $em = $this->getDoctrine()->getManager();
+//
+//        $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($id);
+//
+//        $productotopeList = $em->getRepository('BusetaBodegaBundle:ProductoTope')->findBy(
+//            array(
+//                'almacen' => $almacen,
+//            )
+//        );
+//
+//        $productotopeArray = array();
+//
+//        /*  @var  \Buseta\BodegaBundle\Entity\ProductoTope  $pt*/
+//        $fe = new FuncionesExtras();
+//        foreach ($productotopeList as $pt) {
+//            $producto = $pt->getProducto();
+//            $productotopeElem['prodtope']=$pt;
+//            $cantidadDisponible = $fe->obtenerCantidadProductosAlmancen($producto,$almacen,$em);
+//            $productotopeElem['cantidad']=$cantidadDisponible;
+//            $productotopeArray[]=$productotopeElem;
+//        }
+//
+//        $productotopeArray = $this->get('knp_paginator')
+//            ->paginate(
+//                $productotopeArray,
+//                $this->get('request')->query->get('page', 1),
+//                10
+//            );
+//
+//        return $this->render('@BusetaBodega/Bodega/ProductoTope/list_template.html.twig', array(
+//            'entities' => $productotopeArray,
+//            'almacen' => $almacen,
+//        ));
+//    }
+
+
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * ///@Route("/new/modal/{reporte}", name="bodega_productotope_new_modal", methods={"GET","POST"}, options={"expose":true})
+     * ///@ParamConverter("reporte", options={"mapping":{"reporte":"id"}})
+     */
+    public function newModalAction(Bodega $bodega, Request $request)
+    {
+
+        $trans = $this->get('translator');
+
+        $handler = $this->get('buseta_bodega.productotope.handler');
+        $handler->bindData($bodega);
+
+        $handler->setRequest($request);
+        if($handler->handle()) {
+            $renderView = $this->renderView('@BusetaBodega/Bodega/ProductoTope/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
+            ), 201);
+        }
+
+        if($handler->getError()) {
+            $renderView = $this->renderView('@BusetaBodega/Bodega/ProductoTope/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Producto Tope'), 'BusetaBodegaBundle')
+            ), 500);
+        }
+
+        $renderView = $this->renderView('@BusetaBodega/Bodega/ProductoTope/modal_form.html.twig', array(
+            'form' => $handler->getForm()->createView(),
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
+    }
+
+
+    public function editModalAction(ProductoTope $productoTope,  $bodega = 1 , Request $request)
+    {
+       // var_dump('---------');die;
+
+        $bodega = $this->get('doctrine.orm.entity_manager')->getRepository('BusetaBodegaBundle:Bodega')->find($bodega);  ;
+
+        $trans = $this->get('translator');
+        $handler = $this->get('buseta_bodega.productotope.handler');
+
+        $handler->bindData($bodega, $productoTope);
+        $handler->setRequest($request);
+
+        if($handler->handle()) {
+            $renderView = $this->renderView('@BusetaBodega/Bodega/ProductoTope/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
+            ), 201);
+        }
+
+        if($handler->getError()) {
+
+            $renderView = $this->renderView('@BusetaBodega/Bodega/ProductoTope/modal_form.html.twig', array(
+                'form' => $handler->getForm()->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $renderView,
+                'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Producto Tope'), 'BusetaBodegaBundle')
+            ), 500);
+        }
+
+        $renderView = $this->renderView('@BusetaBodega/Bodega/ProductoTope/modal_form.html.twig', array(
+            'form' => $handler->getForm()->createView(),
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
+    }
+
+    /**
+     * Deletes a ProductoTope entity.
+     * @Route("/{id}/delete", name="productotope_delete_modal", options={"expose": true})
+     * @Method({"DELETE", "GET"})
+     */
+    public function deleteModalAction(Request $request, ProductoTope $productoTope)
+    {
+        $form = $this->createDeleteForm($productoTope->getId());
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            try {
+                $em->remove($productoTope);
+                $em->flush();
+
+                $message = $this->get('translator')->trans('messages.delete.success', array(), 'BusetaBodegaBundle');
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array('message' => $message), 202);
+                }
+            } catch (\Exception $e) {
+                $message = $this->get('translator')->trans('messages.delete.error.%key%', array('key' => 'Producto Tope'), 'BusetaBodegaBundle');
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array('message' => $message), 500);
+                }
+            }
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            $view = $this->renderView('@BusetaBodega/Bodega/ProductoTope/modal_delete.html.twig', array(
+                'entity'    => $productoTope,
+                'form'      => $form->createView(),
+            ));
+
+            return new JsonResponse(array(
+                'view' => $view
+            ), 200);
+        }
+
+        return $this->redirect($this->generateUrl('linea'));//?????
     }
 
 

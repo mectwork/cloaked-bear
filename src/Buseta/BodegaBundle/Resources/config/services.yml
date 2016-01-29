@@ -74,6 +74,10 @@ services:
       class: Buseta\BodegaBundle\Form\Handler\CostoProductoHandler
       arguments:
         - @service_container
+    buseta_bodega.productotope.handler:
+      class: Buseta\BodegaBundle\Form\Handler\ProductoTopeHandler
+      arguments:
+        - @service_container
 
     # MANAGERS
     buseta.bodega.terceros_manager:

@@ -1,0 +1,38 @@
+<div class="modal" id="form_productotope_modal" tabindex="-1" role="dialog" aria-labelledby="createProductoTope" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="createProductoTope">Adicionar/Modificar Producto con Topes</h4>
+            </div>
+            <div class="modal-body">
+                <form name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" action="{{ form.vars.action }}"
+                      method="post" enctype="multipart/form-data">
+                    {% if form.vars.method == 'PUT' %}
+                        <input type="hidden" name="_method" value="PUT"/>
+                    {% endif %}
+
+                        {#    variante que muestra todos los campos del formulario automaticamente
+                        {{ form_widget(form) }}#}
+
+                    <div class="row">
+                        <div class="col-lg-12">{{ form_row(form.producto) }}</div>
+                        <div class="col-lg-12">{{ form_row(form.almacen) }}</div>
+                        <div class="col-lg-6">{{ form_row(form.min) }}</div>
+                        <div class="col-lg-6">{{ form_row(form.max) }}</div>
+                        <div class="col-lg-12">{{ form_row(form.comentarios) }}</div>
+                    </div>
+
+                    {{ form_widget(form._token) }}
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" id="btn_productotope_cancel" data-dismiss="modal"><span class="glyphicon glyphicon-chevron-left"></span>
+                    {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+                <a href="#" class="btn btn-primary" id="btn_productotope_save"><span class="glyphicon glyphicon-save"></span>
+                    {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
+            </div>
+        </div>
+    </div>
+</div>
