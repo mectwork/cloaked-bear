@@ -29,7 +29,20 @@ class RoleController extends Controller
      */
     public function indexAction()
     {
-        $roles = $this->get('configuration.reader')->getRoleList();
+        $rolesReader = $this->get('configuration.reader');
+        if (!$rolesReader->fileExist()) {
+            $this->get('session')->getFlashBag()->add('danger', sprintf('No existe el archivo de configuración "%s"
+            y no es posible crearlo debido a problemas de permisos. Compruebe que exista el archivo y tenga
+            permisos 775 con propietario y grupo correctos.', $rolesReader->getSecurityConfig()));
+        } elseif (!$rolesReader->isReadable()) {
+            $this->get('session')->getFlashBag()->add('danger', sprintf('No es posible leer el archivo de configuración "%s".
+             Compruebe que tenga permisos 775 con propietario y grupo correctos.', $rolesReader->getSecurityConfig()));
+        } elseif (!$rolesReader->isWritable()) {
+            $this->get('session')->getFlashBag()->add('danger', sprintf('No es posible escribir el archivo de configuración "%s".
+             Compruebe que tenga permisos 775 con propietario y grupo correctos.', $rolesReader->getSecurityConfig()));
+        }
+
+        $roles = $rolesReader->getRoleList();
 
         return $this->render('HatueySoftSecurityBundle:Role:manager.html.twig', array(
             'entities' => $roles,

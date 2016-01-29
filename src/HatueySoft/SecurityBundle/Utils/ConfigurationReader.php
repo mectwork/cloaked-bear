@@ -3,27 +3,37 @@
 namespace HatueySoft\SecurityBundle\Utils;
 
 use HatueySoft\SecurityBundle\Utils\SecurityManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
 class ConfigurationReader
 {
 
     /**
-     * @var container Contenedor de servicios
-     * */
+     * container Contenedor de servicios
+     *
+     * @var ContainerInterface
+     */
     protected $container;
 
     /**
-     * @var configuración de la seguridad, path.
+     * configuración de la seguridad, path.
      *
-     * */
+     * @var string
+     *
+     */
     protected $security_config;
 
+    /**
+     * ConfigurationReader constructor.
+     *
+     * @param $container
+     * @param $security_config
+     */
     public function __construct($container, $security_config)
     {
         $this->container = $container;
         $this->security_config = $security_config;
-
     }
 
     /**
@@ -165,5 +175,56 @@ class ConfigurationReader
         }
 
         return $position;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecurityConfig()
+    {
+        return $this->security_config;
+    }
+
+    /**
+     * Check if config file existe, else aim to created.
+     *
+     * @return boolean
+     */
+    public function fileExist()
+    {
+        if (file_exists($this->security_config)) {
+            return true;
+        } else {
+            try {
+                if ($resource = fopen($this->security_config, 'a+')) {
+                    fclose($resource);
+
+                    return true;
+                }
+            } catch (\Exception $e) {
+            }
+
+            return false;
+        }
+    }
+
+    /**
+     * Check if config file is readable.
+     *
+     * @return boolean
+     */
+    public function isReadable()
+    {
+        return is_readable($this->security_config);
+    }
+
+    /**
+     * Check if config file es writable.
+     *
+     * @return boolean
+     */
+    public function isWritable()
+    {
+        return is_writable($this->security_config);
     }
 }
