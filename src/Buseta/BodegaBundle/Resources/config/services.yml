@@ -182,7 +182,9 @@ services:
         class: Buseta\BodegaBundle\Doctrine\DateTimeSubscriber
         tags:
             - { name: doctrine.event_subscriber }
-            
+
     # Generador de Seriales
     buseta.bodega.generadorseriales:
         class: Buseta\BodegaBundle\Extras\GeneradorSeriales
+        arguments:
+          - @logger
