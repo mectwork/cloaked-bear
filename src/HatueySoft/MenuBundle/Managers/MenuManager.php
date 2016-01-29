@@ -4,9 +4,13 @@ namespace HatueySoft\MenuBundle\Managers;
 
 
 use HatueySoft\MenuBundle\Model\MenuNode;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class MenuManager
+ *
+ * @package HatueySoft\MenuBundle\Managers
+ */
 class MenuManager
 {
     /**
@@ -19,7 +23,11 @@ class MenuManager
      */
     private $menuTree;
 
-
+    /**
+     * MenuManager constructor.
+     *
+     * @param $config
+     */
     function __construct($config)
     {
         $this->menuConf = $config['menu_conf'];
@@ -67,6 +75,49 @@ class MenuManager
             $children->setRoles($node->getRoles());
 
             $this->updateChildrensRoles($children);
+        }
+    }
+
+    /**
+     * Check if config file is readable.
+     *
+     * @return boolean
+     */
+    public function isReadable()
+    {
+        return is_readable($this->menuConf);
+    }
+
+    /**
+     * Check if config file es writable.
+     *
+     * @return boolean
+     */
+    public function isWritable()
+    {
+        return is_writable($this->menuConf);
+    }
+
+    /**
+     * Check if config file existe, else aim to created.
+     *
+     * @return boolean
+     */
+    public function configFileExist()
+    {
+        if (file_exists($this->menuConf)) {
+            return true;
+        } else {
+            try {
+                if ($resource = fopen($this->menuConf, 'a+')) {
+                    fclose($resource);
+
+                    return true;
+                }
+            } catch (\Exception $e) {
+            }
+
+            return false;
         }
     }
 
@@ -177,5 +228,13 @@ class MenuManager
         }
 
         return $treenode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMenuConf()
+    {
+        return $this->menuConf;
     }
 }

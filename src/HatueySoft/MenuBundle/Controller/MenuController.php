@@ -28,6 +28,19 @@ class MenuController extends Controller
      */
     public function indexAction()
     {
+        $menuManager = $this->get('hatuey_soft.menu.manager');
+        if (!$menuManager->configFileExist()) {
+            $this->get('session')->getFlashBag()->add('danger', sprintf('No existe el archivo de configuración "%s"
+            y no es posible crearlo debido a problemas de permisos. Compruebe que exista el archivo y tenga
+            permisos 775 con propietario y grupo correctos.', $menuManager->getMenuConf()));
+        } elseif (!$menuManager->isReadable()) {
+            $this->get('session')->getFlashBag()->add('danger', sprintf('No es posible leer el archivo de configuración "%s".
+             Compruebe que tenga permisos 775 con propietario y grupo correctos.', $menuManager->getMenuConf()));
+        } elseif (!$menuManager->isWritable()) {
+            $this->get('session')->getFlashBag()->add('danger', sprintf('No es posible escribir el archivo de configuración "%s".
+             Compruebe que tenga permisos 775 con propietario y grupo correctos.', $menuManager->getMenuConf()));
+        }
+
         return $this->render('@HatueySoftMenu/Menu/index.html.twig');
     }
 
