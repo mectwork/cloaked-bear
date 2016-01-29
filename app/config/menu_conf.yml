@@ -220,7 +220,7 @@ root:
                 menu_B_C_C:
                   id: menu_B_C_C
                   name: null
-                  label: Orden de Entrada
+                  label: 'Orden de Entrada'
                   route: albaran
                   roles: [ROLE_USER]
                   type: item
@@ -476,7 +476,7 @@ root:
           id: menu_D
           name: menu_combustible
           label: Combustible
-          route: configuracion_combustible
+          route: servicioCombustible
           roles:
             - ROLE_USER
           type: folder
