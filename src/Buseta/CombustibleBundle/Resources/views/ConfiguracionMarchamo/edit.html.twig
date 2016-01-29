@@ -1,12 +1,8 @@
 {% extends "BusetaCombustibleBundle::layout.html.twig" %}
 
-{% block title %}
-    Modificar Datos de la Configuración de Marchamo
-{% endblock %}
+{% block title block('header') %}
 
-{% block header %}
-    Modificar Datos de la Configuración de Marchamo
-{% endblock %}
+{% block header 'Modificar Datos de la Configuración de Marchamo' %}
 
 {% block area_trabajo %}
     {% include '@BusetaCombustible/ConfiguracionMarchamo/form_template.html.twig' with {'form': form} %}
