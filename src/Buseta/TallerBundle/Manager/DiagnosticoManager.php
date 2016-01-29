@@ -8,8 +8,13 @@ use Buseta\TallerBundle\Entity\TareaAdicional;
 use Buseta\TallerBundle\Entity\Diagnostico;
 use Buseta\TallerBundle\Entity\OrdenTrabajo;
 use Doctrine\Common\Persistence\ObjectManager;
+use HatueySoft\SequenceBundle\HatueySoftSequenceBundle;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Session\Session;
+use HatueySoft\SequenceBundle\Managers\SequenceManager;
+use Symfony\Component\Security\Core\Util\ClassUtils;
+
+
 
 /**
  * Class DiagnosticoManager
@@ -32,17 +37,23 @@ class DiagnosticoManager
      */
     private $session;
 
+    /**
+     * @var \HatueySoft\SequenceBundle\Managers\SequenceManager
+     */
+    private $sequenceManager;
 
     /**
      * @param ObjectManager $em
      * @param Logger $logger
      * @param Session $session
+     * @param SequenceManager $sequenceManager
      */
-    function __construct(ObjectManager $em, Logger $logger, Session $session)
+    function __construct(ObjectManager $em, Logger $logger, Session $session, SequenceManager $sequenceManager)
     {
         $this->em = $em;
         $this->logger = $logger;
         $this->session = $session;
+        $this->sequenceManager = $sequenceManager;
     }
 
     /**
@@ -56,7 +67,10 @@ class DiagnosticoManager
         try {
             //Crear nuevo Diagnostico a partir del Reporte seleccionado
             $diagnostico = new Diagnostico();
-            $diagnostico->setNumero( $reporte->getNumero() );
+
+            if ($this->sequenceManager->hasSequence(ClassUtils::getRealClass($diagnostico))) {
+                $diagnostico->setNumero($this->sequenceManager->getNextValue('diagnostico_seq'));
+            }
             $diagnostico->setReporte($reporte);
             $diagnostico->setAutobus($reporte->getAutobus());
             $diagnostico->setCancelado(false);
@@ -65,7 +79,6 @@ class DiagnosticoManager
             $this->em->flush();
 
             $this->session->getFlashBag()->add('success', sprintf('Se ha creado el Diagnóstico %s de forma satisfactoria.', $diagnostico->getNumero()));
-
             return true;
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Diagnostico.Persist: %s', $e->getMessage()));

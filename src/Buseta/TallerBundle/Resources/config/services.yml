@@ -21,6 +21,7 @@ services:
             - @doctrine.orm.entity_manager
             - @logger
             - @session
+            - @hatuey_soft.sequence.manager
 
     # EVENT SUBSCRIBER
     buseta.taller.diagnostico.subscriber:
