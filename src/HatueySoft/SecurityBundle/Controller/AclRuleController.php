@@ -23,6 +23,17 @@ class AclRuleController extends Controller
     public function indexAction()
     {
         $rulesManager = $this->get('hatuey_soft.security.acl_rules_manager');
+        if (!$rulesManager->fileExist()) {
+            $this->get('session')->getFlashBag()->add('danger', sprintf('No existe el archivo de configuración "%s"
+            y no es posible crearlo debido a problemas de permisos. Compruebe que exista el archivo y tenga
+            permisos 775 con propietario y grupo correctos.', $rulesManager->getAclConfigFile()));
+        } elseif (!$rulesManager->isReadable()) {
+            $this->get('session')->getFlashBag()->add('danger', sprintf('No es posible leer el archivo de configuración "%s".
+             Compruebe que tenga permisos 775 con propietario y grupo correctos.', $rulesManager->getAclConfigFile()));
+        } elseif (!$rulesManager->isWritable()) {
+            $this->get('session')->getFlashBag()->add('danger', sprintf('No es posible escribir el archivo de configuración "%s".
+             Compruebe que tenga permisos 775 con propietario y grupo correctos.', $rulesManager->getAclConfigFile()));
+        }
 
         return $this->render('@HatueySoftSecurity/AclRules/index.html.twig', array(
             'entities' => $rulesManager->getEntities()

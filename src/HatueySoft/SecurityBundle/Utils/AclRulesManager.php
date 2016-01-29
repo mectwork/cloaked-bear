@@ -21,8 +21,6 @@ class AclRulesManager
      */
     private $logger;
 
-    private $aclManager;
-
     /**
      * @var array
      */
@@ -252,5 +250,56 @@ class AclRulesManager
         }
 
         return $rules;
+    }
+
+    /**
+     * Check if config file existe, else aim to created.
+     *
+     * @return boolean
+     */
+    public function fileExist()
+    {
+        if (file_exists($this->aclConfigFile)) {
+            return true;
+        } else {
+            try {
+                if ($resource = fopen($this->aclConfigFile, 'a+')) {
+                    fclose($resource);
+
+                    return true;
+                }
+            } catch (\Exception $e) {
+            }
+
+            return false;
+        }
+    }
+
+    /**
+     * Check if config file is readable.
+     *
+     * @return boolean
+     */
+    public function isReadable()
+    {
+        return is_readable($this->aclConfigFile);
+    }
+
+    /**
+     * Check if config file es writable.
+     *
+     * @return boolean
+     */
+    public function isWritable()
+    {
+        return is_writable($this->aclConfigFile);
+    }
+
+    /**
+     * @return string
+     */
+    public function getAclConfigFile()
+    {
+        return $this->aclConfigFile;
     }
 }
