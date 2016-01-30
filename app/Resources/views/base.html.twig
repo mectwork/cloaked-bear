@@ -39,7 +39,7 @@
                     <div class="row">
                         <div id="global-messages" class="col-sm-12">
                         {% if app.session.flashbag.peekAll|length > 0 %}
-                            {{ session_flash() }}
+                            {{ session_flash(true, true) }}
                         {% endif %}
                         </div>
                     </div>
