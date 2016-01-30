@@ -14,109 +14,65 @@
 
 {% block area_trabajo %}
 
-    <table class="table table-striped" style="font-size: 16px;">
-    <tbody>
+    <div class="row">
+        <div class="col-lg-12">
+            {# Nav tabs #}
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos del Producto</a></li>
+                <li><a href="#bitacoraalmacen" data-toggle="tab">Bitacora de Movimientos</a></li>
+                <li><a href="#bitacoraseriales" data-toggle="tab">Bitacora de Seriales</a></li>
+            </ul>
 
-    <tr>
-        <th>Nombre</th>
-        <td>{{ entity.nombre }}</td>
-    </tr>
-    <tr>
-        <th>Proveedor</th>
-        <td>{{ entity.proveedor }}</td>
-    </tr>
-    <tr>
-        <th>Código</th>
-        <td>{{ entity.codigo }}</td>
-    </tr>
-    <tr>
-        <th>Unidad de medida (U/M)</th>
-        <td>{{ entity.uom }}</td>
-    </tr>
-    <tr>
-        <th>Categoría de Producto</th>
-        <td>{{ entity.categoriaProducto }}</td>
-    </tr>
-    <tr>
-        <th>Grupo</th>
-        <td>{{ entity.grupo }}</td>
-    </tr>
-    <tr>
-        <th>Subgrupo</th>
-        <td>{{ entity.subgrupo }}</td>
-    </tr>
-    <tr>
-        <th>Condición</th>
-        <td>{{ entity.condicion }}</td>
-    </tr>
+            {# Tab panes #}
+            <div class="tab-content" style="padding-top: 20px;">
+                <!-- TAB BASICOS-->
+                <div class="tab-pane fade in active" id="basicos">
+                    {% include '@BusetaBodega/Producto/show_datos_basicos.html.twig' with {'entity': entity} %}
+                    <input type="hidden" id="producto_id" name="producto_id" value="{{ entity.id }}">
+                </div>
 
-    <tr>
-        <th>Tiene Numero Serie</th>
-        <td>
-            {% if entity.tieneNroSerie == 1 %}
-                Sí
-            {% else %}
-                No
-            {% endif %}
-        </td>
-    </tr>
+                <div class="tab-pane fade" id="bitacoraalmacen">
+                    {# BitacoraAlmacen #}
+                </div>
 
-    <tr>
-        <th>Tiene Ref. Interna</th>
-        <td>
-            {% if entity.tieneRefInterna == 1 %}
-                Sí
-            {% else %}
-                No
-            {% endif %}
-        </td>
-    </tr>
+                <div class="tab-pane fade" id="bitacoraseriales">
+                    {# Bitacoraseriales #}
+                </div>
+            </div>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
 
-    <tr>
-        <th>Costos existentes</th>
-        <td>
-            <table class="table table-striped" style="font-size: 16px;">
-                <th>Costo</th>
-                <th>Proveedor</th>
-                <th>Código Alternativo</th>
-                <th>Activo</th>
-
-                {% for costo in entity.costoproducto %}
-                <tbody>
-                <tr>
-                    <td>{{ costo.costo }}</td>
-                    <td>{{ costo.proveedor }}</td>
-                    <td>{{ costo.codigoAlternativo }}</td>
-                    <td>{{ costo.activo ? '<span class="glyphicon glyphicon-ok" title="Activo"></span>' : '<span class="glyphicon glyphicon-remove" title="Inactivo"></span>' }}</td>
-                </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="6">
-                            <span class="label label-danger">No existen líneas de costos de productos disponibles</span>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </td>
-    </tr>
-
-    <tr>
-        <th>Activo</th>
-        <td>{{ entity.activo ? '<span class="glyphicon glyphicon-ok" title="Activo"></span>' : '<span class="glyphicon glyphicon-remove" title="Inactivo"></span>' }}</td>
-    </tr>
-
-    </tbody>
-    </table>
-
+{#
     <div class="form-actions">
         <a class="btn btn-primary" href="{{ path('producto_edit', { 'id': entity.id }) }}"> Editar</a>
         <a class="btn btn-primary" href="{{ path('producto') }}"> Listado</a>
-        {#<a href="#delete" data-href="{{ path('producto_delete', {'id': entity.id}) }}" class="btn btn-danger">
-            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>#}
+        &#123;&#35;<a href="#delete" data-href="{{ path('producto_delete', {'id': entity.id}) }}" class="btn btn-danger">
+            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>&#35;&#125;
         <a class="btn btn-primary" href="{{ path('producto_bitacora', { 'id': entity.id }) }}"> Bitácora</a>
     </div>
+#}
 
-    {% include 'BusetaBodegaBundle:Producto:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <a class="btn btn-primary" href="{{ path('producto_edit', { 'id': entity.id }) }}">
+                <span class="glyphicon glyphicon-edit"></span>
+                Editar
+            </a>
+            <a class="btn btn-primary" href="{{ path('producto') }}">
+                <span class="glyphicon glyphicon-list"></span>
+                Listado
+            </a>
+            <a class="btn btn-primary" href="{{ path('producto_bitacora', { 'id': entity.id }) }}">
+                <span class="glyphicon glyphicon-eye-open"></span>
+                Ver Bitacora
+            </a>
+        </div>
+    </div>
+
+{#    {% include 'BusetaBodegaBundle:Producto:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}#}
 
 {% endblock %}
 
@@ -124,12 +80,149 @@
 
 {% endblock %}
 
-{% block javascripts %}
+{#{% block javascripts %}
     {{ parent() }}
 
     <script type="text/javascript">
         var productodeleteevent = new DeleteEvent('{{ path('producto') }}', 'div#producto_records_list', false);
         productodeleteevent.start_events();
     </script>
-{% endblock %}
+{% endblock %}#}
+
+{% block javascripts %}
+    <!-- Initialize script -->
+    <script type="text/javascript">
+        $(function () {
+
+            //Obtenemos el id del producto actualmente mostrado en el show
+            producto.id = $('#producto_id').val();
+
+            // on show tab events
+            $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+                var href = $(e.target).attr('href');
+
+                //Si damos click en el tab "bitacoraalmacen"
+                if (href === '#bitacoraalmacen') {
+                    bitacoraalmacen._load();
+                } else
+                //Si damos click en el tab "bitacoraseriales"
+                if (href === '#bitacoraseriales') {
+                    bitacoraseriales._load();
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        var button = {
+            _disable: function (selector) {
+                $(selector).addClass('disabled');
+            },
+            _enable: function (selector) {
+                $(selector).removeClass('disabled');
+            }
+        };
+        var tabs = {
+            loadding_image: '<i class="fa fa-spinner fa-spin"></i>',
+            _show_all_tabs: function () {
+                tabs._show_tab('bitacoraalmacen');
+            },
+            _show_tab: function (tabname) {
+                $('li a[href="#' + tabname + '"]').parent().show();
+            },
+            _hide_tab: function () {
+                $('li a[href="#' + tabname + '"]').parent().hide();
+            },
+            _add_loadding: function (tabname) {
+                var linktab = $('li a[href="#' + tabname + '"]');
+                linktab.prepend($(tabs.loadding_image));
+            },
+            _remove_loadding: function (tabname) {
+                var spinning = $('li a[href="#' + tabname + '"]').find('i.fa.fa-spinner.fa-spin');
+                spinning.remove();
+            },
+            _active: function (href) {
+                $('li a[href="' + href + '"]').parent().addClass('active');
+                $('div' + href).addClass('active').addClass('in');
+            },
+            _desactive: function (href) {
+                $('li a[href="' + href + '"]').parent().removeClass('active');
+                $('div' + href).removeClass('active').removeClass('in');
+            }
+        };
+        var utils = {
+            _fail: function (jqXHR, textStatus, errorThrown) {
+                $('div.modal').modal('hide').html('');
+                if (jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                    addGlobalMessage('danger', jqXHR.responseText.message);
+                } else {
+                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+                }
+            }
+        };
+        var progressBar = {
+            _add_progressBar: function (name) {
+                var progressBar = $('<div class="progress" id="' + name + '_progress_bar"></div>'),
+                        bar = $('<div>')
+                                .addClass('progress-bar')
+                                .attr('role', 'progressbar')
+                                .attr('aria-valuenow', 2)
+                                .attr('aria-valuemin', 0)
+                                .attr('aria-valuemax', 100)
+                                .css('width', '2%')
+                                .append($('<span class="sr-only"></span>'));
+
+                progressBar.append(bar);
+
+                $('div#' + name).prepend(progressBar);
+            },
+            _remove_progressBar: function (name) {
+                var progressBar = $('div#' + name + '_progress_bar');
+                progressBar.slideUp(400, function () {
+                    progressBar.remove();
+                });
+            }
+        };
+    </script>
+
+    <!-- Bodega script -->
+    <script type="text/javascript">
+        var producto = {
+            form_id: 'buseta_bodegabundle_producto',
+            form_name: 'buseta_bodegabundle_producto',
+            id: ''
+        };
+    </script>
+
+    <!-- BitacoraAlmacen script -->
+    <script type="text/javascript" src="{{ asset('bundles/busetabodega/js/producto/bitacoraalmacen.js') }}"></script>
+
+    <!-- BitacoraSeriales script -->
+    <script type="text/javascript" src="{{ asset('bundles/busetabodega/js/producto/bitacoraseriales.js') }}"></script>
+
+
+    {#    <!-- Scripts utiles -->
+
+        <!-- Disable F5 refresh -->
+        <script type="text/javascript">
+            function disableF5(e) {
+                if ((e.which || e.keyCode) == 116) e.preventDefault();
+            }
+            ;
+            $(document).on("keydown", disableF5);
+        </script>
+
+
+        <!-- Disable go back navigation -->
+        <script type="text/javascript">
+            history.pushState(null, null, location.href);
+            function disableGoBack(e) {
+                history.go(1);
+            }
+            ;
+            $(window).on("beforeunload", disableGoBack);
+            $(window).on("popstate", disableGoBack);
+        </script>#}
+
+{% endblock javascripts %}
 

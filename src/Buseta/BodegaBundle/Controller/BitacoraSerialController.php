@@ -9,7 +9,7 @@ use Buseta\BodegaBundle\Form\Model\BitacoraAlmacenModel;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
+use Buseta\BodegaBundle\Entity\BitacoraSerial;
 use Buseta\BodegaBundle\Form\Type\BitacoraAlmacenType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 
@@ -19,18 +19,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * BitacoraAlmacen controller.
+ * BitacoraSerial controller.
  *
  *
  */
-class BitacoraAlmacenController extends Controller
+class BitacoraSerialController extends Controller
 {
 
 
     /**
-     * Lists all BitacoraAlmacen entities.
+     * Lists all BitacoraSerial entities.
      */
-    public function indexAction(Request $request)
+/*    public function indexAction(Request $request)
     {
         $filter = new BitacoraAlmacenFilterModel();
 
@@ -59,14 +59,14 @@ class BitacoraAlmacenController extends Controller
             'entities'      => $entities,
             'filter_form'   => $form->createView(),
         ));
-    }
+    }*/
 
 
 
     /**
      * Finds and displays a BitacoraAlmacen entity.
      */
-    public function showAction($id)
+/*    public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -79,53 +79,7 @@ class BitacoraAlmacenController extends Controller
         return $this->render('BusetaBodegaBundle:BitacoraAlmacen:show.html.twig', array(
             'entity'      => $entity
               ));
-    }
-
-
-
-
-    /**
-     * @param BitacoraAlmacen $bitacoraAlmacen
-     *
-     * @Route("/{id}/data.{format}", name="productos_get_product_data", requirements={"format": "json|txt"}, defaults={"format":"json"}, options={"expose": true})
-     * @Method({"GET"})
-     */
-    public function getBitacoraAlmacenDataAction($id)
-    {
-        $em = $this->get('doctrine.orm.entity_manager');
-        $qb = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')
-            ->createQueryBuilder('BitacoraAlmacen');
-
-        /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacoraalmacen */
-        $producto = $qb->select('producto,uom,categoriaProducto')
-            ->leftJoin('BitacoraAlmacen.uom', 'uom')
-            ->leftJoin('BitacoraAlmacen.categoriaProducto', 'categoriaProducto')
-            ->where($qb->expr()->eq('BitacoraAlmacen', ':id'))
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getSingleResult();
-
-        if (!$producto) {
-            return new JsonResponse('No existe la BitacoraAlmacen con id: ' . $id, 404);
-        }
-
-        $data = array(
-            'id'        => $producto->getId(),
-            'nombre'    => $producto->getNombre(),
-            'codigo'    => $producto->getCodigo(),
-        );
-
-        // Select UOM
-        if ($producto->getUom()) {
-            $data['uom'] = array(
-                'id'    => $producto->getUom()->getId(),
-                'value' => $producto->getUom()->getValor(),
-            );
-        }
-
-        return new JsonResponse($data);
-    }
-
+    }*/
 
     //A partir de aqui el metodo requerido para el AJAX que llama desde el formulario de Producto
     /**
@@ -135,7 +89,7 @@ class BitacoraAlmacenController extends Controller
     public function listAction(Producto $producto, Request $request)
     {
         $entities = $this->get('doctrine.orm.entity_manager')
-            ->getRepository('BusetaBodegaBundle:BitacoraAlmacen')
+            ->getRepository('BusetaBodegaBundle:BitacoraSerial')
             ->findBy(array('producto' => $producto) );
 
         $entities = $this->get('knp_paginator')
@@ -145,7 +99,7 @@ class BitacoraAlmacenController extends Controller
                 10
             );
 
-        return $this->render('@BusetaBodega/Producto/BitacoraAlmacen/list_template.html.twig', array(
+        return $this->render('@BusetaBodega/Producto/BitacoraSeriales/list_template.html.twig', array(
             'entities' => $entities,
             'producto' => $producto,
         ));

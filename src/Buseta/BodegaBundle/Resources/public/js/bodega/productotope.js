@@ -29,6 +29,9 @@ var productotope = {
     config_ruta_deletemodal: 'productotope_delete_modal',
 
 
+//#form_productotope_modal
+
+
     _start_events: function () {
         //Cargar el modal
         $('a[href="'+ productotope.config_form_id_modal +'"]').on('click', productotope._load_modal);
@@ -63,14 +66,11 @@ var productotope = {
     },
     _load: function (event) {
 
-
-
         if (event !== undefined) {
             event.preventDefault();
         }
 
-
-        $(productotope.config_form_div_listar).block();
+        $(productotope.config_form_div_listar).unblock();
 
         //Obtenemos el id del reporte actualmente mostrado en el show
         /*config_nombre*/
@@ -101,6 +101,8 @@ var productotope = {
         if (bodega.id === '' || bodega.id === undefined) {
             return;
         }
+
+        $(productotope.config_form_div_listar).block();
 
         var url = Routing.generate(productotope.config_ruta_newmodal, {'id': bodega.id});
         if ($(this).attr('href') !== undefined && $(this).attr('href') === '#edit') {
@@ -140,6 +142,8 @@ var productotope = {
         if (bodega.id === '' || bodega.id === undefined) {
             return;
         }
+
+        //$(productotope.config_form_div_listar).block();
 
         var id = $(this).data('content'),
             url = Routing.generate(productotope.config_ruta_deletemodal, {id: id});
@@ -229,7 +233,6 @@ var productotope = {
             .removeClass('fa-spin');
 
         button._enable(productotope.config_form_btn_save);
-
         $(productotope.config_form_div_listar).unblock();
 
     }
