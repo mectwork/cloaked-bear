@@ -28,11 +28,14 @@
     <div id="filter_form_component" style="{{ display }}">
         <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
             <div class="row">
-                <div class="col-lg-4">{{ form_row(filter_form.alma) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.categoriaProd) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.producto) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
+                <div class="row">
+                    <div class="col-lg-4">{{ form_row(filter_form.tipoMovimiento ) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.alma) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.producto) }}</div>
+                    {#<div class="col-lg-4">{{ form_row(filter_form.categoriaProd) }}</div>#}
+                    <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
+                </div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -57,6 +60,7 @@
         <thead>
         <tr>
             <th>Producto{#{{ knp_pagination_sortable(entities, 'producto', 't.producto') }}#}</th>
+            <th>Bodega{#{{ knp_pagination_sortable(entities, 'producto', 't.producto') }}#}</th>
             <th>Cantidad Movida{#{{ knp_pagination_sortable(entities, 'cantMovida', 't.cantMovida') }}#}</th>
             <th>Fecha Movimiento{#{{ knp_pagination_sortable(entities, 'fechaMovimiento', 't.fechaMovimiento') }}#}</th>
             <th>Tipo Movimiento{#{{ knp_pagination_sortable(entities, 'fechaMovimiento', 't.fechaMovimiento') }}#}</th>
@@ -68,6 +72,7 @@
         {% for entity in entities %}
             <tr>
                 <td>{{ entity.producto }}</td>
+                <td>{{ entity.almacen }}</td>
                 <td>{{ entity.cantidadMovida }}</td>
                 <td>{{ entity.fechaMovimiento | date('d/m/Y h:i a') }}</td>
                 <td>{{ entity.tipoMovimiento }}</td>
@@ -138,7 +143,8 @@
                 useCurrent: false
             });
             fechaFin.datetimepicker({
-                format: 'DD/MM/YYYY'
+                format: 'DD/MM/YYYY',
+                useCurrent: false
             });
 
             fechaInicio.on('dp.change', function(e){

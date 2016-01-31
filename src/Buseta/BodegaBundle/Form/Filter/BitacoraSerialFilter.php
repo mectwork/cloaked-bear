@@ -5,7 +5,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class BitacoraAlmacenFilter extends AbstractType
+class BitacoraSerialFilter extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -21,7 +21,7 @@ class BitacoraAlmacenFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('alma', 'entity', array(
+            ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'empty_value' => '---Seleccione---',
                 'label' => 'Almacen',
@@ -67,23 +67,28 @@ class BitacoraAlmacenFilter extends AbstractType
                 ),
             ))
             ->add('tipoMovimiento', 'choice', array(
-                    'required' => false,
-                    'empty_value' => '---Seleccione---',
-                    //luego implementar 'translation_domain' => 'BusetaBodegaBundle',
-                    'choices' => array(
-                        'V+' => '[V+]Recepcion desde Proveedor',
-                        'M+' => '[M+]Movimiento de entrada a Bodega',
-                        'M-' => '[M-]Movimiento de salida de Bodega',
-                        'I+' => '[I+]Aumento por Inventario Fisico',
-                        'I-' => '[I-]Disminucion por Inventario Fisico',
-                        'P-' => '[P-]Salida hacia Produccion',
-                    ),
-                    'attr' => array(
-                        'class' => 'form-control',
-                    )
+                'required' => false,
+                'empty_value' => '---Seleccione---',
+                //luego implementar 'translation_domain' => 'BusetaBodegaBundle',
+                'choices' => array(
+                    'V+' => '[V+]Recepcion desde Proveedor',
+                    'M+' => '[M+]Movimiento de entrada a Bodega',
+                    'M-' => '[M-]Movimiento de salida de Bodega',
+                    'I+' => '[I+]Aumento por Inventario Fisico',
+                    'I-' => '[I-]Disminucion por Inventario Fisico',
+                    'P-' => '[P-]Salida hacia Produccion',
+                ),
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('serial', 'text', array(
+                'required' => false,
+                'label' => 'Serial',
+                'attr' => array(
+                    'class' => 'form-control',
                 )
-            );
-
+            ));
 
     }
 
@@ -93,7 +98,7 @@ class BitacoraAlmacenFilter extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\BodegaBundle\Form\Model\BitacoraAlmacenFilterModel',
+            'data_class' => 'Buseta\BodegaBundle\Form\Model\BitacoraSerialFilterModel',
             'method' => 'GET',
         ));
     }
@@ -103,6 +108,6 @@ class BitacoraAlmacenFilter extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_bitacoraalmacen_filter';
+        return 'buseta_bitacoraserial_filter';
     }
 }

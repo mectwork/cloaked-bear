@@ -3,12 +3,12 @@ namespace Buseta\BodegaBundle\Form\Model;
 
 use Buseta\BodegaBundle\Entity\Producto;
 
-class BitacoraAlmacenFilterModel
+class BitacoraSerialFilterModel
 {
     /**
      * @var \Buseta\BodegaBundle\Entity\Bodega
      */
-    private $alma;
+    private $almacen;
 
     /**
      * @var \Buseta\BodegaBundle\Entity\CategoriaProducto
@@ -19,7 +19,6 @@ class BitacoraAlmacenFilterModel
      * @var string
      */
     private $fechaMovimiento;
-
 
     /**
      * @var \Buseta\BodegaBundle\Entity\Producto
@@ -42,19 +41,25 @@ class BitacoraAlmacenFilterModel
     private $tipoMovimiento;
 
     /**
+     * @var string
+     */
+    private $serial;
+
+
+    /**
      * @return string
      */
-    public function getAlma()
+    public function getAlmacen()
     {
-        return $this->alma;
+        return $this->almacen;
     }
 
     /**
      * @param string
      */
-    public function setAlma($alma)
+    public function setAlmacen($almacen)
     {
-        $this->alma = $alma;
+        $this->almacen = $almacen;
     }
 
     /**
@@ -73,9 +78,6 @@ class BitacoraAlmacenFilterModel
         $this->categoriaProd = $categoriaProd;
     }
 
-
-
-
     /**
      * @return string
      */
@@ -91,8 +93,6 @@ class BitacoraAlmacenFilterModel
     {
         $this->fechaMovimiento = $fechaMovimiento;
     }
-
-
 
     /**
      * @return \Buseta\BodegaBundle\Entity\Producto
@@ -153,6 +153,20 @@ class BitacoraAlmacenFilterModel
     public function setTipoMovimiento($tipoMovimiento)
     {
         $this->tipoMovimiento = $tipoMovimiento;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSerial()
+    {
+        return $this->serial;
+    }
+
+    public function setSerial($serial)
+    {
+        $this->serial = $serial;
         return $this;
     }
 

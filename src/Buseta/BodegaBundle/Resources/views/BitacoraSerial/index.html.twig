@@ -12,7 +12,7 @@
 <div id="records_list">
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
-    {% if (filter_form.vars.value.alma is null or filter_form.vars.value.alma is empty)
+    {% if (filter_form.vars.value.almacen is null or filter_form.vars.value.almacen is empty)
     and (filter_form.vars.value.fechaMovimiento is null or filter_form.vars.value.fechaMovimiento is empty)
     %}
         {% set display = 'display: none;' %}
@@ -28,9 +28,11 @@
     <div id="filter_form_component" style="{{ display }}">
         <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
             <div class="row">
-                <div class="col-lg-4">{{ form_row(filter_form.alma) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.categoriaProd) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.tipoMovimiento ) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.almacen) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.producto) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.serial ) }}</div>
+                {#<div class="col-lg-4">{{ form_row(filter_form.categoriaProd) }}</div>#}
                 <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
             </div>
@@ -56,10 +58,12 @@
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
         <tr>
+            <th>Serial{#{{ knp_pagination_sortable(entities, 'producto', 't.producto') }}#}</th>
             <th>Producto{#{{ knp_pagination_sortable(entities, 'producto', 't.producto') }}#}</th>
+            <th>Bodega{#{{ knp_pagination_sortable(entities, 'producto', 't.producto') }}#}</th>
+            <th>Tipo Movimiento{#{{ knp_pagination_sortable(entities, 'fechaMovimiento', 't.fechaMovimiento') }}#}</th>
             <th>Cantidad Movida{#{{ knp_pagination_sortable(entities, 'cantMovida', 't.cantMovida') }}#}</th>
             <th>Fecha Movimiento{#{{ knp_pagination_sortable(entities, 'fechaMovimiento', 't.fechaMovimiento') }}#}</th>
-            <th>Tipo Movimiento{#{{ knp_pagination_sortable(entities, 'fechaMovimiento', 't.fechaMovimiento') }}#}</th>
 
             <th style="text-align: center">Acciones</th>
         </tr>
@@ -67,10 +71,12 @@
         <tbody>
         {% for entity in entities %}
             <tr>
+                <td>{{ entity.serial }}</td>
                 <td>{{ entity.producto }}</td>
+                <td>{{ entity.almacen }}</td>
+                <td>{{ entity.tipoMovimiento }}</td>
                 <td>{{ entity.cantidadMovida }}</td>
                 <td>{{ entity.fechaMovimiento | date('d/m/Y h:i a') }}</td>
-                <td>{{ entity.tipoMovimiento }}</td>
                 <td style="width: 24% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"
@@ -138,7 +144,8 @@
                 useCurrent: false
             });
             fechaFin.datetimepicker({
-                format: 'DD/MM/YYYY'
+                format: 'DD/MM/YYYY',
+                useCurrent: false
             });
 
             fechaInicio.on('dp.change', function(e){

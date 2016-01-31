@@ -1,3 +1,4 @@
+
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
 {% block nombre_menu_superior %}
@@ -5,7 +6,7 @@
 {% endblock %}
 
 {% block title %}
-    Datos del Producto
+    Datos de la Bitacora de Almacen
 {% endblock %}
 
 {% block titulo_encabezado %}
@@ -14,35 +15,49 @@
 
 {% block area_trabajo %}
 
-    <table class="table table-striped" style="font-size: 16px;">
-    <tbody>
+    <div class="row">
+        <div class="col-lg-12">
+            {# Nav tabs #}
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos de la bitacora de Almacen</a></li>
 
-    <tr>
-        <th>Producto</th>
-        <td>{{ entity.producto }}</td>
-    </tr>
+                {% if entity.producto.tieneNroSerie == 1 %}
+                    <li><a href="#bitacoraseriales" data-toggle="tab">Bitacora de Seriales</a></li>
+                {% endif %}
 
-    <tr>
-        <th>Cantidad Movida</th>
-        <td>{{ entity.cantidadMovida }}</td>
-    </tr>
-    <tr>
-        <th>Fecha Movimiento</th>
-        <td>{{ entity.fechaMovimiento  | date('d/m/Y h:i a') }}</td>
-    </tr>
-    <tr>
-        <th>Tipo Movimiento</th>
-        <td>{{ entity.tipoMovimiento }}</td>
-    </tr>
+            </ul>
 
+            {# Tab panes #}
+            <div class="tab-content" style="padding-top: 20px;">
+                <!-- TAB BASICOS-->
+                <div class="tab-pane fade in active" id="basicos">
+                    {% include '@BusetaBodega/BitacoraAlmacen/show_datos_basicos.html.twig' with {'entity': entity} %}
+                    <input type="hidden" id="bitacoraalmacen_id" name="bitacoraalmacen_id" value="{{ entity.id }}">
 
+                    <div class="tab-pane fade" id="bitacoraseriales">
+                        {# Bitacoraseriales #}
+                    </div>
 
-    </tbody>
-    </table>
+                </div>
 
-    <div class="form-actions">
-        <a class="btn btn-primary" href="{{ path('bitacoraalmacen') }}"> Listado</a>
-        <a class="btn btn-primary" href="{{ path('producto_bitacora', { 'id': entity.id }) }}"> Bitácora del producto</a>
+           {#
+             <div class="tab-pane fade" id="bitacoraseriales">
+                    &#123;&#35; Bitacoraseriales &#35;&#125;
+                </div>#}
+
+            </div>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+
+    <div class="row">
+        <div class="col-md-4">
+            <a class="btn btn-primary" href="{{ path('bitacoraalmacen') }}">
+                <span class="glyphicon glyphicon-list"></span>
+                Listado
+            </a>
+        </div>
     </div>
 
 {% endblock %}
@@ -52,7 +67,107 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
+    <!-- Initialize script -->
+    <script type="text/javascript">
+        $(function () {
 
-{% endblock %}
+            //Obtenemos el id del producto actualmente mostrado en el show
+            bitacoraalmacen.id = $('#producto_id').val();
 
+            // on show tab events
+            $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+                var href = $(e.target).attr('href');
+
+                //Si damos click en el tab "bitacoraseriales"
+                if (href === '#bitacoraseriales') {
+                    bitacoraseriales._load();
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        var button = {
+            _disable: function (selector) {
+                $(selector).addClass('disabled');
+            },
+            _enable: function (selector) {
+                $(selector).removeClass('disabled');
+            }
+        };
+        var tabs = {
+            loadding_image: '<i class="fa fa-spinner fa-spin"></i>',
+            _show_all_tabs: function () {
+                tabs._show_tab('bitacoraalmacen');
+            },
+            _show_tab: function (tabname) {
+                $('li a[href="#' + tabname + '"]').parent().show();
+            },
+            _hide_tab: function () {
+                $('li a[href="#' + tabname + '"]').parent().hide();
+            },
+            _add_loadding: function (tabname) {
+                var linktab = $('li a[href="#' + tabname + '"]');
+                linktab.prepend($(tabs.loadding_image));
+            },
+            _remove_loadding: function (tabname) {
+                var spinning = $('li a[href="#' + tabname + '"]').find('i.fa.fa-spinner.fa-spin');
+                spinning.remove();
+            },
+            _active: function (href) {
+                $('li a[href="' + href + '"]').parent().addClass('active');
+                $('div' + href).addClass('active').addClass('in');
+            },
+            _desactive: function (href) {
+                $('li a[href="' + href + '"]').parent().removeClass('active');
+                $('div' + href).removeClass('active').removeClass('in');
+            }
+        };
+        var utils = {
+            _fail: function (jqXHR, textStatus, errorThrown) {
+                $('div.modal').modal('hide').html('');
+                if (jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                    addGlobalMessage('danger', jqXHR.responseText.message);
+                } else {
+                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+                }
+            }
+        };
+        var progressBar = {
+            _add_progressBar: function (name) {
+                var progressBar = $('<div class="progress" id="' + name + '_progress_bar"></div>'),
+                        bar = $('<div>')
+                                .addClass('progress-bar')
+                                .attr('role', 'progressbar')
+                                .attr('aria-valuenow', 2)
+                                .attr('aria-valuemin', 0)
+                                .attr('aria-valuemax', 100)
+                                .css('width', '2%')
+                                .append($('<span class="sr-only"></span>'));
+
+                progressBar.append(bar);
+
+                $('div#' + name).prepend(progressBar);
+            },
+            _remove_progressBar: function (name) {
+                var progressBar = $('div#' + name + '_progress_bar');
+                progressBar.slideUp(400, function () {
+                    progressBar.remove();
+                });
+            }
+        };
+    </script>
+
+    <!-- bitacoraalmacen script -->
+    <script type="text/javascript">
+        var bitacoraalmacen = {
+            form_id: 'buseta_bodegabundle_bitacoraalmacen',
+            form_name: 'buseta_bodegabundle_bitacoraalmacen',
+            id: ''
+        };
+    </script>
+
+    <!-- BitacoraSeriales script -->
+    <script type="text/javascript" src="{{ asset('bundles/busetabodega/js/bitacoraalmacen/bitacoraseriales.js') }}"></script>
+
+{% endblock javascripts %}

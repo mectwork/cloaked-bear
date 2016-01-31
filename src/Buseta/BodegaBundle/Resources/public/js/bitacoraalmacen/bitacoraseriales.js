@@ -12,7 +12,7 @@ var bitacoraseriales = {
 
     config_form_div_listar: 'div#bitacoraseriales',
 
-    config_ruta_listar: 'bitacoraserial_listarpor_producto',
+    config_ruta_listar: 'bitacoraserial_listarpor_bitacoraalmacen',
 
     _start_events: function () {
         $('div.paginator.row ul.pagination').find('a.paginator-link').on('click', bitacoraseriales._load);
@@ -24,19 +24,17 @@ var bitacoraseriales = {
             event.preventDefault();
         }
 
-        $(bitacoraseriales.config_form_div_listar).unblock();
-
         //Obtenemos el id del reporte actualmente mostrado en el show
-        producto.id = $('#producto_id').val();
+        bitacoraalmacen.id = $('#bitacoraalmacen_id').val();
 
-        if (producto.id == '') {
+        if (bitacoraalmacen.id == '') {
             return;
         }
 
         // add spinning to show loading process
         tabs._add_loadding(bitacoraseriales.config_form_nombre);
 
-        var url = Routing.generate(bitacoraseriales.config_ruta_listar, {'id': producto.id});
+        var url = Routing.generate(bitacoraseriales.config_ruta_listar, {'id': bitacoraalmacen.id});
         if ($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
             url = $(this).attr('href');
         }

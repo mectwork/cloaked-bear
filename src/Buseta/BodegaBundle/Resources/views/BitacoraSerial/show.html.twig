@@ -18,10 +18,21 @@
     <tbody>
 
     <tr>
+        <th>Serial</th>
+        <td>{{ entity.serial }}</td>
+    </tr>
+    <tr>
         <th>Producto</th>
         <td>{{ entity.producto }}</td>
     </tr>
-
+    <tr>
+        <th>Bodega</th>
+        <td>{{ entity.almacen }}</td>
+    </tr>
+    <tr>
+        <th>Tipo Movimiento</th>
+        <td>{{ entity.tipoMovimiento }}</td>
+    </tr>
     <tr>
         <th>Cantidad Movida</th>
         <td>{{ entity.cantidadMovida }}</td>
@@ -30,19 +41,15 @@
         <th>Fecha Movimiento</th>
         <td>{{ entity.fechaMovimiento  | date('d/m/Y h:i a') }}</td>
     </tr>
-    <tr>
-        <th>Tipo Movimiento</th>
-        <td>{{ entity.tipoMovimiento }}</td>
-    </tr>
-
-
 
     </tbody>
     </table>
 
     <div class="form-actions">
-        <a class="btn btn-primary" href="{{ path('bitacoraserial') }}"> Listado</a>
-        <a class="btn btn-primary" href="{{ path('producto_bitacora', { 'id': entity.id }) }}"> Bitácora del producto</a>
+        <a class="btn btn-primary" href="{{ path('bitacoraserial') }}">
+            <span class="glyphicon glyphicon-list"></span>
+            Listado
+        </a>
     </div>
 
 {% endblock %}
