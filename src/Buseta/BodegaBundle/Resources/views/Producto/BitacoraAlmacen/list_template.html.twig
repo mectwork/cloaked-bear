@@ -1,5 +1,5 @@
 {#*******************formulario de filtro para que funcione la busqueda en TABS**********************#}
-{#
+
 {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.alma is null or filter_form.vars.value.alma is empty)
@@ -22,8 +22,6 @@
             <div class="col-lg-4">{{ form_row(filter_form.tipoMovimiento ) }}</div>
             <div class="col-lg-4">{{ form_row(filter_form.alma) }}</div>
             <div class="col-lg-4">{{ form_row(filter_form.producto) }}</div>
-            &#123;&#35;<div class="col-lg-4">{{ form_row(filter_form.serial ) }}</div>&#35;&#125;
-            &#123;&#35;<div class="col-lg-4">{{ form_row(filter_form.categoriaProd) }}</div>&#35;&#125;
             <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
             <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
         </div>
@@ -40,10 +38,9 @@
     </form>
 </div>
 
-<hr/>#}
+<hr/>
 
 {#******************* fin de formulario de filtro para que funcione la busqueda en TABS**********************#}
-
 <div class="paginator row">
     <div class="col-lg-12"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
     <div class="col-lg-12"><strong>Producto:</strong> {{ producto }}</div>
@@ -82,7 +79,7 @@
 
 {#*******************script para que funcione la busqueda en TABS**********************#}
 
-{#<script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function () {
         $('a#filter_form_header').on('click', function (e) {
             e.preventDefault();
@@ -119,7 +116,7 @@
 
     });
 
-</script>#}
+</script>
 
 
 {#*******************script para que funcione la busqueda en TABS**********************#}

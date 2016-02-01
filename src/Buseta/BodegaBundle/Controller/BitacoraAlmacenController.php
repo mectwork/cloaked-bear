@@ -135,11 +135,25 @@ class BitacoraAlmacenController extends Controller
      *
      * @Route("/listarporproducto/{id}", name="bitacoraalmacen_listarpor_producto", methods={"GET"}, options={"expose":true})
      */
-    public function listarPorProductoAction(Producto $producto, Request $request)
+    public function listAction(Producto $producto, Request $request)
+    //Esta es la variante para que fucione con formulario de filtro
     {
-        $entities = $this->get('doctrine.orm.entity_manager')
-            ->getRepository('BusetaBodegaBundle:BitacoraAlmacen')
-            ->findBy(array('producto' => $producto));
+        /*Esta variante es para el formulario de busqueda*/
+        $filter = new BitacoraAlmacenFilterModel();
+
+        $form = $this->createForm(new BitacoraAlmacenFilter(), $filter, array(
+            //   'action' => $this->generateUrl('bitacoraalmacen'),
+        ));
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->filter($filter);
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->filter();
+        }
 
         $entities = $this->get('knp_paginator')
             ->paginate(
@@ -150,43 +164,32 @@ class BitacoraAlmacenController extends Controller
 
         return $this->render('@BusetaBodega/Producto/BitacoraAlmacen/list_template.html.twig', array(
             'entities' => $entities,
+            'filter_form' => $form->createView(),
             'producto' => $producto,
         ));
+
     }
 
-//Esta es la variante para que fucione con formulario de filtro
-//    public function listAction(Producto $producto, Request $request)
-//    {
-//        /*Esta variante es para el formulario de busqueda*/
-//        $filter = new BitacoraAlmacenFilterModel();
-//
-//        $form = $this->createForm(new BitacoraAlmacenFilter(), $filter, array(
-//            //   'action' => $this->generateUrl('bitacoraalmacen'),
-//        ));
-//
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $entities = $this->get('doctrine.orm.entity_manager')
-//                ->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->filter($filter);
-//        } else {
-//            $entities = $this->get('doctrine.orm.entity_manager')
-//                ->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->filter();
-//        }
-//
-//        $entities = $this->get('knp_paginator')
-//            ->paginate(
-//                $entities,
-//                $request->query->get('page', 1),
-//                10
-//            );
-//
-//        return $this->render('@BusetaBodega/Producto/BitacoraAlmacen/list_template.html.twig', array(
-//            'entities' => $entities,
-//            'filter_form' => $form->createView(),
-//            'producto' => $producto,
-//        ));
-//
-//    }
+
+    /*    public function listarPorProductoAction(Producto $producto, Request $request)
+        {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:BitacoraAlmacen')
+                ->findBy(array('producto' => $producto));
+
+            $entities = $this->get('knp_paginator')
+                ->paginate(
+                    $entities,
+                    $request->query->get('page', 1),
+                    10
+                );
+
+            return $this->render('@BusetaBodega/Producto/BitacoraAlmacen/list_template.html.twig', array(
+                'entities' => $entities,
+                'producto' => $producto,
+            ));
+        }*/
+
+
 
 }

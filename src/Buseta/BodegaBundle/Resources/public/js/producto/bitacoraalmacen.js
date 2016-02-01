@@ -18,7 +18,8 @@ var bitacoraalmacen = {
         $('div.paginator.row ul.pagination').find('a.paginator-link').on('click', bitacoraalmacen._load);
 
         //esto es para el formulario de busqueda dentro del TAB
-        /*$('form#filter_form').on('submit', bitacoraalmacen._load );*/
+        //$('form#filter_form').on('submit', bitacoraalmacen._load );
+        $('form#filter_form').on( 'submit',bitacoraalmacen._load );
     },
 
     _load: function (event) {
@@ -39,17 +40,13 @@ var bitacoraalmacen = {
 
         var url = Routing.generate(bitacoraalmacen.config_ruta_listar, {'id': producto.id});
 
-         //esto es para el formulario de busqueda dentro del TAB
-         /* var str = $( "#buseta_bitacoraalmacen_filter__token" ).querystring();
-            alert( str );
-         var busqueda =  '?buseta_bitacoraalmacen_filter[tipoMovimiento]=V+' +
-                        '&buseta_bitacoraalmacen_filter[alma]='+ document.getElementById("buseta_bitacoraalmacen_filter_alma").text +
-                        '&buseta_bitacoraalmacen_filter[producto]='+
-                        '&buseta_bitacoraalmacen_filter[fechaInicio]='+
-                        '&buseta_bitacoraalmacen_filter[fechaFin]='+
-                        '&buseta_bitacoraalmacen_filter[_token]=_D222_QWC60UyJN_vs_pAL4T4UJgTkUoEg4ycpWTqaw';*/
-        //url += encodeURI(busqueda);
-        //url += '?buseta_bitacoraalmacen_filter[tipoMovimiento]=V%2B&buseta_bitacoraalmacen_filter[alma]=1&buseta_bitacoraalmacen_filter[producto]=1663&buseta_bitacoraalmacen_filter[fechaInicio]=22%2F01%2F2016&buseta_bitacoraalmacen_filter[fechaFin]=&buseta_bitacoraalmacen_filter[_token]=yVJbRU9WCl9cLi7X8OzqhllHUwN4Lj1AL71VC9NSxeI';
+        //Aqui todo lo del formulario de busqueda interno del tab
+        //la query es un string con los parametros del formulario a pasar por GET para el filtro
+        var query =  $('form#filter_form').serialize();
+        if ( query !== undefined && query != '' ) {
+            url += '?' + query;
+        }
+
         if ($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
             url = $(this).attr('href');
         }

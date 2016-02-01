@@ -117,16 +117,36 @@ class BitacoraSerialController extends Controller
      */
     public function listarPorBitacoraAlmacenAction(BitacoraAlmacen $bitacoraalmacen, Request $request)
     {
-        $entities = $this->get('doctrine.orm.entity_manager')
-            ->getRepository('BusetaBodegaBundle:BitacoraSerial')
-            ->findBy(
-                array(
-                    'tipoMovimiento' => $bitacoraalmacen->getTipoMovimiento(),
-                    'movimientoLinea' => $bitacoraalmacen->getMovimientoLinea(),
-                    'entradaSalidaLinea' => $bitacoraalmacen->getEntradaSalidaLinea(),
-                    'produccionLinea' => $bitacoraalmacen->getProduccionLinea(),
-                    'inventarioLinea' => $bitacoraalmacen->getInventarioLinea(),
-                ));
+
+        $tipoMovimiento = $bitacoraalmacen->getTipoMovimiento();
+
+        if ($tipoMovimiento == 'I+' || $tipoMovimiento == 'I-') {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:BitacoraSerial')
+                ->findBy(
+                    array(
+                        //una linea de inventario en la bitacora de bodega puede
+                        //generar lineas en la bitacora de seriales, tanto I+ como I-
+                        //por tanto no pongo esto
+                        'movimientoLinea' => $bitacoraalmacen->getMovimientoLinea(),
+                        'entradaSalidaLinea' => $bitacoraalmacen->getEntradaSalidaLinea(),
+                        'produccionLinea' => $bitacoraalmacen->getProduccionLinea(),
+                        'inventarioLinea' => $bitacoraalmacen->getInventarioLinea(),
+                    ));
+
+        } else {
+            $entities = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('BusetaBodegaBundle:BitacoraSerial')
+                ->findBy(
+                    array(
+                        'tipoMovimiento' => $tipoMovimiento,
+                        'movimientoLinea' => $bitacoraalmacen->getMovimientoLinea(),
+                        'entradaSalidaLinea' => $bitacoraalmacen->getEntradaSalidaLinea(),
+                        'produccionLinea' => $bitacoraalmacen->getProduccionLinea(),
+                        'inventarioLinea' => $bitacoraalmacen->getInventarioLinea(),
+                    ));
+        }
+
 
         $entities = $this->get('knp_paginator')
             ->paginate(
