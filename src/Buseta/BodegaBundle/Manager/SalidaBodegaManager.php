@@ -11,6 +11,7 @@ use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\SecurityContext;
 use Buseta\BodegaBundle\Exceptions\NotFoundElementException;
+use Doctrine\DBAL\Connections;
 
 /**
  * Class SalidaBodegaManager
@@ -98,14 +99,20 @@ class SalidaBodegaManager
 
 
     /**
-     * @param $id
-     * @return bool|string
+     * Completar SalidaBodega
+     *
+     * @param integer $id
+     * @return bool
      */
     public function completar($id)
     {
-        try {
+        /** @var \Buseta\BodegaBundle\Entity\SalidaBodega $salidaBodega */
+        /** @var \Buseta\BodegaBundle\Entity\SalidaBodegaProducto $linea */
 
-            /** @var \Buseta\BodegaBundle\Entity\SalidaBodega $salidaBodega */
+        // suspend auto-commit
+        $this->em->getConnection()->beginTransaction();
+
+        try {
 
             $salidaBodega = $this->em->getRepository('BusetaBodegaBundle:SalidaBodega')->find($id);
 
@@ -113,52 +120,65 @@ class SalidaBodegaManager
                 throw new NotFoundElementException('Unable to find SalidaBodega entity.');
             }
 
-            //entonces mando a crear los movimientos en la bitacora, producto a producto, a traves de eventos
-            //sin persistir en la base de datos
-            foreach ($salidaBodega->getSalidasProductos() as $linea) {
+            $salidasBodega = $salidaBodega->getSalidasProductos();
 
-                /** @var \Buseta\BodegaBundle\Entity\SalidaBodegaProducto $linea */
-                $event = new FilterBitacoraEvent($linea);
-                $this->event_dispacher->dispatch(BitacoraEvents::MOVEMENT_FROM /*M-*/, $event);
-                $result = $event->getReturnValue();
-                if ($result !== true) {
-                    //borramos los cambios en el entity manager
-                    $this->em->clear();
-                    return $error = $result;
+            if ($salidasBodega !== null && count($salidasBodega) > 0) {
+                //entonces mando a crear los movimientos en la bitacora, producto a producto, a traves de eventos
+                foreach ($salidasBodega as $linea) {
+                    $event = new FilterBitacoraEvent($linea);
+                    $this->event_dispacher->dispatch(BitacoraEvents::MOVEMENT_FROM /*M-*/, $event);
+                    $result = $event->getReturnValue();
+                    if ($result !== true) {
+                        // Rollback the failed transaction attempt
+                        $this->em->getConnection()->rollback();
+                        return $error = $result;
+                    }
+
+                    $event = new FilterBitacoraEvent($linea);
+                    $this->event_dispacher->dispatch(BitacoraEvents::MOVEMENT_TO /*M+*/, $event);
+                    $result = $event->getReturnValue();
+                    if ($result !== true) {
+                        // Rollback the failed transaction attempt
+                        $this->em->getConnection()->rollback();
+                        return $error = $result;
+                    }
+
+                    //aunque debe ser de la siguiente forma
+                    //$event = new FilterBitacoraEvent($linea);
+                    //$eventDispatcher->dispatch(BitacoraEvents::PRODUCTION_NEGATIVE, $event);//P+
                 }
 
-                $event = new FilterBitacoraEvent($linea);
-                $this->event_dispacher->dispatch(BitacoraEvents::MOVEMENT_TO /*M+*/, $event);
-                $result = $event->getReturnValue();
-                if ($result !== true) {
-                    //borramos los cambios en el entity manager
-                    $this->em->clear();
-                    return $error = $result;
-                }
+                //Cambia el estado de Procesado a Completado e incorpora otros datos
+                $username = $this->security_context->getToken()->getUser()->getUsername();
+                //$salidaBodega->setCreatedBy($username);
+                $salidaBodega->setMovidoBy($username);
+                $salidaBodega->setFecha($fechaSalidaBodega = new \DateTime());
+                $salidaBodega->setEstadoDocumento('CO');
+                $this->em->persist($salidaBodega);
 
-                //aunque debe ser de la siguiente forma
-                //$event = new FilterBitacoraEvent($linea);
-                //$eventDispatcher->dispatch(BitacoraEvents::PRODUCTION_NEGATIVE, $event);//P+
+            } else {
+                // Rollback the failed transaction attempt
+                $this->em->getConnection()->rollback();
+                return $error = 'La salida de bodega debe tener al menos un producto';
             }
-
-            //Cambia el estado de Procesado a Completado e incorpora otros datos
-            $username = $this->security_context->getToken()->getUser()->getUsername();
-            //$salidaBodega->setCreatedBy($username);
-            $salidaBodega->setMovidoBy($username);
-            $salidaBodega->setFecha($fechaSalidaBodega = new \DateTime());
-            $salidaBodega->setEstadoDocumento('CO');
-            $this->em->persist($salidaBodega);
 
             //finalmentele damos flush a todo para guardar en la Base de Datos
             //tanto en la bitacora almacen como en la bitacora de seriales
             //es el unico flush que se hace.
             $this->em->flush();
+
+            // Try and commit the transaction, aqui puede ocurrir un error
+            $this->em->getConnection()->commit();
+
             return true;
 
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Ha ocurrido un error al completar la salida de bodega: %s',
                 $e->getMessage()));
-            $this->em->clear();
+
+            // Rollback the failed transaction attempt
+            $this->em->getConnection()->rollback();
+
             return $error = 'Ha ocurrido un error al completar la salida de bodega';
         }
 
