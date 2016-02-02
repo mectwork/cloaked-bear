@@ -8,8 +8,8 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.4.*",
-        "doctrine/orm": ">=2.2.3,<2.5-dev",
+        "symfony/symfony": "2.7.*",
+        "doctrine/orm": ">=2.2.3,<2.6-dev",
         "doctrine/doctrine-bundle": "~1.2",
         "twig/extensions": "~1.0",
         "symfony/assetic-bundle": "~2.3",
@@ -19,10 +19,10 @@
         "sensio/framework-extra-bundle": "~3.0",
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
-        "friendsofsymfony/user-bundle": "dev-master",
+        "friendsofsymfony/user-bundle": "~2.0@dev",
         "knplabs/knp-paginator-bundle": "~2.4",
         "friendsofsymfony/jsrouting-bundle": "~1.5",
-        "javiereguiluz/easyadmin-bundle": "1.4.*@dev",
+        "javiereguiluz/easyadmin-bundle": "~1.0@dev",
         "knplabs/knp-menu-bundle": "~2.0",
         "tecnickcom/tcpdf": "~6.0",
         "apy/breadcrumbtrail-bundle": "^1.3"
