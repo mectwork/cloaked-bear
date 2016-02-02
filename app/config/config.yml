@@ -121,50 +121,79 @@ knp_paginator:
 easy_admin:
     site_name: 'Nomencladores'
     list_actions: ['show', 'edit', 'delete']
-    assets:
-        css:
-            - %nomenclator.assets.css%
     entities:
-        'Aceite Caja Cambios': Buseta\NomencladorBundle\Entity\AceiteCajaCambios
-        AceiteHidraulico:
+        aceiteCajaCambios:
+            class: Buseta\NomencladorBundle\Entity\AceiteCajaCambios
+            label: 'Aceite Caja Cambios'
+        aceiteHidraulico:
             class: Buseta\NomencladorBundle\Entity\AceiteHidraulico
             label: 'Aceite Hidráulico'
-        'Acite Motor': Buseta\NomencladorBundle\Entity\AceiteMotor
-        AceiteTransision:
+        aceiteMotor:
+            class: Buseta\NomencladorBundle\Entity\AceiteMotor
+            label: 'Acite Motor'
+        aceiteTransision:
             class: Buseta\NomencladorBundle\Entity\AceiteTransmision
             label: 'Aceite Transmisión'
-        'Caja Chica': Buseta\NomencladorBundle\Entity\CajaChica
-        'Color': Buseta\NomencladorBundle\Entity\Color
-        CondicionesPago:
+        cajaChica:
+            class: Buseta\NomencladorBundle\Entity\CajaChica
+            label: 'Caja Chica'
+        color:
+            class: Buseta\NomencladorBundle\Entity\Color
+            label: 'Color'
+        condicionesPago:
             class: Buseta\TallerBundle\Entity\CondicionesPago
             label: 'Condiciones Pago'
-        'Combustible': Buseta\NomencladorBundle\Entity\Combustible
-        Condicion:
+        combustible:
+            class: Buseta\NomencladorBundle\Entity\Combustible
+            label: 'Combustible'
+        condicion:
             class: Buseta\NomencladorBundle\Entity\Condicion
             label: 'Condición Producto'
-        'Estilo': Buseta\NomencladorBundle\Entity\Estilo
-        'EstadoCivil': Buseta\NomencladorBundle\Entity\EstadoCivil
-        'Forma Pago': Buseta\NomencladorBundle\Entity\FormaPago
-        GarantiaTarea:
+        estilo:
+            class: Buseta\NomencladorBundle\Entity\Estilo
+            label: 'Estilo'
+        estadoCivil:
+            class: Buseta\NomencladorBundle\Entity\EstadoCivil
+            label: 'Estado Civil'
+        formaPago:
+            class: Buseta\NomencladorBundle\Entity\FormaPago
+            label: 'Forma Pago'
+        garantiaTarea:
             class: Buseta\NomencladorBundle\Entity\GarantiaTarea
             label: 'Garantía Tarea'
-        'Grupo': Buseta\NomencladorBundle\Entity\Grupo
-        'Subgrupo': Buseta\NomencladorBundle\Entity\Subgrupo
-        Impuesto:
+        grupo:
+            class: Buseta\NomencladorBundle\Entity\Grupo
+            label: 'Grupo'
+        subgrupo:
+            class: Buseta\NomencladorBundle\Entity\Subgrupo
+            label: 'Subgrupo'
+        impuesto:
             class: Buseta\TallerBundle\Entity\Impuesto
             label: 'Impuesto'
-        MantenimientoPorcientoCumplido:
+        mantenimientoPorcientoCumplido:
             class: Buseta\NomencladorBundle\Entity\MantenimientoPorcientoCumplido
             label: 'Mantenimiento % Cumplido'
-        'Marca': Buseta\NomencladorBundle\Entity\Marca
-        'Modelo': Buseta\NomencladorBundle\Entity\Modelo
-        'Marca Motor': Buseta\NomencladorBundle\Entity\MarcaMotor
-        'Moneda': Buseta\NomencladorBundle\Entity\Moneda
-        'Nacionalidad': Buseta\NomencladorBundle\Entity\Nacionalidad
-        'Prioridad Solicitud': Buseta\NomencladorBundle\Entity\PrioridadSolicitud
-        TiempodePrioridad:
+        marca:
+            class: Buseta\NomencladorBundle\Entity\Marca
+            label: 'Marca'
+        modelo:
+            class: Buseta\NomencladorBundle\Entity\Modelo
+            label: 'Modelo'
+        marcaMotor:
+            class: Buseta\NomencladorBundle\Entity\MarcaMotor
+            label: 'Marca Motor'
+        moneda:
+            class: Buseta\NomencladorBundle\Entity\Moneda
+            label: 'Moneda'
+        nacionalidad:
+            class: Buseta\NomencladorBundle\Entity\Nacionalidad
+            label: 'Nacionalidad'
+        prioridadSolicitud:
+            class: Buseta\NomencladorBundle\Entity\PrioridadSolicitud
+            label: 'Prioridad Solicitud'
+        tiempoPrioridad:
             class: Buseta\NomencladorBundle\Entity\TiempoPrioridad
-            label: 'Tiempo de Prioridad'
+            label: 'Tiempo Prioridad'
             list:
                 fields:
                     - 'id'
@@ -172,11 +201,21 @@ easy_admin:
                     - 'minutos'
                     - { property: 'colorentiempo', label: 'Color en Tiempo' }
                     - { property: 'coloratrasado', label: 'Color si Atrasado' }
-        'Tipo Compra': Buseta\NomencladorBundle\Entity\TipoCompra
-        'Tipo Contacto': Buseta\NomencladorBundle\Entity\TipoContacto
-        'Tarea': Buseta\NomencladorBundle\Entity\Tarea
-        'Unidad de Medida': Buseta\NomencladorBundle\Entity\UOM
-        'Medio Reporte': Buseta\NomencladorBundle\Entity\MedioReporte
+        tipoCompra:
+            class: Buseta\NomencladorBundle\Entity\TipoCompra
+            label: 'Tipo Compra'
+        tipoContacto:
+            class: Buseta\NomencladorBundle\Entity\TipoContacto
+            label: 'Tipo Contacto'
+        tarea:
+            class: Buseta\NomencladorBundle\Entity\Tarea
+            label: 'Tarea'
+        uom:
+            class: Buseta\NomencladorBundle\Entity\UOM
+            label: 'Unidad de Medida'
+        medioReporte:
+            class: Buseta\NomencladorBundle\Entity\MedioReporte
+            label: 'Medio Reporte'
 
 #HATUEY SOFT SECURITY CONFIGURATION
 hatuey_soft_security:
