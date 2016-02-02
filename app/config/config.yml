@@ -258,3 +258,8 @@ hatuey_soft_sequence:
 hatuey_soft_menu:
     menu_conf: "%kernel.root_dir%/config/menu_conf.yml"
     menu_name: menu
+
+# GLOBAL SERVICES
+services:
+    fos_user.doctrine_registry:
+        alias: doctrine
