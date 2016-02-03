@@ -1,4 +1,4 @@
-<form id="form_linea" action="{{ path('pedido_compra_linea_compra_create') }}" method="post" {{ form_enctype(pedido_compra_linea) }}>
+<form id="form_linea" action="{{ path('pedido_compra_linea_compra_create') }}" method="post" enctype="multipart/form-data">
     <div class="row show-grid">
         <div class="col-md-4">
             {{ form_row(pedido_compra_linea.linea) }}

@@ -6,7 +6,7 @@
 
 {% block area_trabajo %}
 
-<form action="{{ path('cambiohora_update') }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('cambiohora_update') }}" method="post" enctype="multipart/form-data">
     {{ form_errors(form) }}
     {{ form_row(form._token) }}
 

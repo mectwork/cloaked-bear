@@ -6,8 +6,7 @@
 
 {% block area_trabajo %}
 
-    <form action="{{ path('tareamantenimiento_create') }}" method="post" {{ form_enctype(form) }}>
-
+    <form action="{{ path('tareamantenimiento_create') }}" method="post" enctype="multipart/form-data">
         {{ form_errors(form) }}
         <div class="row">
             <div class="col-md-4">

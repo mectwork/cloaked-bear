@@ -21,7 +21,7 @@
             <div class="tab-content" style="padding-top: 20px;">
                 <!-- TAB BASICOS-->
                 <div class="tab-pane fade in active" id="basicos">
-                    <form action="{{ path('diagnostico_update',{'id':entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
+                    <form action="{{ path('diagnostico_update',{'id':entity.id}) }}" method="post" enctype="multipart/form-data">
                         {{ form_errors(edit_form) }}
                         <input value="PUT" name="_method" type="hidden">
                         <div class="row">

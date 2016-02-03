@@ -6,7 +6,7 @@
 
 {% block area_trabajo %}
 
-    <form action="{{ path('productotope_update',{'id':entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
+    <form action="{{ path('productotope_update',{'id':entity.id}) }}" method="post" enctype="multipart/form-data">
 
         {{ form_errors(edit_form) }}
 

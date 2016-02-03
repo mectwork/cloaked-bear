@@ -6,7 +6,7 @@
 
 {% block area_trabajo %}
 
-    <form action="{{ path('impuesto_create') }}" method="post" {{ form_enctype(form) }}>
+    <form action="{{ path('impuesto_create') }}" method="post" enctype="multipart/form-data">
 
         {{ form_errors(form) }}
 

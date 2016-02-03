@@ -20,7 +20,7 @@
         <div class="tab-content" style="padding-top: 20px;">
             <!-- TAB BASICOS-->
             <div class="tab-pane fade in active" id="basicos">
-                <form action="{{ path('ordentrabajo_create') }}" method="post" {{ form_enctype(form) }}>
+                <form action="{{ path('ordentrabajo_create') }}" method="post" enctype="multipart/form-data">
                     {{ form_errors(form) }}
 
                     <div class="row">
