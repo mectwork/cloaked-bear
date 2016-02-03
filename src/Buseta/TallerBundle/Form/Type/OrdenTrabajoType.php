@@ -9,24 +9,25 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Buseta\TallerBundle\Form\EventListener\AddAutobusFieldSubscriber;
 use Buseta\TallerBundle\Form\EventListener\AddDiagnosticadoporFieldSubscriber;
 use Buseta\TallerBundle\Form\EventListener\AddKilometrajeFieldSubscriber;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 
 class OrdenTrabajoType extends AbstractType
 {
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorageInterface
      */
-    private $securityContext;
+    private $tokenStorage;
 
     /**
      * Constructor
      *
-     * @param SecurityContextInterface $securityContext
+     * @param SecurityContextInterface $tokenStorage
      */
-    function __construct(SecurityContextInterface $securityContext)
+    function __construct(TokenStorageInterface $tokenStorage)
     {
-        $this->securityContext = $securityContext;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -79,7 +80,7 @@ class OrdenTrabajoType extends AbstractType
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('o');
 
-                    $user = $this->securityContext->getToken()->getUser();
+                    $user = $this->tokenStorage->getToken()->getUser();
                     if (ClassUtils::getRealClass($user) === 'HatueySoft\SecurityBundle\Entity\User'){
                         $grupo = $user->getGrupoBuses();
 

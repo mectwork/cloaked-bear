@@ -25,7 +25,7 @@ class TareaMantenimientoController extends Controller
      */
     public function select_grupo_subgrupoAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 
@@ -55,7 +55,7 @@ class TareaMantenimientoController extends Controller
      */
     public function select_subgrupo_productoAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 

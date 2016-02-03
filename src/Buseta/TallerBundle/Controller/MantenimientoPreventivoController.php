@@ -234,7 +234,7 @@ class MantenimientoPreventivoController extends Controller
      */
     public function selectSubgroupBelongGroupAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 
@@ -267,7 +267,7 @@ class MantenimientoPreventivoController extends Controller
      */
     public function selectTareaBelongSubgroupAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 
@@ -300,7 +300,7 @@ class MantenimientoPreventivoController extends Controller
      */
     public function selectGarantiaBelongTareaAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 
@@ -330,7 +330,7 @@ class MantenimientoPreventivoController extends Controller
      */
     public function selectMPreventivoBelongSubgroupAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 

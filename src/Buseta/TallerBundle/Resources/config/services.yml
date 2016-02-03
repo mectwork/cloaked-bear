@@ -123,6 +123,6 @@ services:
      #Form Type
     taller.orden_trabajo.type:
         class: Buseta\TallerBundle\Form\Type\OrdenTrabajoType
-        arguments: [@security.context]
+        arguments: [@security.token_storage]
         tags:
             - {name: form.type, alias: 'buseta_tallerbundle_ordentrabajo'}

@@ -11,15 +11,26 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ExecutionContextInterface;
 
+/**
+ * Class Marchamo1ValidoValidator
+ *
+ * @package Buseta\CombustibleBundle\Validator\Constraints
+ */
 class Marchamo1ValidoValidator extends ConstraintValidator
 {
-    private $security;
+    /**
+     * @var EntityManager
+     */
     private $em;
 
-    function __construct(SecurityContext $security, EntityManager $em)
+    /**
+     * Marchamo1ValidoValidator constructor.
+     *
+     * @param EntityManager $em
+     */
+    function __construct(EntityManager $em)
     {
-        $this->security = $security;
-        $this->em       = $em;
+        $this->em = $em;
     }
 
     /**

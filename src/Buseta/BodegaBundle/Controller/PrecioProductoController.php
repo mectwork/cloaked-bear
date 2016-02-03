@@ -93,7 +93,7 @@ class PrecioProductoController extends Controller
 
     public function select_precio_productos_allAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 
@@ -111,7 +111,7 @@ class PrecioProductoController extends Controller
 
     public function comprobarPrecioAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 

@@ -2,22 +2,32 @@
 
 namespace Buseta\BodegaBundle\Validator\Constraints;
 
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\Security\Core\SecurityContext;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class ValidarMaxMinValidator extends ConstraintValidator
 {
-    private $security;
+    /**
+     * @var ObjectManager
+     */
     private $em;
 
-    function __construct(SecurityContext $security, EntityManager $em)
+
+    /**
+     * ValidarMaxMinValidator constructor.
+     *
+     * @param ObjectManager $em
+     */
+    function __construct(ObjectManager $em)
     {
-        $this->security = $security;
-        $this->em       = $em;
+        $this->em = $em;
     }
 
+    /**
+     * @param mixed      $entity
+     * @param Constraint $constraint
+     */
     public function validate($entity, Constraint $constraint)
     {
         /*  @var  \Buseta\BodegaBundle\Entity\ProductoTope  $entity*/

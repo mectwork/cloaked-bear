@@ -10,7 +10,6 @@ services:
     core.codigoypin.validador:
         class: Buseta\CoreBundle\Validator\Constraints\CodigoYPinValidoValidator
         arguments:
-            - @security.context
             - @doctrine.orm.entity_manager
         tags:
             - {name: validator.constraint_validator, alias: codigoYpin_validador}

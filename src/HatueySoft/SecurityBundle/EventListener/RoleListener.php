@@ -47,10 +47,10 @@ class RoleListener
         $process->run();
 
         if ($process->isSuccessful()) {
-            $this->container->get('security.context')->getToken()->setAuthenticated(false);
-            $this->container->get('security.context')->getToken()->eraseCredentials();
+            $this->container->get('security.token_storage')->getToken()->setAuthenticated(false);
+            $this->container->get('security.token_storage')->getToken()->eraseCredentials();
             $this->container->get("request")->getSession()->invalidate();
-            $this->container->get('security.context')->setToken(null);
+            $this->container->get('security.token_storage')->setToken(null);
         }
     }
 }

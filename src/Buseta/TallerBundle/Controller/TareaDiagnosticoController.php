@@ -18,7 +18,7 @@ class TareaDiagnosticoController extends Controller
 
     public function newModalAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 

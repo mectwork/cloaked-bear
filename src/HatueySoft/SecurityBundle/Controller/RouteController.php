@@ -236,10 +236,10 @@ class RouteController extends Controller
      */
     private function FireCache()
     {
-        $this->get('security.context')->getToken()->setAuthenticated(false);
-        $this->get('security.context')->getToken()->eraseCredentials();
+        $this->get('security.token_storage')->getToken()->setAuthenticated(false);
+        $this->get('security.token_storage')->getToken()->eraseCredentials();
         $this->get("request")->getSession()->invalidate();
-        $this->get('security.context')->setToken(null);
+        $this->get('security.token_storage')->setToken(null);
         $dispatcher = $this->get('event_dispatcher');
         $event = new GetRoleEvents("cache");
         $dispatcher->dispatch(RoleEvents::ROLE_SAVE,$event);

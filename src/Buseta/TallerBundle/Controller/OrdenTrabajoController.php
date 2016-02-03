@@ -35,7 +35,7 @@ class OrdenTrabajoController extends Controller
         $form = $this->createForm(new OrdenTrabajoFilter(), $filter, array(
             'action' => $this->generateUrl('ordentrabajo'),
         ));
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         if (ClassUtils::getRealClass($user) === 'HatueySoft\SecurityBundle\Entity\User'){
             $filter->setGrupoBuses($user->getGrupoBuses());
         }
@@ -282,7 +282,7 @@ class OrdenTrabajoController extends Controller
      */
     public function selectAutobusMantenimientoPreventivoAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 
@@ -328,7 +328,7 @@ class OrdenTrabajoController extends Controller
      */
     public function selectAutobusKilometrajeAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 
@@ -361,7 +361,7 @@ class OrdenTrabajoController extends Controller
      */
     public function select_salidabodega_ordentrabajoAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new Response('Acceso Denegado', 403);
         }
 

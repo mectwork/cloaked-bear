@@ -2,8 +2,7 @@
 
 namespace Buseta\BodegaBundle\Validator\Constraints;
 
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\Security\Core\SecurityContext;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Buseta\BodegaBundle\Extras\GeneradorSeriales;
@@ -11,7 +10,9 @@ use Symfony\Component\Security\Core\Util\ClassUtils;
 
 class ValidarSerialValidator extends ConstraintValidator
 {
-    private $security;
+    /**
+     * @var ObjectManager
+     */
     private $em;
 
     /**
@@ -19,9 +20,15 @@ class ValidarSerialValidator extends ConstraintValidator
      */
     private $generadorSeriales;
 
-    function __construct(SecurityContext $security, EntityManager $em, GeneradorSeriales $generadorSeriales)
+
+    /**
+     * ValidarSerialValidator constructor.
+     *
+     * @param ObjectManager     $em
+     * @param GeneradorSeriales $generadorSeriales
+     */
+    function __construct(ObjectManager $em, GeneradorSeriales $generadorSeriales)
     {
-        $this->security = $security;
         $this->em = $em;
         $this->generadorSeriales = $generadorSeriales;
     }
@@ -59,7 +66,6 @@ class ValidarSerialValidator extends ConstraintValidator
         }
 
     }
-
 
     /**
      * @param $entity

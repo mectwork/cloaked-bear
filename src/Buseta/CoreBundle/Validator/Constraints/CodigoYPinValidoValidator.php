@@ -11,17 +11,28 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ExecutionContextInterface;
 use Symfony\Component\Security\Core\Util\StringUtils;
 
+/**
+ * Class CodigoYPinValidoValidator
+ *
+ * @package Buseta\CoreBundle\Validator\Constraints
+ */
 class CodigoYPinValidoValidator extends ConstraintValidator
 {
-    private $security;
+    /**
+     * @var EntityManager
+     */
     private $em;
 
-    function __construct(SecurityContext $security, EntityManager $em)
-    {
-        $this->security = $security;
-        $this->em       = $em;
-    }
 
+    /**
+     * CodigoYPinValidoValidator constructor.
+     *
+     * @param EntityManager $em
+     */
+    function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
 
     /**
      * Checks if the passed value is valid.
@@ -49,7 +60,7 @@ class CodigoYPinValidoValidator extends ConstraintValidator
 
         //Validando por pin, solo el chofer o un administrador del sistema
         $dataPin = $data->getPin();
-        if (StringUtils::equals($choferPin,$dataPin)) {
+        if (StringUtils::equals($choferPin, $dataPin)) {
             return;
         } else {
             try {
@@ -61,7 +72,7 @@ class CodigoYPinValidoValidator extends ConstraintValidator
                     ->where('u.pin = :dataPin')
                     //->setParameter('roleadmin','%ROLE_ADMINISTRADOR%')
                     //->setParameter('roleasuperdmin','%ROLE_SUPER_ADMIN%')
-                    ->setParameter('dataPin',$dataPin)
+                    ->setParameter('dataPin', $dataPin)
                     ->getQuery()
                     ->getResult();
                 if(!$admins)

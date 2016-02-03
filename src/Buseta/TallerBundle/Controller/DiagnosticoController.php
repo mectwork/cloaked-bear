@@ -382,7 +382,7 @@ class DiagnosticoController extends Controller
      */
     public function select_reporte_autobusAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new Response('Acceso Denegado', 403);
         }
 
@@ -434,7 +434,7 @@ class DiagnosticoController extends Controller
      */
     public function select_diagnostico_ordentrabajoAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new Response('Acceso Denegado', 403);
         }
 

@@ -7,6 +7,7 @@ use HatueySoft\MenuBundle\Model\MenuNode;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class MenuBuilder extends ContainerAware
@@ -14,7 +15,7 @@ class MenuBuilder extends ContainerAware
     public function defaultModulesMenu(FactoryInterface $factory, array $options)
     {
         $builder = $this->container->get('hatuey_soft.menu_builder.service');
-        $securityContext = $this->container->get('security.context');
+        $authorizationChecker = $this->container->get('security.authorization_checker');
 
         //Obteniendo el menu
         $modules = $builder->getModules();
@@ -26,7 +27,7 @@ class MenuBuilder extends ContainerAware
             $counter = 0;
             foreach ($modules->getChildrens() as $children) {
                 // check roles permission
-                if (count($children->getRoles()) && $securityContext->isGranted($children->getRoles()) && !$children->isDisabled()) {
+                if (count($children->getRoles()) && $authorizationChecker->isGranted($children->getRoles()) && !$children->isDisabled()) {
                     $attributes = array(
                         'class' => 'span4',
                     );
@@ -55,7 +56,7 @@ class MenuBuilder extends ContainerAware
     public function mainMenu(FactoryInterface $factory, array $options)
     {
         $builder = $this->container->get('hatuey_soft.menu_builder.service');
-        $securityContext = $this->container->get('security.context');
+        $authorizationChecker = $this->container->get('security.authorization_checker');
 
         //Obteniendo el menu
         $item = $builder->getModuleMenu($this->getName());
@@ -72,17 +73,17 @@ class MenuBuilder extends ContainerAware
         $menu['pagina_principal']->setExtra('safe_label', true);
 
         if (!$item->getChildrens()->isEmpty()) {
-            $this->renderChildrens($menu, $item, $securityContext);
+            $this->renderChildrens($menu, $item, $authorizationChecker);
         }
 
         return $menu;
     }
 
-    private function renderChildrens(ItemInterface $menu, MenuNode $item, SecurityContextInterface $securityContext)
+    private function renderChildrens(ItemInterface $menu, MenuNode $item, AuthorizationCheckerInterface $authorizationChecker)
     {
         foreach ($item->getChildrens() as $children) {
             // check roles permission
-            if (count($children->getRoles()) && $securityContext->isGranted($children->getRoles()) && !$children->isDisabled()) {
+            if (count($children->getRoles()) && $authorizationChecker->isGranted($children->getRoles()) && !$children->isDisabled()) {
                 /** @var \HatueySoft\MenuBundle\Model\MenuNode $children */
                 $options = array();
                 if ($children->getRoute() !== null) {
@@ -96,7 +97,7 @@ class MenuBuilder extends ContainerAware
 
                 if (!$children->getChildrens()->isEmpty()) {
                     $menu[$children->getId()]->setChildrenAttribute('class', 'nav nav-second-level');
-                    $this->renderChildrens($menu[$children->getId()], $children, $securityContext);
+                    $this->renderChildrens($menu[$children->getId()], $children, $authorizationChecker);
                 }
             }
         }

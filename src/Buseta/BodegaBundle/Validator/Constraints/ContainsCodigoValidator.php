@@ -2,7 +2,7 @@
 
 namespace Buseta\BodegaBundle\Validator\Constraints;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -11,15 +11,26 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class ContainsCodigoValidator extends ConstraintValidator
 {
-    private $security;
+    /**
+     * @var \Doctrine\Common\Persistence\ObjectManager
+     */
     private $em;
 
-    function __construct(SecurityContext $security, EntityManager $em)
+
+    /**
+     * ContainsCodigoValidator constructor.
+     *
+     * @param ObjectManager $em
+     */
+    function __construct(ObjectManager $em)
     {
-        $this->security = $security;
         $this->em       = $em;
     }
 
+    /**
+     * @param mixed      $entity
+     * @param Constraint $constraint
+     */
     public function validate($entity, Constraint $constraint)
     {
 

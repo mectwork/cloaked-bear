@@ -9,7 +9,7 @@ use Symfony\Bridge\Monolog\Logger;
 use Buseta\BodegaBundle\Entity\SalidaBodega;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Buseta\BodegaBundle\Exceptions\NotFoundElementException;
 use Doctrine\DBAL\Connections;
 
@@ -35,27 +35,27 @@ class SalidaBodegaManager
     private $event_dispacher;
 
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContext
+     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage
      */
-    private $security_context;
+    private $tokenStorage;
 
 
     /**
-     * @param ObjectManager $em
-     * @param Logger $logger
+     * @param ObjectManager            $em
+     * @param Logger                   $logger
      * @param EventDispatcherInterface $event_dispacher
-     * @param SecurityContext $security_context
+     * @param TokenStorage          $tokenStorage
      */
     function __construct(
         ObjectManager $em,
         Logger $logger,
         EventDispatcherInterface $event_dispacher,
-        SecurityContext $security_context
+        TokenStorage $tokenStorage
     ) {
         $this->em = $em;
         $this->logger = $logger;
         $this->event_dispacher = $event_dispacher;
-        $this->security_context = $security_context;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -109,19 +109,16 @@ class SalidaBodegaManager
         /** @var \Buseta\BodegaBundle\Entity\SalidaBodega $salidaBodega */
         /** @var \Buseta\BodegaBundle\Entity\SalidaBodegaProducto $linea */
 
-        // suspend auto-commit
-        $this->em->getConnection()->beginTransaction();
-
         try {
-
             $salidaBodega = $this->em->getRepository('BusetaBodegaBundle:SalidaBodega')->find($id);
-
             if (!$salidaBodega) {
                 throw new NotFoundElementException('Unable to find SalidaBodega entity.');
             }
 
-            $salidasBodega = $salidaBodega->getSalidasProductos();
+            // suspend auto-commit
+            $this->em->getConnection()->beginTransaction();
 
+            $salidasBodega = $salidaBodega->getSalidasProductos();
             if ($salidasBodega !== null && count($salidasBodega) > 0) {
                 //entonces mando a crear los movimientos en la bitacora, producto a producto, a traves de eventos
                 foreach ($salidasBodega as $linea) {
@@ -149,7 +146,7 @@ class SalidaBodegaManager
                 }
 
                 //Cambia el estado de Procesado a Completado e incorpora otros datos
-                $username = $this->security_context->getToken()->getUser()->getUsername();
+                $username = $this->tokenStorage->getToken()->getUser()->getUsername();
                 //$salidaBodega->setCreatedBy($username);
                 $salidaBodega->setMovidoBy($username);
                 $salidaBodega->setFecha($fechaSalidaBodega = new \DateTime());
@@ -171,7 +168,6 @@ class SalidaBodegaManager
             $this->em->getConnection()->commit();
 
             return true;
-
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Ha ocurrido un error al completar la salida de bodega: %s',
                 $e->getMessage()));
@@ -181,7 +177,5 @@ class SalidaBodegaManager
 
             return $error = 'Ha ocurrido un error al completar la salida de bodega';
         }
-
     }
-
 }

@@ -4,29 +4,29 @@ namespace Buseta\BusesBundle\Form\Type;
 
 use Buseta\BusesBundle\Form\EventListener\AddMarcaFieldSubscriber;
 use Buseta\BusesBundle\Form\EventListener\AddModeloFieldSubscriber;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class VehiculoType extends AbstractType
 {
     /**
-     * @var SecurityContextInterface
+     * @var AuthorizationCheckerInterface
      */
-    private $securityContext;
+    private $authorizationChecker;
 
     /**
      * Constructor
      *
-     * @param SecurityContextInterface $securityContext
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    function __construct(SecurityContextInterface $securityContext)
+    function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -45,7 +45,7 @@ class VehiculoType extends AbstractType
             $autobus    = $event->getData();
             $form       = $event->getForm();
 
-            if ($autobus && null !== $autobus->getId() || $this->securityContext->isGranted('ROLE_ADMIN')) {
+            if ($autobus && null !== $autobus->getId() || $this->authorizationChecker->isGranted('ROLE_ADMIN')) {
                 $form
                     ->add('kilometraje', 'integer', array(
                         'required' => false,

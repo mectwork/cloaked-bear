@@ -12,16 +12,6 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 
 class CapacidadTanqueValidoValidator extends ConstraintValidator
 {
-    private $security;
-    private $em;
-
-    function __construct(SecurityContext $security, EntityManager $em)
-    {
-        $this->security = $security;
-        $this->em       = $em;
-    }
-
-
     /**
      * Checks if the passed value is valid.
      *
