@@ -13,7 +13,7 @@ tareadiagnostico_new:
 tareadiagnostico_create:
     path:     /create
     defaults: { _controller: "BusetaTallerBundle:TareaDiagnostico:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 tareadiagnostico_edit:
     path:     /{id}/edit
@@ -22,16 +22,16 @@ tareadiagnostico_edit:
 tareadiagnostico_update:
     path:     /{id}/update
     defaults: { _controller: "BusetaTallerBundle:TareaDiagnostico:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 tareadiagnostico_delete:
     path:     /{id}/delete
     defaults: { _controller: "BusetaTallerBundle:TareaDiagnostico:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 tareadiagnostico_new_modal:
-    pattern: /modal/new
+    path: /modal/new
     defaults: { _controller: "BusetaTallerBundle:TareaDiagnostico:newModal" }
-    requirements: { _method: get }
+    requirements: { methods: get }
     options:
       expose: true

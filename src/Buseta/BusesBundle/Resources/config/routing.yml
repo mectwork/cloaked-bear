@@ -2,10 +2,10 @@ BusetaBusesBundle_autobus:
         resource: "@BusetaBusesBundle/Resources/config/routing/autobus.yml"
         prefix:   /autobus
 BusetaBuses_homepage:
-    pattern:  /hello/{name}
+    path:  /hello/{name}
     defaults: { _controller: BusetaBusesBundle:Default:index }
 autobus_principal:
-    pattern:  /modulo/autobus
+    path:  /modulo/autobus
     defaults: { _controller: "BusetaBusesBundle:Autobus:principal" }
 buseta_buses_autobus:
   resource: "@BusetaBusesBundle/Controller/AutobusController.php"

@@ -1,37 +1,37 @@
 impuesto:
-    pattern:  /
+    path:  /
     defaults: { _controller: "BusetaTallerBundle:Impuesto:index" }
 
 impuesto_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "BusetaTallerBundle:Impuesto:show" }
 
 impuesto_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "BusetaTallerBundle:Impuesto:new" }
 
 impuesto_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaTallerBundle:Impuesto:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 impuesto_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "BusetaTallerBundle:Impuesto:edit" }
 
 impuesto_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "BusetaTallerBundle:Impuesto:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 impuesto_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "BusetaTallerBundle:Impuesto:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 impuesto_ajax_productos_all:
-  pattern: /select_impuesto_productos_all
+  path: /select_impuesto_productos_all
   defaults: { _controller: "BusetaTallerBundle:Impuesto:select_impuesto_productos_all" }
-  requirements: { _method: "GET" }
+  requirements: { methods: "GET" }
   options:
       expose: true

@@ -1,56 +1,56 @@
 diagnostico:
-    pattern:  /
+    path:  /
     defaults: { _controller: "BusetaTallerBundle:Diagnostico:index" }
 
 diagnostico_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "BusetaTallerBundle:Diagnostico:show" }
 
 diagnostico_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "BusetaTallerBundle:Diagnostico:new" }
 
 diagnostico_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaTallerBundle:Diagnostico:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 diagnostico_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "BusetaTallerBundle:Diagnostico:edit" }
 
 diagnostico_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "BusetaTallerBundle:Diagnostico:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 diagnostico_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "BusetaTallerBundle:Diagnostico:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 diagnostico_generar_ordentrabajo:
-    pattern:  /{id}/generar_ordentrabajo
+    path:  /{id}/generar_ordentrabajo
     defaults: { _controller: "BusetaTallerBundle:Diagnostico:generarOrdenTrabajo" }
 
 diagnostico_ajax_reporte_autobus:
-  pattern: /select_reporte_autobus
+  path: /select_reporte_autobus
   defaults: { _controller: "BusetaTallerBundle:Diagnostico:select_reporte_autobus" }
-  requirements: { _method: "GET" }
+  requirements: { methods: "GET" }
   options:
       expose: true
 
 diagnostico_ajax_ordentrabajo_autobus:
-  pattern: /select_diagnostico_ordentrabajo
+  path: /select_diagnostico_ordentrabajo
   defaults: { _controller: "BusetaTallerBundle:Diagnostico:select_diagnostico_ordentrabajo" }
-  requirements: { _method: "GET" }
+  requirements: { methods: "GET" }
   options:
       expose: true
 
 procesarDiagnostico:
-    pattern:  /{id}/procesarDiagnostico
+    path:  /{id}/procesarDiagnostico
     defaults: { _controller: "BusetaTallerBundle:Diagnostico:procesarDiagnostico" }
 
 cancelarDiagnostico:
-    pattern:  /{id}/cancelarDiagnostico
+    path:  /{id}/cancelarDiagnostico
     defaults: { _controller: "BusetaTallerBundle:Diagnostico:cancelarDiagnostico" }

@@ -1,58 +1,63 @@
 bodega:
-    pattern:  /
+    path:  /
     defaults: { _controller: "BusetaBodegaBundle:Bodega:index" }
 
 bodega_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "BusetaBodegaBundle:Bodega:show" }
 
 bodega_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "BusetaBodegaBundle:Bodega:new" }
 
 bodega_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaBodegaBundle:Bodega:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 bodega_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "BusetaBodegaBundle:Bodega:edit" }
 
 bodega_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "BusetaBodegaBundle:Bodega:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 bodega_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "BusetaBodegaBundle:Bodega:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 informe_stock_create:
-    pattern:  /informe_stock_create
+    path:  /informe_stock_create
     defaults: { _controller: "BusetaBodegaBundle:Default:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 informe_stock_show:
-    pattern:  /informe_stock/{id}/show
+    path:  /informe_stock/{id}/show
     defaults: { _controller: "BusetaBodegaBundle:Default:show" }
 
 almacen_ajax_busqueda_avanzada:
-  pattern: /busqueda-avanzada/{page}/{cantResult}
+  path: /busqueda-avanzada/{page}/{cantResult}
   defaults: { _controller: "BusetaBodegaBundle:Bodega:busquedaAvanzada", page: 0, cantResult: 10 }
-  requirements: { _method: "GET" }
+  requirements: { methods: "GET" }
 
 bodega_ajax_productos_all:
-  pattern: /select_bodega_productos_all
+  path: /select_bodega_productos_all
   defaults: { _controller: "BusetaBodegaBundle:Bodega:select_bodega_productos_all" }
-  requirements: { _method: "GET" }
+  requirements: { methods: "GET" }
   options:
       expose: true
 
+bodega_productomaxmin:
+    path:  /productomaxmin/{id}
+    defaults: { _controller: "BusetaBodegaBundle:Bodega:productoTope" }
+    requirements: { methods: post|get }
+
 bodega_productotope_list:
-    pattern: /productotope/list/{id}
+    path: /productotope/list/{id}
     defaults: { _controller: "BusetaBodegaBundle:Bodega:listProductosTope" }
-    requirements: { _method: get }
+    requirements: { methods: get }
     options:
       expose: true

@@ -1,42 +1,42 @@
 reporte:
-    pattern: /
+    path: /
     defaults: { _controller: "BusetaTallerBundle:Reporte:principal" }
 
 reporte_index:
-    pattern:  /index
+    path:  /index
     defaults: { _controller: "BusetaTallerBundle:Reporte:index" }
 
 reporte_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "BusetaTallerBundle:Reporte:show" }
 
 reporte_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "BusetaTallerBundle:Reporte:new" }
 
 reporte_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaTallerBundle:Reporte:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 reporte_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "BusetaTallerBundle:Reporte:edit" }
 
 reporte_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "BusetaTallerBundle:Reporte:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 reporte_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "BusetaTallerBundle:Reporte:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 procesarReporte:
-    pattern:  /{id}/procesarReporte
+    path:  /{id}/procesarReporte
     defaults: { _controller: "BusetaTallerBundle:Reporte:procesarReporte" }
 
 reporte_generar_diagnostico:
-    pattern:  /{id}/generar_diagnostico
+    path:  /{id}/generar_diagnostico
     defaults: { _controller: "BusetaTallerBundle:Reporte:generarDiagnostico" }

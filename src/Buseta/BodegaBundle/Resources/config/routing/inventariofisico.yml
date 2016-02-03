@@ -1,43 +1,43 @@
 inventariofisico:
-    pattern:  /
+    path:  /
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:index" }
 
 inventariofisico_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:show" }
 
 inventariofisico_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:new" }
 
 inventariofisico_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 inventariofisico_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:edit" }
 
 inventariofisico_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 inventariofisico_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 procesarInventarioFisico:
-    pattern:  /{id}/procesarInventarioFisico
+    path:  /{id}/procesarInventarioFisico
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:procesarInventarioFisico" }
 
 completarInventarioFisico:
-    pattern:  /{id}/completarInventarioFisico
+    path:  /{id}/completarInventarioFisico
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:completarInventarioFisico" }
 
 inventarioFisico_ajax_busqueda_avanzada:
-  pattern: /busqueda-avanzada/{page}/{cantResult}
+  path: /busqueda-avanzada/{page}/{cantResult}
   defaults: { _controller: "BusetaBodegaBundle:InventarioFisico:busquedaAvanzada", page: 0, cantResult: 10 }
-  requirements: { _method: "GET" }
+  requirements: { methods: "GET" }

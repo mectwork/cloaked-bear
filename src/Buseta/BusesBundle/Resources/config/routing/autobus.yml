@@ -1,37 +1,37 @@
 autobus:
-    pattern:  /
+    path:  /
     defaults: { _controller: "BusetaBusesBundle:Autobus:index" }
 
 autobus_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "BusetaBusesBundle:Autobus:show" }
 
 autobus_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "BusetaBusesBundle:Autobus:new" }
 
 autobus_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaBusesBundle:Autobus:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 autobus_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "BusetaBusesBundle:Autobus:edit" }
 
 autobus_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "BusetaBusesBundle:Autobus:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 autobus_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "BusetaBusesBundle:Autobus:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 autobus_ajax_modelos:
-  pattern: /ajax/{idMarca}/modelos
+  path: /ajax/{idMarca}/modelos
   defaults: { _controller: "BusetaBusesBundle:Autobus:modelos" }
-  requirements: { _method: "GET" }
+  requirements: { methods: "GET" }
   options:
       expose: true

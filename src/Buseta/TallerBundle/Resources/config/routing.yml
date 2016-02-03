@@ -40,7 +40,7 @@ BusetaTallerBundle_impuesto:
     prefix:   /impuesto
 
 taller_principal:
-    pattern:  /modulo/taller
+    path:  /modulo/taller
     defaults: { _controller: "BusetaTallerBundle:Default:principal" }
 
 mantenimientopreventivo:

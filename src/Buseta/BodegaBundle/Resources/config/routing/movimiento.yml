@@ -1,59 +1,59 @@
 movimiento:
-    pattern:  /
+    path:  /
     defaults: { _controller: "BusetaBodegaBundle:Movimiento:index" }
 
 movimiento_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "BusetaBodegaBundle:Movimiento:show" }
 
 movimiento_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "BusetaBodegaBundle:Movimiento:new" }
 
 movimiento_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaBodegaBundle:Movimiento:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 movimiento_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "BusetaBodegaBundle:Movimiento:edit" }
 
 movimiento_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "BusetaBodegaBundle:Movimiento:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 movimiento_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "BusetaBodegaBundle:Movimiento:delete" }
-    requirements: { _method: get|post|delete }
+    requirements: { methods: get|post|delete }
 
 movimientos_productos_create:
-    pattern:  /movimientos/create
+    path:  /movimientos/create
     defaults: { _controller: "BusetaBodegaBundle:Movimiento:create_movimiento" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 movimientos_ajax_almacenOrigen_almacenDestino:
-  pattern: /select_almacenOrigen_almacenDestino
+  path: /select_almacenOrigen_almacenDestino
   defaults: { _controller: "BusetaBodegaBundle:Movimiento:select_almacenOrigen_almacenDestino" }
-  requirements: { _method: "GET" }
+  requirements: { methods: "GET" }
   options:
       expose: true
 
 movimiento_informe:
-    pattern:  /informeMovimiento
+    path:  /informeMovimiento
     defaults: { _controller: "BusetaBodegaBundle:Informe:informeMovimientos" }
 
 movimiento_ajax_busqueda_avanzada:
-  pattern: /busqueda-avanzada/{page}/{cantResult}
+  path: /busqueda-avanzada/{page}/{cantResult}
   defaults: { _controller: "BusetaBodegaBundle:Informe:busquedaAvanzada", page: 0, cantResult: 10 }
-  requirements: { _method: "GET" }
+  requirements: { methods: "GET" }
 
 procesarMovimiento:
-    pattern:  /{id}/procesar
-    defaults: { _controller: "BusetaBodegaBundle:Movimiento:procesarMovimiento" }
+  path:  /{id}/procesar
+  defaults: { _controller: "BusetaBodegaBundle:Movimiento:procesarMovimiento" }
 
 completarMovimiento:
-    pattern:  /{id}/completar
-    defaults: { _controller: "BusetaBodegaBundle:Movimiento:completarMovimiento" }
+  path:  /{id}/completar
+  defaults: { _controller: "BusetaBodegaBundle:Movimiento:completarMovimiento" }

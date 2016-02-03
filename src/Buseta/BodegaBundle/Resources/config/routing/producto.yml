@@ -1,60 +1,60 @@
 producto:
-    pattern:  /
+    path:  /
     defaults: { _controller: "BusetaBodegaBundle:Producto:index" }
 
 producto_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "BusetaBodegaBundle:Producto:show" }
 
 producto_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "BusetaBodegaBundle:Producto:new" }
 
 producto_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaBodegaBundle:Producto:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 producto_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "BusetaBodegaBundle:Producto:edit" }
 
 producto_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "BusetaBodegaBundle:Producto:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 producto_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "BusetaBodegaBundle:Producto:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 producto_ajax_grupos_subgrupos:
-  pattern: /select_grupo_subgrupo
+  path: /select_grupo_subgrupo
   defaults: { _controller: "BusetaBodegaBundle:Producto:select_grupo_subgrupo" }
-  requirements: { _method: "GET" }
+  requirements: { methods: "GET" }
   options:
       expose: true
 
 producto_ajax_productos_all:
-  pattern: /select_productos_all
+  path: /select_productos_all
   defaults: { _controller: "BusetaBodegaBundle:Producto:select_productos_all" }
-  requirements: { _method: "GET" }
+  requirements: { methods: "GET" }
   options:
       expose: true
 
 producto_filter:
-  pattern: /producto_filter
+  path: /producto_filter
   defaults: { _controller: "BusetaBodegaBundle:Producto:productoFilter" }
-  requirements: { _method: "GET" }
+  requirements: { methods: "GET" }
   options:
       expose: true
 
 producto_ajax_busqueda_avanzada:
-  pattern: /busqueda-avanzada/{page}/{cantResult}
+  path: /busqueda-avanzada/{page}/{cantResult}
   defaults: { _controller: "BusetaBodegaBundle:Producto:busquedaAvanzada", page: 0, cantResult: 10 }
-  requirements: { _method: "GET" }
+  requirements: { methods: "GET" }
 
 producto_bitacora:
-    pattern:  /{id}/productoBitacora
+    path:  /{id}/productoBitacora
     defaults: { _controller: "BusetaBodegaBundle:Producto:productoBitacora" }

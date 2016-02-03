@@ -51,15 +51,15 @@ BusetaBodegaBundle_precioproducto:
 #    prefix:   /albaranlinea
 
 bodega_principal:
-  pattern:  /modulo/bodega
+  path:  /modulo/bodega
   defaults: { _controller: "BusetaBodegaBundle:Bodega:principal" }
 
 bodega_informe_stock:
-  pattern:  /modulo/bodega/informe_stock
+  path:  /modulo/bodega/informe_stock
   defaults: { _controller: "BusetaBodegaBundle:InformeStock:index" }
 
 bodega_informe_costos:
-  pattern:  /modulo/bodega/informe_costos
+  path:  /modulo/bodega/informe_costos
   defaults: { _controller: "BusetaBodegaBundle:Informe:informeCostos" }
 
 buseta_bodega_terceros:
@@ -162,7 +162,3 @@ buseta_bodega_bitacoraalmacen:
 buseta_bodega_bitacoraserial:
     resource: "@BusetaBodegaBundle/Controller/BitacoraSerialController.php"
     type: annotation
-
-#BusetaBodegaBundle_bitacoraalmacen:
-#    resource: "@BusetaBodegaBundle/Resources/config/routing/bitacoraalmacen.yml"
-#    prefix:   /bodega/bitacoraalmacen

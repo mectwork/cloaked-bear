@@ -1,75 +1,75 @@
 ordentrabajo:
-    pattern:  /
+    path:  /
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:index" }
 
 ordentrabajo_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:show" }
 
 ordentrabajo_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:new" }
 
 ordentrabajo_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 ordentrabajo_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:edit" }
 
 ordentrabajo_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 ordentrabajo_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 ajax_select_autobus_mpreventivo:
-    pattern: /select_autobus_mpreventivo
+    path: /select_autobus_mpreventivo
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:selectAutobusMantenimientoPreventivo" }
-    requirements: { _method: "GET" }
+    requirements: { methods: "GET" }
     options:
         expose: true
 
 ajax_select_autobus_kilometraje:
-    pattern: /select_autobus_kilometraje
+    path: /select_autobus_kilometraje
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:selectAutobusKilometraje" }
-    requirements: { _method: "GET" }
+    requirements: { methods: "GET" }
     options:
         expose: true
 
 diagnostico_ajax_diag_diagpor:
-    pattern: /select_diag_diagpor
+    path: /select_diag_diagpor
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:selectdiagdiagpor" }
-    requirements: { _method: "GET" }
+    requirements: { methods: "GET" }
     options:
         expose: true
 
 ordentrabajo_ajax_salidabodega:
-    pattern: /select_salidadbodega_ordentrabajo
+    path: /select_salidadbodega_ordentrabajo
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:select_salidabodega_ordentrabajo" }
-    requirements: { _method: "GET" }
+    requirements: { methods: "GET" }
     options:
       expose: true
 
 ordentrabajo_ajax_diagnostico_autobus:
-    pattern: /select_filter_diagnostico_autobus
+    path: /select_filter_diagnostico_autobus
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:select_diagnostico_autobus" }
-    requirements: { _method: "GET" }
+    requirements: { methods: "GET" }
     options:
       expose: true
 
 procesarOrden:
-    pattern:  /{id}/procesarOrden
+    path:  /{id}/procesarOrden
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:procesarOrden" }
 
 cancelarOrden:
-    pattern:  /{id}/cancelarOrden
+    path:  /{id}/cancelarOrden
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:cancelarOrden" }
 
 

@@ -1,42 +1,42 @@
 tareaadicional:
-    pattern:  /
+    path:  /
     defaults: { _controller: "BusetaTallerBundle:TareaAdicional:index" }
 
 tareaadicional_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "BusetaTallerBundle:TareaAdicional:show" }
 
 tareaadicional_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "BusetaTallerBundle:TareaAdicional:new" }
 
 tareaadicional_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaTallerBundle:TareaAdicional:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 tarea_adicional_orden_trabajo_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaTallerBundle:TareaAdicional:create_orden_trabajo" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 tareaadicional_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "BusetaTallerBundle:TareaAdicional:edit" }
 
 tareaadicional_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "BusetaTallerBundle:TareaAdicional:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 tareaadicional_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "BusetaTallerBundle:TareaAdicional:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 tareaadicional_new_modal:
-    pattern: /modal/new
+    path: /modal/new
     defaults: { _controller: "BusetaTallerBundle:TareaAdicional:newModal" }
-    requirements: { _method: get }
+    requirements: { methods: get }
     options:
       expose: true

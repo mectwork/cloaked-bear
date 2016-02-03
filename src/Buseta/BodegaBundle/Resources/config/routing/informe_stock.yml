@@ -1,7 +1,7 @@
 informeStock:
-    pattern:  /
+    path:  /
     defaults: { _controller: "BusetaBodegaBundle:InformeStock:index" }
 
 informeCostos:
-    pattern:  /costos
+    path:  /costos
     defaults: { _controller: "BusetaBodegaBundle:Informe:informeCostos" }

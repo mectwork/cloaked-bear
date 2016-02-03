@@ -1,35 +1,35 @@
 inventario_fisoc_linea:
-    pattern:  /
+    path:  /
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisicoLinea:index" }
 
 inventario_fisico_linea_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisicoLinea:show" }
 
 inventario_fisico_linea_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisicoLinea:new" }
 
 inventario_fisico_linea_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisicoLinea:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 inventario_fisico_linea_compra_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisicoLinea:create_compra" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 inventario_fisico_linea_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisicoLinea:edit" }
 
 inventario_fisico_linea_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisicoLinea:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 inventario_fisico_linea_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "BusetaBodegaBundle:InventarioFisicoLinea:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }

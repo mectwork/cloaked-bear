@@ -1,37 +1,37 @@
 compra:
-    pattern:  /
+    path:  /
     defaults: { _controller: "BusetaTallerBundle:Compra:index" }
 
 compra_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "BusetaTallerBundle:Compra:show" }
 
 compra_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "BusetaTallerBundle:Compra:new" }
 
 compra_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaTallerBundle:Compra:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 compra_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "BusetaTallerBundle:Compra:edit" }
 
 compra_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "BusetaTallerBundle:Compra:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 compra_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "BusetaTallerBundle:Compra:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 guardarPedido:
-  pattern: /guardarPedido
+  path: /guardarPedido
   defaults: { _controller: "BusetaTallerBundle:Compra:guardarPedido" }
-  requirements: { _method: "GET" }
+  requirements: { methods: "GET" }
   options:
       expose: true

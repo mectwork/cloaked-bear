@@ -1,42 +1,42 @@
 observaciondiagnostico:
-    pattern:  /
+    path:  /
     defaults: { _controller: "BusetaTallerBundle:ObservacionDiagnostico:index" }
 
 observaciondiagnostico_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "BusetaTallerBundle:ObservacionDiagnostico:show" }
 
 observaciondiagnostico_new:
-    pattern:  /new
+    path:  /new
     defaults: { _controller: "BusetaTallerBundle:ObservacionDiagnostico:new" }
 
 observaciondiagnostico_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaTallerBundle:ObservacionDiagnostico:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 observaciondiagnostico_reporte_create:
-    pattern:  /create
+    path:  /create
     defaults: { _controller: "BusetaTallerBundle:ObservacionDiagnostico:create_reporte" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 observaciondiagnostico_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "BusetaTallerBundle:ObservacionDiagnostico:edit" }
 
 observaciondiagnostico_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "BusetaTallerBundle:ObservacionDiagnostico:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 observaciondiagnostico_delete:
-    pattern:  /{id}/delete
+    path:  /{id}/delete
     defaults: { _controller: "BusetaTallerBundle:ObservacionDiagnostico:delete" }
-    requirements: { _method: post|delete }
+    requirements: { methods: post|delete }
 
 observaciondiagnostico_new_modal:
-    pattern: /modal/new
+    path: /modal/new
     defaults: { _controller: "BusetaTallerBundle:ObservacionDiagnostico:newModalObservacionDiagnostico" }
-    requirements: { _method: get }
+    requirements: { methods: get }
     options:
       expose: true

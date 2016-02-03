@@ -1,8 +1,8 @@
 cambiohora_index:
-    pattern: /index
+    path: /index
     defaults: { _controller: CoreBundle:CambioHoraSistema:index }
 
 cambiohora_update:
-    pattern: /update
+    path: /update
     defaults: { _controller: CoreBundle:CambioHoraSistema:update }
-    requirements: { _method: post }
+    requirements: { methods: post }

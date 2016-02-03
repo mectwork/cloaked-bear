@@ -1,9 +1,9 @@
 core_homepage:
-    pattern:  /
+    path:  /
     defaults: { _controller: CoreBundle:Default:index }
 
 configuracion_principal:
-    pattern:  /modulo/configuracion
+    path:  /modulo/configuracion
     defaults: { _controller: "CoreBundle:Default:principal" }
 
 coreBundle_cambiohorasistema:
