@@ -3,7 +3,7 @@ namespace Buseta\BodegaBundle\Form\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CategoriaProductoFilter extends AbstractType
 {
@@ -25,9 +25,9 @@ class CategoriaProductoFilter extends AbstractType
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Buseta\BodegaBundle\Form\Model\CategoriaProductoFilterModel',
@@ -42,4 +42,4 @@ class CategoriaProductoFilter extends AbstractType
     {
         return 'buseta_categoria_producto_filter';
     }
-} 
+}

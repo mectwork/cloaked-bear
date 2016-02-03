@@ -5,7 +5,7 @@ namespace Buseta\BusesBundle\Form\Type;
 use HatueySoft\UploadBundle\Form\Type\UploadResourcesType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ImagenType extends AbstractType
 {
@@ -65,9 +65,9 @@ class ImagenType extends AbstractType
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
                 'data_class' => 'Buseta\BusesBundle\Form\Model\ImagenModel',

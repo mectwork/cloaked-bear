@@ -6,7 +6,7 @@ namespace Buseta\BodegaBundle\Form\Type;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Buseta\BodegaBundle\Form\Model\BitacoraAlmacenModel;
 
 class BitacoraAlmacenType extends AbstractType
@@ -57,9 +57,9 @@ class BitacoraAlmacenType extends AbstractType
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Buseta\BodegaBundle\Form\Model\BitacoraAlmacen',

@@ -4,7 +4,7 @@ namespace Buseta\CombustibleBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ListaNegraCombustibleType extends AbstractType
 {
@@ -40,7 +40,7 @@ class ListaNegraCombustibleType extends AbstractType
         ;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Buseta\CombustibleBundle\Entity\ListaNegraCombustible'
