@@ -10,6 +10,7 @@ use Buseta\TallerBundle\Entity\Diagnostico;
 use Buseta\TallerBundle\Entity\TareaDiagnostico;
 use Buseta\TallerBundle\Form\Type\ObservacionDiagnosticoType;
 use Buseta\TallerBundle\Form\Type\TareaDiagnosticoType;
+use Doctrine\ORM\AbstractQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -100,8 +101,8 @@ class DiagnosticoController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $em = $this->get('doctrine.orm.entity_manager');
         $filter = new DiagnosticoFilterModel();
-
         $form = $this->createForm(new DiagnosticoFilter(), $filter, array(
             'action' => $this->generateUrl('diagnostico'),
         ));
@@ -122,7 +123,6 @@ class DiagnosticoController extends Controller
             10
         );
 
-        $em = $this->getDoctrine()->getManager();
         $resumentotal = $em->getRepository('BusetaTallerBundle:Diagnostico')->findTotalAtrasadasFilter($entities);
 
         return $this->render('BusetaTallerBundle:Diagnostico:index.html.twig', array(

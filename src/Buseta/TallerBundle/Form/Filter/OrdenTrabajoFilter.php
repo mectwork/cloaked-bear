@@ -23,30 +23,21 @@ class OrdenTrabajoFilter extends AbstractType
             ->add('numero', 'text', array(
                 'required' => false,
                 'label'  => 'Número',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
             ))
             ->add('requisionMateriales', 'text', array(
                 'required' => false,
                 'label' => 'Número control materiales',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
             ))
             ->add('diagnosticadoPor', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'required' => false,
                 'label'  => 'Diagnosticado por',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
                 // Esta consulta hace que en el select solo aparezcan las entradas de la tabla terceros que tengan el campo
                 // usuario no nulo, o sea muestra los terceros que tengan usuarios asignados
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('responsable');
                     $qb->join('responsable.usuario', 'usuario')
-                        ->andWhere($qb->expr()->isNotNull('usuario'));
+                        ->andWhere($qb->expr()->isNotNull('usuario.id'));
 
                     return $qb;
                 },
@@ -61,7 +52,7 @@ class OrdenTrabajoFilter extends AbstractType
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('ayudante');
                     $qb->join('ayudante.persona', 'persona')
-                        ->andWhere($qb->expr()->isNotNull('persona'));
+                        ->andWhere($qb->expr()->isNotNull('persona.id'));
 
                     return $qb;
                 },
@@ -72,24 +63,30 @@ class OrdenTrabajoFilter extends AbstractType
                 'placeholder' => '---Seleccione---',
                 'label' => 'Autobús',
                 'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('a')
+                        ->select('a, filtro_aceite, filtro_agua, filtro_caja, filtro_diesel, filtro_hidraulico, filtro_transmision')
+                        ->leftJoin('a.filtroAceite', 'filtro_aceite')
+                        ->leftJoin('a.filtroAgua', 'filtro_agua')
+                        ->leftJoin('a.filtroCaja', 'filtro_caja')
+                        ->leftJoin('a.filtroDiesel', 'filtro_diesel')
+                        ->leftJoin('a.filtroHidraulico', 'filtro_hidraulico')
+                        ->leftJoin('a.filtroTransmision', 'filtro_transmision')
+                        ;
+                }
             ))
 
             ->add('diagnostico','entity',array(
                 'class' => 'BusetaTallerBundle:Diagnostico',
                 'query_builder' => function (EntityRepository $er) {
-                    $qb = $er->createQueryBuilder('d');
+                    $qb = $er->createQueryBuilder('d')
+                        ->select('d, ot');
                     return $qb->leftJoin('d.ordenTrabajo', 'ot')
-                        ->where($qb->expr()->isNull('ot'));
+                        ->where($qb->expr()->isNull('ot.id'));
                 },
                 'placeholder' => '---Seleccione---',
                 'label' => 'Diagnóstico',
                 'required' => false,
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
             ))
 
         ;

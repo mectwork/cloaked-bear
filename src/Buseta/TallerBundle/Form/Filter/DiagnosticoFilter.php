@@ -1,6 +1,8 @@
 <?php
 namespace Buseta\TallerBundle\Form\Filter;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,22 +24,34 @@ class DiagnosticoFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('reporte','entity',array(
+            ->add('reporte', 'entity', array(
                 'class' => 'BusetaTallerBundle:Reporte',
                 'placeholder' => '---Seleccione---',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
+                'required' => false,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('r')
+                        ->select('r,d,ot')
+                        ->leftJoin('r.diagnostico', 'd')
+                        ->leftJoin('d.ordenTrabajo', 'ot')
+                        ->where('r.deleted IS NULL');
+                },
             ))
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
                 'placeholder' => '---Seleccione---',
                 'label' => 'Autobús',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
+                'required' => false,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('a')
+                        ->select('a, filtro_aceite, filtro_agua, filtro_caja, filtro_diesel, filtro_hidraulico, filtro_transmision')
+                        ->leftJoin('a.filtroAceite', 'filtro_aceite')
+                        ->leftJoin('a.filtroAgua', 'filtro_agua')
+                        ->leftJoin('a.filtroCaja', 'filtro_caja')
+                        ->leftJoin('a.filtroDiesel', 'filtro_diesel')
+                        ->leftJoin('a.filtroHidraulico', 'filtro_hidraulico')
+                        ->leftJoin('a.filtroTransmision', 'filtro_transmision')
+                        ;
+                }
             ))
             ->add('estado', 'choice', array(
                 'required' => false,

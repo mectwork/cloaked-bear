@@ -42,10 +42,6 @@ class DiagnosticoType extends AbstractType
                 'placeholder' => '---Seleccione prioridad---',
                 'required' => false,
             ))
-
-
-
-
             ->add('tareaDiagnostico', 'collection', array(
                 'type' => new TareaDiagnosticoType(),
                 'label'  => false,
@@ -54,7 +50,6 @@ class DiagnosticoType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
-
             ->add('observaciones','collection',array(
                 'type' => new ObservacionDiagnosticoType(),
                 'label'  => false,
@@ -81,6 +76,6 @@ class DiagnosticoType extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_tallerbundle_reporte';
+        return 'buseta_tallerbundle_diagnostico';
     }
 }

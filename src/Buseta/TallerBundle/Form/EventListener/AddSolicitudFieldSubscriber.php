@@ -50,18 +50,17 @@ class AddSolicitudFieldSubscriber implements EventSubscriberInterface
             //para no asociarle dos diagnosticos a una misma solicitud
             'query_builder' => function (EntityRepository $er) use ($reporte) {
                 $qb = $er->createQueryBuilder('r');
-                $qb
-                    ->leftJoin('r.diagnostico', 'd')
-                ;
+                $qb->leftJoin('r.diagnostico', 'd');
+
                 if ($reporte !== null) {
                     $qb->andWhere(
                         $qb->expr()->orX(
-                            $qb->expr()->isNull('d'),
+                            $qb->expr()->isNull('d.id'),
                             $qb->expr()->eq('r.id', ':id')
                         )
                     )->setParameter('id', $reporte);
                 } else {
-                    $qb->andWhere($qb->expr()->isNull('d'));
+                    $qb->andWhere($qb->expr()->isNull('d.id'));
                 }
 
                 return $qb;

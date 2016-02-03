@@ -15,7 +15,10 @@ class DiagnosticoRepository extends EntityRepository
 {
     public function filter(DiagnosticoFilterModel $filter = null)
     {
-        $qb = $this->createQueryBuilder('d');
+        $qb = $this->createQueryBuilder('d')
+            ->select('d,r,a')
+            ->leftJoin('d.reporte', 'r')
+            ->leftJoin('d.autobus', 'a');
         $query = $qb->where($qb->expr()->eq(true,true));
 
         if($filter) {
@@ -24,11 +27,11 @@ class DiagnosticoRepository extends EntityRepository
                     ->setParameter('numero',  sprintf('%%%s%%', $filter->getNumero()));
             }
             if ($filter->getReporte() !== null && $filter->getReporte() !== '') {
-                $query->andWhere($query->expr()->eq('d.reporte', ':reporte'))
+                $query->andWhere($query->expr()->eq('r', ':reporte'))
                     ->setParameter('reporte', $filter->getReporte());
             }
             if ($filter->getAutobus() !== null && $filter->getAutobus() !== '') {
-                $query->andWhere($query->expr()->eq('d.autobus', ':autobus'))
+                $query->andWhere($query->expr()->eq('a', ':autobus'))
                     ->setParameter('autobus', $filter->getAutobus());
             }
             if ($filter->getEstado() !== null && $filter->getEstado() !== '') {
@@ -98,9 +101,7 @@ class DiagnosticoRepository extends EntityRepository
      */
     public function findTotalAtrasadasFilter($entities = null)
     {
-
         $num_atrasadas = 0;
-
         foreach ($entities as $entity) {
             //si ocurre error no se cuenta como atrasada
             try {
@@ -115,7 +116,7 @@ class DiagnosticoRepository extends EntityRepository
                         }
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 continue;
             }
         }
