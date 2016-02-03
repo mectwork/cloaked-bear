@@ -1,10 +1,8 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% block nombre_menu_superior %}{% endblock %}
+{% block title block('header') %}
 
-{% block titulo_encabezado %}
-    Adicionar nuevo Tercero
-{% endblock %}
+{% block header 'Crear nuevo Tercero' %}
 
 {% block area_trabajo %}
     <ul class="nav nav-tabs">

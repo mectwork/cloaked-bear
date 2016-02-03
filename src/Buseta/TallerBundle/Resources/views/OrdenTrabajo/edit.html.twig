@@ -2,19 +2,9 @@
 
 {% form_theme edit_form.tareasAdicionales 'BusetaTallerBundle:OrdenTrabajo/widget:collection_tareas_adicionales.html.twig' %}
 
-{% block nombre_menu_superior %}
-    {% block stylesheets %}
-        {{ parent() }}
-    {% endblock %}
-{% endblock %}
+{% block title block('header') %}
 
-{% block title %}
-    Modificar datos de Orden de Trabajo
-{% endblock %}
-
-{% block titulo_encabezado %}
-    Modificar datos de  Orden de Trabajo
-{% endblock %}
+{% block header 'Modificar datos de Orden de Trabajo' %}
 
 {% block area_trabajo %}
     <div class="row">

@@ -1,16 +1,8 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% block nombre_menu_superior %}
+{% block title block('header') %}
 
-{% endblock %}
-
-{% block title %}
-    Datos del Producto
-{% endblock %}
-
-{% block titulo_encabezado %}
-    Datos de la Bitacora de Almacen: "{{ entity.nombre }}"
-{% endblock %}
+{% block header 'Ver datos de Bitacora Almacen' %}
 
 {% block area_trabajo %}
 

@@ -1,6 +1,8 @@
 {% extends "BusetaTallerBundle::layout.html.twig" %}
 
-{% block title 'Solicitudes de Servicio de Mantenimiento'%}
+{% block title block('header') %}
+
+{% block header 'Listado de Solicitudes' %}
 
 {% block titulo_encabezado %}
     {% set label = 'completadas' | upper %}

@@ -1,12 +1,8 @@
 {% extends "BusetaCombustibleBundle::layout.html.twig" %}
 
-{% block nombre_menu_superior %}
-    Datos del Servicio de Combustible
-{% endblock %}
+{% block title block('header') %}
 
-{% block titulo_encabezado %}
-    Datos del Servicio de Combustible: "{{ entity.combustible }}"
-{% endblock %}
+{% block header 'Ver datos del Servicio de Combustible' %}
 
 {% block area_trabajo %}
     <table class="table table-striped" style="font-size: 16px;">

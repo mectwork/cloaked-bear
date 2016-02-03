@@ -1,12 +1,8 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% block title %}
-    Listado de de Bitacora Almacen
-{% endblock %}
+{% block title block('header') %}
 
-{% block titulo_encabezado %}
-    Listado de Bitacora Almacen
-{% endblock %}
+{% block header 'Listado de Bitacora Almacen' %}
 
 {% block area_trabajo %}
 <div id="records_list">

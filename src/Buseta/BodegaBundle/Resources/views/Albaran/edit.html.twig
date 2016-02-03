@@ -2,19 +2,10 @@
 
 {% form_theme edit_form 'BusetaBodegaBundle:Widgets:collection_albaran_linea_insertadas.html.twig' %}
 
-{% block nombre_menu_superior %}
+{% block title block('header') %}
 
-{% endblock %}
+{% block header 'Modificar Datos de Ordenes de Entrada' %}
 
-{% block title %}
-    {{ 'albaran.nuevo' | trans({}, 'BusetaBodegaBundle') }}
-{% endblock %}
-
-{% block titulo_encabezado %}
-
-    {{ 'albaran.nuevo' | trans({}, 'BusetaBodegaBundle') }}
-
-{% endblock %}
 
 {% block area_trabajo %}
 

@@ -1,12 +1,8 @@
 {% extends "BusetaTallerBundle::layout.html.twig" %}
 
-{% block nombre_menu_superior %}
+{% block title block('header') %}
 
-{% endblock %}
-
-{% block titulo_encabezado %}
-    Adicionar nuevo mantenimiento preventivo
-{% endblock %}
+{% block header 'Modificar  mantenimiento preventivo' %}
 
 {% block area_trabajo %}
     <form action="{{ path('mantenimientopreventivo_update',{'id':entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
