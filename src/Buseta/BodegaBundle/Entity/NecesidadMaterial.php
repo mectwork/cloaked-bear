@@ -243,7 +243,7 @@ class NecesidadMaterial
     /**
      * @return bool
      *
-     * @Assert\True(groups={"on_complete"}, message="El importe entrado para la Compra y el importe total del Registro no coinciden.")
+     * @Assert\IsTrue(groups={"on_complete"}, message="El importe entrado para la Compra y el importe total del Registro no coinciden.")
      */
     public function isValidToComplete()
     {
