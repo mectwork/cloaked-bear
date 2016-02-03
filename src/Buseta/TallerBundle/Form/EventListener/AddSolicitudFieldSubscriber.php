@@ -66,7 +66,7 @@ class AddSolicitudFieldSubscriber implements EventSubscriberInterface
 
                 return $qb;
             },
-            'empty_value' => '---Seleccione---',
+            'placeholder' => '---Seleccione---',
             'label' => 'Solicitud',
             'required' => false,
         ));

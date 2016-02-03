@@ -24,7 +24,7 @@ class DiagnosticoFilter extends AbstractType
             ))
             ->add('reporte','entity',array(
                 'class' => 'BusetaTallerBundle:Reporte',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -32,7 +32,7 @@ class DiagnosticoFilter extends AbstractType
             ))
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Autobús',
                 'required' => true,
                 'attr' => array(
@@ -41,7 +41,7 @@ class DiagnosticoFilter extends AbstractType
             ))
             ->add('estado', 'choice', array(
                 'required' => false,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'translation_domain' => 'BusetaTallerBundle',
                 'choices' => array(
                     'CO' => 'estado.CO',

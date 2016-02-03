@@ -30,7 +30,7 @@ class DiagnosticoType extends AbstractType
             ))
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Autobús',
                 'required' => true,
                 'attr' => array(
@@ -39,7 +39,7 @@ class DiagnosticoType extends AbstractType
             ))
             ->add('prioridad', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:PrioridadSolicitud',
-                'empty_value' => '---Seleccione prioridad---',
+                'placeholder' => '---Seleccione prioridad---',
                 'required' => false,
             ))
 

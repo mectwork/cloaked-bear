@@ -78,7 +78,7 @@ class AutobusBasicoType extends AbstractType
             ->add('grupo_buses', 'entity', array(
                 'class' => 'BusetaBusesBundle:GrupoBuses',
                 'label' => 'Grupo Buses',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
             ))
             ->add('capacidadTanque', 'number', array(
                 'required' => true,
@@ -114,7 +114,7 @@ class AutobusBasicoType extends AbstractType
                 'label' => 'Válido Hasta',
             ))
             ->add('fechaRtv1', 'choice', array(
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'choices' => array(
                     'Enero'=>'Enero',
                     'Febrero' => 'Febrero',
@@ -131,7 +131,7 @@ class AutobusBasicoType extends AbstractType
                 ),
             ))
             ->add('fechaRtv2', 'choice', array(
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'choices' => array(
                     'Enero'=>'Enero',
                     'Febrero' => 'Febrero',
@@ -157,23 +157,23 @@ class AutobusBasicoType extends AbstractType
             ))
             ->add('estilo','entity',array(
                 'class' => 'BusetaNomencladorBundle:Estilo',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
             ))
 
             ->add('color', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Color',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
             ))
 
 
             ->add('marcaMotor', 'entity', array(
                     'class' => 'BusetaNomencladorBundle:MarcaMotor',
                     'label' => 'Marca Motor',
-                    'empty_value' => '---Seleccione---',
+                    'placeholder' => '---Seleccione---',
                 ))
             ->add('combustible', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Combustible',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
             ))
             ->add('rampas', 'textarea', array(
                 'required' => false,

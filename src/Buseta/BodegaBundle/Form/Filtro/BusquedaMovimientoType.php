@@ -13,7 +13,7 @@ class BusquedaMovimientoType extends AbstractType
         $builder
             ->add('fechaInicio', 'date', array(
                 'widget' => 'single_text',
-                'empty_value' => '---Seleccione fecha máxima---',
+                'placeholder' => '---Seleccione fecha máxima---',
                 'required' => false,
                 'label' => 'Fecha Inicio',
                 'format'  => 'dd/MM/yyyy',
@@ -23,7 +23,7 @@ class BusquedaMovimientoType extends AbstractType
             ))
             ->add('fechaFin', 'date', array(
                 'widget' => 'single_text',
-                'empty_value' => '---Seleccione fecha máxima---',
+                'placeholder' => '---Seleccione fecha máxima---',
                 'required' => false,
                 'label' => 'Fecha Final',
                 'format'  => 'dd/MM/yyyy',
@@ -33,7 +33,7 @@ class BusquedaMovimientoType extends AbstractType
             ))
             ->add('almacenOrigen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Bodega Origen',
                 'required' => false,
                 'attr' => array(
@@ -42,7 +42,7 @@ class BusquedaMovimientoType extends AbstractType
             ))
             ->add('almacenDestino', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Bodega Destino',
                 'required' => false,
                 'attr' => array(
@@ -51,7 +51,7 @@ class BusquedaMovimientoType extends AbstractType
             ))
             ->add('categoriaProducto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:CategoriaProducto',
-                'empty_value' => '---Seleccione categoría de producto---',
+                'placeholder' => '---Seleccione categoría de producto---',
                 'label' => 'Categoría de Producto',
                 'required' => false,
                 'attr' => array(

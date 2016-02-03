@@ -70,7 +70,7 @@ class InformacionExtraType extends AbstractType
             ))
             ->add('aceitecajacambios', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:AceiteCajaCambios',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -78,7 +78,7 @@ class InformacionExtraType extends AbstractType
             ))
             ->add('aceitehidraulico', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:AceiteHidraulico',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -86,7 +86,7 @@ class InformacionExtraType extends AbstractType
             ))
             ->add('aceitemotor', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:AceiteMotor',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -94,7 +94,7 @@ class InformacionExtraType extends AbstractType
             ))
             ->add('aceitetransmision', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:AceiteTransmision',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',

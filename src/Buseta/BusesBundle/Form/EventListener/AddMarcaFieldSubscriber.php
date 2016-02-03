@@ -30,7 +30,7 @@ class AddMarcaFieldSubscriber implements EventSubscriberInterface
         $form->add('marca', 'entity', array(
             'class'         => 'BusetaNomencladorBundle:Marca',
             'auto_initialize' => false,
-            'empty_value'   => '---Seleccione---',
+            'placeholder'   => '---Seleccione---',
             'data' => $marca,
             'attr' => array(
                 'class' => 'form-control',

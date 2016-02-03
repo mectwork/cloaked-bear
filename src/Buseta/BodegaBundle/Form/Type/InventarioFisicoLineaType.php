@@ -31,7 +31,7 @@ class InventarioFisicoLineaType extends AbstractType
             ))
             ->add('producto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Producto',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',

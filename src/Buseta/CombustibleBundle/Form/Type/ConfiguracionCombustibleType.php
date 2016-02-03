@@ -29,7 +29,7 @@ class ConfiguracionCombustibleType extends AbstractType
             ->add('combustible', 'entity', array(
                 'required' => false,
                 'class' => 'BusetaNomencladorBundle:Combustible',
-                'empty_value' => '.:Seleccione:.',
+                'placeholder' => '.:Seleccione:.',
                 'attr' => array(
                     'class' => 'form-control'
                 ),
@@ -37,7 +37,7 @@ class ConfiguracionCombustibleType extends AbstractType
             ->add('producto', 'entity', array(
                 'required' => false,
                 'class' => 'BusetaBodegaBundle:Producto',
-                'empty_value' => '.:Seleccione:.',
+                'placeholder' => '.:Seleccione:.',
                 'attr' => array(
                     'class' => 'form-control'
                 ),
@@ -45,7 +45,7 @@ class ConfiguracionCombustibleType extends AbstractType
             ->add('bodega', 'entity', array(
                 'required' => false,
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '.:Seleccione:.',
+                'placeholder' => '.:Seleccione:.',
                 'attr' => array(
                     'class' => 'form-control'
                 ),

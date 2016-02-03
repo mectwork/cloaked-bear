@@ -58,7 +58,7 @@ class PedidoCompraType extends AbstractType
                         ->where($qb->expr()->isNotNull('proveedor'))
                         ->orderBy('t.nombres', 'ASC');
                 },
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'label' => 'Nombre del Proveedor',
                 'attr' => array(
@@ -76,7 +76,7 @@ class PedidoCompraType extends AbstractType
             ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'label' => 'Bodega',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -84,7 +84,7 @@ class PedidoCompraType extends AbstractType
             ))
             ->add('moneda', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Moneda',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -93,7 +93,7 @@ class PedidoCompraType extends AbstractType
             ->add('forma_pago', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:FormaPago',
                 'label' => 'Forma de Pago',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -102,7 +102,7 @@ class PedidoCompraType extends AbstractType
             ->add('condiciones_pago', 'entity', array(
                 'class' => 'BusetaTallerBundle:CondicionesPago',
                 'label' => 'Condiciones de Pago',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -111,7 +111,7 @@ class PedidoCompraType extends AbstractType
             ->add('estado_documento', 'choice', array(
                 'required' => false,
                 'read_only' => true,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'translation_domain' => 'BusetaTallerBundle',
                 'choices' => array(
                     'CO' => 'estado.CO',
@@ -131,7 +131,7 @@ class PedidoCompraType extends AbstractType
             ))
             ->add('impuesto', 'entity', array(
                 'class'         => 'BusetaTallerBundle:Impuesto',
-                'empty_value'   => '---Seleccione---',
+                'placeholder'   => '---Seleccione---',
                 'required'      => false,
                 'label'         => 'Impuesto compra',
                 'attr'          => array(

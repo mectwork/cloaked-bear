@@ -16,7 +16,7 @@ class ListaNegraCombustibleFilter extends AbstractType
         $builder
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 )

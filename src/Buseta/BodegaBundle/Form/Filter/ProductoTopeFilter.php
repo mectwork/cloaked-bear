@@ -16,7 +16,7 @@ class ProductoTopeFilter extends AbstractType
         $builder
             ->add('producto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Producto',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Producto',
                 'required' => false,
                 'attr' => array(
@@ -25,7 +25,7 @@ class ProductoTopeFilter extends AbstractType
             ))
             ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Bodega',
                 'required' => false,
                 'attr' => array(

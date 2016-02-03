@@ -26,7 +26,7 @@ class BusquedaPedidoCompraType extends AbstractType
                     return $qb->join('t.proveedor', 'proveedor')
                         ->where($qb->expr()->isNotNull('proveedor'));
                 },
-                'empty_value' => '---Seleccione proveedor---',
+                'placeholder' => '---Seleccione proveedor---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -35,7 +35,7 @@ class BusquedaPedidoCompraType extends AbstractType
             ->add('almacen','entity',array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'label' => 'Bodega',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -43,7 +43,7 @@ class BusquedaPedidoCompraType extends AbstractType
             ))
             ->add('moneda', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Moneda',
-                'empty_value' => '---Seleccione tipo de moneda---',
+                'placeholder' => '---Seleccione tipo de moneda---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -52,7 +52,7 @@ class BusquedaPedidoCompraType extends AbstractType
             ->add('forma_pago', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:FormaPago',
                 'label' => 'Forma de Pago',
-                'empty_value' => '---Seleccione forma de pago---',
+                'placeholder' => '---Seleccione forma de pago---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -61,7 +61,7 @@ class BusquedaPedidoCompraType extends AbstractType
             ->add('condiciones_pago', 'entity', array(
                 'class' => 'BusetaTallerBundle:CondicionesPago',
                 'label' => 'Condiciones de Pago',
-                'empty_value' => '---Seleccione condiciones de pago---',
+                'placeholder' => '---Seleccione condiciones de pago---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',

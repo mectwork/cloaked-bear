@@ -23,7 +23,7 @@ class ProductoTopeType extends AbstractType
                 'class' => 'BusetaBodegaBundle:Producto',
                 'label' => 'Producto',
                 'required' => true,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -32,7 +32,7 @@ class ProductoTopeType extends AbstractType
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'label' => 'Almacen',
                 'required' => true,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),

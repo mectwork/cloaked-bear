@@ -73,7 +73,7 @@ class ChoferType extends AbstractType
                 ))
             ->add('estadoCivil','entity',array(
                 'class' => 'BusetaNomencladorBundle:EstadoCivil',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Estado Civil',
                 'required' => true,
                 'attr' => array(
@@ -82,7 +82,7 @@ class ChoferType extends AbstractType
             ))
             ->add('nacionalidad','entity',array(
                 'class' => 'BusetaNomencladorBundle:Nacionalidad',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',

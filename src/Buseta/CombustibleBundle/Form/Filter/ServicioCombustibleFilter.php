@@ -16,7 +16,7 @@ class ServicioCombustibleFilter extends AbstractType
         $builder
             ->add('chofer','entity',array(
                 'class' => 'BusetaBusesBundle:Chofer',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Chofer',
                 'attr' => array(
                     'class' => 'form-control',
@@ -24,7 +24,7 @@ class ServicioCombustibleFilter extends AbstractType
             ))
             ->add('combustible','entity',array(
                 'class' => 'BusetaCombustibleBundle:ConfiguracionCombustible',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Nomenclador de Combustible',
                 'attr' => array(
                     'class' => 'form-control',
@@ -32,7 +32,7 @@ class ServicioCombustibleFilter extends AbstractType
             ))
             ->add('vehiculo','entity',array(
                 'class' => 'BusetaBusesBundle:Vehiculo',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Vehículo',
                 'attr' => array(
                     'class' => 'form-control',

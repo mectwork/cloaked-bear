@@ -33,7 +33,7 @@ class MovimientosProductosFilter extends AbstractType
                 'class' => 'BusetaBodegaBundle:CategoriaProducto',
                 'label' => 'Categoría de Producto',
                 'required' => false,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 )
@@ -42,7 +42,7 @@ class MovimientosProductosFilter extends AbstractType
                 'class' => 'BusetaNomencladorBundle:Grupo',
                 'label' => 'Grupo',
                 'required' => false,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 )
@@ -51,7 +51,7 @@ class MovimientosProductosFilter extends AbstractType
                 'class' => 'BusetaNomencladorBundle:Subgrupo',
                 'label' => 'Subgrupo',
                 'required' => false,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 )

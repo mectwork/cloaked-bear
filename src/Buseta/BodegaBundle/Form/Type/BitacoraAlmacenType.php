@@ -48,7 +48,7 @@ class BitacoraAlmacenType extends AbstractType
                 'class' => 'BusetaBodegaBundle:Producto',
                 'label' => 'Producto',
                 'required' => false,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),

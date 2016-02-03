@@ -48,7 +48,7 @@ class ProveedorFilter extends AbstractType
             ))
             ->add('moneda', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Moneda',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'translation_domain' => 'BusetaBodegaBundle',
                 'label' => 'proveedor.moneda',
                 'required' => false,

@@ -31,7 +31,7 @@ class InventarioFisicoFilter extends AbstractType
             ))
             ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Bodega',
                 'required' => false,
                 'attr' => array(
@@ -58,7 +58,7 @@ class InventarioFisicoFilter extends AbstractType
             ))
             ->add('estado', 'choice', array(
                 'required' => false,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'translation_domain' => 'BusetaTallerBundle',
                 'choices' => array(
                     'CO' => 'estado.CO',

@@ -34,7 +34,7 @@ class SalidaBodegaFilter extends AbstractType
             ))
             ->add('almacenOrigen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Bodega Origen',
                 'required' => false,
                 'attr' => array(
@@ -43,7 +43,7 @@ class SalidaBodegaFilter extends AbstractType
             ))
             ->add('almacenDestino', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Bodega Destino',
                 'required' => false,
                 'attr' => array(
@@ -52,7 +52,7 @@ class SalidaBodegaFilter extends AbstractType
             ))
             ->add('centroCosto', 'entity', array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Centro de Costo',
                 'required' => false,
                 'attr' => array(
@@ -61,7 +61,7 @@ class SalidaBodegaFilter extends AbstractType
             ))
             ->add('responsable', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Responsable',
                 'required' => false,
                 'attr' => array(
@@ -70,7 +70,7 @@ class SalidaBodegaFilter extends AbstractType
             ))
             ->add('ordenTrabajo', 'entity', array(
                 'class' => 'BusetaTallerBundle:OrdenTrabajo',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Orden de Trabajo',
                 'required' => false,
                 'attr' => array(

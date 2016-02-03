@@ -53,7 +53,7 @@ class AlbaranType extends AbstractType
             ))
             ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Bodega',
                 'required' => false,
                 'attr' => array(
@@ -70,7 +70,7 @@ class AlbaranType extends AbstractType
                         ->orderBy('t.nombres', 'ASC')
                     ;
                 },
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -98,7 +98,7 @@ class AlbaranType extends AbstractType
                 'required' => false,
                 'read_only' => true,
                 'label' => 'Estado del Documento',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'translation_domain' => 'BusetaTallerBundle',
                 'choices' => array(
                     'CO' => 'estado.CO',

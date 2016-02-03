@@ -24,7 +24,7 @@ class ReporteFilter extends AbstractType
             ))
             ->add('autobus', 'entity', array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Autobús',
                 'required' => true,
                 'attr' => array(

@@ -48,7 +48,7 @@ class AddAutobusFieldSubscriber implements EventSubscriberInterface
         $form->add('autobus', 'entity', array(
             'class'         => 'BusetaBusesBundle:Vehiculo',
             'auto_initialize' => false,
-            'empty_value'   => '.:Seleccione:.',
+            'placeholder'   => '.:Seleccione:.',
             //Con el query builder obtengo el repositorio de la provincia
             'query_builder' => function (EntityRepository $re) use ($diagnostico) {
 
@@ -80,7 +80,7 @@ class AddAutobusFieldSubscriber implements EventSubscriberInterface
         if ($data === null || $propertyAccessor->getValue($data, 'diagnostico') === null) {
             $form->add('autobus', 'choice', array(
                 'choices' => array(),
-                'empty_value' => '......:Seleccione un diagnostico:......',
+                'placeholder' => '---Seleccione---',
                 'disabled' => 'true',
                 'required' => false,
             ));

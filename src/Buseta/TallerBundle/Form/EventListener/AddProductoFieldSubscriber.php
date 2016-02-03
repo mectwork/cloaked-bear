@@ -31,7 +31,7 @@ class AddProductoFieldSubscriber implements EventSubscriberInterface
         if ($subgrupo === null) {
             $form->add('productos', 'choice', array(
                 'choices' => array(),
-                'empty_value'   => '---Seleccione un producto---',
+                'placeholder'   => '---Seleccione un producto---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -39,7 +39,7 @@ class AddProductoFieldSubscriber implements EventSubscriberInterface
         } else {
             $form->add('productos', 'entity', array(
                 'class'         => 'BusetaBodegaBundle:Producto',
-                'empty_value'   => '---Seleccione un producto---',
+                'placeholder'   => '---Seleccione un producto---',
                 'auto_initialize' => false,
                 'data'          => $producto,
                 'attr' => array(

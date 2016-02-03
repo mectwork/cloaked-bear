@@ -55,7 +55,7 @@ class ServicioCombustibleType extends AbstractType
             )
             ->add('combustible','entity',array(
                 'class' => 'BusetaCombustibleBundle:ConfiguracionCombustible',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Nomenclador de Combustible',
                 'required' => true,
             ))
@@ -97,8 +97,7 @@ class ServicioCombustibleType extends AbstractType
                     ;
                     return $qb;
                 },
-
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Vehículo',
                 'required' => true,
                 'attr' => array(
@@ -121,7 +120,7 @@ class ServicioCombustibleType extends AbstractType
                     return $qb;
                 },
 
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Autobús',
                 'required' => true,
                 'attr' => array(

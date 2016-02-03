@@ -30,7 +30,7 @@ class AddGrupoFieldSubscriber implements EventSubscriberInterface
         $form->add('grupo', 'entity', array(
             'class'         => 'BusetaNomencladorBundle:Grupo',
             'auto_initialize' => false,
-            'empty_value'   => '---Seleccione---',
+            'placeholder'   => '---Seleccione---',
             'data' => $grupo,
             'attr' => array(
                 'class' => 'form-control',

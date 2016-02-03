@@ -35,7 +35,7 @@ class ImpuestoFilter extends AbstractType
                     'fijo'       => 'Fijo',
                     'porcentaje' => 'Porcentaje (%)'),
                 'multiple' => false,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'expanded' => false,
                 'label' => 'Tipo',
                 'required' => false,

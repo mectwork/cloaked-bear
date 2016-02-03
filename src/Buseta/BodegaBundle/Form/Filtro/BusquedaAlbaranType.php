@@ -29,7 +29,7 @@ class BusquedaAlbaranType extends AbstractType
             ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'label' => 'Bodega',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -42,7 +42,7 @@ class BusquedaAlbaranType extends AbstractType
                     return $qb->join('t.proveedor', 'proveedor')
                         ->where($qb->expr()->isNotNull('proveedor'));
                 },
-                'empty_value' => '---Seleccione proveedor---',
+                'placeholder' => '---Seleccione proveedor---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',

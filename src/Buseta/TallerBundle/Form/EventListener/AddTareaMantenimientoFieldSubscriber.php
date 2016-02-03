@@ -31,7 +31,7 @@ class AddTareaMantenimientoFieldSubscriber implements EventSubscriberInterface
         if ($subgrupo === null) {
             $form->add('tareamantenimiento', 'choice', array(
                 'choices' => array(),
-                'empty_value'   => '---Seleccione---',
+                'placeholder'   => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -39,7 +39,7 @@ class AddTareaMantenimientoFieldSubscriber implements EventSubscriberInterface
         } else {
             $form->add('tareamantenimiento', 'entity', array(
                 'class'         => 'BusetaTallerBundle:TareaMantenimiento',
-                'empty_value'   => '---Seleccione---',
+                'placeholder'   => '---Seleccione---',
                 'auto_initialize' => false,
                 'data'          => $tareamantenimiento,
                 'attr' => array(

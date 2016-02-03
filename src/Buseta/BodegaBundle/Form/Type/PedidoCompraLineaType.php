@@ -24,7 +24,7 @@ class PedidoCompraLineaType extends AbstractType
                 ))
             ->add('producto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Producto',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -39,7 +39,7 @@ class PedidoCompraLineaType extends AbstractType
             ))
             ->add('uom', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:UOM',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -54,7 +54,7 @@ class PedidoCompraLineaType extends AbstractType
             ))
             ->add('impuesto', 'entity', array(
                 'class' => 'BusetaTallerBundle:Impuesto',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -62,7 +62,7 @@ class PedidoCompraLineaType extends AbstractType
             ))
             ->add('moneda', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Moneda',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',

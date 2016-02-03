@@ -31,7 +31,7 @@ class AddBodegaFieldSubscriber implements EventSubscriberInterface
         $form->add('bodega', 'entity', array(
             'class'         => 'BusetaBodegaBundle:Bodega',
             'auto_initialize' => false,
-            'empty_value'   => '---Seleccione---',
+            'placeholder'   => '---Seleccione---',
             'data' => $bodega,
             'attr' => array(
                 'class' => 'form-control',

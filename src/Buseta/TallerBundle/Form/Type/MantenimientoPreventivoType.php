@@ -29,7 +29,7 @@ class MantenimientoPreventivoType extends AbstractType
                 'required' => true,
                 'label' => 'Tarea',
                 'class' => 'BusetaNomencladorBundle:Tarea',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -61,7 +61,7 @@ class MantenimientoPreventivoType extends AbstractType
             ))
             ->add('autobus', 'entity', array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione autobús---',
+                'placeholder' => '---Seleccione autobús---',
                 'label' => 'Autobús',
                 'required' => true,
                 'attr' => array(

@@ -24,7 +24,7 @@ class TareaMantenimientoFilter extends AbstractType
         $builder
             ->add('valor','entity',array(
                 'class' => 'BusetaNomencladorBundle:Tarea',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Valor',
                 'required' => true,
                 'attr' => array(
@@ -33,7 +33,7 @@ class TareaMantenimientoFilter extends AbstractType
             ))
             ->add('garantia','entity',array(
                 'class' => 'BusetaNomencladorBundle:GarantiaTarea',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Garantía',
                 'required' => true,
                 'attr' => array(

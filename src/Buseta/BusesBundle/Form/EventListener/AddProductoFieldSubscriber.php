@@ -31,7 +31,7 @@ class AddProductoFieldSubscriber implements EventSubscriberInterface
         if($bodega === null) {
             $form->add('producto','choice',array(
                 'choices' => array(),
-                'empty_value'   => '---Seleccione---',
+                'placeholder'   => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -39,7 +39,7 @@ class AddProductoFieldSubscriber implements EventSubscriberInterface
         } else {
             $form->add('producto','entity', array(
                 'class'         => 'BusetaBodegaBundle:Producto',
-                'empty_value'   => '---Seleccione---',
+                'placeholder'   => '---Seleccione---',
                 'auto_initialize' => false,
                 'data'          => $producto,
                 'attr' => array(

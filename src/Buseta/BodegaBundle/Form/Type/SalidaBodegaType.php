@@ -67,7 +67,7 @@ class SalidaBodegaType extends AbstractType
             ))
             ->add('centro_costo', 'entity', array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Centro de Costo',
                 'required' => true,
                 'attr' => array(
@@ -76,7 +76,7 @@ class SalidaBodegaType extends AbstractType
             ))
             ->add('orden_trabajo', 'entity', array(
                 'class' => 'BusetaTallerBundle:OrdenTrabajo',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Orden de Trabajo',
                 'required' => true,
                 'attr' => array(
@@ -102,7 +102,7 @@ class SalidaBodegaType extends AbstractType
             ->add('estado_documento', 'choice', array(
                 'required' => false,
                 'read_only' => true,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'translation_domain' => 'BusetaTallerBundle',
                 'choices' => array(
                     'CO' => 'estado.CO',

@@ -46,7 +46,7 @@ class TerceroType extends AbstractType
                 ))
             ->add('usuario','entity',array(
                 'required' => false,
-                'empty_value' => '.:Seleccione:.',
+                'placeholder' => '.:Seleccione:.',
                 'class' => 'HatueySoftSecurityBundle:User',
             ))
             ->add('activo', 'checkbox', array(

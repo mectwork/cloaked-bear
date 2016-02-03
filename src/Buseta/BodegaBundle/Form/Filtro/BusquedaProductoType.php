@@ -27,7 +27,7 @@ class BusquedaProductoType extends AbstractType
             ))
             ->add('uom', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:UOM',
-                'empty_value' => '---Seleccione UOM---',
+                'placeholder' => '---Seleccione UOM---',
                 'label' => 'Unidad de Medida (UOM)',
                 'required' => false,
                 'attr' => array(
@@ -36,7 +36,7 @@ class BusquedaProductoType extends AbstractType
             ))
             ->add('condicion', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Condicion',
-                'empty_value' => '---Seleccione condición---',
+                'placeholder' => '---Seleccione condición---',
                 'label' => 'Condición',
                 'required' => false,
                 'attr' => array(
@@ -46,7 +46,7 @@ class BusquedaProductoType extends AbstractType
             ->add('bodega', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'required' => false,
-                'empty_value' => '---Seleccione bodega---',
+                'placeholder' => '---Seleccione bodega---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -55,7 +55,7 @@ class BusquedaProductoType extends AbstractType
                 'class' => 'BusetaBodegaBundle:CategoriaProducto',
                 'label' => 'Categoría de Producto',
                 'required' => false,
-                'empty_value' => '---Seleccione categoría de producto---',
+                'placeholder' => '---Seleccione categoría de producto---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),

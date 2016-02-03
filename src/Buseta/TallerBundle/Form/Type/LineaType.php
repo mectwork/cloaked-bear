@@ -68,7 +68,7 @@ class LineaType extends AbstractType
                 ))
             /*->add('producto','entity',array(
                     'class' => 'BusetaBodegaBundle:Producto',
-                    'empty_value' => '---Seleccione un producto---',
+                    'placeholder' => '---Seleccione un producto---',
                     'required' => true,
                     'attr' => array(
                         'class' => 'form-control',
@@ -76,7 +76,7 @@ class LineaType extends AbstractType
                 ))*/
 //            ->add('bodegas','entity',array(
 //                'class' => 'BusetaBodegaBundle:Bodega',
-//                'empty_value' => '---Seleccione una bodega---',
+//                'placeholder' => '---Seleccione una bodega---',
 //                'required' => true,
 //                'attr' => array(
 //                    'class' => 'form-control',
@@ -84,7 +84,7 @@ class LineaType extends AbstractType
 //            ))
             ->add('impuesto', 'entity', array(
                     'class' => 'BusetaTallerBundle:Impuesto',
-                    'empty_value' => '---Seleccione un impuesto---',
+                    'placeholder' => '---Seleccione un impuesto---',
                     'required' => true,
                     'attr' => array(
                         'class' => 'form-control',

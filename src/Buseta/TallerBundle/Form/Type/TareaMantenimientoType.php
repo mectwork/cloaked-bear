@@ -33,7 +33,7 @@ class TareaMantenimientoType extends AbstractType
             ))
             ->add('valor', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Tarea',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => false,
                 'label'  => 'Valor',
                 'attr'   => array(

@@ -61,7 +61,7 @@ class MenuNodeType extends AbstractType
                 'choices' => $rolesChoices,
             ))
             ->add('type', 'choice', array(
-                'empty_value' => '.:Seleccione:.',
+                'placeholder' => '.:Seleccione:.',
                 'choices' => array(
                     'folder' => 'folder',
                     'item'   => 'item'

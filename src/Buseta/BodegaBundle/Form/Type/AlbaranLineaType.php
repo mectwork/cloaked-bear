@@ -17,7 +17,7 @@ class AlbaranLineaType extends AbstractType
         $builder
             ->add('producto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Producto',
-                'empty_value' => '---Seleccione producto---',
+                'placeholder' => '---Seleccione producto---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -25,7 +25,7 @@ class AlbaranLineaType extends AbstractType
             ))
             ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Bodega',
                 'required' => false,
                 'attr' => array(
@@ -41,7 +41,7 @@ class AlbaranLineaType extends AbstractType
             ))
             ->add('uom', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:UOM',
-                'empty_value' => '---Seleccione unidad de medida---',
+                'placeholder' => '---Seleccione unidad de medida---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',

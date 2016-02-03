@@ -34,7 +34,7 @@ class ProductoFilter extends AbstractType
             ))
             ->add('condicion', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Condicion',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Condición',
                 'required' => false,
                 'attr' => array(
@@ -43,7 +43,7 @@ class ProductoFilter extends AbstractType
             ))
             ->add('proveedor', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Proveedor',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Proveedor',
                 'required' => false,
                 'attr' => array(

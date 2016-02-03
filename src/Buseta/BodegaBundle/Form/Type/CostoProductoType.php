@@ -23,7 +23,7 @@ class CostoProductoType extends AbstractType
             ->add('proveedor', 'entity', array(
                 'required' => false,
                 'class' => 'BusetaBodegaBundle:Tercero',
-                'empty_value' => '.:Seleccione:.',
+                'placeholder' => '.:Seleccione:.',
                 'query_builder' => function (EntityRepository $er) {
                     $qb = $er->createQueryBuilder('t');
                     return $qb->innerJoin('t.proveedor', 'p')

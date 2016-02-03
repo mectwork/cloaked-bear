@@ -29,7 +29,7 @@ class NecesidadMaterialFilter extends AbstractType
                     return $qb->join('t.proveedor', 'proveedor')
                         ->where($qb->expr()->isNotNull('proveedor'));
                 },
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -38,7 +38,7 @@ class NecesidadMaterialFilter extends AbstractType
             ->add('almacen','entity',array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'label' => 'Bodega',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -46,7 +46,7 @@ class NecesidadMaterialFilter extends AbstractType
             ))
             ->add('moneda','entity',array(
                 'class' => 'BusetaNomencladorBundle:Moneda',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -55,7 +55,7 @@ class NecesidadMaterialFilter extends AbstractType
             ->add('forma_pago','entity',array(
                 'class' => 'BusetaNomencladorBundle:FormaPago',
                 'label' => 'Forma de Pago',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -64,7 +64,7 @@ class NecesidadMaterialFilter extends AbstractType
             ->add('condiciones_pago','entity',array(
                 'class' => 'BusetaTallerBundle:CondicionesPago',
                 'label' => 'Condiciones de Pago',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
@@ -86,7 +86,7 @@ class NecesidadMaterialFilter extends AbstractType
             ))
             ->add('estado_documento', 'choice', array(
                 'required' => false,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'translation_domain' => 'BusetaTallerBundle',
                 'choices' => array(
                     'CO' => 'estado.CO',

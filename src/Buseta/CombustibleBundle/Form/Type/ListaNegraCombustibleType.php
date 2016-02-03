@@ -13,7 +13,7 @@ class ListaNegraCombustibleType extends AbstractType
         $builder
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',

@@ -17,7 +17,7 @@ class MovimientoFilter extends AbstractType
             ->add('almacenOrigen','entity',array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'label' => 'Bodega Origen',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -26,7 +26,7 @@ class MovimientoFilter extends AbstractType
             ->add('almacenDestino','entity',array(
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'label' => 'Bodega Destino',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -35,7 +35,7 @@ class MovimientoFilter extends AbstractType
             ->add('producto','entity',array(
                 'class' => 'BusetaBodegaBundle:Producto',
                 'label' => 'Producto',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',

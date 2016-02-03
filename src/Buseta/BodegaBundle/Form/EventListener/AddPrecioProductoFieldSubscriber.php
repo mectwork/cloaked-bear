@@ -31,7 +31,7 @@ class AddPrecioProductoFieldSubscriber implements EventSubscriberInterface
         if ($producto === null) {
             $form->add('precio_producto', 'choice', array(
                 'choices' => array(),
-                'empty_value'   => '---Seleccione un precio---',
+                'placeholder'   => '---Seleccione un precio---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -43,16 +43,12 @@ class AddPrecioProductoFieldSubscriber implements EventSubscriberInterface
                     return $er->createQueryBuilder('p')
                         ->where('p.producto_id = true');
                 },
-                'empty_value' => '---Seleccione un precio---',
                 'required' => false,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
             ))*/
 
             $form->add('productos', 'entity', array(
                 'class'         => 'BusetaBodegaBundle:Producto',
-                'empty_value'   => '---Seleccione un producto---',
+                'placeholder'   => '---Seleccione un producto---',
                 'auto_initialize' => false,
                 'data'          => $producto,
                 'attr' => array(

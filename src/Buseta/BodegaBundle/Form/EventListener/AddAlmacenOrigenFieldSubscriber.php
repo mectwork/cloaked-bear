@@ -30,7 +30,7 @@ class AddAlmacenOrigenFieldSubscriber implements EventSubscriberInterface
         $form->add('almacenOrigen', 'entity', array(
             'class'         => 'BusetaBodegaBundle:Bodega',
             'auto_initialize' => false,
-            'empty_value'   => '---Seleccione---',
+            'placeholder'   => '---Seleccione---',
             'data' => $almacenOrigen,
             'attr' => array(
                 'class' => 'form-control',

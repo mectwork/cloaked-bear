@@ -54,7 +54,7 @@ class CompraType extends AbstractType
             ->add('orden_prioridad', 'choice', array(
                 'required' => true,
                 'translation_domain' => 'BusetaTallerBundle',
-                'empty_value' => '---Seleccione prioridad---',
+                'placeholder' => '---Seleccione prioridad---',
                 'choices' => array(
                     'High' => 'prioridad.High',
                     'Medium' => 'prioridad.Medium',
@@ -81,7 +81,7 @@ class CompraType extends AbstractType
             ->add('forma_pago', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:FormaPago',
                 'label' => 'Forma de Pago',
-                'empty_value' => '---Seleccione forma de pago---',
+                'placeholder' => '---Seleccione forma de pago---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -89,7 +89,7 @@ class CompraType extends AbstractType
             ))
             ->add('moneda', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Moneda',
-                'empty_value' => '---Seleccione tipo de moneda---',
+                'placeholder' => '---Seleccione tipo de moneda---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -97,7 +97,7 @@ class CompraType extends AbstractType
             ))
             ->add('condiciones_pago', 'entity', array(
                 'class' => 'BusetaTallerBundle:CondicionesPago',
-                'empty_value' => '---Seleccione condiciones de pago---',
+                'placeholder' => '---Seleccione condiciones de pago---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -128,7 +128,7 @@ class CompraType extends AbstractType
                 ))
             ->add('estado', 'choice', array(
                     'required' => true,
-                    'empty_value' => '---Seleccione estado---',
+                    'placeholder' => '---Seleccione estado---',
                     'translation_domain' => 'BusetaTallerBundle',
                     'choices' => array(
                         '??' => 'estado.??',
@@ -161,7 +161,7 @@ class CompraType extends AbstractType
                         return $qb->join('t.proveedor', 'proveedor')
                             ->where($qb->expr()->isNotNull('proveedor'));
                         },
-                    'empty_value' => '---Seleccione un proveedor---',
+                    'placeholder' => '---Seleccione un proveedor---',
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
@@ -185,7 +185,7 @@ class CompraType extends AbstractType
             ->add('centro_costo', 'entity', array(
                 'class' => 'BusetaBusesBundle:Autobus',
                 'label' => 'Centro de costo',
-                'empty_value' => '---Seleccione centro de costo---',
+                'placeholder' => '---Seleccione centro de costo---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',

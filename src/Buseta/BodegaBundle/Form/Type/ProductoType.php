@@ -51,7 +51,7 @@ class ProductoType extends AbstractType
             ))
             ->add('uom', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:UOM',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Unidad de Medida (UOM)',
                 'required' => false,
                 'attr' => array(
@@ -60,7 +60,7 @@ class ProductoType extends AbstractType
             ))
             ->add('condicion', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Condicion',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Condición',
                 'required' => false,
                 'attr' => array(
@@ -71,7 +71,7 @@ class ProductoType extends AbstractType
                 'class' => 'BusetaBodegaBundle:CategoriaProducto',
                 'label' => 'Categoría de Producto',
                 'required' => false,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -85,7 +85,7 @@ class ProductoType extends AbstractType
             ))
             ->add('proveedor', 'entity', array(
                 'required' => false,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'query_builder' => function (EntityRepository $er) {
                     $qb = $er->createQueryBuilder('t')

@@ -92,20 +92,20 @@ class VehiculoType extends AbstractType
 
             ->add('estilo','entity',array(
                 'class' => 'BusetaNomencladorBundle:Estilo',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
             ))
             ->add('color', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Color',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
             ))
             ->add('marcaMotor', 'entity', array(
                     'class' => 'BusetaNomencladorBundle:MarcaMotor',
                     'label' => 'Marca de Motor',
-                    'empty_value' => '---Seleccione---',
+                    'placeholder' => '---Seleccione---',
                 ))
             ->add('combustible', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Combustible',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
             ))
             ->add('marcaCajacambio', 'text', array(
                 'required' => false,

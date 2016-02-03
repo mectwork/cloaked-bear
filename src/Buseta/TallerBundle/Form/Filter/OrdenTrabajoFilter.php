@@ -69,7 +69,7 @@ class OrdenTrabajoFilter extends AbstractType
 
             ->add('autobus', 'entity', array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Autobús',
                 'required' => true,
                 'attr' => array(
@@ -84,7 +84,7 @@ class OrdenTrabajoFilter extends AbstractType
                     return $qb->leftJoin('d.ordenTrabajo', 'ot')
                         ->where($qb->expr()->isNull('ot'));
                 },
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Diagnóstico',
                 'required' => false,
                 'attr' => array(

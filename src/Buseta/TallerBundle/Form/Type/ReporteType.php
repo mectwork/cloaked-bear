@@ -39,17 +39,17 @@ class ReporteType extends AbstractType
         $builder
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'empty_value' => '---Seleccione autobus---',
+                'placeholder' => '---Seleccione autobus---',
                 'required' => true,
             ))
             ->add('prioridad', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:PrioridadSolicitud',
-                'empty_value' => '---Seleccione prioridad---',
+                'placeholder' => '---Seleccione prioridad---',
                 'required' => false,
             ))
             ->add('grupo', 'entity', array(
                 'class' => 'BusetaNomencladorBundle:Grupo',
-                'empty_value' => '---Seleccione grupo---',
+                'placeholder' => '---Seleccione grupo---',
                 'required' => false,
             ))
             ->add('observaciones','collection',array(
@@ -62,7 +62,7 @@ class ReporteType extends AbstractType
             ))
             ->add('medioReporte','entity',array(
                 'class' => 'BusetaNomencladorBundle:MedioReporte',
-                'empty_value' => '---Seleccione medio reporte---',
+                'placeholder' => '---Seleccione medio reporte---',
                 'required' => true,
             ))
             ->add('reporta', 'entity', array(
@@ -94,7 +94,7 @@ class ReporteType extends AbstractType
             ))
 //            ->add('estado', 'choice', array(
 //                'required' => false,
-//                'empty_value' => '---Seleccione---',
+//                'placeholder' => '---Seleccione---',
 //                'translation_domain' => 'BusetaTallerBundle',
 //                'choices' => array(
 //                    'CO' => 'estado.CO',

@@ -167,7 +167,7 @@ class OrdenTrabajoType extends AbstractType
                      $qb->setParameter('estado','BO');
                     return $qb;
                 },
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Diagnóstico',
                 'required' => false,
                 'attr' => array(

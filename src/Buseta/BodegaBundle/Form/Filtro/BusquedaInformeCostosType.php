@@ -14,7 +14,7 @@ class BusquedaInformeCostosType extends AbstractType
 
             ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
@@ -22,7 +22,7 @@ class BusquedaInformeCostosType extends AbstractType
             ))
             ->add('categoriaProducto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:CategoriaProducto',
-                'empty_value' => '---Seleccione categoría de producto---',
+                'placeholder' => '---Seleccione categoría de producto---',
                 'label' => 'Categoría de Producto',
                 'required' => false,
                 'attr' => array(
@@ -31,7 +31,7 @@ class BusquedaInformeCostosType extends AbstractType
             ))
             ->add('fecha', 'date', array(
                 'widget' => 'single_text',
-                'empty_value' => '---Seleccione fecha máxima---',
+                'placeholder' => '---Seleccione fecha máxima---',
                 'required' => false,
                 'format'  => 'dd/MM/yyyy',
                 'attr'   => array(

@@ -14,11 +14,8 @@ class ChoferInServicioCombustibleType extends AbstractType{
         $builder
             ->add('chofer','entity',array(
                 'class' => 'BusetaBusesBundle:Chofer',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
             ))
             ->add('codigobarras','password',array(
                     'required' => false,

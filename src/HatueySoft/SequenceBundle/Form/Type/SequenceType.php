@@ -29,7 +29,7 @@ class SequenceType extends AbstractType
             ->add('type', 'choice', array(
                 'label'  => 'sequence.type',
                 'translation_domain' => 'HatueySoftSequenceBundle',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'choices' => array(
                     'incremental' => 'Incremental',
                     //'fixed' => 'Fija',

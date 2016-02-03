@@ -32,7 +32,7 @@ class AddModeloFieldSubscriber implements EventSubscriberInterface
         if($marca === null) {
             $form->add('modelo','choice',array(
                 'choices' => array(),
-                'empty_value'   => '---Seleccione---',
+                'placeholder'   => '---Seleccione---',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -40,7 +40,7 @@ class AddModeloFieldSubscriber implements EventSubscriberInterface
         } else {
             $form->add('modelo','entity', array(
                 'class'         => 'BusetaNomencladorBundle:Modelo',
-                'empty_value'   => '---Seleccione---',
+                'placeholder'   => '---Seleccione---',
                 'auto_initialize' => false,
                 'data'          => $modelo,
                 'attr' => array(
