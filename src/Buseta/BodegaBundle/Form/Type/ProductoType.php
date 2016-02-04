@@ -91,7 +91,7 @@ class ProductoType extends AbstractType
                     $qb = $er->createQueryBuilder('t')
                         ->leftJoin('t.proveedor', 'p')
                         ->orderBy('t.nombres', 'ASC');
-                    return $qb->where($qb->expr()->isNotNull('p'));
+                    return $qb->where($qb->expr()->isNotNull('p.id'));
                 },
                 'attr' => array(
                     'class' => 'form-control',
