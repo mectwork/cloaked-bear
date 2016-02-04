@@ -32,10 +32,9 @@ class TerceroController extends Controller
      * @Route("/busqueda-avanzada/{page}/{cantResult}", name="tercero_ajax_busqueda_avanzada", defaults={"page": 0, "cantResult": 10})
      * @Method({"GET"})
      */
-    public function busquedaAvanzadaAction($page, $cantResult)
+    public function busquedaAvanzadaAction($page, $cantResult, Request $request)
     {
         $em = $this->get('doctrine.orm.entity_manager');
-        $request = $this->getRequest();
 
         $orderBy = $request->query->get('orderBy');
         $filter  = $request->query->get('filter');

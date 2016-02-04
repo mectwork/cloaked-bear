@@ -286,7 +286,6 @@ class BodegaController extends Controller
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
         }
 
-        $request = $this->getRequest();
         if (!$request->isXmlHttpRequest()) {
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
         }

@@ -435,7 +435,6 @@ class VehiculoController extends Controller
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY'))
             return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
 
-        $request = $this->getRequest();
         if (!$request->isXmlHttpRequest())
             return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
 

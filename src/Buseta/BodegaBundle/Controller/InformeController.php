@@ -24,15 +24,12 @@ class InformeController extends Controller
         ));
     }
 
-    public function busquedaAvanzadaAction($page, $cantResult)
+    public function busquedaAvanzadaAction($page, $cantResult, Request $request)
     {
         $em = $this->get('doctrine.orm.entity_manager');
-        $request = $this->getRequest();
 
         $orderBy = $request->query->get('orderBy');
         $filter  = $request->query->get('filter');
-
-        $filter = $filter;
 
         $busqueda = $em->getRepository('BusetaBodegaBundle:Movimiento')
             ->busquedaAvanzada($page, $cantResult, $filter, $orderBy);
