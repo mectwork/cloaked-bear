@@ -1,7 +1,0 @@
-informeStock:
-    path:  /
-    defaults: { _controller: "BusetaBodegaBundle:InformeStock:index" }
-
-informeCostos:
-    path:  /costos
-    defaults: { _controller: "BusetaBodegaBundle:Informe:informeCostos" }

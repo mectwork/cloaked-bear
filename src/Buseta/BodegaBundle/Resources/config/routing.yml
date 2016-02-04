@@ -34,10 +34,6 @@ BusetaBodegaBundle_categoria_producto:
     resource: "@BusetaBodegaBundle/Resources/config/routing/categoria_producto.yml"
     prefix:   /bodega/categoria_producto
 
-BusetaBodegaBundle_informestock:
-    resource: "@BusetaBodegaBundle/Resources/config/routing/informe_stock.yml"
-    prefix:   /informestock
-
 BusetaBodegaBundle_precioproducto:
     resource: "@BusetaBodegaBundle/Resources/config/routing/precio_producto.yml"
     prefix:   /precioproducto
@@ -55,12 +51,12 @@ bodega_principal:
   defaults: { _controller: "BusetaBodegaBundle:Bodega:principal" }
 
 bodega_informe_stock:
-  path:  /modulo/bodega/informe_stock
-  defaults: { _controller: "BusetaBodegaBundle:InformeStock:index" }
+  resource: "@BusetaBodegaBundle/Controller/InformeStockController.php"
+  type: annotation
 
 bodega_informe_costos:
-  path:  /modulo/bodega/informe_costos
-  defaults: { _controller: "BusetaBodegaBundle:Informe:informeCostos" }
+  resource: "@BusetaBodegaBundle/Controller/InformeCostosController.php"
+  type: annotation
 
 buseta_bodega_terceros:
   resource: "@BusetaBodegaBundle/Controller/TerceroController.php"

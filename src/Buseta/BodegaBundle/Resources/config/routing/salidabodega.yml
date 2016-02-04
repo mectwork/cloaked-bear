@@ -41,9 +41,9 @@ salidabodegas_ajax_almacenOrigen_almacenDestino:
   options:
       expose: true
 
-salidabodega_informe:
-    path:  /informeSalidaBodega
-    defaults: { _controller: "BusetaBodegaBundle:Informe:informeSalidaBodegas" }
+#salidabodega_informe:
+#    path:  /informeSalidaBodega
+#    defaults: { _controller: "BusetaBodegaBundle:Informe:informeSalidaBodegas" }
 
 salidabodega_ajax_busqueda_avanzada:
   path: /busqueda-avanzada/{page}/{cantResult}

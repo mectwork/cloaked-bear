@@ -7,9 +7,13 @@ use Buseta\BodegaBundle\Form\Filtro\BusquedaInformeCostosType;
 use Buseta\BodegaBundle\Form\Filtro\BusquedaMovimientoType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * Informe controller.
+ *
+ * @Route("/informe")
  */
 class InformeController extends Controller
 {
@@ -43,49 +47,5 @@ class InformeController extends Controller
             'orderBy'    => $orderBy,
             'paginacion' => $paginacion,
         ));
-    }
-
-    public function informeCostosAction(Request $request)
-    {
-        $em = $this->get('doctrine.orm.entity_manager');
-        $informeCostos = $this->createForm(new BusquedaInformeCostosType());
-
-        if ($request->getMethod() === 'POST') {
-            $informeCostos->submit($request);
-
-            if ($informeCostos->isValid()) {
-                //Se obtienen todas las bitacoras que cumplieron con el filtro de búsqueda
-                $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->busquedaBitacoraAlmacen($informeCostos);
-                $almacenes = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
-
-                $funcionesExtras = new FuncionesExtras();
-                $almacenesArray = $funcionesExtras->generarInformeCostos($bitacoras, $em);
-
-                $almacenesFinal = null;
-                $pos = 0;
-
-                foreach ($almacenes as $almacen) {
-                    foreach ($almacenesArray as $almacenArray) {
-                        if ($almacen == $almacenArray['almacen']) {
-                            $almacenesFinal[$pos] = $almacen;
-                            $pos++;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return $this->render('BusetaBodegaBundle:Informe:informeCostos.html.twig', array(
-                'entities' => $almacenesArray,
-                'almacenes' => $almacenesFinal,
-                'informeCostos' => $informeCostos->createView(),
-            ));
-        } else {
-            return $this->render('BusetaBodegaBundle:Informe:informeCostos.html.twig', array(
-                'entities' => null,
-                'almacenes' => null,
-                'informeCostos' => $informeCostos->createView(),
-            ));
-        }
     }
 }
