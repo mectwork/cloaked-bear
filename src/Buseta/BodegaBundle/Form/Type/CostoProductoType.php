@@ -27,7 +27,7 @@ class CostoProductoType extends AbstractType
                 'query_builder' => function (EntityRepository $er) {
                     $qb = $er->createQueryBuilder('t');
                     return $qb->innerJoin('t.proveedor', 'p')
-                        ->where($qb->expr()->isNotNull('p'))
+                        ->where($qb->expr()->isNotNull('p.id'))
                         ->orderBy('t.nombres', 'ASC');
                 },
                 'attr' => array(

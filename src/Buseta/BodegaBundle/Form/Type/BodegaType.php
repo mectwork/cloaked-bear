@@ -55,7 +55,7 @@ class BodegaType extends AbstractType
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('responsable');
                     $qb->join('responsable.usuario', 'usuario')
-                        ->andWhere($qb->expr()->isNotNull('usuario'));
+                        ->andWhere($qb->expr()->isNotNull('usuario.id'));
 
                     return $qb;
                 },

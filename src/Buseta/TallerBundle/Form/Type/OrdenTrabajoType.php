@@ -63,7 +63,7 @@ class OrdenTrabajoType extends AbstractType
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('responsable');
                     $qb->join('responsable.persona', 'persona')
-                        ->andWhere($qb->expr()->isNotNull('persona'));
+                        ->andWhere($qb->expr()->isNotNull('persona.id'));
 
                     return $qb;
                 },
@@ -118,7 +118,7 @@ class OrdenTrabajoType extends AbstractType
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('responsable');
                     $qb->join('responsable.usuario', 'usuario')
-                        ->andWhere($qb->expr()->isNotNull('usuario'));
+                        ->andWhere($qb->expr()->isNotNull('usuario.id'));
 
                     return $qb;
                 },
@@ -151,7 +151,7 @@ class OrdenTrabajoType extends AbstractType
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('ayudante');
                     $qb->join('ayudante.persona', 'persona')
-                        ->andWhere($qb->expr()->isNotNull('persona'));
+                        ->andWhere($qb->expr()->isNotNull('persona.id'));
 
                     return $qb;
                 },
@@ -162,7 +162,7 @@ class OrdenTrabajoType extends AbstractType
                 'query_builder' => function (EntityRepository $er)   {
                      $qb = $er->createQueryBuilder('d');
                      $qb->leftJoin('d.ordenTrabajo','ot')
-                        ->where($qb->expr()->isNull('ot'))
+                        ->where($qb->expr()->isNull('ot.id'))
                         ->andWhere($qb->expr()->eq('d.estado', ':estado'));
                      $qb->setParameter('estado','BO');
                     return $qb;
@@ -231,7 +231,7 @@ class OrdenTrabajoType extends AbstractType
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('tercero');
                     return $qb->join('tercero.persona', 'persona')
-                        ->andWhere($qb->expr()->isNotNull('persona'));
+                        ->andWhere($qb->expr()->isNotNull('persona.id'));
                 },
             ))
             ->add('revisadoPor', 'entity', array(
@@ -244,7 +244,7 @@ class OrdenTrabajoType extends AbstractType
                 'query_builder' => function (EntityRepository $repository) {
                     $qb = $repository->createQueryBuilder('tercero');
                     $qb->join('tercero.persona', 'persona')
-                        ->andWhere($qb->expr()->isNotNull('persona'));
+                        ->andWhere($qb->expr()->isNotNull('persona.id'));
 
                     return $qb;
                 },

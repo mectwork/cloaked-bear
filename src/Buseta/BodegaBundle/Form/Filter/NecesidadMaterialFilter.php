@@ -27,7 +27,7 @@ class NecesidadMaterialFilter extends AbstractType
                 'query_builder' => function(EntityRepository $er){
                     $qb = $er->createQueryBuilder('t');
                     return $qb->join('t.proveedor', 'proveedor')
-                        ->where($qb->expr()->isNotNull('proveedor'));
+                        ->where($qb->expr()->isNotNull('proveedor.id'));
                 },
                 'placeholder' => '---Seleccione---',
                 'required' => true,

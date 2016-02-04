@@ -55,7 +55,7 @@ class PedidoCompraType extends AbstractType
                     return $qb
                         ->select('t, proveedor')
                         ->innerJoin('t.proveedor', 'proveedor')
-                        ->where($qb->expr()->isNotNull('proveedor'))
+                        ->where($qb->expr()->isNotNull('proveedor.id'))
                         ->orderBy('t.nombres', 'ASC');
                 },
                 'placeholder' => '---Seleccione---',

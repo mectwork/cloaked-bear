@@ -335,7 +335,7 @@ class ImportProductosCommand extends ContainerAwareCommand
     {
         $qb = $this->em->getRepository('BusetaBodegaBundle:Tercero')->createQueryBuilder('t');
         $this->proveedores = $qb->leftJoin('t.proveedor', 'p')
-            ->where($qb->expr()->isNotNull('p'))
+            ->where($qb->expr()->isNotNull('p.id'))
             ->getQuery()
             ->getResult();
     }
