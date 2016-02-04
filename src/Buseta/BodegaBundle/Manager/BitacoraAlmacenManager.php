@@ -4,7 +4,7 @@ namespace Buseta\BodegaBundle\Manager;
 
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Validator\Validator;
+use Symfony\Component\Validator\Validator\RecursiveValidator;
 use Symfony\Bridge\Monolog\Logger;
 
 class BitacoraAlmacenManager
@@ -20,16 +20,16 @@ class BitacoraAlmacenManager
     private $logger;
 
     /**
-     * @var \Symfony\Component\Validator\Validator
+     * @var \Symfony\Component\Validator\Validator\RecursiveValidator
      */
     private $validator;
 
     /**
      * @param ObjectManager $em
      * @param Logger $logger
-     * @param Validator $validator
+     * @param RecursiveValidator $validator
      */
-    function __construct(ObjectManager $em, Logger $logger, Validator $validator)
+    function __construct(ObjectManager $em, Logger $logger, RecursiveValidator $validator)
     {
         $this->em = $em;
         $this->logger = $logger;
