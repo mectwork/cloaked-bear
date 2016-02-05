@@ -2,15 +2,15 @@
 
 namespace HatueySoft\SecurityBundle\Voter;
 
-
 use HatueySoft\SecurityBundle\Utils\AclRulesManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class CreateEntityVoter implements VoterInterface
+class DefaultEntityActionsVoter implements VoterInterface
 {
-    const CREATE_ENTITY = 'create_entity';
+    const PROCESS = 'process';
+    const COMPLETE = 'complete';
 
     /**
      * @var \HatueySoft\SecurityBundle\Utils\AclRulesManager
@@ -33,7 +33,8 @@ class CreateEntityVoter implements VoterInterface
     public function supportsAttribute($attribute)
     {
         return in_array(strtolower($attribute), array(
-            self::CREATE_ENTITY,
+            self::PROCESS,
+            self::COMPLETE,
         ));
     }
 
@@ -70,7 +71,7 @@ class CreateEntityVoter implements VoterInterface
 
         if (1 !== count($attributes)) {
             throw new \InvalidArgumentException(
-                'Only one attribute is allowed for CREATE_ENTITY'
+                'Only one attribute is allowed for this voter'
             );
         }
 

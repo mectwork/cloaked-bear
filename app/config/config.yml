@@ -168,9 +168,23 @@ hatuey_soft_security:
     command_scope: "%kernel.root_dir%"
     acl:
         entities:
-            reporte: Buseta\TallerBundle\Entity\Reporte
-            diagnostico: Buseta\TallerBundle\Entity\Diagnostico
-            ordentrabajo: Buseta\TallerBundle\Entity\OrdenTrabajo
+            'reporte':
+                    class: Buseta\TallerBundle\Entity\Reporte
+                    rules: [create, view, edit, delete, search, list, process, complete]
+            'diagnostico':
+                    class: Buseta\TallerBundle\Entity\Diagnostico
+                    rules: [create, view, edit, delete, search, list]
+            'ordentrabajo':
+                    class: Buseta\TallerBundle\Entity\OrdenTrabajo
+                    rules: [create, view, edit]
+            'bodega':
+                    class: Buseta\BodegaBundle\Entity\Bodega
+                    rules: [create, view, edit, delete, search, list]
+#    acl:
+#        entities:
+#            reporte: Buseta\TallerBundle\Entity\Reporte
+#            diagnostico: Buseta\TallerBundle\Entity\Diagnostico
+#            ordentrabajo: Buseta\TallerBundle\Entity\OrdenTrabajo
 
 
 #EJEMPLO DE COMO OBTENER LOS VALORES DEL ARCHIVO "CONFIG.YML"

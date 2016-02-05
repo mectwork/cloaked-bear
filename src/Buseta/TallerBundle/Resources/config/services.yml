@@ -107,3 +107,12 @@ services:
         class: HatueyERP\TercerosBundle\Form\Handler\InstitucionHandler
         arguments:
             - @service_container
+
+    #Voters
+    security.access.taller_entities_actions_voter:
+        class: Buseta\TallerBundle\Voter\TallerEntitiesActionsVoter
+        arguments:
+            - @hatuey_soft.security.acl_rules_manager
+        public: false
+        tags:
+            - {name: security.voter}

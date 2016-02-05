@@ -38,7 +38,8 @@ class AclRulesManager
     }
 
     /**
-     * Devuelve el arreglo con las reglas de ACL
+     * Devuelve el arreglo con las reglas de ACL, situadas en el archivo
+     * ACL_CONFIG_FILE = '/../Resources/config/security_acl.yml';
      *
      * @return bool|mixed
      */
@@ -60,13 +61,15 @@ class AclRulesManager
     }
 
     /**
-     * Establece el arreglo con las reglas de ACL
+     * Establece el arreglo con las reglas de ACL, situadas en el archivo
+     * ACL_CONFIG_FILE = '/../Resources/config/security_acl.yml';
      *
      * @param array $aclRules
      * @return bool
      */
     public function setSecurityAcl($aclRules)
     {
+        //verifica que el archivo existe
         if (!$this->checkConfigFile()) {
             return false;
         }
@@ -76,7 +79,8 @@ class AclRulesManager
 
             file_put_contents($this->aclConfigFile, $yaml);
 
-            return true;
+            //var_dump('true');die;
+
         } catch(DumpException $e) {
             $this->logger->addCritical(printf('No es posible escribir sobre el archivo YAML: %s', $e->getMessage()));
 
@@ -94,11 +98,18 @@ class AclRulesManager
         return $this->aclEntities;
     }
 
+    /**
+     * Devuelve el nombre completo de la entidad, es para configuracion global
+     *
+     * @return String
+     */
     public function getEntity($entity)
     {
-        foreach ($this->getEntities() as $name => $path) {
-            if ($name === $entity || $path === $entity) {
-                return $path;
+        //Busca las entidades globalmente definidas en el YML global config.yml
+        $globalEntities =  $this->getEntities();
+        foreach ($globalEntities as $name => $path) {
+            if ($name === $entity || $path['class'] === $entity) {
+                return $path['class'];
             }
         }
 
@@ -106,9 +117,28 @@ class AclRulesManager
     }
 
     /**
+     * Devuelve las reglas a la que esta subscrita la entidad, es para configuracion global
+     *
+     * @return String
+     */
+    public function getGlobalEntityRules($entity)
+    {
+        //Busca las entidades globalmente definidas en el YML global config.yml
+        $globalEntities =  $this->getEntities();
+        foreach ($globalEntities as $name => $path) {
+            if ($name === $entity || $path['class'] === $entity) {
+                return $path['class'];
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
      * Comprueba la existencia del fichero de configuración, en caso de no existir intenta crearlo.
      *
-     * @return bool
+     * @return bool/mixed
      */
     private function checkConfigFile()
     {
@@ -135,21 +165,25 @@ class AclRulesManager
      */
     public function getEntityRule($entity)
     {
+        //devuelve todas las entidades con todas las reglas para cada entidad, como un arreglo
+        //leyendolas del fichero como un arreglo
         $rules = $this->getSecurityAcl();
 
         if (!$rules) {
             return false;
         }
 
-        foreach ($rules as $value) {
-            $entityData = $this->getEntity($entity);
-            if ($value['entity'] === $entity || $value['entity'] === $entityData) {
-                return $value;
+        $entityData = $this->getEntity($entity);
+
+        foreach ($rules as $rule) {
+            if ($rule['entity']['class'] === $entity || $rule['entity']['class'] === $entityData) {
+                return $rule;
             }
         }
 
         return false;
     }
+
 
     /**
      * Establece para la entidad las reglas ACL para roles y usuarios
@@ -157,40 +191,50 @@ class AclRulesManager
      * @param $entity
      * @param array $roles
      * @param array $users
+     * @return boolean
      */
     public function setEntityRule($entity, $roles = array(), $users = array())
     {
-        $rule = $this->getEntityRule($entity);
-        $entities = $this->getEntities();
+        //devuelve todas las entidades con todas las reglas para cada entidad, como un arreglo
+        //leyendolas del fichero como un arreglo
+        $allRules = $this->getSecurityAcl();
 
-        if (!$rule) {
-            $rule = array(
-                'entity'    => $entities[$entity],
-                'roles'     => $roles,
-                'users'     => $users,
-            );
-        } else {
-            $rule['roles'] = $roles;
-            $rule['users'] = $users;
+        if (!$allRules) {
+            return false;
         }
 
-        $allRules = $this->getSecurityAcl();
         $flag = false;
-        foreach ($allRules as $key => $value) {
-            $entityData = $this->getEntity($entity);
-            if ($value['entity'] === $entity || $value['entity'] === $entityData) {
-                $allRules[$key] = $rule;
-                $flag = true;
-                break;
+        $entityData = $this->getEntity($entity); // var_dump($entityData);die;
+        if ($entityData != false) {
+            foreach ($allRules as $key => $rule) {
+                if ($rule['entity']['class'] === $entity || $rule['entity']['class'] === $entityData) {
+                    //caso en que modifico el nodo.
+                    $rule['roles'] = $roles;
+                    $rule['users'] = $users;
+                    //guardo el cambio
+                    $allRules[$key] = $rule;
+                    $flag = true;
+                    break;
+                }
             }
         }
 
-        if(!$flag) {
-            $allRules[] = $rule;
+        //caso en que creo el nodo nuevo porque no existia en el Array
+        if (!$flag) {
+            $entities = $this->getEntities();
+            $entityNode = array(
+                'entity' => $entities[$entity], //aqui pone la clase y las acciones a la que esta subscrita
+                'roles' => $roles,
+                'users' => $users,
+            );
+            $allRules[] = $entityNode;
         }
 
-        $this->setSecurityAcl($allRules);
+        //guardar al fichero las reglas y retornar true si no hubo error, false si fallo
+        return $this->setSecurityAcl($allRules);
+
     }
+
 
     /**
      * Check if the given role has the attribute for entity
@@ -230,23 +274,23 @@ class AclRulesManager
     }
 
     /**
-     * Clear rules array from CREATE_ENTITY permissions that not exist in ACL mask.
+     * Clear rules array from CREATE permissions that not exist in ACL mask.
      *
      * @param $rules
      * @return mixed
      */
     public function clearCreateEntityPermissions(&$rules)
     {
-        // Elimina la llave 'CREATE_ENTITY' que no existe dentro de las reglas ACL.
+        // Elimina la llave 'CREATE' que no existe dentro de las reglas ACL.
         foreach ($rules['roles'] as $key => $rules_rol) {
-            if (false !== $index = array_search('CREATE_ENTITY', $rules_rol)) {
+            if (false !== $index = array_search('CREATE', $rules_rol)) {
                 unset($rules['roles'][$key][$index]);
             }
         }
 
-        // Elimina la llave 'CREATE_ENTITY' que no existe dentro de las reglas ACL.
+        // Elimina la llave 'CREATE' que no existe dentro de las reglas ACL.
         foreach ($rules['users'] as $key => $rules_user) {
-            if (false !== $index = array_search('CREATE_ENTITY', $rules_user)) {
+            if (false !== $index = array_search('CREATE', $rules_user)) {
                 unset($rules['users'][$key][$index]);
             }
         }

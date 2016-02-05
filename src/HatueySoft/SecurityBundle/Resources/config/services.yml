@@ -79,8 +79,8 @@ services:
             - { name: doctrine.event_subscriber }
 
     #Voters
-    security.access.create_entity_voter:
-        class: HatueySoft\SecurityBundle\Voter\CreateEntityVoter
+    security.access.default_entity_actions_voter:
+        class: HatueySoft\SecurityBundle\Voter\DefaultEntityActionsVoter
         arguments:
             - @hatuey_soft.security.acl_rules_manager
         public: false
