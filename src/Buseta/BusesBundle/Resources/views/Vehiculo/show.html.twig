@@ -1,12 +1,8 @@
 {% extends "BusetaBusesBundle::layout.html.twig" %}
 
-{% block nombre_menu_superior %}
+{% block title block('header') %}
 
-{% endblock %}
-
-{% block titulo_encabezado %}
-    Datos del vehículo de matrícula: "{{ entity.matricula }}"
-{% endblock %}
+{% block header 'Ver Datos de Vehículo' %}
 
 {% block area_trabajo %}
     <div class="row">

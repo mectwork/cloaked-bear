@@ -2,13 +2,9 @@
 
 {% trans_default_domain 'BusetaBodegaBundle' %}
 
-{% block nombre_menu_superior %}
+{% block title block('header') %}
 
-{% endblock %}
-
-{% block titulo_encabezado %}
-    {{ 'albaran.datos' | trans({}, 'BusetaBodegaBundle') }}
-{% endblock %}
+{% block header 'Listado de Órdenes de Entrada' %}
 
 {% block area_trabajo %}
 

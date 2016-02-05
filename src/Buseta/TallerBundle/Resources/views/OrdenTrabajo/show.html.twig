@@ -2,13 +2,9 @@
 
 {% trans_default_domain 'BusetaTallerBundle' %}
 
-{% block nombre_menu_superior %}
+{% block title block('header') %}
 
-{% endblock %}
-
-{% block titulo_encabezado %}
-    Datos de la Orden de Trabajo
-{% endblock %}
+{% block header 'Ver Datos de Orden de Trabajo' %}
 
 {% block area_trabajo %}
     {#{% set cancelado = entity.cancelado %}#}

@@ -3,19 +3,9 @@
 {% form_theme edit_form.tareaDiagnostico 'BusetaTallerBundle:Diagnostico/widget:collection_tareas_diagnostico.html.twig' %}
 {% form_theme edit_form.observaciones 'BusetaTallerBundle:Reporte/widget:collection_observaciones.html.twig' %}
 
-{% block nombre_menu_superior %}
-    {% block stylesheets %}
-        {{ parent() }}
-    {% endblock %}
-{% endblock %}
+{% block title block('header') %}
 
-{% block title %}
-    Modificar datos de Diagnostico
-{% endblock %}
-
-{% block titulo_encabezado %}
-    Modificar datos de Diagnostico
-{% endblock %}
+{% block header 'Modificar Diagnóstico' %}
 
 {% block area_trabajo %}
     <div class="row">

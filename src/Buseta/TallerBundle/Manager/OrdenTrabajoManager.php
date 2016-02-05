@@ -5,8 +5,11 @@ namespace Buseta\TallerBundle\Manager;
 use Buseta\TallerBundle\Entity\Diagnostico;
 use Buseta\TallerBundle\Entity\OrdenTrabajo;
 use Buseta\TallerBundle\Entity\TareaAdicional;
+use Buseta\TallerBundle\Entity\TareaDiagnostico;
 use Doctrine\Common\Persistence\ObjectManager;
+use HatueySoft\SequenceBundle\Managers\SequenceManager;
 use Symfony\Bridge\Monolog\Logger;
+use Symfony\Component\Security\Core\Util\ClassUtils;
 
 class OrdenTrabajoManager
 {
@@ -22,13 +25,19 @@ class OrdenTrabajoManager
 
 
     /**
+     * @var \HatueySoft\SequenceBundle\Managers\SequenceManager
+     */
+    private $sequenceManager;
+
+    /**
      * @param ObjectManager $em
      * @param Logger $logger
      */
-    function __construct(ObjectManager $em, Logger $logger)
+    function __construct(ObjectManager $em, Logger $logger, SequenceManager $sequenceManager)
     {
         $this->em = $em;
         $this->logger = $logger;
+        $this->sequenceManager = $sequenceManager;
     }
 
 
@@ -77,7 +86,12 @@ class OrdenTrabajoManager
             //Crear nueva orden de trabajo a partir del Diagnostico seleccionado
             $ordenTrabajo = new OrdenTrabajo();
 
-            $ordenTrabajo->setNumero($diagnostico->getNumero());
+            //$ordenTrabajo->setNumero($diagnostico->getNumero());
+
+            if ($this->sequenceManager->hasSequence(ClassUtils::getRealClass($ordenTrabajo))) {
+                $ordenTrabajo->setNumero($this->sequenceManager->getNextValue('ot_seq'));
+            }
+
             $ordenTrabajo->setDiagnostico($diagnostico);
             $ordenTrabajo->setAutobus($diagnostico->getAutobus());
             $ordenTrabajo->setCancelado(false);

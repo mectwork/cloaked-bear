@@ -1,17 +1,51 @@
 {% extends "BusetaBusesBundle::layout.html.twig" %}
 
-{% block title %}
-    Modificar Datos del Grupo Buses
-{% endblock %}
+{% block title block('header') %}
 
-{% block titulo_encabezado %}
-    Modificar Datos del Grupo Buses
-{% endblock %}
+{% block header 'Modificar Grupo Buses' %}
 
 {% block area_trabajo %}
 
     {% include '@BusetaBuses/GrupoBuses/form_template.html.twig' with {'form': edit_form} %}
 
 {% endblock area_trabajo %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('.colorpicker').each(function () {
+                $(this).minicolors({
+                    control: $(this).attr('data-control') || 'hue',
+                    defaultValue: $(this).attr('data-defaultValue') || '',
+                    format: $(this).attr('data-format') || 'hex',
+                    keywords: $(this).attr('data-keywords') || '',
+                    inline: $(this).attr('data-inline') === 'true',
+                    letterCase: $(this).attr('data-letterCase') || 'lowercase',
+                    opacity: $(this).attr('data-opacity'),
+                    position: $(this).attr('data-position') || 'bottom left',
+                    swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split(',') : [],
+                    change: function (value, opacity) {
+                        if (!value) return;
+                        if (opacity) value += ', ' + opacity;
+                        if (typeof console === 'object') {
+                            console.log(value);
+                        }
+                    },
+                    theme: 'bootstrap'
+                });
+
+            });
+
+        });
+
+    </script>
+
+
+{% endblock %}
 
 

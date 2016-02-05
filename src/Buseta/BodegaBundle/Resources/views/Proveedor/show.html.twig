@@ -1,8 +1,8 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% block titulo_encabezado %}
-    Datos del proveedor: {{ entity.nombres ~ ' ' ~ entity.apellidos }}
-{% endblock %}
+{% block title block('header') %}
+
+{% block header 'Ver Datos de Proveedor' %}
 
 {% block area_trabajo %}
 

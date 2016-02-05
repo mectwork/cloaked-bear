@@ -2,15 +2,11 @@
 
 {% form_theme edit_form 'BusetaTemplateBundle:Widgets:collection_widget_archivo_adjunto.html.twig' %}
 
-{% block title %}
-    Modificar Datos del Autobús
-{% endblock %}
+{% block title block('header') %}
 
-{% block titulo_encabezado %}
-    Modificar Datos del Autobús
-{% endblock %}
+{% block header 'Modificar Autobús' %}
 
-{% block area_trabajo %}
+    {% block area_trabajo %}
 
     <div class="row">
         <div class="col-lg-12">

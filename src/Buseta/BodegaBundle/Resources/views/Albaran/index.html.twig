@@ -1,14 +1,8 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% block title %}
-    {{ 'albaran.listado' | trans({}, 'BusetaBodegaBundle') }}
-{% endblock %}
+{% block title block('header') %}
 
-{% block titulo_encabezado %}
-
-    {{ 'albaran.listado' | trans({}, 'BusetaBodegaBundle') }}
-
-{% endblock %}
+{% block header 'Ver Datos de Orden de Entrada' %}
 
 {% block area_trabajo %}
 <div id="records_list">
