@@ -1,8 +1,8 @@
 {% extends '@HatueySoftSecurity/layout.html.twig' %}
 
-{% block title 'Lista' %}
+{% block title block('header') %}
 
-{% block headline block('title') %}
+{% block header 'Lista' %}
 
 {% block checkPath %}
     {{ entity.path == '^/' or entity.path == '^/login$' ? 'disabled' }}

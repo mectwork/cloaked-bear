@@ -1,9 +1,9 @@
 {% extends "HatueySoftSecurityBundle::layout.html.twig" %}
 
 
-{% block titulo_encabezado %}
-    Datos de la Secuencia: {{ entity.nombre }}
-{% endblock %}
+{% block title block('header') %}
+
+{% block header 'Ver Datos de Secuencia' %}
 
 {% block content -%}
     <table class="table table-striped" style="font-size: 16px;">

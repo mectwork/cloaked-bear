@@ -5,6 +5,7 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - @logger
+            - @hatuey_soft.sequence.manager
 
     # EVENT SUBSCRIBER
     buseta.taller.ordentrabajo.subscriber:
