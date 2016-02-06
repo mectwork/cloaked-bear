@@ -1,9 +1,10 @@
 <?php
 
 namespace Buseta\BusesBundle\Entity;
-use Doctrine\Common\Collections\ArrayCollection;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -27,6 +28,7 @@ class GrupoBuses
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $nombre;
 
@@ -34,13 +36,14 @@ class GrupoBuses
      * @var string
      *
      * @ORM\Column(name="color", type="string", length=7)
+     * @Assert\NotBlank()
      */
     private $color;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Buseta\BusesBundle\Entity\Autobus", mappedBy="grupobuses", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Buseta\BusesBundle\Entity\Autobus", mappedBy="grupobuses")
      */
     private $autobuses;
 
@@ -48,6 +51,7 @@ class GrupoBuses
      * @var string
      *
      * @ORM\Column(name="colorTexto", type="string", length=7)
+     * @Assert\NotBlank()
      */
     private $colorTexto;
 
@@ -159,7 +163,6 @@ class GrupoBuses
 
     public function __toString()
     {
-        return sprintf( '%s', $this->getNombre() );
+        return sprintf('%s', $this->getNombre() );
     }
-
 }
