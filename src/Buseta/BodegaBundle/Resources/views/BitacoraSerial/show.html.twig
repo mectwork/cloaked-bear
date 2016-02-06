@@ -1,48 +1,37 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% block nombre_menu_superior %}
+{% block title block('header') %}
 
-{% endblock %}
-
-{% block title %}
-    Datos del Producto
-{% endblock %}
-
-{% block titulo_encabezado %}
-    Datos de la Bitacora de Seriales: "{{ entity.nombre }}"
-{% endblock %}
+{% block header 'Ver Datos de Bitácora Seriales Producto: ' ~ entity.producto %}
 
 {% block area_trabajo %}
-
     <table class="table table-striped" style="font-size: 16px;">
-    <tbody>
-
-    <tr>
-        <th>Serial</th>
-        <td>{{ entity.serial }}</td>
-    </tr>
-    <tr>
-        <th>Producto</th>
-        <td>{{ entity.producto }}</td>
-    </tr>
-    <tr>
-        <th>Bodega</th>
-        <td>{{ entity.almacen }}</td>
-    </tr>
-    <tr>
-        <th>Tipo Movimiento</th>
-        <td>{{ entity.tipoMovimiento }}</td>
-    </tr>
-    <tr>
-        <th>Cantidad Movida</th>
-        <td>{{ entity.cantidadMovida }}</td>
-    </tr>
-    <tr>
-        <th>Fecha Movimiento</th>
-        <td>{{ entity.fechaMovimiento  | date('d/m/Y h:i a') }}</td>
-    </tr>
-
-    </tbody>
+        <tbody>
+            <tr>
+                <th>Serial</th>
+                <td>{{ entity.serial }}</td>
+            </tr>
+            <tr>
+                <th>Producto</th>
+                <td>{{ entity.producto }}</td>
+            </tr>
+            <tr>
+                <th>Bodega</th>
+                <td>{{ entity.almacen }}</td>
+            </tr>
+            <tr>
+                <th>Tipo Movimiento</th>
+                <td>{{ entity.tipoMovimiento }}</td>
+            </tr>
+            <tr>
+                <th>Cantidad Movida</th>
+                <td>{{ entity.cantidadMovida }}</td>
+            </tr>
+            <tr>
+                <th>Fecha Movimiento</th>
+                <td>{{ entity.fechaMovimiento  | date('d/m/Y h:i a') }}</td>
+            </tr>
+        </tbody>
     </table>
 
     <div class="form-actions">
@@ -51,15 +40,4 @@
             Listado
         </a>
     </div>
-
 {% endblock %}
-
-{% block contenido %}
-
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-
-{% endblock %}
-
