@@ -224,10 +224,10 @@ class SalidaBodegaController extends Controller
             //Comparar la existencia de cantidad de productos disponibles en el almacen
             //a partir de la solicitud de salidabodega de productos entre almacenes
 
-            $idAlmacenOrigen  = $datos['almacenOrigen'];
+            $idAlmacenOrigen = $datos['almacenOrigen'];
             $idAlmacenDestino = $datos['almacenDestino'];
 
-            if(isset($datos['salidas_productos'])) {
+            if (isset($datos['salidas_productos'])) {
 
                 $salidabodegas = $datos['salidas_productos'];
 
@@ -236,12 +236,13 @@ class SalidaBodegaController extends Controller
                 foreach ($salidabodegas as $salidabodega) {
                     $idProducto = $salidabodega['producto'];
 
-                    $producto           = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
-                    $almacen            = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
-                    $cantidadProducto   = $salidabodega['cantidad'];
+                    $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
+                    $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
+                    $cantidadProducto = $salidabodega['cantidad'];
 
                     $fe = new FuncionesExtras();
-                    $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $almacen, $cantidadProducto, $em);
+                    $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $almacen, $cantidadProducto,
+                        $em);
 
                     //Comprobar la existencia del producto en la bodega seleccionada
                     if ($cantidadDisponible === 'No existe') {
@@ -249,64 +250,42 @@ class SalidaBodegaController extends Controller
                         //Volver al menu de de crear nuevo SalidaBodega
                         $salidabodegasProductos = $this->createForm(new SalidaBodegaProductoType());
 
-                        $form   = $this->createCreateForm($entity);
+                        $form = $this->createCreateForm($entity);
                         $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
-                        $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
+                        $bodega = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
 
-                        $form->addError(new FormError("El producto '".$producto->getNombre()."' no existe en la bodega seleccionada"));
+                        $form->addError(new FormError("El producto '" . $producto->getNombre() . "' no existe en la bodega seleccionada"));
 
                         return $this->render('BusetaBodegaBundle:SalidaBodega:new.html.twig', array(
                             'entity' => $entity,
                             'salidabodegasProductos' => $salidabodegasProductos->createView(),
-                            'form'   => $form->createView(),
+                            'form' => $form->createView(),
                         ));
-                    }
-                    //Si no existe la cantidad solicitada en el almacen del producto seleccionado
+                    } //Si no existe la cantidad solicitada en el almacen del producto seleccionado
                     elseif ($cantidadDisponible < 0) {
                         //Volver al menu de de crear nuevo SalidaBodega
                         $salidabodegasProductos = $this->createForm(new SalidaBodegaProductoType());
 
-                        $form   = $this->createCreateForm($entity);
+                        $form = $this->createCreateForm($entity);
                         $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($idProducto);
-                        $bodega   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
+                        $bodega = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
 
-                        $form->addError(new FormError("No existe en la bodega '".$bodega->getNombre()."' la cantidad de productos solicitados para el producto: ".$producto->getNombre()));
+                        $form->addError(new FormError("No existe en la bodega '" . $bodega->getNombre() . "' la cantidad de productos solicitados para el producto: " . $producto->getNombre()));
 
                         return $this->render('BusetaBodegaBundle:SalidaBodega:new.html.twig', array(
                             'entity' => $entity,
                             'salidabodegasProductos' => $salidabodegasProductos->createView(),
-                            'form'   => $form->createView(),
+                            'form' => $form->createView(),
                         ));
-                    }
-                    //Si sí existe la cantidad del producto en la bodega seleccionada
+                    } //Si sí existe la cantidad del producto en la bodega seleccionada
                     else {
-                        /*//Actualizar Bitácora - AlmacenOrigen
-                        $bitacora = new BitacoraAlmacen();
-                        $bitacora->setProducto($producto);
-                        $bitacora->setFechaMovimiento($fechaSalidaBodega);
-                        $origen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
-                        $bitacora->setAlmacen($origen);
-                        $bitacora->setCantMovida($salidabodega['cantidad']);
-                        $bitacora->setTipoMovimiento('M-');
-                        $em->persist($bitacora);
-                        $em->flush();
+                        /*Antes se Actualizaban las Bitácora - AlmacenOrigen*/
 
-                        //Actualizar Bitácora - AlmacenDestino
-                        $bitacora = new BitacoraAlmacen();
-                        $bitacora->setProducto($producto);
-                        $bitacora->setFechaMovimiento($fechaSalidaBodega);
-                        $destino = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
-                        $bitacora->setAlmacen($destino);
-                        $bitacora->setCantMovida($salidabodega['cantidad']);
-                        $bitacora->setTipoMovimiento('M+');
-                        $em->persist($bitacora);
-                        $em->flush();*/
+                        $almacenOrigen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
+                        $almacenDestino = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
 
-                        $almacenOrigen    = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenOrigen);
-                        $almacenDestino   = $em->getRepository('BusetaBodegaBundle:Bodega')->find($idAlmacenDestino);
-
-                        $centroCosto   = $em->getRepository('BusetaBusesBundle:Autobus')->find($datos['centro_costo']);
-                        $ordenTrabajo   = $em->getRepository('BusetaTallerBundle:OrdenTrabajo')->find($datos['orden_trabajo']);
+                        $centroCosto = $em->getRepository('BusetaBusesBundle:Autobus')->find($datos['centro_costo']);
+                        $ordenTrabajo = $em->getRepository('BusetaTallerBundle:OrdenTrabajo')->find($datos['orden_trabajo']);
 
                         //Persistimos los salidabodegas
                         $entity->setCreatedBy($this->getUser()->getUsername());
@@ -319,11 +298,7 @@ class SalidaBodegaController extends Controller
                         $entity->setAlmacenOrigen($almacenOrigen);
                         $entity->setAlmacenDestino($almacenDestino);
                         $entity->setFecha($fechaSalidaBodega);
-
-                        if($entity->getEstadoDocumento() == 'PR')
-                        {
-                            $entity->setEstadoDocumento('CO');
-                        }
+                        //el estado es
                         $em->persist($entity);
                         $em->flush();
                     }
@@ -338,7 +313,7 @@ class SalidaBodegaController extends Controller
 
         return $this->render('BusetaBodegaBundle:SalidaBodega:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 

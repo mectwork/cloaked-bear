@@ -20,43 +20,71 @@
     <tr>
         <th>Fecha de movimiento</th>
         <td>{{ entity.created|date('d/m/Y')  }}</td>
-        <th></th>
-        <td></td>
+        <th>Estado Documento</th>
+        <td>{{ ('estado.'~entity.estadoDocumento) | trans({}, 'BusetaTallerBundle') }}</td>
     </tr>
 
     <tr>
-        <th><Producto></Producto></th>
-        <td></td>
-        <th>Cantidad</th>
-        <td></td>
+        <th>Movimientos de Productos Existentes</th>
+        <td>
+            <table class="table table-striped" style="font-size: 16px;">
+                <th>Producto</th>
+                <th>Cantidad Movida</th>
+                {% for linea in entity.movimientosproductos %}
+                <tbody>
+                <tr>
+                    <td>{{ linea.producto.nombre }}</td>
+                    <td>{{ linea.cantidad }}</td>
+                </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">
+                            <span class="label label-danger">No existen movimientos de producto disponibles</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </td>
     </tr>
-
-    {% for objeto in entity.movimientosproductos %}
-
-        <tr>
-            <td>{{ objeto.producto }}</td>
-            <td></td>
-            <td>{{ objeto.cantidad }}</td>
-            <td></td>
-        </tr>
-
-    {% endfor %}
 
     </tbody>
     </table>
 
     <div class="form-actions">
-        {{ form_start(delete_form) }}
-        <a class="btn btn-primary" href="{{ path('movimiento_edit', { 'id': entity.id }) }}"> Editar</a>
+        {% if entity.estadodocumento == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('movimiento_edit', { 'id': entity.id }) }}"> Editar</a>
+        {% endif %}
+        {% if entity.estadodocumento == 'PR' %}
+            <a class="btn btn-primary" href="{{ path('completarMovimiento', { 'id': entity.id }) }}"> Completar Proceso</a>
+        {% elseif entity.estadodocumento == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('procesarMovimiento', { 'id': entity.id }) }}"> Procesar</a>
+        {% endif %}
         <a class="btn btn-primary" href="{{ path('movimiento') }}"> Listado</a>
-        <button type="sumbit" class="btn btn-primary">Eliminar</button>
-        {{ form_end(delete_form) }}
+
+        {% if entity.estadodocumento == 'BO' %}
+            <a href="#delete" data-href="{{ path('movimiento_delete', {'id': entity.id}) }}" class="btn btn-danger">
+                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+        {% endif %}
     </div>
 
-{% endblock %}
+    {% include 'BusetaBodegaBundle:Movimiento:delete_modal.html.twig' with { 'form' : delete_form, 'entity' : entity } %}
 
+{% endblock %}
 
 {% block contenido %}
 
-
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if entity.estadodocumento == 'BO' %}
+        <script type="text/javascript">
+            var deleteevent = new DeleteEvent('{{ path('movimiento') }}', 'div#movimiento_records_list', false);
+            deleteevent.start_events();
+        </script>
+    {% endif %}
+{% endblock %}
+

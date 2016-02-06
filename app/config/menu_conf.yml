@@ -341,6 +341,16 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
+                menu_B_E_E:
+                  id: menu_B_E_E
+                  name: null
+                  label: 'Bitacora de seriales'
+                  route: bitacoraserial
+                  roles: [ROLE_ADMIN]
+                  type: item
+                  disabled: false
+                  attributes: {  }
+                  childrens: {  }
             menu_B_F:
               id: menu_B_F
               name: null

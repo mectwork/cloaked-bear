@@ -50,7 +50,9 @@ bodega_ajax_productos_all:
   options:
       expose: true
 
-bodega_productomaxmin:
-    pattern:  /productomaxmin/{id}
-    defaults: { _controller: "BusetaBodegaBundle:Bodega:productoTope" }
-    requirements: { _method: post|get }
+bodega_productotope_list:
+    pattern: /productotope/list/{id}
+    defaults: { _controller: "BusetaBodegaBundle:Bodega:listProductosTope" }
+    requirements: { _method: get }
+    options:
+      expose: true

@@ -226,7 +226,12 @@
                 $('table.lineas_records_list').find('a[href="#edit"]').on('click', lineas._load_modal);
                 $('table.lineas_records_list').find('a[href="#delete"]').on('click', lineas._load_delete_modal);
                 // Paginator navigation
-                $('div.lineas-paginator.row ul.pagination').find('a.paginator-link').on('click', lineas._load);
+
+                //habia problemas aqui con la paginacion del formulario!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //$('div.lineas-paginator.row ul.pagination').find('a.paginator-link').on('click', lineas._load);
+                $('div.paginator.row ul.pagination').find('a.paginator-link').on('click', lineas._load);
+
             },
             _load: function (event) {
 

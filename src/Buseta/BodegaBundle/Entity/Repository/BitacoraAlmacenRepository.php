@@ -74,6 +74,10 @@ class BitacoraAlmacenRepository extends EntityRepository
                 $query->andWhere($qb->expr()->lte('p.fechaMovimiento',':fechaFin'))
                     ->setParameter('fechaFin', $filter->getFechaFin());
             }
+            if ($filter->getTipoMovimiento() !== null && $filter->getTipoMovimiento() !== '') {
+                $query->andWhere($qb->expr()->eq('p.tipoMovimiento',':tipoMovimiento'))
+                    ->setParameter('tipoMovimiento', $filter->getTipoMovimiento());
+            }
         }
 
         $query->orderBy('p.id', 'ASC');

@@ -1,6 +1,8 @@
 <?php
 namespace Buseta\BodegaBundle\Form\Model;
 
+use Buseta\BodegaBundle\Entity\Producto;
+
 class AlbaranFilterModel
 {
     /**
@@ -37,6 +39,11 @@ class AlbaranFilterModel
      * @var string
      */
     private $estado;
+
+    /**
+     * @var Producto
+     */
+    private $producto;
 
     /**
      * @return \Buseta\BodegaBundle\Entity\Bodega
@@ -149,4 +156,20 @@ class AlbaranFilterModel
     {
         $this->fechaFin = $fechaFin;
     }
+    /**
+     * @return Producto
+     */
+    public function getProducto()
+    {
+        return $this->producto;
+    }
+
+    /**
+     * @param Producto $producto
+     */
+    public function setProducto($producto)
+    {
+        $this->producto = $producto;
+    }
+
 } 

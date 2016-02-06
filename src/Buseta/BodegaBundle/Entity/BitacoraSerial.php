@@ -10,7 +10,7 @@ use Buseta\BodegaBundle\Interfaces\DateTimeAwareInterface;
  * BitacoraSeriales.
  *
  * @ORM\Table(name="d_bitacora_serial")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\BitacoraSerialRepository")
  */
 class BitacoraSerial implements DateTimeAwareInterface
 {

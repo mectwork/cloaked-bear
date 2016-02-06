@@ -151,10 +151,18 @@ buseta_bodega_categoriaproducto:
     resource: "@BusetaBodegaBundle/Controller/CategoriaProductoController.php"
     type: annotation
 
-#buseta_bodega_productotope:
-#    resource: "@BusetaBodegaBundle/Controller/ProductoTopeController.php"
-#    type: annotation
-
 BusetaBodegaBundle_productotope:
     resource: "@BusetaBodegaBundle/Resources/config/routing/productotope.yml"
     prefix:   /bodega/productotope
+
+buseta_bodega_bitacoraalmacen:
+    resource: "@BusetaBodegaBundle/Controller/BitacoraAlmacenController.php"
+    type: annotation
+
+buseta_bodega_bitacoraserial:
+    resource: "@BusetaBodegaBundle/Controller/BitacoraSerialController.php"
+    type: annotation
+
+#BusetaBodegaBundle_bitacoraalmacen:
+#    resource: "@BusetaBodegaBundle/Resources/config/routing/bitacoraalmacen.yml"
+#    prefix:   /bodega/bitacoraalmacen

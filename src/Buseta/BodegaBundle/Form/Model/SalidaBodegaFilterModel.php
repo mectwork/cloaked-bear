@@ -2,6 +2,7 @@
 namespace Buseta\BodegaBundle\Form\Model;
 
 use Buseta\BodegaBundle\Entity\Bodega;
+use Buseta\BodegaBundle\Entity\Producto;
 use Buseta\BusesBundle\Entity\Autobus;
 use Buseta\BodegaBundle\Entity\Tercero;
 use Buseta\TallerBundle\Entity\OrdenTrabajo;
@@ -42,6 +43,16 @@ class SalidaBodegaFilterModel
      * @var OrdenTrabajo
      */
     private $ordenTrabajo;
+
+    /**
+     * @var string
+     */
+    private $estado;
+
+    /**
+     * @var Producto
+     */
+    private $producto;
 
     /**
      * @return Bodega
@@ -153,6 +164,38 @@ class SalidaBodegaFilterModel
     public function setOrdenTrabajo($ordenTrabajo)
     {
         $this->ordenTrabajo = $ordenTrabajo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
+     * @param string $estado
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+    }
+
+    /**
+     * @return Producto
+     */
+    public function getProducto()
+    {
+        return $this->producto;
+    }
+
+    /**
+     * @param Producto $producto
+     */
+    public function setProducto($producto)
+    {
+        $this->producto = $producto;
     }
 
 

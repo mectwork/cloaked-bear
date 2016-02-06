@@ -1,0 +1,36 @@
+<div class="paginator row">
+    <div class="col-lg-12"><h4>Seriales Asociados</h4></div>
+    <div class="col-lg-12"><strong>Cantidad Total:</strong> {{ entities.getTotalItemCount }}</div>
+  {#  <div class="col-lg-12"><strong>Producto:</strong> {{ producto }}</div>#}
+</div>
+
+<table class="bitacoraserial_records_list table table-striped table-bordered table-condensed table-hover">
+    <thead>
+    <tr>
+        <th style="text-align: left">Serial</th>
+        <th style="text-align: left">Fecha Movimiento</th>
+        <th style="text-align: left">Tipo Movimiento</th>
+    {#    <th style="text-align: left">Bodega</th>#}
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td>{{ entity.serial }}</td>
+            <td>{{ entity.fechaMovimiento | date('d/m/Y h:i a') }}</td>
+            <td>{{ entity.tipoMovimiento }}</td>
+          {#  <td>{{ entity.almacen }}</td>#}
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="paginator row">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-12" style="text-align: center">{{ knp_pagination_render(entities) }}</div>
+</div>

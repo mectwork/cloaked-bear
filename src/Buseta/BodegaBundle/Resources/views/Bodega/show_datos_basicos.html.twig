@@ -1,0 +1,23 @@
+    <ul class="list-group">
+        <li class="list-group-item"><b>Nombre:</b>    {{ entity.nombre }}</li>
+        <li class="list-group-item"><b>Responsable:</b>   {{ entity.responsable }}</li>
+
+        {% if entity.codigo == '' %}
+            <li class="list-group-item"><b>Codigo</b> La bodega no tiene código</li>
+        {% else %}
+            <li class="list-group-item"><b>Codigo</b>   {{ entity.codigo | default('-') }}</li>
+        {% endif %}
+
+        {% if entity.descripcion == '' %}
+            <li class="list-group-item"><b>Descripcion</b> La bodega no tiene descripción</li>
+        {% else %}
+            <li class="list-group-item"><b>Descripcion</b>   {{ entity.descripcion | default('-') }}</li>
+        {% endif %}
+
+        {% if entity.direccion == '' %}
+            <li class="list-group-item"><b>Direccion:</b> La bodega no tiene dirección</li>
+        {% else %}
+            <li class="list-group-item"><b>Direccion:</b>   {{ entity.direccion | default('-') }}</li>
+        {% endif %}
+
+    </ul>

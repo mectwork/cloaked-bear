@@ -12,6 +12,7 @@ use Buseta\BodegaBundle\Event\BitacoraEvents;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Doctrine\DBAL\Connections;
 
 /**
  * Class AlbaranManager
@@ -84,19 +85,27 @@ class AlbaranManager
 
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Ha ocurrido un error al procesar el Albaran: %s', $e->getMessage()));
+            //borramos los cambios en el entity manager
+            $this->em->clear();
             return 'Ha ocurrido un error al procesar el Albaran';
         }
 
     }
 
     /**
-     * @param $id
-     * @return bool|string
+     * Completar Albaran
+     *
+     * @param integer $id
+     * @return bool
      */
     public function completar($id)
     {
         /** @var \Buseta\BodegaBundle\Entity\Albaran $albaran */
         /** @var \Buseta\BodegaBundle\Entity\AlbaranLinea $lineas */
+
+        // suspend auto-commit
+        $this->em->getConnection()->beginTransaction();
+
         try {
 
             $albaran = $this->em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
@@ -108,14 +117,14 @@ class AlbaranManager
             $albaranLineas = $albaran->getAlbaranLineas();
 
             if ($albaranLineas !== null && count($albaranLineas) > 0) {
+                //entonces mando a crear los movimientos en la bitacora, producto a producto, a traves de eventos
                 foreach ($albaranLineas as $linea) {
-                    /** @var \Buseta\BodegaBundle\Entity\AlbaranLinea $linea */
                     $event = new FilterBitacoraEvent($linea);
                     $this->dispatcher->dispatch(BitacoraEvents::VENDOR_RECEIPTS, $event);
                     $result = $event->getReturnValue();
                     if ($result !== true) {
-                        //borramos los cambios en el entity manager
-                        $this->em->clear();
+                        // Rollback the failed transaction attempt
+                        $this->em->getConnection()->rollback();
                         return $error = $result;
                     }
                 }
@@ -125,11 +134,13 @@ class AlbaranManager
                 $this->dispatcher->dispatch(AlbaranEvents::POS_COMPLETE, $event);
                 $result = $event->getReturnValue();
                 if ($result !== true) {
-                    //borramos los cambios en el entity manager
-                    $this->em->clear();
+                    // Rollback the failed transaction attempt
+                    $this->em->getConnection()->rollback();
                     return $error = $result;
                 }
             } else {
+                // Rollback the failed transaction attempt
+                $this->em->getConnection()->rollback();
                 return $error = 'La Orden de Entrega debe tener al menos una linea';
             }
 
@@ -137,12 +148,21 @@ class AlbaranManager
             //tanto en la bitacora almacen como en la bitacora de seriales yel cambio de estado
             //es el unico flush que se hace.
             $this->em->flush();
+
+            // Try and commit the transaction, aqui puede ocurrir un error
+            $this->em->getConnection()->commit();
+
             return true;
 
         } catch (\Exception $e) {
+
             $this->logger->error(sprintf('Ha ocurrido un error al procesar la Orden de Entrega: %s',
                 $e->getMessage()));
-            $this->em->clear();
+
+            // Rollback the failed transaction attempt
+            $this->em->getConnection()->rollback();
+
+            //$this->em->clear();
             return $error = 'Ha ocurrido un error al completar la Orden de Entrega';
         }
 

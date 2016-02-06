@@ -13,6 +13,7 @@ use Buseta\BodegaBundle\Entity\InventarioFisico;
 use Buseta\BodegaBundle\Entity\InventarioFisicoLinea;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Doctrine\DBAL\Connections;
 
 /**
  * Class InventarioFisicoManager
@@ -56,6 +57,7 @@ class InventarioFisicoManager
      */
     public function procesar($id)
     {
+
         try {
 
             $inventarioFisico = $this->em->getRepository('BusetaBodegaBundle:InventarioFisico')->find($id);
@@ -89,7 +91,7 @@ class InventarioFisicoManager
             $this->logger->error(sprintf('Ha ocurrido un error al procesar el Inventario Fisico: %s',
                 $e->getMessage()));
             $this->em->clear();
-            return $error='Ha ocurrido un error al procesar el Inventario Fisico';
+            return $error = 'Ha ocurrido un error al procesar el Inventario Fisico';
         }
 
     }
@@ -105,6 +107,10 @@ class InventarioFisicoManager
     {
         /** @var \Buseta\BodegaBundle\Entity\InventarioFisico $inventarioFisico */
         /** @var \Buseta\BodegaBundle\Entity\InventarioFisicoLinea $linea */
+
+        // suspend auto-commit
+        $this->em->getConnection()->beginTransaction();
+
         try {
 
             $inventarioFisico = $this->em->getRepository('BusetaBodegaBundle:InventarioFisico')->find($id);
@@ -116,15 +122,14 @@ class InventarioFisicoManager
             $inventarioFisicoLineas = $inventarioFisico->getInventarioFisicoLineas();
 
             if ($inventarioFisicoLineas !== null && count($inventarioFisicoLineas) > 0) {
-
+                //entonces mando a crear los movimientos en la bitacora, producto a producto, a traves de eventos
                 foreach ($inventarioFisicoLineas as $linea) {
-                    /** @var \Buseta\BodegaBundle\Entity\InventarioFisicoLinea $linea */
                     $event = new FilterBitacoraEvent($linea);
                     $this->dispatcher->dispatch(BitacoraEvents::INVENTORY_IN, $event);//I+
                     $result = $event->getReturnValue();
                     if ($result !== true) {
-                        //borramos los cambios en el entity manager
-                        $this->em->clear();
+                        // Rollback the failed transaction attempt
+                        $this->em->getConnection()->rollback();
                         return $error = $result;
                     }
                 }
@@ -134,11 +139,14 @@ class InventarioFisicoManager
                 $this->dispatcher->dispatch(InventarioFisicoEvents::POS_COMPLETE, $event);
                 $result = $event->getReturnValue();
                 if ($result !== true) {
-                    //borramos los cambios en el entity manager
-                    $this->em->clear();
+                    // Rollback the failed transaction attempt
+                    $this->em->getConnection()->rollback();
                     return $error = $result;
                 }
+
             } else {
+                // Rollback the failed transaction attempt
+                $this->em->getConnection()->rollback();
                 return $error = 'El inventario fisico debe tener al menos una linea';
             }
 
@@ -146,12 +154,17 @@ class InventarioFisicoManager
             //tanto en la bitacora almacen como en la bitacora de seriales yel cambio de estado
             //es el unico flush que se hace.
             $this->em->flush();
+
+            // Try and commit the transaction, aqui puede ocurrir un error
+            $this->em->getConnection()->commit();
+
             return true;
 
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Ha ocurrido un error al procesar el Inventario Fisico: %s',
                 $e->getMessage()));
-            $this->em->clear();
+            // Rollback the failed transaction attempt
+            $this->em->getConnection()->rollback();
             return $error = 'Ha ocurrido un error al completar Inventario Fisico';
         }
 

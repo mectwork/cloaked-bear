@@ -50,22 +50,39 @@ class BitacoraAlmacenFilter extends AbstractType
             ))
             ->add('fechaInicio', 'date', array(
                 'widget' => 'single_text',
-                'label'  => 'Fecha Inicial',
-                'format'  => 'dd/MM/yyyy',
+                'label' => 'Fecha Inicial',
+                'format' => 'dd/MM/yyyy',
                 'required' => false,
-                'attr'   => array(
+                'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
             ->add('fechaFin', 'date', array(
                 'widget' => 'single_text',
-                'label'  => 'Fecha Final',
-                'format'  => 'dd/MM/yyyy',
+                'label' => 'Fecha Final',
+                'format' => 'dd/MM/yyyy',
                 'required' => false,
-                'attr'   => array(
+                'attr' => array(
                     'class' => 'form-control',
                 ),
-            )) ;
+            ))
+            ->add('tipoMovimiento', 'choice', array(
+                    'required' => false,
+                    'empty_value' => '---Seleccione---',
+                    //luego implementar 'translation_domain' => 'BusetaBodegaBundle',
+                    'choices' => array(
+                        'V+' => '[V+]Recepcion desde Proveedor',
+                        'M+' => '[M+]Movimiento de entrada a Bodega',
+                        'M-' => '[M-]Movimiento de salida de Bodega',
+                        'I+' => '[I+]Aumento por Inventario Fisico',
+                        'I-' => '[I-]Disminucion por Inventario Fisico',
+                        'P-' => '[P-]Salida hacia Produccion',
+                    ),
+                    'attr' => array(
+                        'class' => 'form-control',
+                    )
+                )
+            );
 
 
     }

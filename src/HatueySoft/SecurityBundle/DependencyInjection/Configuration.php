@@ -21,22 +21,30 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('hatuey_soft_security');
         $rootNode->children()
             ->scalarNode('security_config')->defaultValue('config.yml')->end()
-        ->end();
+            ->end();
         $rootNode->children()
             ->scalarNode('command_scope')->defaultValue('app/')->end()
-        ->end();
+            ->end();
 
-        $rootNode->children()
-            ->arrayNode('acl')
-                ->performNoDeepMerging()
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->variableNode('entities')
-                    ->defaultValue(array())
-                    ->info('Listado de entidades bajo control de acl.')
-                ->end()
-            ->end()
-        ->end();
+          $rootNode->children()
+                      ->arrayNode('acl')
+                           ->performNoDeepMerging()
+                           ->addDefaultsIfNotSet()
+                           ->children()
+                                ->arrayNode('entities')
+                                    ->prototype('array')
+                                        ->children()
+                                            ->scalarNode('class')->end()
+                                            ->arrayNode('rules')
+                                                ->prototype('variable')->end()
+                                                ->info('The list of actions enabled in the "class"')
+                                            ->end()
+                                        ->end()
+                                    ->end()
+                                 ->end()
+                           ->end()
+                       ->end()
+                     ->end();
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

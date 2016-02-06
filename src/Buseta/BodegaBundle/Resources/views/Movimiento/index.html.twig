@@ -31,6 +31,7 @@
                 <div class="col-lg-4">{{ form_row(filter_form.producto) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.estado) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -58,6 +59,7 @@
             <th>Bodega Origen</th>
             <th>Bodega Destino</th>
             <th>Realizado por</th>
+            <th>Estado</th>
             <th>Acciones</th>
         </tr>
         </thead>
@@ -68,6 +70,7 @@
                 <td>{{ entity.almacenOrigen }}</td>
                 <td>{{ entity.almacenDestino }}</td>
                 <td>{{ entity.createdBy }}</td>
+                <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
                 <td  style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs" href="{{ path('movimiento_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
@@ -131,7 +134,8 @@
                 useCurrent: false
             });
             fechaFin.datetimepicker({
-                format: 'DD/MM/YYYY'
+                format: 'DD/MM/YYYY',
+                useCurrent: false
             });
             fechaInicio.on('dp.change', function(e){
                 fechaFin.data("DateTimePicker").minDate(e.date);

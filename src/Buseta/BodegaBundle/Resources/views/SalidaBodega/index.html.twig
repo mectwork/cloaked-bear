@@ -33,10 +33,13 @@
                 <div class="col-lg-4">{{ form_row(filter_form.almacenOrigen) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.almacenDestino) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.centroCosto) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.estado) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.producto) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.responsable) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.ordenTrabajo) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.estado) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -164,7 +167,8 @@
                 useCurrent: false
             });
             fechaFin.datetimepicker({
-                format: 'DD/MM/YYYY'
+                format: 'DD/MM/YYYY',
+                useCurrent: false
             });
             fechaInicio.on('dp.change', function (e) {
                 fechaFin.data("DateTimePicker").minDate(e.date);

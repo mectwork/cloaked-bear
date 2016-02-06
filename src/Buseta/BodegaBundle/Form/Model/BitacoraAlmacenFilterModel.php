@@ -36,7 +36,10 @@ class BitacoraAlmacenFilterModel
      */
     private $fechaFin;
 
-
+    /**
+     * @var string
+     */
+    private $tipoMovimiento;
 
     /**
      * @return string
@@ -139,6 +142,18 @@ class BitacoraAlmacenFilterModel
         $this->fechaFin = $fechaFin;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getTipoMovimiento()
+    {
+        return $this->tipoMovimiento;
+    }
 
+    public function setTipoMovimiento($tipoMovimiento)
+    {
+        $this->tipoMovimiento = $tipoMovimiento;
+        return $this;
+    }
 
 }

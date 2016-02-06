@@ -70,19 +70,19 @@ services:
         tags:
             - { name: twig.extension }
 
-    hatueyerp.direccion_ajax_type.form:
-        class: HatueyERP\TercerosBundle\Form\Type\DireccionAjaxType
-        arguments:
-            - @router
-        tags:
-            - { name: form.type, alias: hatueyerp_terceros_direccion_type }
+#    hatueyerp.direccion_ajax_type.form:
+#        class: HatueyERP\TercerosBundle\Form\Type\DireccionAjaxType
+#        arguments:
+#            - @router
+#        tags:
+#            - { name: form.type, alias: hatueyerp_terceros_direccion_type }
 
     # MANAGER
-    hatueyerp.tercero.manager:
-        class: HatueyERP\TercerosBundle\Manager\TerceroManager
-        arguments:
-            - @doctrine.orm.entity_manager
-            - @logger
+#    hatueyerp.tercero.manager:
+#        class: HatueyERP\TercerosBundle\Manager\TerceroManager
+#        arguments:
+#            - @doctrine.orm.entity_manager
+#            - @logger
 
     # HANDLERS
     buseta_reporte.observacion.handler:
@@ -93,22 +93,32 @@ services:
         class: Buseta\TallerBundle\Form\Handler\ObservacionDiagnosticoHandler
         arguments:
             - @service_container
-    hatueyerp_terceros.persona.handler:
-        class: HatueyERP\TercerosBundle\Form\Handler\PersonaHandler
+#    hatueyerp_terceros.persona.handler:
+#        class: HatueyERP\TercerosBundle\Form\Handler\PersonaHandler
+#        arguments:
+#            - @service_container
+#    hatueyerp_terceros.cliente.handler:
+#        class: HatueyERP\TercerosBundle\Form\Handler\ClienteHandler
+#        arguments:
+#            - @service_container
+#    hatueyerp_terceros.proveedor.handler:
+#        class: HatueyERP\TercerosBundle\Form\Handler\ProveedorHandler
+#        arguments:
+#            - @service_container
+#    hatueyerp_terceros.institucion.handler:
+#        class: HatueyERP\TercerosBundle\Form\Handler\InstitucionHandler
+#        arguments:
+#            - @service_container
+
+    #Voters
+    security.access.taller_entities_actions_voter:
+        class: Buseta\TallerBundle\Voter\TallerEntitiesActionsVoter
         arguments:
-            - @service_container
-    hatueyerp_terceros.cliente.handler:
-        class: HatueyERP\TercerosBundle\Form\Handler\ClienteHandler
-        arguments:
-            - @service_container
-    hatueyerp_terceros.proveedor.handler:
-        class: HatueyERP\TercerosBundle\Form\Handler\ProveedorHandler
-        arguments:
-            - @service_container
-    hatueyerp_terceros.institucion.handler:
-        class: HatueyERP\TercerosBundle\Form\Handler\InstitucionHandler
-        arguments:
-            - @service_container
+            - @hatuey_soft.security.acl_rules_manager
+        public: false
+        tags:
+            - {name: security.voter}
+
      #Form Type
     taller.orden_trabajo.type:
         class: Buseta\TallerBundle\Form\Type\OrdenTrabajoType
