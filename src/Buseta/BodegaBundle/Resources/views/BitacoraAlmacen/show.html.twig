@@ -2,7 +2,7 @@
 
 {% block title block('header') %}
 
-{% block header 'Ver Datos de Bitácora Almacén' %}
+{% block header 'Ver Datos de Bitácora Bodega' %}
 
 {% block area_trabajo %}
 
@@ -11,11 +11,9 @@
             {# Nav tabs #}
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos de la bitacora de Almacen</a></li>
-
                 {% if entity.producto.tieneNroSerie == 1 %}
                     <li><a href="#bitacoraseriales" data-toggle="tab">Bitacora de Seriales</a></li>
                 {% endif %}
-
             </ul>
 
             {# Tab panes #}
