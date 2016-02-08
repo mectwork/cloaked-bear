@@ -180,22 +180,21 @@ easy_admin:
 
 #HATUEY SOFT SECURITY CONFIGURATION
 hatuey_soft_security:
-    security_config: "%kernel.root_dir%/config/security_conf.yml"
-    command_scope: "%kernel.root_dir%"
     acl:
+        symfony_acl: false
         entities:
-            'reporte':
+            reporte:
                     class: Buseta\TallerBundle\Entity\Reporte
-                    rules: [create, view, edit, delete, search, list, process, complete]
-            'diagnostico':
+                    rules: [process, complete]
+            diagnostico:
                     class: Buseta\TallerBundle\Entity\Diagnostico
-                    rules: [create, view, edit, delete, search, list]
-            'ordentrabajo':
+                    rules: [search, list]
+            ordentrabajo:
                     class: Buseta\TallerBundle\Entity\OrdenTrabajo
-                    rules: [create, view, edit]
-            'bodega':
+                    rules: []
+            bodega:
                     class: Buseta\BodegaBundle\Entity\Bodega
-                    rules: [create, view, edit, delete, search, list]
+                    rules: []
 #    acl:
 #        entities:
 #            reporte: Buseta\TallerBundle\Entity\Reporte

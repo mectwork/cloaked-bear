@@ -2,19 +2,20 @@
 
 namespace HatueySoft\SecurityBundle\EventListener;
 
-use HatueySoft\SecurityBundle\Event\GetRoleEvents;
-use Symfony\Component\Console\Input\InputDefinition;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 
-
+/**
+ * Class RoleListener
+ *
+ * @package HatueySoft\SecurityBundle\EventListener
+ */
 class RoleListener
 {
+    /**
+     * @var string
+     */
     protected  $scope;
 
     /**
@@ -22,13 +23,22 @@ class RoleListener
      */
     protected $container;
 
-    public function __construct($scope, Container $container)
+    /**
+     * RoleListener constructor.
+     *
+     * @param string             $scope
+     * @param ContainerInterface $container
+     */
+    public function __construct($scope, ContainerInterface $container)
     {
         $this->scope = $scope;
         $this->container = $container;
     }
 
-    public function onRoleSave(GetRoleEvents $event)
+    /**
+     * Trigger command process and logoff the user token from the Security Context
+     */
+    public function onRoleSave()
     {
         $kernel = $this->container->get('kernel');
         $env = $kernel->getEnvironment();

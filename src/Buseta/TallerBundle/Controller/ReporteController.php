@@ -94,7 +94,7 @@ class ReporteController extends Controller
     /**
      * Creates a new Reporte entity.
      *
-     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\Reporte')")
+     * @Security("is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\Reporte')")
      */
     public function createAction(Request $request)
     {
@@ -154,7 +154,7 @@ class ReporteController extends Controller
     /**
      * Displays a form to create a new Reporte entity.
      *
-     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\Reporte')")
+     * @Security("is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\Reporte')")
      */
     public function newAction(Request $request)
     {

@@ -15,7 +15,7 @@ services:
         tags:
             - { name: form.type, alias: hatueysoft_security_role_type }
 
-    # VALIDATIONS
+    # VALIDATORS
     security.unique_systemuser_username.validator:
         class: HatueySoft\SecurityBundle\Validator\Constraints\UniqueSystemUserUsernameValidator
         arguments:
@@ -32,7 +32,7 @@ services:
 
     #SECURITY MANAGERS
     security.manager:
-         class: HatueySoft\SecurityBundle\Utils\SecurityManager
+         class: HatueySoft\SecurityBundle\Manager\SecurityManager
          arguments: [ %security_config% ]
 
     configuration.reader:
@@ -40,12 +40,20 @@ services:
          arguments: [ @service_container, %security_config% ]
 
     hatuey_soft.security.acl_manager:
-        class: HatueySoft\SecurityBundle\Utils\AclManager
+        class: HatueySoft\SecurityBundle\Manager\AclManager
         arguments: [@service_container]
 
     hatuey_soft.security.acl_rules_manager:
-        class: HatueySoft\SecurityBundle\Utils\AclRulesManager
+        class: HatueySoft\SecurityBundle\Manager\AclRulesManager
         arguments: [@service_container]
+
+    hatuey_soft.voter_attributes_checker:
+        class: HatueySoft\SecurityBundle\Utils\VoterAttributesChecker
+
+    hatuey_soft.voter_class_checker:
+        class: HatueySoft\SecurityBundle\Utils\VoterClassChecker
+        arguments:
+            - @hatuey_soft.security.acl_rules_manager
 
     #SUBSCRIBERS
     hatuey_soft.doctrine_subscriber.acl_aware:
@@ -53,6 +61,7 @@ services:
         arguments:
             - @hatuey_soft.security.acl_manager
             - @hatuey_soft.security.acl_rules_manager
+            - %hatuey_soft_security.config%
         tags:
             - { name: doctrine.event_subscriber }
 
@@ -80,9 +89,11 @@ services:
 
     #Voters
     security.access.default_entity_actions_voter:
-        class: HatueySoft\SecurityBundle\Voter\DefaultEntityActionsVoter
+        class: HatueySoft\SecurityBundle\Voter\EntitiesActionsVoter
         arguments:
             - @hatuey_soft.security.acl_rules_manager
+            - @hatuey_soft.voter_attributes_checker
+            - @hatuey_soft.voter_class_checker
         public: false
         tags:
             - {name: security.voter}

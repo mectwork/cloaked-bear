@@ -2,65 +2,71 @@
 
 namespace HatueySoft\SecurityBundle\Voter;
 
-use HatueySoft\SecurityBundle\Utils\AclRulesManager;
+use HatueySoft\SecurityBundle\Manager\AclRulesManager;
+use HatueySoft\SecurityBundle\Utils\VoterAttributesChecker;
+use HatueySoft\SecurityBundle\Utils\VoterClassChecker;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Util\ClassUtils;
 
-class DefaultEntityActionsVoter implements VoterInterface
+/**
+ * Class EntitiesActionsVoter
+ *
+ * @package HatueySoft\SecurityBundle\Voter
+ */
+class EntitiesActionsVoter implements VoterInterface
 {
-    const PROCESS = 'process';
-    const COMPLETE = 'complete';
-
     /**
-     * @var \HatueySoft\SecurityBundle\Utils\AclRulesManager
+     * @var AclRulesManager
      */
     private $rulesManager;
 
+    /**
+     * @var VoterAttributesChecker
+     */
+    private $attributesChecker;
 
-    function __construct(AclRulesManager $rulesManager)
+    /**
+     * @var VoterClassChecker
+     */
+    private $classChecker;
+
+    /**
+     * DefaultEntityActionsVoter constructor.
+     *
+     * @param AclRulesManager $rulesManager
+     * @param VoterAttributesChecker $attributesChecker
+     * @param VoterClassChecker $classChecker
+     */
+    function __construct(
+        AclRulesManager $rulesManager,
+        VoterAttributesChecker $attributesChecker,
+        VoterClassChecker $classChecker)
     {
         $this->rulesManager = $rulesManager;
+        $this->attributesChecker = $attributesChecker;
+        $this->classChecker = $classChecker;
     }
 
     /**
-     * Checks if the voter supports the given attribute.
-     *
-     * @param string $attribute An attribute
-     *
-     * @return bool    true if this Voter supports the attribute, false otherwise
+     * {@inheritdoc}
      */
     public function supportsAttribute($attribute)
     {
-        return in_array(strtolower($attribute), array(
-            self::PROCESS,
-            self::COMPLETE,
-        ));
+        return $this->attributesChecker->supportsAttribute($attribute);
     }
 
     /**
-     * Checks if the voter supports the given class.
-     *
-     * @param string $class A class name
-     *
-     * @return bool    true if this Voter can process the class
+     * {@inheritdoc}
      */
     public function supportsClass($class)
     {
-        return gettype($class) === 'string';
+        return $this->classChecker->supportsClass($class);
     }
 
     /**
-     * Returns the vote for the given parameters.
-     *
-     * This method must return one of the following constants:
-     * ACCESS_GRANTED, ACCESS_DENIED, or ACCESS_ABSTAIN.
-     *
-     * @param TokenInterface $token A TokenInterface instance
-     * @param string $object The object to secure
-     * @param array $attributes An array of attributes associated with the method being invoked
-     *
-     * @return int     either ACCESS_GRANTED, ACCESS_ABSTAIN, or ACCESS_DENIED
+     * {@inheritdoc}
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
@@ -93,15 +99,19 @@ class DefaultEntityActionsVoter implements VoterInterface
 
         // check first for role permission if fails check user permission
         $roles = $user->getRoles();
-        if ($this->rulesManager->checkEntityRolePermission($object, $roles, $attribute)) {
+        $realClass = $object;
+        if (is_object($object)) {
+            $realClass = ClassUtils::getRealClass($object);
+        }
+
+        if ($this->rulesManager->checkEntityRolePermission($realClass, $roles, $attribute)) {
             return VoterInterface::ACCESS_GRANTED;
         }
 
-        if ($this->rulesManager->checkEntityUserPermission($object, $user->getUsername(), $attribute)) {
+        if ($this->rulesManager->checkEntityUserPermission($realClass, $user->getUsername(), $attribute)) {
             return VoterInterface::ACCESS_GRANTED;
         }
 
-        return VoterInterface::ACCESS_ABSTAIN;
+        return VoterInterface::ACCESS_DENIED;
     }
-
 }

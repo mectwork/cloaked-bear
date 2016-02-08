@@ -115,7 +115,8 @@ services:
         class: Buseta\TallerBundle\Voter\TallerEntitiesActionsVoter
         arguments:
             - @hatuey_soft.security.acl_rules_manager
-        public: false
+            - @hatuey_soft.voter_attributes_checker
+            - @hatuey_soft.voter_class_checker
         tags:
             - {name: security.voter}
 

@@ -66,7 +66,7 @@
     </div>
 
     <hr/>
-    {% if status == 'BO' and is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\Reporte') %}
+    {% if status == 'BO' and is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\Reporte') %}
     <div class="btn-group" style="margin-bottom: 8px;">
         <a class="btn btn-primary" href="{{ path('reporte_new', {'status': status}) }}">
             <span class="glyphicon glyphicon-plus-sign"></span> {{ 'reporte.btn.adicionar'|trans({}, 'BusetaTallerBundle') }}

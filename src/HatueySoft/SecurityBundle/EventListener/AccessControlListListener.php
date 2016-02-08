@@ -3,31 +3,44 @@
 namespace HatueySoft\SecurityBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\Common\EventSubscriber;
-use HatueySoft\SecurityBundle\Utils\AclManager;
-use HatueySoft\SecurityBundle\Utils\AclRulesManager;
-use HatueySoft\SecurityBundle\Utils\ConfigurationReader;
+use HatueySoft\SecurityBundle\Manager\AclManager;
+use HatueySoft\SecurityBundle\Manager\AclRulesManager;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 
+/**
+ * Class AccessControlListListener
+ *
+ * @package HatueySoft\SecurityBundle\EventListener
+ */
 class AccessControlListListener
 {
     /**
-     * @var \HatueySoft\SecurityBundle\Utils\AclRulesManager
+     * @var AclRulesManager
      */
     private $aclRulesManager;
 
     /**
-     * @var \HatueySoft\SecurityBundle\Utils\AclManager
+     * @var AclManager
      */
     private $aclManager;
 
     /**
-     * @param AclRulesManager $aclRulesManager
+     * @var boolean
      */
-    function __construct(AclRulesManager $aclRulesManager, AclManager $aclManager)
+    private $useSymfonyAcl;
+
+
+    /**
+     * @param AclRulesManager $aclRulesManager
+     * @param AclManager      $aclManager
+     * @param array           $hatueySoftSecurityConfig
+     */
+    function __construct(AclRulesManager $aclRulesManager, AclManager $aclManager, $hatueySoftSecurityConfig)
     {
         $this->aclRulesManager = $aclRulesManager;
         $this->aclManager = $aclManager;
+        $this->useSymfonyAcl = $hatueySoftSecurityConfig['acl']['symfony_acl'] ?
+            $hatueySoftSecurityConfig['acl']['symfony_acl'] : false;
     }
 
     /**
@@ -35,8 +48,11 @@ class AccessControlListListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        if (!$this->useSymfonyAcl) {
+            return;
+        }
 
+        $entity = $args->getEntity();
         $className = ClassUtils::getRealClass($entity);
         $classRules = $this->aclRulesManager->getEntityRule($className);
 

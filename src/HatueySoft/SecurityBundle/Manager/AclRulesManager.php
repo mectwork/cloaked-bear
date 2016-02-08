@@ -1,7 +1,6 @@
 <?php
 
-namespace HatueySoft\SecurityBundle\Utils;
-
+namespace HatueySoft\SecurityBundle\Manager;
 
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -9,6 +8,11 @@ use Symfony\Component\Yaml\Exception\DumpException;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class AclRulesManager
+ *
+ * @package HatueySoft\SecurityBundle\Manager
+ */
 class AclRulesManager
 {
     /**
@@ -26,11 +30,15 @@ class AclRulesManager
      */
     private $aclEntities;
 
-    const ACL_CONFIG_FILE = '/../Resources/config/security_acl.yml';
 
+    /**
+     * AclRulesManager constructor.
+     *
+     * @param ContainerInterface $container
+     */
     function __construct(ContainerInterface $container)
     {
-        $this->aclConfigFile    = __DIR__.AclRulesManager::ACL_CONFIG_FILE;
+        $this->aclConfigFile    = $container->getParameter('hatuey_soft_security.config')['config_file'];
         $this->logger           = $container->get('logger');
         $this->aclEntities      = $container->getParameter('hatuey_soft_security.config')['acl']['entities'];
     }
@@ -63,6 +71,7 @@ class AclRulesManager
      * ACL_CONFIG_FILE = '/../Resources/config/security_acl.yml';
      *
      * @param array $aclRules
+     *
      * @return bool
      */
     public function setSecurityAcl($aclRules)
@@ -73,12 +82,11 @@ class AclRulesManager
         }
 
         try {
-            $yaml = Yaml::dump($aclRules,3,2);
+            $yaml = Yaml::dump($aclRules, 3, 2);
 
             file_put_contents($this->aclConfigFile, $yaml);
 
-            //var_dump('true');die;
-
+            return true;
         } catch(DumpException $e) {
             $this->logger->addCritical(printf('No es posible escribir sobre el archivo YAML: %s', $e->getMessage()));
 
@@ -99,7 +107,9 @@ class AclRulesManager
     /**
      * Devuelve el nombre completo de la entidad, es para configuracion global
      *
-     * @return String
+     * @param $entity
+     *
+     * @return string|boolean
      */
     public function getEntity($entity)
     {
@@ -159,6 +169,7 @@ class AclRulesManager
      * Retorna un arreglo con las debidas reglas de ACL. Falso en caso de no encontrar reglas algunas.
      *
      * @param $entity
+     *
      * @return bool|array
      */
     public function getEntityRule($entity)
@@ -172,9 +183,8 @@ class AclRulesManager
         }
 
         $entityData = $this->getEntity($entity);
-
         foreach ($rules as $rule) {
-            if ($rule['entity']['class'] === $entity || $rule['entity']['class'] === $entityData) {
+            if ($rule['entity'] === $entity || $rule['entity'] === $entityData) {
                 return $rule;
             }
         }
@@ -189,6 +199,7 @@ class AclRulesManager
      * @param $entity
      * @param array $roles
      * @param array $users
+     *
      * @return boolean
      */
     public function setEntityRule($entity, $roles = array(), $users = array())
@@ -205,7 +216,7 @@ class AclRulesManager
         $entityData = $this->getEntity($entity); // var_dump($entityData);die;
         if ($entityData != false) {
             foreach ($allRules as $key => $rule) {
-                if ($rule['entity']['class'] === $entity || $rule['entity']['class'] === $entityData) {
+                if ($rule['entity'] === $entity || $rule['entity'] === $entityData) {
                     //caso en que modifico el nodo.
                     $rule['roles'] = $roles;
                     $rule['users'] = $users;
@@ -236,9 +247,11 @@ class AclRulesManager
 
     /**
      * Check if the given role has the attribute for entity
+     *
      * @param $entity
      * @param $roles
      * @param $attribute
+     *
      * @return bool
      */
     public function checkEntityRolePermission($entity, $roles, $attribute)
@@ -259,6 +272,7 @@ class AclRulesManager
      * @param $entity
      * @param $user
      * @param $attribute
+     *
      * @return bool
      */
     public function checkEntityUserPermission($entity, $user, $attribute)
@@ -340,6 +354,8 @@ class AclRulesManager
     }
 
     /**
+     * Gets Acl config file path
+     *
      * @return string
      */
     public function getAclConfigFile()

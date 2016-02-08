@@ -19,32 +19,63 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('hatuey_soft_security');
-        $rootNode->children()
-            ->scalarNode('security_config')->defaultValue('config.yml')->end()
+        $rootNode
+            ->children()
+                ->scalarNode('security_config')
+                    ->defaultValue('%kernel.root_dir%/config/security_conf.yml')
+                ->end()
             ->end();
-        $rootNode->children()
-            ->scalarNode('command_scope')->defaultValue('app/')->end()
+        $rootNode
+            ->children()
+                ->scalarNode('command_scope')
+                    ->defaultValue('%kernel.root_dir%')
+                ->end()
+            ->end();
+        $rootNode
+            ->children()
+                ->scalarNode('config_file')
+                    ->defaultValue('%kernel.root_dir%/config/security_acl.yml')
+                ->end()
             ->end();
 
-          $rootNode->children()
-                      ->arrayNode('acl')
-                           ->performNoDeepMerging()
-                           ->addDefaultsIfNotSet()
-                           ->children()
-                                ->arrayNode('entities')
-                                    ->prototype('array')
-                                        ->children()
-                                            ->scalarNode('class')->end()
-                                            ->arrayNode('rules')
-                                                ->prototype('variable')->end()
-                                                ->info('The list of actions enabled in the "class"')
-                                            ->end()
-                                        ->end()
+        $rootNode
+            ->children()
+                ->arrayNode('acl')
+                    ->performNoDeepMerging()
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('symfony_acl')
+                            ->defaultTrue()
+                            ->info('Enable/Disable Symfony ACL Mechanism.')
+                        ->end()
+                    ->end()
+                    ->children()
+                        ->arrayNode('entities')
+                            ->info('List of entities under ACL control.')
+                            ->prototype('array')
+                                ->children()
+                                    ->scalarNode('name')
+                                        ->info('Name to show for this entity.')
                                     ->end()
-                                 ->end()
-                           ->end()
-                       ->end()
-                     ->end();
+                                    ->scalarNode('class')
+                                        ->isRequired()
+                                        ->cannotBeEmpty()
+                                        ->info('Entity path.')
+                                    ->end()
+                                    ->arrayNode('rules')
+                                        ->prototype('scalar')->end()
+                                        ->info('The list of actions enabled in the "class".
+    By default contains create, view, edit, delete, list and search.
+    To exclude one of the default rule, prepend "!" and then the rule.
+    Ex: "!create"')
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end(); // end root node
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

@@ -2,9 +2,13 @@
 
 namespace HatueySoft\SecurityBundle\Doctrine;
 
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Class AclProviderCallable
+ *
+ * @package HatueySoft\SecurityBundle\Doctrine
+ */
 class AclProviderCallable
 {
     /**
@@ -12,6 +16,12 @@ class AclProviderCallable
      */
     private $container;
 
+
+    /**
+     * AclProviderCallable constructor.
+     *
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -20,6 +30,9 @@ class AclProviderCallable
     /**
      * @param $object
      * @param $method
+     *
+     * @return mixed|\Symfony\Component\Security\Acl\Model\MutableAclInterface
+     *
      * @throws \Exception
      * @throws \Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException
      */
@@ -28,9 +41,9 @@ class AclProviderCallable
         if ($method === 'create') {
             return $this->container->get('security.acl.provider')->createAcl($object);
         } elseif ($method === 'update') {
-            $this->container->get('security.acl.provider')->updateAcl($object);
+            return $this->container->get('security.acl.provider')->updateAcl($object);
         } elseif($method === 'delete') {
-            $this->container->get('security.acl.provider')->deleteAcl($object);
+            return $this->container->get('security.acl.provider')->deleteAcl($object);
         }
     }
-} 
+}

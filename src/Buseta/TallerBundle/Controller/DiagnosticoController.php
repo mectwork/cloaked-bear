@@ -287,7 +287,7 @@ class DiagnosticoController extends Controller
     /**
      * Displays a form to create a new Diagnostico entity.
      *
-     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\Diagnostico')")
+     * @Security("is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\Diagnostico')")
      *
      */
     public function newAction()
@@ -332,7 +332,7 @@ class DiagnosticoController extends Controller
     /**
      * Creates a new Diagnostico entity.
      *
-     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\Diagnostico')")
+     * @Security("is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\Diagnostico')")
      */
     public function createAction(Request $request)
     {

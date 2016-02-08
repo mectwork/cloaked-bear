@@ -47,7 +47,7 @@
     <hr/>
 
     <div id="actions_container">
-        {% if is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo') %}
+        {% if is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo') %}
         <div class="btn-group pull-left" style="padding-bottom: 8px;">
             <a class="btn btn-primary" href="{{ path('ordentrabajo_new') }}"><i class="fa fa-plus-circle"></i> Adicionar
                 Orden de Trabajo</a>

@@ -1,6 +1,6 @@
 <?php
 
-namespace HatueySoft\SecurityBundle\Utils;
+namespace HatueySoft\SecurityBundle\Manager;
 
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Bridge\Monolog\Logger;
@@ -8,9 +8,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Util\ClassUtils;
 
+/**
+ * Class AclManager
+ *
+ * @package HatueySoft\SecurityBundle\Manager
+ */
 class AclManager
 {
     /**
@@ -28,11 +31,17 @@ class AclManager
      */
     private $logger;
 
+
+    /**
+     * AclManager constructor.
+     *
+     * @param ContainerInterface $container
+     */
     function __construct(ContainerInterface $container)
     {
         $this->aclProviderCallable  = $container->get('hatuey_soft.acl_provider_callable');
-        $this->logger               = $container->get('logger');
         $this->userCallable         = $container->get('hatuey_soft.security.user_callable');
+        $this->logger               = $container->get('logger');
     }
 
     /**

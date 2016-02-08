@@ -45,7 +45,7 @@
     </div>
 
     <hr/>
-    {% if is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\Diagnostico') %}
+    {% if is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\Diagnostico') %}
     <div class="btn-group" style="margin-bottom: 8px;">
         <a class="btn btn-primary" href="{{ path('diagnostico_new') }}">
             <span class="glyphicon glyphicon-plus-sign"></span> {{ 'diagnostico.btn.adicionar'|trans({}, 'BusetaTallerBundle') }}

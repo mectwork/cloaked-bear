@@ -66,7 +66,7 @@ class OrdenTrabajoController extends Controller
     /**
      * Creates a new OrdenTrabajo entity.
      *
-     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo')")
+     * @Security("is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo')")
      */
     public function createAction(Request $request)
     {
@@ -123,7 +123,7 @@ class OrdenTrabajoController extends Controller
     /**
      * Displays a form to create a new OrdenTrabajo entity.
      *
-     * @Security("is_granted('CREATE_ENTITY', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo')")
+     * @Security("is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo')")
      */
     public function newAction()
     {

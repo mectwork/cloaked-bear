@@ -7,7 +7,8 @@ app/bootstrap.php.cache
 app/bootstrap_cache.php.cache
 app/config/parameters.ini
 app/config/parameters.yml
-/app/config/security_conf.yml
+app/config/security_conf.yml
+app/config/security_acl.yml
 app/cache/*
 app/logs/*
 vendor/*
