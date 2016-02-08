@@ -4,18 +4,19 @@ namespace HatueySoft\SecurityBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use HatueySoft\SecurityBundle\Form\Model\UserModel;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use HatueySoft\SecurityBundle\Entity\User as Usuario;
-use HatueySoft\SecurityBundle\Form\Type\UsuarioType as UsuarioType;
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 
 /**
  * Usuario controller.
  *
  * @Route("/usuario")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo Seguridad", routeName="security_usuario")
  */
 class UsuarioController extends Controller
 {
@@ -24,6 +25,7 @@ class UsuarioController extends Controller
      * Lists all Usuario entities.
      *
      * @Route("/", name="security_usuario")
+     * @Breadcrumb(title="Listado de Usuarios", routeName="security_usuario")
      */
     public function indexAction()
     {
@@ -40,6 +42,7 @@ class UsuarioController extends Controller
      *
      * @Route("/create", name="security_usuario_create")
      * @Method("POST")
+     * @Breadcrumb(title="Crear Nuevo Usuario", routeName="security_usuario_create")
      */
     public function createAction(Request $request)
     {
@@ -107,6 +110,7 @@ class UsuarioController extends Controller
      * Displays a form to create a new Usuario entity.
      *
      * @Route("/new", name="security_usuario_new")
+     * @Breadcrumb(title="Crear Nuevo Usuario", routeName="security_usuario_create")
      */
     public function newAction()
     {
@@ -121,6 +125,7 @@ class UsuarioController extends Controller
      * Finds and displays a Usuario entity.
      *
      * @Route("/{id}/show", name="security_usuario_show")
+     * @Breadcrumb(title="Ver Datos de Usuario", routeName="security_usuario_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -148,6 +153,7 @@ class UsuarioController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @Route("/{id}/edit", name="security_usuario_edit")
+     * @Breadcrumb(title="Modificar Usuario", routeName="security_usuario_edit", routeParameters={"id"})
      */
     public function editAction(Usuario $user)
     {
@@ -182,6 +188,7 @@ class UsuarioController extends Controller
      *
      * @Route("/{id}/update", name="security_usuario_update")
      * @Method({"POST", "PUT"})
+     * @Breadcrumb(title="Modificar Usuario", routeName="security_usuario_edit", routeParameters={"id"})
      */
     public function updateAction(Request $request, Usuario $user)
     {
