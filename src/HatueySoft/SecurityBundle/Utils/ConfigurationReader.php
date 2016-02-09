@@ -2,7 +2,7 @@
 
 namespace HatueySoft\SecurityBundle\Utils;
 
-use HatueySoft\SecurityBundle\Utils\SecurityManager;
+use HatueySoft\SecurityBundle\Manager\SecurityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
