@@ -23,7 +23,7 @@ class VoterAttributesChecker
      */
     public function supportsAttribute($attribute)
     {
-        return in_array(strtolower($attribute), array(
+        return in_array(trim(strtolower($attribute)), array(
             self::CREATE,
             self::VIEW,
             self::EDIT,
@@ -31,5 +31,22 @@ class VoterAttributesChecker
             self::LISTS,
             self::SEARCH
         ));
+    }
+
+
+    /**
+     *
+     * @return array
+     */
+    public function getSupportsAttributes()
+    {
+        return array(
+            self::CREATE,
+            self::VIEW,
+            self::EDIT,
+            self::DELETE,
+            self::LISTS,
+            self::SEARCH
+        );
     }
 }

@@ -172,6 +172,14 @@ easy_admin:
                     - 'minutos'
                     - { property: 'colorentiempo', label: 'Color en Tiempo' }
                     - { property: 'coloratrasado', label: 'Color si Atrasado' }
+#       diagnostico:
+#               class: Buseta\TallerBundle\Entity\Diagnostico
+#               label: 'Diagnósticos de Buses'
+#               rules:
+#                   - 'list'
+#                   - 'view'
+#                   - 'process'
+#                   - { code: 'complete', label: 'Completar', icon: 'fa fa-tag' }
         'Tipo Compra': Buseta\NomencladorBundle\Entity\TipoCompra
         'Tipo Contacto': Buseta\NomencladorBundle\Entity\TipoContacto
         'Tarea': Buseta\NomencladorBundle\Entity\Tarea
@@ -185,16 +193,32 @@ hatuey_soft_security:
         entities:
             reporte:
                     class: Buseta\TallerBundle\Entity\Reporte
-                    rules: [process, complete]
+                    label: 'Reporte de Transacciones'
+                    rules:
+                             - !
+                             - { code: 'aa', icon: 'book' }
+                             - { code: 'cc' }
+                             - { code: 'show' }
+            trabajador:
+                    class: Buseta\TallerBundle\Entity\Trabajador
+                    label: 'Trabajador de Planilla'
+                    rules:
+                             - { code: pasaraborrador, icon: 'book' }
+                             - { code: 'cc' }
+                             - { code: '!show' }
             diagnostico:
                     class: Buseta\TallerBundle\Entity\Diagnostico
-                    rules: [search, list]
+                    rules: [ terminar , delete , { code: 'list', label: 'LISTADOOOOOOO',  icon: 'leaf' } ]
             ordentrabajo:
                     class: Buseta\TallerBundle\Entity\OrdenTrabajo
-                    rules: []
+                    rules: [ !list , !search ]
             bodega:
                     class: Buseta\BodegaBundle\Entity\Bodega
                     rules: []
+            almacen:
+                    class: Buseta\BodegaBundle\Entity\Almacen
+            usuario: Buseta\TallerBundle\Entity\Usuario
+
 #    acl:
 #        entities:
 #            reporte: Buseta\TallerBundle\Entity\Reporte

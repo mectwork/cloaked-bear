@@ -4,6 +4,7 @@ namespace HatueySoft\SecurityBundle\Controller;
 
 use HatueySoft\SecurityBundle\Event\GetRoleEvents;
 use HatueySoft\SecurityBundle\Event\RoleEvents;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -89,6 +90,7 @@ class RoleController extends Controller
 
     /**
      * @param Request $request
+     * @return RedirectResponse
      *
      * @Route("/{role}/edit", name="role_edit", options={"expose": true})
      */
@@ -112,6 +114,7 @@ class RoleController extends Controller
 
     /**
      * @param Request $request
+     * @return RedirectResponse
      *
      * @Route("/{role}/update", name="role_update")
      * @Method({"POST", "PUT"})
@@ -244,7 +247,6 @@ class RoleController extends Controller
             }
 
         }
-
 
         $manager = $this->get('security.manager');
         $security = $manager->fileAsArray();

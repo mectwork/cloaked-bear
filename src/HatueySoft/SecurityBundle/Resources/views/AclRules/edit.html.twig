@@ -24,23 +24,9 @@
                     <td class="col-md-4">{{ u.nombreCompleto }}</td>
                     <td class="col-md-6">
                         <div class="btn-group">
-                            <a href="#" class="btn btn-primary" title="CREATE" data-content="CREATE">
-                                <span class="glyphicon glyphicon-plus"></span></a>
-                            <a href="#" class="btn btn-primary" title="VIEW" data-content="VIEW">
-                                <span class="glyphicon glyphicon-eye-open"></span></a>
-                            <a href="#" class="btn btn-primary" title="EDIT" data-content="EDIT">
-                                <span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="#" class="btn btn-primary" title="DELETE" data-content="DELETE">
-                                <span class="glyphicon glyphicon-trash"></span></a>
-                            <a href="#" class="btn btn-primary" title="SEARCH" data-content="SEARCH">
-                                <span class="glyphicon glyphicon-search"></span></a>
-                            <a href="#" class="btn btn-primary" title="LIST" data-content="LIST">
-                                <span class="glyphicon glyphicon-list"></span></a>
-
-                            {#A PARTIR DE AQUI LOS PERMISOS ESPECIFICOS QUE CADA ENTIDAD DEFINA#}
-                            {% for a in allExtraRules %}
-                                <a href="#" class="btn btn-primary" title="{{ a | upper }}" data-content="{{ a | upper }}">
-                                    <span class="glyphicon glyphicon-edit"></span></a>
+                            {% for rule in bakendEntityRules %}
+                                <a href="#" class="btn btn-primary" title="{{ rule.label }}" data-content="{{ rule.code }}">
+                                    <span class="glyphicon glyphicon-{{ rule.icon }}"></span></a>
                             {% endfor %}
                         </div>
                     </td>
@@ -69,26 +55,10 @@
                     <td  class="col-md-6">{{ r }}</td>
                     <td  class="col-md-6">
                         <div class="btn-group">
-                            {#ESTOS SON LOS ESTANDARES#}
-                            <a href="#" class="btn btn-primary" title="CREATE" data-content="CREATE">
-                                <span class="glyphicon glyphicon-plus"></span></a>
-                            <a href="#" class="btn btn-primary" title="VIEW" data-content="VIEW">
-                                <span class="glyphicon glyphicon-eye-open"></span></a>
-                            <a href="#" class="btn btn-primary" title="EDIT" data-content="EDIT">
-                                <span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="#" class="btn btn-primary" title="DELETE" data-content="DELETE">
-                                <span class="glyphicon glyphicon-trash"></span></a>
-                            <a href="#" class="btn btn-primary" title="SEARCH" data-content="SEARCH">
-                                <span class="glyphicon glyphicon-search"></span></a>
-                            <a href="#" class="btn btn-primary" title="LIST" data-content="LIST">
-                                <span class="glyphicon glyphicon-list"></span></a>
-
-                            {#A PARTIR DE AQUI LOS PERMISOS ESPECIFICOS QUE CADA ENTIDAD DEFINA#}
-                            {% for a in allExtraRules %}
-                            <a href="#" class="btn btn-primary" title="{{ a | upper }}" data-content="{{ a | upper }}">
-                                <span class="glyphicon glyphicon-edit"></span></a>
+                            {% for rule in bakendEntityRules %}
+                                <a href="#" class="btn btn-primary" title="{{ rule.label }}" data-content="{{ rule.code }}">
+                                    <span class="glyphicon glyphicon-{{ rule.icon  }}"></span></a>
                             {% endfor %}
-
                         </div>
                     </td>
                 </tr>
