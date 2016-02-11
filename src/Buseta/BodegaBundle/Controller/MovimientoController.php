@@ -248,7 +248,7 @@ class MovimientoController extends Controller
                     $em);
 
                 //Comprobar la existencia del producto en la bodega seleccionada
-                if ($cantidadDisponible == 'No existe') {
+                if ($cantidadDisponible === 'No existe') {
                     //Volver al menu de de crear nuevo Movimiento
                     $movimientosProductos = $this->createForm(new MovimientosProductosType());
 
