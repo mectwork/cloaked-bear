@@ -3,23 +3,8 @@
 
     {% set cancelado = entity.cancelado %}
 
-
     <li class="list-group-item"><b>Número:</b>  {{ entity.numero }}</li>
     <li class="list-group-item"><b>Autobus:</b>  {{ entity.autobus }}</li>
-
-
-    {% if entity.estado == 'CO' %}
-        {% set badge = 'success' %}
-    {% elseif entity.estado == 'PR' %}
-        {% set badge = 'primary' %}
-    {% else %}
-        {% set badge = 'warning' %}
-    {% endif %}
-
-    <li class="list-group-item">Estado: <span
-                class="label label-{{ badge }}"> {{ ('estado.' ~ entity.estado)  | trans({}, 'BusetaTallerBundle') }}
-    </li>
-
     <li class="list-group-item"><b>Medio:</b> Sin medio reporte</li>
     <li class="list-group-item"><b>Reporta:</b> Sin reporte</li>
 
