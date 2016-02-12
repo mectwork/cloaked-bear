@@ -107,12 +107,12 @@
                 {#<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}" type="text/javascript"></script>#}
             {% endblock foot_script_assetic %}
 
-            {#<script type="text/javascript">
+            <script type="text/javascript">
                 $(document).ready(function () {
                     $('[data-toggle="tooltip"]').tooltip();
-                    $('[data-toggle="popover"]').popover();
+//                    $('[data-toggle="popover"]').popover();
                 });
-            </script>#}
+            </script>
             {% block javascripts %}{% endblock javascripts %}
         {% endblock foot_script %}
     </body>

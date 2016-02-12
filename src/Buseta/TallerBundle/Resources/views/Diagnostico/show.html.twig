@@ -7,15 +7,11 @@
 {% block header 'Ver Datos de Diagnóstico' %}
 
 {% block header_right %}
-    {% if entity.estado == 'CO' %}
-        {% set badge = 'success' %}
-    {% elseif entity.estado == 'PR' %}
-        {% set badge = 'primary' %}
-    {% else %}
-        {% set badge = 'warning' %}
-    {% endif %}
+    {% from '@BusetaTemplate/Macros/macros.html.twig' import documentState %}
 
-    <h4 class="pull-right"><span class="label label-{{ badge }}"> {{ ('estado.' ~ entity.estado)  | trans({}, 'BusetaTallerBundle') }}</h4>
+    <h4 class="pull-right">
+        {{ documentState(entity.estado, 'BusetaTallerBundle') }}
+    </h4>
 {% endblock %}
 
 {% block area_trabajo %}

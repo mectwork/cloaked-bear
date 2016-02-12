@@ -1,0 +1,15 @@
+{% trans_default_domain 'messages' %}
+
+{% macro documentState(state, translationDomain) %}
+    {% if state == 'CO' %}
+        {% set badge = 'success' %}
+    {% elseif state == 'PR' %}
+        {% set badge = 'primary' %}
+    {% else %}
+        {% set badge = 'danger' %}
+    {% endif %}
+
+    {% set value = ('estado.' ~ state)  | trans({}, translationDomain) %}
+    <span class="label label-{{ badge }}" data-toggle="tooltip" data-placement="left"
+          title="{{ 'label.state'|trans ~ ' ' ~ value }}"> {{ value | upper }}</span>
+{% endmacro %}
