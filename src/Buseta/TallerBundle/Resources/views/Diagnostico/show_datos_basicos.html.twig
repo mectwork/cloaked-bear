@@ -54,15 +54,15 @@
                 <div class="panel panel-default" style="margin: 10px">
                     <!-- Default panel contents -->
                     <div class="panel-heading">
-                        <h3 class="panel-title">Observaciones del Reporte</h3>
+                        <h3 class="panel-title">Observaciones de Solicitud</h3>
                     </div>
 
-                    <!-- Observaciones del Reporte -->
+                    <!-- Observaciones de Solicitud -->
                     <ul class="list-group">
                         {% for reporte in reportes.observaciones %}
                             <li class="list-group-item">{{ reporte.valor }}</li>
                         {% else %}
-                            <li class="list-group-item">No existen observaciones de reportes disponibles</li>
+                            <li class="list-group-item">No existen observaciones de solicitud disponibles</li>
                         {% endfor %}
                     </ul>
 
@@ -75,7 +75,7 @@
 
         </ul>
     {% else %}
-        <!-- Resumen Reporte -->
+        <!-- Resumen Solicitud -->
         <ul class="list-group">
 
 
@@ -83,10 +83,10 @@
                 <div class="panel panel-default" style="margin: 10px">
                     <!-- Default panel contents -->
                     <div class="panel-heading">
-                        <h3 class="panel-title">Observaciones del Reporte</h3>
+                        <h3 class="panel-title">Observaciones de Solicitud</h3>
                     </div>
                     <ul class="list-group">
-                        <li class="list-group-item"> No fueron asociados reportes al diagnóstico.</li>
+                        <li class="list-group-item"> No fueron asociados solicitudes al diagnóstico.</li>
                     </ul>
                     <!-- Observaciones del Reporte -->
 
@@ -105,7 +105,7 @@
         <div class="panel panel-default" style="margin: 10px">
             <!-- Default panel contents -->
             <div class="panel-heading">
-                <h3 class="panel-title">Tareas del diagnostico</h3>
+                <h3 class="panel-title">Tareas del Diagnóstico</h3>
             </div>
 
 
@@ -133,7 +133,7 @@
                     {% else %}
                         <tr>
                             <td colspan="6">
-                                <span class="label label-danger">No existen tareas de mantenimiento disponibles</span>
+                                <span class="label label-danger">No existen tareas de diagnóstico disponibles</span>
                             </td>
                         </tr>
                     {% endfor %}
