@@ -8,7 +8,6 @@ use Buseta\BusesBundle\Form\Model\ArchivoAdjuntoModel;
 use Buseta\BusesBundle\Form\Model\AutobusBasicoModel;
 use Buseta\BusesBundle\Form\Model\AutobusFilterModel;
 use Buseta\BusesBundle\Entity\Autobus;
-
 use Buseta\BusesBundle\Form\Type\ArchivoAdjuntoType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,12 +15,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\HttpFoundation\Response;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * Autobus controller.
  *
  * @Route("/autobus")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Vehículos", routeName="autobus_principal")
  */
 class AutobusController extends Controller
 {
@@ -35,6 +35,8 @@ class AutobusController extends Controller
 
     /**
      * Lists all Autobuses entities.
+     * @Route("/autobus")
+     * @Breadcrumb(title="Listado de Autobuses", routeName="autobus")
      */
     public function indexAction(Request $request)
     {
@@ -68,8 +70,8 @@ class AutobusController extends Controller
 
     /**
      * Creates a new Autobus entity.
-     *
      * @Route("/create", name="autobuses_autobus_basicos_create", methods={"POST"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Autobus", routeName="autobuses_autobus_basicos_create")
      */
     public function createAction(Request $request)
     {
@@ -137,6 +139,7 @@ class AutobusController extends Controller
      * Displays a form to create a new Autobus entity.
      *
      * @Route("/new", name="autobuses_autobus_basicos_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Autobus", routeName="autobuses_autobus_basicos_create")
      */
     public function newAction()
     {
@@ -152,6 +155,7 @@ class AutobusController extends Controller
      *
      * @Route("/{id}/show", name="autobus_show")
      * @Method("GET")
+     * @Breadcrumb(title="Ver Datos de Autobus", routeName="autobus_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -180,6 +184,7 @@ class AutobusController extends Controller
      *
      * @Route("/{id}/edit", name="autobus_edit")
      * @Method("GET")
+     * @Breadcrumb(title="Modificar Autobus", routeName="autobus_edit", routeParameters={"id"})
      */
     public function editAction(Autobus $autobus)
     {
@@ -214,6 +219,7 @@ class AutobusController extends Controller
      *
      * @Route("/{id}/update", name="autobus_basico_update", options={"expose": true})
      * @Method({"POST", "PUT"})
+     * @Breadcrumb(title="Modificar Autobus", routeName="autobus_basico_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, Autobus $autobus)
     {
