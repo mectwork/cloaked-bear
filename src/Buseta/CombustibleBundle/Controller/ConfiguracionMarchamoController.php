@@ -10,12 +10,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 
 /**
  * Class ConfiguracionMarchamoController
  * @package Buseta\CombustibleBundle\Controller
  *
  * @Route("/configuracion/marchamo")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Combustible", routeName="servicioCombustible")
+ * * @Breadcrumb(title="Configuración de Marchamo")
  */
 class ConfiguracionMarchamoController extends Controller
 {
@@ -56,6 +60,7 @@ class ConfiguracionMarchamoController extends Controller
      *
      * @Route("/update", name="combustible_configuracion_marchamo_update")
      * @Method("PUT")
+     * @Breadcrumb(title="Modificar Configuración de Marchamo", routeName="autobus_basico_update", routeParameters={"id"})
      */
     public function updateAction(Request $request)
     {

@@ -11,11 +11,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * ConfiguracionCombustible controller.
  *
  * @Route("/configuracion/combustible")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Combustible", routeName="servicioCombustible")
  */
 class ConfiguracionCombustibleController extends Controller
 {
@@ -24,6 +26,7 @@ class ConfiguracionCombustibleController extends Controller
      *
      * @Route("/", name="configuracion_combustible")
      * @Method("GET")
+     * @Breadcrumb(title="Listado de Configuración de Combustibles", routeName="configuracion_combustible")
      */
     public function indexAction(Request $request)
     {
@@ -40,6 +43,7 @@ class ConfiguracionCombustibleController extends Controller
      * Displays a form to create a new ConfiguracionCombustible entity.
      *
      * @Route("/new", name="configuracion_combustible_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nueva Configuración de Combustibles", routeName="configuracion_combustible_new")
      */
     public function newAction()
     {
@@ -73,6 +77,7 @@ class ConfiguracionCombustibleController extends Controller
      * Creates a new ConfiguracionCombustible entity.
      *
      * @Route("/create", name="configuracion_combustible_create", methods={"POST"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nueva Configuración de Combustibles", routeName="configuracion_combustible_create")
      */
     public function createAction(Request $request)
     {
@@ -99,6 +104,7 @@ class ConfiguracionCombustibleController extends Controller
      *
      * @Route("/{id}/show", name="configuracion_combustible_show")
      * @Method("GET")
+     * @Breadcrumb(title="Ver datos de la Configuración de Combustible", routeName="configuracion_combustible_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -228,6 +234,7 @@ class ConfiguracionCombustibleController extends Controller
      *
      * @Route("/{id}/edit", name="configuracion_combustible_edit")
      * @Method("GET")
+     * @Breadcrumb(title="Modificar Datos de la Configuración de Combustible", routeName="configuracion_combustible_edit", routeParameters={"id"})
      */
     public function editAction($id)
     {
@@ -271,6 +278,7 @@ class ConfiguracionCombustibleController extends Controller
      *
      * @Route("/{id}/update", name="configuracion_combustible_update", options={"expose": true})
      * @Method({"POST", "PUT"})
+     * @Breadcrumb(title="Modificar Datos de la Configuración de Combustible", routeName="configuracion_combustible_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {

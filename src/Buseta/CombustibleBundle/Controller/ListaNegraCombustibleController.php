@@ -13,11 +13,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * ListaNegraCombustible controller.
  *
  * @Route("/listaNegraCombustible")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Combustible", routeName="servicioCombustible")
  */
 class ListaNegraCombustibleController extends Controller
 {
@@ -26,6 +28,7 @@ class ListaNegraCombustibleController extends Controller
      *
      * @Route("/", name="listaNegraCombustible")
      * @Method("GET")
+     * @Breadcrumb(title="Listas Negras de Combustible", routeName="listaNegraCombustible")
      */
     public function indexAction(Request $request)
     {
@@ -61,6 +64,7 @@ class ListaNegraCombustibleController extends Controller
      * Displays a form to create a new ListaNegraCombustible entity.
      *
      * @Route("/new", name="listaNegraCombustible_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Lista Negra de Combustible", routeName="listaNegraCombustible_new")
      */
     public function newAction()
     {
@@ -94,6 +98,7 @@ class ListaNegraCombustibleController extends Controller
      * Creates a new ListaNegraCombustible entity.
      *
      * @Route("/create", name="listaNegraCombustible_create", methods={"POST"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Lista Negra de Combustible", routeName="listaNegraCombustible_create")
      */
     public function createAction(Request $request)
     {
@@ -120,6 +125,7 @@ class ListaNegraCombustibleController extends Controller
      *
      * @Route("/{id}/show", name="listaNegraCombustible_show")
      * @Method("GET")
+     * @Breadcrumb(title="Ver Datos de Lista Negra Combustible", routeName="listaNegraCombustible_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -217,6 +223,7 @@ class ListaNegraCombustibleController extends Controller
      *
      * @Route("/{id}/edit", name="listaNegraCombustible_edit")
      * @Method("GET")
+     * @Breadcrumb(title="Modificar Lista Negra de Combustible", routeName="listaNegraCombustible_edit", routeParameters={"id"})
      */
     public function editAction($id)
     {
@@ -260,6 +267,7 @@ class ListaNegraCombustibleController extends Controller
      *
      * @Route("/{id}/update", name="listaNegraCombustible_update", options={"expose": true})
      * @Method({"POST", "PUT"})
+     * @Breadcrumb(title="Modificar Lista Negra de Combustible", routeName="listaNegraCombustible_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {
