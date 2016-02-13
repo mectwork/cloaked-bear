@@ -6,12 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * Class AclRuleController
  * @package HatueySoft\SecurityBundle\Controller
  *
  * @Route("/aclrules")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo Seguridad", routeName="security_usuario")
  */
 class AclRuleController extends Controller
 {
@@ -19,6 +21,7 @@ class AclRuleController extends Controller
      * @return Response
      *
      * @Route("/", name="aclrules")
+     * @Breadcrumb(title="Reglas de Listas Control de Acceso", routeName="aclrules")
      */
     public function indexAction()
     {
@@ -49,6 +52,7 @@ class AclRuleController extends Controller
      * @return Response
      *
      * @Route("/{entity}/edit", name="aclrules_edit")
+     * @Breadcrumb(title="Modificar ACL", routeParameters={"id"})
      */
     public function editAction($entity)
     {
