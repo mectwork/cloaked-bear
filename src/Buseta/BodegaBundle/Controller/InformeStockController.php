@@ -8,8 +8,19 @@ use Buseta\BodegaBundle\Form\Filtro\BusquedaInformeStockType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
+/**
+ * informeStock controller.
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
+ */
+
 class InformeStockController extends Controller
 {
+/**
+ * Lists all Informe de Stock entities.
+ * @Breadcrumb(title="Informe de Stock", routeName="informeStock")
+*/
     public function indexAction(Request $request)
     {
         $em = $this->get('doctrine.orm.entity_manager');

@@ -18,11 +18,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Validator\ConstraintViolation;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * PedidoCompra controller.
  *
  * @Route("/pedidocompra")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class PedidoCompraController extends Controller
 {
@@ -31,6 +33,7 @@ class PedidoCompraController extends Controller
      *
      * @Route("/", name="pedidocompra")
      * @Method("GET")
+     * @Breadcrumb(title="Registros de Compras", routeName="pedidocompra")
      */
     public function indexAction(Request $request)
     {
@@ -176,6 +179,7 @@ class PedidoCompraController extends Controller
      *
      * @Route("/create", name="pedidocompra_create", options={"expose": true})
      * @Method("POST")
+     * @Breadcrumb(title="Crear Nuevo Registro de Compra", routeName="pedidocompra_create")
      */
     public function createAction(Request $request)
     {
@@ -245,6 +249,7 @@ class PedidoCompraController extends Controller
      *
      * @Route("/new", name="pedidocompra_new")
      * @Method("GET")
+     * @Breadcrumb(title="Crear Nuevo Registro de Compra", routeName="pedidocompra_new")
      */
     public function newAction()
     {
@@ -285,6 +290,7 @@ class PedidoCompraController extends Controller
      *
      * @Route("/{id}/show", name="pedidocompra_show")
      * @Method("GET")
+     * @Breadcrumb(title="Ver Datos de Registro de Compra", routeName="pedidocompra_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -308,6 +314,7 @@ class PedidoCompraController extends Controller
      *
      * @Route("/{id}/edit", name="pedidocompra_edit", options={"expose": true})
      * @Method("GET")
+     * @Breadcrumb(title="Modificar Registro de Compra", routeName="pedidocompra_edit", routeParameters={"id"})
      */
     public function editAction(PedidoCompra $pedidocompra)
     {
@@ -343,6 +350,7 @@ class PedidoCompraController extends Controller
      *
      * @Route("/{id}/update", name="pedidocompra_update", options={"expose": true})
      * @Method({"POST", "PUT"})
+     * @Breadcrumb(title="Modificar Registro de Compra", routeName="pedidocompra_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, PedidoCompra $pedidocompra)
     {

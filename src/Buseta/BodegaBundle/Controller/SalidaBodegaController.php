@@ -20,11 +20,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Buseta\BodegaBundle\Event\BitacoraEvents;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * SalidaBodega controller.
  *
  * @Route("/salidabodega")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class SalidaBodegaController extends Controller
 {
@@ -172,6 +174,9 @@ class SalidaBodegaController extends Controller
 
     /**
      * Lists all SalidaBodega entities.
+     * @Route("/salidabodega", name="salidabodega")
+     * @Method("GET")
+     * @Breadcrumb(title="Salidas de Bodegas", routeName="salidabodega")
      */
     public function indexAction(Request $request)
     {
@@ -207,6 +212,8 @@ class SalidaBodegaController extends Controller
 
     /**
      * Creates a new SalidaBodega entity.
+     * @Route("/create", name="salidabodega_create", methods={"POST"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nueva Orden de Entrada", routeName="salidabodega_create")
      */
     public function createAction(Request $request)
     {
@@ -338,6 +345,8 @@ class SalidaBodegaController extends Controller
 
     /**
      * Displays a form to create a new SalidaBodega entity.
+     * @Route("/new", name="salidabodega_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nueva Salida de Bodega", routeName="salidabodega_new")
      */
     public function newAction()
     {
@@ -371,6 +380,8 @@ class SalidaBodegaController extends Controller
 
     /**
      * Finds and displays a SalidaBodega entity.
+     * @Route("/{id}/show", name="salidabodega_show", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Ver Datos de Salida de Bodega", routeName="salidabodega_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -392,6 +403,8 @@ class SalidaBodegaController extends Controller
 
     /**
      * Displays a form to edit an existing SalidaBodega entity.
+     * @Route("/{id}/edit", name="salidabodega_edit", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Salida de Bodega", routeName="salidabodega_edit", routeParameters={"id"})
      */
     public function editAction($id)
     {
@@ -437,6 +450,8 @@ class SalidaBodegaController extends Controller
 
     /**
      * Edits an existing SalidaBodega entity.
+     * @Route("/{id}/update", name="salidabodega_update", methods={"POST","PUT"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Salida de Bodega", routeName="salidabodega_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {

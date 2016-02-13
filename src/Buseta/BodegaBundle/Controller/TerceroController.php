@@ -16,11 +16,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Buseta\BodegaBundle\Entity\Tercero;
 use Buseta\BodegaBundle\Form\Type\TerceroType;
 use Symfony\Component\HttpFoundation\Response;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * Tercero controller.
  *
  * @Route("/tercero")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class TerceroController extends Controller
 {
@@ -64,6 +66,7 @@ class TerceroController extends Controller
      *
      * @Route("/", name="tercero")
      * @Method("GET")
+     * @Breadcrumb(title="Listado de Terceros", routeName="tercero")
      */
     public function indexAction(Request $request)
     {
@@ -104,6 +107,7 @@ class TerceroController extends Controller
      *
      * @Route("/create", name="tercero_create")
      * @Method("POST")
+     * @Breadcrumb(title="Crear Nuevo Tercero", routeName="tercero_create")
      */
     public function createAction(Request $request)
     {
@@ -190,6 +194,7 @@ class TerceroController extends Controller
      *
      * @Route("/new", name="tercero_new")
      * @Method("GET")
+     * @Breadcrumb(title="Crear Nuevo Tercero", routeName="tercero_new")
      */
     public function newAction()
     {
@@ -206,6 +211,7 @@ class TerceroController extends Controller
      *
      * @Route("/{id}/show", name="tercero_show")
      * @Method("GET")
+     * @Breadcrumb(title="Ver Datos de Tercero", routeName="tercero_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -234,6 +240,7 @@ class TerceroController extends Controller
      *
      * @Route("/{id}/edit", name="tercero_edit")
      * @Method("GET")
+     * @Breadcrumb(title="Modificar Tercero", routeName="tercero_edit", routeParameters={"id"})
      */
     public function editAction(Tercero $tercero)
     {
@@ -268,6 +275,7 @@ class TerceroController extends Controller
      *
      * @Route("/{id}/update", name="tercero_update")
      * @Method({"PUT","POST"})
+     * @Breadcrumb(title="Modificar Tercero", routeName="tercero_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, Tercero $tercero)
     {

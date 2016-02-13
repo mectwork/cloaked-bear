@@ -18,11 +18,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * Producto controller.
  *
  * @Route("/producto")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class ProductoController extends Controller
 {
@@ -166,6 +168,9 @@ class ProductoController extends Controller
 
     /**
      * Lists all Producto entities.
+     * @Route("/", name="producto")
+     * @Method("GET")
+     * @Breadcrumb(title="Listado de Productos", routeName="producto")
      */
     public function indexAction(Request $request)
     {
@@ -201,6 +206,7 @@ class ProductoController extends Controller
      * Creates a new Producto entity.
      *
      * @Route("/create", name="productos_producto_create", methods={"POST"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Producto", routeName="productos_producto_create")
      */
     public function createAction(Request $request)
     {
@@ -272,6 +278,7 @@ class ProductoController extends Controller
      * Displays a form to create a new Producto entity.
      *
      * @Route("/new", name="productos_producto_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Producto", routeName="productos_producto_new")
      */
     public function newAction()
     {
@@ -284,6 +291,8 @@ class ProductoController extends Controller
 
     /**
      * Finds and displays a Producto entity.
+     * @Route("/{id}/show", name="producto_show", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Ver Datos de Producto", routeName="producto_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -306,6 +315,7 @@ class ProductoController extends Controller
      * Displays a form to edit an existing Producto entity.
      *
      * @Route("/{id}/edit", name="productos_producto_edit", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Producto", routeName="productos_producto_edit", routeParameters={"id"})
      */
     public function editAction(Producto $producto)
     {
@@ -341,6 +351,7 @@ class ProductoController extends Controller
      * Edits an existing Producto entity.
      *
      * @Route("/{id}/update", name="productos_producto_update", methods={"POST","PUT"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Producto", routeName="productos_producto_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, Producto $producto)
     {

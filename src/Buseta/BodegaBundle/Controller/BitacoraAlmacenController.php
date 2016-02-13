@@ -17,11 +17,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * BitacoraAlmacen controller.
  *
  * @Route("/bodega/bitacorabodega")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class BitacoraAlmacenController extends Controller
 {
@@ -30,6 +32,7 @@ class BitacoraAlmacenController extends Controller
      *
      * @Route("/", name="bitacoraalmacen")
      * @Method("GET")
+     * @Breadcrumb(title="Bitácora Bodegas", routeName="bitacoraalmacen")
      */
     public function indexAction(Request $request)
     {
@@ -67,6 +70,7 @@ class BitacoraAlmacenController extends Controller
      *
      * @Route("/{id}/show", name="bitacoraalmacen_show", options={"expose": true})
      * @Method("GET")
+     * @Breadcrumb(title="Ver Datos de Bitacora", routeName="bitacoraalmacen_show", routeParameters={"id"})
      */
     public function showAction($id)
     {

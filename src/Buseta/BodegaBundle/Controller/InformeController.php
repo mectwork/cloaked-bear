@@ -7,9 +7,12 @@ use Buseta\BodegaBundle\Form\Filtro\BusquedaInformeCostosType;
 use Buseta\BodegaBundle\Form\Filtro\BusquedaMovimientoType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * Informe controller.
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
+ * @Breadcrumb(title="Informe de Movimientos")
  */
 class InformeController extends Controller
 {

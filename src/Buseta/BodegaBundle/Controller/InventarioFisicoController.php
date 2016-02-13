@@ -20,16 +20,21 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 use Buseta\BodegaBundle\BusetaBodegaBitacoraEvents;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * InventarioFisico controller.
  *
  * @Route("/inventariofisico")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class InventarioFisicoController extends Controller
 {
     /**
      * Lists all InventarioFisico entities.
+     * @Route("/inventariofisico", name="inventario_fisico")
+     * @Method("GET")
+     * @Breadcrumb(title="Inventarios Físicos", routeName="inventario_fisico")
      */
     public function indexAction(Request $request)
     {
@@ -95,6 +100,7 @@ class InventarioFisicoController extends Controller
      * Creates a new InventarioFisico entity.
      *
      * @Route("/create", name="inventariofisicos_inventariofisico_create", methods={"POST"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Inventario Físico", routeName="inventariofisicos_inventariofisico_create")
      */
     public function createAction(Request $request)
     {
@@ -163,6 +169,7 @@ class InventarioFisicoController extends Controller
      * Displays a form to create a new InventarioFisico entity.
      *
      * @Route("/new", name="inventariofisicos_inventariofisico_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Inventario Físico", routeName="inventariofisicos_inventariofisico_new")
      */
     public function newAction()
     {
@@ -178,6 +185,8 @@ class InventarioFisicoController extends Controller
 
     /**
      * Finds and displays a InventarioFisico entity.
+     * @Route("/{id}/show", name="inventariofisico_show", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Ver Datos de Inventario Físico", routeName="inventariofisico_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -200,6 +209,7 @@ class InventarioFisicoController extends Controller
      * Displays a form to edit an existing InventarioFisico entity.
      *
      * @Route("/{id}/edit", name="inventariofisicos_inventariofisico_edit", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Inventario Físico", routeName="inventariofisicos_inventariofisico_edit", routeParameters={"id"})
      */
     public function editAction(InventarioFisico $inventariofisico)
     {
@@ -234,6 +244,7 @@ class InventarioFisicoController extends Controller
      * Edits an existing InventarioFisico entity.
      *
      * @Route("/{id}/update", name="inventariofisicos_inventariofisico_update", methods={"POST","PUT"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Inventario Físico", routeName="inventariofisicos_inventariofisico_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, InventarioFisico $inventariofisico)
     {
