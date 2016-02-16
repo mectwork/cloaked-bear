@@ -27,12 +27,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 
 /**
  * ProductoTope controller.
  *
  * @Route("/productotope")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class ProductoTopeController extends Controller
 {
@@ -42,6 +44,7 @@ class ProductoTopeController extends Controller
      *
      * @Route("/", name="productotope")
      * @Method("GET")
+     * @Breadcrumb(title="Productos con Tope", routeName="productotope")
      */
     public function indexAction(Request $request)
     {
@@ -78,7 +81,7 @@ class ProductoTopeController extends Controller
      *
      * @Route("/create", name="productotope_create", options={"expose":true})
      * @Method("POST")
-     *
+     * @Breadcrumb(title="Crear Nuevo Producto Tope, routeName="productotope_create")
      */
     public function createAction(Request $request)
     {
@@ -123,6 +126,7 @@ class ProductoTopeController extends Controller
      * Displays a form to create a new ProductoTope entity.
      *
      * @Route("/new", name="productotope_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Producto Tope", routeName="productotope_new")
      */
     public function newAction()
     {
@@ -139,6 +143,7 @@ class ProductoTopeController extends Controller
      * Finds and displays a ProductoTope entity.
      *
      * @Route("/{id}/show", name="productotope_show", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Ver Datos de Producto Tope", routeName="productotope_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -162,6 +167,7 @@ class ProductoTopeController extends Controller
      * Displays a form to edit an existing ProductoTope entity.
      *
      * @Route("/{id}/edit", name="productotope_edit", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Producto Tope", routeName="productotope_edit", routeParameters={"id"})
      */
     public function editAction($id)
     {
@@ -206,6 +212,7 @@ class ProductoTopeController extends Controller
      *
      * @Route("/{id}/update", name="productotope_update", options={"expose":true})
      * @Method({"PUT", "POST"})
+     * @Breadcrumb(title="Modificar Producto Tope", routeName="productotope_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {

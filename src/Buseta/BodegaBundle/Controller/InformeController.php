@@ -9,11 +9,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 
 /**
  * Informe controller.
  *
  * @Route("/informe")
+ *
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
+ * @Breadcrumb(title="Informe de Movimientos")
  */
 class InformeController extends Controller
 {

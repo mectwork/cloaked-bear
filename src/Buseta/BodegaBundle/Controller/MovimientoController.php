@@ -19,9 +19,11 @@ use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * Movimiento controller.
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class MovimientoController extends Controller
 {
@@ -166,6 +168,8 @@ class MovimientoController extends Controller
 
     /**
      * Lists all Movimiento entities.
+     * @Route("/", name="movimiento")
+     * @Breadcrumb(title="Movimientos de Productos ", routeName="movimiento")
      */
     public function indexAction(Request $request)
     {
@@ -201,6 +205,8 @@ class MovimientoController extends Controller
 
     /**
      * Creates a new Movimiento entity.
+     * @Route("/create", name="movimiento_create", methods={"POST"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Movimiento de Productos", routeName="movimiento_create")
      */
     public function createAction(Request $request)
     {
@@ -338,6 +344,8 @@ class MovimientoController extends Controller
 
     /**
      * Displays a form to create a new Movimiento entity.
+     * @Route("/new", name="movimiento_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Movimiento de Productos", routeName="movimiento_new")
      */
     public function newAction()
     {
@@ -371,6 +379,8 @@ class MovimientoController extends Controller
 
     /**
      * Finds and displays a Movimiento entity.
+     * @Route("/{id}/show", name="movimiento_show", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Ver Datos de Movimiento de Productos", routeName="movimiento_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -392,6 +402,8 @@ class MovimientoController extends Controller
 
     /**
      * Displays a form to edit an existing Movimiento entity.
+     * @Route("/{id}/edit", name="movimiento_edit", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Movimiento de Productos", routeName="movimiento_edit", routeParameters={"id"})
      */
     public function editAction($id)
     {
@@ -437,6 +449,8 @@ class MovimientoController extends Controller
 
     /**
      * Edits an existing Movimiento entity.
+     * @Route("/{id}/update", name="movimiento_update", methods={"POST","PUT"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Movimiento de Productos", routeName="movimiento_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {

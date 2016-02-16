@@ -14,11 +14,13 @@ use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * Bodega controller.
  *
  * @Route("/bodega")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class BodegaController extends Controller
 {
@@ -32,6 +34,8 @@ class BodegaController extends Controller
 
     /**
      * Lists all Bodega entities.
+     * @Route("/", name="bodegas")
+     * @Breadcrumb(title="Listado de Bodegas ", routeName="bodegas")
      */
     public function indexAction(Request $request)
     {
@@ -65,6 +69,8 @@ class BodegaController extends Controller
 
     /**
      * Creates a new Bodega entity.
+     * @Route("/create", name="bodega_create", methods={"POST"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nueva Bodega", routeName="bodega_create")
      */
     public function createAction(Request $request)
     {
@@ -105,6 +111,8 @@ class BodegaController extends Controller
 
     /**
      * Displays a form to create a new Bodega entity.
+     * @Route("/new", name="bodega_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nueva Bodega", routeName="bodega_new")
      */
     public function newAction()
     {
@@ -119,6 +127,8 @@ class BodegaController extends Controller
 
     /**
      * Finds and displays a Bodega entity.
+     * @Route("/{id}/show", name="bodega_show", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Ver Datos de Bodega", routeName="bodega_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -139,6 +149,8 @@ class BodegaController extends Controller
 
     /**
      * Displays a form to edit an existing Bodega entity.
+     * @Route("/{id}/edit", name="bodega_edit", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Bodega", routeName="bodega_edit", routeParameters={"id"})
      */
     public function editAction($id)
     {
@@ -181,6 +193,8 @@ class BodegaController extends Controller
 
     /**
      * Edits an existing Bodega entity.
+     * @Route("/{id}/update", name="bodega_update", options={"expose": true})
+     * @Breadcrumb(title="Modificar Bodega", routeName="bodega_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {

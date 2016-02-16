@@ -2,6 +2,7 @@
 
 namespace HatueySoft\SequenceBundle\Controller;
 
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 use HatueySoft\SequenceBundle\Entity\Sequence;
 use HatueySoft\SequenceBundle\Form\Filter\SequenceFilter;
 use HatueySoft\SequenceBundle\Form\Model\SequenceFilterModel;
@@ -18,11 +19,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  * Sequence controller.
  *
  * @Route("/sequence")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo Seguridad", routeName="security_usuario")
  */
 class SequenceController extends Controller
 {
     /**
      * Lists all Sequence entities.
+     * @Route("/sequence", name="sequence")
+     * @Breadcrumb(title="Listado de Secuencias", routeName="sequence")
      */
     public function indexAction(Request $request)
     {
@@ -83,6 +88,14 @@ class SequenceController extends Controller
         ));
     }
 
+    /**
+     * Creates a new Sequence entity.
+     *
+     * @Route("/create", name="sequence_create")
+     * @Method("POST")
+     * @Breadcrumb(title="Crear Nuevo Secuenciador", routeName="sequence_create")
+     */
+
     public function createAction(Request $request)
     {
         $entity = new Sequence();
@@ -122,6 +135,8 @@ class SequenceController extends Controller
 
     /**
      * Displays a form to create a new Sequence entity.
+     * @Route("/new", name="sequence_new")
+     * @Breadcrumb(title="Crear Nuevo Secuenciador", routeName="sequence_new")
      */
     public function newAction()
     {
@@ -137,6 +152,8 @@ class SequenceController extends Controller
 
     /**
      * Finds and displays a Sequence entity.
+     * @Route("/{id}/show", name="sequence_show")
+     * @Breadcrumb(title="Ver Datos de Secuenciador", routeName="sequence_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -155,6 +172,8 @@ class SequenceController extends Controller
 
     /**
      * Displays a form to edit an existing Sequence entity.
+     * @Route("/{id}/edit", name="sequence_edit")
+     * @Breadcrumb(title="Modificar Secuenciador", routeName="sequence_edit", routeParameters={"id"})
      */
     public function editAction($id)
     {
@@ -193,6 +212,9 @@ class SequenceController extends Controller
 
     /**
      * Edits an existing Sequence entity.
+     * @Route("/{id}/update", name="sequence_update")
+     * @Method({"POST", "PUT"})
+     * @Breadcrumb(title="Modificar Secuenciador", routeName="sequence_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {

@@ -9,11 +9,12 @@ use Buseta\TallerBundle\Form\Type\MantenimientoPreventivoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * MantenimientoPreventivo controller.
- *
  * @Route("/mpreventivo")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Taller", routeName="taller_principal")
  */
 class MantenimientoPreventivoController extends Controller
 {
@@ -21,6 +22,7 @@ class MantenimientoPreventivoController extends Controller
      * Lists all MantenimientoPreventivo entities.
      *
      * @Route("/", name="mantenimientopreventivo", methods={"GET"})
+     * @Breadcrumb(title="Mantenimientos Preventivos", routeName="mantenimientopreventivo")
      */
     public function indexAction(Request $request)
     {
@@ -57,6 +59,7 @@ class MantenimientoPreventivoController extends Controller
      * Creates a new MantenimientoPreventivo entity.
      *
      * @Route("/create", name="mantenimientopreventivo_create", methods={"POST"})
+     * @Breadcrumb(title="Crear Nuevo Mantenimiento Preventivo", routeName="mantenimientopreventivo_create")
      */
     public function createAction(Request $request)
     {
@@ -99,6 +102,7 @@ class MantenimientoPreventivoController extends Controller
      * Displays a form to create a new MantenimientoPreventivo entity.
      *
      * @Route("/new", name="mantenimientopreventivo_new", methods={"GET"})
+     * @Breadcrumb(title="Crear Nuevo Mantenimiento Preventivo", routeName="mantenimientopreventivo_new")
      */
     public function newAction()
     {
@@ -115,6 +119,7 @@ class MantenimientoPreventivoController extends Controller
      * Finds and displays a MantenimientoPreventivo entity.
      *
      * @Route("/{id}/show", name="mantenimientopreventivo_show", methods={"GET"})
+     * @Breadcrumb(title="Ver Datos de Mantenimiento Preventivo ", routeName="mantenimientopreventivo_show", routeParameters={"id"})
      */
     public function showAction(MantenimientoPreventivo $entity)
     {
@@ -130,6 +135,7 @@ class MantenimientoPreventivoController extends Controller
      * Displays a form to edit an existing MantenimientoPreventivo entity.
      *
      * @Route("/{id}/edit", name="mantenimientopreventivo_edit", methods={"GET"})
+     * @Breadcrumb(title="Modificar Mantenimiento Preventivo", routeName="mantenimientopreventivo_edit", routeParameters={"id"})
      */
     public function editAction(MantenimientoPreventivo $entity)
     {
@@ -161,6 +167,7 @@ class MantenimientoPreventivoController extends Controller
      * Edits an existing MantenimientoPreventivo entity.
      *
      * @Route("/{id}/update", name="mantenimientopreventivo_update", methods={"PUT","POST"})
+     * @Breadcrumb(title="Modificar Mantenimiento Preventivo", routeName="mantenimientopreventivo_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, MantenimientoPreventivo $entity)
     {

@@ -17,11 +17,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * BitacoraSerial controller.
  *
  * @Route("bodega/bitacoraserial")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class BitacoraSerialController extends Controller
 {
@@ -31,6 +33,7 @@ class BitacoraSerialController extends Controller
      *
      * @Route("/", name="bitacoraserial")
      * @Method("GET")
+     * @Breadcrumb(title="Bitácora de Seriales", routeName="bitacoraserial")
      */
     public function indexAction(Request $request)
     {
@@ -68,6 +71,7 @@ class BitacoraSerialController extends Controller
      * Displays a form to edit an existing BitacoraSerial entity.
      *
      * @Route("/{id}/show", name="bitacoraserial_show", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Ver Datos de Bitácora de Seriales", routeName="bitacoraserial_show", routeParameters={"id"})
      */
     public function showAction($id)
     {

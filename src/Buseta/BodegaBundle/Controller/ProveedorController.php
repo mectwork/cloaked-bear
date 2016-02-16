@@ -14,11 +14,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Buseta\BodegaBundle\Entity\Proveedor;
 use Buseta\BodegaBundle\Form\Type\ProveedorType;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * Proveedor controller.
  *
  * @Route("/bodega/proveedor")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class ProveedorController extends Controller
 {
@@ -28,6 +30,7 @@ class ProveedorController extends Controller
      * @Route("/", name="proveedor")
      *
      * @Method("GET")
+     * @Breadcrumb(title="Listado de Proveedores", routeName="proveedor")
      */
     public function indexAction(Request $request)
     {
@@ -67,6 +70,7 @@ class ProveedorController extends Controller
      * @Route("/", name="proveedor_create", options={"expose":true})
      *
      * @Method("POST")
+     * @Breadcrumb(title="Crear Nuevo Proveedor", routeName="proveedor_create")
      */
     public function createAction(Request $request)
     {
@@ -143,6 +147,7 @@ class ProveedorController extends Controller
      * @Route("/new", name="proveedor_new")
      *
      * @Method("GET")
+     * @Breadcrumb(title="Crear Nuevo Proveedor", routeName="proveedor_new")
      */
     public function newAction()
     {
@@ -162,6 +167,7 @@ class ProveedorController extends Controller
      * @Route("/{id}", name="proveedor_show")
      *
      * @Method("GET")
+     * @Breadcrumb(title="Ver Datos de Proveedor", routeName="proveedor_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -186,6 +192,7 @@ class ProveedorController extends Controller
      * @Route("/{id}/edit", name="proveedor_edit")
      *
      * @Method("GET")
+     * @Breadcrumb(title="Modificar Proveedor", routeName="proveedor_edit", routeParameters={"id"})
      */
     public function editAction($id)
     {
@@ -233,6 +240,7 @@ class ProveedorController extends Controller
      * @Route("/{id}", name="proveedor_update", options={"expose":true})
      *
      * @Method("PUT")
+     * @Breadcrumb(title="Modificar Proveedor", routeName="proveedor_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {

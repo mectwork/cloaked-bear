@@ -8,14 +8,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\TallerBundle\Entity\CondicionesPago;
 use Buseta\TallerBundle\Form\Type\CondicionesPagoType;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 /**
  * CondicionesPago controller.
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class CondicionesPagoController extends Controller
 {
     /**
      * Lists all CondicionesPago entities.
+     * @Route("/", name="condicionespago")
+     * @Method("GET")
+     * @Breadcrumb(title="Condiciones de Pago", routeName="condicionespago")
      */
     public function indexAction(Request $request)
     {
@@ -49,6 +56,8 @@ class CondicionesPagoController extends Controller
     }
     /**
      * Creates a new CondicionesPago entity.
+     * @Route("/create", name="condicionespago_create", methods={"POST"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nueva Condición de Pago", routeName="condicionespago_create")
      */
     public function createAction(Request $request)
     {
@@ -91,6 +100,9 @@ class CondicionesPagoController extends Controller
 
     /**
      * Displays a form to create a new CondicionesPago entity.
+     *
+     * @Route("/new", name="condicionespago_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nueva Condición de Pago", routeName="condicionespago_new")
      */
     public function newAction()
     {
@@ -105,6 +117,8 @@ class CondicionesPagoController extends Controller
 
     /**
      * Finds and displays a CondicionesPago entity.
+     * @Route("/{id}/show", name="condicionespago_show", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Ver Condición de Pago", routeName="condicionespago_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -125,6 +139,8 @@ class CondicionesPagoController extends Controller
 
     /**
      * Displays a form to edit an existing CondicionesPago entity.
+     * @Route("/{id}/edit", name="condicionespago_edit", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Condición de Pago", routeName="condicionespago_edit", routeParameters={"id"})
      */
     public function editAction($id)
     {
@@ -166,6 +182,8 @@ class CondicionesPagoController extends Controller
     }
     /**
      * Edits an existing CondicionesPago entity.
+     * @Route("/{id}/update", name="condicionespago_update", methods={"POST","PUT"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Condición de Pago", routeName="condicionespago_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {

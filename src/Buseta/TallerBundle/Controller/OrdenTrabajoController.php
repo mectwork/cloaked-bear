@@ -10,6 +10,8 @@ use Buseta\TallerBundle\Form\Filter\OrdenTrabajoFilter;
 use Buseta\TallerBundle\Form\Model\OrdenTrabajoFilterModel;
 use Buseta\TallerBundle\Form\Type\TareaAdicionalType;
 use Buseta\TallerBundle\Manager\MantenimientoPreventivoManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -18,15 +20,20 @@ use Buseta\TallerBundle\Form\Type\OrdenTrabajoType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Util\ClassUtils;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 
 /**
  * OrdenTrabajo controller.
+ * @Route("/ordentrabajo")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Taller", routeName="taller_principal")
  */
 class OrdenTrabajoController extends Controller
 {
     /**
      * Lists all OrdenTrabajo entities.
+     * @Route("/ordentrabajo", name="ordentrabajo")
+     * @Breadcrumb(title="Ordenes de Trabajo ", routeName="ordentrabajo")
      */
     public function indexAction(Request $request)
     {
@@ -65,7 +72,9 @@ class OrdenTrabajoController extends Controller
 
     /**
      * Creates a new OrdenTrabajo entity.
-     *
+     * @Route("/create", name="ordentrabajo_create")
+     * @Method("POST")
+     * @Breadcrumb(title="Crear Nueva Orden de Trabajo", routeName="ordentrabajo_create")
      * @Security("is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo')")
      */
     public function createAction(Request $request)
@@ -122,7 +131,8 @@ class OrdenTrabajoController extends Controller
 
     /**
      * Displays a form to create a new OrdenTrabajo entity.
-     *
+     * @Route("/new", name="ordentrabajo_new")
+     * @Breadcrumb(title="Crear Nueva Orden de Trabajo", routeName="ordentrabajo_new")
      * @Security("is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo')")
      */
     public function newAction()
@@ -147,7 +157,8 @@ class OrdenTrabajoController extends Controller
 
     /**
      * Finds and displays a OrdenTrabajo entity.
-     *
+     * @Route("/{id}/show", name="ordentrabajo_show")
+     * @Breadcrumb(title="Ver Datos de Orden de Trabajo", routeName="ordentrabajo_show", routeParameters={"id"})
      * @Security("is_granted('VIEW', ordenTrabajo)")
      */
     public function showAction(OrdenTrabajo $ordenTrabajo)
@@ -162,7 +173,8 @@ class OrdenTrabajoController extends Controller
 
     /**
      * Displays a form to edit an existing OrdenTrabajo entity.
-     *
+     * @Route("/{id}/edit", name="ordentrabajo_edit")
+     * @Breadcrumb(title="Modificar Orden de Trabajo", routeName="ordentrabajo_edit", routeParameters={"id"})
      * @Security("is_granted('EDIT', ordenTrabajo)")
      */
     public function editAction(OrdenTrabajo $ordenTrabajo)
@@ -203,7 +215,9 @@ class OrdenTrabajoController extends Controller
 
     /**
      * Edits an existing OrdenTrabajo entity.
-     *
+     * @Route("/{id}/update", name="ordentrabajo_update")
+     * @Method({"POST", "PUT"})
+     * @Breadcrumb(title="Modificar Orden de Trabajo", routeName="ordentrabajo_update", routeParameters={"id"})
      * @Security("is_granted('EDIT', ordenTrabajo)")
      */
     public function updateAction(Request $request, OrdenTrabajo $ordenTrabajo)

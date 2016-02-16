@@ -15,11 +15,13 @@ use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * Impuesto controller.
  *
  * @Route("/impuesto")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class ImpuestoController extends Controller
 {
@@ -79,6 +81,9 @@ class ImpuestoController extends Controller
 
     /**
      * Lists all Impuesto entities.
+     * @Route("/", name="impuesto")
+     * @Method("GET")
+     * @Breadcrumb(title="Impuestos", routeName="impuesto")
      */
     public function indexAction(Request $request)
     {
@@ -112,6 +117,8 @@ class ImpuestoController extends Controller
 
     /**
      * Creates a new Impuesto entity.
+     * @Route("/create", name="impuesto_create", methods={"POST"}, options={"expose":true})
+     * @Breadcrumb(title="Crar Nuevo Impuesto", routeName="impuesto_create")
      */
     public function createAction(Request $request)
     {
@@ -154,6 +161,8 @@ class ImpuestoController extends Controller
 
     /**
      * Displays a form to create a new Impuesto entity.
+     * @Route("/new", name="impuesto_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Impuesto", routeName="impuesto_new")
      */
     public function newAction()
     {
@@ -168,6 +177,8 @@ class ImpuestoController extends Controller
 
     /**
      * Finds and displays a Impuesto entity.
+     * @Route("/{id}/show", name="impuesto_show", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Ver Datos del Impuesto", routeName="impuesto_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -188,6 +199,8 @@ class ImpuestoController extends Controller
 
     /**
      * Displays a form to edit an existing Impuesto entity.
+     * @Route("/{id}/edit", name="impuesto_edit", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Impuesto", routeName="impuesto_edit", routeParameters={"id"})
      */
     public function editAction($id)
     {
@@ -229,6 +242,8 @@ class ImpuestoController extends Controller
     }
     /**
      * Edits an existing Impuesto entity.
+     * @Route("/{id}/update", name="impuesto_update", methods={"POST","PUT"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Impuesto", routeName="impuesto_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {

@@ -11,6 +11,8 @@ use Buseta\TallerBundle\Entity\TareaDiagnostico;
 use Buseta\TallerBundle\Form\Type\ObservacionDiagnosticoType;
 use Buseta\TallerBundle\Form\Type\TareaDiagnosticoType;
 use Doctrine\ORM\AbstractQuery;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,9 +22,14 @@ use Buseta\TallerBundle\Form\Type\DiagnosticoType;
 use Buseta\TallerBundle\Form\Model\DiagnosticoFilterModel;
 use Buseta\TallerBundle\Form\Filter\DiagnosticoFilter;
 use Symfony\Component\HttpFoundation\Response;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * Diagnostico controller.
+ *
+ * @Route("/diagnostico")
+ *
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Taller", routeName="taller_principal")
  *
  */
 class DiagnosticoController extends Controller
@@ -98,6 +105,10 @@ class DiagnosticoController extends Controller
 
     /**
      * Lists all Diagnostico entities.
+     *
+     * @Route("/diagnostico", name="diagnostico")
+     *
+     * @Breadcrumb(title="Listado de Diagnósticos", routeName="diagnostico")
      */
     public function indexAction(Request $request)
     {
@@ -136,6 +147,10 @@ class DiagnosticoController extends Controller
      * Finds and displays a Diagnostico entity.
      *
      * @Security("is_granted('VIEW', diagnostico)")
+     *
+     * @Route("/{id}/show", name="diagnostico_show")
+     *
+     * @Breadcrumb(title="Ver Datos de Diagnóstico", routeName="diagnostico_show", routeParameters={"id"})
      */
     public function showAction(Diagnostico $diagnostico)
     {
@@ -156,8 +171,11 @@ class DiagnosticoController extends Controller
 
     /**
      * Displays a form to edit an existing Diagnostico entity.
+     *
+     * @Route("/{id}/edit", name="diagnostico_edit")
+     *
+     * @Breadcrumb(title="Modificar Diagnóstico", routeName="diagnostico_edit", routeParameters={"id"})
      */
-
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -237,6 +255,15 @@ class DiagnosticoController extends Controller
         return $this->redirect($this->generateUrl('diagnostico'));
     }
 
+    /**
+     * Edits an existing Usuario entity.
+     *
+     * @Route("/{id}/update", name="diagnostico_update")
+     *
+     * @Method({"POST", "PUT"})
+     *
+     * @Breadcrumb(title="Modificar Diagnóstico", routeName="diagnostico_update", routeParameters={"id"})
+     */
     public function updateAction(Request $request, Diagnostico $diagnostico)
     {
         $em = $this->getDoctrine()->getManager();
@@ -289,6 +316,9 @@ class DiagnosticoController extends Controller
      *
      * @Security("is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\Diagnostico')")
      *
+     * @Route("/new", name="diagnostico_new")
+     *
+     * @Breadcrumb(title="Crear Nuevo Diagnóstico", routeName="diagnostico_new")
      */
     public function newAction()
     {
@@ -331,8 +361,13 @@ class DiagnosticoController extends Controller
 
     /**
      * Creates a new Diagnostico entity.
+     * @Route("/create", name="diagnostico_create")
+     *
+     * @Method("POST")
      *
      * @Security("is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\Diagnostico')")
+     *
+     * @Breadcrumb(title="Crear Nuevo Diagnóstico", routeName="diagnostico_create")
      */
     public function createAction(Request $request)
     {

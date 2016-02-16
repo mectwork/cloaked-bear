@@ -12,16 +12,21 @@ use Buseta\BodegaBundle\Form\Type\CategoriaProductoType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * CategoriaProducto controller.
  *
  * @Route("/categoriaproducto")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class CategoriaProductoController extends Controller
 {
     /**
      * Lists all CategoriaProducto entities.
+     * @Route("/", name="categoriaproducto")
+     * @Method("GET")
+     * @Breadcrumb(title="Listado de Categorías de Producto", routeName="categoriaproducto")
      */
     public function indexAction(Request $request)
     {
@@ -54,6 +59,8 @@ class CategoriaProductoController extends Controller
     }
     /**
      * Creates a new CategoriaProducto entity.
+     * @Route("/create", name="categoria_producto_create", methods={"POST"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nueva Categoría de Producto", routeName="categoria_producto_create")
      */
     public function createAction(Request $request)
     {
@@ -96,6 +103,8 @@ class CategoriaProductoController extends Controller
 
     /**
      * Displays a form to create a new CategoriaProducto entity.
+     * @Route("/new", name="categoria_producto_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nueva Categoría de Producto", routeName="categoria_producto_new")
      */
     public function newAction()
     {
@@ -110,6 +119,8 @@ class CategoriaProductoController extends Controller
 
     /**
      * Finds and displays a CategoriaProducto entity.
+     * @Route("/{id}/show", name="categoria_producto_show", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Ver Datos de Categorías de Producto", routeName="categoria_producto_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -130,6 +141,8 @@ class CategoriaProductoController extends Controller
 
     /**
      * Displays a form to edit an existing CategoriaProducto entity.
+     * @Route("/{id}/edit", name="categoria_producto_edit", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Modificar Categoría de Producto", routeName="categoria_producto_edit", routeParameters={"id"})
      */
     public function editAction($id)
     {
@@ -171,6 +184,9 @@ class CategoriaProductoController extends Controller
     }
     /**
      * Edits an existing CategoriaProducto entity.
+     * @Route("/{id}/update", name="categoria_producto_update", options={"expose": true})
+     * @Breadcrumb(title="Modificar Categoría de Producto", routeName="categoria_producto_update", routeParameters={"id"})
+     * @Method({"POST", "PUT"})
      */
     public function updateAction(Request $request, $id)
     {

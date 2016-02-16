@@ -10,22 +10,30 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * Class InformeStockController
  *
  * @package Buseta\BodegaBundle\Controller
+ *
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  *
  * @Route("/informe_stock")
  */
 class InformeStockController extends Controller
 {
     /**
+     * Lists all Informe de Stock entities.
+     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @Route("/", name="bodega_informe_stock")
      * @Method({"GET", "POST"})
+     *
+     * @Breadcrumb(title="Informe de Stock", routeName="informeStock")
      */
     public function indexAction(Request $request)
     {

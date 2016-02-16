@@ -3,6 +3,7 @@
 namespace HatueySoft\MenuBundle\Controller;
 
 
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 use HatueySoft\MenuBundle\Form\Type\MenuNodeType;
 use HatueySoft\MenuBundle\Model\MenuNode;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,6 +18,9 @@ use Symfony\Component\HttpFoundation\Response;
  * @package HatueySoft\MenuBundle\Controller
  *
  * @Route("/menu")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo Seguridad", routeName="security_usuario")
+ * @Breadcrumb(title="Listado de Menus")
  */
 class MenuController extends Controller
 {
@@ -118,6 +122,7 @@ class MenuController extends Controller
      *
      * @Route("/{parent}/new", name="hatueysoft_menu_new", options={"expose": true})
      * @Method("GET")
+     * @Breadcrumb(title="Crear Nuevo Menu", routeName="hatueysoft_menu_new")
      */
     public function newAction(Request $request, $parent)
     {
@@ -136,6 +141,7 @@ class MenuController extends Controller
      *
      * @Route("/{parent}/create", name="hatueysoft_menu_create", options={"expose": true})
      * @Method("POST")
+     * @Breadcrumb(title="Crear Nuevo Menu", routeName="hatueysoft_menu_create")
      */
     public function createAction(Request $request, $parent)
     {
@@ -184,7 +190,7 @@ class MenuController extends Controller
      *
      * @Route("/{id}/show", name="hatueysoft_menu_show", options={"expose": true})
      * @Method("GET")
-     *
+     * @Breadcrumb(title="Ver Datos del Menu", routeName="hatueysoft_menu_show", routeParameters={"id"})
      */
     public function showAction(Request $request, $id)
     {
@@ -217,6 +223,7 @@ class MenuController extends Controller
      *
      * @Route("/{id}/edit", name="hatueysoft_menu_edit", options={"expose": true})
      * @Method("GET")
+     * @Breadcrumb(title="Modificar Menu", routeName="hatueysoft_menu_edit", routeParameters={"id"})
      */
     public function editAction(Request $request, $id)
     {
@@ -238,6 +245,7 @@ class MenuController extends Controller
      *
      * @Route("/{id}/update", name="hatueysoft_menu_update", options={"expose": true})
      * @Method("PUT")
+     * @Breadcrumb(title="Modificar Menu", routeName="hatueysoft_menu_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {

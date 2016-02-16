@@ -11,12 +11,14 @@ use Buseta\BusesBundle\Entity\GrupoBuses;
 use Buseta\BusesBundle\Form\Type\GrupoBusesType;
 use Buseta\BusesBundle\Form\Filter\GrupoBusesFilter;
 use Buseta\BusesBundle\Form\Model\GrupoBusesFilterModel;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 
 /**
  * GrupoBuses controller.
  *
  * @Route("/grupobuses")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Vehículos", routeName="autobus_principal")
  */
 class GrupoBusesController extends Controller
 {
@@ -27,6 +29,7 @@ class GrupoBusesController extends Controller
      * @Route("/", name="grupobuses")
      * @Method("GET")
      * @Template()
+     * @Breadcrumb(title="Listado de Grupos Buses ", routeName="grupobuses")
      */
     public function indexAction(Request $request)
     {
@@ -63,6 +66,7 @@ class GrupoBusesController extends Controller
      * @Route("/", name="grupobuses_create")
      * @Method("POST")
      * @Template("BusetaBusesBundle:GrupoBuses:new.html.twig")
+     * @Breadcrumb(title="Crear Nuevo Grupo Buses", routeName="grupobuses_create")
      */
     public function createAction(Request $request)
     {
@@ -109,6 +113,7 @@ class GrupoBusesController extends Controller
      * @Route("/new", name="grupobuses_new")
      * @Method("GET")
      * @Template()
+     * @Breadcrumb(title="Crear Nuevo Grupo Buses", routeName="grupobuses_new")
      */
     public function newAction()
     {
@@ -127,6 +132,7 @@ class GrupoBusesController extends Controller
      * @Route("/{id}", name="grupobuses_show")
      * @Method("GET")
      * @Template()
+     * @Breadcrumb(title="Ver Datos de Grupo Buses", routeName="grupobuses_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -152,6 +158,7 @@ class GrupoBusesController extends Controller
      * @Route("/{id}/edit", name="grupobuses_edit")
      * @Method("GET")
      * @Template()
+     * @Breadcrumb(title="Modificar Grupo Buses", routeName="grupobuses_edit", routeParameters={"id"})
      */
     public function editAction($id)
     {
@@ -197,6 +204,7 @@ class GrupoBusesController extends Controller
      * @Route("/{id}", name="grupobuses_update")
      * @Method("PUT")
      * @Template("BusetaBusesBundle:GrupoBuses:edit.html.twig")
+     * @Breadcrumb(title="Modificar Grupo Buses", routeName="grupobuses_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {

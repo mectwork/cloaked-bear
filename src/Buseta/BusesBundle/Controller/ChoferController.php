@@ -9,15 +9,16 @@ use Buseta\BusesBundle\Form\Type\ChoferType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * Chofer controller.
  *
  * @Route("/chofer")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Vehículos", routeName="autobus_principal")
  */
 class ChoferController extends Controller
 {
@@ -26,6 +27,7 @@ class ChoferController extends Controller
      *
      * @Route("/", name="chofer")
      * @Method("GET")
+     * @Breadcrumb(title="Listado de Choferes", routeName="chofer")
      */
     public function indexAction(Request $request)
     {
@@ -61,6 +63,7 @@ class ChoferController extends Controller
      * Displays a form to create a new Chofer entity.
      *
      * @Route("/new", name="chofer_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Chofer", routeName="chofer_new")
      */
     public function newAction()
     {
@@ -94,6 +97,7 @@ class ChoferController extends Controller
      * Creates a new Chofer entity.
      *
      * @Route("/create", name="chofer_create", methods={"POST"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Chofer", routeName="chofer_create")
      */
     public function createAction(Request $request)
     {
@@ -120,6 +124,7 @@ class ChoferController extends Controller
      *
      * @Route("/{id}/show", name="chofer_show")
      * @Method("GET")
+     * @Breadcrumb(title="Ver Datos de Chofer", routeName="chofer_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -217,6 +222,7 @@ class ChoferController extends Controller
      *
      * @Route("/{id}/edit", name="chofer_edit")
      * @Method("GET")
+     * @Breadcrumb(title="Modificar Chofer", routeName="chofer_edit", routeParameters={"id"})
      */
     public function editAction($id)
     {
@@ -260,6 +266,7 @@ class ChoferController extends Controller
      *
      * @Route("/{id}/update", name="chofer_update", options={"expose": true})
      * @Method({"POST", "PUT"})
+     * @Breadcrumb(title="Modificar Chofer", routeName="chofer_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {

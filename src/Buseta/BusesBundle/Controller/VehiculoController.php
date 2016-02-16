@@ -17,11 +17,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * Vehiculo controller.
  *
  * @Route("/vehiculo")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Vehículos", routeName="autobus_principal")
  */
 class VehiculoController extends Controller
 {
@@ -38,6 +40,7 @@ class VehiculoController extends Controller
      *
      * @Route("/", name="vehiculo")
      * @Method("GET")
+     * @Breadcrumb(title="Listado de Vehículos", routeName="vehiculo")
      */
     public function indexAction(Request $request)
     {
@@ -73,6 +76,7 @@ class VehiculoController extends Controller
      * Creates a new Vehiculo entity.
      *
      * @Route("/create", name="vehiculo_create", methods={"POST"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Vehículos", routeName="vehiculo_create")
      */
     public function createAction(Request $request)
     {
@@ -140,6 +144,7 @@ class VehiculoController extends Controller
      * Displays a form to create a new Vehiculo entity.
      *
      * @Route("/new", name="vehiculo_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Vehículos", routeName="vehiculo_new")
      */
     public function newAction()
     {
@@ -155,6 +160,7 @@ class VehiculoController extends Controller
      *
      * @Route("/{id}/show", name="vehiculo_show")
      * @Method("GET")
+     * @Breadcrumb(title="Ver Datos de Vehículo", routeName="vehiculo_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -183,6 +189,7 @@ class VehiculoController extends Controller
      *
      * @Route("/{id}/edit", name="vehiculo_edit")
      * @Method("GET")
+     * @Breadcrumb(title="Modificar Vehículo", routeName="vehiculo_edit", routeParameters={"id"})
      */
     public function editAction(Vehiculo $vehiculo)
     {
@@ -217,6 +224,7 @@ class VehiculoController extends Controller
      *
      * @Route("/{id}/update", name="vehiculo_update", options={"expose": true})
      * @Method({"POST", "PUT"})
+     * @Breadcrumb(title="Modificar Vehículo", routeName="vehiculo_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, Vehiculo $vehiculo)
     {

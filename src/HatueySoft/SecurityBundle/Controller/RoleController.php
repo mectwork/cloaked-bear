@@ -11,12 +11,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * Class RoleController
  * @package HatueySoft\SecurityBundle\Controller
  *
  * @Route("/role")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo Seguridad", routeName="security_usuario")
  */
 class RoleController extends Controller
 {
@@ -26,6 +28,7 @@ class RoleController extends Controller
      * @return Response
      *
      * @Route("/", name="role_manager")
+     * @Breadcrumb(title="Listado de Roles", routeName="role_manager")
      */
     public function indexAction()
     {

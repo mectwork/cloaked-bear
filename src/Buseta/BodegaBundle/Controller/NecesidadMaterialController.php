@@ -20,11 +20,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Validator\ConstraintViolation;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * NecesidadMaterial controller.
  *
  * @Route("/necesidadmaterial")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class NecesidadMaterialController extends Controller
 {
@@ -33,6 +35,7 @@ class NecesidadMaterialController extends Controller
      *
      * @Route("/", name="necesidadmaterial")
      * @Method("GET")
+     * @Breadcrumb(title="Listado de Necesidad de Materiales", routeName="necesidadmaterial")
      */
     public function indexAction(Request $request)
     {
@@ -190,6 +193,7 @@ class NecesidadMaterialController extends Controller
      *
      * @Route("/create", name="necesidadmaterial_create", options={"expose": true})
      * @Method("POST")
+     * @Breadcrumb(title="Crear Nueva Necesidad de Materiales", routeName="necesidadmaterial_create")
      */
     public function createAction(Request $request)
     {
@@ -259,6 +263,7 @@ class NecesidadMaterialController extends Controller
      *
      * @Route("/new", name="necesidadmaterial_new")
      * @Method("GET")
+     * @Breadcrumb(title="Crear Nueva Necesidad de Materiales", routeName="necesidadmaterial_new")
      */
     public function newAction()
     {
@@ -299,6 +304,7 @@ class NecesidadMaterialController extends Controller
      *
      * @Route("/{id}/show", name="necesidadmaterial_show")
      * @Method("GET")
+     * @Breadcrumb(title="Ver Datos de Necesidad Material", routeName="necesidadmaterial_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -322,6 +328,7 @@ class NecesidadMaterialController extends Controller
      *
      * @Route("/{id}/edit", name="necesidadmaterial_edit", options={"expose": true})
      * @Method("GET")
+     * @Breadcrumb(title="Modificar Necesidad Material", routeName="necesidadmaterial_edit", routeParameters={"id"})
      */
     public function editAction(NecesidadMaterial $necesidadmaterial)
     {
@@ -357,6 +364,7 @@ class NecesidadMaterialController extends Controller
      *
      * @Route("/{id}/update", name="necesidadmaterial_update", options={"expose": true})
      * @Method({"POST", "PUT"})
+     * @Breadcrumb(title="Modificar Necesidad de Material", routeName="necesidadmaterial_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, NecesidadMaterial $necesidadmaterial)
     {

@@ -13,9 +13,14 @@ use Symfony\Component\Security\Core\Util\ClassUtils;
 use Buseta\TallerBundle\Event\FilterReporteEvent;
 use Buseta\TallerBundle\Event\ReporteEvents;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 /**
  * Reporte controller.
+ * @Route("/reporte")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Taller", routeName="taller_principal")
  */
 class ReporteController extends Controller
 {
@@ -54,6 +59,8 @@ class ReporteController extends Controller
     }
     /**
      * Lists all Reporte entities.
+     * @Route("/reporte", name="reporte")
+     * @Breadcrumb(title="Solicitudes", routeName="reporte")
      */
     public function indexAction(Request $request)
     {
@@ -95,6 +102,7 @@ class ReporteController extends Controller
      * Creates a new Reporte entity.
      *
      * @Security("is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\Reporte')")
+     * @Breadcrumb(title="Crear Nuevo Usuario", routeName="security_usuario_create")
      */
     public function createAction(Request $request)
     {
@@ -155,6 +163,8 @@ class ReporteController extends Controller
      * Displays a form to create a new Reporte entity.
      *
      * @Security("is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\Reporte')")
+     * @Route("/new", name="reporte_new")
+     * @Breadcrumb(title="Crear Nueva Solicitud", routeName="reporte_new")
      */
     public function newAction(Request $request)
     {
@@ -182,6 +192,8 @@ class ReporteController extends Controller
      * Finds and displays a Reporte entity.
      *
      * @Security("is_granted('VIEW', reporte)")
+     * @Route("/{id}/show", name="reporte_show")
+     * @Breadcrumb(title="Ver Datos de Solicitud", routeName="reporte_show", routeParameters={"id"})
      */
     public function showAction(Request $request, Reporte $reporte)
     {

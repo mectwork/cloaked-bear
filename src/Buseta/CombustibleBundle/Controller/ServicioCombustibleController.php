@@ -19,11 +19,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * ServicioCombustible controller.
  *
  * @Route("/servicioCombustible")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Combustible", routeName="servicioCombustible")
  */
 class ServicioCombustibleController extends Controller
 {
@@ -32,6 +34,7 @@ class ServicioCombustibleController extends Controller
      *
      * @Route("/", name="servicioCombustible")
      * @Method("GET")
+     * @Breadcrumb(title="Servicios de Combustibles", routeName="servicioCombustible")
      */
     public function indexAction(Request $request)
     {
@@ -67,6 +70,7 @@ class ServicioCombustibleController extends Controller
      * Displays a form to create a new ServicioCombustible entity.
      *
      * @Route("/new", name="servicioCombustible_new", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Servicio de Combustible", routeName="servicioCombustible_new")
      */
     public function newAction()
     {
@@ -100,6 +104,7 @@ class ServicioCombustibleController extends Controller
      * Creates a new ServicioCombustible entity.
      *
      * @Route("/create", name="servicioCombustible_create", methods={"POST"}, options={"expose":true})
+     * @Breadcrumb(title="Crear Nuevo Servicio de Combustible", routeName="servicioCombustible_create")
      */
     public function createAction(Request $request)
     {
@@ -171,6 +176,7 @@ class ServicioCombustibleController extends Controller
      *
      * @Route("/{id}/show", name="servicioCombustible_show")
      * @Method("GET")
+     * @Breadcrumb(title="Ver Datos de Servicio de Combustible", routeName="servicioCombustible_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -267,6 +273,8 @@ class ServicioCombustibleController extends Controller
      *
      * @Route("/{id}/edit", name="servicioCombustible_edit")
      * @Method("GET")
+     * @Breadcrumb(title="Modificar Servicio de Combustible", routeName="servicioCombustible_edit", routeParameters={"id"})
+     *
      */
     public function editAction($id)
     {
@@ -310,6 +318,7 @@ class ServicioCombustibleController extends Controller
      *
      * @Route("/{id}/update", name="servicioCombustible_update", options={"expose": true})
      * @Method({"POST", "PUT"})
+     * @Breadcrumb(title="Modificar Servicios de Combustibles", routeName="servicioCombustible_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {
