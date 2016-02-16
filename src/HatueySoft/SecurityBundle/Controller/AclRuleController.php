@@ -70,8 +70,7 @@ class AclRuleController extends Controller
             $rules = array('roles' => array(), 'users' => array());
         }
 
-        $allPosibleRules = isset($rules['entity']['rules']) ? $rules['entity']['rules'] : array();//devuelve todas las reglas a las que esta subscrita
-        $allExtraRules = array_diff($allPosibleRules, array('create', 'view', 'edit', 'delete', 'search', 'list'));
+        $bakendEntityRules = $rulesManager->getGlobalConfigEntityRules($entity);
 
         $usersManager = $this->get('configuration.reader');
         //Devuelve el listado de roles que existe en el sistema, estan configurados en app/config/security_conf.yml
@@ -84,7 +83,7 @@ class AclRuleController extends Controller
 
         return $this->render('@HatueySoftSecurity/AclRules/edit.html.twig', array(
             'entity' => $entity,
-            'allExtraRules' => $allExtraRules,
+            'bakendEntityRules' => $bakendEntityRules,
             'roles' => $roles,
             'users' => $users,
             'roles_rules' => json_encode($rules['roles']), //paso las reglas para los roles
@@ -110,6 +109,8 @@ class AclRuleController extends Controller
 
         //aqui se llama adentro un getEntity para las reglas, por la configuracion en el YAML del bundle
         $rules = $rulesManager->getEntityRule($entity);
+
+       // var_dump($rules);die;
 
         //si no esta definido el usuario o rol en la regla de entidad
         if (!isset($rules[$target][$content])) {

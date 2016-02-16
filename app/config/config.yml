@@ -224,16 +224,32 @@ hatuey_soft_security:
         entities:
             reporte:
                     class: Buseta\TallerBundle\Entity\Reporte
-                    rules: [process, complete]
+                    label: 'Reporte de Transacciones'
+                    rules:
+                             - !
+                             - { code: 'aa', icon: 'book' }
+                             - { code: 'cc' }
+                             - { code: 'show' }
+            trabajador:
+                    class: Buseta\TallerBundle\Entity\Trabajador
+                    label: 'Trabajador de Planilla'
+                    rules:
+                             - { code: pasaraborrador, icon: 'book' }
+                             - { code: 'cc' }
+                             - { code: '!show' }
             diagnostico:
                     class: Buseta\TallerBundle\Entity\Diagnostico
-                    rules: [search, list]
+                    rules: [ terminar , delete , { code: 'list', label: 'LISTADOOOOOOO',  icon: 'leaf' } ]
             ordentrabajo:
                     class: Buseta\TallerBundle\Entity\OrdenTrabajo
-                    rules: []
+                    rules: [ !list , !search ]
             bodega:
                     class: Buseta\BodegaBundle\Entity\Bodega
                     rules: []
+            almacen:
+                    class: Buseta\BodegaBundle\Entity\Almacen
+            usuario: Buseta\TallerBundle\Entity\Usuario
+
 #    acl:
 #        entities:
 #            reporte: Buseta\TallerBundle\Entity\Reporte

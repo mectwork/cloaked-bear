@@ -2,6 +2,7 @@
 
 namespace HatueySoft\SecurityBundle\Manager;
 
+use HatueySoft\SecurityBundle\Utils\VoterAttributesChecker;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Exception\DumpException;
@@ -125,17 +126,21 @@ class AclRulesManager
     }
 
     /**
-     * Devuelve las reglas a la que esta subscrita la entidad, es para configuracion global
+     * Devuelve todas las reglas a las que esta subscrita la entidad
+     * se busca en la configuracion global, estas son [list, edit, view, etc]
      *
-     * @return String
+     * @param $entity
+     *
+     * @return array|boolean
      */
-    public function getGlobalEntityRules($entity)
+    public function getGlobalConfigEntityRules($entity)
     {
         //Busca las entidades globalmente definidas en el YML global config.yml
         $globalEntities =  $this->getEntities();
+
         foreach ($globalEntities as $name => $path) {
             if ($name === $entity || $path['class'] === $entity) {
-                return $path['class'];
+                return $path['rules'];
             }
         }
 
@@ -232,7 +237,7 @@ class AclRulesManager
         if (!$flag) {
             $entities = $this->getEntities();
             $entityNode = array(
-                'entity' => $entities[$entity], //aqui pone la clase y las acciones a la que esta subscrita
+                'entity' => $entities[$entity]['class'], //aqui pone la clase y las acciones a la que esta subscrita
                 'roles' => $roles,
                 'users' => $users,
             );
