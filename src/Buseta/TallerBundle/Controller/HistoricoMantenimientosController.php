@@ -8,11 +8,13 @@ use Doctrine\ORM\NoResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
  * HistoricoMantenimientos controller.
  *
  * @Route("/historicom")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Taller", routeName="taller_principal")
  */
 class HistoricoMantenimientosController extends Controller
 {
@@ -20,6 +22,7 @@ class HistoricoMantenimientosController extends Controller
      * Lists all HistoricoMantenimientos entities.
      *
      * @Route("/", name="historicomantenimientos", methods={"GET"})
+     * @Breadcrumb(title="Histórico de Mantenimientos", routeName="historicomantenimientos")
      */
     public function indexAction(Request $request)
     {

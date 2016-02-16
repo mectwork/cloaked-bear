@@ -8,15 +8,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\TallerBundle\Entity\TareaMantenimiento;
 use Buseta\TallerBundle\Form\Type\TareaMantenimientoType;
-
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * NecesidadMaterial controller.
- *
  * @Route("/tareamantenimiento")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Taller", routeName="taller_principal")
  */
 class TareaMantenimientoController extends Controller
 {
@@ -81,6 +82,8 @@ class TareaMantenimientoController extends Controller
 
     /**
      * Lists all TareaMantenimiento entities.
+     * @Route("/tareamantenimiento", name="tareamantenimiento")
+     * @Breadcrumb(title="Tareas de Mantenimiento ", routeName="tareamantenimiento")
      */
     public function indexAction(Request $request)
     {
@@ -114,6 +117,9 @@ class TareaMantenimientoController extends Controller
 
     /**
      * Creates a new TareaMantenimiento entity.
+     * @Route("/create", name="tareamantenimiento_create")
+     * @Method("POST")
+     * @Breadcrumb(title="Crear Nueva Tarea de Mantenimiento ", routeName="tareamantenimiento_create")
      */
     public function createAction(Request $request)
     {
@@ -157,6 +163,8 @@ class TareaMantenimientoController extends Controller
 
     /**
      * Displays a form to create a new TareaMantenimiento entity.
+     * @Route("/new", name="tareamantenimiento_new")
+     * @Breadcrumb(title="Crear Nueva Tarea Mantenimiento", routeName="tareamantenimiento_new")
      */
     public function newAction()
     {
@@ -171,6 +179,8 @@ class TareaMantenimientoController extends Controller
 
     /**
      * Finds and displays a TareaMantenimiento entity.
+     * @Route("/{id}/show", name="tareamantenimiento_show")
+     * @Breadcrumb(title="Ver Datos de Tarea Mantenimiento ", routeName="tareamantenimiento_show", routeParameters={"id"})
      */
     public function showAction($id)
     {
@@ -191,6 +201,8 @@ class TareaMantenimientoController extends Controller
 
     /**
      * Displays a form to edit an existing TareaMantenimiento entity.
+     * @Route("/{id}/edit", name="tareamantenimiento_edit")
+     * @Breadcrumb(title="Modificar Tarea Mantenimiento", routeName="tareamantenimiento_edit", routeParameters={"id"})
      */
     public function editAction($id)
     {
@@ -230,6 +242,9 @@ class TareaMantenimientoController extends Controller
     }
     /**
      * Edits an existing TareaMantenimiento entity.
+     * @Route("/{id}/update", name="tareamantenimiento_update")
+     * @Method({"POST", "PUT"})
+     * @Breadcrumb(title="Modificar Tarea Mantenimiento", routeName="tareamantenimiento_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
     {
