@@ -179,7 +179,7 @@ class BitacoraSubscriber implements EventSubscriberInterface
                 case 'Buseta\BodegaBundle\Entity\AlbaranLinea': {
                     /* @var  $entity \Buseta\BodegaBundle\Entity\AlbaranLinea */
                     $nuevabitacora
-                        ->setAlmacen($entity->getAlbaran()->getAlmacen())
+                        ->setAlmacen($entity->getAlmacen())
                         ->setProducto($entity->getProducto())
                         ->setCantidadMovida($entity->getCantidadMovida())
                         ->setFechaMovimiento($entity->getAlbaran()->getFechaMovimiento())
