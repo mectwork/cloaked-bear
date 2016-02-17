@@ -24,7 +24,6 @@ class BitacoraSubscriber implements EventSubscriberInterface
      */
     private $bitacoraAlmacenManager;
 
-
     /**
      * @var \Buseta\BodegaBundle\Manager\BitacoraSerialManager
      */
