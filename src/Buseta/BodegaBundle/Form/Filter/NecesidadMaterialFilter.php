@@ -22,6 +22,13 @@ class NecesidadMaterialFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
+            ->add('numero_referencia', 'text', array(
+                'required' => false,
+                'label'  => 'Nro.Referencia',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('tercero','entity',array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'query_builder' => function(EntityRepository $er){
