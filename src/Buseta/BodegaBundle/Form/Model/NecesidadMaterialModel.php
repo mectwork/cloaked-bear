@@ -26,14 +26,14 @@ class NecesidadMaterialModel
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
-    private $observaciones;
+    private $numero_referencia;
 
     /**
      * @var string
-     *
      */
-    private $consecutivo_compra;
+    private $observaciones;
 
     /**
      * @var \Buseta\BodegaBundle\Entity\Tercero
@@ -166,7 +166,6 @@ class NecesidadMaterialModel
             $this->id = $necesidadmaterial->getId();
             $this->created = $necesidadmaterial->getCreated();
             $this->createdby = $necesidadmaterial->getCreatedby();
-            $this->consecutivo_compra = $necesidadmaterial->getConsecutivoCompra();
             $this->deleted = $necesidadmaterial->getDeleted();
             $this->deletedby = $necesidadmaterial->getDeletedby();
             $this->updated = $necesidadmaterial->getUpdated();
@@ -177,6 +176,7 @@ class NecesidadMaterialModel
             $this->importe_total = $necesidadmaterial->getImporteTotal();
             $this->importe_total_lineas = $necesidadmaterial->getImporteTotalLineas();
             $this->numero_documento = $necesidadmaterial->getNumeroDocumento();
+            $this->numero_referencia = $necesidadmaterial->getNumeroReferencia();
             $this->descuento        = $necesidadmaterial->getDescuento();
             $this->impuesto         = $necesidadmaterial->getImpuesto();
             $this->importeDescuento = $necesidadmaterial->getImporteDescuento();
@@ -214,7 +214,6 @@ class NecesidadMaterialModel
         $necesidadmaterial = new NecesidadMaterial();
         $necesidadmaterial->setCreated($this->getCreated());
         $necesidadmaterial->setCreatedby($this->getCreatedby());
-        $necesidadmaterial->setConsecutivoCompra($this->getConsecutivoCompra());
         $necesidadmaterial->setDeleted($this->getDeleted());
         $necesidadmaterial->setDeletedby($this->getDeletedby());
         $necesidadmaterial->setEstadoDocumento($this->getEstadoDocumento());
@@ -223,6 +222,7 @@ class NecesidadMaterialModel
         $necesidadmaterial->setImporteTotal($this->getImporteTotal());
         $necesidadmaterial->setImporteTotalLineas($this->getImporteTotalLineas());
         $necesidadmaterial->setNumeroDocumento($this->getNumeroDocumento());
+        $necesidadmaterial->setNumeroReferencia($this->getNumeroReferencia());
         $necesidadmaterial->setUpdated($this->getUpdated());
         $necesidadmaterial->setUpdatedby($this->getUpdatedby());
         $necesidadmaterial->setImpuesto($this->getImpuesto());
@@ -322,22 +322,6 @@ class NecesidadMaterialModel
     public function setCondicionesPago($condiciones_pago)
     {
         $this->condiciones_pago = $condiciones_pago;
-    }
-
-    /**
-     * @return string
-     */
-    public function getConsecutivoCompra()
-    {
-        return $this->consecutivo_compra;
-    }
-
-    /**
-     * @param string $consecutivo_compra
-     */
-    public function setConsecutivoCompra($consecutivo_compra)
-    {
-        $this->consecutivo_compra = $consecutivo_compra;
     }
 
     /**
@@ -530,6 +514,22 @@ class NecesidadMaterialModel
     public function setNumeroDocumento($numero_documento)
     {
         $this->numero_documento = $numero_documento;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumeroReferencia()
+    {
+        return $this->numero_referencia;
+    }
+
+    /**
+     * @param string $numero_referencia
+     */
+    public function setNumeroReferencia($numero_referencia)
+    {
+        $this->numero_referencia = $numero_referencia;
     }
 
     /**
