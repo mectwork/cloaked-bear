@@ -42,14 +42,6 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <!-- Initialize script -->
-    <script type="text/javascript">
-        $(function (){
-            // init necesidadmaterial
-            necesidadmaterial._load();
-        });
-    </script>
-
     <script type="text/javascript">
         var button = {
             _disable: function (selector) {
