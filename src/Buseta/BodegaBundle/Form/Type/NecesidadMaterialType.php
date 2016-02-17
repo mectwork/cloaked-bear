@@ -36,7 +36,6 @@ class NecesidadMaterialType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'preSetData'));
         $builder
             ->add('id', 'hidden', array(
                 'required' => false,
@@ -48,6 +47,13 @@ class NecesidadMaterialType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))//
+            ->add('numero_referencia', 'text', array(
+                'required' => false,
+                'label'  => 'Nro.Referencia',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->add('tercero', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'query_builder' => function (EntityRepository $er) {
@@ -108,7 +114,7 @@ class NecesidadMaterialType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('estado_documento', 'choice', array(
+            /*->add('estado_documento', 'choice', array(
                 'required' => false,
                 'read_only' => true,
                 'placeholder' => '---Seleccione---',
@@ -121,7 +127,7 @@ class NecesidadMaterialType extends AbstractType
                 'attr'   => array(
                     'class' => 'form-control',
                 ),
-            ))
+            ))*/
             ->add('descuento', 'number', array(
                 'required'  => false,
                 'label'     => 'Descuento compra',
@@ -206,27 +212,4 @@ class NecesidadMaterialType extends AbstractType
         return 'bodega_necesidad_material';
     }
 
-    public function preSetData(FormEvent $formEvent)
-    {
-        $form = $formEvent->getForm();
-
-        //Compruebo que existe el consecutivo automatico de Compra
-        //Si no existe captu$consecutivoCompraro la configuracion predeterminada,
-        //Si existe obtengo el maximo valor de consecutivo de compra y le incremento en 1
-        $results = $this->em->getRepository('BusetaBodegaBundle:NecesidadMaterial')->consecutivoLast();
-
-        $consecutivoCompra = $results ?
-            $results['consecutivo_compra'] + 1 :
-            $this->serviceContainer->getParameter('consecutivoCompra');
-
-        $form->add('consecutivo_compra', 'text', array(
-            'required' => true,
-            'read_only' => true,
-            'label'  => 'Consecutivo automático',
-            'attr'   => array(
-                'class' => 'form-control',
-            ),
-            'data' => $consecutivoCompra,
-        ));
-    }
 }
