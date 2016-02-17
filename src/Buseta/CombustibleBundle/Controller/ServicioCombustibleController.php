@@ -20,10 +20,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
+
 /**
  * ServicioCombustible controller.
  *
  * @Route("/servicioCombustible")
+ *
  * @Breadcrumb(title="Inicio", routeName="core_homepage")
  * @Breadcrumb(title="Módulo de Combustible", routeName="servicioCombustible")
  */
@@ -33,7 +35,9 @@ class ServicioCombustibleController extends Controller
      * Lists all ServicioCombustible entities.
      *
      * @Route("/", name="servicioCombustible")
+     *
      * @Method("GET")
+     *
      * @Breadcrumb(title="Servicios de Combustibles", routeName="servicioCombustible")
      */
     public function indexAction(Request $request)
@@ -70,6 +74,7 @@ class ServicioCombustibleController extends Controller
      * Displays a form to create a new ServicioCombustible entity.
      *
      * @Route("/new", name="servicioCombustible_new", methods={"GET"}, options={"expose":true})
+     *
      * @Breadcrumb(title="Crear Nuevo Servicio de Combustible", routeName="servicioCombustible_new")
      */
     public function newAction()
@@ -86,7 +91,7 @@ class ServicioCombustibleController extends Controller
     /**
      * Creates a form to create a ServicioCombustible entity.
      *
-     * @param ServicioCombustible $entity The entity
+     * @param ServicioCombustibleModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
@@ -104,6 +109,7 @@ class ServicioCombustibleController extends Controller
      * Creates a new ServicioCombustible entity.
      *
      * @Route("/create", name="servicioCombustible_create", methods={"POST"}, options={"expose":true})
+     *
      * @Breadcrumb(title="Crear Nuevo Servicio de Combustible", routeName="servicioCombustible_create")
      */
     public function createAction(Request $request)

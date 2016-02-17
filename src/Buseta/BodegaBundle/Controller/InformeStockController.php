@@ -2,15 +2,14 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
-use Buseta\BodegaBundle\Entity\InformeStock;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Buseta\BodegaBundle\Form\Filtro\BusquedaInformeStockType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
+
 /**
  * Class InformeStockController
  *
@@ -33,7 +32,7 @@ class InformeStockController extends Controller
      * @Route("/", name="bodega_informe_stock")
      * @Method({"GET", "POST"})
      *
-     * @Breadcrumb(title="Informe de Stock", routeName="informeStock")
+     * @Breadcrumb(title="Informe de Stock", routeName="bodega_informe_stock")
      */
     public function indexAction(Request $request)
     {
