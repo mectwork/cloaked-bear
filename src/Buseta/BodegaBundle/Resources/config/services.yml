@@ -88,11 +88,11 @@ services:
         - @translator
         - @logger
     buseta.bodega.bitacora_almacen.manager:
-            class: Buseta\BodegaBundle\Manager\BitacoraAlmacenManager
-            arguments:
-                - @doctrine.orm.entity_manager
-                - @logger
-                - @validator
+      class: Buseta\BodegaBundle\Manager\BitacoraAlmacenManager
+      arguments:
+        - @doctrine.orm.entity_manager
+        - @logger
+        - @validator
 
     buseta.bodega.bitacora_serial.manager:
         class: Buseta\BodegaBundle\Manager\BitacoraSerialManager
@@ -122,6 +122,7 @@ services:
             - @doctrine.orm.entity_manager
             - @logger
             - @event_dispatcher
+            - @security.token_storage
 
     buseta.bodega.salidabodega.manager:
         class: Buseta\BodegaBundle\Manager\SalidaBodegaManager

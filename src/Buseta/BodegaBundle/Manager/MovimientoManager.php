@@ -38,20 +38,28 @@ class MovimientoManager
      */
     private $event_dispacher;
 
+    /**
+     * @var TokenStorage
+     */
+    private $tokenStorage;
+
 
     /**
      * @param ObjectManager            $em
      * @param Logger                   $logger
      * @param EventDispatcherInterface $event_dispacher
+     * @param TokenStorage             $tokenStorage
      */
     function __construct(
         ObjectManager $em,
         Logger $logger,
-        EventDispatcherInterface $event_dispacher
+        EventDispatcherInterface $event_dispacher,
+        TokenStorage $tokenStorage
     ) {
         $this->em = $em;
         $this->logger = $logger;
         $this->event_dispacher = $event_dispacher;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -139,7 +147,7 @@ class MovimientoManager
                 }
 
                 //Cambia el estado de Procesado a Completado e incorpora otros datos
-                $username = $this->security_context->getToken()->getUser()->getUsername();
+                $username = $this->tokenStorage->getToken()->getUser()->getUsername();
                 //$movimiento->setCreatedBy($username);
                 $movimiento->setMovidoBy($username);
                 $movimiento->setFechaMovimiento($fechaSalidaBodega = new \DateTime());

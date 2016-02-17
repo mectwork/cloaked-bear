@@ -7,7 +7,7 @@ use HatueySoft\SecurityBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
+use Symfony\Component\Translation\DataCollector\TranslationDataCollector;
 
 class TerceroManager
 {
@@ -22,7 +22,7 @@ class TerceroManager
     private $session;
 
     /**
-     * @var Translator
+     * @var TranslationDataCollector
      */
     private $trans;
 
@@ -31,7 +31,7 @@ class TerceroManager
      */
     private $logger;
 
-    function __construct(EntityManager $em, Session $session, Translator $trans, Logger $logger)
+    function __construct(EntityManager $em, Session $session, TranslationDataCollector $trans, Logger $logger)
     {
         $this->em       = $em;
         $this->session  = $session;
