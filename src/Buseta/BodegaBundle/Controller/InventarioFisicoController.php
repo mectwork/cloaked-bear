@@ -13,14 +13,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\InventarioFisico;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
-
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
 use Buseta\BodegaBundle\BusetaBodegaBitacoraEvents;
-use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
+
 /**
  * InventarioFisico controller.
  *

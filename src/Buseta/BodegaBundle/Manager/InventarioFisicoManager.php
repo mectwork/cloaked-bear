@@ -11,7 +11,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Monolog\Logger;
 use Buseta\BodegaBundle\Entity\InventarioFisico;
 use Buseta\BodegaBundle\Entity\InventarioFisicoLinea;
-use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
+use Buseta\BodegaBundle\Event\LegacyBitacoraEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\DBAL\Connections;
 
@@ -124,7 +124,7 @@ class InventarioFisicoManager
             if ($inventarioFisicoLineas !== null && count($inventarioFisicoLineas) > 0) {
                 //entonces mando a crear los movimientos en la bitacora, producto a producto, a traves de eventos
                 foreach ($inventarioFisicoLineas as $linea) {
-                    $event = new FilterBitacoraEvent($linea);
+                    $event = new LegacyBitacoraEvent($linea);
                     $this->dispatcher->dispatch(BitacoraEvents::INVENTORY_IN, $event);//I+
                     $result = $event->getReturnValue();
                     if ($result !== true) {

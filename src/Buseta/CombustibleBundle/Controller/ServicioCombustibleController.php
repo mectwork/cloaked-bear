@@ -4,7 +4,7 @@ namespace Buseta\CombustibleBundle\Controller;
 
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Event\BitacoraEvents;
-use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
+use Buseta\BodegaBundle\Event\LegacyBitacoraEvent;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Buseta\CombustibleBundle\Entity\ServicioCombustible;
 use Buseta\CombustibleBundle\Form\Filter\ServicioCombustibleFilter;
@@ -151,7 +151,7 @@ class ServicioCombustibleController extends Controller
                     $em->persist($servicioCombustible);
 
                     $dispatcher = $this->get('event_dispatcher');
-                    $dispatcher->dispatch(BitacoraEvents::PRODUCTION_NEGATIVE, new FilterBitacoraEvent($servicioCombustible));
+                    $dispatcher->dispatch(BitacoraEvents::PRODUCTION_NEGATIVE, new LegacyBitacoraEvent($servicioCombustible));
 
                     $em->flush();
 

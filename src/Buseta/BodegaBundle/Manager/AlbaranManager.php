@@ -9,7 +9,7 @@ use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Monolog\Logger;
 use Buseta\BodegaBundle\Event\BitacoraEvents;
-use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
+use Buseta\BodegaBundle\Event\LegacyBitacoraEvent;
 use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\DBAL\Connections;
@@ -119,7 +119,7 @@ class AlbaranManager
             if ($albaranLineas !== null && count($albaranLineas) > 0) {
                 //entonces mando a crear los movimientos en la bitacora, producto a producto, a traves de eventos
                 foreach ($albaranLineas as $linea) {
-                    $event = new FilterBitacoraEvent($linea);
+                    $event = new LegacyBitacoraEvent($linea);
                     $this->dispatcher->dispatch(BitacoraEvents::VENDOR_RECEIPTS, $event);
                     $result = $event->getReturnValue();
                     if ($result !== true) {

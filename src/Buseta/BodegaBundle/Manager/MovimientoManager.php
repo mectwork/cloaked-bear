@@ -9,7 +9,7 @@ use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Buseta\BodegaBundle\Entity\MovimientosProductos;
 use Buseta\BodegaBundle\Entity\InventarioFisicoLinea;
-use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
+use Buseta\BodegaBundle\Event\LegacyBitacoraEvent;
 use Buseta\BodegaBundle\Event\BitacoraEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -127,7 +127,7 @@ class MovimientoManager
             if ($movimientos !== null && count($movimientos) > 0) {
                 //entonces mando a crear los movimientos en la bitacora, producto a producto, a traves de eventos
                 foreach ($movimientos as $linea) {
-                    $event = new FilterBitacoraEvent($linea);
+                    $event = new LegacyBitacoraEvent($linea);
                     $this->event_dispacher->dispatch(BitacoraEvents::MOVEMENT_FROM /*M-*/, $event);
                     $result = $event->getReturnValue();
                     if ($result !== true) {
@@ -136,7 +136,7 @@ class MovimientoManager
                         return $error = $result;
                     }
 
-                    $event = new FilterBitacoraEvent($linea);
+                    $event = new LegacyBitacoraEvent($linea);
                     $this->event_dispacher->dispatch(BitacoraEvents::MOVEMENT_TO /*M+*/, $event);
                     $result = $event->getReturnValue();
                     if ($result !== true) {

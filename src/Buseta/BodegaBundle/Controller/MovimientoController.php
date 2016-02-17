@@ -14,12 +14,11 @@ use Buseta\BodegaBundle\Form\Type\MovimientosProductosType;
 use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Form\Type\MovimientoType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
-use Buseta\BodegaBundle\Event\BitacoraEvents;
-use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
+
 /**
  * Movimiento controller.
  * @Breadcrumb(title="Inicio", routeName="core_homepage")

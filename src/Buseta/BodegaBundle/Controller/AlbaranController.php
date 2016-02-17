@@ -2,24 +2,17 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
-use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
-use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
-use Buseta\BodegaBundle\Entity\AlbaranLinea;
-use Buseta\BodegaBundle\Entity\Movimiento;
-
 use Buseta\BodegaBundle\Form\Filter\AlbaranFilter;
 use Buseta\BodegaBundle\Form\Model\AlbaranFilterModel;
 use Buseta\BodegaBundle\Form\Model\AlbaranModel;
-use Buseta\BodegaBundle\Form\Type\AlbaranLineaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\Albaran;
-use Buseta\BodegaBundle\Form\Filtro\BusquedaAlbaranType;
-
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
+
 /**
  * Albaran controller.
  *

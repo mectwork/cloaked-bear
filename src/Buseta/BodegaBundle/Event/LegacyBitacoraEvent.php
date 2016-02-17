@@ -1,10 +1,16 @@
 <?php
 
 namespace Buseta\BodegaBundle\Event;
+
 use Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface;
 use Symfony\Component\EventDispatcher\Event;
 
-class FilterBitacoraEvent extends Event
+/**
+ * Class LegacyBitacoraEvent
+ *
+ * @package Buseta\BodegaBundle\Event
+ */
+class LegacyBitacoraEvent extends Event
 {
     /**
      * @var \Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface

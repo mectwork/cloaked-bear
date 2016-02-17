@@ -2,8 +2,6 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
-use Buseta\BodegaBundle\BusetaBodegaBundle;
-use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\SalidaBodegaProducto;
 use Buseta\BodegaBundle\Form\Filter\SalidaBodegaFilter;
 use Buseta\BodegaBundle\Form\Model\SalidaBodegaFilterModel;
@@ -18,9 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Buseta\BodegaBundle\Event\BitacoraEvents;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 
 /**

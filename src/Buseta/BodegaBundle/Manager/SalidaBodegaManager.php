@@ -7,7 +7,7 @@ use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Monolog\Logger;
 use Buseta\BodegaBundle\Entity\SalidaBodega;
-use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
+use Buseta\BodegaBundle\Event\LegacyBitacoraEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Buseta\BodegaBundle\Exceptions\NotFoundElementException;
@@ -122,7 +122,7 @@ class SalidaBodegaManager
             if ($salidasBodega !== null && count($salidasBodega) > 0) {
                 //entonces mando a crear los movimientos en la bitacora, producto a producto, a traves de eventos
                 foreach ($salidasBodega as $linea) {
-                    $event = new FilterBitacoraEvent($linea);
+                    $event = new LegacyBitacoraEvent($linea);
                     $this->event_dispacher->dispatch(BitacoraEvents::INTERNAL_CONSUMPTION_NEGATIVE /*I-*/, $event);
                     $result = $event->getReturnValue();
                     if (!$result) {
@@ -131,7 +131,7 @@ class SalidaBodegaManager
                         return $error = $result;
                     }
                     //aunque debe ser de la siguiente forma
-                    //$event = new FilterBitacoraEvent($linea);
+                    //$event = new LegacyBitacoraEvent($linea);
                     //$eventDispatcher->dispatch(BitacoraEvents::PRODUCTION_NEGATIVE, $event);//P+
                 }
 
