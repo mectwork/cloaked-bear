@@ -70,7 +70,7 @@ class BitacoraAlmacen implements DateTimeAwareInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="movement_date", type="date")
+     * @ORM\Column(name="movement_date", type="datetime")
      * @Assert\Date()
      */
     private $fechaMovimiento;
