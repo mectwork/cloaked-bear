@@ -87,6 +87,7 @@ services:
         - @session
         - @translator
         - @logger
+
     buseta.bodega.bitacora_almacen.manager:
       class: Buseta\BodegaBundle\Manager\BitacoraAlmacenManager
       arguments:
@@ -95,42 +96,42 @@ services:
         - @validator
 
     buseta.bodega.bitacora_serial.manager:
-        class: Buseta\BodegaBundle\Manager\BitacoraSerialManager
-        arguments:
-                - @doctrine.orm.entity_manager
-                - @logger
-                - @validator
-                - @buseta.bodega.generadorseriales
+      class: Buseta\BodegaBundle\Manager\BitacoraSerialManager
+      arguments:
+        - @doctrine.orm.entity_manager
+        - @logger
+        - @validator
+        - @buseta.bodega.generadorseriales
 
     buseta.bodega.albaran.manager:
-        class: Buseta\BodegaBundle\Manager\AlbaranManager
-        arguments:
-            - @doctrine.orm.entity_manager
-            - @logger
-            - @event_dispatcher
+      class: Buseta\BodegaBundle\Manager\AlbaranManager
+      arguments:
+        - @doctrine.orm.entity_manager
+        - @logger
+        - @event_dispatcher
 
     buseta.bodega.inventariofisico.manager:
-        class: Buseta\BodegaBundle\Manager\InventarioFisicoManager
-        arguments:
-            - @doctrine.orm.entity_manager
-            - @logger
-            - @event_dispatcher
+      class: Buseta\BodegaBundle\Manager\InventarioFisicoManager
+      arguments:
+        - @doctrine.orm.entity_manager
+        - @logger
+        - @event_dispatcher
 
     buseta.bodega.movimiento.manager:
-        class: Buseta\BodegaBundle\Manager\MovimientoManager
-        arguments:
-            - @doctrine.orm.entity_manager
-            - @logger
-            - @event_dispatcher
-            - @security.token_storage
+      class: Buseta\BodegaBundle\Manager\MovimientoManager
+      arguments:
+        - @doctrine.orm.entity_manager
+        - @logger
+        - @event_dispatcher
+        - @security.token_storage
 
     buseta.bodega.salidabodega.manager:
-        class: Buseta\BodegaBundle\Manager\SalidaBodegaManager
-        arguments:
-            - @doctrine.orm.entity_manager
-            - @logger
-            - @event_dispatcher
-            - @security.token_storage
+      class: Buseta\BodegaBundle\Manager\SalidaBodegaManager
+      arguments:
+        - @doctrine.orm.entity_manager
+        - @logger
+        - @event_dispatcher
+        - @security.token_storage
 
     #VALIDATORS
     bodega.constains_codigo.validador:

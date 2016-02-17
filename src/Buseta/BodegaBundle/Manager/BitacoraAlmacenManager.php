@@ -4,32 +4,32 @@ namespace Buseta\BodegaBundle\Manager;
 
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Validator\Validator\RecursiveValidator;
 use Symfony\Bridge\Monolog\Logger;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BitacoraAlmacenManager
 {
     /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
+     * @var ObjectManager
      */
     private $em;
 
     /**
-     * @var \Symfony\Bridge\Monolog\Logger
+     * @var Logger
      */
     private $logger;
 
     /**
-     * @var \Symfony\Component\Validator\Validator\RecursiveValidator
+     * @var ValidatorInterface
      */
     private $validator;
 
     /**
      * @param ObjectManager $em
      * @param Logger $logger
-     * @param RecursiveValidator $validator
+     * @param ValidatorInterface $validator
      */
-    function __construct(ObjectManager $em, Logger $logger, RecursiveValidator $validator)
+    function __construct(ObjectManager $em, Logger $logger, ValidatorInterface $validator)
     {
         $this->em = $em;
         $this->logger = $logger;
@@ -39,7 +39,6 @@ class BitacoraAlmacenManager
     public function createRegistry(BitacoraAlmacen $bitacora)
     {
         try {
-
             //el validator valida por los assert de la entity
             $validationOrigen = $this->validator->validate($bitacora);
             if ($validationOrigen->count() === 0) {
@@ -61,7 +60,5 @@ class BitacoraAlmacenManager
             //hacer rollback en el futuro
             return 'Error guardando la Bitacora';
         }
-
     }
-
 }

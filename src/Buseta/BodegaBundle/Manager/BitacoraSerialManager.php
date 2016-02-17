@@ -1,33 +1,35 @@
 <?php
 
 namespace Buseta\BodegaBundle\Manager;
+
 use Buseta\BodegaBundle\Entity\BitacoraSerial;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Validator\Validator\RecursiveValidator;
 use Symfony\Bridge\Monolog\Logger;
 use Buseta\BodegaBundle\Extras\GeneradorSeriales;
 use Buseta\BodegaBundle\Exceptions\NotValidBitacoraTypeException;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class BitacoraSerialManager
+ *
  * @package Buseta\BodegaBundle\Manager
  */
 class BitacoraSerialManager
 {
     /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
+     * @var ObjectManager
      */
     private $em;
 
     /**
-     * @var \Symfony\Bridge\Monolog\Logger
+     * @var Logger
      */
     private $logger;
 
     /**
-     * @var \Symfony\Component\Validator\Validator\RecursiveValidator
+     * @var ValidatorInterface
      */
     private $validator;
 
@@ -40,10 +42,10 @@ class BitacoraSerialManager
     /**
      * @param ObjectManager $em
      * @param Logger $logger
-     * @param RecursiveValidator $validator
+     * @param ValidatorInterface $validator
      * @param GeneradorSeriales $generadorSeriales
      */
-    function __construct(ObjectManager $em, Logger $logger, RecursiveValidator $validator, GeneradorSeriales $generadorSeriales)
+    function __construct(ObjectManager $em, Logger $logger, ValidatorInterface $validator, GeneradorSeriales $generadorSeriales)
     {
         $this->em = $em;
         $this->logger = $logger;
@@ -55,6 +57,7 @@ class BitacoraSerialManager
     /**
      * @param $albaranLinea  \Buseta\BodegaBundle\Entity\AlbaranLinea
      * @param $movementType string
+     *
      * @return bool
      */
     public function guardarSerialesDesdeAlbaranLinea($albaranLinea, $movementType)
