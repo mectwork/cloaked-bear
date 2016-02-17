@@ -18,6 +18,7 @@
         {% set display = '' %}
         {% set headericon = 'glyphicon-chevron-down' %}
         {% if (filter_form.vars.value.numerodocumento is null or filter_form.vars.value.numerodocumento is empty)
+        and (filter_form.vars.value.numeroreferencia is null or filter_form.vars.value.numeroreferencia is empty)
         and (filter_form.vars.value.tercero is null or filter_form.vars.value.tercero is empty)
         and (filter_form.vars.value.almacen is null or filter_form.vars.value.almacen is empty)
         and (filter_form.vars.value.moneda is null or filter_form.vars.value.moneda is empty)
@@ -41,6 +42,7 @@
             <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
                 <div class="row">
                     <div class="col-lg-4">{{ form_row(filter_form.numero_documento) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.numero_referencia) }}</div>
                     <div class="col-lg-4">{{ form_row(filter_form.tercero) }}</div>
                     <div class="col-lg-4">{{ form_row(filter_form.almacen) }}</div>
                     <div class="col-lg-4">{{ form_row(filter_form.moneda) }}</div>
@@ -96,7 +98,17 @@
                     <td>{{ entity.moneda }}</td>
                     <td>{{ entity.formapago }}</td>
                     <td>{{ entity.importetotal }}</td>
-                    <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
+                    {% if entity.estadodocumento == 'CO' %}
+                        {% set badge = 'success' %}
+                        {% set text_color = 'success' %}
+                    {% elseif entity.estadodocumento == 'PR' %}
+                        {% set badge = 'primary' %}
+                        {% set text_color = 'primary' %}
+                    {% else %}
+                        {% set badge = 'danger' %}
+                        {% set text_color = 'danger' %}
+                    {% endif %}
+                    <td class="text-{{ text_color }}"><span class="label label-{{ badge }}">{{ ('estado.' ~entity.estadodocumento) | trans({}, 'BusetaBodegaBundle') | upper }}</span></td>
 
                     <td style="width: 24% !important; text-align: center;">
                         <div class="btn-group">
@@ -144,6 +156,8 @@
 
 {% block javascripts %}
     <script type="text/javascript">
+        $('#buseta_necesidad_material_filter_tercero').chosen();
+        $('#buseta_necesidad_material_filter_almacen').chosen();
         $(document).ready(function () {
             $('a#filter_form_header').click(function () {
                 if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
