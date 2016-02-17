@@ -179,3 +179,9 @@ bodega:
 necesidadmaterial:
   btn:
     adicionar: Adicionar Necesidad de Material
+
+# ESTADO DE LOS DOCUMENTOS
+estado:
+    BO: Borrador/Abierto
+    PR: Procesado
+    CO: Completado
