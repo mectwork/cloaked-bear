@@ -19,7 +19,7 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
  * @Route("/configuracion/marchamo")
  * @Breadcrumb(title="Inicio", routeName="core_homepage")
  * @Breadcrumb(title="Módulo de Combustible", routeName="servicioCombustible")
- * * @Breadcrumb(title="Configuración de Marchamo")
+ * * @Breadcrumb(title="Modificar Datos de la Configuración de Marchamo")
  */
 class ConfiguracionMarchamoController extends Controller
 {
@@ -60,7 +60,6 @@ class ConfiguracionMarchamoController extends Controller
      *
      * @Route("/update", name="combustible_configuracion_marchamo_update")
      * @Method("PUT")
-     * @Breadcrumb(title="Modificar Configuración de Marchamo", routeName="autobus_basico_update", routeParameters={"id"})
      */
     public function updateAction(Request $request)
     {
