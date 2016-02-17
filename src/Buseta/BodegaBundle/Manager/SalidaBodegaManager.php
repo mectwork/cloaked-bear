@@ -123,23 +123,13 @@ class SalidaBodegaManager
                 //entonces mando a crear los movimientos en la bitacora, producto a producto, a traves de eventos
                 foreach ($salidasBodega as $linea) {
                     $event = new FilterBitacoraEvent($linea);
-                    $this->event_dispacher->dispatch(BitacoraEvents::MOVEMENT_FROM /*M-*/, $event);
+                    $this->event_dispacher->dispatch(BitacoraEvents::INTERNAL_CONSUMPTION_NEGATIVE /*I-*/, $event);
                     $result = $event->getReturnValue();
-                    if ($result !== true) {
+                    if (!$result) {
                         // Rollback the failed transaction attempt
                         $this->em->getConnection()->rollback();
                         return $error = $result;
                     }
-
-                    $event = new FilterBitacoraEvent($linea);
-                    $this->event_dispacher->dispatch(BitacoraEvents::MOVEMENT_TO /*M+*/, $event);
-                    $result = $event->getReturnValue();
-                    if ($result !== true) {
-                        // Rollback the failed transaction attempt
-                        $this->em->getConnection()->rollback();
-                        return $error = $result;
-                    }
-
                     //aunque debe ser de la siguiente forma
                     //$event = new FilterBitacoraEvent($linea);
                     //$eventDispatcher->dispatch(BitacoraEvents::PRODUCTION_NEGATIVE, $event);//P+
@@ -156,7 +146,8 @@ class SalidaBodegaManager
             } else {
                 // Rollback the failed transaction attempt
                 $this->em->getConnection()->rollback();
-                return $error = 'La salida de bodega debe tener al menos un producto';
+
+                return false;
             }
 
             //finalmentele damos flush a todo para guardar en la Base de Datos
@@ -175,7 +166,7 @@ class SalidaBodegaManager
             // Rollback the failed transaction attempt
             $this->em->getConnection()->rollback();
 
-            return $error = 'Ha ocurrido un error al completar la salida de bodega';
+            return false;
         }
     }
 }

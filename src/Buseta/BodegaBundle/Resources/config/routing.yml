@@ -18,11 +18,15 @@ BusetaBodegaBundle_producto:
     resource: "@BusetaBodegaBundle/Resources/config/routing/producto.yml"
     prefix:   /bodega/producto
 
-BusetaBodegaBundle_movimiento:
-    resource: "@BusetaBodegaBundle/Resources/config/routing/salidabodega.yml"
-    prefix:   /bodega/salidabodega
-
 BusetaBodegaBundle_salidabodega:
+    resource: "@BusetaBodegaBundle/Controller/SalidaBodegaController.php"
+    type: annotation
+
+BusetaBodegaBundle_informe:
+    resource: "@BusetaBodegaBundle/Controller/InformeController.php"
+    type: annotation
+
+BusetaBodegaBundle_movimiento:
     resource: "@BusetaBodegaBundle/Resources/config/routing/movimiento.yml"
     prefix:   /bodega/movimiento
 

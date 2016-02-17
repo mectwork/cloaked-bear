@@ -43,22 +43,21 @@ class BitacoraAlmacenManager
             $validationOrigen = $this->validator->validate($bitacora);
             if ($validationOrigen->count() === 0) {
                 $this->em->persist($bitacora);
+
+                return true;
             } else {
                 $errors = '';
                 foreach ($validationOrigen->getIterator() as $param => $error) {
                     $errors .= sprintf('%s: %s. ', $param, $error);
                 }
                 $this->logger->error(sprintf('BitacoraAlmacen.Validation: %s', $errors));
-                return 'Error en la validacion de la Bitacora';
+
+                return false;
             }
-
-            //si todo bien y  no hay errores devuelvo true
-            return true;
-
         } catch (\Exception $e) {
             $this->logger->error(sprintf('BitacoraAlmacen.Persist: %s', $e->getMessage()));
             //hacer rollback en el futuro
-            return 'Error guardando la Bitacora';
+            return false;
         }
     }
 }
