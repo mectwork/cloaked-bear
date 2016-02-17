@@ -169,7 +169,7 @@ class MovimientoController extends Controller
     /**
      * Lists all Movimiento entities.
      * @Route("/", name="movimiento")
-     * @Breadcrumb(title="Movimientos de Productos ", routeName="movimiento")
+     * @Breadcrumb(title="Listados de Movimientos de Productos", routeName="movimiento")
      */
     public function indexAction(Request $request)
     {

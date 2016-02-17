@@ -82,18 +82,14 @@
                 <td colspan="12">No se encontraron registros de movimientos en el sistema.</td>
             </tr>
         {% endfor %}
-
         </tbody>
     </table>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                {{ knp_pagination_render(entities) }}
-            </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            {{ knp_pagination_render(entities) }}
         </div>
     </div>
-
 {% endblock %}
 
 {% block javascripts %}
