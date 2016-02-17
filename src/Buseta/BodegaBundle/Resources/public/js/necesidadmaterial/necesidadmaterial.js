@@ -8,6 +8,7 @@ var necesidadmaterial = {
             'format': 'DD/MM/YYYY'
         });
         $('#bodega_necesidad_material_tercero').chosen();
+        $('#bodega_necesidad_material_almacen').chosen();
 
         $('a#btn_necesidadmaterial_save').on('click', necesidadmaterial._save);
     },
@@ -66,15 +67,15 @@ var necesidadmaterial = {
     },
     _done: function (response, textStatus, jqXHR) {
         $('form#' + necesidadmaterial.form_id).replaceWith(response.view);
-
         if(jqXHR.status == 201) {
-            addGlobalMessage('success', response.message);
+            alert('201');
+            $btalerts.addSuccess(response.message);
             // PedidoCompra Id
             necesidadmaterial.id = $('input[id="' + necesidadmaterial.form_id + '_id"]').val();
             // activate all tabs
             tabs._show_all_tabs();
         } else if(jqXHR.status == 202) {
-            addGlobalMessage('success', response.message);
+            $btalerts.addSuccess(response.message);
         }
         necesidadmaterial._start_evens();
     },
