@@ -68,8 +68,14 @@ class DiagnosticoManager
             //Crear nuevo Diagnostico a partir del Reporte seleccionado
             $diagnostico = new Diagnostico();
 
-            if ($this->sequenceManager->hasSequence(ClassUtils::getRealClass($diagnostico))) {
-                $diagnostico->setNumero($this->sequenceManager->getNextValue('diagnostico_seq'));
+            if (($this->sequenceManager->getNextValue('diagnostico_seq')) != null) {
+                if ($this->sequenceManager->hasSequence(ClassUtils::getRealClass($diagnostico))) {
+                    $diagnostico->setNumero($this->sequenceManager->getNextValue('diagnostico_seq'));
+
+            } else {
+                $diagnostico->setNumero( $reporte->getNumero() );
+
+                }
             }
             $diagnostico->setReporte($reporte);
             $diagnostico->setAutobus($reporte->getAutobus());

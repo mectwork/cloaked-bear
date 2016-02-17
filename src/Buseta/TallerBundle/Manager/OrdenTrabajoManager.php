@@ -86,12 +86,16 @@ class OrdenTrabajoManager
             //Crear nueva orden de trabajo a partir del Diagnostico seleccionado
             $ordenTrabajo = new OrdenTrabajo();
 
-            //$ordenTrabajo->setNumero($diagnostico->getNumero());
 
-            if ($this->sequenceManager->hasSequence(ClassUtils::getRealClass($ordenTrabajo))) {
-                $ordenTrabajo->setNumero($this->sequenceManager->getNextValue('ot_seq'));
+            if (($this->sequenceManager->getNextValue('ot_seq')) != null) {
+                if ($this->sequenceManager->hasSequence(ClassUtils::getRealClass($ordenTrabajo))) {
+                    $ordenTrabajo->setNumero($this->sequenceManager->getNextValue('ot_seq'));
+
+                } else {
+                    $ordenTrabajo->setNumero( $diagnostico->getNumero() );
+
+                }
             }
-
             $ordenTrabajo->setDiagnostico($diagnostico);
             $ordenTrabajo->setAutobus($diagnostico->getAutobus());
             $ordenTrabajo->setCancelado(false);
