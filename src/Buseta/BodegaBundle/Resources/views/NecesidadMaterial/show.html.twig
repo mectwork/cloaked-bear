@@ -14,6 +14,22 @@
 
 {% block area_trabajo %}
 
+    {# Para mostrar el estado del documento como un label bootstrap con color en dependencia del estado#}
+    {% if entity.estadodocumento == 'CO' %}
+        {% set badge = 'success' %}
+        {% set text_color = 'success' %}
+    {% elseif entity.estadodocumento == 'PR' %}
+        {% set badge = 'primary' %}
+        {% set text_color = 'primary' %}
+    {% else %}
+        {% set badge = 'danger' %}
+        {% set text_color = 'danger' %}
+    {% endif %}
+    <h4 class="pull-right">
+        <span class="label label-{{ badge }}">{{ ('estado.' ~entity.estadodocumento) | trans({}, 'BusetaBodegaBundle') | upper }}</span>
+    </h4>
+    {# Para mostrar el estado del documento como un label bootstrap con color en dependencia del estado#}
+
     <table class="table table-striped" style="font-size: 16px;">
         <tbody>
 
@@ -24,7 +40,7 @@
 
             <tr>
                 <th>Nro.Referencia</th>
-                <td>{{ entity.consecutivocompra }}</td>
+                <td>{{ entity.numeroReferencia }}</td>
             </tr>
 
             <tr>
@@ -70,11 +86,6 @@
             <tr>
                 <th>Nombre del Proveedor</th>
                 <td>{{ entity.tercero.nombres }} {{ entity.tercero.apellidos }}</td>
-            </tr>
-
-            <tr>
-                <th>Estado Documento</th>
-                <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
             </tr>
 
             <tr>
