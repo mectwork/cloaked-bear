@@ -2,13 +2,9 @@
 
 {% form_theme edit_form 'BusetaTemplateBundle:Widgets:collection_linea_insertadas.html.twig' %}
 
-{% block nombre_menu_superior %}
+{% block title block('header') %}
 
-{% endblock %}
-
-{% block titulo_encabezado %}
-    Adicionar nueva compra
-{% endblock %}
+{% block header 'Modificar Registro de Compra' %}
 
 {% block area_trabajo %}
 

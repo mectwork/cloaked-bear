@@ -1,8 +1,8 @@
 {% extends 'BusetaBodegaBundle::layout.html.twig' %}
 
-{% block titulo_encabezado %}
-    Listado de Proveedores
-{% endblock %}
+{% block title block('header') %}
+
+{% block header 'Listado de Proveedores' %}
 
 {% block area_trabajo -%}
     {% set display = '' %}

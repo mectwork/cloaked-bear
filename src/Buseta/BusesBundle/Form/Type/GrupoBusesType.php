@@ -22,13 +22,20 @@ class GrupoBusesType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('color')
-
+            ->add('color', 'text', array(
+                'required' => false,
+                'label' => 'Color de fondo',
+                'attr'   => array(
+                    'class' => 'minicolors-input colorpicker',
+                    'data-control' => 'wheel',
+                ),
+            ))
             ->add('colorTexto', 'text', array(
                 'required' => false,
                 'label' => 'Color de texto',
                 'attr'   => array(
-                    'class' => 'form-control',
+                    'class' => 'minicolors-input colorpicker',
+                    'data-control' => 'wheel',
                 ),
             ));
 

@@ -1,12 +1,8 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% block nombre_menu_superior %}
+{% block title block('header') %}
 
-{% endblock %}
-
-{% block titulo_encabezado %}
-    Datos de la categoría de producto: {{ entity.valor }}
-{% endblock %}
+    {% block header 'Ver Datos de Categoría de Producto' %}
 
 {% block area_trabajo %}
 

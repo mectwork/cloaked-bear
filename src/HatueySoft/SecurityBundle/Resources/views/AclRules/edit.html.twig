@@ -1,8 +1,8 @@
 {% extends '@HatueySoftSecurity/layout.html.twig' %}
 
-{% block title 'Listas Control de Acceso para entidad: ' ~ entity|capitalize  %}
+{% block title block('header') ~ entity|capitalize  %}
 
-{% block headline block('title') %}
+{% block header 'Modificar Lista Control de Acceso para entidad' %}
 
 {% block content -%}
     <div class="panel panel-default">

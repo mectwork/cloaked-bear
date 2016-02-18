@@ -1,16 +1,8 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% block nombre_menu_superior %}
+{% block title block('header') %}
 
-{% endblock %}
-
-{% block title %}
-    Modificar datos de la bodega: {{ entity.nombre }}
-{% endblock %}
-
-{% block titulo_encabezado %}
-    Modificar datos de la bodega: {{ entity.nombre }}
-{% endblock %}
+{% block header 'Modificar Bodega' %}
 
 {% block area_trabajo %}
 

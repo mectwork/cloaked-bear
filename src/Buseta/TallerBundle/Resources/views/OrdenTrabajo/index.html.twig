@@ -1,12 +1,8 @@
 {% extends "BusetaTallerBundle::layout.html.twig" %}
 
-{% block title %}
-    Listado de órdenes de trabajo
-{% endblock %}
+{% block title block('header') %}
 
-{% block titulo_encabezado %}
-    Listado de órdenes de trabajo
-{% endblock %}
+{% block header 'Listado de Ordenes de Trabajo' %}
 
 {% block area_trabajo %}
     {% set display = '' %}

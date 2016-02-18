@@ -1,12 +1,8 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% block title %}
-    Modificar Datos del Producto
-{% endblock %}
+{% block title block('header') %}
 
-{% block titulo_encabezado %}
-    Modificar Datos del Producto: "{{ entity.nombre }}"
-{% endblock %}
+{% block header 'Modificar Producto' %}
 
 {% block area_trabajo %}
 
