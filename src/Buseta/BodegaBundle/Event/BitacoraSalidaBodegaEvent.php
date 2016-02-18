@@ -5,6 +5,7 @@ namespace Buseta\BodegaBundle\Event;
 use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
 use Buseta\BodegaBundle\Entity\SalidaBodega;
 use Buseta\BodegaBundle\Entity\SalidaBodegaProducto;
+use Buseta\BodegaBundle\Model\BitacoraEventModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -44,7 +45,7 @@ class BitacoraSalidaBodegaEvent extends Event implements BitacoraEventInterface
 
             foreach ($salidaBodega->getSalidasProductos() as $salidaProducto) {
                 /** @var SalidaBodegaProducto $salidaProducto */
-                $bitacoraEvent = new BitacoraEvent();
+                $bitacoraEvent = new BitacoraEventModel();
                 $bitacoraEvent->setProduct($salidaProducto->getProducto());
                 $bitacoraEvent->setWarehouse($salidaBodega->getAlmacenOrigen());
                 $bitacoraEvent->setMovementQty($salidaProducto->getCantidad());
@@ -65,15 +66,15 @@ class BitacoraSalidaBodegaEvent extends Event implements BitacoraEventInterface
     }
 
     /**
-     * @param BitacoraEvent $bitacoraEvent
+     * @param BitacoraEventModel $bitacoraEventModel
      */
-    public function addBitacoraEvent(BitacoraEvent $bitacoraEvent)
+    public function addBitacoraEvent(BitacoraEventModel $bitacoraEventModel)
     {
-        $this->bitacoraEvents->add($bitacoraEvent);
+        $this->bitacoraEvents->add($bitacoraEventModel);
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getError()
     {

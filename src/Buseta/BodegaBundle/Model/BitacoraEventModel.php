@@ -1,15 +1,15 @@
 <?php
 
-namespace Buseta\BodegaBundle\Event;
+namespace Buseta\BodegaBundle\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class BitacoraEvent
+ * Class BitacoraEventModel
  *
  * @package Buseta\BodegaBundle\Event
  */
-class BitacoraEvent
+class BitacoraEventModel
 {
     /**
      * @var \Buseta\BodegaBundle\Entity\Bodega

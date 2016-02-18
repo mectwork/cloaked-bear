@@ -5,6 +5,7 @@ namespace Buseta\BodegaBundle\Event;
 use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
+use Buseta\BodegaBundle\Model\BitacoraEventModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -44,7 +45,7 @@ class BitacoraAlbaranEvent extends Event implements BitacoraEventInterface
 
             foreach ($albaran->getAlbaranLineas() as $albaranLinea) {
                 /** @var AlbaranLinea $albaranLinea */
-                $bitacoraEvent = new BitacoraEvent();
+                $bitacoraEvent = new BitacoraEventModel();
                 $bitacoraEvent->setWarehouse($albaranLinea->getAlmacen());
                 $bitacoraEvent->setProduct($albaranLinea->getProducto());
                 $bitacoraEvent->setMovementQty($albaranLinea->getCantidadMovida());
@@ -65,15 +66,15 @@ class BitacoraAlbaranEvent extends Event implements BitacoraEventInterface
     }
 
     /**
-     * @param BitacoraEvent $bitacoraEvent
+     * @param BitacoraEventModel $bitacoraEvent
      */
-    public function addBitacoraEvent(BitacoraEvent $bitacoraEvent)
+    public function addBitacoraEvent(BitacoraEventModel $bitacoraEvent)
     {
         $this->bitacoraEvents->add($bitacoraEvent);
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getError()
     {

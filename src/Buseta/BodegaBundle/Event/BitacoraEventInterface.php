@@ -13,4 +13,11 @@ interface BitacoraEventInterface
      * @return ArrayCollection
      */
     public function getBitacoraEvents();
+
+    /**
+     * Gets error during event call if any.
+     *
+     * @return string
+     */
+    public function getError();
 }

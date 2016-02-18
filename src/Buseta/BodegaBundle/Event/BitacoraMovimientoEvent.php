@@ -5,6 +5,7 @@ namespace Buseta\BodegaBundle\Event;
 use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
 use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Entity\MovimientosProductos;
+use Buseta\BodegaBundle\Model\BitacoraEventModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -43,14 +44,14 @@ class BitacoraMovimientoEvent extends Event implements BitacoraEventInterface
             $this->movimiento = $movimiento;
             foreach ($movimiento->getMovimientosProductos() as $movimientoProducto) {
                 /** @var MovimientosProductos $movimientoProducto */
-                $bitacoraEventTo = new BitacoraEvent();
+                $bitacoraEventTo = new BitacoraEventModel();
                 $bitacoraEventTo->setProduct($movimientoProducto->getProducto());
                 $bitacoraEventTo->setWarehouse($movimiento->getAlmacenDestino());
                 $bitacoraEventTo->setMovementQty($movimientoProducto->getCantidad());
                 $bitacoraEventTo->setMovementDate($movimiento->getFechaMovimiento());
                 $bitacoraEventTo->setMovementType(BusetaBodegaMovementTypes::MOVEMENT_TO);
 
-                $bitacoraEventFrom = new BitacoraEvent();
+                $bitacoraEventFrom = new BitacoraEventModel();
                 $bitacoraEventFrom->setProduct($movimientoProducto->getProducto());
                 $bitacoraEventFrom->setWarehouse($movimiento->getAlmacenOrigen());
                 $bitacoraEventFrom->setMovementQty($movimientoProducto->getCantidad());
@@ -72,15 +73,15 @@ class BitacoraMovimientoEvent extends Event implements BitacoraEventInterface
     }
 
     /**
-     * @param BitacoraEvent $bitacoraEvent
+     * @param BitacoraEventModel $bitacoraEventModel
      */
-    public function addBitacoraEvent(BitacoraEvent $bitacoraEvent)
+    public function addBitacoraEvent(BitacoraEventModel $bitacoraEventModel)
     {
-        $this->bitacoraEvents->add($bitacoraEvent);
+        $this->bitacoraEvents->add($bitacoraEventModel);
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getError()
     {

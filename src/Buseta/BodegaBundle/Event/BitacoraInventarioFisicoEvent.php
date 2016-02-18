@@ -5,6 +5,7 @@ namespace Buseta\BodegaBundle\Event;
 use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
 use Buseta\BodegaBundle\Entity\InventarioFisico;
 use Buseta\BodegaBundle\Entity\InventarioFisicoLinea;
+use Buseta\BodegaBundle\Model\BitacoraEventModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -46,7 +47,7 @@ class BitacoraInventarioFisicoEvent extends Event implements BitacoraEventInterf
                     continue;
                 }
                 /** @var InventarioFisicoLinea $inventarioFisicoLinea */
-                $bitacoraEvent = new BitacoraEvent();
+                $bitacoraEvent = new BitacoraEventModel();
                 $bitacoraEvent->setProduct($inventarioFisicoLinea->getProducto());
                 $bitacoraEvent->setWarehouse($inventarioFisico->getAlmacen());
                 $bitacoraEvent->setMovementQty(abs($movementQty));
@@ -68,15 +69,15 @@ class BitacoraInventarioFisicoEvent extends Event implements BitacoraEventInterf
     }
 
     /**
-     * @param BitacoraEvent $bitacoraEvent
+     * @param BitacoraEventModel $bitacoraEvent
      */
-    public function addBitacoraEvent(BitacoraEvent $bitacoraEvent)
+    public function addBitacoraEvent(BitacoraEventModel $bitacoraEvent)
     {
         $this->bitacoraEvents->add($bitacoraEvent);
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getError()
     {
