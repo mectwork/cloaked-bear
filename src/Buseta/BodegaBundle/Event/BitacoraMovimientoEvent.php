@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Event;
 
 use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
+use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Entity\MovimientosProductos;
 use Buseta\BodegaBundle\Model\BitacoraEventModel;
@@ -50,6 +51,9 @@ class BitacoraMovimientoEvent extends Event implements BitacoraEventInterface
                 $bitacoraEventTo->setMovementQty($movimientoProducto->getCantidad());
                 $bitacoraEventTo->setMovementDate($movimiento->getFechaMovimiento());
                 $bitacoraEventTo->setMovementType(BusetaBodegaMovementTypes::MOVEMENT_TO);
+                $bitacoraEventTo->setCallback(function (BitacoraAlmacen $bitacoraAlmacen) use ($movimientoProducto) {
+                    $bitacoraAlmacen->setMovimientoLinea($movimientoProducto);
+                });
 
                 $bitacoraEventFrom = new BitacoraEventModel();
                 $bitacoraEventFrom->setProduct($movimientoProducto->getProducto());
@@ -57,6 +61,9 @@ class BitacoraMovimientoEvent extends Event implements BitacoraEventInterface
                 $bitacoraEventFrom->setMovementQty($movimientoProducto->getCantidad());
                 $bitacoraEventFrom->setMovementDate($movimiento->getFechaMovimiento());
                 $bitacoraEventFrom->setMovementType(BusetaBodegaMovementTypes::MOVEMENT_FROM);
+                $bitacoraEventFrom->setCallback(function (BitacoraAlmacen $bitacoraAlmacen) use ($movimientoProducto) {
+                    $bitacoraAlmacen->setMovimientoLinea($movimientoProducto);
+                });
 
                 $this->bitacoraEvents->add($bitacoraEventTo);
                 $this->bitacoraEvents->add($bitacoraEventFrom);
@@ -88,10 +95,10 @@ class BitacoraMovimientoEvent extends Event implements BitacoraEventInterface
         return $this->error;
     }
 
-    /**
-     * @param string $error
-     */
     public function setError($error)
+        /**
+         * @param string $error
+         */
     {
         $this->error = $error;
     }

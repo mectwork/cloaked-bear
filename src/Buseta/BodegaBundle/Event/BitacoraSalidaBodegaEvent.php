@@ -3,11 +3,13 @@
 namespace Buseta\BodegaBundle\Event;
 
 use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
+use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\SalidaBodega;
 use Buseta\BodegaBundle\Entity\SalidaBodegaProducto;
 use Buseta\BodegaBundle\Model\BitacoraEventModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\Security\Core\Util\ClassUtils;
 
 /**
  * Class BitacoraSalidaBodegaEvent
@@ -51,6 +53,13 @@ class BitacoraSalidaBodegaEvent extends Event implements BitacoraEventInterface
                 $bitacoraEvent->setMovementQty($salidaProducto->getCantidad());
                 $bitacoraEvent->setMovementDate(new \DateTime());
                 $bitacoraEvent->setMovementType(BusetaBodegaMovementTypes::INTERNAL_CONSUMPTION_MINUS);
+                $bitacoraEvent->setCallback(function (BitacoraAlmacen $bitacoraAlmacen) use ($salidaProducto) {
+                    $bitacoraAlmacen->setConsumoInterno(sprintf(
+                        '%s,%d',
+                        ClassUtils::getRealClass($salidaProducto),
+                        $salidaProducto->getId()
+                    ));
+                });
 
                 $this->bitacoraEvents->add($bitacoraEvent);
             }

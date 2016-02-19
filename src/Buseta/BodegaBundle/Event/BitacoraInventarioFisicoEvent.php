@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Event;
 
 use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
+use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\InventarioFisico;
 use Buseta\BodegaBundle\Entity\InventarioFisicoLinea;
 use Buseta\BodegaBundle\Model\BitacoraEventModel;
@@ -54,6 +55,9 @@ class BitacoraInventarioFisicoEvent extends Event implements BitacoraEventInterf
                 $bitacoraEvent->setMovementDate($inventarioFisico->getFecha());
                 $bitacoraEvent->setMovementType(
                     $movementQty > 0 ? BusetaBodegaMovementTypes::INVENTORY_IN : BusetaBodegaMovementTypes::INVENTORY_OUT);
+                $bitacoraEvent->setCallback(function (BitacoraAlmacen $bitacoraAlmacen) use ($inventarioFisicoLinea) {
+                    $bitacoraAlmacen->setInventarioLinea($inventarioFisicoLinea);
+                });
 
                 $this->bitacoraEvents->add($bitacoraEvent);
             }
