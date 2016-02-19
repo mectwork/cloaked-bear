@@ -17,6 +17,7 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
  * Albaran controller.
  *
  * @Route("/albaran")
+ *
  * @Breadcrumb(title="Inicio", routeName="core_homepage")
  * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
@@ -27,11 +28,11 @@ class AlbaranController extends Controller
      *
      * @Route("/", name="albaran")
      * @Method("GET")
-     * @Breadcrumb(title="Orden de Entrada ", routeName="bodegas")
+     *
+     * @Breadcrumb(title="Listado de Órdenes de Entrada", routeName="albaran")
      */
     public function indexAction(Request $request)
     {
-
         $filter = new AlbaranFilterModel();
 
         $form = $this->createForm(new AlbaranFilter(), $filter, array(
@@ -60,11 +61,11 @@ class AlbaranController extends Controller
         ));
     }
 
-
     /**
+     * Process Albaran entity
      *
-     *
-     * @Route("/{id}/procesarAlbaran", name="procesarAlbaran", methods={"GET"}, options={"expose":true})
+     * @Route("/{id}/procesarAlbaran", name="procesarAlbaran")
+     * @Method({"GET"})
      */
     public function procesarAlbaranAction($id)
     {
@@ -85,9 +86,10 @@ class AlbaranController extends Controller
 
 
     /**
-     * Complete Albaran
+     * Complete Albaran entity
      *
-     * @Route("/{id}/completarAlbaran", name="completarAlbaran", methods={"GET"}, options={"expose":true})
+     * @Route("/{id}/completarAlbaran", name="completarAlbaran")
+     * @Method({"GET"})
      */
     public function completarAlbaranAction(Albaran $albaran)
     {
@@ -209,9 +211,11 @@ class AlbaranController extends Controller
 
 
     /**
-     * Displays a form to edit an existing Albaran entity.
+     * Displays a data from an existing Albaran entity.
      *
-     * @Route("/{id}/show", name="albaran_show", methods={"GET"}, options={"expose":true})
+     * @Route("/{id}/show", name="albaran_show")
+     * @Method({"GET"})
+     *
      * @Breadcrumb(title="Ver Datos de Orden de Entrada", routeName="albaran_show", routeParameters={"id"})
      */
     public function showAction($id)
@@ -236,7 +240,9 @@ class AlbaranController extends Controller
     /**
      * Displays a form to edit an existing Albaran entity.
      *
-     * @Route("/{id}/edit", name="albarans_albaran_edit", methods={"GET"}, options={"expose":true})
+     * @Route("/{id}/edit", name="albarans_albaran_edit")
+     * @Method({"GET"})
+     *
      * @Breadcrumb(title="Modificar Orden de Entrada", routeName="albarans_albaran_edit", routeParameters={"id"})
      */
     public function editAction(Albaran $albaran)
@@ -271,7 +277,8 @@ class AlbaranController extends Controller
     /**
      * Edits an existing Albaran entity.
      *
-     * @Route("/{id}/update", name="albarans_albaran_update", methods={"POST","PUT"}, options={"expose":true})
+     * @Route("/{id}/update", name="albarans_albaran_update", options={"expose":true})
+     * @Method({"POST", "PUT"})
      * @Breadcrumb(title="Modificar Orden de Entrada", routeName="albarans_albaran_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, Albaran $albaran)
@@ -319,7 +326,9 @@ class AlbaranController extends Controller
     /**
      * Creates a new Albaran entity.
      *
-     * @Route("/create", name="albarans_albaran_create", methods={"POST"}, options={"expose":true})
+     * @Route("/create", name="albarans_albaran_create", options={"expose":true})
+     * @Method({"POST"})
+     *
      * @Breadcrumb(title="Crear Nueva Orden de Entrada", routeName="albarans_albaran_create")
      */
     public function createAction(Request $request)
@@ -388,7 +397,9 @@ class AlbaranController extends Controller
     /**
      * Displays a form to create a new Albaran entity.
      *
-     * @Route("/new", name="albaran_new", methods={"GET"}, options={"expose":true})
+     * @Route("/new", name="albaran_new", options={"expose":true})
+     * @Method({"GET"})
+     *
      * @Breadcrumb(title="Crear Nueva Orden de Entrada", routeName="albaran_new")
      */
     public function newAction()
