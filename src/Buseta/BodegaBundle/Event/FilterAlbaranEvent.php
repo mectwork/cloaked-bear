@@ -14,6 +14,11 @@ class FilterAlbaranEvent extends Event
     private $valorretorno;
 
     /**
+     * @var string|null
+     */
+    private $error;
+
+    /**
      * @param \Buseta\BodegaBundle\Entity\Albaran $albaran
      */
     function __construct( Albaran $albaran )
@@ -41,4 +46,35 @@ class FilterAlbaranEvent extends Event
        return $this->valorretorno ;
     }
 
+    /**
+     * @return Albaran
+     */
+    public function getAlbaran()
+    {
+        return $this->albaran;
+    }
+
+    /**
+     * @param Albaran $albaran
+     */
+    public function setAlbaran($albaran)
+    {
+        $this->albaran = $albaran;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * @param string $error
+     */
+    public function setError($error)
+    {
+        $this->error = $error;
+    }
 }

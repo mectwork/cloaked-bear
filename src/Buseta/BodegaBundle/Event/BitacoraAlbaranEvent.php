@@ -5,6 +5,7 @@ namespace Buseta\BodegaBundle\Event;
 use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
+use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Model\BitacoraEventModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\EventDispatcher\Event;
@@ -51,6 +52,9 @@ class BitacoraAlbaranEvent extends Event implements BitacoraEventInterface
                 $bitacoraEvent->setMovementQty($albaranLinea->getCantidadMovida());
                 $bitacoraEvent->setMovementDate(new \DateTime());
                 $bitacoraEvent->setMovementType(BusetaBodegaMovementTypes::VENDOR_RECEIPTS);
+                $bitacoraEvent->setCallback(function (BitacoraAlmacen $bitacoraAlmacen) use ($albaranLinea){
+                    $bitacoraAlmacen->setEntradaSalidaLinea($albaranLinea);
+                });
 
                 $this->bitacoraEvents->add($bitacoraEvent);
             }

@@ -2,7 +2,14 @@
 
 namespace Buseta\BodegaBundle\Event;
 
-
+/**
+ * Class AlbaranEvents
+ *
+ * @package Buseta\BodegaBundle\Event
+ *
+ * @deprecated {@link Buseta\BodegaBundle\Event\AlbaranEvents} is deprecated,
+ * use {@link Buseta\BodegaBundle\BusetaBodegaEvents} instead.
+ */
 final class AlbaranEvents
 {
     const PRE_CREATE = 'buseta.bodega.albaran.pre_create';

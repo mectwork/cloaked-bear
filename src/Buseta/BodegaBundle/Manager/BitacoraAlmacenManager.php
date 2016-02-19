@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Manager;
 
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
+use Buseta\BodegaBundle\Model\BitacoraEventModel;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -36,7 +37,36 @@ class BitacoraAlmacenManager
         $this->validator = $validator;
     }
 
-    public function createRegistry(BitacoraAlmacen $bitacora)
+    public function createRegistry(BitacoraEventModel $model, $flush=true)
+    {
+        try {
+            $registry = new BitacoraAlmacen();
+            $registry->setAlmacen($model->getWarehouse());
+            $registry->setProducto($model->getProduct());
+            $registry->setFechaMovimiento($model->getMovementDate());
+            $registry->setCantidadMovida($model->getMovementQty());
+            $registry->setTipoMovimiento($model->getMovementType());
+            if ($model->getQuantityOrder()) {
+                $registry->setCantidadOrden($model->getQuantityOrder());
+            }
+            if ($model->getCallback() !== null) {
+                call_user_func($model->getCallback(), $registry);
+            }
+
+            $this->em->persist($registry);
+            if ($flush) {
+                $this->em->flush();
+            }
+
+            return true;
+        } catch(\Exception $e) {
+            $this->logger->critical(sprintf('BitacoraAlmacen.Persist: %s', $e->getMessage()));
+
+            return false;
+        }
+    }
+
+    public function legacyCreateRegistry(BitacoraAlmacen $bitacora)
     {
         try {
             //el validator valida por los assert de la entity

@@ -50,6 +50,11 @@ class BitacoraEventModel
     private $movementType;
 
     /**
+     * @var callable
+     */
+    private $callback;
+
+    /**
      * @var string
      */
     private $error;
@@ -165,5 +170,21 @@ class BitacoraEventModel
     public function setError($error)
     {
         $this->error = $error;
+    }
+
+    /**
+     * @return callable
+     */
+    public function getCallback()
+    {
+        return $this->callback;
+    }
+
+    /**
+     * @param callable $callback
+     */
+    public function setCallback($callback)
+    {
+        $this->callback = $callback;
     }
 }

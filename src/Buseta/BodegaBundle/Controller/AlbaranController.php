@@ -24,6 +24,7 @@ class AlbaranController extends Controller
 {
     /**
      * Lists all Albaran entities.
+     *
      * @Route("/", name="albaran")
      * @Method("GET")
      * @Breadcrumb(title="Orden de Entrada ", routeName="bodegas")
@@ -84,7 +85,7 @@ class AlbaranController extends Controller
 
 
     /**
-     *
+     * Complete Albaran
      *
      * @Route("/{id}/completarAlbaran", name="completarAlbaran", methods={"GET"}, options={"expose":true})
      */
@@ -94,15 +95,13 @@ class AlbaranController extends Controller
         $trans = $this->get('translator');
         $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
 
-        $result = $manager->completar($albaran->getId());
-        if ($result===true){
+        if (true === $result = $manager->completar($albaran)){
             $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha completado la %s de forma correcta.', $albaranTrans) );
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
         } else {
             $this->get('session')->getFlashBag()->add('danger',  sprintf(  'Ha ocurrido un error al completar la %s: %s', $albaranTrans,$result)  );
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
         }
-
     }
 
     public function guardarAlbaranAction(Request $request)

@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\EventListener;
 
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
+use Buseta\BodegaBundle\Event\BitacoraEventInterface;
 use Buseta\BodegaBundle\Event\BitacoraEvents;
 use Buseta\BodegaBundle\Event\LegacyBitacoraEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidBitacoraTypeException;
@@ -89,72 +90,89 @@ class BitacoraSubscriber implements EventSubscriberInterface
 
     public function customerReturns(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'C+');
+        $this->legacyCreateRegistry($event, 'C+');
     }
 
     public function customerShipment(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'C-');
+        $this->legacyCreateRegistry($event, 'C-');
     }
 
     public function internalConsumptionPositive(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'D+');
+        $this->legacyCreateRegistry($event, 'D+');
     }
 
     public function internalConsumptionNegative(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'D-');
+        $this->legacyCreateRegistry($event, 'D-');
     }
 
     public function inventoryIn(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'I+');
+        $this->legacyCreateRegistry($event, 'I+');
     }
 
     public function inventoryOut(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'I-');
+        $this->legacyCreateRegistry($event, 'I-');
     }
 
     public function movementTo(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'M+');
+        $this->legacyCreateRegistry($event, 'M+');
     }
 
     public function movementFrom(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'M-');
+        $this->legacyCreateRegistry($event, 'M-');
     }
 
     public function productionPositive(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'P+');
+        $this->legacyCreateRegistry($event, 'P+');
     }
 
     public function productionNegative(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'P-');
+        $this->legacyCreateRegistry($event, 'P-');
     }
 
-    public function vendorReceipts(LegacyBitacoraEvent $event)
+    public function vendorReceipts(BitacoraEventInterface $event)
     {
         $this->createRegistry($event, 'V+');
     }
 
     public function vendorReturns(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'V-');
+        $this->legacyCreateRegistry($event, 'V-');
     }
 
     public function workOrderPositive(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'W+');
+        $this->legacyCreateRegistry($event, 'W+');
     }
 
     public function workOrderNegative(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'W-');
+        $this->legacyCreateRegistry($event, 'W-');
+    }
+
+    private function createRegistry(BitacoraEventInterface $event, $movementType)
+    {
+        if ($event->getError()) {
+            return;
+        }
+
+        try {
+            $bitacoraEvents = $event->getBitacoraEvents();
+            foreach ($bitacoraEvents->getIterator() as $bitacoraEvent) {
+                $this->bitacoraAlmacenManager->createRegistry($bitacoraEvent, false);
+            }
+
+        } catch(\Exception $e) {
+
+        }
     }
 
     /**
@@ -162,7 +180,7 @@ class BitacoraSubscriber implements EventSubscriberInterface
      * @param $movementType
      *
      */
-    public function createRegistry(LegacyBitacoraEvent $event, $movementType)
+    public function legacyCreateRegistry(LegacyBitacoraEvent $event, $movementType)
     {
         try {
             $resultSerial = true;

@@ -3,9 +3,11 @@
 namespace Buseta\BodegaBundle\EventListener;
 
 
+use Buseta\BodegaBundle\BusetaBodegaEvents;
+use Buseta\BodegaBundle\Event\BitacoraAlbaranEvent;
 use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
-use Buseta\BodegaBundle\Event\AlbaranEvents;
 use Buseta\BodegaBundle\Manager\AlbaranManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AlbaranSubscriber implements EventSubscriberInterface
@@ -14,6 +16,11 @@ class AlbaranSubscriber implements EventSubscriberInterface
      * @var \Buseta\BodegaBundle\Manager\AlbaranManager
      */
     private $albaranManager;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $dispatcher = null;
 
 
     /**
@@ -30,9 +37,30 @@ class AlbaranSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            AlbaranEvents::POS_PROCESS  => 'cambiarestadoProcesado',
-            AlbaranEvents::POS_COMPLETE => 'cambiarestadoCompletado',
+            //BusetaBodegaEvents::ALBARAN_PRE_CREATE  => 'undefinedEvent',
+            //BusetaBodegaEvents::ALBARAN_POS_CREATE  => 'undefinedEvent',
+            BusetaBodegaEvents::ALBARAN_PRE_PROCESS  => 'preProcess',
+            //BusetaBodegaEvents::ALBARAN_PROCESS  => 'undefinedEvent',
+            //BusetaBodegaEvents::ALBARAN_POS_PROCESS  => 'undefinedEvent',
+            //BusetaBodegaEvents::ALBARAN_PRE_COMPLETE => 'undefinedEvent',
+            //BusetaBodegaEvents::ALBARAN_COMPLETE => 'undefinedEvent',
+            BusetaBodegaEvents::ALBARAN_POS_COMPLETE => 'posComplete',
         );
+    }
+
+    public function preProcess(FilterAlbaranEvent $event)
+    {
+        // trigger validation
+    }
+
+    public function posComplete(FilterAlbaranEvent $event, $eventName = null, EventDispatcherInterface $eventDispatcher = null)
+    {
+        $bitacoraEvent = new BitacoraAlbaranEvent($event->getAlbaran());
+        $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_VENDOR_RECEIPTS, $bitacoraEvent);
+
+        if (null !== $error = $bitacoraEvent->getError()) {
+            $event->setError($error);
+        }
     }
 
     public function cambiarestadoProcesado(FilterAlbaranEvent $event)
@@ -45,12 +73,16 @@ class AlbaranSubscriber implements EventSubscriberInterface
         $this->cambiarEstado($event, 'CO');
     }
 
-
-    public function cambiarEstado(FilterAlbaranEvent $event, $estado )
+    private function cambiarEstado(FilterAlbaranEvent $event, $estado )
     {
         $albaran = $event->getEntityData();
         //Si hay error devuelve el string del error, si todo ok devuelve true
-        $result=  $this->albaranManager->cambiarEstado( $albaran , $estado );
+        $result=  $this->albaranManager->legacyCambiarestado( $albaran , $estado );
         $event->setReturnValue( $result );
+    }
+
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->dispatcher = $eventDispatcher;
     }
 }
