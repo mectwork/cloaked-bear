@@ -166,7 +166,6 @@ class NecesidadMaterialModel
             $this->id = $necesidadmaterial->getId();
             $this->created = $necesidadmaterial->getCreated();
             $this->createdby = $necesidadmaterial->getCreatedby();
-            $this->consecutivo_compra = $necesidadmaterial->getConsecutivoCompra();
             $this->deleted = $necesidadmaterial->getDeleted();
             $this->deletedby = $necesidadmaterial->getDeletedby();
             $this->updated = $necesidadmaterial->getUpdated();
@@ -214,7 +213,6 @@ class NecesidadMaterialModel
         $necesidadmaterial = new NecesidadMaterial();
         $necesidadmaterial->setCreated($this->getCreated());
         $necesidadmaterial->setCreatedby($this->getCreatedby());
-        $necesidadmaterial->setConsecutivoCompra($this->getConsecutivoCompra());
         $necesidadmaterial->setDeleted($this->getDeleted());
         $necesidadmaterial->setDeletedby($this->getDeletedby());
         $necesidadmaterial->setEstadoDocumento($this->getEstadoDocumento());
@@ -322,22 +320,6 @@ class NecesidadMaterialModel
     public function setCondicionesPago($condiciones_pago)
     {
         $this->condiciones_pago = $condiciones_pago;
-    }
-
-    /**
-     * @return string
-     */
-    public function getConsecutivoCompra()
-    {
-        return $this->consecutivo_compra;
-    }
-
-    /**
-     * @param string $consecutivo_compra
-     */
-    public function setConsecutivoCompra($consecutivo_compra)
-    {
-        $this->consecutivo_compra = $consecutivo_compra;
     }
 
     /**

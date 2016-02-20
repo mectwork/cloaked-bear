@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Security\Core\Util\ClassUtils;
 use Symfony\Component\Validator\ConstraintViolation;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
@@ -137,7 +138,6 @@ class NecesidadMaterialController extends Controller
 
             //Registro los datos del nuevo PedidoCompra que se crear al procesar la NecesidadMaterial
             $pedidoCompra = new PedidoCompra();
-            $pedidoCompra->setNumeroDocumento($necesidadMaterial->getNumeroDocumento());
             $pedidoCompra->setConsecutivoCompra($necesidadMaterial->getConsecutivoCompra());
             $pedidoCompra->setTercero($tercero);
             $pedidoCompra->setFechaPedido($necesidadMaterial->getFechaPedido());
@@ -178,7 +178,6 @@ class NecesidadMaterialController extends Controller
             }
 
             $necesidadMaterial->setEstadoDocumento('CO');
-            //$necesidadMaterial->setDeleted(true);
             $em->persist($necesidadMaterial);
             $em->flush();
 
@@ -267,8 +266,8 @@ class NecesidadMaterialController extends Controller
      */
     public function newAction()
     {
-        $form   = $this->createCreateForm(new NecesidadMaterialModel());
 
+        $form   = $this->createCreateForm(new NecesidadMaterialModel());
         $em = $this->get('doctrine.orm.entity_manager');
         $productos = $em->getRepository('BusetaBodegaBundle:Producto')
             ->createQueryBuilder('p')

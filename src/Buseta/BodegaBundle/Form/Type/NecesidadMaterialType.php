@@ -4,6 +4,7 @@ namespace Buseta\BodegaBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
+use HatueySoft\SequenceBundle\Managers\SequenceManager;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,13 +42,6 @@ class NecesidadMaterialType extends AbstractType
             ->add('id', 'hidden', array(
                 'required' => false,
             ))
-            ->add('numero_documento', 'text', array(
-                'required' => false,
-                'label'  => 'Nro.Documento',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ))//
             ->add('tercero', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'query_builder' => function (EntityRepository $er) {
@@ -208,25 +202,25 @@ class NecesidadMaterialType extends AbstractType
 
     public function preSetData(FormEvent $formEvent)
     {
+        $data = $formEvent->getData();
         $form = $formEvent->getForm();
 
-        //Compruebo que existe el consecutivo automatico de Compra
-        //Si no existe captu$consecutivoCompraro la configuracion predeterminada,
-        //Si existe obtengo el maximo valor de consecutivo de compra y le incremento en 1
-        $results = $this->em->getRepository('BusetaBodegaBundle:NecesidadMaterial')->consecutivoLast();
+        if ( $data->getNumeroDocumento() ) {
+            $secuencia = $data->getNumeroDocumento();
+        } else {
+            $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
+            $secuencia = $sequenceManager->getNextValue('necesidad_material_seq');
+        }
 
-        $consecutivoCompra = $results ?
-            $results['consecutivo_compra'] + 1 :
-            $this->serviceContainer->getParameter('consecutivoCompra');
-
-        $form->add('consecutivo_compra', 'text', array(
+        $form->add('numero_documento', 'text', array(
             'required' => true,
             'read_only' => true,
-            'label'  => 'Consecutivo automático',
+            'label'  => 'Nro.Documento',
             'attr'   => array(
                 'class' => 'form-control',
             ),
-            'data' => $consecutivoCompra,
+            'data' => $secuencia,
         ));
+
     }
 }
