@@ -182,6 +182,6 @@ necesidadmaterial:
 
 # ESTADO DE LOS DOCUMENTOS
 estado:
-    BO: Borrador/Abierto
+    BO: Abierto
     PR: Procesado
     CO: Completado
