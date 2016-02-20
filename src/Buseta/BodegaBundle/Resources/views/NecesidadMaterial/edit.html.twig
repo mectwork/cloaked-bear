@@ -22,7 +22,11 @@
                 <div class="tab-pane fade in active" id="basicos">
                     {% include '@BusetaBodega/NecesidadMaterial/form_template.html.twig' with {'form': edit_form} %}
                 </div>
-
+                <div class="form-actions">
+                    {% if entity.estadodocumento == 'BO' %}
+                        <a class="btn btn-primary" href="{{ path('procesarNecesidad', { 'id': entity.id }) }}"> Procesar</a>
+                    {% endif %}
+                </div>
                 <!-- TAB LINEAS-->
                 <div class="tab-pane fade" id="lineas">
                     {# Líneas #}
