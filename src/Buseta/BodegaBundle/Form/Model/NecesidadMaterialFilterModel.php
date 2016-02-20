@@ -11,6 +11,11 @@ class NecesidadMaterialFilterModel
     /**
      * @var string
      */
+    private $numero_referencia;
+
+    /**
+     * @var string
+     */
     private $estado_documento;
 
     /**
@@ -174,6 +179,22 @@ class NecesidadMaterialFilterModel
     public function setNumeroDocumento($numero_documento)
     {
         $this->numero_documento = $numero_documento;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumeroReferencia()
+    {
+        return $this->numero_referencia;
+    }
+
+    /**
+     * @param string $numero_referencia
+     */
+    public function setNumeroReferencia($numero_referencia)
+    {
+        $this->numero_referencia = $numero_referencia;
     }
 
     /**

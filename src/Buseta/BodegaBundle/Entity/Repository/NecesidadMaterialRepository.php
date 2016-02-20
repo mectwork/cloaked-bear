@@ -24,6 +24,10 @@ class NecesidadMaterialRepository extends EntityRepository
                 $query->andWhere($qb->expr()->like('r.numero_documento',':numero_documento'))
                     ->setParameter('numero_documento', '%' . $filter->getNumeroDocumento() . '%');
             }
+            if ($filter->getNumeroReferencia() !== null && $filter->getNumeroReferencia() !== '') {
+                $query->andWhere($qb->expr()->like('r.numero_referencia',':numero_referencia'))
+                    ->setParameter('numero_referencia', '%' . $filter->getNumeroReferencia() . '%');
+            }
             if ($filter->getTercero() !== null && $filter->getTercero() !== '') {
                 $query->andWhere($query->expr()->eq('r.tercero', ':tercero'))
                     ->setParameter('tercero', $filter->getTercero());
@@ -66,23 +70,5 @@ class NecesidadMaterialRepository extends EntityRepository
             return array();
         }
     }
-
-    public function consecutivoLast()
-    {
-        $qb = $this->_em->createQueryBuilder();
-
-        $q = $qb->select('p.consecutivo_compra')
-            ->from('BusetaBodegaBundle:NecesidadMaterial', 'p')
-            ->orderBy('p.consecutivo_compra','DESC')
-            ->getQuery()
-            ->setMaxResults(1);
-
-        try {
-            return $q->getSingleResult();
-        } catch (NoResultException $e) {
-            return false;
-        }
-    }
-
 
 }
