@@ -36,12 +36,12 @@ class NecesidadMaterial
     /**
      * @var string
      *
-     * @ORM\Column(name="consecutivo_compra", type="string")
+     * @ORM\Column(name="numero_referencia", type="string", length=32)
      * @Assert\NotBlank()
      */
-    private $consecutivo_compra;
+    private $numero_referencia;
 
-    /**
+     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="necesidadMaterial")
      */
     private $tercero;
@@ -206,7 +206,7 @@ class NecesidadMaterial
     {
         $this->created = $model->getCreated();
         $this->createdby = $model->getCreatedby();
-        $this->consecutivo_compra = $model->getConsecutivoCompra();
+        $this->numero_referencia = $model->getNumeroReferencia();
         $this->deleted = $model->getDeleted();
         $this->deletedby = $model->getDeletedby();
         $this->updated = $model->getUpdated();
@@ -325,30 +325,30 @@ class NecesidadMaterial
     }
 
     /**
-     * Set consecutivo_compra.
+     * Set numero_referencia.
      *
-     * @param string $consecutivoCompra
+     * @param string $numeroReferencia
      *
      * @return NecesidadMaterial
      */
-    public function setConsecutivoCompra($consecutivoCompra)
+    public function setNumeroReferencia($numeroReferencia)
     {
-        $this->consecutivo_compra = $consecutivoCompra;
+        $this->numero_referencia = $numeroReferencia;
 
         return $this;
     }
 
     /**
-     * Get consecutivo_compra.
+     * Get numero_referencia.
      *
      * @return string
      */
-    public function getConsecutivoCompra()
+    public function getNumeroReferencia()
     {
-        return $this->consecutivo_compra;
+        return $this->numero_referencia;
     }
 
-    /**
+     /**
      * Set fecha_pedido.
      *
      * @param \DateTime $fechaPedido
