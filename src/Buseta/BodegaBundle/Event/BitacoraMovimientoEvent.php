@@ -7,30 +7,18 @@ use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Entity\MovimientosProductos;
 use Buseta\BodegaBundle\Model\BitacoraEventModel;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class BitacoraMovimientoEvent
  *
  * @package Buseta\BodegaBundle\Event
  */
-class BitacoraMovimientoEvent extends Event implements BitacoraEventInterface
+class BitacoraMovimientoEvent extends AbstractBitacoraEvent
 {
     /**
      * @var Movimiento
      */
     private $movimiento;
-
-    /**
-     * @var ArrayCollection
-     */
-    private $bitacoraEvents;
-
-    /**
-     * @var string
-     */
-    private $error;
 
 
     /**
@@ -38,9 +26,10 @@ class BitacoraMovimientoEvent extends Event implements BitacoraEventInterface
      *
      * @param Movimiento $movimiento
      */
-    public function __construct(Movimiento $movimiento = null)
+    public function __construct(Movimiento $movimiento=null, $flush=false)
     {
-        $this->bitacoraEvents = new ArrayCollection();
+        parent::__construct($flush);
+
         if ($movimiento !== null && $movimiento->getMovimientosProductos()->count() > 0) {
             $this->movimiento = $movimiento;
             foreach ($movimiento->getMovimientosProductos() as $movimientoProducto) {
@@ -69,37 +58,5 @@ class BitacoraMovimientoEvent extends Event implements BitacoraEventInterface
                 $this->bitacoraEvents->add($bitacoraEventFrom);
             }
         }
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getBitacoraEvents()
-    {
-        return $this->bitacoraEvents;
-    }
-
-    /**
-     * @param BitacoraEventModel $bitacoraEventModel
-     */
-    public function addBitacoraEvent(BitacoraEventModel $bitacoraEventModel)
-    {
-        $this->bitacoraEvents->add($bitacoraEventModel);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getError()
-    {
-        return $this->error;
-    }
-
-    public function setError($error)
-        /**
-         * @param string $error
-         */
-    {
-        $this->error = $error;
     }
 }

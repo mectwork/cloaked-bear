@@ -104,7 +104,15 @@ class AlbaranManager
 
     }
 
-    public function completar(Albaran $albaran, $flush=true)
+    /**
+     * Set albaran status as Completed
+     *
+     * @param Albaran    $albaran
+     * @param bool|false $flush
+     *
+     * @return bool
+     */
+    public function completar(Albaran $albaran, $flush=false)
     {
         try {
             if (self::USE_TRANSACTIONS) {
@@ -238,7 +246,7 @@ class AlbaranManager
      *
      * @return bool|string
      */
-    private function cambiarEstado(Albaran $albaran, $estado, $flush=true)
+    private function cambiarEstado(Albaran $albaran, $estado, $flush=false)
     {
         try {
             if (($albaran === null) || ($estado === null)) {
@@ -270,7 +278,7 @@ class AlbaranManager
      *
      * @deprecated
      */
-    public function legacyCambiarestado(Albaran $albaran, $estado, $flush=true)
+    public function legacyCambiarestado(Albaran $albaran, $estado, $flush=false)
     {
         try {
             if (($albaran === null) || ($estado === null)) {

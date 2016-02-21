@@ -15,32 +15,24 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * @package Buseta\BodegaBundle\Event
  */
-class BitacoraAlbaranEvent extends Event implements BitacoraEventInterface
+class BitacoraAlbaranEvent extends AbstractBitacoraEvent
 {
     /**
      * @var Albaran
      */
     private $albaran;
 
-    /**
-     * @var ArrayCollection
-     */
-    private $bitacoraEvents;
-
-    /**
-     * @var string
-     */
-    private $error;
-
 
     /**
      * BitacoraAlbaranEvent constructor.
      *
      * @param Albaran $albaran
+     * @param boolean $flush
      */
-    public function __construct(Albaran $albaran = null)
+    public function __construct(Albaran $albaran = null, $flush=false)
     {
-        $this->bitacoraEvents = new ArrayCollection();
+        parent::__construct($flush);
+
         if ($albaran !== null && $albaran->getAlbaranLineas()->count() > 0) {
             $this->albaran = $albaran;
 
@@ -59,37 +51,5 @@ class BitacoraAlbaranEvent extends Event implements BitacoraEventInterface
                 $this->bitacoraEvents->add($bitacoraEvent);
             }
         }
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getBitacoraEvents()
-    {
-        return $this->bitacoraEvents;
-    }
-
-    /**
-     * @param BitacoraEventModel $bitacoraEvent
-     */
-    public function addBitacoraEvent(BitacoraEventModel $bitacoraEvent)
-    {
-        $this->bitacoraEvents->add($bitacoraEvent);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getError()
-    {
-        return $this->error;
-    }
-
-    /**
-     * @param string $error
-     */
-    public function setError($error)
-    {
-        $this->error = $error;
     }
 }

@@ -97,7 +97,7 @@ class AlbaranController extends Controller
         $trans = $this->get('translator');
         $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
 
-        if (true === $result = $manager->completar($albaran)){
+        if (true === $result = $manager->completar($albaran, true)){
             $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha completado la %s de forma correcta.', $albaranTrans) );
             return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
         } else {

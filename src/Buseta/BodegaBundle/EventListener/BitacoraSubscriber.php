@@ -2,9 +2,9 @@
 
 namespace Buseta\BodegaBundle\EventListener;
 
+use Buseta\BodegaBundle\BusetaBodegaEvents;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Event\BitacoraEventInterface;
-use Buseta\BodegaBundle\Event\BitacoraEvents;
 use Buseta\BodegaBundle\Event\LegacyBitacoraEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidBitacoraTypeException;
 use Buseta\BodegaBundle\Exceptions\NotValidStateException;
@@ -57,34 +57,20 @@ class BitacoraSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            /* C+ */
-            BitacoraEvents::CUSTOMER_RETURNS => 'customerReturns',
-            /* C- */
-            BitacoraEvents::CUSTOMER_SHIPMENT => 'customerShipment',
-            /* D+ */
-            BitacoraEvents::INTERNAL_CONSUMPTION_POSITIVE => 'internalConsumptionPositive',
-            /* D- */
-            BitacoraEvents::INTERNAL_CONSUMPTION_NEGATIVE => 'internalConsumptionNegative',
-            /* I+ */
-            BitacoraEvents::INVENTORY_IN => 'inventoryIn',
-            /* I- */
-            BitacoraEvents::INVENTORY_OUT => 'inventoryOut',
-            /* M+ */
-            BitacoraEvents::MOVEMENT_TO => 'movementTo',
-            /* M- */
-            BitacoraEvents::MOVEMENT_FROM => 'movementFrom',
-            /* P+ */
-            BitacoraEvents::PRODUCTION_POSITIVE => 'productionPositive',
-            /* P- */
-            BitacoraEvents::PRODUCTION_NEGATIVE => 'productionNegative',
-            /* V+ */
-            BitacoraEvents::VENDOR_RECEIPTS => 'vendorReceipts',
-            /* V- */
-            BitacoraEvents::VENDOR_RETURNS => 'vendorReturns',
-            /* W+ */
-            BitacoraEvents::WORK_ORDER_POSITIVE => 'workOrderPositive',
-            /* W- */
-            BitacoraEvents::WORK_ORDER_NEGATIVE => 'workOrderNegative',
+            BusetaBodegaEvents::BITACORA_CUSTOMER_RETURNS => 'customerReturns',
+            BusetaBodegaEvents::BITACORA_CUSTOMER_SHIPMENT => 'customerShipment',
+            BusetaBodegaEvents::BITACORA_INTERNAL_CONSUMPTION_POSITIVE => 'internalConsumptionPositive',
+            BusetaBodegaEvents::BITACORA_INTERNAL_CONSUMPTION_NEGATIVE => 'internalConsumptionNegative',
+            BusetaBodegaEvents::BITACORA_INVENTORY_IN => 'inventoryIn',
+            BusetaBodegaEvents::BITACORA_INVENTORY_OUT => 'inventoryOut',
+            BusetaBodegaEvents::BITACORA_MOVEMENT_TO => 'movementTo',
+            BusetaBodegaEvents::BITACORA_MOVEMENT_FROM => 'movementFrom',
+            BusetaBodegaEvents::BITACORA_PRODUCTION_POSITIVE => 'productionPositive',
+            BusetaBodegaEvents::BITACORA_PRODUCTION_NEGATIVE => 'productionNegative',
+            BusetaBodegaEvents::BITACORA_VENDOR_RECEIPTS => 'vendorReceipts',
+            BusetaBodegaEvents::BITACORA_VENDOR_RETURNS => 'vendorReturns',
+            BusetaBodegaEvents::BITACORA_WORK_ORDER_POSITIVE => 'workOrderPositive',
+            BusetaBodegaEvents::BITACORA_WORK_ORDER_NEGATIVE => 'workOrderNegative',
         );
     }
 
@@ -140,7 +126,7 @@ class BitacoraSubscriber implements EventSubscriberInterface
 
     public function vendorReceipts(BitacoraEventInterface $event)
     {
-        $this->createRegistry($event, 'V+');
+        $this->createRegistry($event);
     }
 
     public function vendorReturns(LegacyBitacoraEvent $event)
@@ -158,7 +144,7 @@ class BitacoraSubscriber implements EventSubscriberInterface
         $this->legacyCreateRegistry($event, 'W-');
     }
 
-    private function createRegistry(BitacoraEventInterface $event, $movementType)
+    private function createRegistry(BitacoraEventInterface $event)
     {
         if ($event->getError()) {
             return;
@@ -167,11 +153,11 @@ class BitacoraSubscriber implements EventSubscriberInterface
         try {
             $bitacoraEvents = $event->getBitacoraEvents();
             foreach ($bitacoraEvents->getIterator() as $bitacoraEvent) {
-                $this->bitacoraAlmacenManager->createRegistry($bitacoraEvent, false);
+                $this->bitacoraAlmacenManager->createRegistry($bitacoraEvent, $event->isFlush());
             }
-
         } catch(\Exception $e) {
-
+            $this->logger->critical(sprintf('Ha ocurrido un error al crear la Bitacora de Almacen. Detalles: %s', $e->getMessage()));
+            $event->setError('Ha ocurrido un error al crear la Bitacora de Almacen.');
         }
     }
 
@@ -179,9 +165,11 @@ class BitacoraSubscriber implements EventSubscriberInterface
      * @param LegacyBitacoraEvent $event
      * @param $movementType
      *
+     * @deprecated
      */
     public function legacyCreateRegistry(LegacyBitacoraEvent $event, $movementType)
     {
+
         try {
             $resultSerial = true;
             $entity = $event->getEntityData();

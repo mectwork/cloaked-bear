@@ -7,39 +7,30 @@ use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\InventarioFisico;
 use Buseta\BodegaBundle\Entity\InventarioFisicoLinea;
 use Buseta\BodegaBundle\Model\BitacoraEventModel;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class BitacoraInventarioFisicoEvent
  *
  * @package Buseta\BodegaBundle\Event
  */
-class BitacoraInventarioFisicoEvent extends Event implements BitacoraEventInterface
+class BitacoraInventarioFisicoEvent extends AbstractBitacoraEvent
 {
     /**
      * @var InventarioFisico
      */
     private $inventarioFisico;
 
-    /**
-     * @var ArrayCollection
-     */
-    private $bitacoraEvents;
-
-    /**
-     * @var string
-     */
-    private $error;
 
     /**
      * BitacoraInventarioFisicoEvent constructor.
      *
-     * @param InventarioFisico $inventarioFisico
+     * @param InventarioFisico  $inventarioFisico
+     * @param boolean           $flush
      */
-    public function __construct(InventarioFisico $inventarioFisico = null)
+    public function __construct(InventarioFisico $inventarioFisico = null, $flush=false)
     {
-        $this->bitacoraEvents = new ArrayCollection();
+        parent::__construct($flush);
+
         if ($inventarioFisico !== null && $inventarioFisico->getInventarioFisicoLineas()->count() > 0) {
             $this->inventarioFisico = $inventarioFisico;
             foreach ($inventarioFisico->getInventarioFisicoLineas() as $inventarioFisicoLinea) {
@@ -62,37 +53,5 @@ class BitacoraInventarioFisicoEvent extends Event implements BitacoraEventInterf
                 $this->bitacoraEvents->add($bitacoraEvent);
             }
         }
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getBitacoraEvents()
-    {
-        return $this->bitacoraEvents;
-    }
-
-    /**
-     * @param BitacoraEventModel $bitacoraEvent
-     */
-    public function addBitacoraEvent(BitacoraEventModel $bitacoraEvent)
-    {
-        $this->bitacoraEvents->add($bitacoraEvent);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getError()
-    {
-        return $this->error;
-    }
-
-    /**
-     * @param string $error
-     */
-    public function setError($error)
-    {
-        $this->error = $error;
     }
 }

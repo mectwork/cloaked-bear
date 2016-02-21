@@ -8,6 +8,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 interface BitacoraEventInterface
 {
     /**
+     * Check if the subscriber must flush the data
+     *
+     * @return boolean
+     */
+    public function isFlush();
+
+    /**
      * Gets the entire collections for the events to register in trace.
      *
      * @return ArrayCollection
@@ -20,4 +27,13 @@ interface BitacoraEventInterface
      * @return string
      */
     public function getError();
+
+    /**
+     * Set Bitacora event error.
+     *
+     * @param string $error
+     *
+     * @return string
+     */
+    public function setError($error);
 }

@@ -37,7 +37,7 @@ class BitacoraAlmacenManager
         $this->validator = $validator;
     }
 
-    public function createRegistry(BitacoraEventModel $model, $flush=true)
+    public function createRegistry(BitacoraEventModel $model, $flush=false)
     {
         try {
             $registry = new BitacoraAlmacen();
