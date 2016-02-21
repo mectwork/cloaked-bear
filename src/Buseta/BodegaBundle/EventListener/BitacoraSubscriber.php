@@ -4,7 +4,7 @@ namespace Buseta\BodegaBundle\EventListener;
 
 use Buseta\BodegaBundle\BusetaBodegaEvents;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
-use Buseta\BodegaBundle\Event\BitacoraEventInterface;
+use Buseta\BodegaBundle\Event\BitacoraBodega\BitacoraEventInterface;
 use Buseta\BodegaBundle\Event\LegacyBitacoraEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidBitacoraTypeException;
 use Buseta\BodegaBundle\Exceptions\NotValidStateException;

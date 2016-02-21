@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\BodegaBundle\Event;
+namespace Buseta\BodegaBundle\Event\BitacoraBodega;
 
 use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
@@ -11,7 +11,7 @@ use Buseta\BodegaBundle\Model\BitacoraEventModel;
 /**
  * Class BitacoraMovimientoEvent
  *
- * @package Buseta\BodegaBundle\Event
+ * @package Buseta\BodegaBundle\Event\BitacoraBodega
  */
 class BitacoraMovimientoEvent extends AbstractBitacoraEvent
 {
@@ -25,6 +25,7 @@ class BitacoraMovimientoEvent extends AbstractBitacoraEvent
      * BitacoraMovimientoEvent constructor.
      *
      * @param Movimiento $movimiento
+     * @param bool       $flush
      */
     public function __construct(Movimiento $movimiento=null, $flush=false)
     {

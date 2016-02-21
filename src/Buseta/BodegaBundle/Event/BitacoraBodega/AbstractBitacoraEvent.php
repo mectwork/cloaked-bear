@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\BodegaBundle\Event;
+namespace Buseta\BodegaBundle\Event\BitacoraBodega;
 
 use Buseta\BodegaBundle\Model\BitacoraEventModel;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Class AbstractBitacoraEvent
  *
- * @package Buseta\BodegaBundle\Event
+ * @package Buseta\BodegaBundle\Event\BitacoraBodega
  */
 abstract class AbstractBitacoraEvent extends Event implements BitacoraEventInterface
 {
@@ -73,9 +73,7 @@ abstract class AbstractBitacoraEvent extends Event implements BitacoraEventInter
     }
 
     /**
-     * Set BitacoraEvent error
-     *
-     * @param string $error
+     * {@inheritdoc}
      */
     public function setError($error)
     {

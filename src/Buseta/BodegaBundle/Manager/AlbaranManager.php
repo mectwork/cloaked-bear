@@ -4,10 +4,8 @@ namespace Buseta\BodegaBundle\Manager;
 
 use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\BusetaBodegaEvents;
-use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Event\AlbaranEvents;
-use Buseta\BodegaBundle\Event\BitacoraAlbaranEvent;
 use Buseta\BodegaBundle\Exceptions\NotFoundElementException;
 use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use Doctrine\Common\Persistence\ObjectManager;

@@ -4,7 +4,7 @@ namespace Buseta\BodegaBundle\EventListener;
 
 
 use Buseta\BodegaBundle\BusetaBodegaEvents;
-use Buseta\BodegaBundle\Event\BitacoraAlbaranEvent;
+use Buseta\BodegaBundle\Event\BitacoraBodega\BitacoraAlbaranEvent;
 use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
 use Buseta\BodegaBundle\Manager\AlbaranManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

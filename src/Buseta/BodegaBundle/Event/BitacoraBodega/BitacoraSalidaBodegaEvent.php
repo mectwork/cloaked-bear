@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\BodegaBundle\Event;
+namespace Buseta\BodegaBundle\Event\BitacoraBodega;
 
 use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Util\ClassUtils;
 /**
  * Class BitacoraSalidaBodegaEvent
  *
- * @package Buseta\BodegaBundle\Event
+ * @package Buseta\BodegaBundle\Event\BitacoraBodega
  */
 class BitacoraSalidaBodegaEvent extends AbstractBitacoraEvent
 {
@@ -25,7 +25,8 @@ class BitacoraSalidaBodegaEvent extends AbstractBitacoraEvent
     /**
      * BitacoraSalidaBodegaEvent constructor.
      *
-     * @param $salidaBodega
+     * @param SalidaBodega $salidaBodega
+     * @param bool         $flush
      */
     public function __construct(SalidaBodega $salidaBodega=null, $flush=false)
     {

@@ -1,19 +1,17 @@
 <?php
 
-namespace Buseta\BodegaBundle\Event;
+namespace Buseta\BodegaBundle\Event\BitacoraBodega;
 
 use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Model\BitacoraEventModel;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class BitacoraAlbaranEvent
  *
- * @package Buseta\BodegaBundle\Event
+ * @package Buseta\BodegaBundle\Event\BitacoraBodega
  */
 class BitacoraAlbaranEvent extends AbstractBitacoraEvent
 {

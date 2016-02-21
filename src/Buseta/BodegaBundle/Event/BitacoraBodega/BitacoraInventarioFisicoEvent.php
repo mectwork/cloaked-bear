@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\BodegaBundle\Event;
+namespace Buseta\BodegaBundle\Event\BitacoraBodega;
 
 use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
@@ -11,7 +11,7 @@ use Buseta\BodegaBundle\Model\BitacoraEventModel;
 /**
  * Class BitacoraInventarioFisicoEvent
  *
- * @package Buseta\BodegaBundle\Event
+ * @package Buseta\BodegaBundle\Event\BitacoraBodega
  */
 class BitacoraInventarioFisicoEvent extends AbstractBitacoraEvent
 {

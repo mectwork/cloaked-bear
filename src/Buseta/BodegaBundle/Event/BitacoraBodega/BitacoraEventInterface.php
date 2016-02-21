@@ -1,10 +1,15 @@
 <?php
 
-namespace Buseta\BodegaBundle\Event;
+namespace Buseta\BodegaBundle\Event\BitacoraBodega;
 
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+/**
+ * Interface BitacoraEventInterface
+ *
+ * @package Buseta\BodegaBundle\Event\BitacoraBodega
+ */
 interface BitacoraEventInterface
 {
     /**
@@ -32,8 +37,6 @@ interface BitacoraEventInterface
      * Set Bitacora event error.
      *
      * @param string $error
-     *
-     * @return string
      */
     public function setError($error);
 }
