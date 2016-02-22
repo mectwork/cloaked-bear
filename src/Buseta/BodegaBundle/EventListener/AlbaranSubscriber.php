@@ -55,7 +55,7 @@ class AlbaranSubscriber implements EventSubscriberInterface
 
     public function posComplete(FilterAlbaranEvent $event, $eventName = null, EventDispatcherInterface $eventDispatcher = null)
     {
-        $bitacoraEvent = new BitacoraAlbaranEvent($event->getAlbaran());
+        $bitacoraEvent = new BitacoraAlbaranEvent($event->getAlbaran(), $event->isFlush());
         $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_VENDOR_RECEIPTS, $bitacoraEvent);
 
         if (null !== $error = $bitacoraEvent->getError()) {

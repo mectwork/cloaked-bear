@@ -62,7 +62,7 @@ class GeneradorSeriales
      */
     private $logger;
 
-    public function __construct(Logger $logger, $str_serial = '')
+    public function __construct(Logger $logger=null, $str_serial = '')
     {
         $this->logger = $logger;
         $this->setStrSerial($str_serial);
@@ -144,7 +144,9 @@ class GeneradorSeriales
             return $lista_seriales;
 
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error generando números seriados. Detalles: %s', $e->getMessage()));
+            if ($this->logger) {
+                $this->logger->error(sprintf('Ha ocurrido un error generando números seriados. Detalles: %s', $e->getMessage()));
+            }
             $this->addError($this::MSG_OTRO_ERROR);
 
             return false;

@@ -161,6 +161,13 @@ services:
         class: Buseta\BodegaBundle\EventListener\BitacoraSubscriber
         arguments:
             - @buseta.bodega.bitacora_almacen.manager
+            - @logger
+        tags:
+            - {name: kernel.event_subscriber}
+
+    buseta.bodega.bitacora_serial.subscriber:
+        class: Buseta\BodegaBundle\EventListener\BitacoraSerialSubscriber
+        arguments:
             - @buseta.bodega.bitacora_serial.manager
             - @logger
         tags:

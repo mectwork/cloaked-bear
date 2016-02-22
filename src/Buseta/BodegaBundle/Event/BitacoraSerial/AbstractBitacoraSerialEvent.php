@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Event\BitacoraSerial;
 
 
+use Buseta\BodegaBundle\Extras\GeneradorSeriales;
 use Buseta\BodegaBundle\Model\BitacoraSerialEventModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\EventDispatcher\Event;
@@ -29,6 +30,11 @@ class AbstractBitacoraSerialEvent extends Event implements BitacoraSerialEventIn
      */
     protected $flush;
 
+    /**
+     * @var GeneradorSeriales
+     */
+    protected $generadorSeriales;
+
 
     /**
      * AbstractBitacoraEvent constructor.
@@ -39,6 +45,7 @@ class AbstractBitacoraSerialEvent extends Event implements BitacoraSerialEventIn
     {
         $this->flush = $flush;
         $this->bitacoraSerialEvents = new ArrayCollection();
+        $this->generadorSeriales = new GeneradorSeriales();
     }
 
     /**
@@ -54,7 +61,7 @@ class AbstractBitacoraSerialEvent extends Event implements BitacoraSerialEventIn
      */
     public function getBitacoraSerialEvents()
     {
-        $this->bitacoraSerialEvents;
+        return $this->bitacoraSerialEvents;
     }
 
     /**

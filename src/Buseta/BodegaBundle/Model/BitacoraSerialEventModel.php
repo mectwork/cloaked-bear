@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Model;
 
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class BitacoraSerialEventModel
@@ -12,6 +13,8 @@ class BitacoraSerialEventModel
 {
     /**
      * @var \Buseta\BodegaBundle\Entity\Bodega
+     *
+     * @Assert\NotNull()
      */
     private $warehouse;
 
@@ -24,8 +27,18 @@ class BitacoraSerialEventModel
 
     /**
      * @var \Buseta\BodegaBundle\Entity\ProductoSeriado
+     *
+     * @Assert\NotNull()
      */
     private $serialProduct;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     */
+    private $serial;
 
     /**
      * @var string
@@ -104,6 +117,22 @@ class BitacoraSerialEventModel
     public function setSerialProduct($serialProduct)
     {
         $this->serialProduct = $serialProduct;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSerial()
+    {
+        return $this->serial;
+    }
+
+    /**
+     * @param string $serial
+     */
+    public function setSerial($serial)
+    {
+        $this->serial = $serial;
     }
 
     /**

@@ -56,6 +56,10 @@ final class BusetaBodegaEvents
     /* W- */
     const BITACORA_WORK_ORDER_NEGATIVE = 'buseta.bodega.bitacora_almacen.work_order.negative';
 
+    // BITACORA SERIAL
+
+    const BITACORA_SERIAL_REGISTER_EVENTS = 'buseta.bodega.bitacora_serial.register_events';
+
     // INVENTARIO FISICO EVENTS
 
     const PHYSICAL_INVENTORY_PARE_CREATE = 'buseta.bodega.inventariofisico.pre_create';

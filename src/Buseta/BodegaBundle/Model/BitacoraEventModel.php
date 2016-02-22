@@ -55,6 +55,11 @@ class BitacoraEventModel
     private $callback;
 
     /**
+     * @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen
+     */
+    private $bitacoraLine;
+
+    /**
      * @var string
      */
     private $error;
@@ -154,6 +159,22 @@ class BitacoraEventModel
     public function setMovementType($movementType)
     {
         $this->movementType = $movementType;
+    }
+
+    /**
+     * @return \Buseta\BodegaBundle\Entity\BitacoraAlmacen
+     */
+    public function getBitacoraLine()
+    {
+        return $this->bitacoraLine;
+    }
+
+    /**
+     * @param \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacoraLine
+     */
+    public function setBitacoraLine($bitacoraLine)
+    {
+        $this->bitacoraLine = $bitacoraLine;
     }
 
     /**

@@ -118,14 +118,14 @@ class AlbaranManager
             }
 
             if ($this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_PRE_COMPLETE)) {
-                $preCompleteEvent = new FilterAlbaranEvent($albaran);
+                $preCompleteEvent = new FilterAlbaranEvent($albaran, $flush);
                 $this->dispatcher->dispatch(BusetaBodegaEvents::ALBARAN_PRE_COMPLETE, $preCompleteEvent);
             }
 
-            $this->cambiarEstado($albaran, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_COMPLETE, false);
+            $this->cambiarEstado($albaran, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_COMPLETE, $flush);
 
             if ($this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_POS_COMPLETE)) {
-                $posCompleteEvent = new FilterAlbaranEvent($albaran);
+                $posCompleteEvent = new FilterAlbaranEvent($albaran, $flush);
                 $this->dispatcher->dispatch(BusetaBodegaEvents::ALBARAN_POS_COMPLETE, $posCompleteEvent);
 
                 if ($posCompleteEvent->getError()) {

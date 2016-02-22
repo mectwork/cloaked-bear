@@ -1,16 +1,25 @@
 <?php
 
 namespace Buseta\BodegaBundle\Event;
+
 use Buseta\BodegaBundle\Entity\Albaran;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class FilterAlbaranEvent
+ *
+ * @package Buseta\BodegaBundle\Event
+ */
 class FilterAlbaranEvent extends Event
 {
     /**
-     * @var \Buseta\BodegaBundle\Entity\Albaran
+     * @var Albaran
      */
     private $albaran;
 
+    /**
+     * @var boolean
+     */
     private $valorretorno;
 
     /**
@@ -19,12 +28,21 @@ class FilterAlbaranEvent extends Event
     private $error;
 
     /**
-     * @param \Buseta\BodegaBundle\Entity\Albaran $albaran
+     * @var boolean
      */
-    function __construct( Albaran $albaran )
+    private $flush;
+
+    /**
+     * FilterAlbaranEvent constructor
+     *
+     * @param Albaran $albaran
+     * @param boolean $flush
+     */
+    function __construct(Albaran $albaran, $flush=false)
     {
         $this->albaran = $albaran;
         $this->valorretorno = true;
+        $this->flush = $flush;
     }
 
     /**
@@ -76,5 +94,13 @@ class FilterAlbaranEvent extends Event
     public function setError($error)
     {
         $this->error = $error;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isFlush()
+    {
+        return $this->flush;
     }
 }

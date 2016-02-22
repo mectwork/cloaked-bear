@@ -58,6 +58,8 @@ class BitacoraAlmacenManager
                 $this->em->flush();
             }
 
+            $model->setBitacoraLine($registry);
+
             return true;
         } catch(\Exception $e) {
             $this->logger->critical(sprintf('BitacoraAlmacen.Persist: %s', $e->getMessage()));

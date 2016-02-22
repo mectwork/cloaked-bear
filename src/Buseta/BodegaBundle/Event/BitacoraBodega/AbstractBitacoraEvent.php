@@ -53,7 +53,7 @@ abstract class AbstractBitacoraEvent extends Event implements BitacoraEventInter
      */
     public function getBitacoraEvents()
     {
-        $this->bitacoraEvents;
+        return $this->bitacoraEvents;
     }
 
     /**
