@@ -263,7 +263,8 @@ class NecesidadMaterialController extends Controller
      *
      * @Route("/new", name="necesidadmaterial_new")
      * @Method("GET")
-     * @Breadcrumb(title="Crear Nueva Necesidad de Materiales", routeName="necesidadmaterial_new")
+     *
+     * @Breadcrumb(title="Crear Nueva Necesidad de Material", routeName="necesidadmaterial_new")
      */
     public function newAction()
     {
@@ -277,25 +278,8 @@ class NecesidadMaterialController extends Controller
             ->getQuery()
             ->getResult();
 
-        $json = array();
-        $costoSalida = 0;
-
-        foreach ($productos as $p) {
-            foreach ($p->getCostoProducto() as $costo) {
-                if ($costo->getActivo()) {
-                    $costoSalida = ($costo->getCosto());
-                }
-            }
-
-            $json[$p->getId()] = array(
-                'nombre' => $p->getNombre(),
-                'precio_salida' => $costoSalida,
-            );
-        }
-
         return $this->render('@BusetaBodega/NecesidadMaterial/new.html.twig', array(
             'form'   => $form->createView(),
-            'json'   => json_encode($json),
         ));
     }
 
