@@ -62,8 +62,8 @@
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
         <tr>
-            <th>Número{#{{ knp_pagination_sortable(entities, 'Número de Referencia', 't.numeroReferencia') }}#}</th>
-            <th>Consecutivo Compra{#{{ knp_pagination_sortable(entities, 'Consecutivo Compra', 't.consecutivoCompra') }}#}</th>
+            <th>Nro. Documento{#{{ knp_pagination_sortable(entities, 'Nro. Documento', 't.numeroDocumento') }}#}</th>
+            <th>Nro. Referencia{#{{ knp_pagination_sortable(entities, 'Nro. Referencia', 't.numeroReferencia') }}#}</th>
             <th>Bodega{#{{ knp_pagination_sortable(entities, 'Almacén', 't.almacen') }}#}</th>
             <th>Nombre del Proveedor{#{{ knp_pagination_sortable(entities, 'Tercero', 't.tercero') }}#}</th>
             <th>Estado{#{{ knp_pagination_sortable(entities, 'Tercero', 't.tercero') }}#}</th>
@@ -73,8 +73,8 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.numeroReferencia }}</td>
                 <td>{{ entity.consecutivoCompra }}</td>
+                <td>{{ entity.numeroReferencia }}</td>
                 <td>{{ entity.almacen }}</td>
                 <td>{{ entity.tercero }}</td>
                 <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
