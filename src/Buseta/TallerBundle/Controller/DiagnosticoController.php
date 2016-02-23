@@ -13,10 +13,10 @@ use Buseta\TallerBundle\Form\Type\TareaDiagnosticoType;
 use Doctrine\ORM\AbstractQuery;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 use Buseta\TallerBundle\Form\Type\DiagnosticoType;
 use Buseta\TallerBundle\Form\Model\DiagnosticoFilterModel;
@@ -172,25 +172,19 @@ class DiagnosticoController extends Controller
     /**
      * Displays a form to edit an existing Diagnostico entity.
      *
+     * @Security("is_granted('EDIT', diagnostico)")
+     *
      * @Route("/{id}/edit", name="diagnostico_edit")
      *
      * @Breadcrumb(title="Modificar Diagnóstico", routeName="diagnostico_edit", routeParameters={"id"})
      */
-    public function editAction($id)
+    public function editAction(Diagnostico $diagnostico)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BusetaTallerBundle:Diagnostico')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Diagnostico entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createEditForm($diagnostico);
+        $deleteForm = $this->createDeleteForm($diagnostico->getId());
 
         return $this->render('BusetaTallerBundle:Diagnostico:edit.html.twig', array(
-            'entity' => $entity,
+            'entity' => $diagnostico,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
