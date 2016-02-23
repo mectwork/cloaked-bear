@@ -68,7 +68,6 @@ var necesidadmaterial = {
     _done: function (response, textStatus, jqXHR) {
         $('form#' + necesidadmaterial.form_id).replaceWith(response.view);
         if(jqXHR.status == 201) {
-            alert('201');
             $btalerts.addSuccess(response.message);
             // PedidoCompra Id
             necesidadmaterial.id = $('input[id="' + necesidadmaterial.form_id + '_id"]').val();
