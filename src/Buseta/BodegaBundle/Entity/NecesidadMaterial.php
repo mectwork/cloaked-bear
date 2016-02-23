@@ -41,7 +41,7 @@ class NecesidadMaterial
      */
     private $numero_referencia;
 
-     /**
+    /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="necesidadMaterial")
      */
     private $tercero;

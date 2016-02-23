@@ -123,7 +123,6 @@ class AlbaranModel
             $this->deletedby = $albaran->getDeletedby();
             $this->updated = $albaran->getUpdated();
             $this->updatedby = $albaran->getUpdatedby();*/
-
             $this->consecutivoCompra = $albaran->getConsecutivoCompra();
             $this->numeroReferencia = $albaran->getNumeroReferencia();
             $this->fechaMovimiento = $albaran->getFechaMovimiento();

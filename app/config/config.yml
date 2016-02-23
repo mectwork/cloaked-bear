@@ -270,6 +270,9 @@ hatuey_soft_sequence:
         reporte_seq:     Buseta\TallerBundle\Entity\Reporte
         diagnostico_seq: Buseta\TallerBundle\Entity\Diagnostico
         ot_seq:          Buseta\TallerBundle\Entity\OrdenTrabajo
+        necesidad_material_seq: Buseta\BodegaBundle\Entity\NecesidadMaterial
+        registro_compra_seq: Buseta\BodegaBundle\Entity\PedidoCompra
+        orden_entrada_seq: Buseta\BodegaBundle\Entity\Albaran
 
 hatuey_soft_menu:
     menu_conf: "%kernel.root_dir%/config/menu_conf.yml"
