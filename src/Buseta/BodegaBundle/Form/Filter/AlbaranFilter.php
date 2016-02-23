@@ -82,7 +82,7 @@ class AlbaranFilter extends AbstractType
             ->add('producto','entity',array(
                 'class' => 'BusetaBodegaBundle:Producto',
                 'label' => 'Producto',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-control',

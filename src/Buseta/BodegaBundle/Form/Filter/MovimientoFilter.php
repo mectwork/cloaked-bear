@@ -61,7 +61,7 @@ class MovimientoFilter extends AbstractType
             ))
             ->add('estado', 'choice', array(
                 'required' => false,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'translation_domain' => 'BusetaTallerBundle',
                 'choices' => array(
                     'CO' => 'estado.CO',

@@ -68,7 +68,7 @@ class BitacoraAlmacenFilter extends AbstractType
             ))
             ->add('tipoMovimiento', 'choice', array(
                     'required' => false,
-                    'empty_value' => '---Seleccione---',
+                    'placeholder' => '---Seleccione---',
                     //luego implementar 'translation_domain' => 'BusetaBodegaBundle',
                     'choices' => array(
                         'V+' => '[V+]Recepcion desde Proveedor',

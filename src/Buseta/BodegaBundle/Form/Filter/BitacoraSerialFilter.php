@@ -23,7 +23,7 @@ class BitacoraSerialFilter extends AbstractType
             ))
             ->add('almacen', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Bodega',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Almacen',
                 'required' => false,
                 'attr' => array(
@@ -32,7 +32,7 @@ class BitacoraSerialFilter extends AbstractType
             ))
             ->add('categoriaProd', 'entity', array(
                 'class' => 'BusetaBodegaBundle:CategoriaProducto',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Categoria del producto',
                 'required' => false,
                 'attr' => array(
@@ -41,7 +41,7 @@ class BitacoraSerialFilter extends AbstractType
             ))
             ->add('producto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Producto',
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Producto',
                 'required' => false,
                 'attr' => array(
@@ -68,7 +68,7 @@ class BitacoraSerialFilter extends AbstractType
             ))
             ->add('tipoMovimiento', 'choice', array(
                 'required' => false,
-                'empty_value' => '---Seleccione---',
+                'placeholder' => '---Seleccione---',
                 //luego implementar 'translation_domain' => 'BusetaBodegaBundle',
                 'choices' => array(
                     'V+' => '[V+]Recepcion desde Proveedor',
