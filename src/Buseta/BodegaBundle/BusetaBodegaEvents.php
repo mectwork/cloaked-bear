@@ -12,19 +12,19 @@ final class BusetaBodegaEvents
     // ALBARAN EVENTS
     const ALBARAN_PRE_CREATE = 'buseta.bodega.albaran.pre_create';
 
-    const ALBARAN_POS_CREATE = 'buseta.bodega.albaran.pos_create';
+    const ALBARAN_POST_CREATE = 'buseta.bodega.albaran.pos_create';
 
     const ALBARAN_PRE_PROCESS = 'buseta.bodega.albaran.pre_process';
 
     const ALBARAN_PROCESS = 'buseta.bodega.albaran_process';
 
-    const ALBARAN_POS_PROCESS = 'buseta.bodega.albaran.pos_process';
+    const ALBARAN_POST_PROCESS = 'buseta.bodega.albaran.pos_process';
 
     const ALBARAN_PRE_COMPLETE = 'buseta.bodega.albaran.pre_complete';
 
     const ALBARAN_COMPLETE = 'buseta.bodega.albaran_complete';
 
-    const ALBARAN_POS_COMPLETE = 'buseta.bodega.albaran.pos_complete';
+    const ALBARAN_POST_COMPLETE = 'buseta.bodega.albaran.pos_complete';
 
     // BITACORA EVENTS
     /* C+ */
@@ -62,15 +62,15 @@ final class BusetaBodegaEvents
 
     // INVENTARIO FISICO EVENTS
 
-    const PHYSICAL_INVENTORY_PARE_CREATE = 'buseta.bodega.inventariofisico.pre_create';
+    const PHYSICAL_INVENTORY_PRE_CREATE = 'buseta.bodega.inventariofisico.pre_create';
 
-    const PHYSICAL_INVENTORY_POS_CREATE = 'buseta.bodega.inventariofisico.pos_create';
+    const PHYSICAL_INVENTORY_POST_CREATE = 'buseta.bodega.inventariofisico.pos_create';
 
     const PHYSICAL_INVENTORY_PRE_PROCESS = 'buseta.bodega.inventariofisico.pre_process';
 
-    const PHYSICAL_INVENTORY_POS_PROCESS = 'buseta.bodega.inventariofisico.pos_process';
+    const PHYSICAL_INVENTORY_POST_PROCESS = 'buseta.bodega.inventariofisico.pos_process';
 
     const PHYSICAL_INVENTORY_PRE_COMPLETE = 'buseta.bodega.inventariofisico.pre_complete';
 
-    const PHYSICAL_INVENTORY_POS_COMPLETE = 'buseta.bodega.inventariofisico.pos_complete';
+    const PHYSICAL_INVENTORY_POST_COMPLETE = 'buseta.bodega.inventariofisico.pos_complete';
 }
