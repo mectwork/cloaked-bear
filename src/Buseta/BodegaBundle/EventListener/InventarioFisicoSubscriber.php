@@ -2,9 +2,12 @@
 
 namespace Buseta\BodegaBundle\EventListener;
 
+use Buseta\BodegaBundle\BusetaBodegaEvents;
+use Buseta\BodegaBundle\Event\BitacoraSerial\BitacoraSerialInventarioFisicoEvent;
 use Buseta\BodegaBundle\Event\FilterInventarioFisicoEvent;
 use Buseta\BodegaBundle\Event\InventarioFisicoEvents;
 use Buseta\BodegaBundle\Manager\InventarioFisicoManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InventarioFisicoSubscriber implements EventSubscriberInterface
@@ -29,27 +32,42 @@ class InventarioFisicoSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            InventarioFisicoEvents::POS_PROCESS  => 'cambiarestadoProcesado',
-            InventarioFisicoEvents::POS_COMPLETE => 'cambiarestadoCompletado',
+            BusetaBodegaEvents::PHYSICAL_INVENTORY_PRE_CREATE => 'preCreate',
+            BusetaBodegaEvents::PHYSICAL_INVENTORY_POST_CREATE => 'postCreate',
+            BusetaBodegaEvents::PHYSICAL_INVENTORY_PRE_PROCESS => 'preProcess',
+            BusetaBodegaEvents::PHYSICAL_INVENTORY_POST_PROCESS => 'postProcess',
+            BusetaBodegaEvents::PHYSICAL_INVENTORY_PRE_COMPLETE => 'preComplete',
+            BusetaBodegaEvents::PHYSICAL_INVENTORY_POST_COMPLETE => 'postComplete',
         );
     }
 
-    public function cambiarestadoProcesado(FilterInventarioFisicoEvent $event)
+    public function preCreate(BitacoraSerialInventarioFisicoEvent $serialInventarioFisicoEvent)
     {
-        $this->cambiarEstado($event, 'PR');
+
     }
 
-    public function cambiarestadoCompletado(FilterInventarioFisicoEvent $event)
+    public function postCreate(BitacoraSerialInventarioFisicoEvent $serialInventarioFisicoEvent)
     {
-        $this->cambiarEstado($event, 'CO');
+
     }
 
-
-    public function cambiarEstado(FilterInventarioFisicoEvent $event, $estado )
+    public function preProcess(BitacoraSerialInventarioFisicoEvent $serialInventarioFisicoEvent)
     {
-        $inventariofisico = $event->getEntityData();
-        //Si hay error devuelve false, si to ok devuelve true
-        $resultadobooleano =  $this->inventariofisicoManager->cambiarEstado( $inventariofisico , $estado );
-        $event->setReturnValue( $resultadobooleano );
+
+    }
+
+    public function postProcess(BitacoraSerialInventarioFisicoEvent $serialInventarioFisicoEvent)
+    {
+
+    }
+
+    public function preComplete(BitacoraSerialInventarioFisicoEvent $serialInventarioFisicoEvent)
+    {
+
+    }
+
+    public function postComplete(BitacoraSerialInventarioFisicoEvent $serialInventarioFisicoEvent)
+    {
+
     }
 }
