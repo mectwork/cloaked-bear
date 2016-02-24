@@ -36,10 +36,10 @@ class Albaran implements DateTimeAwareInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="consecutivoCompra", type="string", nullable=true)
+     * @ORM\Column(name="numeroDocumento", type="string", nullable=true)
      * @Assert\NotBlank()
      */
-    private $consecutivoCompra;
+    private $numeroDocumento;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="albaran")
@@ -205,7 +205,7 @@ class Albaran implements DateTimeAwareInterface
         $this->updated = $model->getUpdated();
         $this->updatedby = $model->getUpdatedby();
 
-        $this->consecutivoCompra = $model->getConsecutivoCompra();
+        $this->numeroDocumento = $model->getNumeroDocumento();
         $this->numeroReferencia = $model->getNumeroReferencia();
         $this->fechaMovimiento = $model->getFechaMovimiento();
         $this->fechaContable = $model->getFechaContable();
@@ -264,27 +264,27 @@ class Albaran implements DateTimeAwareInterface
     }
 
     /**
-     * Set consecutivoCompra.
+     * Set numeroDocumento.
      *
-     * @param string $consecutivoCompra
+     * @param string $numeroDocumento
      *
      * @return Albaran
      */
-    public function setConsecutivoCompra($consecutivoCompra)
+    public function setNumeroDocumento($numeroDocumento)
     {
-        $this->consecutivoCompra = $consecutivoCompra;
+        $this->numeroDocumento = $numeroDocumento;
 
         return $this;
     }
 
     /**
-     * Get consecutivoCompra.
+     * Get numeroDocumento.
      *
      * @return string
      */
-    public function getConsecutivoCompra()
+    public function getNumeroDocumento()
     {
-        return $this->consecutivoCompra;
+        return $this->numeroDocumento;
     }
 
     /**

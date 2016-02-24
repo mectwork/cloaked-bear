@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Form\Type;
 
+use Buseta\BodegaBundle\Entity\PedidoCompra;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\DependencyInjection\Container;
@@ -204,23 +205,37 @@ class PedidoCompraType extends AbstractType
     {
         $data = $formEvent->getData();
         $form = $formEvent->getForm();
+        $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
 
-        if ( $data->getNumeroDocumento() ) {
-            $secuencia = $data->getNumeroDocumento();
-        } else {
-            $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
-            $secuencia = $sequenceManager->getNextValue('registro_compra_seq');
+        if ($sequenceManager->hasSequence(PedidoCompra::class)) {
+            if ( $data->getNumeroDocumento() ) {
+                $secuencia = $data->getNumeroDocumento();
+            } else {
+                $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
+                $secuencia = $sequenceManager->getNextValue('registro_compra_seq');
+            }
+
+            $form->add('numeroDocumento', 'text', array(
+                'required' => true,
+                'read_only' => true,
+                'label'  => 'Nro.Documento',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+                'data' => $secuencia,
+            ));
+
+        }  else {
+            $form->add('numeroDocumento', 'text', array(
+                'required' => true,
+                'label'  => 'Nro.Documento',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ));
+
         }
 
-        $form->add('numero_documento', 'text', array(
-            'required' => true,
-            'read_only' => true,
-            'label'  => 'Nro.Documento',
-            'attr'   => array(
-                'class' => 'form-control',
-            ),
-            'data' => $secuencia,
-        ));
      }
 
   }

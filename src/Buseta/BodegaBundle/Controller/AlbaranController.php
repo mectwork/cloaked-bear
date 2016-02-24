@@ -181,7 +181,7 @@ class AlbaranController extends Controller
         }
 
         if ($request->query->get('consecutivoCompra')) {
-            $consecutivoCompra = $request->query->get('consecutivoCompra');
+            $numeroDocumento = $request->query->get('numeroDocumento');
         } else {
             $error = "error";
         }

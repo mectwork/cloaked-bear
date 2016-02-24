@@ -24,9 +24,9 @@ class AlbaranRepository extends EntityRepository
                 $query->andWhere($qb->expr()->like('a.numeroReferencia',':numeroReferencia'))
                     ->setParameter('numeroReferencia', '%' . $filter->getNumeroReferencia() . '%');
             }
-            if ($filter->getConsecutivoCompra() !== null && $filter->getConsecutivoCompra() !== '') {
+            if ($filter->getNumeroDocumento() !== null && $filter->getNumeroDocumento() !== '') {
                 $query->andWhere($qb->expr()->like('a.consecutivoCompra',':consecutivoCompra'))
-                    ->setParameter('consecutivoCompra', '%' . $filter->getConsecutivoCompra() . '%');
+                    ->setParameter('numeroDocumento', '%' . $filter->getNumeroDocumento() . '%');
             }
             if ($filter->getAlmacen() !== null && $filter->getAlmacen() !== '') {
                 $query->andWhere($query->expr()->eq('a.almacen', ':almacen'))

@@ -45,7 +45,7 @@
     {% for pedidoCompra in pedidosCompras %}
         <tr>
             <td>{{ pedidoCompra.numerodocumento }}</td>
-            <td>{{ pedidoCompra.consecutivocompra }}</td>
+            <td>{{ pedidoCompra.numeroDocumento }}</td>
             <td>{{ pedidoCompra.tercero }}</td>
             <td>{% if pedidoCompra.fechapedido %}{{ pedidoCompra.fechapedido|date('d/m/Y') }}{% endif %}</td>
             <td>{{ pedidoCompra.almacen }}</td>

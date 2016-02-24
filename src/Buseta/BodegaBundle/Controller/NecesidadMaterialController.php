@@ -137,8 +137,16 @@ class NecesidadMaterialController extends Controller
             $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($necesidadMaterial->getTercero());
 
             //Registro los datos del nuevo PedidoCompra que se crear al procesar la NecesidadMaterial
+
+            $sequenceManager = $this->get('hatuey_soft.sequence.manager');
             $pedidoCompra = new PedidoCompra();
-            $pedidoCompra->setNumeroDocumento($necesidadMaterial->getNumeroDocumento());
+            if (($sequenceManager->getNextValue('orden_entrada_seq')) != null) {
+                $pedidoCompra->setNumeroDocumento($sequenceManager->getNextValue('registro_compra_seq'));
+
+            }  else {
+                $pedidoCompra->setNumeroDocumento($necesidadMaterial->getNumeroDocumento());
+
+            }
             $pedidoCompra->setTercero($tercero);
             $pedidoCompra->setFechaPedido($necesidadMaterial->getFechaPedido());
             $pedidoCompra->setAlmacen($almacen);

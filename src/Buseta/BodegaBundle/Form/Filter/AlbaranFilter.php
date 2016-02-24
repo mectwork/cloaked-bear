@@ -22,7 +22,7 @@ class AlbaranFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('consecutivoCompra', 'text', array(
+            ->add('numeroDocumento', 'text', array(
                 'required' => false,
                 'label'  => 'Nro.Documento',
                 'attr'   => array(
