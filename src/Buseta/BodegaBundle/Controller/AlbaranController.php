@@ -5,6 +5,7 @@ namespace Buseta\BodegaBundle\Controller;
 use Buseta\BodegaBundle\Form\Filter\AlbaranFilter;
 use Buseta\BodegaBundle\Form\Model\AlbaranFilterModel;
 use Buseta\BodegaBundle\Form\Model\AlbaranModel;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\Albaran;
@@ -64,23 +65,34 @@ class AlbaranController extends Controller
     /**
      * Process Albaran entity
      *
+     * @param Albaran $albaran
+     *
+     * @return RedirectResponse
+     *
      * @Route("/{id}/procesarAlbaran", name="procesarAlbaran")
      * @Method({"GET"})
      */
-    public function procesarAlbaranAction($id)
+    public function procesarAlbaranAction(Albaran $albaran)
     {
         $manager = $this->get('buseta.bodega.albaran.manager');
 
         $trans = $this->get('translator');
         $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
 
-        $result = $manager->procesar($id);
-        if ($result===true){
-            $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha procesado la %s de forma correcta.', $albaranTrans) );
-            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
+        if (true === $result = $manager->procesar($albaran, true)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                sprintf('Se ha procesado la %s de forma correcta.', $albaranTrans)
+            );
+
+            return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
         } else {
-            $this->get('session')->getFlashBag()->add('danger',  sprintf(  'Ha ocurrido un error al procesar la %s: %s', $albaranTrans, $result) );
-            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
+            $this->get('session')->getFlashBag()->add(
+                'danger',
+                sprintf('Ha ocurrido un error al procesar la %s.', $albaranTrans, $result)
+            );
+
+            return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
         }
     }
 
@@ -97,12 +109,20 @@ class AlbaranController extends Controller
         $trans = $this->get('translator');
         $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
 
-        if (true === $result = $manager->completar($albaran, true)){
-            $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha completado la %s de forma correcta.', $albaranTrans) );
-            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
+        if (true === $result = $manager->completar($albaran, true)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                sprintf('Se ha completado la %s de forma correcta.', $albaranTrans)
+            );
+
+            return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
         } else {
-            $this->get('session')->getFlashBag()->add('danger',  sprintf(  'Ha ocurrido un error al completar la %s: %s', $albaranTrans,$result)  );
-            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
+            $this->get('session')->getFlashBag()->add(
+                'danger',
+                sprintf('Ha ocurrido un error al completar la %s: %s', $albaranTrans, $result)
+            );
+
+            return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
         }
     }
 
@@ -207,8 +227,6 @@ class AlbaranController extends Controller
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
-
-
 
     /**
      * Displays a data from an existing Albaran entity.

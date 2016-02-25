@@ -6,29 +6,28 @@ namespace Buseta\BodegaBundle\EventListener;
 use Buseta\BodegaBundle\BusetaBodegaEvents;
 use Buseta\BodegaBundle\Event\BitacoraBodega\BitacoraAlbaranEvent;
 use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
+use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use Buseta\BodegaBundle\Manager\AlbaranManager;
+use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AlbaranSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var \Buseta\BodegaBundle\Manager\AlbaranManager
+     * @var Logger
      */
-    private $albaranManager;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $dispatcher = null;
+    private $logger;
 
 
     /**
-     * @param \Buseta\BodegaBundle\Manager\AlbaranManager $albaranManager
+     * AlbaranSubscriber Constructor
+     *
+     * @param Logger            $logger
      */
-    function __construct(AlbaranManager $albaranManager)
+    function __construct(Logger $logger)
     {
-        $this->albaranManager  = $albaranManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -41,19 +40,56 @@ class AlbaranSubscriber implements EventSubscriberInterface
             //BusetaBodegaEvents::ALBARAN_POST_CREATE  => 'undefinedEvent',
             BusetaBodegaEvents::ALBARAN_PRE_PROCESS  => 'preProcess',
             //BusetaBodegaEvents::ALBARAN_PROCESS  => 'undefinedEvent',
-            //BusetaBodegaEvents::ALBARAN_POST_PROCESS  => 'undefinedEvent',
-            //BusetaBodegaEvents::ALBARAN_PRE_COMPLETE => 'undefinedEvent',
+            BusetaBodegaEvents::ALBARAN_POST_PROCESS  => 'postProcess',
+            BusetaBodegaEvents::ALBARAN_PRE_COMPLETE => 'preComplete',
             //BusetaBodegaEvents::ALBARAN_COMPLETE => 'undefinedEvent',
-            BusetaBodegaEvents::ALBARAN_POST_COMPLETE => 'posComplete',
+            BusetaBodegaEvents::ALBARAN_POST_COMPLETE => 'postComplete',
         );
     }
 
+    /**
+     * @param FilterAlbaranEvent $event
+     *
+     * @throws NotValidStateException
+     */
     public function preProcess(FilterAlbaranEvent $event)
     {
-        // trigger validation
+        $albaran = $event->getAlbaran();
+        if ($albaran->getEstadoDocumento() !== 'BO') {
+            $this->logger->error(
+                sprintf(
+                    'El estado %s del Albaran con id %d no se corresponde con el estado previo a procesado(PR).',
+                    $albaran->getEstadoDocumento(),
+                    $albaran->getId()
+                )
+            );
+
+            throw new NotValidStateException();
+        }
     }
 
-    public function posComplete(FilterAlbaranEvent $event, $eventName = null, EventDispatcherInterface $eventDispatcher = null)
+    /**
+     * @param FilterAlbaranEvent $event
+     */
+    public function postProcess(FilterAlbaranEvent $event)
+    {
+
+    }
+
+    /**
+     * @param FilterAlbaranEvent $event
+     */
+    public function preComplete(FilterAlbaranEvent $event)
+    {
+
+    }
+
+    /**
+     * @param FilterAlbaranEvent            $event
+     * @param string|null                          $eventName
+     * @param EventDispatcherInterface|null $eventDispatcher
+     */
+    public function postComplete(FilterAlbaranEvent $event, $eventName = null, EventDispatcherInterface $eventDispatcher = null)
     {
         $bitacoraEvent = new BitacoraAlbaranEvent($event->getAlbaran(), $event->isFlush());
         $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_VENDOR_RECEIPTS, $bitacoraEvent);
@@ -61,28 +97,5 @@ class AlbaranSubscriber implements EventSubscriberInterface
         if (null !== $error = $bitacoraEvent->getError()) {
             $event->setError($error);
         }
-    }
-
-    public function cambiarestadoProcesado(FilterAlbaranEvent $event)
-    {
-        $this->cambiarEstado($event, 'PR');
-    }
-
-    public function cambiarestadoCompletado(FilterAlbaranEvent $event)
-    {
-        $this->cambiarEstado($event, 'CO');
-    }
-
-    private function cambiarEstado(FilterAlbaranEvent $event, $estado )
-    {
-        $albaran = $event->getEntityData();
-        //Si hay error devuelve el string del error, si todo ok devuelve true
-        $result=  $this->albaranManager->legacyCambiarestado( $albaran , $estado );
-        $event->setReturnValue( $result );
-    }
-
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->dispatcher = $eventDispatcher;
     }
 }

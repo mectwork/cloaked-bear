@@ -59,44 +59,49 @@ class AlbaranManager
 
 
     /**
-     * @param $id
+     * Process Albaran instance
+     *
+     * @param Albaran   $albaran
+     * @param bool      $flush
+     *
      * @return bool|string
      */
-    public function procesar($id)
+    public function procesar(Albaran $albaran, $flush=false)
     {
         try {
-
-            $albaran = $this->em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
-
-            if (!$albaran) {
-                throw new NotFoundElementException('No se encontro la entidad Albaran.');
+            if (self::USE_TRANSACTIONS) {
+                $this->em->getConnection()->beginTransaction();
             }
 
-            if ($albaran->getEstadoDocumento() !== 'BO') {
-                $this->logger->error(sprintf('El estado %s del Albaran con id %d no se corresponde con el estado previo a procesado(PR).',
-                    $albaran->getEstadoDocumento(),
-                    $albaran->getId()
-                ));
-                throw new NotValidStateException();
+            if ($this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_PRE_PROCESS)) {
+                $preProcessEvent = new FilterAlbaranEvent($albaran, $flush);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::ALBARAN_PRE_PROCESS, $preProcessEvent);
             }
 
-            // Change state Borrador(BO) to Procesado(PR)
-            $event = new FilterAlbaranEvent($albaran);
-            $this->dispatcher->dispatch(AlbaranEvents::POS_PROCESS, $event);
-            $result = $event->getReturnValue();
-            if ($result !== true) {
-                //borramos los cambios en el entity manager
-                $this->em->clear();
-                return $error = $result;
+            $this->cambiarEstado($albaran, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_PROCESS, $flush);
+
+            if ($this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_POST_PROCESS)) {
+                $postProcessEvent = new FilterAlbaranEvent($albaran, $flush);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::ALBARAN_POST_PROCESS, $postProcessEvent);
             }
 
-            $this->em->flush();
+            if ($flush) {
+                $this->em->flush();
+            }
+
+            // Try and commit the transaction, aqui puede ocurrir un error
+            if (self::USE_TRANSACTIONS) {
+                $this->em->getConnection()->commit();
+            }
+
             return true;
-
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error al procesar el Albaran: %s', $e->getMessage()));
-            //borramos los cambios en el entity manager
-            $this->em->clear();
+            $this->logger->error(sprintf('Ha ocurrido un error al procesar el Albaran. Detalles: %s', $e->getMessage()));
+
+            if (self::USE_TRANSACTIONS) {
+                $this->em->getConnection()->rollback();
+            }
+
             return 'Ha ocurrido un error al procesar el Albaran';
         }
 

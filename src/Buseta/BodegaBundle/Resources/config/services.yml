@@ -176,7 +176,7 @@ services:
     buseta.bodega.albaran.subscriber:
         class: Buseta\BodegaBundle\EventListener\AlbaranSubscriber
         arguments:
-            - @buseta.bodega.albaran.manager
+            - @logger
         tags:
             - {name: kernel.event_subscriber}
 
