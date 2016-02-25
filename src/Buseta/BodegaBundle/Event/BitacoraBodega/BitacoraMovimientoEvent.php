@@ -33,29 +33,30 @@ class BitacoraMovimientoEvent extends AbstractBitacoraEvent
 
         if ($movimiento !== null && $movimiento->getMovimientosProductos()->count() > 0) {
             $this->movimiento = $movimiento;
-            foreach ($movimiento->getMovimientosProductos() as $movimientoProducto) {
-                /** @var MovimientosProductos $movimientoProducto */
+            foreach ($movimiento->getMovimientosProductos() as $movimientoLinea) {
+                /** @var MovimientosProductos $movimientoLinea */
                 $bitacoraEventTo = new BitacoraEventModel();
-                $bitacoraEventTo->setProduct($movimientoProducto->getProducto());
+                $bitacoraEventTo->setProduct($movimientoLinea->getProducto());
                 $bitacoraEventTo->setWarehouse($movimiento->getAlmacenDestino());
-                $bitacoraEventTo->setMovementQty($movimientoProducto->getCantidad());
-                $bitacoraEventTo->setMovementDate($movimiento->getFechaMovimiento());
+                $bitacoraEventTo->setMovementQty($movimientoLinea->getCantidad());
+                $bitacoraEventTo->setMovementDate(new \DateTime());
                 $bitacoraEventTo->setMovementType(BusetaBodegaMovementTypes::MOVEMENT_TO);
-                $bitacoraEventTo->setCallback(function (BitacoraAlmacen $bitacoraAlmacen) use ($movimientoProducto) {
-                    $bitacoraAlmacen->setMovimientoLinea($movimientoProducto);
+                $bitacoraEventTo->setReferencedObject($movimientoLinea);
+                $bitacoraEventTo->setCallback(function (BitacoraAlmacen $bitacoraAlmacen) use ($movimientoLinea) {
+                    $bitacoraAlmacen->setMovimientoLinea($movimientoLinea);
                 });
+                $this->bitacoraEvents->add($bitacoraEventTo);
 
                 $bitacoraEventFrom = new BitacoraEventModel();
-                $bitacoraEventFrom->setProduct($movimientoProducto->getProducto());
+                $bitacoraEventFrom->setProduct($movimientoLinea->getProducto());
                 $bitacoraEventFrom->setWarehouse($movimiento->getAlmacenOrigen());
-                $bitacoraEventFrom->setMovementQty($movimientoProducto->getCantidad());
-                $bitacoraEventFrom->setMovementDate($movimiento->getFechaMovimiento());
+                $bitacoraEventFrom->setMovementQty($movimientoLinea->getCantidad());
+                $bitacoraEventFrom->setMovementDate(new \DateTime());
                 $bitacoraEventFrom->setMovementType(BusetaBodegaMovementTypes::MOVEMENT_FROM);
-                $bitacoraEventFrom->setCallback(function (BitacoraAlmacen $bitacoraAlmacen) use ($movimientoProducto) {
-                    $bitacoraAlmacen->setMovimientoLinea($movimientoProducto);
+                $bitacoraEventFrom->setReferencedObject($movimientoLinea);
+                $bitacoraEventFrom->setCallback(function (BitacoraAlmacen $bitacoraAlmacen) use ($movimientoLinea) {
+                    $bitacoraAlmacen->setMovimientoLinea($movimientoLinea);
                 });
-
-                $this->bitacoraEvents->add($bitacoraEventTo);
                 $this->bitacoraEvents->add($bitacoraEventFrom);
             }
         }

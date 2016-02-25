@@ -3,9 +3,11 @@
 namespace Buseta\BodegaBundle\Event\BitacoraSerial;
 
 use Buseta\BodegaBundle\Entity\BitacoraSerial;
+use Buseta\BodegaBundle\Entity\SalidaBodegaProducto;
 use Buseta\BodegaBundle\Event\BitacoraBodega\BitacoraSalidaBodegaEvent;
 use Buseta\BodegaBundle\Model\BitacoraEventModel;
 use Buseta\BodegaBundle\Model\BitacoraSerialEventModel;
+use Symfony\Component\Security\Core\Util\ClassUtils;
 
 /**
  * Class BitacoraSerialSalidaBodegaEvent
@@ -45,25 +47,28 @@ class BitacoraSerialSalidaBodegaEvent extends AbstractBitacoraSerialEvent
                 $bitacoraSerialEvent->setMovementDate($salidaBodegaEventLinea->getMovementDate());
                 $bitacoraSerialEvent->setMovementType($salidaBodegaEventLinea->getMovementType());
                 $bitacoraSerialEvent->setCallback(function (BitacoraSerial $bitacoraSerial) use ($salidaBodegaEventLinea){
-                    if ($salidaBodegaEventLinea !== null && $salidaBodegaEventLinea->getBitacoraLine() !== null) {
-                        $bitacoraSerial
-                            ->setConsumoInterno($salidaBodegaEventLinea->getBitacoraLine()->getConsumoInterno());
-                    }
+                    $salidaBodegaLinea = $salidaBodegaEventLinea->getReferencedObject();
+                    $bitacoraSerial->setConsumoInterno(sprintf(
+                        '%s,%d',
+                        ClassUtils::getRealClass($salidaBodegaLinea),
+                        $salidaBodegaLinea->getId()
+                    ));
                 });
-
                 $this->bitacoraSerialEvents->add($bitacoraSerialEvent);
             };
 
             foreach ($salidaBodegaEvent->getBitacoraEvents() as $salidaBodegaEventLinea) {
                 /** @var BitacoraEventModel $salidaBodegaEventLinea */
-                $salidaBodegaString = $salidaBodegaEventLinea->getBitacoraLine()->getConsumoInterno();
-                // !TODO: Need to refactor BitacoraEventModel to admit the queried object line.
-                /*$strSeriales = $salidaBodegaLinea->getSeriales();
-                $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
+                $salidaBodegaLinea = $salidaBodegaEventLinea->getReferencedObject();
+                if (null !== $salidaBodegaLinea && $salidaBodegaLinea instanceof SalidaBodegaProducto::class) {
+                    /** @var SalidaBodegaProducto $salidaBodegaLinea */
+                    $strSeriales = $salidaBodegaLinea->getSeriales();
+                    $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
 
-                foreach ($seriales as $serial) {
-                    call_user_func($fillBitacoraSerialEvents, $salidaBodegaEventLinea, $serial);
-                }*/
+                    foreach ($seriales as $serial) {
+                        call_user_func($fillBitacoraSerialEvents, $salidaBodegaEventLinea, $serial);
+                    }
+                }
             }
         }
     }

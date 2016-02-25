@@ -43,13 +43,13 @@ class BitacoraInventarioFisicoEvent extends AbstractBitacoraEvent
                 $bitacoraEvent->setProduct($inventarioFisicoLinea->getProducto());
                 $bitacoraEvent->setWarehouse($inventarioFisico->getAlmacen());
                 $bitacoraEvent->setMovementQty(abs($movementQty));
-                $bitacoraEvent->setMovementDate($inventarioFisico->getFecha());
+                $bitacoraEvent->setMovementDate(new \DateTime());
                 $bitacoraEvent->setMovementType(
                     $movementQty > 0 ? BusetaBodegaMovementTypes::INVENTORY_IN : BusetaBodegaMovementTypes::INVENTORY_OUT);
+                $bitacoraEvent->setReferencedObject($inventarioFisicoLinea);
                 $bitacoraEvent->setCallback(function (BitacoraAlmacen $bitacoraAlmacen) use ($inventarioFisicoLinea) {
                     $bitacoraAlmacen->setInventarioLinea($inventarioFisicoLinea);
                 });
-
                 $this->bitacoraEvents->add($bitacoraEvent);
             }
         }

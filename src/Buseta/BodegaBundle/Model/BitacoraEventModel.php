@@ -60,6 +60,11 @@ class BitacoraEventModel
     private $bitacoraLine;
 
     /**
+     * @var mixed
+     */
+    private $referencedObject;
+
+    /**
      * @var string
      */
     private $error;
@@ -175,6 +180,22 @@ class BitacoraEventModel
     public function setBitacoraLine($bitacoraLine)
     {
         $this->bitacoraLine = $bitacoraLine;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReferencedObject()
+    {
+        return $this->referencedObject;
+    }
+
+    /**
+     * @param mixed $referencedObject
+     */
+    public function setReferencedObject($referencedObject)
+    {
+        $this->referencedObject = $referencedObject;
     }
 
     /**

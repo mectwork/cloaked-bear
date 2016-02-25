@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Event\BitacoraSerial;
 
+use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\BitacoraSerial;
 use Buseta\BodegaBundle\Event\BitacoraBodega\BitacoraAlbaranEvent;
 use Buseta\BodegaBundle\Model\BitacoraEventModel;
@@ -44,24 +45,22 @@ class BitacoraSerialAlbaranEvent extends AbstractBitacoraSerialEvent
                 $bitacoraSerialEvent->setSerial($serial);
                 $bitacoraSerialEvent->setMovementDate($albaranEventLinea->getMovementDate());
                 $bitacoraSerialEvent->setMovementType($albaranEventLinea->getMovementType());
-                $bitacoraSerialEvent->setCallback(function (BitacoraSerial $bitacoraSerial) use ($albaranEventLinea){
-                    if ($albaranEventLinea !== null && $albaranEventLinea->getBitacoraLine() !== null) {
-                        $bitacoraSerial
-                            ->setEntradaSalidaLinea($albaranEventLinea->getBitacoraLine()->getEntradaSalidaLinea());
-                    }
+                $bitacoraSerialEvent->setCallback(function (BitacoraSerial $bitacoraSerial) use ($albaranEventLinea) {
+                    $bitacoraSerial->setEntradaSalidaLinea($albaranEventLinea->getReferencedObject());
                 });
-
                 $this->bitacoraSerialEvents->add($bitacoraSerialEvent);
             };
 
             foreach ($albaranEvent->getBitacoraEvents() as $albaranEventLinea) {
                 /** @var BitacoraEventModel $albaranEventLinea */
-                $albaranLinea = $albaranEventLinea->getBitacoraLine()->getEntradaSalidaLinea();
-                $strSeriales = $albaranLinea->getSeriales();
-                $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
+                $albaranLinea = $albaranEventLinea->getReferencedObject();
+                if (null !== $albaranLinea && $albaranLinea instanceof AlbaranLinea::class) {
+                    $strSeriales = $albaranLinea->getSeriales();
+                    $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
 
-                foreach ($seriales as $serial) {
-                    call_user_func($fillBitacoraSerialEvents, $albaranEventLinea, $serial);
+                    foreach ($seriales as $serial) {
+                        call_user_func($fillBitacoraSerialEvents, $albaranEventLinea, $serial);
+                    }
                 }
             }
         }

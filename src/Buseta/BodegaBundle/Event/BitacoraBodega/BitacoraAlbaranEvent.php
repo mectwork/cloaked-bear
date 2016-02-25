@@ -42,10 +42,10 @@ class BitacoraAlbaranEvent extends AbstractBitacoraEvent
                 $bitacoraEvent->setMovementQty($albaranLinea->getCantidadMovida());
                 $bitacoraEvent->setMovementDate(new \DateTime());
                 $bitacoraEvent->setMovementType(BusetaBodegaMovementTypes::VENDOR_RECEIPTS);
-                $bitacoraEvent->setCallback(function (BitacoraAlmacen $bitacoraAlmacen) use ($albaranLinea){
+                $bitacoraEvent->setReferencedObject($albaranLinea);
+                $bitacoraEvent->setCallback(function (BitacoraAlmacen $bitacoraAlmacen) use ($albaranLinea) {
                     $bitacoraAlmacen->setEntradaSalidaLinea($albaranLinea);
                 });
-
                 $this->bitacoraEvents->add($bitacoraEvent);
             }
         }

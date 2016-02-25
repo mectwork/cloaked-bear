@@ -35,22 +35,22 @@ class BitacoraSalidaBodegaEvent extends AbstractBitacoraEvent
         if ($salidaBodega !== null && $salidaBodega->getSalidasProductos()->count() > 0) {
             $this->salidaBodega = $salidaBodega;
 
-            foreach ($salidaBodega->getSalidasProductos() as $salidaProducto) {
-                /** @var SalidaBodegaProducto $salidaProducto */
+            foreach ($salidaBodega->getSalidasProductos() as $salidaBodegaLinea) {
+                /** @var SalidaBodegaProducto $salidaBodegaLinea */
                 $bitacoraEvent = new BitacoraEventModel();
-                $bitacoraEvent->setProduct($salidaProducto->getProducto());
+                $bitacoraEvent->setProduct($salidaBodegaLinea->getProducto());
                 $bitacoraEvent->setWarehouse($salidaBodega->getAlmacenOrigen());
-                $bitacoraEvent->setMovementQty($salidaProducto->getCantidad());
+                $bitacoraEvent->setMovementQty($salidaBodegaLinea->getCantidad());
                 $bitacoraEvent->setMovementDate(new \DateTime());
                 $bitacoraEvent->setMovementType(BusetaBodegaMovementTypes::INTERNAL_CONSUMPTION_MINUS);
-                $bitacoraEvent->setCallback(function (BitacoraAlmacen $bitacoraAlmacen) use ($salidaProducto) {
+                $bitacoraEvent->setReferencedObject($salidaBodegaLinea);
+                $bitacoraEvent->setCallback(function (BitacoraAlmacen $bitacoraAlmacen) use ($salidaBodegaLinea) {
                     $bitacoraAlmacen->setConsumoInterno(sprintf(
                         '%s,%d',
-                        ClassUtils::getRealClass($salidaProducto),
-                        $salidaProducto->getId()
+                        ClassUtils::getRealClass($salidaBodegaLinea),
+                        $salidaBodegaLinea->getId()
                     ));
                 });
-
                 $this->bitacoraEvents->add($bitacoraEvent);
             }
         }
