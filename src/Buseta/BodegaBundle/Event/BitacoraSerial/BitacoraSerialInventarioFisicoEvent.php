@@ -23,9 +23,13 @@ class BitacoraSerialInventarioFisicoEvent extends AbstractBitacoraSerialEvent
      */
     public function __construct(BitacoraInventarioFisicoEvent $inventarioFisicoEvent=null)
     {
+        if (null === $inventarioFisicoEvent) {
+            return;
+        }
+
         parent::__construct($inventarioFisicoEvent->isFlush());
 
-        if (null !== $inventarioFisicoEvent && 0 < $inventarioFisicoEvent->getBitacoraEvents()->count()) {
+        if ($inventarioFisicoEvent->getBitacoraEvents()->count() > 0) {
             $this->inventarioFisicoEvent = $inventarioFisicoEvent;
 
             $fillBitacoraSerialEvents = function (BitacoraEventModel $inventarioFisicoEventLinea, $serial) {

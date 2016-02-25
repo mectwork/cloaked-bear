@@ -27,9 +27,13 @@ class BitacoraSerialAlbaranEvent extends AbstractBitacoraSerialEvent
      */
     public function __construct(BitacoraAlbaranEvent $albaranEvent=null)
     {
+        if (null === $albaranEvent) {
+            return;
+        }
+
         parent::__construct($albaranEvent->isFlush());
 
-        if ($albaranEvent !== null && $albaranEvent->getBitacoraEvents()->count() > 0) {
+        if ($albaranEvent->getBitacoraEvents()->count() > 0) {
             $this->albaranEvent = $albaranEvent;
 
             $fillBitacoraSerialEvents = function (BitacoraEventModel $albaranEventLinea, $serial) {
