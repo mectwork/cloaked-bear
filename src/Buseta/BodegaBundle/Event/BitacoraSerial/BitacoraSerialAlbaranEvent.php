@@ -54,7 +54,7 @@ class BitacoraSerialAlbaranEvent extends AbstractBitacoraSerialEvent
             foreach ($albaranEvent->getBitacoraEvents() as $albaranEventLinea) {
                 /** @var BitacoraEventModel $albaranEventLinea */
                 $albaranLinea = $albaranEventLinea->getReferencedObject();
-                if (null !== $albaranLinea && $albaranLinea instanceof AlbaranLinea::class) {
+                if (null !== $albaranLinea && $albaranLinea instanceof AlbaranLinea) {
                     $strSeriales = $albaranLinea->getSeriales();
                     $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
 

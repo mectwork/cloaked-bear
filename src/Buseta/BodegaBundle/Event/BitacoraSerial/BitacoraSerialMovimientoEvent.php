@@ -66,7 +66,7 @@ class BitacoraSerialMovimientoEvent extends AbstractBitacoraSerialEvent
             foreach ($movimientoEvent->getBitacoraEvents() as $movimientoLineaEvent) {
                 /** @var BitacoraEventModel $movimientoLineaEvent */
                 $movimientoLinea = $movimientoLineaEvent->getReferencedObject();
-                if (null !== $movimientoLinea && $movimientoLinea instanceof MovimientosProductos::class) {
+                if (null !== $movimientoLinea && $movimientoLinea instanceof MovimientosProductos) {
                     $strSeriales = $movimientoLinea->getSeriales();
                     $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
 

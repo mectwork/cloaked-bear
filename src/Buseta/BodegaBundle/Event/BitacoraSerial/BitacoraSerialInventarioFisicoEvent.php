@@ -50,7 +50,7 @@ class BitacoraSerialInventarioFisicoEvent extends AbstractBitacoraSerialEvent
             foreach ($inventarioFisicoEvent->getBitacoraEvents() as $inventarioFisicoLineaEvent) {
                 /** @var BitacoraEventModel $inventarioFisicoLineaEvent */
                 $inventarioLinea = $inventarioFisicoLineaEvent->getReferencedObject();
-                if (null !== $inventarioLinea && $inventarioLinea instanceof InventarioFisicoLinea::class) {
+                if (null !== $inventarioLinea && $inventarioLinea instanceof InventarioFisicoLinea) {
                     $strSeriales = $inventarioLinea->getSeriales();
                     $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
 
