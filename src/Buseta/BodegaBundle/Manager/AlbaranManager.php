@@ -124,9 +124,9 @@ class AlbaranManager
 
             $this->cambiarEstado($albaran, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_COMPLETE, $flush);
 
-            if ($this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_POS_COMPLETE)) {
+            if ($this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_POST_COMPLETE)) {
                 $posCompleteEvent = new FilterAlbaranEvent($albaran, $flush);
-                $this->dispatcher->dispatch(BusetaBodegaEvents::ALBARAN_POS_COMPLETE, $posCompleteEvent);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::ALBARAN_POST_COMPLETE, $posCompleteEvent);
 
                 if ($posCompleteEvent->getError()) {
                     if (self::USE_TRANSACTIONS) {

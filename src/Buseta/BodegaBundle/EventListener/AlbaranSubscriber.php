@@ -38,13 +38,13 @@ class AlbaranSubscriber implements EventSubscriberInterface
     {
         return array(
             //BusetaBodegaEvents::ALBARAN_PRE_CREATE  => 'undefinedEvent',
-            //BusetaBodegaEvents::ALBARAN_POS_CREATE  => 'undefinedEvent',
+            //BusetaBodegaEvents::ALBARAN_POST_CREATE  => 'undefinedEvent',
             BusetaBodegaEvents::ALBARAN_PRE_PROCESS  => 'preProcess',
             //BusetaBodegaEvents::ALBARAN_PROCESS  => 'undefinedEvent',
-            //BusetaBodegaEvents::ALBARAN_POS_PROCESS  => 'undefinedEvent',
+            //BusetaBodegaEvents::ALBARAN_POST_PROCESS  => 'undefinedEvent',
             //BusetaBodegaEvents::ALBARAN_PRE_COMPLETE => 'undefinedEvent',
             //BusetaBodegaEvents::ALBARAN_COMPLETE => 'undefinedEvent',
-            BusetaBodegaEvents::ALBARAN_POS_COMPLETE => 'posComplete',
+            BusetaBodegaEvents::ALBARAN_POST_COMPLETE => 'posComplete',
         );
     }
 
