@@ -136,38 +136,50 @@
 
 {% block javascripts %}
     <script type="text/javascript">
+
+
+  var filtrodesplegable = {
+      _start_events: function () {
+          $('a#filter_form_header').click(function () {
+              if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
+                  $('a#filter_form_header span')
+                          .removeClass('glyphicon-chevron-right')
+                          .addClass('glyphicon-chevron-down');
+              } else {
+                  $('a#filter_form_header span')
+                          .removeClass('glyphicon-chevron-down')
+                          .addClass('glyphicon-chevron-right');
+              }
+
+              $('div#filter_form_component').slideToggle(500);
+          });
+
+          $('a#filter_form_submit_btn').click(function () {
+              $('form#filter_form').submit();
+          });
+
+          $('a#filter_form_reset_btn').click(function () {
+              $('form#filter_form').find('input').each(function () {
+                  $(this).val(null);
+              });
+              $('form#filter_form').find('select').each(function () {
+                  $(this).val(null);
+              })
+          });
+
+      }
+  }
+
         $(document).ready(function () {
-            $('a#filter_form_header').click(function () {
-                if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
-                    $('a#filter_form_header span')
-                            .removeClass('glyphicon-chevron-right')
-                            .addClass('glyphicon-chevron-down');
-                } else {
-                    $('a#filter_form_header span')
-                            .removeClass('glyphicon-chevron-down')
-                            .addClass('glyphicon-chevron-right');
-                }
-
-                $('div#filter_form_component').slideToggle(500);
-            });
-
-            $('a#filter_form_submit_btn').click(function () {
-                $('form#filter_form').submit();
-            });
-
-            $('a#filter_form_reset_btn').click(function () {
-                $('form#filter_form').find('input').each(function () {
-                    $(this).val(null);
-                });
-                $('form#filter_form').find('select').each(function () {
-                    $(this).val(null);
-                })
-            });
+            filtrodesplegable._start_events();
         });
+
     </script>
 
     <script type="text/javascript">
         var deleteevent = new DeleteEvent('{{ path('necesidadmaterial') }}', 'div#records_list');
         deleteevent.start_events();
+        //filtrodesplegable._start_events();
     </script>
+
 {% endblock javascripts %}
