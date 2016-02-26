@@ -135,7 +135,7 @@ class PedidoCompraController extends Controller
             $albaran = new Albaran();
             $albaran->setEstadoDocumento('BO');
             $albaran->setAlmacen($almacen);
-            $albaran->setConsecutivoCompra($pedidoCompra->getConsecutivoCompra());
+            $albaran->setConsecutivoCompra($pedidoCompra->getNumeroReferencia());
             $albaran->setTercero($tercero);
             $albaran->setCreated(new \DateTime());
 

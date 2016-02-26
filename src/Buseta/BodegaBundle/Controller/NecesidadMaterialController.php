@@ -138,7 +138,7 @@ class NecesidadMaterialController extends Controller
             //Registro los datos del nuevo PedidoCompra que se crear al procesar la NecesidadMaterial
             $pedidoCompra = new PedidoCompra();
             $pedidoCompra->setNumeroDocumento($necesidadMaterial->getNumeroDocumento());
-            $pedidoCompra->setConsecutivoCompra($necesidadMaterial->getConsecutivoCompra());
+            $pedidoCompra->setNumeroReferencia($necesidadMaterial->getNumeroReferencia());
             $pedidoCompra->setTercero($tercero);
             $pedidoCompra->setFechaPedido($necesidadMaterial->getFechaPedido());
             $pedidoCompra->setAlmacen($almacen);

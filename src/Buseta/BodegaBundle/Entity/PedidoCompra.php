@@ -36,10 +36,10 @@ class PedidoCompra
     /**
      * @var string
      *
-     * @ORM\Column(name="consecutivo_compra", type="string")
+     * @ORM\Column(name="numero_referencia", type="string", length=32)
      * @Assert\NotBlank()
      */
-    private $consecutivo_compra;
+    private $numeroReferencia;
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="pedidoCompra")
@@ -206,7 +206,7 @@ class PedidoCompra
     {
         $this->created = $model->getCreated();
         $this->createdby = $model->getCreatedby();
-        $this->consecutivo_compra = $model->getConsecutivoCompra();
+        $this->numeroReferencia = $model->getNumeroReferencia();
         $this->deleted = $model->getDeleted();
         $this->deletedby = $model->getDeletedby();
         $this->updated = $model->getUpdated();
@@ -325,27 +325,27 @@ class PedidoCompra
     }
 
     /**
-     * Set consecutivo_compra.
+     * Set numeroReferencia.
      *
-     * @param string $consecutivoCompra
+     * @param string $numeroReferencia
      *
      * @return PedidoCompra
      */
-    public function setConsecutivoCompra($consecutivoCompra)
+    public function setNumeroReferencia($numeroReferencia)
     {
-        $this->consecutivo_compra = $consecutivoCompra;
+        $this->numeroReferencia = $numeroReferencia;
 
         return $this;
     }
 
     /**
-     * Get consecutivo_compra.
+     * Get numeroReferencia.
      *
      * @return string
      */
-    public function getConsecutivoCompra()
+    public function getNumeroReferencia()
     {
-        return $this->consecutivo_compra;
+        return $this->numeroReferencia;
     }
 
     /**

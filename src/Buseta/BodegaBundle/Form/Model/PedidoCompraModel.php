@@ -31,9 +31,9 @@ class PedidoCompraModel
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      */
-    private $consecutivo_compra;
+    private $numeroReferencia;
 
     /**
      * @var \Buseta\BodegaBundle\Entity\Tercero
@@ -166,7 +166,7 @@ class PedidoCompraModel
             $this->id = $pedidocompra->getId();
             $this->created = $pedidocompra->getCreated();
             $this->createdby = $pedidocompra->getCreatedby();
-            $this->consecutivo_compra = $pedidocompra->getConsecutivoCompra();
+            $this->numeroReferencia = $pedidocompra->getNumeroReferencia();
             $this->deleted = $pedidocompra->getDeleted();
             $this->deletedby = $pedidocompra->getDeletedby();
             $this->updated = $pedidocompra->getUpdated();
@@ -214,7 +214,7 @@ class PedidoCompraModel
         $pedidocompra = new PedidoCompra();
         $pedidocompra->setCreated($this->getCreated());
         $pedidocompra->setCreatedby($this->getCreatedby());
-        $pedidocompra->setConsecutivoCompra($this->getConsecutivoCompra());
+        $pedidocompra->setNumeroReferencia($this->getNumeroReferencia());
         $pedidocompra->setDeleted($this->getDeleted());
         $pedidocompra->setDeletedby($this->getDeletedby());
         $pedidocompra->setEstadoDocumento($this->getEstadoDocumento());
@@ -327,17 +327,17 @@ class PedidoCompraModel
     /**
      * @return string
      */
-    public function getConsecutivoCompra()
+    public function getNumeroReferencia()
     {
-        return $this->consecutivo_compra;
+        return $this->numeroReferencia;
     }
 
     /**
-     * @param string $consecutivo_compra
+     * @param string $numeroReferencia
      */
-    public function setConsecutivoCompra($consecutivo_compra)
+    public function setNumeroReferencia($numeroReferencia)
     {
-        $this->consecutivo_compra = $consecutivo_compra;
+        $this->numeroReferencia = $numeroReferencia;
     }
 
     /**
