@@ -100,7 +100,7 @@ class NecesidadMaterialController extends Controller
             $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
         }
 
-        return $this->redirect($this->generateUrl('necesidadmaterial'));
+        return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
     }
 
     /**
