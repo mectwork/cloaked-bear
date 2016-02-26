@@ -34,9 +34,10 @@ abstract class AbstractBitacoraEvent extends Event implements BitacoraEventInter
      *
      * @param bool $flush
      */
-    public function __construct($flush=false)
+    public function __construct($flush=true)
     {
         $this->flush = $flush;
+        $this->error = false;
         $this->bitacoraEvents = new ArrayCollection();
     }
 

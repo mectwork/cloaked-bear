@@ -27,9 +27,9 @@ class BitacoraAlbaranEvent extends AbstractBitacoraEvent
      * @param Albaran $albaran
      * @param boolean $flush
      */
-    public function __construct(Albaran $albaran = null, $flush=false)
+    public function __construct(Albaran $albaran = null)
     {
-        parent::__construct($flush);
+        parent::__construct();
 
         if ($albaran !== null && $albaran->getAlbaranLineas()->count() > 0) {
             $this->albaran = $albaran;

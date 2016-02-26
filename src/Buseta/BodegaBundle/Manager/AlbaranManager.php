@@ -5,59 +5,15 @@ namespace Buseta\BodegaBundle\Manager;
 use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\BusetaBodegaEvents;
 use Buseta\BodegaBundle\Entity\Albaran;
-use Buseta\BodegaBundle\Event\AlbaranEvents;
-use Buseta\BodegaBundle\Exceptions\NotFoundElementException;
-use Buseta\BodegaBundle\Exceptions\NotValidStateException;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bridge\Monolog\Logger;
-use Buseta\BodegaBundle\Event\BitacoraEvents;
-use Buseta\BodegaBundle\Event\LegacyBitacoraEvent;
 use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Doctrine\DBAL\Connections;
 
 /**
  * Class AlbaranManager
  *
  * @package Buseta\BodegaBundle\Manager
  */
-class AlbaranManager
+class AlbaranManager extends AbstractBodegaManager
 {
-    /**
-     * Set if use or not persistent transactions
-     *
-     * @var boolean
-     */
-    const USE_TRANSACTIONS = true;
-
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    private $em;
-
-    /**
-     * @var \Symfony\Bridge\Monolog\Logger
-     */
-    private $logger;
-
-    /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    /**
-     * @param ObjectManager            $em
-     * @param Logger                   $logger
-     * @param EventDispatcherInterface $dispatcher
-     */
-    function __construct(ObjectManager $em, Logger $logger, EventDispatcherInterface $dispatcher)
-    {
-        $this->em = $em;
-        $this->logger = $logger;
-        $this->dispatcher = $dispatcher;
-    }
-
-
     /**
      * Process Albaran instance
      *
@@ -69,9 +25,7 @@ class AlbaranManager
     {
         $error = false;
         try {
-            if (self::USE_TRANSACTIONS) {
-                $this->em->getConnection()->beginTransaction();
-            }
+            $this->beginTransaction();
 
             if ($this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_PRE_PROCESS)) {
                 $preProcessEvent = new FilterAlbaranEvent($albaran);
@@ -98,9 +52,7 @@ class AlbaranManager
             if ($error) {
                 $this->logger->warning(sprintf('Orden de Entrada no procesada debido a errores previos: %s', $error));
 
-                if (self::USE_TRANSACTIONS) {
-                    $this->em->getConnection()->rollback();
-                }
+                $this->rollbackTransaction();
 
                 return false;
             }
@@ -108,9 +60,7 @@ class AlbaranManager
             $this->em->flush();
 
             // Try and commit the transaction, aqui puede ocurrir un error
-            if (self::USE_TRANSACTIONS) {
-                $this->em->getConnection()->commit();
-            }
+            $this->commitTransaction();
 
             return true;
         } catch (\Exception $e) {
@@ -118,9 +68,7 @@ class AlbaranManager
                 sprintf('Ha ocurrido un error al procesar Orden de Entrada. Detalles: %s', $e->getMessage())
             );
 
-            if (self::USE_TRANSACTIONS) {
-                $this->em->getConnection()->rollback();
-            }
+            $this->rollbackTransaction();
 
             return false;
         }
@@ -130,8 +78,7 @@ class AlbaranManager
     /**
      * Set albaran status as Completed
      *
-     * @param Albaran    $albaran
-     * @param bool|false $flush
+     * @param Albaran $albaran
      *
      * @return bool
      */
@@ -139,9 +86,7 @@ class AlbaranManager
     {
         $error = false;
         try {
-            if (self::USE_TRANSACTIONS) {
-                $this->em->getConnection()->beginTransaction();
-            }
+            $this->beginTransaction();
 
             if ($this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_PRE_COMPLETE)) {
                 $preCompleteEvent = new FilterAlbaranEvent($albaran);
@@ -168,9 +113,7 @@ class AlbaranManager
             if ($error) {
                 $this->logger->warning(sprintf('Orden de Entrada no completada debido a errores previos: %s', $error));
 
-                if (self::USE_TRANSACTIONS) {
-                    $this->em->getConnection()->rollback();
-                }
+                $this->rollbackTransaction();
 
                 return false;
             }
@@ -178,19 +121,20 @@ class AlbaranManager
             $this->em->flush();
 
             // Try and commit the transaction, aqui puede ocurrir un error
-            if (self::USE_TRANSACTIONS) {
-                $this->em->getConnection()->commit();
-            }
+            $this->commitTransaction();
 
             return true;
         } catch (\Exception $e) {
             $this->logger->critical(
-                sprintf('Ha ocurrido un error al completar Orden de Entrada. Detalles: %s', $e->getMessage())
+                sprintf(
+                    'Ha ocurrido un error al completar Orden de Entrada. Detalles: {message: %s, class: %s, line: %d}',
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                )
             );
 
-            if (self::USE_TRANSACTIONS) {
-                $this->em->getConnection()->rollback();
-            }
+            $this->rollbackTransaction();
 
             return false;
         }

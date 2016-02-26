@@ -119,7 +119,7 @@ class AlbaranController extends Controller
         } else {
             $this->get('session')->getFlashBag()->add(
                 'danger',
-                sprintf('Ha ocurrido un error al completar la %s: %s', $albaranTrans, $result)
+                sprintf('Ha ocurrido un error al completar la %s.', $albaranTrans, $result)
             );
 
             return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
