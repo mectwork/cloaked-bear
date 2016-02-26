@@ -81,7 +81,7 @@
         <div class="col-md-4">
             <a class="btn btn-primary" id="btn_necesidadmaterial_save" href="#"><span class="glyphicon glyphicon-save"></span>
                 {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
-            {% if entity.estadodocumento == 'BO' %}
+            {% if entity.estadodocumento is defined and entity.estadodocumento == 'BO' %}
             <a class="btn btn-primary" href="{{ path('procesarNecesidad', { 'id': entity.id }) }}"> Procesar</a>
             {% endif %}
             <a class="btn btn-default" id="btn_necesidadmaterial_cancel" href="{{ path('necesidadmaterial') }}"><span class="glyphicon glyphicon-chevron-left"></span>

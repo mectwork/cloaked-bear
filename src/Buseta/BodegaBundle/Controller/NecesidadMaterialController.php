@@ -342,11 +342,18 @@ class NecesidadMaterialController extends Controller
         $editForm = $this->createEditForm(new NecesidadMaterialModel($necesidadmaterial));
         $deleteForm = $this->createDeleteForm($necesidadmaterial->getId());
 
-        return $this->render('BusetaBodegaBundle:NecesidadMaterial:edit.html.twig', array(
-            'entity'        => $necesidadmaterial,
-            'edit_form'     => $editForm->createView(),
-            'delete_form'   => $deleteForm->createView(),
-        ));
+        if($necesidadmaterial->getEstadoDocumento() == 'BO' ) {
+            return $this->render('BusetaBodegaBundle:NecesidadMaterial:edit.html.twig', array(
+                'entity' => $necesidadmaterial,
+                'edit_form' => $editForm->createView(),
+                'delete_form' => $deleteForm->createView(),
+            ));
+
+        } else {
+        $this->get('session')->getFlashBag()->add('danger',  sprintf(  'No se Puede Editar la Necesidad Material, pues ya se encuetra Procesada. ') );
+        return $this->redirect($this->generateUrl('necesidadmaterial'));
+
+           }
     }
 
     /**

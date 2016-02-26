@@ -2,6 +2,8 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\Event\AlbaranEvents;
+use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
@@ -251,13 +253,36 @@ class AlbaranController extends Controller
     {
         $editForm = $this->createEditForm(new AlbaranModel($albaran));
         /*$deleteForm = $this->createDeleteForm($albaran->getId());*/
-
         return $this->render('BusetaBodegaBundle:Albaran:edit.html.twig', array(
             'entity'        => $albaran,
             'edit_form'     => $editForm->createView(),
             /*'delete_form'   => $deleteForm->createView(),*/
         ));
     }
+
+//    /**
+//     *
+//     * @Route("/{id}/revertir", name="albarans_borrador", methods={"GET"}, options={"expose":true})
+//     * @Breadcrumb(title="Borrador de Orden de Entrada", routeName="albarans_borrador", routeParameters={"id"})
+//     */
+//    public function borradorAction(Albaran $albaran)
+//    {
+//        $manager = $this->get('buseta.bodega.albaran.manager');
+//
+//        $trans = $this->get('translator');
+//        $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
+//
+//        $result = $manager->cambiarestado($albaran,'BO');
+//        return $this->redirect( $this->generateUrl('albarans_borrador', array('id' => $albaran,$result=>'BO' ) ) );
+//        if ($result===true){
+//            $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha procesado la %s de forma correcta.', $albaranTrans) );
+//            return $this->redirect( $this->generateUrl('albarans_borrador', array( 'id' => $albaran,'BO' ) ) );
+//        } else {
+//            $this->get('session')->getFlashBag()->add('danger',  sprintf(  'Ha ocurrido un error al procesar la %s: %s', $albaranTrans, $result) );
+//            return $this->redirect( $this->generateUrl('albarans_borrador', array( 'id' => $albaran,'BO'  ) ) );
+//        }
+//    }
+
 
     /**
      * Creates a form to edit a Albaran entity.
