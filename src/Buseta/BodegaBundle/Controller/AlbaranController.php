@@ -260,28 +260,29 @@ class AlbaranController extends Controller
         ));
     }
 
-//    /**
-//     *
-//     * @Route("/{id}/revertir", name="albarans_borrador", methods={"GET"}, options={"expose":true})
-//     * @Breadcrumb(title="Borrador de Orden de Entrada", routeName="albarans_borrador", routeParameters={"id"})
-//     */
-//    public function borradorAction(Albaran $albaran)
-//    {
-//        $manager = $this->get('buseta.bodega.albaran.manager');
-//
-//        $trans = $this->get('translator');
-//        $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
-//
-//        $result = $manager->cambiarestado($albaran,'BO');
-//        return $this->redirect( $this->generateUrl('albarans_borrador', array('id' => $albaran,$result=>'BO' ) ) );
-//        if ($result===true){
-//            $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha procesado la %s de forma correcta.', $albaranTrans) );
-//            return $this->redirect( $this->generateUrl('albarans_borrador', array( 'id' => $albaran,'BO' ) ) );
-//        } else {
-//            $this->get('session')->getFlashBag()->add('danger',  sprintf(  'Ha ocurrido un error al procesar la %s: %s', $albaranTrans, $result) );
-//            return $this->redirect( $this->generateUrl('albarans_borrador', array( 'id' => $albaran,'BO'  ) ) );
-//        }
-//    }
+    /**
+     *
+     * @Route("/{id}/revertir", name="albaran_revertir", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Borrador de Orden de Entrada", routeName="albaran_revertir", routeParameters={"id"})
+     */
+    public function revertirAction(Albaran $albaran)
+    {
+        $manager = $this->get('buseta.bodega.albaran.manager');
+
+        $trans = $this->get('translator');
+        $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
+
+        $result = $manager->revertir( $albaran->getId() );
+
+        if ($result===true){
+            $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha revertido la %s de forma correcta.', $albaranTrans) );
+            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
+        } else {
+            $this->get('session')->getFlashBag()->add('danger',  sprintf(  'Ha ocurrido un error al revertir la %s: %s', $albaranTrans, $result) );
+            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
+        }
+
+    }
 
 
     /**

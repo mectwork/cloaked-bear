@@ -93,6 +93,43 @@ class AlbaranManager
     }
 
     /**
+     * @param $id
+     * @return bool|string
+     */
+    public function revertir($id)
+    {
+        try {
+
+            $albaran = $this->em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
+
+            if (!$albaran) {
+                throw new NotFoundElementException('No se encontro la entidad Albaran.');
+            }
+
+            if ($albaran->getEstadoDocumento() !== 'PR') {
+                $this->logger->error(sprintf('El estado %s del Albaran con id %d no se corresponde con el estado previo a procesado(PR).',
+                    $albaran->getEstadoDocumento(),
+                    $albaran->getId()
+                ));
+                throw new NotValidStateException();
+            }
+
+            // Change state Borrador(BO) to Procesado(PR)
+            $albaran->setEstadoDocumento('BO');
+
+            $this->em->flush();
+            return true;
+
+        } catch (\Exception $e) {
+            $this->logger->error(sprintf('Ha ocurrido un error al procesar el Albaran: %s', $e->getMessage()));
+            //borramos los cambios en el entity manager
+            $this->em->clear();
+            return 'Ha ocurrido un error al procesar el Albaran';
+        }
+
+    }
+
+    /**
      * Completar Albaran
      *
      * @param integer $id
