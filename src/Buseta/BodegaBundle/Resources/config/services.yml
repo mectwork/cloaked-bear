@@ -1,6 +1,3 @@
-parameters:
-    consecutivoCompra: 89
-
 services:
     # hidden_entity Form Type
     form.type.hidden_entity:

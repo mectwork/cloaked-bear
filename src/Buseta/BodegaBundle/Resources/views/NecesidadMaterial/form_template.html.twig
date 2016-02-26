@@ -7,7 +7,7 @@
     {{ form_row(form._token) }}
     <div class="row">
         <div class="col-md-4">
-            {{ form_row(form.numero_documento) }}
+            {{ form_row(form.numeroDocumento) }}
         </div>
 
         <div class="col-md-4">
@@ -85,6 +85,9 @@
         <div class="col-md-4">
             <a class="btn btn-primary" id="btn_necesidadmaterial_save" href="#"><span class="glyphicon glyphicon-save"></span>
                 {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
+            {% if entity is defined and entity.estadodocumento == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('procesarNecesidad', { 'id': entity.id }) }}"> Procesar</a>
+            {% endif %}
             <a class="btn btn-default" id="btn_necesidadmaterial_cancel" href="{{ path('necesidadmaterial') }}"><span class="glyphicon glyphicon-chevron-left"></span>
                 {{ 'actions.back' | trans({}, 'BusetaBodegaBundle') }}</a>
         </div>

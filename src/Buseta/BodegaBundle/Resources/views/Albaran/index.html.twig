@@ -9,7 +9,7 @@
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.numeroReferencia is null or filter_form.vars.value.numeroReferencia is empty)
-    and (filter_form.vars.value.consecutivoCompra is null or filter_form.vars.value.consecutivoCompra is empty)
+    and (filter_form.vars.value.numeroDocumento is null or filter_form.vars.value.numeroDocumento is empty)
     and (filter_form.vars.value.almacen is null or filter_form.vars.value.almacen is empty)
     and (filter_form.vars.value.tercero is null or filter_form.vars.value.tercero is empty)
     %}
@@ -27,7 +27,7 @@
         <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
             <div class="row">
                 <div class="col-lg-4">{{ form_row(filter_form.numeroReferencia) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.consecutivoCompra) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.numeroDocumento) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.almacen) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.tercero) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.producto) }}</div>
@@ -73,8 +73,8 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.consecutivoCompra }}</td>
                 <td>{{ entity.numeroReferencia }}</td>
+                <td>{{ entity.numeroDocumento }}</td>
                 <td>{{ entity.almacen }}</td>
                 <td>{{ entity.tercero }}</td>
                 <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>

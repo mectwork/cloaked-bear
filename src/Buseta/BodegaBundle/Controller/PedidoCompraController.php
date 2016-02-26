@@ -132,10 +132,18 @@ class PedidoCompraController extends Controller
             $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($pedidoCompra->getTercero());
 
             //registro los datos del nuevo albarán que se crear al procesar el pedido
+
+            $sequenceManager = $this->get('hatuey_soft.sequence.manager');
             $albaran = new Albaran();
+            if (($sequenceManager->getNextValue('orden_entrada_seq')) != null) {
+                $albaran->setNumeroDocumento($sequenceManager->getNextValue('orden_entrada_seq'));
+
+              }  else {
+                    $albaran->setNumeroDocumento($pedidoCompra->getNumeroDocumento());
+
+                }
             $albaran->setEstadoDocumento('BO');
             $albaran->setAlmacen($almacen);
-            $albaran->setConsecutivoCompra($pedidoCompra->getConsecutivoCompra());
             $albaran->setTercero($tercero);
             $albaran->setCreated(new \DateTime());
 

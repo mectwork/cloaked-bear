@@ -13,7 +13,7 @@ class AlbaranFilterModel
     /**
      * @var string
      */
-    private $consecutivoCompra;
+    private $numeroDocumento;
 
     /**
      * @var \Buseta\BodegaBundle\Entity\Bodega
@@ -64,17 +64,17 @@ class AlbaranFilterModel
     /**
      * @return string
      */
-    public function getConsecutivoCompra()
+    public function getNumeroDocumento()
     {
-        return $this->consecutivoCompra;
+        return $this->numeroDocumento;
     }
 
     /**
-     * @param string $consecutivoCompra
+     * @param string $numeroDocumento
      */
-    public function setConsecutivoCompra($consecutivoCompra)
+    public function setNumeroDocumento($numeroDocumento)
     {
-        $this->consecutivoCompra = $consecutivoCompra;
+        $this->numeroDocumento = $numeroDocumento;
     }
 
     /**

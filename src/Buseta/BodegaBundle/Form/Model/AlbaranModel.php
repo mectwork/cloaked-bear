@@ -28,7 +28,7 @@ class AlbaranModel
      * @var string
      * @Assert\NotBlank()
      */
-    private $consecutivoCompra;
+    private $numeroDocumento;
 
     /**
      * @var \Buseta\BodegaBundle\Entity\Tercero
@@ -123,8 +123,7 @@ class AlbaranModel
             $this->deletedby = $albaran->getDeletedby();
             $this->updated = $albaran->getUpdated();
             $this->updatedby = $albaran->getUpdatedby();*/
-
-            $this->consecutivoCompra = $albaran->getConsecutivoCompra();
+            $this->numeroDocumento = $albaran->getNumeroDocumento();
             $this->numeroReferencia = $albaran->getNumeroReferencia();
             $this->fechaMovimiento = $albaran->getFechaMovimiento();
             $this->fechaContable = $albaran->getFechaContable();
@@ -160,7 +159,7 @@ class AlbaranModel
         $albaran->setUpdated($this->getUpdated());
         $albaran->setUpdatedby($this->getUpdatedby());*/
 
-        $albaran->setConsecutivoCompra($this->getConsecutivoCompra());
+        $albaran->setNumeroDocumento($this->getNumeroDocumento());
         $albaran->setNumeroReferencia($this->getNumeroReferencia());
         $albaran->setFechaMovimiento($this->getFechaMovimiento());
         $albaran->setFechaContable($this->getFechaContable());
@@ -219,17 +218,17 @@ class AlbaranModel
     /**
      * @return string
      */
-    public function getConsecutivoCompra()
+    public function getNumeroDocumento()
     {
-        return $this->consecutivoCompra;
+        return $this->numeroDocumento;
     }
 
     /**
-     * @param string $consecutivoCompra
+     * @param string $NumeroDocumento
      */
-    public function setConsecutivoCompra($consecutivoCompra)
+    public function setNumeroDocumento($numeroDocumento)
     {
-        $this->consecutivoCompra = $consecutivoCompra;
+        $this->numeroDocumento = $numeroDocumento;
     }
 
     /**

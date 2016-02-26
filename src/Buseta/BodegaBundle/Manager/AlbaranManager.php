@@ -54,20 +54,36 @@ class AlbaranManager
      */
     public function procesar($id)
     {
+
+        $errors = array();
+
         try {
 
             $albaran = $this->em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
 
             if (!$albaran) {
-                throw new NotFoundElementException('No se encontro la entidad Albaran.');
+                $errors[] = 'No se encontro la entidad Albaran.';
+                throw new \Exception();
             }
 
+            //validaciones para poder hacer el cambio de estado.
             if ($albaran->getEstadoDocumento() !== 'BO') {
-                $this->logger->error(sprintf('El estado %s del Albaran con id %d no se corresponde con el estado previo a procesado(PR).',
+                $error = sprintf('El estado %s de la Orden de Entrada con id %d no se corresponde con el estado previo a procesado(PR).',
                     $albaran->getEstadoDocumento(),
                     $albaran->getId()
-                ));
-                throw new NotValidStateException();
+                );
+                $errors[] = $error;
+            }
+
+            if (($albaran->getFechaMovimiento() == null) || $albaran->getFechaMovimiento() == '') {
+                $error = sprintf('La fecha de movimiento de la Orden de Entrada con id %d no es valida, edite la Orden de Entrada e introduzca una fecha valida.',
+                    $albaran->getId()
+                );
+                $errors[] = $error;
+            }
+
+            if (count($errors) > 0) {
+                throw new \Exception();
             }
 
             // Change state Borrador(BO) to Procesado(PR)
@@ -79,6 +95,57 @@ class AlbaranManager
                 $this->em->clear();
                 return $error = $result;
             }
+
+            $this->em->flush();
+            return true;
+
+        } catch (\Exception $e) {
+
+            $errorsDetalles = '';
+            if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    $this->logger->error(sprintf('Ha ocurrido un error al procesar la Orden de Entrada. Detalles: %s',
+                        $error));
+                    $errorsDetalles .= $error . ' ';
+                }
+            } else {
+                $errorsDetalles = 'Existen datos no validos';
+                $this->logger->error(sprintf('Ha ocurrido un error al procesar la Orden de Entrada. Detalles: %s',
+                    $e->getMessage()));
+            }
+
+            //borramos los cambios en el entity manager
+            $this->em->clear();
+            return sprintf('Detalles: %s', $errorsDetalles);
+
+        }
+
+    }
+
+    /**
+     * @param $id
+     * @return bool|string
+     */
+    public function revertir($id)
+    {
+        try {
+
+            $albaran = $this->em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
+
+            if (!$albaran) {
+                throw new NotFoundElementException('No se encontro la entidad Albaran.');
+            }
+
+            if ($albaran->getEstadoDocumento() !== 'PR') {
+                $this->logger->error(sprintf('El estado %s del Albaran con id %d no se corresponde con el estado previo a procesado(PR).',
+                    $albaran->getEstadoDocumento(),
+                    $albaran->getId()
+                ));
+                throw new NotValidStateException();
+            }
+
+            // Change state Borrador(PR) to Procesado(BO)
+            $albaran->setEstadoDocumento('BO');
 
             $this->em->flush();
             return true;

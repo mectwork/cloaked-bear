@@ -2,6 +2,8 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\Event\AlbaranEvents;
+use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
 use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
@@ -181,7 +183,7 @@ class AlbaranController extends Controller
         }
 
         if ($request->query->get('consecutivoCompra')) {
-            $consecutivoCompra = $request->query->get('consecutivoCompra');
+            $numeroDocumento = $request->query->get('numeroDocumento');
         } else {
             $error = "error";
         }
@@ -251,13 +253,37 @@ class AlbaranController extends Controller
     {
         $editForm = $this->createEditForm(new AlbaranModel($albaran));
         /*$deleteForm = $this->createDeleteForm($albaran->getId());*/
-
         return $this->render('BusetaBodegaBundle:Albaran:edit.html.twig', array(
             'entity'        => $albaran,
             'edit_form'     => $editForm->createView(),
             /*'delete_form'   => $deleteForm->createView(),*/
         ));
     }
+
+    /**
+     *
+     * @Route("/{id}/revertir", name="albaran_revertir", methods={"GET"}, options={"expose":true})
+     * @Breadcrumb(title="Borrador de Orden de Entrada", routeName="albaran_revertir", routeParameters={"id"})
+     */
+    public function revertirAction(Albaran $albaran)
+    {
+        $manager = $this->get('buseta.bodega.albaran.manager');
+
+        $trans = $this->get('translator');
+        $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
+
+        $result = $manager->revertir( $albaran->getId() );
+
+        if ($result===true){
+            $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha revertido la %s de forma correcta.', $albaranTrans) );
+            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
+        } else {
+            $this->get('session')->getFlashBag()->add('danger',  sprintf(  'Ha ocurrido un error al revertir la %s: %s', $albaranTrans, $result) );
+            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
+        }
+
+    }
+
 
     /**
      * Creates a form to edit a Albaran entity.

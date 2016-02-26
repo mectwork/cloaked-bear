@@ -11,6 +11,7 @@ use Buseta\BodegaBundle\Form\Filter\NecesidadMaterialFilter;
 use Buseta\BodegaBundle\Form\Model\NecesidadMaterialFilterModel;
 use Buseta\BodegaBundle\Form\Model\NecesidadMaterialModel;
 use Buseta\BodegaBundle\Form\Type\NecesidadMaterialLineaType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\NecesidadMaterial;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Security\Core\Util\ClassUtils;
 use Symfony\Component\Validator\ConstraintViolation;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
@@ -136,9 +138,16 @@ class NecesidadMaterialController extends Controller
             $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($necesidadMaterial->getTercero());
 
             //Registro los datos del nuevo PedidoCompra que se crear al procesar la NecesidadMaterial
+
+            $sequenceManager = $this->get('hatuey_soft.sequence.manager');
             $pedidoCompra = new PedidoCompra();
-            $pedidoCompra->setNumeroDocumento($necesidadMaterial->getNumeroDocumento());
-            $pedidoCompra->setConsecutivoCompra($necesidadMaterial->getConsecutivoCompra());
+            if (($sequenceManager->getNextValue('orden_entrada_seq')) != null) {
+                $pedidoCompra->setNumeroDocumento($sequenceManager->getNextValue('registro_compra_seq'));
+
+            }  else {
+                $pedidoCompra->setNumeroDocumento($necesidadMaterial->getNumeroDocumento());
+
+            }
             $pedidoCompra->setTercero($tercero);
             $pedidoCompra->setFechaPedido($necesidadMaterial->getFechaPedido());
             $pedidoCompra->setAlmacen($almacen);
@@ -178,7 +187,6 @@ class NecesidadMaterialController extends Controller
             }
 
             $necesidadMaterial->setEstadoDocumento('CO');
-            //$necesidadMaterial->setDeleted(true);
             $em->persist($necesidadMaterial);
             $em->flush();
 
@@ -268,8 +276,8 @@ class NecesidadMaterialController extends Controller
      */
     public function newAction()
     {
-        $form   = $this->createCreateForm(new NecesidadMaterialModel());
 
+        $form   = $this->createCreateForm(new NecesidadMaterialModel());
         $em = $this->get('doctrine.orm.entity_manager');
         $productos = $em->getRepository('BusetaBodegaBundle:Producto')
             ->createQueryBuilder('p')
@@ -312,18 +320,26 @@ class NecesidadMaterialController extends Controller
      *
      * @Route("/{id}/edit", name="necesidadmaterial_edit", options={"expose": true})
      * @Method("GET")
+     *
      * @Breadcrumb(title="Modificar Necesidad Material", routeName="necesidadmaterial_edit", routeParameters={"id"})
      */
     public function editAction(NecesidadMaterial $necesidadmaterial)
     {
+        if ($necesidadmaterial->getEstadoDocumento() !== 'BO') {
+            throw $this->createAccessDeniedException(
+                'No se puede modificar la Necesidad Material, pues ya ha sido Procesada.'
+            );
+        }
+
         $editForm = $this->createEditForm(new NecesidadMaterialModel($necesidadmaterial));
         $deleteForm = $this->createDeleteForm($necesidadmaterial->getId());
 
         return $this->render('BusetaBodegaBundle:NecesidadMaterial:edit.html.twig', array(
-            'entity'        => $necesidadmaterial,
-            'edit_form'     => $editForm->createView(),
-            'delete_form'   => $deleteForm->createView(),
-        ));
+                'entity' => $necesidadmaterial,
+                'edit_form' => $editForm->createView(),
+                'delete_form' => $deleteForm->createView(),
+            )
+        );
     }
 
     /**
