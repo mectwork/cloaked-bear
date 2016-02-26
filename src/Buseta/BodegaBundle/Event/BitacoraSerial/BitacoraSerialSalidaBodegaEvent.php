@@ -62,11 +62,14 @@ class BitacoraSerialSalidaBodegaEvent extends AbstractBitacoraSerialEvent
                 $salidaBodegaLinea = $salidaBodegaEventLinea->getReferencedObject();
                 if (null !== $salidaBodegaLinea && $salidaBodegaLinea instanceof SalidaBodegaProducto) {
                     /** @var SalidaBodegaProducto $salidaBodegaLinea */
-                    $strSeriales = $salidaBodegaLinea->getSeriales();
-                    $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
+                    $producto = $salidaBodegaLinea->getProducto();
+                    if ($producto->getTieneNroSerie()) { // check if product line supports serials
+                        $strSeriales = $salidaBodegaLinea->getSeriales();
+                        $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
 
-                    foreach ($seriales as $serial) {
-                        call_user_func($fillBitacoraSerialEvents, $salidaBodegaEventLinea, $serial);
+                        foreach ($seriales as $serial) {
+                            call_user_func($fillBitacoraSerialEvents, $salidaBodegaEventLinea, $serial);
+                        }
                     }
                 }
             }

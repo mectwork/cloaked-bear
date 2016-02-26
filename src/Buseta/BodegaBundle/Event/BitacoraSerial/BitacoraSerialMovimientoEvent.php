@@ -67,11 +67,14 @@ class BitacoraSerialMovimientoEvent extends AbstractBitacoraSerialEvent
                 /** @var BitacoraEventModel $movimientoLineaEvent */
                 $movimientoLinea = $movimientoLineaEvent->getReferencedObject();
                 if (null !== $movimientoLinea && $movimientoLinea instanceof MovimientosProductos) {
-                    $strSeriales = $movimientoLinea->getSeriales();
-                    $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
+                    $producto = $movimientoLinea->getProducto();
+                    if ($producto->getTieneNroSerie()) { // check if product line supports serials
+                        $strSeriales = $movimientoLinea->getSeriales();
+                        $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
 
-                    foreach ($seriales as $serial) {
-                        call_user_func($fillBitacoraSerialEvents, $movimientoLineaEvent, $serial);
+                        foreach ($seriales as $serial) {
+                            call_user_func($fillBitacoraSerialEvents, $movimientoLineaEvent, $serial);
+                        }
                     }
                 }
             }

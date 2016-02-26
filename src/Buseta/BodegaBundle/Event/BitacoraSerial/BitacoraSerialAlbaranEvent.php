@@ -55,11 +55,14 @@ class BitacoraSerialAlbaranEvent extends AbstractBitacoraSerialEvent
                 /** @var BitacoraEventModel $albaranEventLinea */
                 $albaranLinea = $albaranEventLinea->getReferencedObject();
                 if (null !== $albaranLinea && $albaranLinea instanceof AlbaranLinea) {
-                    $strSeriales = $albaranLinea->getSeriales();
-                    $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
+                    $producto = $albaranLinea->getProducto();
+                    if ($producto->getTieneNroSerie()) { // check if product line supports serials
+                        $strSeriales = $albaranLinea->getSeriales();
+                        $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
 
-                    foreach ($seriales as $serial) {
-                        call_user_func($fillBitacoraSerialEvents, $albaranEventLinea, $serial);
+                        foreach ($seriales as $serial) {
+                            call_user_func($fillBitacoraSerialEvents, $albaranEventLinea, $serial);
+                        }
                     }
                 }
             }

@@ -51,11 +51,14 @@ class BitacoraSerialInventarioFisicoEvent extends AbstractBitacoraSerialEvent
                 /** @var BitacoraEventModel $inventarioFisicoLineaEvent */
                 $inventarioLinea = $inventarioFisicoLineaEvent->getReferencedObject();
                 if (null !== $inventarioLinea && $inventarioLinea instanceof InventarioFisicoLinea) {
-                    $strSeriales = $inventarioLinea->getSeriales();
-                    $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
+                    $producto = $inventarioLinea->getProducto();
+                    if ($producto->getTieneNroSerie()) { // check if product line supports serials
+                        $strSeriales = $inventarioLinea->getSeriales();
+                        $seriales = $this->generadorSeriales->getListaDeSeriales($strSeriales);
 
-                    foreach ($seriales as $serial) {
-                        call_user_func($fillBitacoraSerialEvents, $inventarioFisicoLineaEvent, $serial);
+                        foreach ($seriales as $serial) {
+                            call_user_func($fillBitacoraSerialEvents, $inventarioFisicoLineaEvent, $serial);
+                        }
                     }
                 }
             }
