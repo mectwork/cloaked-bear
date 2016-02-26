@@ -38,10 +38,11 @@ class FilterAlbaranEvent extends Event
      * @param Albaran $albaran
      * @param boolean $flush
      */
-    function __construct(Albaran $albaran, $flush=false)
+    function __construct(Albaran $albaran, $flush=true)
     {
         $this->albaran = $albaran;
         $this->valorretorno = true;
+        $this->error = false;
         $this->flush = $flush;
     }
 

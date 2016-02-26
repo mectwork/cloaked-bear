@@ -46,8 +46,8 @@ class AlbaranManager
     private $dispatcher;
 
     /**
-     * @param ObjectManager $em
-     * @param Logger $logger
+     * @param ObjectManager            $em
+     * @param Logger                   $logger
      * @param EventDispatcherInterface $dispatcher
      */
     function __construct(ObjectManager $em, Logger $logger, EventDispatcherInterface $dispatcher)
@@ -61,33 +61,51 @@ class AlbaranManager
     /**
      * Process Albaran instance
      *
-     * @param Albaran   $albaran
-     * @param bool      $flush
+     * @param Albaran $albaran
      *
      * @return bool|string
      */
-    public function procesar(Albaran $albaran, $flush=false)
+    public function procesar(Albaran $albaran)
     {
+        $error = false;
         try {
             if (self::USE_TRANSACTIONS) {
                 $this->em->getConnection()->beginTransaction();
             }
 
             if ($this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_PRE_PROCESS)) {
-                $preProcessEvent = new FilterAlbaranEvent($albaran, $flush);
+                $preProcessEvent = new FilterAlbaranEvent($albaran);
                 $this->dispatcher->dispatch(BusetaBodegaEvents::ALBARAN_PRE_PROCESS, $preProcessEvent);
+
+                if ($preProcessEvent->getError()) {
+                    $error = $preProcessEvent->getError();
+                }
             }
 
-            $this->cambiarEstado($albaran, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_PROCESS, $flush);
+            if (!$error) {
+                $this->cambiarEstado($albaran, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_PROCESS);
+            }
 
-            if ($this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_POST_PROCESS)) {
-                $postProcessEvent = new FilterAlbaranEvent($albaran, $flush);
+            if (!$error && $this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_POST_PROCESS)) {
+                $postProcessEvent = new FilterAlbaranEvent($albaran);
                 $this->dispatcher->dispatch(BusetaBodegaEvents::ALBARAN_POST_PROCESS, $postProcessEvent);
+
+                if ($postProcessEvent->getError()) {
+                    $error = $postProcessEvent->getError();
+                }
             }
 
-            if ($flush) {
-                $this->em->flush();
+            if ($error) {
+                $this->logger->warning(sprintf('Orden de Entrada no procesada debido a errores previos: %s', $error));
+
+                if (self::USE_TRANSACTIONS) {
+                    $this->em->getConnection()->rollback();
+                }
+
+                return false;
             }
+
+            $this->em->flush();
 
             // Try and commit the transaction, aqui puede ocurrir un error
             if (self::USE_TRANSACTIONS) {
@@ -96,13 +114,15 @@ class AlbaranManager
 
             return true;
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error al procesar el Albaran. Detalles: %s', $e->getMessage()));
+            $this->logger->error(
+                sprintf('Ha ocurrido un error al procesar Orden de Entrada. Detalles: %s', $e->getMessage())
+            );
 
             if (self::USE_TRANSACTIONS) {
                 $this->em->getConnection()->rollback();
             }
 
-            return 'Ha ocurrido un error al procesar el Albaran';
+            return false;
         }
 
     }
@@ -115,36 +135,47 @@ class AlbaranManager
      *
      * @return bool
      */
-    public function completar(Albaran $albaran, $flush=false)
+    public function completar(Albaran $albaran)
     {
+        $error = false;
         try {
             if (self::USE_TRANSACTIONS) {
                 $this->em->getConnection()->beginTransaction();
             }
 
             if ($this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_PRE_COMPLETE)) {
-                $preCompleteEvent = new FilterAlbaranEvent($albaran, $flush);
+                $preCompleteEvent = new FilterAlbaranEvent($albaran);
                 $this->dispatcher->dispatch(BusetaBodegaEvents::ALBARAN_PRE_COMPLETE, $preCompleteEvent);
-            }
 
-            $this->cambiarEstado($albaran, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_COMPLETE, $flush);
-
-            if ($this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_POST_COMPLETE)) {
-                $posCompleteEvent = new FilterAlbaranEvent($albaran, $flush);
-                $this->dispatcher->dispatch(BusetaBodegaEvents::ALBARAN_POST_COMPLETE, $posCompleteEvent);
-
-                if ($posCompleteEvent->getError()) {
-                    if (self::USE_TRANSACTIONS) {
-                        $this->em->getConnection()->rollback();
-                    }
-
-                    return false;
+                if ($preCompleteEvent->getError()) {
+                    $error = $preCompleteEvent->getError();
                 }
             }
 
-            if ($flush) {
-                $this->em->flush();
+            if (!$error) {
+                $this->cambiarEstado($albaran, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_COMPLETE);
             }
+
+            if (!$error && $this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_POST_COMPLETE)) {
+                $posCompleteEvent = new FilterAlbaranEvent($albaran);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::ALBARAN_POST_COMPLETE, $posCompleteEvent);
+
+                if ($posCompleteEvent->getError()) {
+                    $error = $posCompleteEvent->getError();
+                }
+            }
+
+            if ($error) {
+                $this->logger->warning(sprintf('Orden de Entrada no completada debido a errores previos: %s', $error));
+
+                if (self::USE_TRANSACTIONS) {
+                    $this->em->getConnection()->rollback();
+                }
+
+                return false;
+            }
+
+            $this->em->flush();
 
             // Try and commit the transaction, aqui puede ocurrir un error
             if (self::USE_TRANSACTIONS) {
@@ -153,7 +184,9 @@ class AlbaranManager
 
             return true;
         } catch (\Exception $e) {
-            $this->logger->critical(sprintf('Ha ocurrido un error al completar Albaran. Detalles: %s', $e->getMessage()));
+            $this->logger->critical(
+                sprintf('Ha ocurrido un error al completar Orden de Entrada. Detalles: %s', $e->getMessage())
+            );
 
             if (self::USE_TRANSACTIONS) {
                 $this->em->getConnection()->rollback();
@@ -164,139 +197,25 @@ class AlbaranManager
     }
 
     /**
-     * Completar Albaran
+     * Change Albaran document status
      *
-     * @param integer $id
-     * @return bool
+     * @param Albaran $albaran
+     * @param string  $estado
      *
-     * @deprecated
+     * @return bool|string
      */
-    public function legacyCompletar($id)
+    private function cambiarEstado(Albaran $albaran, $estado)
     {
-        /** @var \Buseta\BodegaBundle\Entity\Albaran $albaran */
-        /** @var \Buseta\BodegaBundle\Entity\AlbaranLinea $lineas */
-
-        // suspend auto-commit
-        $this->em->getConnection()->beginTransaction();
-
         try {
-            $albaran = $this->em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
-
-            if (!$albaran) {
-                throw new NotFoundElementException('No se encontro la entidad Albaran.');
-            }
-
-            $albaranLineas = $albaran->getAlbaranLineas();
-            if ($albaranLineas !== null && count($albaranLineas) > 0) {
-                //entonces mando a crear los movimientos en la bitacora, producto a producto, a traves de eventos
-                foreach ($albaranLineas as $linea) {
-                    $event = new LegacyBitacoraEvent($linea);
-                    $this->dispatcher->dispatch(BitacoraEvents::VENDOR_RECEIPTS, $event);
-                    $result = $event->getReturnValue();
-                    if ($result !== true) {
-                        // Rollback the failed transaction attempt
-                        $this->em->getConnection()->rollback();
-                        return $error = $result;
-                    }
-                }
-
-                // Change state to 'CO'
-                $event = new FilterAlbaranEvent($albaran);
-                $this->dispatcher->dispatch(AlbaranEvents::POS_COMPLETE, $event);
-                $result = $event->getReturnValue();
-                if ($result !== true) {
-                    // Rollback the failed transaction attempt
-                    $this->em->getConnection()->rollback();
-                    return $error = $result;
-                }
-            } else {
-                // Rollback the failed transaction attempt
-                $this->em->getConnection()->rollback();
-                return $error = 'La Orden de Entrega debe tener al menos una linea';
-            }
-
-            //finalmente le damos flush a todo para guardar en la Base de Datos
-            //tanto en la bitacora almacen como en la bitacora de seriales yel cambio de estado
-            //es el unico flush que se hace.
+            $albaran->setEstadoDocumento($estado);
+            //$this->em->persist($albaran);
             $this->em->flush();
 
-            // Try and commit the transaction, aqui puede ocurrir un error
-            $this->em->getConnection()->commit();
-
-            return true;
-
-        } catch (\Exception $e) {
-
-            $this->logger->error(sprintf('Ha ocurrido un error al procesar la Orden de Entrega: %s',
-                $e->getMessage()));
-
-            // Rollback the failed transaction attempt
-            $this->em->getConnection()->rollback();
-
-            //$this->em->clear();
-            return $error = 'Ha ocurrido un error al completar la Orden de Entrega';
-        }
-
-    }
-
-
-    /**
-     * Change Albaran document status
-     *
-     * @param Albaran $albaran
-     * @param string $estado
-     * @param boolean $flush
-     *
-     * @return bool|string
-     */
-    private function cambiarEstado(Albaran $albaran, $estado, $flush=false)
-    {
-        try {
-            if (($albaran === null) || ($estado === null)) {
-                return 'El albaran no puede ser vacio';
-            }
-
-            $albaran->setEstadoDocumento($estado);
-            $this->em->persist($albaran);
-            if ($flush) {
-                $this->em->flush();
-            }
-
             return true;
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error al cambiar estado al Albaran: %s', $e->getMessage()));
-
-            return false;
-        }
-    }
-
-    /**
-     * Change Albaran document status
-     *
-     * @param Albaran $albaran
-     * @param string $estado
-     * @param boolean $flush
-     *
-     * @return bool|string
-     *
-     * @deprecated
-     */
-    public function legacyCambiarestado(Albaran $albaran, $estado, $flush=false)
-    {
-        try {
-            if (($albaran === null) || ($estado === null)) {
-                return 'El albaran no puede ser vacio';
-            }
-
-            $albaran->setEstadoDocumento($estado);
-            $this->em->persist($albaran);
-            if ($flush) {
-                $this->em->flush();
-            }
-
-            return true;
-        } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error al cambiar estado al Albaran: %s', $e->getMessage()));
+            $this->logger->critical(
+                sprintf('Ha ocurrido un error al cambiar estado de la Orden de Entrada. Detalles: %s', $e->getMessage())
+            );
 
             return false;
         }

@@ -7,11 +7,15 @@ use Buseta\BodegaBundle\BusetaBodegaEvents;
 use Buseta\BodegaBundle\Event\BitacoraBodega\BitacoraAlbaranEvent;
 use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidStateException;
-use Buseta\BodegaBundle\Manager\AlbaranManager;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Class AlbaranSubscriber
+ *
+ * @package Buseta\BodegaBundle\EventListener
+ */
 class AlbaranSubscriber implements EventSubscriberInterface
 {
     /**
@@ -58,7 +62,7 @@ class AlbaranSubscriber implements EventSubscriberInterface
         if ($albaran->getEstadoDocumento() !== 'BO') {
             $this->logger->error(
                 sprintf(
-                    'El estado %s del Albaran con id %d no se corresponde con el estado previo a procesado(PR).',
+                    'El estado %s de Orden Entrada con id %d no se corresponde con el estado previo a procesado.',
                     $albaran->getEstadoDocumento(),
                     $albaran->getId()
                 )
@@ -78,10 +82,23 @@ class AlbaranSubscriber implements EventSubscriberInterface
 
     /**
      * @param FilterAlbaranEvent $event
+     *
+     * @throws NotValidStateException
      */
     public function preComplete(FilterAlbaranEvent $event)
     {
+        $albaran = $event->getAlbaran();
+        if ($albaran->getEstadoDocumento() !== 'PR') {
+            $this->logger->error(
+                sprintf(
+                    'El estado %s del Albaran con id %d no se corresponde con el estado previo a completado.',
+                    $albaran->getEstadoDocumento(),
+                    $albaran->getId()
+                )
+            );
 
+            throw new NotValidStateException();
+        }
     }
 
     /**

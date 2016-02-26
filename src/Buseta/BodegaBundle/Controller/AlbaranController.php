@@ -79,7 +79,7 @@ class AlbaranController extends Controller
         $trans = $this->get('translator');
         $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
 
-        if (true === $result = $manager->procesar($albaran, true)) {
+        if (true === $result = $manager->procesar($albaran)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
                 sprintf('Se ha procesado la %s de forma correcta.', $albaranTrans)
@@ -109,7 +109,7 @@ class AlbaranController extends Controller
         $trans = $this->get('translator');
         $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
 
-        if (true === $result = $manager->completar($albaran, true)) {
+        if (true === $result = $manager->completar($albaran)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
                 sprintf('Se ha completado la %s de forma correcta.', $albaranTrans)
