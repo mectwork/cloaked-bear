@@ -49,30 +49,30 @@ class AlbaranManager extends AbstractBodegaManager
                 }
             }
 
-            if ($error) {
-                $this->logger->warning(sprintf('Orden de Entrada no procesada debido a errores previos: %s', $error));
+            if (!$error) {
+                $this->em->flush();
 
-                $this->rollbackTransaction();
+                // Try and commit the transaction, aqui puede ocurrir un error
+                $this->commitTransaction();
 
-                return false;
+                return true;
             }
 
-            $this->em->flush();
-
-            // Try and commit the transaction, aqui puede ocurrir un error
-            $this->commitTransaction();
-
-            return true;
+            $this->logger->warning(sprintf('Orden de Entrada no procesada debido a errores previos: %s', $error));
         } catch (\Exception $e) {
             $this->logger->error(
-                sprintf('Ha ocurrido un error al procesar Orden de Entrada. Detalles: %s', $e->getMessage())
+                sprintf(
+                    'Ha ocurrido un error al completar Orden de Entrada. Detalles: {message: %s, class: %s, line: %d}',
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                )
             );
-
-            $this->rollbackTransaction();
-
-            return false;
         }
 
+        $this->rollbackTransaction();
+
+        return false;
     }
 
     /**
@@ -110,20 +110,16 @@ class AlbaranManager extends AbstractBodegaManager
                 }
             }
 
-            if ($error) {
-                $this->logger->warning(sprintf('Orden de Entrada no completada debido a errores previos: %s', $error));
+            if (!$error) {
+                $this->em->flush();
 
-                $this->rollbackTransaction();
+                // Try and commit the transaction, aqui puede ocurrir un error
+                $this->commitTransaction();
 
-                return false;
+                return true;
             }
 
-            $this->em->flush();
-
-            // Try and commit the transaction, aqui puede ocurrir un error
-            $this->commitTransaction();
-
-            return true;
+            $this->logger->warning(sprintf('Orden de Entrada no completada debido a errores previos: %s', $error));
         } catch (\Exception $e) {
             $this->logger->critical(
                 sprintf(
@@ -133,11 +129,11 @@ class AlbaranManager extends AbstractBodegaManager
                     $e->getLine()
                 )
             );
-
-            $this->rollbackTransaction();
-
-            return false;
         }
+
+        $this->rollbackTransaction();
+
+        return false;
     }
 
     /**

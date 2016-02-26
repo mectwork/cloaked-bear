@@ -63,7 +63,7 @@ abstract class AbstractBodegaManager
     protected function commitTransaction()
     {
         if (self::USE_TRANSACTIONS) {
-            $this->em->getConnection()->rollback();
+            $this->em->getConnection()->commit();
         }
     }
 

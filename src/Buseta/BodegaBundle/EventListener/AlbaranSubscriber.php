@@ -111,7 +111,7 @@ class AlbaranSubscriber implements EventSubscriberInterface
         $bitacoraEvent = new BitacoraAlbaranEvent($event->getAlbaran());
         $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_VENDOR_RECEIPTS, $bitacoraEvent);
 
-        if (null !== $error = $bitacoraEvent->getError()) {
+        if ($error = $bitacoraEvent->getError()) {
             $event->setError($error);
         }
     }
