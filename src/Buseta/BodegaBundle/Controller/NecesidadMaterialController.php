@@ -182,10 +182,10 @@ class NecesidadMaterialController extends Controller
             $em->persist($necesidadMaterial);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('necesidadmaterial'));
+            return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
         }
 
-        return $this->redirect($this->generateUrl('necesidadmaterial'));
+        return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
     }
 
     /**
