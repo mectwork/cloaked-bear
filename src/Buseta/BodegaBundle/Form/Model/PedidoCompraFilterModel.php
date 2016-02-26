@@ -11,6 +11,11 @@ class PedidoCompraFilterModel
     /**
      * @var string
      */
+    private $numeroReferencia;
+
+    /**
+     * @var string
+     */
     private $estado_documento;
 
     /**
@@ -174,6 +179,22 @@ class PedidoCompraFilterModel
     public function setNumeroDocumento($numero_documento)
     {
         $this->numero_documento = $numero_documento;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumeroReferencia()
+    {
+        return $this->numeroReferencia;
+    }
+
+    /**
+     * @param string $numeroReferencia
+     */
+    public function setNumeroReferencia($numeroReferencia)
+    {
+        $this->numeroReferencia = $numeroReferencia;
     }
 
     /**

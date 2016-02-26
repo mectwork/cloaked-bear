@@ -22,6 +22,13 @@ class PedidoCompraFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
+            ->add('numeroReferencia', 'text', array(
+                'required' => false,
+                'label'  => 'Nro.Referencia',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
             ->add('tercero','entity',array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'query_builder' => function(EntityRepository $er){

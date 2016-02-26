@@ -10,6 +10,7 @@
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.numerodocumento is null or filter_form.vars.value.numerodocumento is empty)
+    and (filter_form.vars.value.numeroreferencia is null or filter_form.vars.value.numeroreferencia is empty)
     and (filter_form.vars.value.tercero is null or filter_form.vars.value.tercero is empty)
     and (filter_form.vars.value.almacen is null or filter_form.vars.value.almacen is empty)
     and (filter_form.vars.value.moneda is null or filter_form.vars.value.moneda is empty)
@@ -33,6 +34,7 @@
         <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
             <div class="row">
                 <div class="col-lg-4">{{ form_row(filter_form.numero_documento) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.numeroReferencia) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.tercero) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.almacen) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.moneda) }}</div>
