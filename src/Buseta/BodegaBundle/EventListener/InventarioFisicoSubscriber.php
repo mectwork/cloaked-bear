@@ -2,28 +2,31 @@
 
 namespace Buseta\BodegaBundle\EventListener;
 
+use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\BusetaBodegaEvents;
-use Buseta\BodegaBundle\Event\BitacoraSerial\BitacoraSerialInventarioFisicoEvent;
+use Buseta\BodegaBundle\Event\BitacoraBodega\BitacoraInventarioFisicoEvent;
 use Buseta\BodegaBundle\Event\FilterInventarioFisicoEvent;
-use Buseta\BodegaBundle\Event\InventarioFisicoEvents;
-use Buseta\BodegaBundle\Manager\InventarioFisicoManager;
+use Buseta\BodegaBundle\Exceptions\NotValidStateException;
+use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InventarioFisicoSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var \Buseta\BodegaBundle\Manager\InventarioFisicoManager
+     * @var Logger
      */
-    private $inventariofisicoManager;
+    private $logger;
 
 
     /**
-     * @param \Buseta\BodegaBundle\Manager\InventarioFisicoManager $inventariofisicoManager
+     * AlbaranSubscriber Constructor
+     *
+     * @param Logger $logger
      */
-    function __construct(InventarioFisicoManager $inventariofisicoManager)
+    function __construct(Logger $logger)
     {
-        $this->inventariofisicoManager  = $inventariofisicoManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -32,8 +35,8 @@ class InventarioFisicoSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            BusetaBodegaEvents::PHYSICAL_INVENTORY_PRE_CREATE => 'preCreate',
-            BusetaBodegaEvents::PHYSICAL_INVENTORY_POST_CREATE => 'postCreate',
+            //BusetaBodegaEvents::PHYSICAL_INVENTORY_PRE_CREATE => 'preCreate',
+            //BusetaBodegaEvents::PHYSICAL_INVENTORY_POST_CREATE => 'postCreate',
             BusetaBodegaEvents::PHYSICAL_INVENTORY_PRE_PROCESS => 'preProcess',
             BusetaBodegaEvents::PHYSICAL_INVENTORY_POST_PROCESS => 'postProcess',
             BusetaBodegaEvents::PHYSICAL_INVENTORY_PRE_COMPLETE => 'preComplete',
@@ -41,33 +44,65 @@ class InventarioFisicoSubscriber implements EventSubscriberInterface
         );
     }
 
-    public function preCreate(BitacoraSerialInventarioFisicoEvent $serialInventarioFisicoEvent)
+//    public function preCreate(FilterInventarioFisicoEvent $event)
+//    {
+//
+//    }
+//
+//    public function postCreate(FilterInventarioFisicoEvent $event)
+//    {
+//
+//    }
+
+    /**
+     * @param FilterInventarioFisicoEvent $event
+     *
+     * @throws NotValidStateException
+     */
+    public function preProcess(FilterInventarioFisicoEvent $event)
+    {
+        $inventarioFisico = $event->getInventarioFisico();
+        if ($inventarioFisico->getEstado() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_DRAFT) {
+            throw new NotValidStateException();
+        }
+    }
+
+    /**
+     * @param FilterInventarioFisicoEvent $event
+     */
+    public function postProcess(FilterInventarioFisicoEvent $event)
     {
 
     }
 
-    public function postCreate(BitacoraSerialInventarioFisicoEvent $serialInventarioFisicoEvent)
+    /**
+     * @param FilterInventarioFisicoEvent $event
+     *
+     * @throws NotValidStateException
+     */
+    public function preComplete(FilterInventarioFisicoEvent $event)
     {
-
+        $inventarioFisico = $event->getInventarioFisico();
+        if ($inventarioFisico->getEstado() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_PROCESS) {
+            throw new NotValidStateException();
+        }
     }
 
-    public function preProcess(BitacoraSerialInventarioFisicoEvent $serialInventarioFisicoEvent)
-    {
+    /**
+     * @param FilterInventarioFisicoEvent   $event
+     * @param null                          $eventName
+     * @param EventDispatcherInterface|null $eventDispatcher
+     */
+    public function postComplete(
+        FilterInventarioFisicoEvent $event,
+        $eventName = null,
+        EventDispatcherInterface $eventDispatcher = null
+    ) {
+        $bitacoraEvent = new BitacoraInventarioFisicoEvent($event->getInventarioFisico());
+        $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_INVENTORY_IN_OUT, $bitacoraEvent);
 
-    }
-
-    public function postProcess(BitacoraSerialInventarioFisicoEvent $serialInventarioFisicoEvent)
-    {
-
-    }
-
-    public function preComplete(BitacoraSerialInventarioFisicoEvent $serialInventarioFisicoEvent)
-    {
-
-    }
-
-    public function postComplete(BitacoraSerialInventarioFisicoEvent $serialInventarioFisicoEvent)
-    {
-
+        if ($error = $bitacoraEvent->getError()) {
+            $event->setError($error);
+        }
     }
 }

@@ -41,7 +41,7 @@ class AbstractBitacoraSerialEvent extends Event implements BitacoraSerialEventIn
      *
      * @param bool $flush
      */
-    public function __construct($flush=false)
+    public function __construct($flush=true)
     {
         $this->flush = $flush;
         $this->bitacoraSerialEvents = new ArrayCollection();

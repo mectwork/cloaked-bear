@@ -18,11 +18,6 @@ class FilterAlbaranEvent extends Event
     private $albaran;
 
     /**
-     * @var boolean
-     */
-    private $valorretorno;
-
-    /**
      * @var string|null
      */
     private $error;
@@ -41,28 +36,8 @@ class FilterAlbaranEvent extends Event
     function __construct(Albaran $albaran, $flush=true)
     {
         $this->albaran = $albaran;
-        $this->valorretorno = true;
         $this->error = false;
         $this->flush = $flush;
-    }
-
-    /**
-     * @return \Buseta\BodegaBundle\Entity\Albaran $albaran
-     */
-    public function getEntityData()
-    {
-        return $this->albaran;
-    }
-
-    public function setReturnValue($valorretorno)
-    {
-        $this->valorretorno = $valorretorno;
-    }
-
-
-    public function getReturnValue()
-    {
-       return $this->valorretorno ;
     }
 
     /**

@@ -37,7 +37,7 @@ class AlbaranManager extends AbstractBodegaManager
             }
 
             if (!$error) {
-                $this->cambiarEstado($albaran, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_PROCESS);
+                $this->cambiarEstado($albaran, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_PROCESS, $error);
             }
 
             if (!$error && $this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_POST_PROCESS)) {
@@ -98,7 +98,7 @@ class AlbaranManager extends AbstractBodegaManager
             }
 
             if (!$error) {
-                $this->cambiarEstado($albaran, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_COMPLETE);
+                $this->cambiarEstado($albaran, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_COMPLETE, $error);
             }
 
             if (!$error && $this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_POST_COMPLETE)) {
@@ -139,12 +139,13 @@ class AlbaranManager extends AbstractBodegaManager
     /**
      * Change Albaran document status
      *
-     * @param Albaran $albaran
-     * @param string  $estado
+     * @param Albaran           $albaran
+     * @param string            $estado
+     * @param boolean|string    $error
      *
      * @return bool|string
      */
-    private function cambiarEstado(Albaran $albaran, $estado)
+    private function cambiarEstado(Albaran $albaran, $estado, &$error)
     {
         try {
             $albaran->setEstadoDocumento($estado);
@@ -156,6 +157,8 @@ class AlbaranManager extends AbstractBodegaManager
             $this->logger->critical(
                 sprintf('Ha ocurrido un error al cambiar estado de la Orden de Entrada. Detalles: %s', $e->getMessage())
             );
+
+            $error = 'Ha ocurrido un error al cambiar estado de la Orden de Entrada.';
 
             return false;
         }

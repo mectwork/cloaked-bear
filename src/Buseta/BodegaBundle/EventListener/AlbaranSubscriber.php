@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\EventListener;
 
 
+use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\BusetaBodegaEvents;
 use Buseta\BodegaBundle\Event\BitacoraBodega\BitacoraAlbaranEvent;
 use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
@@ -27,7 +28,7 @@ class AlbaranSubscriber implements EventSubscriberInterface
     /**
      * AlbaranSubscriber Constructor
      *
-     * @param Logger            $logger
+     * @param Logger $logger
      */
     function __construct(Logger $logger)
     {
@@ -42,9 +43,9 @@ class AlbaranSubscriber implements EventSubscriberInterface
         return array(
             //BusetaBodegaEvents::ALBARAN_PRE_CREATE  => 'undefinedEvent',
             //BusetaBodegaEvents::ALBARAN_POST_CREATE  => 'undefinedEvent',
-            BusetaBodegaEvents::ALBARAN_PRE_PROCESS  => 'preProcess',
+            BusetaBodegaEvents::ALBARAN_PRE_PROCESS => 'preProcess',
             //BusetaBodegaEvents::ALBARAN_PROCESS  => 'undefinedEvent',
-            BusetaBodegaEvents::ALBARAN_POST_PROCESS  => 'postProcess',
+            BusetaBodegaEvents::ALBARAN_POST_PROCESS => 'postProcess',
             BusetaBodegaEvents::ALBARAN_PRE_COMPLETE => 'preComplete',
             //BusetaBodegaEvents::ALBARAN_COMPLETE => 'undefinedEvent',
             BusetaBodegaEvents::ALBARAN_POST_COMPLETE => 'postComplete',
@@ -59,15 +60,7 @@ class AlbaranSubscriber implements EventSubscriberInterface
     public function preProcess(FilterAlbaranEvent $event)
     {
         $albaran = $event->getAlbaran();
-        if ($albaran->getEstadoDocumento() !== 'BO') {
-            $this->logger->error(
-                sprintf(
-                    'El estado %s de Orden Entrada con id %d no se corresponde con el estado previo a procesado.',
-                    $albaran->getEstadoDocumento(),
-                    $albaran->getId()
-                )
-            );
-
+        if ($albaran->getEstadoDocumento() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_DRAFT) {
             throw new NotValidStateException();
         }
     }
@@ -88,28 +81,23 @@ class AlbaranSubscriber implements EventSubscriberInterface
     public function preComplete(FilterAlbaranEvent $event)
     {
         $albaran = $event->getAlbaran();
-        if ($albaran->getEstadoDocumento() !== 'PR') {
-            $this->logger->error(
-                sprintf(
-                    'El estado %s del Albaran con id %d no se corresponde con el estado previo a completado.',
-                    $albaran->getEstadoDocumento(),
-                    $albaran->getId()
-                )
-            );
-
+        if ($albaran->getEstadoDocumento() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_PROCESS) {
             throw new NotValidStateException();
         }
     }
 
     /**
-     * @param FilterAlbaranEvent            $event
-     * @param string|null                          $eventName
+     * @param FilterAlbaranEvent $event
+     * @param string|null $eventName
      * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function postComplete(FilterAlbaranEvent $event, $eventName = null, EventDispatcherInterface $eventDispatcher = null)
-    {
+    public function postComplete(
+        FilterAlbaranEvent $event,
+        $eventName = null,
+        EventDispatcherInterface $eventDispatcher = null
+    ) {
         $bitacoraEvent = new BitacoraAlbaranEvent($event->getAlbaran());
-        $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_VENDOR_RECEIPTS, $bitacoraEvent);
+        $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_INVENTORY_IN_OUT, $bitacoraEvent);
 
         if ($error = $bitacoraEvent->getError()) {
             $event->setError($error);

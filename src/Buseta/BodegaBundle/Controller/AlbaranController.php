@@ -75,21 +75,17 @@ class AlbaranController extends Controller
     public function procesarAlbaranAction(Albaran $albaran)
     {
         $manager = $this->get('buseta.bodega.albaran.manager');
-
-        $trans = $this->get('translator');
-        $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
-
         if (true === $result = $manager->procesar($albaran)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
-                sprintf('Se ha procesado la %s de forma correcta.', $albaranTrans)
+                'Se ha procesado la Orden de Entrada de forma correcta.'
             );
 
             return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
         } else {
             $this->get('session')->getFlashBag()->add(
                 'danger',
-                sprintf('Ha ocurrido un error al procesar la %s.', $albaranTrans, $result)
+                'Ha ocurrido un error al procesar la Orden de Entrada.'
             );
 
             return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
@@ -106,20 +102,17 @@ class AlbaranController extends Controller
     public function completarAlbaranAction(Albaran $albaran)
     {
         $manager = $this->get('buseta.bodega.albaran.manager');
-        $trans = $this->get('translator');
-        $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
-
         if (true === $result = $manager->completar($albaran)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
-                sprintf('Se ha completado la %s de forma correcta.', $albaranTrans)
+                'Se ha completado la Orden de Entrada de forma correcta.'
             );
 
             return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
         } else {
             $this->get('session')->getFlashBag()->add(
                 'danger',
-                sprintf('Ha ocurrido un error al completar la %s.', $albaranTrans, $result)
+                sprintf('Ha ocurrido un error al completar la Orden de Entrada.')
             );
 
             return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));

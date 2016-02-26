@@ -27,9 +27,9 @@ class BitacoraInventarioFisicoEvent extends AbstractBitacoraEvent
      * @param InventarioFisico  $inventarioFisico
      * @param boolean           $flush
      */
-    public function __construct(InventarioFisico $inventarioFisico = null, $flush=false)
+    public function __construct(InventarioFisico $inventarioFisico = null)
     {
-        parent::__construct($flush);
+        parent::__construct();
 
         if ($inventarioFisico !== null && $inventarioFisico->getInventarioFisicoLineas()->count() > 0) {
             $this->inventarioFisico = $inventarioFisico;
