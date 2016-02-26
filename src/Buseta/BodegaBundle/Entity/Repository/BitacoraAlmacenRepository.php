@@ -80,7 +80,7 @@ class BitacoraAlmacenRepository extends EntityRepository
             }
         }
 
-        $query->orderBy('p.id', 'ASC');
+        $query->orderBy('p.id', 'DESC');
 
         try {
             return $query->getQuery();
