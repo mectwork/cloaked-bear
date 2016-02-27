@@ -2,99 +2,76 @@
 
 namespace Buseta\BodegaBundle\Manager;
 
+use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
+use Buseta\BodegaBundle\BusetaBodegaEvents;
 use Buseta\BodegaBundle\Event\BitacoraEvents;
-use Buseta\BodegaBundle\Exceptions\NotValidStateException;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bridge\Monolog\Logger;
+use Buseta\BodegaBundle\Event\FilterSalidaBodegaEvent;
 use Buseta\BodegaBundle\Entity\SalidaBodega;
 use Buseta\BodegaBundle\Event\LegacyBitacoraEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Buseta\BodegaBundle\Exceptions\NotFoundElementException;
 use Doctrine\DBAL\Connections;
 
 /**
  * Class SalidaBodegaManager
+ *
  * @package Buseta\BodegaBundle\Manager\SalidaBodega
  */
-class SalidaBodegaManager
+class SalidaBodegaManager extends AbstractBodegaManager
 {
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    private $em;
-
-    /**
-     * @var \Symfony\Bridge\Monolog\Logger
-     */
-    private $logger;
-
-    /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-     */
-    private $event_dispacher;
-
-    /**
-     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage
-     */
-    private $tokenStorage;
-
-
-    /**
-     * @param ObjectManager            $em
-     * @param Logger                   $logger
-     * @param EventDispatcherInterface $event_dispacher
-     * @param TokenStorage          $tokenStorage
-     */
-    function __construct(
-        ObjectManager $em,
-        Logger $logger,
-        EventDispatcherInterface $event_dispacher,
-        TokenStorage $tokenStorage
-    ) {
-        $this->em = $em;
-        $this->logger = $logger;
-        $this->event_dispacher = $event_dispacher;
-        $this->tokenStorage = $tokenStorage;
-    }
-
     /**
      * Procesar SalidaBodega
      *
-     * @param integer $id
+     * @param SalidaBodega $salidaBodega
+     *
      * @return bool
-     * @throws NotValidStateException
      */
-    public function procesar($id)
+    public function procesar(SalidaBodega $salidaBodega)
     {
+        $error = false;
         try {
+            $this->beginTransaction();
 
-            $salidaBodega = $this->em->getRepository('BusetaBodegaBundle:SalidaBodega')->find($id);
+            if ($this->dispatcher->hasListeners(BusetaBodegaEvents::WAREHOUSE_INOUT_PRE_PROCESS)) {
+                $preProcess = new FilterSalidaBodegaEvent($salidaBodega);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::WAREHOUSE_INOUT_PRE_PROCESS, $preProcess);
 
-            if (!$salidaBodega) {
-                throw new NotFoundElementException('Unable to find SalidaBodega entity.');
+                if ($preProcess->getError()) {
+                    $error = $preProcess->getError();
+                }
             }
 
-            if ($salidaBodega->getEstadoDocumento() !== 'BO') {
-                $this->logger->error(sprintf('El estado %s de la Salida de Bodega con id %d no se corresponde con el estado previo a procesado(BO).',
-                    $salidaBodega->getEstadoDocumento(),
-                    $salidaBodega->getId()
-                ));
-                throw new NotValidStateException();
+            if (!$error) {
+                $this->cambiarEstado($salidaBodega, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_PROCESS, $error);
             }
 
-            // Cambiar estado de borrador(BO) a Procesado(PR)
-            $salidaBodega->setEstadoDocumento('PR');
-            $this->em->persist($salidaBodega);
+            if (!$error && $this->dispatcher->hasListeners(BusetaBodegaEvents::WAREHOUSE_INOUT_POST_PROCESS)) {
+                $postProcess = new FilterSalidaBodegaEvent($salidaBodega);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::WAREHOUSE_INOUT_POST_PROCESS, $postProcess);
+            }
 
-            $this->em->flush();
+            if (!$error) {
+                $this->em->flush();
 
-            return true;
+                $this->commitTransaction();
+
+                return true;
+            }
+
+            $this->logger->warning(sprintf('Salida Bodega no procesada debido a errores previos: %s', $error));
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error al procesar la Salida de Bodega: %s', $e->getMessage()));
-            return 'Ha ocurrido un error al procesar  la Salida de Bodega';
+            $this->logger->critical(
+                sprintf(
+                    'Ha ocurrido un error al procesar Salida Bodega. Detalles: {message: %s, class: %s, line: %d}',
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                )
+            );
         }
 
+        $this->rollbackTransaction();
+
+        return false;
     }
 
 
@@ -165,6 +142,33 @@ class SalidaBodegaManager
 
             // Rollback the failed transaction attempt
             $this->em->getConnection()->rollback();
+
+            return false;
+        }
+    }
+
+    /**
+     * Change Salida Bodega document status
+     *
+     * @param SalidaBodega $albaran
+     * @param string       $status
+     * @param boolean      $error
+     *
+     * @return bool|string
+     */
+    private function cambiarEstado(SalidaBodega $albaran, $status, &$error)
+    {
+        try {
+            $albaran->setEstadoDocumento($status);
+
+            $this->em->flush();
+
+            return true;
+        } catch (\Exception $e) {
+            $error = 'Ha ocurrido un error al cambiar estado de Salida Bodega.';
+            $this->logger->critical(
+                sprintf('%s. Detalles: %s', $error, $e->getMessage())
+            );
 
             return false;
         }

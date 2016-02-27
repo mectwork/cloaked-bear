@@ -187,6 +187,13 @@ services:
         tags:
             - {name: kernel.event_subscriber}
 
+    buseta.bodega.salidabodega.subscriber:
+        class: Buseta\BodegaBundle\EventListener\SalidaBodegaSubscriber
+        arguments:
+            - @logger
+        tags:
+            - {name: kernel.event_subscriber}
+
     buseta.bodega.doctrine_subscriber.datetime_aware:
         class: Buseta\BodegaBundle\Doctrine\DateTimeSubscriber
         tags:

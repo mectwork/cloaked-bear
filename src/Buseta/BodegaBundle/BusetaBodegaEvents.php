@@ -73,4 +73,18 @@ final class BusetaBodegaEvents
     const PHYSICAL_INVENTORY_PRE_COMPLETE = 'buseta.bodega.inventariofisico.pre_complete';
 
     const PHYSICAL_INVENTORY_POST_COMPLETE = 'buseta.bodega.inventariofisico.pos_complete';
+
+    // SALIDA BODEGA EVENTS
+
+    const WAREHOUSE_INOUT_PRE_CREATE = 'buseta.bodega.salidabodega.pre_create';
+
+    const WAREHOUSE_INOUT_POST_CREATE = 'buseta.bodega.salidabodega.post_create';
+
+    const WAREHOUSE_INOUT_PRE_PROCESS = 'buseta.bodega.salidabodega.pre_process';
+
+    const WAREHOUSE_INOUT_POST_PROCESS = 'buseta.bodega.salidabodega.post_process';
+
+    const WAREHOUSE_INOUT_PRE_COMPLETE = 'buseta.bodega.salidabodega.pre_complete';
+
+    const WAREHOUSE_INOUT_POST_COMPLETE = 'buseta.bodega.salidabodega.post_complete';
 }

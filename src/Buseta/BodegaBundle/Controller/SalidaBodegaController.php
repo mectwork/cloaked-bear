@@ -22,6 +22,7 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
  * SalidaBodega controller.
  *
  * @Route("/bodega/salidabodega")
+ *
  * @Breadcrumb(title="Inicio", routeName="core_homepage")
  * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
@@ -29,41 +30,39 @@ class SalidaBodegaController extends Controller
 {
 
     /**
-     * @param $id
+     * @param SalidaBodega $salidaBodega
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @Route("/{id}/procesar", name="procesarSalidaBodega")
      * @Method({"GET"})
      */
-    public function procesarSalidaBodegaAction($id)
+    public function procesarSalidaBodegaAction(SalidaBodega $salidaBodega)
     {
-
         $manager = $this->get('buseta.bodega.salidabodega.manager');
-
-        if ($manager->procesar($id)){
+        if ($manager->procesar($salidaBodega)){
             $this->get('session')->getFlashBag()->add('success', 'Se ha procesado la salida de bodega de forma correcta.');
-            return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $id ) ) );
+            return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $salidaBodega->getId())));
         }
 
-        $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar la salida de bodega.');
+        $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar la Salida de Bodega.');
 
-        return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $id ) ) );
-
+        return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $salidaBodega->getId())));
     }
 
     /**
      * Creates a new SalidaBodega entity.
-     * @param SalidaBodega $entity
+     *
+*@param SalidaBodega $salidaBodega
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @Route("/{id}/completar", name="completarSalidaBodega")
      * @Method({"GET"})
      */
-    public function completarSalidaBodegaAction(SalidaBodega $entity)
+    public function completarSalidaBodegaAction(SalidaBodega $salidaBodega)
     {
-        /*  @var  \Buseta\BodegaBundle\Entity\SalidaBodega  $entity */
+        /*  @var  \Buseta\BodegaBundle\Entity\SalidaBodega $salidaBodega */
         /*  @var  \Buseta\BodegaBundle\Entity\SalidaBodegaProducto  $salidaBodegaProducto */
         /*  @var  \Buseta\BodegaBundle\Entity\Producto  $producto*/
         /*  @var  \Buseta\BodegaBundle\Entity\Bodega  $bodega*/
@@ -72,7 +71,7 @@ class SalidaBodegaController extends Controller
 
         $fe = new FuncionesExtras();
 
-        $almacenOrigen  = $entity->getAlmacenOrigen();
+        $almacenOrigen  = $salidaBodega->getAlmacenOrigen();
 
         $error=false;
 
@@ -80,7 +79,7 @@ class SalidaBodegaController extends Controller
         //a partir de la solicitud de salidabodega de productos entre almacenes
         //ciclo a traves de todos las salidas de bodega de productos para verificar y validar
         //la existencia fisica en el almacen de Origen del producto
-        foreach ($entity->getSalidasProductos() as $salidaBodegaProducto) {
+        foreach ($salidaBodega->getSalidasProductos() as $salidaBodegaProducto) {
             $producto = $salidaBodegaProducto->getProducto();
             $cantidad = $salidaBodegaProducto->getCantidad();
             $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $almacenOrigen, $cantidad, $em);
@@ -91,10 +90,10 @@ class SalidaBodegaController extends Controller
                 //Fallo de validacion, al no existir el producto en el almacen de origen
                 //volver al menu de de crear nuevo SalidaBodega
                 $salidaBodegasProductoFormulario = $this->createForm(new SalidaBodegaProductoType());
-                $form   = $this->createCreateForm($entity);
+                $form   = $this->createCreateForm($salidaBodega);
                 $form->addError(new FormError( sprintf( "El producto %s no existe en la bodega seleccionada", $producto->getNombre()) ));
                 return $this->render('BusetaBodegaBundle:SalidaBodega:new.html.twig', array(
-                    'entity' => $entity,
+                    'entity' => $salidaBodega,
                     'salidabodegasProductos' => $salidaBodegasProductoFormulario->createView(),
                     'form'   => $form->createView(),
                 ));
@@ -104,10 +103,10 @@ class SalidaBodegaController extends Controller
                 //Fallo de validacion, al no existir la cantidad solicitada del producto seleccionado en el almacen de origen
                 //volver al menu de de crear nuevo SalidaBodega
                 $salidaBodegasProductoFormulario = $this->createForm(new SalidaBodegaProductoType());
-                $form   = $this->createCreateForm($entity);
+                $form   = $this->createCreateForm($salidaBodega);
                 $form->addError(new FormError( sprintf("No existe en la bodega %s la cantidad de productos solicitados para el producto: %s", $almacenOrigen->getNombre(), $producto->getNombre()  )));
                 return $this->render('BusetaBodegaBundle:SalidaBodega:new.html.twig', array(
-                    'entity' => $entity,
+                    'entity' => $salidaBodega,
                     'salidabodegasProductos' => $salidaBodegasProductoFormulario->createView(),
                     'form'   => $form->createView(),
                 ));
@@ -120,18 +119,17 @@ class SalidaBodegaController extends Controller
         //Si no hubo error en la validacion de las existencias de ninguna linea de $salidabodegaproducto
         if (!$error) {
             $manager = $this->get('buseta.bodega.salidabodega.manager');
-            $id = $entity->getId();
-            $result = $manager->completar($id);
-            if ($result){
+            $id = $salidaBodega->getId();
+            if ($result = $manager->completar($salidaBodega)){
                 $this->get('session')->getFlashBag()->add('success', 'Se ha completado la salida de bodega de forma correcta.');
 
                 return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $id ) ) );
-            } else {
-                $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar la salida de bodega.');
-
-                return $this->redirect($this->generateUrl('salidabodega_show', array('id' => $id)));
             }
         }
+
+        $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar la salida de bodega.');
+
+        return $this->redirect($this->generateUrl('salidabodega_show', array('id' => $id)));
     }
 
     /**
