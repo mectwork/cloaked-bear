@@ -52,7 +52,7 @@ class CondicionesPago
     /**
      * @var string
      *
-     * @ORM\Column(name="nota", type="string", nullable=false)
+     * @ORM\Column(name="nota", type="string", nullable=true)
      */
     private $nota;
 
