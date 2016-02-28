@@ -164,6 +164,7 @@
                 });
                 $('form#filter_form').find('select').each(function () {
                     $(this).val(null);
+                    $(this).trigger('chosen:updated');
                 })
             });
 
