@@ -4,12 +4,8 @@ namespace Buseta\BodegaBundle\Manager;
 
 use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\BusetaBodegaEvents;
-use Buseta\BodegaBundle\Event\BitacoraEvents;
 use Buseta\BodegaBundle\Event\FilterSalidaBodegaEvent;
 use Buseta\BodegaBundle\Entity\SalidaBodega;
-use Buseta\BodegaBundle\Event\LegacyBitacoraEvent;
-use Buseta\BodegaBundle\Exceptions\NotFoundElementException;
-use Doctrine\DBAL\Connections;
 
 /**
  * Class SalidaBodegaManager
@@ -78,73 +74,61 @@ class SalidaBodegaManager extends AbstractBodegaManager
     /**
      * Completar SalidaBodega
      *
-     * @param integer $id
+     * @param SalidaBodega $salidaBodega
+     *
      * @return bool
      */
-    public function completar($id)
+    public function completar(SalidaBodega $salidaBodega)
     {
-        /** @var \Buseta\BodegaBundle\Entity\SalidaBodega $salidaBodega */
-        /** @var \Buseta\BodegaBundle\Entity\SalidaBodegaProducto $linea */
-
+        $error = false;
         try {
-            $salidaBodega = $this->em->getRepository('BusetaBodegaBundle:SalidaBodega')->find($id);
-            if (!$salidaBodega) {
-                throw new NotFoundElementException('Unable to find SalidaBodega entity.');
-            }
+            $this->beginTransaction();
 
-            // suspend auto-commit
-            $this->em->getConnection()->beginTransaction();
+            if ($this->dispatcher->hasListeners(BusetaBodegaEvents::WAREHOUSE_INOUT_PRE_COMPLETE)) {
+                $preComplete = new FilterSalidaBodegaEvent($salidaBodega);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::WAREHOUSE_INOUT_PRE_COMPLETE, $preComplete);
 
-            $salidasBodega = $salidaBodega->getSalidasProductos();
-            if ($salidasBodega !== null && count($salidasBodega) > 0) {
-                //entonces mando a crear los movimientos en la bitacora, producto a producto, a traves de eventos
-                foreach ($salidasBodega as $linea) {
-                    $event = new LegacyBitacoraEvent($linea);
-                    $this->event_dispacher->dispatch(BitacoraEvents::INTERNAL_CONSUMPTION_NEGATIVE /*I-*/, $event);
-                    $result = $event->getReturnValue();
-                    if (!$result) {
-                        // Rollback the failed transaction attempt
-                        $this->em->getConnection()->rollback();
-                        return $error = $result;
-                    }
-                    //aunque debe ser de la siguiente forma
-                    //$event = new LegacyBitacoraEvent($linea);
-                    //$eventDispatcher->dispatch(BitacoraEvents::PRODUCTION_NEGATIVE, $event);//P+
+                if ($preComplete->getError()) {
+                    $error = $preComplete->getError();
                 }
-
-                //Cambia el estado de Procesado a Completado e incorpora otros datos
-                $username = $this->tokenStorage->getToken()->getUser()->getUsername();
-                //$salidaBodega->setCreatedBy($username);
-                $salidaBodega->setMovidoBy($username);
-                $salidaBodega->setFecha($fechaSalidaBodega = new \DateTime());
-                $salidaBodega->setEstadoDocumento('CO');
-                $this->em->persist($salidaBodega);
-
-            } else {
-                // Rollback the failed transaction attempt
-                $this->em->getConnection()->rollback();
-
-                return false;
             }
 
-            //finalmentele damos flush a todo para guardar en la Base de Datos
-            //tanto en la bitacora almacen como en la bitacora de seriales
-            //es el unico flush que se hace.
-            $this->em->flush();
+            if (!$error) {
+                $this->cambiarEstado($salidaBodega, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_COMPLETE, $error);
+            }
 
-            // Try and commit the transaction, aqui puede ocurrir un error
-            $this->em->getConnection()->commit();
+            if (!$error && $this->dispatcher->hasListeners(BusetaBodegaEvents::WAREHOUSE_INOUT_POST_COMPLETE)) {
+                $postComplete = new FilterSalidaBodegaEvent($salidaBodega);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::WAREHOUSE_INOUT_POST_COMPLETE, $postComplete);
 
-            return true;
+                if ($postComplete->getError()) {
+                    $error = $postComplete->getError();
+                }
+            }
+
+            if (!$error) {
+                $this->em->flush();
+
+                $this->commitTransaction();
+
+                return true;
+            }
+
+            $this->logger->warning(sprintf('Salida Bodega no completada debido a errores previos: %s', $error));
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error al completar la salida de bodega: %s',
-                $e->getMessage()));
-
-            // Rollback the failed transaction attempt
-            $this->em->getConnection()->rollback();
-
-            return false;
+            $this->logger->critical(
+                sprintf(
+                    'Ha ocurrido un error al completar Salida Bodega. Detalles: {message: %s, class: %s, line: %d}',
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                )
+            );
         }
+
+        $this->rollbackTransaction();
+
+        return false;
     }
 
     /**

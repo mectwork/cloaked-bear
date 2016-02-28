@@ -28,7 +28,6 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
  */
 class SalidaBodegaController extends Controller
 {
-
     /**
      * @param SalidaBodega $salidaBodega
      *
@@ -53,7 +52,7 @@ class SalidaBodegaController extends Controller
     /**
      * Creates a new SalidaBodega entity.
      *
-*@param SalidaBodega $salidaBodega
+     * @param SalidaBodega $salidaBodega
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
@@ -119,17 +118,16 @@ class SalidaBodegaController extends Controller
         //Si no hubo error en la validacion de las existencias de ninguna linea de $salidabodegaproducto
         if (!$error) {
             $manager = $this->get('buseta.bodega.salidabodega.manager');
-            $id = $salidaBodega->getId();
             if ($result = $manager->completar($salidaBodega)){
                 $this->get('session')->getFlashBag()->add('success', 'Se ha completado la salida de bodega de forma correcta.');
 
-                return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $id ) ) );
+                return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $salidaBodega->getId())));
             }
         }
 
-        $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar la salida de bodega.');
+        $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar la Salida de Bodega.');
 
-        return $this->redirect($this->generateUrl('salidabodega_show', array('id' => $id)));
+        return $this->redirect($this->generateUrl('salidabodega_show', array('id' => $salidaBodega->getId())));
     }
 
     /**
@@ -176,6 +174,10 @@ class SalidaBodegaController extends Controller
     /**
      * Lists all SalidaBodega entities.
      *
+     * @param Request $request
+     *
+     * @return Response
+     *
      * @Route("/salidabodega", name="salidabodega")
      * @Method("GET")
      *
@@ -190,8 +192,6 @@ class SalidaBodegaController extends Controller
         ));
 
         $form->handleRequest($request);
-        $em = $this->getDoctrine()->getManager();
-
         if($form->isSubmitted() && $form->isValid()) {
             $entities = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('BusetaBodegaBundle:SalidaBodega')->filter($filter);
