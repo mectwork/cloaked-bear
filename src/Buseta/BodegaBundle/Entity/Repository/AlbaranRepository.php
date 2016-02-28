@@ -20,6 +20,13 @@ class AlbaranRepository extends EntityRepository
         $query = $qb->where($qb->expr()->eq(true,true));
 
         if($filter) {
+            if ($filter->getProducto() !== null && $filter->getProducto() !== '') {
+                $query->innerJoin('a.albaranLineas', 'albaranLineas')
+                    ->where($qb->expr()->andX(
+                        $qb->expr()->eq('albaranLineas.producto',':producto')
+                    ))
+                    ->setParameter('producto', $filter->getProducto());
+            }
             if ($filter->getNumeroReferencia() !== null && $filter->getNumeroReferencia() !== '') {
                 $query->andWhere($qb->expr()->like('a.numeroReferencia',':numeroReferencia'))
                     ->setParameter('numeroReferencia', '%' . $filter->getNumeroReferencia() . '%');
@@ -47,13 +54,6 @@ class AlbaranRepository extends EntityRepository
             if ($filter->getFechaFin() !== null && $filter->getFechaFin() !== '') {
                 $query->andWhere($qb->expr()->lte('a.fechaMovimiento',':fechaFin'))
                     ->setParameter('fechaFin', $filter->getFechaFin());
-            }
-            if ($filter->getProducto() !== null && $filter->getProducto() !== '') {
-                $query->innerJoin('a.albaranLineas', 'albaranLineas')
-                    ->where($qb->expr()->andX(
-                        $qb->expr()->eq('albaranLineas.producto',':producto')
-                    ))
-                    ->setParameter('producto', $filter->getProducto());
             }
         }
 
