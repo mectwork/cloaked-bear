@@ -165,15 +165,15 @@ class PedidoCompraController extends Controller
 
                 $em->flush();
 
-                $session->getFlashBag()->add('success', sprintf('Se ha creado el Albarán para el Registro de Compra "%s".',
+                $session->getFlashBag()->add('success', sprintf('Se ha creado la Orden de Entrada para el Registro de Compra "%s".',
                         $pedidoCompra->getNumeroDocumento()
                 ));
             } catch (\Exception $e) {
-                $logger->addCritical(sprintf('Ha ocurrido un error intentando crear el albarán para Registro de Compra "%s". Detalles: %s',
+                $logger->addCritical(sprintf('Ha ocurrido un error intentando crear la Orden de Entrada para Registro de Compra "%s". Detalles: %s',
                     $pedidoCompra->getNumeroDocumento(),
                     $e->getMessage()
                 ));
-                $session->getFlashBag()->add('danger', sprintf('Ha ocurrido un error intentando crear el Albarán para Registro de Compra "%s".',
+                $session->getFlashBag()->add('danger', sprintf('Ha ocurrido un error intentando crear la Orden de Entrada para Registro de Compra "%s".',
                     $pedidoCompra->getNumeroDocumento()
                 ));
             }
