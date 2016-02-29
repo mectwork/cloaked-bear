@@ -38,29 +38,17 @@ class BitacoraSerialMovimientoEvent extends AbstractBitacoraSerialEvent
             $this->movimientoEvent = $movimientoEvent;
 
             $fillBitacoraSerialEvents = function (BitacoraEventModel $movimientoEventLinea, $serial) {
-                $bitacoraSerialEventTo = new BitacoraSerialEventModel();
-                $bitacoraSerialEventTo->setWarehouse($movimientoEventLinea->getWarehouse());
-                $bitacoraSerialEventTo->setProduct($movimientoEventLinea->getProduct());
-                $bitacoraSerialEventTo->setMovementQty(1);
-                $bitacoraSerialEventTo->setSerial($serial);
-                $bitacoraSerialEventTo->setMovementDate($movimientoEventLinea->getMovementDate());
-                $bitacoraSerialEventTo->setMovementType($movimientoEventLinea->getMovementType());
-                $bitacoraSerialEventTo->setCallback(function (BitacoraSerial $bitacoraSerial) use ($movimientoEventLinea){
+                $bitacoraSerialEvent = new BitacoraSerialEventModel();
+                $bitacoraSerialEvent->setWarehouse($movimientoEventLinea->getWarehouse());
+                $bitacoraSerialEvent->setProduct($movimientoEventLinea->getProduct());
+                $bitacoraSerialEvent->setMovementQty(1);
+                $bitacoraSerialEvent->setSerial($serial);
+                $bitacoraSerialEvent->setMovementDate($movimientoEventLinea->getMovementDate());
+                $bitacoraSerialEvent->setMovementType($movimientoEventLinea->getMovementType());
+                $bitacoraSerialEvent->setCallback(function (BitacoraSerial $bitacoraSerial) use ($movimientoEventLinea){
                     $bitacoraSerial->setMovimientoLinea($movimientoEventLinea->getReferencedObject());
                 });
-                $this->bitacoraSerialEvents->add($bitacoraSerialEventTo);
-
-                $bitacoraSerialEventFrom = new BitacoraSerialEventModel();
-                $bitacoraSerialEventFrom->setWarehouse($movimientoEventLinea->getWarehouse());
-                $bitacoraSerialEventFrom->setProduct($movimientoEventLinea->getProduct());
-                $bitacoraSerialEventFrom->setMovementQty(1);
-                $bitacoraSerialEventFrom->setSerial($serial);
-                $bitacoraSerialEventFrom->setMovementDate($movimientoEventLinea->getMovementDate());
-                $bitacoraSerialEventFrom->setMovementType($movimientoEventLinea->getMovementType());
-                $bitacoraSerialEventFrom->setCallback(function (BitacoraSerial $bitacoraSerial) use ($movimientoEventLinea){
-                    $bitacoraSerial->setMovimientoLinea($movimientoEventLinea->getReferencedObject());
-                });
-                $this->bitacoraSerialEvents->add($bitacoraSerialEventFrom);
+                $this->bitacoraSerialEvents->add($bitacoraSerialEvent);
             };
 
             foreach ($movimientoEvent->getBitacoraEvents() as $movimientoLineaEvent) {

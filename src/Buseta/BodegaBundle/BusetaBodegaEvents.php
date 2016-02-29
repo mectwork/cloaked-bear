@@ -26,6 +26,34 @@ final class BusetaBodegaEvents
 
     const ALBARAN_POST_COMPLETE = 'buseta.bodega.albaran.pos_complete';
 
+    // INVENTARIO FISICO EVENTS
+
+    const PHYSICAL_INVENTORY_PRE_CREATE = 'buseta.bodega.inventariofisico.pre_create';
+
+    const PHYSICAL_INVENTORY_POST_CREATE = 'buseta.bodega.inventariofisico.pos_create';
+
+    const PHYSICAL_INVENTORY_PRE_PROCESS = 'buseta.bodega.inventariofisico.pre_process';
+
+    const PHYSICAL_INVENTORY_POST_PROCESS = 'buseta.bodega.inventariofisico.pos_process';
+
+    const PHYSICAL_INVENTORY_PRE_COMPLETE = 'buseta.bodega.inventariofisico.pre_complete';
+
+    const PHYSICAL_INVENTORY_POST_COMPLETE = 'buseta.bodega.inventariofisico.pos_complete';
+
+    // MOVIMIENTO BODEGA
+
+    const MOVEMENT_PRE_CREATE = 'buseta.bodega.movement.pre_create';
+
+    const MOVEMENT_POST_CREATE = 'buseta.bodega.movement.pos_create';
+
+    const MOVEMENT_PRE_PROCESS = 'buseta.bodega.movement.pre_process';
+
+    const MOVEMENT_POST_PROCESS = 'buseta.bodega.movement.pos_process';
+
+    const MOVEMENT_PRE_COMPLETE = 'buseta.bodega.movement.pre_complete';
+
+    const MOVEMENT_POST_COMPLETE = 'buseta.bodega.movement.pos_complete';
+
     // BITACORA EVENTS
     /**  */
     const BITACORA_CUSTOMER_RETURNS = 'buseta.bodega.bitacora_almacen.customer.returns';
@@ -49,20 +77,6 @@ final class BusetaBodegaEvents
     // BITACORA SERIAL
 
     const BITACORA_SERIAL_REGISTER_EVENTS = 'buseta.bodega.bitacora_serial.register_events';
-
-    // INVENTARIO FISICO EVENTS
-
-    const PHYSICAL_INVENTORY_PRE_CREATE = 'buseta.bodega.inventariofisico.pre_create';
-
-    const PHYSICAL_INVENTORY_POST_CREATE = 'buseta.bodega.inventariofisico.pos_create';
-
-    const PHYSICAL_INVENTORY_PRE_PROCESS = 'buseta.bodega.inventariofisico.pre_process';
-
-    const PHYSICAL_INVENTORY_POST_PROCESS = 'buseta.bodega.inventariofisico.pos_process';
-
-    const PHYSICAL_INVENTORY_PRE_COMPLETE = 'buseta.bodega.inventariofisico.pre_complete';
-
-    const PHYSICAL_INVENTORY_POST_COMPLETE = 'buseta.bodega.inventariofisico.pos_complete';
 
     // SALIDA BODEGA EVENTS
 

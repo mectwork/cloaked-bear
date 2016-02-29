@@ -7,6 +7,7 @@ use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Event\BitacoraBodega\BitacoraEventInterface;
 use Buseta\BodegaBundle\Event\BitacoraSerial\BitacoraSerialAlbaranEvent;
 use Buseta\BodegaBundle\Event\BitacoraSerial\BitacoraSerialInventarioFisicoEvent;
+use Buseta\BodegaBundle\Event\BitacoraSerial\BitacoraSerialMovimientoEvent;
 use Buseta\BodegaBundle\Event\LegacyBitacoraEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidBitacoraTypeException;
 use Buseta\BodegaBundle\Manager\BitacoraAlmacenManager;
@@ -93,9 +94,19 @@ class BitacoraSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function movementFromTo(LegacyBitacoraEvent $event)
-    {
-        $this->legacyCreateRegistry($event, 'M+');
+    public function movementFromTo(
+        BitacoraEventInterface $event,
+        $eventName = null,
+        EventDispatcherInterface $eventDispatcher = null
+    ) {
+        $this->createRegistry($event);
+        if (!$event->getError()) {
+            $serialEvent = new BitacoraSerialMovimientoEvent($event);
+            $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_SERIAL_REGISTER_EVENTS, $serialEvent);
+            if ($serialEvent->getError()) {
+                $event->setError($serialEvent->getError());
+            }
+        }
     }
 
     public function production(LegacyBitacoraEvent $event)
