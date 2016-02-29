@@ -38,6 +38,7 @@ class OrdenTrabajoSubscriber implements EventSubscriberInterface
         return array(
 //            OrdenTrabajoEvents::PROCESAR_ORDEN         => 'crearSolicitudCompletada',
             OrdenTrabajoEvents::CAMBIAR_ESTADO_ABIERTO => 'cambioEstadoOrdenAbierto',
+            OrdenTrabajoEvents::CAMBIAR_ESTADO_PROCESADO => 'cambioEstadoOrdenProcesado',
             OrdenTrabajoEvents::CAMBIAR_CANCELADO   => 'cambiarCancelado',
             OrdenTrabajoEvents::CAMBIAR_ESTADO_CERRADO   => 'cambioEstadoOrdenCerrado',
             OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO  => 'cambioEstadoOrdenCompletado',
@@ -60,6 +61,11 @@ class OrdenTrabajoSubscriber implements EventSubscriberInterface
     public function cambioEstadoOrdenAbierto(FilterOrdenTrabajoEvent $event)
     {
         $this->cambioEstado($event, 'BO' );
+    }
+
+    public function cambioEstadoOrdenProcesado(FilterOrdenTrabajoEvent $event)
+    {
+        $this->cambioEstado($event, 'PR' );
     }
 
     public function cambioEstadoOrdenCompletado(FilterOrdenTrabajoEvent $event)

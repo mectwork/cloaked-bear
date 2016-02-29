@@ -13,6 +13,7 @@
       and (filter_form.vars.value.ayudante is null or filter_form.vars.value.ayudante is empty)
       and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
       and (filter_form.vars.value.diagnostico is null or filter_form.vars.value.diagnostico is empty) %}
+
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
     {% endif %}
@@ -133,6 +134,7 @@
                     <th>Autobus</th>
                     <th>Ayudante</th>
                     <th>Prioridad</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -142,12 +144,25 @@
                 "background-color: " ~ entity.autobus.grupobuses.color ~ ";": "" %}
                 {% set color_letra=entity.autobus.grupobuses is not null ?
                 "color: " ~ entity.autobus.grupobuses.colorTexto ~ ";": "" %}
+                {% set text_color = 'default' %}
+                {% if ordentrabajo is defined and ordentrabajo and entity.estado != 'CO' %}
+                    {% set text_color = 'danger' %}
+                {% endif %}
                 <tr>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">OT #{{ entity.numero }}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.diagnosticadoPor | default('-')}}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.autobus }}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.ayudante }}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.prioridad }}</td>
+
+                    {% if entity.estado == 'CO' %}
+                        {% set badge = 'success' %}
+                    {% elseif entity.estado == 'PR' %}
+                        {% set badge = 'primary' %}
+                    {% else %}
+                        {% set badge = 'warning' %}
+                    {% endif %}
+                    <td style="text-{{ text_color }}"><span class="label label-{{ badge }}">{{ ('estado.' ~ entity.estado)  | trans({}, 'BusetaTallerBundle')  }}</span></td>
 
                     <td style="width: 18% !important; text-align: center; {{ color_fondo|raw }}">
                     {% if is_granted('VIEW', entity) %}

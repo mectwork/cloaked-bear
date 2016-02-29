@@ -19,6 +19,8 @@ final class OrdenTrabajoEvents
 
     const CAMBIAR_ESTADO_ABIERTO = 'buseta.taller.orden.cambiarestadoabierto';
 
+    const CAMBIAR_ESTADO_PROCESADO = 'buseta.taller.orden.cambiarestadoprocesado';
+
     const CAMBIAR_ESTADO_CERRADO = 'buseta.taller.orden.cambiarestadocerrado';
 
     const CAMBIAR_ESTADO_COMPLETADO = 'buseta.taller.orden.cambiarestadocompletado';

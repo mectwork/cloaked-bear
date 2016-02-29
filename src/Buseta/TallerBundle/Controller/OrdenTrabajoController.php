@@ -496,12 +496,25 @@ class OrdenTrabajoController extends Controller
 
         $report = $ordenTrabajo->getDiagnostico()->getReporte();
 
-        if ($report === null) {
-            $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
-            $ordenTrabajoEvent->setOrden($ordenTrabajo);
+//var_dump($report);die;
+//var_dump($ordenTrabajo->getEstado()== 'BO');die;
 
-            $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO, $ordenTrabajoEvent);
+        if ($report === null) {
+            if($ordenTrabajo->getEstado()== 'BO') {
+                $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
+                $ordenTrabajoEvent->setOrden($ordenTrabajo);
+                $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_PROCESADO, $ordenTrabajoEvent);
+
+
+            } else {
+
+                $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
+                $ordenTrabajoEvent->setOrden($ordenTrabajo);
+                $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO, $ordenTrabajoEvent);
+            }
+
         } else {
+            if($ordenTrabajo->getEstado()== 'BO') {
             //Crear Eventos para el EventDispatcher
             $reporteEvent = new FilterReporteEvent($report);
             $reporteEvent->setReporte($report);
@@ -509,12 +522,21 @@ class OrdenTrabajoController extends Controller
             $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
             $ordenTrabajoEvent->setOrden($ordenTrabajo);
 
-            $eventDispatcher->dispatch(ReporteEvents::CAMBIAR_ESTADO_COMPLETADO, $reporteEvent);
-            $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO, $ordenTrabajoEvent);
+            $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_PROCESADO, $ordenTrabajoEvent);
 
+            } else {
+                //Crear Eventos para el EventDispatcher
+                $reporteEvent = new FilterReporteEvent($report);
+                $reporteEvent->setReporte($report);
+
+                $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
+                $ordenTrabajoEvent->setOrden($ordenTrabajo);
+
+                $eventDispatcher->dispatch(ReporteEvents::CAMBIAR_ESTADO_COMPLETADO, $reporteEvent);
+                $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO, $ordenTrabajoEvent);
+            }
         }
-
         return $this->redirect($this->generateUrl('ordentrabajo'));
-    }
 
+   }
 }
