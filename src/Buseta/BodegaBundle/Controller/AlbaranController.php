@@ -2,30 +2,23 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
-use Buseta\BodegaBundle\Event\AlbaranEvents;
-use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
-use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
-use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
-use Buseta\BodegaBundle\Entity\AlbaranLinea;
-use Buseta\BodegaBundle\Entity\Movimiento;
-
 use Buseta\BodegaBundle\Form\Filter\AlbaranFilter;
 use Buseta\BodegaBundle\Form\Model\AlbaranFilterModel;
 use Buseta\BodegaBundle\Form\Model\AlbaranModel;
-use Buseta\BodegaBundle\Form\Type\AlbaranLineaType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\Albaran;
-use Buseta\BodegaBundle\Form\Filtro\BusquedaAlbaranType;
-
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
+
 /**
  * Albaran controller.
  *
  * @Route("/albaran")
+ *
  * @Breadcrumb(title="Inicio", routeName="core_homepage")
  * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
@@ -33,13 +26,14 @@ class AlbaranController extends Controller
 {
     /**
      * Lists all Albaran entities.
+     *
      * @Route("/", name="albaran")
      * @Method("GET")
-     * @Breadcrumb(title="Orden de Entrada ", routeName="bodegas")
+     *
+     * @Breadcrumb(title="Listado de Órdenes de Entrada", routeName="albaran")
      */
     public function indexAction(Request $request)
     {
-
         $filter = new AlbaranFilterModel();
 
         $form = $this->createForm(new AlbaranFilter(), $filter, array(
@@ -68,50 +62,61 @@ class AlbaranController extends Controller
         ));
     }
 
-
     /**
+     * Process Albaran entity
      *
+     * @param Albaran $albaran
      *
-     * @Route("/{id}/procesarAlbaran", name="procesarAlbaran", methods={"GET"}, options={"expose":true})
+     * @return RedirectResponse
+     *
+     * @Route("/{id}/procesarAlbaran", name="procesarAlbaran")
+     * @Method({"GET"})
      */
-    public function procesarAlbaranAction($id)
+    public function procesarAlbaranAction(Albaran $albaran)
     {
         $manager = $this->get('buseta.bodega.albaran.manager');
+        if (true === $result = $manager->procesar($albaran)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'Se ha procesado la Orden de Entrada de forma correcta.'
+            );
 
-        $trans = $this->get('translator');
-        $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
-
-        $result = $manager->procesar($id);
-        if ($result===true){
-            $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha procesado la %s de forma correcta.', $albaranTrans) );
-            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
+            return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
         } else {
-            $this->get('session')->getFlashBag()->add('danger',  sprintf(  'Ha ocurrido un error al procesar la %s: %s', $albaranTrans, $result) );
-            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $id ) ) );
+            $this->get('session')->getFlashBag()->add(
+                'danger',
+                'Ha ocurrido un error al procesar la Orden de Entrada.'
+            );
+
+            return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
         }
     }
 
 
     /**
+     * Complete Albaran entity
      *
-     *
-     * @Route("/{id}/completarAlbaran", name="completarAlbaran", methods={"GET"}, options={"expose":true})
+     * @Route("/{id}/completarAlbaran", name="completarAlbaran")
+     * @Method({"GET"})
      */
     public function completarAlbaranAction(Albaran $albaran)
     {
         $manager = $this->get('buseta.bodega.albaran.manager');
-        $trans = $this->get('translator');
-        $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
+        if (true === $result = $manager->completar($albaran)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'Se ha completado la Orden de Entrada de forma correcta.'
+            );
 
-        $result = $manager->completar($albaran->getId());
-        if ($result===true){
-            $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha completado la %s de forma correcta.', $albaranTrans) );
-            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
+            return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
         } else {
-            $this->get('session')->getFlashBag()->add('danger',  sprintf(  'Ha ocurrido un error al completar la %s: %s', $albaranTrans,$result)  );
-            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
-        }
+            $this->get('session')->getFlashBag()->add(
+                'danger',
+                sprintf('Ha ocurrido un error al completar la Orden de Entrada.')
+            );
 
+            return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
+        }
     }
 
     public function guardarAlbaranAction(Request $request)
@@ -216,12 +221,12 @@ class AlbaranController extends Controller
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
 
-
-
     /**
-     * Displays a form to edit an existing Albaran entity.
+     * Displays a data from an existing Albaran entity.
      *
-     * @Route("/{id}/show", name="albaran_show", methods={"GET"}, options={"expose":true})
+     * @Route("/{id}/show", name="albaran_show")
+     * @Method({"GET"})
+     *
      * @Breadcrumb(title="Ver Datos de Orden de Entrada", routeName="albaran_show", routeParameters={"id"})
      */
     public function showAction($id)
@@ -246,13 +251,16 @@ class AlbaranController extends Controller
     /**
      * Displays a form to edit an existing Albaran entity.
      *
-     * @Route("/{id}/edit", name="albarans_albaran_edit", methods={"GET"}, options={"expose":true})
+     * @Route("/{id}/edit", name="albarans_albaran_edit")
+     * @Method({"GET"})
+     *
      * @Breadcrumb(title="Modificar Orden de Entrada", routeName="albarans_albaran_edit", routeParameters={"id"})
      */
     public function editAction(Albaran $albaran)
     {
         $editForm = $this->createEditForm(new AlbaranModel($albaran));
         /*$deleteForm = $this->createDeleteForm($albaran->getId());*/
+
         return $this->render('BusetaBodegaBundle:Albaran:edit.html.twig', array(
             'entity'        => $albaran,
             'edit_form'     => $editForm->createView(),
@@ -305,7 +313,9 @@ class AlbaranController extends Controller
     /**
      * Edits an existing Albaran entity.
      *
-     * @Route("/{id}/update", name="albarans_albaran_update", methods={"POST","PUT"}, options={"expose":true})
+     * @Route("/{id}/update", name="albarans_albaran_update", options={"expose":true})
+     * @Method({"POST", "PUT"})
+     *
      * @Breadcrumb(title="Modificar Orden de Entrada", routeName="albarans_albaran_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, Albaran $albaran)
@@ -353,7 +363,9 @@ class AlbaranController extends Controller
     /**
      * Creates a new Albaran entity.
      *
-     * @Route("/create", name="albarans_albaran_create", methods={"POST"}, options={"expose":true})
+     * @Route("/create", name="albarans_albaran_create", options={"expose":true})
+     * @Method({"POST"})
+     *
      * @Breadcrumb(title="Crear Nueva Orden de Entrada", routeName="albarans_albaran_create")
      */
     public function createAction(Request $request)
@@ -422,7 +434,9 @@ class AlbaranController extends Controller
     /**
      * Displays a form to create a new Albaran entity.
      *
-     * @Route("/new", name="albaran_new", methods={"GET"}, options={"expose":true})
+     * @Route("/new", name="albaran_new", options={"expose":true})
+     * @Method({"GET"})
+     *
      * @Breadcrumb(title="Crear Nueva Orden de Entrada", routeName="albaran_new")
      */
     public function newAction()

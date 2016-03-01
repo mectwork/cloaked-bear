@@ -72,15 +72,13 @@ class BitacoraSerial implements DateTimeAwareInterface
      *
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\ProductoSeriado")
      * @ORM\JoinColumn(name="productoseriado_id")
-     *
-     *
      */
-    private $producto_seriado;
+    private $productoSeriado;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="movement_date", type="date")
+     * @ORM\Column(name="movement_date", type="datetime")
      * @Assert\Date()
      */
     private $fechaMovimiento;
@@ -91,7 +89,6 @@ class BitacoraSerial implements DateTimeAwareInterface
      * @ORM\Column(name="movement_qty", type="integer", nullable=true)
      */
     private $cantidadMovida;
-
 
     /**
      * @var \Buseta\BodegaBundle\Entity\InventarioFisicoLinea
@@ -158,6 +155,7 @@ class BitacoraSerial implements DateTimeAwareInterface
      * @ORM\Column(name="serial", type="string", nullable=true)
      */
     private $serial;
+
 
     /**
      * Get id
@@ -378,28 +376,27 @@ class BitacoraSerial implements DateTimeAwareInterface
     }
 
     /**
-     * Set producto_seriado
+     * Set productoSeriado
      *
-     * @param \Buseta\BodegaBundle\Entity\ProductoSeriado $producto_seriado
+     * @param \Buseta\BodegaBundle\Entity\ProductoSeriado $productoSeriado
      * @return BitacoraSerial
      */
-    public function setProductoSeriado(\Buseta\BodegaBundle\Entity\ProductoSeriado $producto_seriado = null)
+    public function setProductoSeriado(\Buseta\BodegaBundle\Entity\ProductoSeriado $productoSeriado = null)
     {
-        $this->producto_seriado = $producto_seriado;
+        $this->productoSeriado = $productoSeriado;
 
         return $this;
     }
 
     /**
-     * Get producto_seriado
+     * Get productoSeriado
      *
      * @return \Buseta\BodegaBundle\Entity\ProductoSeriado
      */
     public function getProductoSeriado()
     {
-        return $this->producto_seriado;
+        return $this->productoSeriado;
     }
-
 
     /**
      * Set inventarioLinea
@@ -500,7 +497,6 @@ class BitacoraSerial implements DateTimeAwareInterface
     {
         return $this->serial;
     }
-
 
     /**
      * @param $serial

@@ -22,6 +22,12 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
  */
 class InformeController extends Controller
 {
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/informeMovimiento", name="movimiento_informe")
+     * @Method({"GET"})
+     */
     public function informeMovimientosAction()
     {
         $em = $this->get('doctrine.orm.entity_manager');
@@ -33,6 +39,17 @@ class InformeController extends Controller
         ));
     }
 
+    /**
+     * @param         $page
+     * @param         $cantResult
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/busqueda-avanzada/{page}/{cantResult}", name="salidabodega_ajax_busqueda_avanzada",
+     *     defaults={"page": 0, "cantResult": 10})
+     * @Method({"GET"})
+     */
     public function busquedaAvanzadaAction($page, $cantResult, Request $request)
     {
         $em = $this->get('doctrine.orm.entity_manager');

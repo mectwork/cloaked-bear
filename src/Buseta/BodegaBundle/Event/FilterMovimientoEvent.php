@@ -2,23 +2,23 @@
 
 namespace Buseta\BodegaBundle\Event;
 
-use Buseta\BodegaBundle\Entity\Albaran;
+use Buseta\BodegaBundle\Entity\Movimiento;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class FilterAlbaranEvent
+ * Class FilterMovimientoEvent
  *
  * @package Buseta\BodegaBundle\Event
  */
-class FilterAlbaranEvent extends Event
+class FilterMovimientoEvent extends Event
 {
     /**
-     * @var Albaran
+     * @var Movimiento
      */
-    private $albaran;
+    private $movimiento;
 
     /**
-     * @var string|null
+     * @var boolean|string
      */
     private $error;
 
@@ -27,37 +27,36 @@ class FilterAlbaranEvent extends Event
      */
     private $flush;
 
+
     /**
-     * FilterAlbaranEvent constructor
-     *
-     * @param Albaran $albaran
+     * @param Movimiento $movimiento
      * @param boolean $flush
      */
-    function __construct(Albaran $albaran, $flush=true)
+    function __construct(Movimiento $movimiento, $flush=true)
     {
-        $this->albaran = $albaran;
+        $this->movimiento = $movimiento;
         $this->error = false;
         $this->flush = $flush;
     }
 
     /**
-     * @return Albaran
+     * @return Movimiento
      */
-    public function getAlbaran()
+    public function getMovimiento()
     {
-        return $this->albaran;
+        return $this->movimiento;
     }
 
     /**
-     * @param Albaran $albaran
+     * @param Movimiento $movimiento
      */
-    public function setAlbaran($albaran)
+    public function setMovimiento($movimiento)
     {
-        $this->albaran = $albaran;
+        $this->movimiento = $movimiento;
     }
 
     /**
-     * @return string|null
+     * @return bool|string
      */
     public function getError()
     {
@@ -65,7 +64,7 @@ class FilterAlbaranEvent extends Event
     }
 
     /**
-     * @param string $error
+     * @param bool|string $error
      */
     public function setError($error)
     {

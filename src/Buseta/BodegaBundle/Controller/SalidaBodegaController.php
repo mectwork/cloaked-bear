@@ -2,8 +2,6 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
-use Buseta\BodegaBundle\BusetaBodegaBundle;
-use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\SalidaBodegaProducto;
 use Buseta\BodegaBundle\Form\Filter\SalidaBodegaFilter;
 use Buseta\BodegaBundle\Form\Model\SalidaBodegaFilterModel;
@@ -14,47 +12,56 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\SalidaBodega;
 use Buseta\BodegaBundle\Form\Type\SalidaBodegaType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Buseta\BodegaBundle\Event\BitacoraEvents;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
+
 /**
  * SalidaBodega controller.
  *
- * @Route("/salidabodega")
+ * @Route("/bodega/salidabodega")
+ *
  * @Breadcrumb(title="Inicio", routeName="core_homepage")
  * @Breadcrumb(title="Módulo de Bodegas", routeName="bodega_principal")
  */
 class SalidaBodegaController extends Controller
 {
-
-    public function procesarSalidaBodegaAction($id)
+    /**
+     * @param SalidaBodega $salidaBodega
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{id}/procesar", name="procesarSalidaBodega")
+     * @Method({"GET"})
+     */
+    public function procesarSalidaBodegaAction(SalidaBodega $salidaBodega)
     {
-
         $manager = $this->get('buseta.bodega.salidabodega.manager');
-
-        if ($manager->procesar($id)){
+        if ($manager->procesar($salidaBodega)){
             $this->get('session')->getFlashBag()->add('success', 'Se ha procesado la salida de bodega de forma correcta.');
-            return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $id ) ) );
+            return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $salidaBodega->getId())));
         }
 
-        $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar la salida de bodega.');
+        $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar la Salida de Bodega.');
 
-        return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $id ) ) );
-
+        return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $salidaBodega->getId())));
     }
 
     /**
      * Creates a new SalidaBodega entity.
-     * @param SalidaBodega $entity
+     *
+     * @param SalidaBodega $salidaBodega
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{id}/completar", name="completarSalidaBodega")
+     * @Method({"GET"})
      */
-    public function completarSalidaBodegaAction(SalidaBodega $entity)
+    public function completarSalidaBodegaAction(SalidaBodega $salidaBodega)
     {
-        /*  @var  \Buseta\BodegaBundle\Entity\SalidaBodega  $entity */
+        /*  @var  \Buseta\BodegaBundle\Entity\SalidaBodega $salidaBodega */
         /*  @var  \Buseta\BodegaBundle\Entity\SalidaBodegaProducto  $salidaBodegaProducto */
         /*  @var  \Buseta\BodegaBundle\Entity\Producto  $producto*/
         /*  @var  \Buseta\BodegaBundle\Entity\Bodega  $bodega*/
@@ -63,7 +70,7 @@ class SalidaBodegaController extends Controller
 
         $fe = new FuncionesExtras();
 
-        $almacenOrigen  = $entity->getAlmacenOrigen();
+        $almacenOrigen  = $salidaBodega->getAlmacenOrigen();
 
         $error=false;
 
@@ -71,7 +78,7 @@ class SalidaBodegaController extends Controller
         //a partir de la solicitud de salidabodega de productos entre almacenes
         //ciclo a traves de todos las salidas de bodega de productos para verificar y validar
         //la existencia fisica en el almacen de Origen del producto
-        foreach ($entity->getSalidasProductos() as $salidaBodegaProducto) {
+        foreach ($salidaBodega->getSalidasProductos() as $salidaBodegaProducto) {
             $producto = $salidaBodegaProducto->getProducto();
             $cantidad = $salidaBodegaProducto->getCantidad();
             $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $almacenOrigen, $cantidad, $em);
@@ -82,10 +89,10 @@ class SalidaBodegaController extends Controller
                 //Fallo de validacion, al no existir el producto en el almacen de origen
                 //volver al menu de de crear nuevo SalidaBodega
                 $salidaBodegasProductoFormulario = $this->createForm(new SalidaBodegaProductoType());
-                $form   = $this->createCreateForm($entity);
+                $form   = $this->createCreateForm($salidaBodega);
                 $form->addError(new FormError( sprintf( "El producto %s no existe en la bodega seleccionada", $producto->getNombre()) ));
                 return $this->render('BusetaBodegaBundle:SalidaBodega:new.html.twig', array(
-                    'entity' => $entity,
+                    'entity' => $salidaBodega,
                     'salidabodegasProductos' => $salidaBodegasProductoFormulario->createView(),
                     'form'   => $form->createView(),
                 ));
@@ -95,10 +102,10 @@ class SalidaBodegaController extends Controller
                 //Fallo de validacion, al no existir la cantidad solicitada del producto seleccionado en el almacen de origen
                 //volver al menu de de crear nuevo SalidaBodega
                 $salidaBodegasProductoFormulario = $this->createForm(new SalidaBodegaProductoType());
-                $form   = $this->createCreateForm($entity);
+                $form   = $this->createCreateForm($salidaBodega);
                 $form->addError(new FormError( sprintf("No existe en la bodega %s la cantidad de productos solicitados para el producto: %s", $almacenOrigen->getNombre(), $producto->getNombre()  )));
                 return $this->render('BusetaBodegaBundle:SalidaBodega:new.html.twig', array(
-                    'entity' => $entity,
+                    'entity' => $salidaBodega,
                     'salidabodegasProductos' => $salidaBodegasProductoFormulario->createView(),
                     'form'   => $form->createView(),
                 ));
@@ -111,31 +118,37 @@ class SalidaBodegaController extends Controller
         //Si no hubo error en la validacion de las existencias de ninguna linea de $salidabodegaproducto
         if (!$error) {
             $manager = $this->get('buseta.bodega.salidabodega.manager');
-            $id = $entity->getId();
-            $result = $manager->completar($id);
-            if ($result===true){
+            if ($result = $manager->completar($salidaBodega)){
                 $this->get('session')->getFlashBag()->add('success', 'Se ha completado la salida de bodega de forma correcta.');
-                return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $id ) ) );
-            } else {
-                $this->get('session')->getFlashBag()->add('danger',
-                    sprintf('Ha ocurrido un error al completar la salida de bodega: %s', $result));
-                return $this->redirect($this->generateUrl('salidabodega_show', array('id' => $id)));
+
+                return $this->redirect( $this->generateUrl('salidabodega_show', array( 'id' => $salidaBodega->getId())));
             }
         }
 
+        $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar la Salida de Bodega.');
+
+        return $this->redirect($this->generateUrl('salidabodega_show', array('id' => $salidaBodega->getId())));
     }
 
     /**
      * Updated automatically select AlmacenDestino when change select AlmacenOrigen.
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @Route("/select_almacenOrigen_almacenDestino", name="salidabodegas_ajax_almacenOrigen_almacenDestino",
+     *   options={"expose": true})
+     * @Method({"GET"})
      */
     public function select_almacenOrigen_almacenDestinoAction(Request $request)
     {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+            return new Response('Acceso Denegado', 403);
         }
 
         if (!$request->isXmlHttpRequest()) {
-            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+            return new Response('No es una petición Ajax', 500);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -155,26 +168,19 @@ class SalidaBodegaController extends Controller
             }
         }
 
-        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
-    }
-
-    public function create_salidabodegaAction(Request $request)
-    {
-        $entity = new SalidaBodegasProductos();
-        $form = $this->createCreateCompraForm($entity);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-        }
+        return new Response(json_encode($json), 200);
     }
 
     /**
      * Lists all SalidaBodega entities.
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
      * @Route("/salidabodega", name="salidabodega")
      * @Method("GET")
+     *
      * @Breadcrumb(title="Salidas de Bodegas", routeName="salidabodega")
      */
     public function indexAction(Request $request)
@@ -186,8 +192,6 @@ class SalidaBodegaController extends Controller
         ));
 
         $form->handleRequest($request);
-        $em = $this->getDoctrine()->getManager();
-
         if($form->isSubmitted() && $form->isValid()) {
             $entities = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('BusetaBodegaBundle:SalidaBodega')->filter($filter);
@@ -211,7 +215,10 @@ class SalidaBodegaController extends Controller
 
     /**
      * Creates a new SalidaBodega entity.
-     * @Route("/create", name="salidabodega_create", methods={"POST"}, options={"expose":true})
+     *
+     * @Route("/create", name="salidabodega_create")
+     * @Method({"POST"})
+     *
      * @Breadcrumb(title="Crear Nueva Orden de Entrada", routeName="salidabodega_create")
      */
     public function createAction(Request $request)
@@ -344,7 +351,10 @@ class SalidaBodegaController extends Controller
 
     /**
      * Displays a form to create a new SalidaBodega entity.
-     * @Route("/new", name="salidabodega_new", methods={"GET"}, options={"expose":true})
+     *
+     * @Route("/new", name="salidabodega_new", methods={"GET"})
+     * @Method({"GET"})
+     *
      * @Breadcrumb(title="Crear Nueva Salida de Bodega", routeName="salidabodega_new")
      */
     public function newAction()
@@ -379,7 +389,10 @@ class SalidaBodegaController extends Controller
 
     /**
      * Finds and displays a SalidaBodega entity.
-     * @Route("/{id}/show", name="salidabodega_show", methods={"GET"}, options={"expose":true})
+     *
+     * @Route("/{id}/show", name="salidabodega_show", options={"expose":true})
+     * @Method({"GET"})
+     *
      * @Breadcrumb(title="Ver Datos de Salida de Bodega", routeName="salidabodega_show", routeParameters={"id"})
      */
     public function showAction($id)
@@ -402,7 +415,10 @@ class SalidaBodegaController extends Controller
 
     /**
      * Displays a form to edit an existing SalidaBodega entity.
-     * @Route("/{id}/edit", name="salidabodega_edit", methods={"GET"}, options={"expose":true})
+     *
+     * @Route("/{id}/edit", name="salidabodega_edit")
+     * @Method({"GET"})
+     *
      * @Breadcrumb(title="Modificar Salida de Bodega", routeName="salidabodega_edit", routeParameters={"id"})
      */
     public function editAction($id)
@@ -449,7 +465,10 @@ class SalidaBodegaController extends Controller
 
     /**
      * Edits an existing SalidaBodega entity.
-     * @Route("/{id}/update", name="salidabodega_update", methods={"POST","PUT"}, options={"expose":true})
+     *
+     * @Route("/{id}/update", name="salidabodega_update")
+     * @Method({"PUT","POST"})
+     *
      * @Breadcrumb(title="Modificar Salida de Bodega", routeName="salidabodega_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
@@ -483,7 +502,7 @@ class SalidaBodegaController extends Controller
      * Deletes a SalidaBodega entity.
      *
      * @Route("/{id}/delete", name="salidabodega_delete")
-     * @Method({"DELETE", "GET"})
+     * @Method({"POST", "DELETE", "GET"})
      */
     public function deleteAction(SalidaBodega $salidaBodega, Request $request)
     {

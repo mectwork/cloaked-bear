@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Buseta\BodegaBundle\Entity\Repository\BitacoraAlmacenRepository;
 use Buseta\BodegaBundle\Form\Filter\MovimientoFilter;
@@ -14,12 +15,11 @@ use Buseta\BodegaBundle\Form\Type\MovimientosProductosType;
 use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Form\Type\MovimientoType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
-use Buseta\BodegaBundle\Event\BitacoraEvents;
-use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
+
 /**
  * Movimiento controller.
  * @Breadcrumb(title="Inicio", routeName="core_homepage")
@@ -28,19 +28,18 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 class MovimientoController extends Controller
 {
 
-    public function procesarMovimientoAction($id)
+    public function procesarMovimientoAction(Movimiento $movimiento)
     {
-
         $manager = $this->get('buseta.bodega.movimiento.manager');
 
-        if ($manager->procesar($id)){
+        if ($manager->procesar($movimiento)){
             $this->get('session')->getFlashBag()->add('success', 'Se ha procesado el Movimiento de forma correcta.');
-            return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $id ) ) );
+            return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $movimiento->getId())));
         }
 
         $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al procesar el Movimento.');
 
-        return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $id ) ) );
+        return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $movimiento->getId())));
 
     }
 
@@ -108,8 +107,7 @@ class MovimientoController extends Controller
         //Si no hubo error en la validacion de las existencias de ninguna linea de $movimientoProducto
         if (!$error) {
             $manager = $this->get('buseta.bodega.movimiento.manager');
-            $result = $manager->completar($entity->getId());
-            if ($result===true){
+            if ($manager->completar($entity)){
                 $this->get('session')->getFlashBag()->add('success', 'Se ha completado el movimiento de forma correcta.');
                 return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $entity->getId() ) ) );
             } else {
@@ -118,8 +116,8 @@ class MovimientoController extends Controller
                 return $this->redirect($this->generateUrl('movimiento_show', array('id' => $entity->getId())));
             }
         }
-
     }
+
     /**
      * Updated automatically select AlmacenDestino when change select AlmacenOrigen.
      */
@@ -151,19 +149,6 @@ class MovimientoController extends Controller
         }
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
-    }
-
-    public function create_movimientoAction(Request $request)
-    {
-        $entity = new MovimientosProductos();
-        $form = $this->createCreateCompraForm($entity);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-        }
     }
 
     /**
@@ -291,11 +276,11 @@ class MovimientoController extends Controller
 
             if (!$error) {
                 //entity es la entidad Movimiento
-                $entity->setCreatedBy($this->getUser()->getUsername());
-                $entity->setMovidoBy($this->getUser()->getUsername());
+                $entity->setEstadoDocumento(BusetaBodegaDocumentStatus::DOCUMENT_STATUS_DRAFT);
                 $entity->setAlmacenOrigen($almacenOrigen);
                 $entity->setAlmacenDestino($almacenDestino);
                 $entity->setFechaMovimiento($fechaMovimiento = new \DateTime());
+
                 $em->persist($entity);
                 $em->flush();
                 //antes elcompletar era aqui
@@ -311,8 +296,8 @@ class MovimientoController extends Controller
                 }*/
 
                 $this->get('session')->getFlashBag()->add('success',  'Se ha creado el movimiento correctamente');
-                return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $entity->getId() ) ) );
 
+                return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $entity->getId() ) ) );
             }
 
         }

@@ -2,24 +2,23 @@
 
 namespace Buseta\BodegaBundle\EventListener;
 
-use Buseta\BodegaBundle\Entity\AlbaranLinea;
+use Buseta\BodegaBundle\BusetaBodegaEvents;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
-
-use Buseta\BodegaBundle\Entity\InventarioFisicoLinea;
-use Buseta\BodegaBundle\Entity\MovimientosProductos;
-use Buseta\BodegaBundle\Entity\SalidaBodegaProducto;
-use Buseta\BodegaBundle\Event\BitacoraEvents;
-use Buseta\BodegaBundle\Event\FilterBitacoraEvent;
+use Buseta\BodegaBundle\Event\BitacoraBodega\BitacoraEventInterface;
+use Buseta\BodegaBundle\Event\BitacoraSerial\BitacoraSerialAlbaranEvent;
+use Buseta\BodegaBundle\Event\BitacoraSerial\BitacoraSerialInventarioFisicoEvent;
+use Buseta\BodegaBundle\Event\BitacoraSerial\BitacoraSerialMovimientoEvent;
+use Buseta\BodegaBundle\Event\LegacyBitacoraEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidBitacoraTypeException;
-use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use Buseta\BodegaBundle\Manager\BitacoraAlmacenManager;
-use Buseta\BodegaBundle\Manager\BitacoraSerialManager;
 use Symfony\Bridge\Monolog\Logger;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 
 /**
  * Class BitacoraSubscriber
+ *
  * @package Buseta\BodegaBundle\EventListener
  */
 class BitacoraSubscriber implements EventSubscriberInterface
@@ -29,12 +28,6 @@ class BitacoraSubscriber implements EventSubscriberInterface
      */
     private $bitacoraAlmacenManager;
 
-
-    /**
-     * @var \Buseta\BodegaBundle\Manager\BitacoraSerialManager
-     */
-    private $bitacoraSerialManager;
-
     /**
      * @var \Symfony\Bridge\Monolog\Logger
      */
@@ -43,16 +36,13 @@ class BitacoraSubscriber implements EventSubscriberInterface
 
     /**
      * @param \Buseta\BodegaBundle\Manager\BitacoraAlmacenManager $bitacoraAlmacenManager
-     * @param \Buseta\BodegaBundle\Manager\BitacoraSerialManager $bitacoraSerialManager
-     * @param Logger $logger
+     * @param Logger                                              $logger
      */
     function __construct(
         BitacoraAlmacenManager $bitacoraAlmacenManager,
-        BitacoraSerialManager $bitacoraSerialManager,
         Logger $logger
     ) {
         $this->bitacoraAlmacenManager = $bitacoraAlmacenManager;
-        $this->bitacoraSerialManager = $bitacoraSerialManager;
         $this->logger = $logger;
     }
 
@@ -62,114 +52,133 @@ class BitacoraSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            /* C+ */
-            BitacoraEvents::CUSTOMER_RETURNS => 'customerReturns',
-            /* C- */
-            BitacoraEvents::CUSTOMER_SHIPMENT => 'customerShipment',
-            /* D+ */
-            BitacoraEvents::INTERNAL_CONSUMPTION_POSITIVE => 'internalConsumptionPositive',
-            /* D- */
-            BitacoraEvents::INTERNAL_CONSUMPTION_NEGATIVE => 'internalConsumptionNegative',
-            /* I+ */
-            BitacoraEvents::INVENTORY_IN => 'inventoryIn',
-            /* I- */
-            BitacoraEvents::INVENTORY_OUT => 'inventoryOut',
-            /* M+ */
-            BitacoraEvents::MOVEMENT_TO => 'movementTo',
-            /* M- */
-            BitacoraEvents::MOVEMENT_FROM => 'movementFrom',
-            /* P+ */
-            BitacoraEvents::PRODUCTION_POSITIVE => 'productionPositive',
-            /* P- */
-            BitacoraEvents::PRODUCTION_NEGATIVE => 'productionNegative',
-            /* V+ */
-            BitacoraEvents::VENDOR_RECEIPTS => 'vendorReceipts',
-            /* V- */
-            BitacoraEvents::VENDOR_RETURNS => 'vendorReturns',
-            /* W+ */
-            BitacoraEvents::WORK_ORDER_POSITIVE => 'workOrderPositive',
-            /* W- */
-            BitacoraEvents::WORK_ORDER_NEGATIVE => 'workOrderNegative',
+            BusetaBodegaEvents::BITACORA_CUSTOMER_RETURNS => 'customerReturns',
+            BusetaBodegaEvents::BITACORA_CUSTOMER_SHIPMENT => 'customerShipment',
+            BusetaBodegaEvents::BITACORA_INTERNAL_CONSUMPTION => 'internalConsumption',
+            BusetaBodegaEvents::BITACORA_INVENTORY_IN_OUT => 'inventoryInOut',
+            BusetaBodegaEvents::BITACORA_MOVEMENT_FROM_TO => 'movementFromTo',
+            BusetaBodegaEvents::BITACORA_PRODUCTION => 'production',
+            BusetaBodegaEvents::BITACORA_VENDOR_RECEIPTS => 'vendorReceipts',
+            BusetaBodegaEvents::BITACORA_VENDOR_RETURNS => 'vendorReturns',
+            BusetaBodegaEvents::BITACORA_WORK_ORDER => 'workOrder',
         );
     }
 
-    public function customerReturns(FilterBitacoraEvent $event)
+    public function customerReturns(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'C+');
+        $this->legacyCreateRegistry($event, 'C+');
     }
 
-    public function customerShipment(FilterBitacoraEvent $event)
+    public function customerShipment(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'C-');
+        $this->legacyCreateRegistry($event, 'C-');
     }
 
-    public function internalConsumptionPositive(FilterBitacoraEvent $event)
+    public function internalConsumption(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'D+');
+        $this->legacyCreateRegistry($event, 'D+');
     }
 
-    public function internalConsumptionNegative(FilterBitacoraEvent $event)
-    {
-        $this->createRegistry($event, 'D-');
+    public function inventoryInOut(
+        BitacoraEventInterface $event,
+        $eventName = null,
+        EventDispatcherInterface $eventDispatcher = null
+    ) {
+        $this->createRegistry($event);
+        if (!$event->getError()) {
+            $serialEvent = new BitacoraSerialInventarioFisicoEvent($event);
+            $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_SERIAL_REGISTER_EVENTS, $serialEvent);
+            if ($serialEvent->getError()) {
+                $event->setError($serialEvent->getError());
+            }
+        }
     }
 
-    public function inventoryIn(FilterBitacoraEvent $event)
-    {
-        $this->createRegistry($event, 'I+');
+    public function movementFromTo(
+        BitacoraEventInterface $event,
+        $eventName = null,
+        EventDispatcherInterface $eventDispatcher = null
+    ) {
+        $this->createRegistry($event);
+        if (!$event->getError()) {
+            $serialEvent = new BitacoraSerialMovimientoEvent($event);
+            $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_SERIAL_REGISTER_EVENTS, $serialEvent);
+            if ($serialEvent->getError()) {
+                $event->setError($serialEvent->getError());
+            }
+        }
     }
 
-    public function inventoryOut(FilterBitacoraEvent $event)
+    public function production(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'I-');
+        $this->legacyCreateRegistry($event, 'P+');
     }
 
-    public function movementTo(FilterBitacoraEvent $event)
-    {
-        $this->createRegistry($event, 'M+');
+    public function vendorReceipts(
+        BitacoraEventInterface $event,
+        $eventName = null,
+        EventDispatcherInterface $eventDispatcher = null
+    ) {
+        $this->createRegistry($event);
+        if (!$event->getError()) {
+            $serialEvent = new BitacoraSerialAlbaranEvent($event);
+            $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_SERIAL_REGISTER_EVENTS, $serialEvent);
+            if ($serialEvent->getError()) {
+                $event->setError($serialEvent->getError());
+            }
+        }
     }
 
-    public function movementFrom(FilterBitacoraEvent $event)
+    public function vendorReturns(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'M-');
+        $this->legacyCreateRegistry($event, 'V-');
     }
 
-    public function productionPositive(FilterBitacoraEvent $event)
+    public function workOrder(LegacyBitacoraEvent $event)
     {
-        $this->createRegistry($event, 'P+');
+        $this->legacyCreateRegistry($event, 'W+');
     }
 
-    public function productionNegative(FilterBitacoraEvent $event)
+    private function createRegistry(BitacoraEventInterface $event)
     {
-        $this->createRegistry($event, 'P-');
-    }
+        if ($event->getError()) {
+            return;
+        }
 
-    public function vendorReceipts(FilterBitacoraEvent $event)
-    {
-        $this->createRegistry($event, 'V+');
-    }
+        try {
+            $bitacoraEvents = $event->getBitacoraEvents();
+            foreach ($bitacoraEvents->getIterator() as $bitacoraEvent) {
+                /** @var \Buseta\BodegaBundle\Model\BitacoraEventModel $bitacoraEvent */
+                $result = $this->bitacoraAlmacenManager->createRegistry($bitacoraEvent, $event->isFlush());
+                if (!$result && $bitacoraEvent->getError()) {
+                    $event->setError($bitacoraEvent->getError());
 
-    public function vendorReturns(FilterBitacoraEvent $event)
-    {
-        $this->createRegistry($event, 'V-');
-    }
+                    break;
+                }
+            }
+        } catch (\Exception $e) {
+            $this->logger->critical(
+                sprintf(
+                    'Ha ocurrido un error al crear la Bitacora Bodega. Detalles: {message: %s, class: %s, line: %d}',
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                )
+            );
 
-    public function workOrderPositive(FilterBitacoraEvent $event)
-    {
-        $this->createRegistry($event, 'W+');
-    }
-
-    public function workOrderNegative(FilterBitacoraEvent $event)
-    {
-        $this->createRegistry($event, 'W-');
+            $event->setError('Ha ocurrido un error al crear la Bitacora Bodega.');
+        }
     }
 
     /**
-     * @param FilterBitacoraEvent $event
-     * @param $movementType
+     * @param LegacyBitacoraEvent $event
+     * @param                     $movementType
      *
+     * @deprecated
      */
-    public function createRegistry(FilterBitacoraEvent $event, $movementType)
+    public function legacyCreateRegistry(LegacyBitacoraEvent $event, $movementType)
     {
+
         try {
             $resultSerial = true;
             $entity = $event->getEntityData();
@@ -187,10 +196,10 @@ class BitacoraSubscriber implements EventSubscriberInterface
                         ->setTipoMovimiento($movementType);
 
                     //desde aqui llamo el metodo guardarSerialesDesdeAlbaranLinea de la Bitacora de Seriales
-                    if ($entity->getProducto()->getTieneNroSerie()) {
-                        $resultSerial = $this->bitacoraSerialManager->guardarSerialesDesdeAlbaranLinea($entity,
-                            $movementType);
-                    }
+//                    if ($entity->getProducto()->getTieneNroSerie()) {
+//                        $resultSerial = $this->bitacoraSerialManager->guardarSerialesDesdeAlbaranLinea($entity,
+//                            $movementType);
+//                    }
 
                     break;
                 }
@@ -208,12 +217,11 @@ class BitacoraSubscriber implements EventSubscriberInterface
                         ->setTipoMovimiento($cantidadAMover >= 0 ? 'I+' : 'I-');
 
                     //desde aqui llamo el metodo guardarSerialesDesdeInventarioFisicoLinea de la Bitacora de Seriales
-                    if ($entity->getProducto()->getTieneNroSerie()) {
-                        $resultSerial = $this->bitacoraSerialManager->guardarSerialesDesdeInventarioFisicoLinea($entity,
-                            $movementType);
-
-                    }
-
+//                    if ($entity->getProducto()->getTieneNroSerie()) {
+//                        $resultSerial = $this->bitacoraSerialManager->guardarSerialesDesdeInventarioFisicoLinea($entity,
+//                            $movementType);
+//
+//                    }
 
 
                     break;
@@ -234,14 +242,14 @@ class BitacoraSubscriber implements EventSubscriberInterface
                     } elseif ($movementType == 'M+') {
                         $nuevabitacora->setAlmacen($entity->getMovimiento()->getAlmacenDestino());
                     } else {
-                        throw new NotValidBitacoraTypeException('Tipo de Movimiento no valido' . $movementType);
+                        throw new NotValidBitacoraTypeException('Tipo de Movimiento no valido'.$movementType);
                     }
 
                     //desde aqui llamo el metodo guardarSerialesDesdeMovimientoProducto de la Bitacora de Seriales
-                    if ($entity->getProducto()->getTieneNroSerie()) {
-                        $resultSerial = $this->bitacoraSerialManager->guardarSerialesDesdeMovimientoProducto($entity,
-                            $movementType);
-                    }
+//                    if ($entity->getProducto()->getTieneNroSerie()) {
+//                        $resultSerial = $this->bitacoraSerialManager->guardarSerialesDesdeMovimientoProducto($entity,
+//                            $movementType);
+//                    }
 
                     break;
                 }
@@ -261,14 +269,14 @@ class BitacoraSubscriber implements EventSubscriberInterface
                     } elseif ($movementType == 'M+') {
                         $nuevabitacora->setAlmacen($entity->getSalida()->getAlmacenDestino());
                     } else {
-                        throw new NotValidBitacoraTypeException('Tipo de Salida de Producto no valido' . $movementType);
+                        throw new NotValidBitacoraTypeException('Tipo de Salida de Producto no valido'.$movementType);
                     }
 
                     //desde aqui llamo el metodo guardarSerialesDesdeSalidaBodegaProducto de la Bitacora de Seriales
-                    if ($entity->getProducto()->getTieneNroSerie()) {
-                        $resultSerial = $this->bitacoraSerialManager->guardarSerialesDesdeSalidaBodegaProducto($entity,
-                            $movementType);
-                    }
+//                    if ($entity->getProducto()->getTieneNroSerie()) {
+//                        $resultSerial = $this->bitacoraSerialManager->guardarSerialesDesdeSalidaBodegaProducto($entity,
+//                            $movementType);
+//                    }
 
                     break;
                 }

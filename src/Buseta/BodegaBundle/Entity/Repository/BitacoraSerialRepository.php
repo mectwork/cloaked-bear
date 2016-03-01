@@ -14,40 +14,11 @@ use Doctrine\ORM\NoResultException;
  */
 class BitacoraSerialRepository extends EntityRepository
 {
-
- /*   public function busquedaBitacoraAlmacen($busqueda)
-    {
-        $qb = $this->_em->createQueryBuilder();
-        $datos = $busqueda->getData();
-
-        $q = $qb->select('o')
-            ->from('BusetaBodegaBundle:BitacoraAlmacen', 'o')
-            ->where($qb->expr()->eq(true, true));
-
-        if ($datos['almacen'] !== null && $datos['almacen'] !== '') {
-            $q->andWhere('o.almacen = :almacen')
-                ->setParameter('almacen', $datos['almacen']);
-        }
-
-        if ($datos['categoriaProducto'] !== null && $datos['categoriaProducto'] !== '') {
-            $q->andWhere('o.categoriaProducto = :categoriaProducto')
-                ->setParameter('categoriaProducto', $datos['categoriaProducto']);
-        }
-
-        if ($datos['fecha'] !== null && $datos['fecha'] !== '') {
-            $q->andWhere('o.fechaMovimiento <= :fecha')
-                ->setParameter('fecha', $datos['fecha']);
-        }
-
-        $q = $q->getQuery(); //Se devuelve para paginar
-
-        try {
-            return $q->getResult(); //No se debe devolver para paginar, es mas trabajoso
-        } catch (NoResultException $e) {
-            return array();
-        }
-    }*/
-
+    /**
+     * @param BitacoraSerialFilterModel|null $filter
+     *
+     * @return array|\Doctrine\ORM\Query
+     */
     public function filter(BitacoraSerialFilterModel $filter = null)
     {
         $qb = $this->createQueryBuilder('p');
@@ -84,7 +55,7 @@ class BitacoraSerialRepository extends EntityRepository
             }
         }
 
-        $query->orderBy('p.id', 'ASC');
+        $query->orderBy('p.id', 'DESC');
 
         try {
             return $query->getQuery();

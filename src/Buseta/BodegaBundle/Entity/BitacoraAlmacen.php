@@ -70,7 +70,7 @@ class BitacoraAlmacen implements DateTimeAwareInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="movement_date", type="date")
+     * @ORM\Column(name="movement_date", type="datetime")
      * @Assert\Date()
      */
     private $fechaMovimiento;
@@ -277,7 +277,7 @@ class BitacoraAlmacen implements DateTimeAwareInterface
     /**
      * Set consumoInterno
      *
-     * @param integer $consumoInterno
+     * @param string $consumoInterno
      * @return BitacoraAlmacen
      */
     public function setConsumoInterno($consumoInterno)
@@ -290,7 +290,7 @@ class BitacoraAlmacen implements DateTimeAwareInterface
     /**
      * Get consumoInterno
      *
-     * @return integer
+     * @return string
      */
     public function getConsumoInterno()
     {

@@ -46,9 +46,10 @@ class InventarioFisico
     private $descripcion;
 
     /**
-     * @var date
+     * @var \DateTime
      *
-     * @ORM\Column(name="fecha", type="date")
+     * @ORM\Column(name="fecha", type="datetime")
+     *
      * @Assert\Date()
      * @Assert\NotBlank()
      */
@@ -96,7 +97,7 @@ class InventarioFisico
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -128,14 +129,14 @@ class InventarioFisico
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-    
+
         return $this;
     }
 
     /**
      * Get nombre
      *
-     * @return string 
+     * @return string
      */
     public function getNombre()
     {
@@ -151,14 +152,14 @@ class InventarioFisico
     public function setDescripcion($descripcion)
     {
         $this->descripcion = $descripcion;
-    
+
         return $this;
     }
 
     /**
      * Get descripcion
      *
-     * @return string 
+     * @return string
      */
     public function getDescripcion()
     {
@@ -169,19 +170,20 @@ class InventarioFisico
      * Set fecha
      *
      * @param \DateTime $fecha
+     *
      * @return InventarioFisico
      */
     public function setFecha($fecha)
     {
         $this->fecha = $fecha;
-    
+
         return $this;
     }
 
     /**
      * Get fecha
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFecha()
     {
@@ -197,14 +199,14 @@ class InventarioFisico
     public function setAlmacen(\Buseta\BodegaBundle\Entity\Bodega $almacen = null)
     {
         $this->almacen = $almacen;
-    
+
         return $this;
     }
 
     /**
      * Get almacen
      *
-     * @return \Buseta\BodegaBundle\Entity\Bodega 
+     * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getAlmacen()
     {
@@ -217,7 +219,7 @@ class InventarioFisico
     {
         $this->inventarioFisicoLineas = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Add inventarioFisicoLineas
      *
@@ -228,7 +230,7 @@ class InventarioFisico
     {
         $inventarioFisicoLineas->setInventarioFisico($this);
         $this->inventarioFisicoLineas[] = $inventarioFisicoLineas;
-    
+
         return $this;
     }
 
@@ -245,7 +247,7 @@ class InventarioFisico
     /**
      * Get inventarioFisicoLineas
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getInventarioFisicoLineas()
     {

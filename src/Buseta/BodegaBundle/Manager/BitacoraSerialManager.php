@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Manager;
 
 use Buseta\BodegaBundle\Entity\BitacoraSerial;
+use Buseta\BodegaBundle\Model\BitacoraSerialEventModel;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Monolog\Logger;
 use Buseta\BodegaBundle\Extras\GeneradorSeriales;
@@ -100,7 +101,7 @@ class BitacoraSerialManager
                     ->setTipoMovimiento($movementType);
 
                 //validacion y creacion de una linea  de bitacoraSerial
-                $result = $this->createRegistry($bitacoraSerial);
+                $result = $this->legacyCreateRegistry($bitacoraSerial);
                 if ($result === false) {
                     return $error = 'Ocurrio un error salvando en la bitacora de seriales';
                 };
@@ -157,7 +158,7 @@ class BitacoraSerialManager
                     ->setTipoMovimiento('I-');
 
                 //validacion y creacion de una linea  de bitacoraSerial
-                $result = $this->createRegistry($bitacoraSerial);
+                $result = $this->legacyCreateRegistry($bitacoraSerial);
                 if ($result === false) {
                     return $error = 'Ocurrio un error salvando en la bitacora de seriales';
                 };
@@ -190,7 +191,7 @@ class BitacoraSerialManager
                     ->setTipoMovimiento('I+');
 
                 //validacion y creacion de una linea  de bitacoraSerial
-                $result = $this->createRegistry($bitacoraSerial);
+                $result = $this->legacyCreateRegistry($bitacoraSerial);
                 if ($result === false) {
                     return $error = 'Ocurrio un error salvando en la bitacora de seriales';
                 };
@@ -262,7 +263,7 @@ class BitacoraSerialManager
                 }
 
                 //validacion y creacion de una linea  de bitacoraSerial
-                $result = $this->createRegistry($bitacoraSerial);
+                $result = $this->legacyCreateRegistry($bitacoraSerial);
                 if ($result === false) {
                     return $error = 'Ocurrio un error salvando en la bitacora de seriales';
                 };
@@ -333,7 +334,7 @@ class BitacoraSerialManager
                 }
 
                 //validacion y creacion de una linea  de bitacoraSerial
-                $result = $this->createRegistry($bitacoraSerial);
+                $result = $this->legacyCreateRegistry($bitacoraSerial);
                 if ($result === false) {
                     return $error = 'Ocurrio un error salvando en la bitacora de seriales';
                 };
@@ -353,8 +354,10 @@ class BitacoraSerialManager
     /**
      * @param BitacoraSerial $bitacora
      * @return bool
+     *
+     * @deprecated
      */
-    public function createRegistry(BitacoraSerial $bitacora)
+    public function legacyCreateRegistry(BitacoraSerial $bitacora)
     {
         try {
             //el validator valida por los assert de la entity
@@ -381,4 +384,40 @@ class BitacoraSerialManager
 
     }
 
+    /**
+     * Creates Bitacora Serial registry
+     *
+     * @param BitacoraSerialEventModel $bitacoraSerialEventModel
+     * @param bool                     $flush
+     *
+     * @return bool
+     */
+    public function createRegistry(BitacoraSerialEventModel $bitacoraSerialEventModel, $flush=false)
+    {
+        try {
+            $registry = new BitacoraSerial();
+            $registry->setAlmacen($bitacoraSerialEventModel->getWarehouse());
+            $registry->setProducto($bitacoraSerialEventModel->getProduct());
+            $registry->setSerial($bitacoraSerialEventModel->getSerial());
+            $registry->setCantidadMovida($bitacoraSerialEventModel->getMovementQty());
+            $registry->setFechaMovimiento($bitacoraSerialEventModel->getMovementDate());
+            $registry->setTipoMovimiento($bitacoraSerialEventModel->getMovementType());
+
+            if ($bitacoraSerialEventModel->getCallback() !== null) {
+                call_user_func($bitacoraSerialEventModel->getCallback(), $registry);
+            }
+
+            $this->em->persist($registry);
+            if ($flush) {
+                $this->em->flush();
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            $this->logger->critical(sprintf('BitacoraSerial.Persist: %s', $e->getMessage()));
+            $bitacoraSerialEventModel->setError($e->getMessage());
+
+            return false;
+        }
+    }
 }

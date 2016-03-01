@@ -158,6 +158,13 @@ services:
         class: Buseta\BodegaBundle\EventListener\BitacoraSubscriber
         arguments:
             - @buseta.bodega.bitacora_almacen.manager
+            - @logger
+        tags:
+            - {name: kernel.event_subscriber}
+
+    buseta.bodega.bitacora_serial.subscriber:
+        class: Buseta\BodegaBundle\EventListener\BitacoraSerialSubscriber
+        arguments:
             - @buseta.bodega.bitacora_serial.manager
             - @logger
         tags:
@@ -166,14 +173,28 @@ services:
     buseta.bodega.albaran.subscriber:
         class: Buseta\BodegaBundle\EventListener\AlbaranSubscriber
         arguments:
-            - @buseta.bodega.albaran.manager
+            - @logger
         tags:
             - {name: kernel.event_subscriber}
 
     buseta.bodega.inventariofisico.subscriber:
         class: Buseta\BodegaBundle\EventListener\InventarioFisicoSubscriber
         arguments:
-            - @buseta.bodega.inventariofisico.manager
+            - @logger
+        tags:
+            - {name: kernel.event_subscriber}
+
+    buseta.bodega.movimiento.subscriber:
+        class: Buseta\BodegaBundle\EventListener\MovimientoSubscriber
+        arguments:
+            - @logger
+        tags:
+            - {name: kernel.event_subscriber}
+
+    buseta.bodega.salidabodega.subscriber:
+        class: Buseta\BodegaBundle\EventListener\SalidaBodegaSubscriber
+        arguments:
+            - @logger
         tags:
             - {name: kernel.event_subscriber}
 

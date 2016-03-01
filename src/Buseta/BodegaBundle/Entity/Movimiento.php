@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="d_movimiento")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\MovimientoRepository")
  */
-class Movimiento
+class Movimiento implements DateTimeAwareInterface
 {
     /**
      * @var integer
@@ -33,7 +34,7 @@ class Movimiento
     private $almacenDestino;
 
     /**
-     * @var date
+     * @var \DateTime
      *
      * @ORM\Column(name="fechaMovimiento", type="date")
      */
@@ -50,51 +51,62 @@ class Movimiento
     /**
      * @var string
      *
-     * @ORM\Column(name="movidoBy", type="string", nullable=true)
+     * @ORM\Column(name="moved_by", type="string", nullable=true)
      */
-    private $movidoBy;
+    private $movidoPor;
 
     /**
-     * @var date
+     * @var string
      *
-     * @ORM\Column(name="created", type="date")
+     * @ORM\Column(name="document_status", type="string")
+     */
+    private $estadoDocumento;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime")
      */
     private $created;
 
     /**
-     * @var string
+     * @var \HatueySoft\SecurityBundle\Entity\User
      *
-     * @ORM\Column(name="createdBy", type="string", nullable=true)
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
+     * @ORM\JoinColumn(name="createdBy_id")
      */
     private $createdBy;
 
     /**
-     * @var date
+     * @var \DateTime
      *
-     * @ORM\Column(name="updated", type="date")
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
      */
     private $updated;
 
     /**
-     * @var string
+     * HatueySoft\SecurityBundle\Entity\User
      *
-     * @ORM\Column(name="updatedBy", type="string", nullable=true)
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
+     * @ORM\JoinColumn(name="updatedBy_id")
      */
     private $updatedBy;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="estado_documento", type="string")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="deleted", type="datetime", nullable=true)
      */
-    private $estado_documento = 'BO';
+    private $deleted;
 
-    public function __construct()
-    {
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
-    }
+    /**
+     * @var \HatueySoft\SecurityBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
+     * @ORM\JoinColumn(name="deletedBy_id")
+     */
+    private $deletedBy;
+
 
     /**
      * Get id.
@@ -128,126 +140,6 @@ class Movimiento
     public function getFechaMovimiento()
     {
         return $this->fechaMovimiento;
-    }
-
-    /**
-     * Set movidoBy.
-     *
-     * @param string $movidoBy
-     *
-     * @return Movimiento
-     */
-    public function setMovidoBy($movidoBy)
-    {
-        $this->movidoBy = $movidoBy;
-
-        return $this;
-    }
-
-    /**
-     * Get movidoBy.
-     *
-     * @return string
-     */
-    public function getMovidoBy()
-    {
-        return $this->movidoBy;
-    }
-
-    /**
-     * Set created.
-     *
-     * @param \DateTime $created
-     *
-     * @return Movimiento
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created.
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set createdBy.
-     *
-     * @param string $createdBy
-     *
-     * @return Movimiento
-     */
-    public function setCreatedBy($createdBy)
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    /**
-     * Get createdBy.
-     *
-     * @return string
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    /**
-     * Set updated.
-     *
-     * @param \DateTime $updated
-     *
-     * @return Movimiento
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated.
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Set updatedBy.
-     *
-     * @param string $updatedBy
-     *
-     * @return Movimiento
-     */
-    public function setUpdatedBy($updatedBy)
-    {
-        $this->updatedBy = $updatedBy;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedBy.
-     *
-     * @return string
-     */
-    public function getUpdatedBy()
-    {
-        return $this->updatedBy;
     }
 
     /**
@@ -338,11 +230,12 @@ class Movimiento
      * Set estado_documento
      *
      * @param string $estadoDocumento
-     * @return SalidaBodega
+     *
+     * @return Movimiento
      */
     public function setEstadoDocumento($estadoDocumento)
     {
-        $this->estado_documento = $estadoDocumento;
+        $this->estadoDocumento = $estadoDocumento;
 
         return $this;
     }
@@ -354,6 +247,181 @@ class Movimiento
      */
     public function getEstadoDocumento()
     {
-        return $this->estado_documento;
+        return $this->estadoDocumento;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->movimientos_productos = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set movidoPor
+     *
+     * @param string $movidoPor
+     *
+     * @return Movimiento
+     */
+    public function setMovidoPor($movidoPor)
+    {
+        $this->movidoPor = $movidoPor;
+
+        return $this;
+    }
+
+    /**
+     * Get movidoPor
+     *
+     * @return string
+     */
+    public function getMovidoPor()
+    {
+        return $this->movidoPor;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     *
+     * @return Movimiento
+     */
+    public function setCreated(\DateTime $created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return Movimiento
+     */
+    public function setUpdated(\DateTime $updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param \DateTime $deleted
+     *
+     * @return Movimiento
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return \DateTime
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Set createdBy
+     *
+     * @param \HatueySoft\SecurityBundle\Entity\User $createdBy
+     *
+     * @return Movimiento
+     */
+    public function setCreatedBy(\HatueySoft\SecurityBundle\Entity\User $createdBy = null)
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * Get createdBy
+     *
+     * @return \HatueySoft\SecurityBundle\Entity\User
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * Set updatedBy
+     *
+     * @param \HatueySoft\SecurityBundle\Entity\User $updatedBy
+     *
+     * @return Movimiento
+     */
+    public function setUpdatedBy(\HatueySoft\SecurityBundle\Entity\User $updatedBy = null)
+    {
+        $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedBy
+     *
+     * @return \HatueySoft\SecurityBundle\Entity\User
+     */
+    public function getUpdatedBy()
+    {
+        return $this->updatedBy;
+    }
+
+    /**
+     * Set deletedBy
+     *
+     * @param \HatueySoft\SecurityBundle\Entity\User $deletedBy
+     *
+     * @return Movimiento
+     */
+    public function setDeletedBy(\HatueySoft\SecurityBundle\Entity\User $deletedBy = null)
+    {
+        $this->deletedBy = $deletedBy;
+
+        return $this;
+    }
+
+    /**
+     * Get deletedBy
+     *
+     * @return \HatueySoft\SecurityBundle\Entity\User
+     */
+    public function getDeletedBy()
+    {
+        return $this->deletedBy;
     }
 }

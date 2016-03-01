@@ -2,20 +2,20 @@
 
 namespace Buseta\BodegaBundle\Event;
 
-use Buseta\BodegaBundle\Entity\Albaran;
+use Buseta\BodegaBundle\Entity\SalidaBodega;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class FilterAlbaranEvent
+ * Class FilterSalidaBodegaEvent
  *
  * @package Buseta\BodegaBundle\Event
  */
-class FilterAlbaranEvent extends Event
+class FilterSalidaBodegaEvent extends Event
 {
     /**
-     * @var Albaran
+     * @var SalidaBodega
      */
-    private $albaran;
+    private $salidaBodega;
 
     /**
      * @var string|null
@@ -30,30 +30,30 @@ class FilterAlbaranEvent extends Event
     /**
      * FilterAlbaranEvent constructor
      *
-     * @param Albaran $albaran
+     * @param SalidaBodega $salidaBodega
      * @param boolean $flush
      */
-    function __construct(Albaran $albaran, $flush=true)
+    function __construct(SalidaBodega $salidaBodega, $flush=true)
     {
-        $this->albaran = $albaran;
+        $this->salidaBodega = $salidaBodega;
         $this->error = false;
         $this->flush = $flush;
     }
 
     /**
-     * @return Albaran
+     * @return SalidaBodega
      */
-    public function getAlbaran()
+    public function getSalidaBodega()
     {
-        return $this->albaran;
+        return $this->salidaBodega;
     }
 
     /**
-     * @param Albaran $albaran
+     * @param SalidaBodega $salidaBodega
      */
-    public function setAlbaran($albaran)
+    public function setSalidaBodega($salidaBodega)
     {
-        $this->albaran = $albaran;
+        $this->salidaBodega = $salidaBodega;
     }
 
     /**

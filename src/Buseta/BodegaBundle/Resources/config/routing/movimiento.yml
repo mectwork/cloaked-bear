@@ -41,15 +41,6 @@ movimientos_ajax_almacenOrigen_almacenDestino:
   options:
       expose: true
 
-movimiento_informe:
-    path:  /informeMovimiento
-    defaults: { _controller: "BusetaBodegaBundle:Informe:informeMovimientos" }
-
-movimiento_ajax_busqueda_avanzada:
-  path: /busqueda-avanzada/{page}/{cantResult}
-  defaults: { _controller: "BusetaBodegaBundle:Informe:busquedaAvanzada", page: 0, cantResult: 10 }
-  requirements: { methods: "GET" }
-
 procesarMovimiento:
   path:  /{id}/procesar
   defaults: { _controller: "BusetaBodegaBundle:Movimiento:procesarMovimiento" }

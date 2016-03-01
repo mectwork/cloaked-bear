@@ -2,7 +2,14 @@
 
 namespace Buseta\BodegaBundle\Event;
 
-
+/**
+ * Class BitacoraEvents
+ *
+ * @package Buseta\BodegaBundle\Event
+ *
+ * @deprecated {@link Buseta\BodegaBundle\Event\BitacoraEvents} is deprecated,
+ * use {@link Buseta\BodegaBundle\BusetaBodegaEvents} instead.
+ */
 final class BitacoraEvents
 {
     /* C+ */
