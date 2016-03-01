@@ -6,6 +6,7 @@ use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\BusetaBodegaEvents;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
+use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 
 /**
  * Class AlbaranManager
@@ -137,48 +138,64 @@ class AlbaranManager extends AbstractBodegaManager
     }
 
     /**
-     * @param $id
+     * Rollback document status to draft
+     *
+     * @param Albaran $albaran
+     *
      * @return bool|string
      */
-    public function revertir($id)
+    public function revertir(Albaran $albaran)
     {
+        $error = false;
         try {
+            $this->beginTransaction();
 
-            $albaran = $this->em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
+            if ($albaran->getEstadoDocumento() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_PROCESS) {
+                $this->logger->error(
+                    sprintf(
+                        'El estado de Orden Entrada con id %d no se corresponde con el estado previo para revertir.',
+                        $albaran->getId()
+                    )
+                );
 
-            if (!$albaran) {
-                throw new NotFoundElementException('No se encontro la entidad Albaran.');
-            }
-
-            if ($albaran->getEstadoDocumento() !== 'PR') {
-                $this->logger->error(sprintf('El estado %s del Albaran con id %d no se corresponde con el estado previo a procesado(PR).',
-                    $albaran->getEstadoDocumento(),
-                    $albaran->getId()
-                ));
                 throw new NotValidStateException();
             }
 
             // Change state Borrador(PR) to Procesado(BO)
-            $albaran->setEstadoDocumento('BO');
+            $this->cambiarEstado($albaran, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_DRAFT, $error);
 
-            $this->em->flush();
-            return true;
+            if (!$error) {
+                $this->em->flush();
 
+                $this->commitTransaction();
+
+                return true;
+            }
+
+            $this->logger->warning(sprintf(
+                'No se ha podido revertir Orden de Entrada a su anterior estado debido a errores previos: %s',
+                $error
+            ));
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Ha ocurrido un error al procesar el Albaran: %s', $e->getMessage()));
-            //borramos los cambios en el entity manager
-            $this->em->clear();
-            return 'Ha ocurrido un error al procesar el Albaran';
+            $this->logger->error(
+                sprintf(
+                    'Ha ocurrido un error al revertir Orden Entrada desde estado %s. Detalles: {message: %s, class: %s, line: %d}',
+                    $e->getMessage()
+                )
+            );
         }
 
+        $this->rollbackTransaction();
+
+        return false;
     }
 
     /**
      * Change Albaran document status
      *
-     * @param Albaran           $albaran
-     * @param string            $estado
-     * @param boolean|string    $error
+     * @param Albaran $albaran
+     * @param string $estado
+     * @param boolean|string $error
      *
      * @return bool|string
      */

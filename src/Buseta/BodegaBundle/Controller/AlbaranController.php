@@ -69,7 +69,7 @@ class AlbaranController extends Controller
      *
      * @return RedirectResponse
      *
-     * @Route("/{id}/procesarAlbaran", name="procesarAlbaran")
+     * @Route("/{id}/process", name="procesarAlbaran")
      * @Method({"GET"})
      */
     public function procesarAlbaranAction(Albaran $albaran)
@@ -96,7 +96,7 @@ class AlbaranController extends Controller
     /**
      * Complete Albaran entity
      *
-     * @Route("/{id}/completarAlbaran", name="completarAlbaran")
+     * @Route("/{id}/complete", name="completarAlbaran")
      * @Method({"GET"})
      */
     public function completarAlbaranAction(Albaran $albaran)
@@ -113,6 +113,32 @@ class AlbaranController extends Controller
             $this->get('session')->getFlashBag()->add(
                 'danger',
                 sprintf('Ha ocurrido un error al completar la Orden de Entrada.')
+            );
+
+            return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
+        }
+    }
+
+    /**
+     * Reverts to previous Orden Entrada state
+     *
+     * @Route("/{id}/revert", name="albaran_revertir")
+     * @Method({"GET"})
+     */
+    public function revertirAction(Albaran $albaran)
+    {
+        $manager = $this->get('buseta.bodega.albaran.manager');
+        if ($manager->revertir($albaran)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'Se ha revertido la Orden de Entrada de forma correcta.'
+            );
+
+            return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                'danger',
+                'Ha ocurrido un error al revertir la Orden de Entrada.'
             );
 
             return $this->redirect($this->generateUrl('albaran_show', array('id' => $albaran->getId())));
@@ -267,31 +293,6 @@ class AlbaranController extends Controller
             /*'delete_form'   => $deleteForm->createView(),*/
         ));
     }
-
-    /**
-     *
-     * @Route("/{id}/revertir", name="albaran_revertir", methods={"GET"}, options={"expose":true})
-     * @Breadcrumb(title="Borrador de Orden de Entrada", routeName="albaran_revertir", routeParameters={"id"})
-     */
-    public function revertirAction(Albaran $albaran)
-    {
-        $manager = $this->get('buseta.bodega.albaran.manager');
-
-        $trans = $this->get('translator');
-        $albaranTrans = $trans->trans('albaran.singular', array(), 'BusetaBodegaBundle');
-
-        $result = $manager->revertir( $albaran->getId() );
-
-        if ($result===true){
-            $this->get('session')->getFlashBag()->add('success',  sprintf(  'Se ha revertido la %s de forma correcta.', $albaranTrans) );
-            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
-        } else {
-            $this->get('session')->getFlashBag()->add('danger',  sprintf(  'Ha ocurrido un error al revertir la %s: %s', $albaranTrans, $result) );
-            return $this->redirect( $this->generateUrl('albaran_show', array( 'id' => $albaran->getId() ) ) );
-        }
-
-    }
-
 
     /**
      * Creates a form to edit a Albaran entity.
