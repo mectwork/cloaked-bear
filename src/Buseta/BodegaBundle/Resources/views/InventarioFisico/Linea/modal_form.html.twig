@@ -23,3 +23,10 @@
         </div>
     </div>
 </div>
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('select#buseta_inventariofisico_linea_producto').chosen();
+        });
+    </script>
+{% endblock javascripts %}
