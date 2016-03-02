@@ -5,14 +5,15 @@ namespace Buseta\CombustibleBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class Marchamo1Valido
+ * Class Marchamo2Valido
  *
  * @package Buseta\CombustibleBundle\Validator\Constraints
  * @Annotation
  */
-class Marchamo1Valido extends Constraint
+class Marchamo2Valido extends Constraint
 {
-    public $message = 'El Marchamo no coincide con el anterior Servicio.';
+    public $messageCantidad = 'No es posible extraer Marchamo de bodega, no existen cantidades disponibles.';
+    public $messageSerial = 'El Marchamo con número de serie "%serial%" no existe en bodega.';
 
     public function getTargets()
     {
@@ -21,6 +22,6 @@ class Marchamo1Valido extends Constraint
 
     public function validatedBy()
     {
-        return 'combustible_marchamo1valido_validador';
+        return 'combustible_marchamo2valido_validador';
     }
 }

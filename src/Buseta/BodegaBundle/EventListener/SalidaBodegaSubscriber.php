@@ -107,10 +107,13 @@ class SalidaBodegaSubscriber implements EventSubscriberInterface
      * @param string|null                   $eventName
      * @param EventDispatcherInterface|null $eventDispatcher
      */
-    public function postComplete(FilterSalidaBodegaEvent $event, $eventName = null, EventDispatcherInterface $eventDispatcher = null)
-    {
+    public function postComplete(
+        FilterSalidaBodegaEvent $event,
+        $eventName = null,
+        EventDispatcherInterface $eventDispatcher = null
+    ) {
         $bitacoraEvent = new BitacoraSalidaBodegaEvent($event->getSalidaBodega());
-        $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_VENDOR_RECEIPTS, $bitacoraEvent);
+        $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_INTERNAL_CONSUMPTION, $bitacoraEvent);
 
         if ($error = $bitacoraEvent->getError()) {
             $event->setError($error);

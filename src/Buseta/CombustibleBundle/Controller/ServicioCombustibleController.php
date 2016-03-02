@@ -13,6 +13,7 @@ use Buseta\CombustibleBundle\Form\Model\ServicioCombustibleModel;
 use Buseta\CombustibleBundle\Form\Type\ServicioCombustibleType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -108,7 +109,12 @@ class ServicioCombustibleController extends Controller
     /**
      * Creates a new ServicioCombustible entity.
      *
-     * @Route("/create", name="servicioCombustible_create", methods={"POST"}, options={"expose":true})
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
+     *
+     * @Route("/create", name="servicioCombustible_create")
+     * @Method({"POST"})
      *
      * @Breadcrumb(title="Crear Nuevo Servicio de Combustible", routeName="servicioCombustible_create")
      */
@@ -119,55 +125,14 @@ class ServicioCombustibleController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->get('doctrine.orm.entity_manager');
-            $trans = $this->get('translator');
-            $logger = $this->get('logger');
+            $servicioCombustibleManager = $this->get('buseta.combustible.servicio_combustible.manager');
 
-            //Comparar la existencia de cantidadLibros disponibles para el nomenclador seleccionado
-            $producto = $entityModel->getCombustible()->getProducto();
-            $bodega = $entityModel->getCombustible()->getBodega();
-            $cantidadProducto = $entityModel->getCantidadLibros();
+            if ($servicioCombustible = $servicioCombustibleManager->create($entityModel)) {
+                $this->get('session')->getFlashBag()->add('success', 'Se ha creado el Servicio de Combustible satisfactoriamente.');
 
-            $fe = new FuncionesExtras();
-            $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $bodega, $cantidadProducto, $em);
-
-            //Comprobar la existencia del producto en la bodega seleccionada
-            if ($cantidadDisponible == 'No existe') {
-                //Volver al menu de de crear nuevo ServicioCombustible
-
-                $form = $this->createCreateForm($entityModel);
-
-                $form->addError(new FormError("El producto '" . $producto->getNombre() . "' no existe en la bodega del combustible seleccionado"));
-
-                return $this->render('BusetaCombustibleBundle:ServicioCombustible:new.html.twig', array(
-                    'entity' => $entityModel,
-                    'form' => $form->createView(),
-                ));
-            } else { //Si sí existe la cantidad del producto en la bodega seleccionada
-
-                try {
-                    $servicioCombustible = $entityModel->getEntityData();
-
-                    $em->persist($servicioCombustible);
-
-                    $dispatcher = $this->get('event_dispatcher');
-                    $dispatcher->dispatch(BitacoraEvents::PRODUCTION_NEGATIVE, new LegacyBitacoraEvent($servicioCombustible));
-
-                    $em->flush();
-
-                    $this->get('session')->getFlashBag()->add('success', 'Se ha creado el Servicio de Combustible satisfactoriamente.');
-
-                    return $this->redirect($this->generateUrl('servicioCombustible_show', array('id' => $servicioCombustible->getId())));
-                } catch (\Exception $e) {
-                    $logger->addCritical(sprintf(
-                        $trans->trans('', array(), 'BusetaCombustibleBundle') . '. Detalles: %s',
-                        $e->getMessage()
-                    ));
-
-                    $this->get('session')->getFlashBag()->add('danger',
-                        $trans->trans('messages.create.error.%key%', array('key' => 'Servicio de Combustible'),
-                            'BusetaCombustibleBundle'));
-                }
+                return $this->redirect($this->generateUrl('servicioCombustible_show', array('id' => $servicioCombustible->getId())));
+            } else {
+                $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al intentar crear Servicio Combustible');
             }
         }
 
@@ -182,6 +147,7 @@ class ServicioCombustibleController extends Controller
      *
      * @Route("/{id}/show", name="servicioCombustible_show")
      * @Method("GET")
+     *
      * @Breadcrumb(title="Ver Datos de Servicio de Combustible", routeName="servicioCombustible_show", routeParameters={"id"})
      */
     public function showAction($id)

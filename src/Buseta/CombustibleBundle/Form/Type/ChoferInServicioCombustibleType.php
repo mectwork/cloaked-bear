@@ -18,15 +18,12 @@ class ChoferInServicioCombustibleType extends AbstractType{
                 'required' => true,
             ))
             ->add('codigobarras','password',array(
-                    'required' => false,
-                    'label' => 'Código de Barras',
-                    'attr' => array(
-                        'autocomplete' => 'off',
-                    )
-                ))
+                'required' => false,
+                'label' => 'Código de Barras',
+            ))
             ->add('pin', 'password', array(
-                    'required' => false,
-                ))
+                'required' => false,
+            ))
         ;
     }
 
