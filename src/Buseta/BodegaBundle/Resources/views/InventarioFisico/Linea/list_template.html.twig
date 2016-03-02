@@ -12,22 +12,20 @@
         <thead>
         <tr>
             {#<th>{{ knp_pagination_sortable(entities, 'linea.valor' | trans({}, 'BusetaTallerBundle'), 'd.valor') }}</th>#}
-            <th style="text-align: left">Número</th>
             <th style="text-align: left">Producto</th>
-            <th style="text-align: left">Cantidad Real</th>
+            <th style="text-align: left">Descripción</th>
             <th style="text-align: left">Cantidad Teórica</th>
-            <th style="text-align: left">Descripcion</th>
+            <th style="text-align: left">Cantidad Real</th>
             <th style="text-align: center">Acciones</th>
         </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.numero }}</td>
                 <td>{{ entity.producto }}</td>
-                <td>{{ entity.cantidadReal }}</td>
+                <td>{{ entity.descripcion | slice(0, 32)}}</td>
                 <td>{{ entity.cantidadTeorica }}</td>
-                <td>{{ entity.descripcion }}</td>
+                <td>{{ entity.cantidadReal }}</td>
 
                 <td style="width: 10%; text-align: center;">
                     <a href="#delete" data-href="{{ path('inventario_fisico_linea_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">

@@ -15,9 +15,10 @@ class InventarioFisicoLineaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('numero', 'text', array(
+            ->add('producto', 'entity', array(
+                'class' => 'BusetaBodegaBundle:Producto',
+                'placeholder' => '---Seleccione---',
                 'required' => true,
-                'label' => 'Número',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -29,10 +30,10 @@ class InventarioFisicoLineaType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('producto', 'entity', array(
-                'class' => 'BusetaBodegaBundle:Producto',
-                'placeholder' => '---Seleccione---',
+            ->add('cantidadTeorica', 'integer', array(
                 'required' => true,
+                'read_only' => true,
+                'label' => 'Cantidad Teórica',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -40,14 +41,6 @@ class InventarioFisicoLineaType extends AbstractType
             ->add('cantidadReal', 'integer', array(
                 'required' => true,
                 'label' => 'Cantidad Real',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('cantidadTeorica', 'integer', array(
-                'required' => true,
-                'read_only' => true,
-                'label' => 'Cantidad Teórica',
                 'attr' => array(
                     'class' => 'form-control',
                 ),

@@ -27,14 +27,6 @@ class InventarioFisicoLinea implements GeneradorBitacoraInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="numero", type="string", nullable=false)
-     * @Assert\NotBlank()
-     */
-    private $numero;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="descripcion", type="string", nullable=true)
      * @Assert\NotBlank()
      */
@@ -84,29 +76,6 @@ class InventarioFisicoLinea implements GeneradorBitacoraInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set numero
-     *
-     * @param string $numero
-     * @return InventarioFisicoLinea
-     */
-    public function setNumero($numero)
-    {
-        $this->numero = $numero;
-
-        return $this;
-    }
-
-    /**
-     * Get numero
-     *
-     * @return string
-     */
-    public function getNumero()
-    {
-        return $this->numero;
     }
 
     /**
