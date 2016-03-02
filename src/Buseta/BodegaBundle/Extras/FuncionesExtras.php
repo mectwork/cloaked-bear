@@ -2,10 +2,6 @@
 
 namespace Buseta\BodegaBundle\Extras;
 
-use Buseta\TallerBundle\Entity\Impuesto;
-use Buseta\BodegaBundle\Entity\InformeStock;
-use Symfony\Component\Validator\Constraints\DateTime;
-
 class FuncionesExtras
 {
     public function ImporteLinea($cantidad_pedido, $precio_unitario, $impuesto = null, $porciento_descuento = 0)
@@ -219,7 +215,6 @@ class FuncionesExtras
             ) {
                 $cantidad -= $bitacora->getCantidadMovida();
             }
-
         }
 
         if ($existe) {

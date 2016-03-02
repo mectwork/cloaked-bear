@@ -27,13 +27,20 @@ services:
         tags:
             - { name: twig.extension }
 
-    #VALIDATOR
-    buses.marchamo1.validador:
+    #VALIDATORS
+    buseta.combustible.marchamo1valido.validador:
         class: Buseta\CombustibleBundle\Validator\Constraints\Marchamo1ValidoValidator
         arguments:
             - @doctrine.orm.entity_manager
         tags:
-            - {name: validator.constraint_validator, alias: Marchamo1ValidoValidador }
+            - {name: validator.constraint_validator, alias: combustible_marchamo1valido_validador }
+    buseta.combustible.marchamo2valido.validador:
+        class: Buseta\CombustibleBundle\Validator\Constraints\Marchamo2ValidoValidator
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @logger
+        tags:
+            - {name: validator.constraint_validator, alias: combustible_marchamo2valido_validador }
 
     #SUBSCRIBERS
     buses.combustible.servicio_combustible.subscriber:

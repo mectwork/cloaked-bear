@@ -8,7 +8,8 @@ use Buseta\CombustibleBundle\Entity\ServicioCombustible;
 use Doctrine\ORM\Mapping as ORM;
 use Buseta\BusesBundle\Validator\Constraints as BusetaBusesAssert;
 use Symfony\Component\Validator\Constraints as Assert;
-use Buseta\CombustibleBundle\Validator\Constraints\Marchamo1Valido;
+use Buseta\CombustibleBundle\Validator\Constraints as CombustibleAssert;
+use Buseta\CombustibleBundle\Validator\Constraints\Marchamo2Valido;
 
 
 /**
@@ -16,7 +17,8 @@ use Buseta\CombustibleBundle\Validator\Constraints\Marchamo1Valido;
  *
  * @BusetaBusesAssert\CapacidadTanqueValido
  *
- * @Marchamo1Valido()
+ * @CombustibleAssert\Marchamo1Valido()
+ * @CombustibleAssert\Marchamo2Valido()
  */
 class ServicioCombustibleModel
 {
