@@ -3,6 +3,7 @@
 namespace Buseta\CombustibleBundle\Form\Model;
 
 use Buseta\BusesBundle\Entity\Chofer;
+use Buseta\CombustibleBundle\Entity\ConfiguracionCombustible;
 use Buseta\CombustibleBundle\Entity\ServicioCombustible;
 use Buseta\CombustibleBundle\Form\Model\ChoferInServicioCombustible;
 use Buseta\NomencladorBundle\Entity\Combustible;
@@ -26,7 +27,7 @@ class ServicioCombustibleModel
     private $id;
 
     /**
-     * @var \Buseta\NomencladorBundle\Entity\Combustible
+     * @var ConfiguracionCombustible
      */
     private $combustible;
 
@@ -103,7 +104,7 @@ class ServicioCombustibleModel
     }
 
     /**
-     * @return Combustible
+     * @return ConfiguracionCombustible
      */
     public function getCombustible()
     {
@@ -111,9 +112,9 @@ class ServicioCombustibleModel
     }
 
     /**
-     * @param Combustible $combustible
+     * @param ConfiguracionCombustible $combustible
      */
-    public function setCombustible($combustible)
+    public function setCombustible(ConfiguracionCombustible $combustible)
     {
         $this->combustible = $combustible;
     }

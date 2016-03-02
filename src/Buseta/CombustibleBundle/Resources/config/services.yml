@@ -42,3 +42,11 @@ services:
             - @logger
         tags:
             - { name: kernel.event_subscriber }
+
+    #MANAGER
+    buseta.combustible.servicio_combustible.manager:
+        class: Buseta\CombustibleBundle\Manager\ServicioCombustibleManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @logger
+            - @event_dispatcher
