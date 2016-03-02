@@ -5,10 +5,7 @@ namespace Buseta\CombustibleBundle\Form\Model;
 use Buseta\BusesBundle\Entity\Chofer;
 use Buseta\CombustibleBundle\Entity\ConfiguracionCombustible;
 use Buseta\CombustibleBundle\Entity\ServicioCombustible;
-use Buseta\CombustibleBundle\Form\Model\ChoferInServicioCombustible;
-use Buseta\NomencladorBundle\Entity\Combustible;
 use Doctrine\ORM\Mapping as ORM;
-
 use Buseta\BusesBundle\Validator\Constraints as BusetaBusesAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 use Buseta\CombustibleBundle\Validator\Constraints\Marchamo1Valido;
@@ -16,7 +13,9 @@ use Buseta\CombustibleBundle\Validator\Constraints\Marchamo1Valido;
 
 /**
  * ServicioCombustibleModel
+ *
  * @BusetaBusesAssert\CapacidadTanqueValido
+ *
  * @Marchamo1Valido()
  */
 class ServicioCombustibleModel

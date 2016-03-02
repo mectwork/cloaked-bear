@@ -3,13 +3,9 @@
 namespace Buseta\CombustibleBundle\Validator\Constraints;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\NoResultException;
-use Symfony\Component\PropertyAccess\StringUtil;
-use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Util\StringUtils;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * Class Marchamo1ValidoValidator
@@ -36,7 +32,7 @@ class Marchamo1ValidoValidator extends ConstraintValidator
     /**
      * Checks if the passed value is valid.
      *
-     * @param mixed $value      The value that should be validated
+     * @param mixed $data      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      *
      * @api
@@ -66,7 +62,9 @@ WHERE v.id = :vehiculo'))
         }
 
         if ($result !== null && !StringUtils::equals($result['marchamo2'], $marchamo1)) {
-            $this->context->addViolationAt('marchamo1', $constraint->message, array());
+            $this->context->buildViolation($constraint->message)
+                ->atPath('marchamo1')
+                ->addViolation();
         }
 
         return;

@@ -33,7 +33,7 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
         tags:
-            - {name: validator.constraint_validator, alias: marchamo1_validador}
+            - {name: validator.constraint_validator, alias: Marchamo1ValidoValidador }
 
     #SUBSCRIBERS
     buses.combustible.servicio_combustible.subscriber:
