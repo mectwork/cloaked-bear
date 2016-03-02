@@ -34,3 +34,11 @@ services:
             - @doctrine.orm.entity_manager
         tags:
             - {name: validator.constraint_validator, alias: marchamo1_validador}
+
+    #SUBSCRIBERS
+    buses.combustible.servicio_combustible.subscriber:
+        class: Buseta\CombustibleBundle\EventListener\ServicioCombustibleSubscriber
+        arguments:
+            - @logger
+        tags:
+            - { name: kernel.event_subscriber }

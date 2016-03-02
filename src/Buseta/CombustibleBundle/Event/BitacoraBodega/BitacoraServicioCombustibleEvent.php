@@ -28,9 +28,9 @@ class BitacoraServicioCombustibleEvent extends AbstractBitacoraEvent
      * @param ServicioCombustible|null $servicioCombustible
      */
     public function __construct(
+        ServicioCombustible $servicioCombustible,
         ConfiguracionCombustible $configuracionCombustible,
-        ConfiguracionMarchamo $configuracionMarchamo,
-        ServicioCombustible $servicioCombustible = null
+        ConfiguracionMarchamo $configuracionMarchamo
     ) {
         parent::__construct();
 

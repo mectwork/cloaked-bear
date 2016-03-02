@@ -11,6 +11,7 @@ use Buseta\BodegaBundle\Event\BitacoraSerial\BitacoraSerialMovimientoEvent;
 use Buseta\BodegaBundle\Event\LegacyBitacoraEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidBitacoraTypeException;
 use Buseta\BodegaBundle\Manager\BitacoraAlmacenManager;
+use Buseta\CombustibleBundle\Event\BitacoraSerial\BitacoraSerialServicioCombustibleEvent;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -74,9 +75,32 @@ class BitacoraSubscriber implements EventSubscriberInterface
         $this->legacyCreateRegistry($event, 'C-');
     }
 
-    public function internalConsumption(LegacyBitacoraEvent $event)
-    {
-        $this->legacyCreateRegistry($event, 'D+');
+    public function internalConsumption(
+        BitacoraEventInterface $event,
+        $eventName = null,
+        EventDispatcherInterface $eventDispatcher = null
+    ) {
+        $this->createRegistry($event);
+        if (!$event->getError()) {
+            switch (ClassUtils::getRealClass($event)) {
+                case '\Buseta\BodegaBundle\Event\BitacoraBodega\BitacoraSalidaBodegaEvent': {
+                    $serialEvent = new BitacoraSerialInventarioFisicoEvent($event);
+                    $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_SERIAL_REGISTER_EVENTS, $serialEvent);
+                    if ($serialEvent->getError()) {
+                        $event->setError($serialEvent->getError());
+                    }
+                    break;
+                }
+                case '\Buseta\CombustibleBundle\Event\BitacoraBodega\BitacoraServicioCombustibleEvent': {
+                    $serialEvent = new BitacoraSerialServicioCombustibleEvent($event);
+                    $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_SERIAL_REGISTER_EVENTS, $serialEvent);
+                    if ($serialEvent->getError()) {
+                        $event->setError($serialEvent->getError());
+                    }
+                    break;
+                }
+            }
+        }
     }
 
     public function inventoryInOut(
