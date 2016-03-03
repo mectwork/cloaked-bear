@@ -98,7 +98,7 @@ class PedidoCompraController extends Controller
             $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
         }
 
-        return $this->redirect($this->generateUrl('pedidocompra'));
+        return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
     }
 
     /**
@@ -179,7 +179,8 @@ class PedidoCompraController extends Controller
             }
         }
 
-        return $this->redirect($this->generateUrl('pedidocompra'));
+        return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
+
     }
 
     /**
