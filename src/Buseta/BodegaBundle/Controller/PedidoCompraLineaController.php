@@ -3,6 +3,8 @@
 namespace Buseta\BodegaBundle\Controller;
 
 use Buseta\BodegaBundle\Entity\PedidoCompra;
+use Buseta\BodegaBundle\Entity\Producto;
+use Buseta\NomencladorBundle\Entity\UOM;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
@@ -67,7 +69,7 @@ class PedidoCompraLineaController extends Controller
 
         $handler->setRequest($request);
 
-        if($handler->handle()) {
+        if ($handler->handle()) {
             $renderView = $this->renderView('@BusetaBodega/PedidoCompra/Linea/modal_form.html.twig', array(
                 'form' => $handler->getForm()->createView(),
             ));
@@ -78,7 +80,7 @@ class PedidoCompraLineaController extends Controller
             ), 201);
         }
 
-        if($handler->getError()) {
+        if ($handler->getError()) {
             $renderView = $this->renderView('@BusetaBodega/PedidoCompra/Linea/modal_form.html.twig', array(
                 'form' => $handler->getForm()->createView(),
             ));
@@ -114,7 +116,7 @@ class PedidoCompraLineaController extends Controller
 
         $handler->setRequest($request);
 
-        if($handler->handle()) {
+        if ($handler->handle()) {
             $renderView = $this->renderView('@BusetaBodega/PedidoCompra/Linea/modal_form.html.twig', array(
                 'form' => $handler->getForm()->createView(),
             ));
@@ -125,7 +127,7 @@ class PedidoCompraLineaController extends Controller
             ), 201);
         }
 
-        if($handler->getError()) {
+        if ($handler->getError()) {
             $renderView = $this->renderView('@BusetaBodega/PedidoCompra/Linea/modal_form.html.twig', array(
                 'form' => $handler->getForm()->createView(),
             ));
@@ -156,6 +158,7 @@ class PedidoCompraLineaController extends Controller
             'entities' => $entities,
         ));
     }
+
     /**
      * Creates a new PedidoCompraLinea entity.
      */
@@ -175,7 +178,7 @@ class PedidoCompraLineaController extends Controller
 
         return $this->render('BusetaBodegaBundle:PedidoCompraLinea:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -221,9 +224,9 @@ class PedidoCompraLineaController extends Controller
     private function createCreateCompraForm(PedidoCompraLinea $entity)
     {
         $form = $this->createForm(new PedidoCompraLineaType(), $entity, array(
-                'action' => $this->generateUrl('linea_compra_create'),
-                'method' => 'POST',
-            ));
+            'action' => $this->generateUrl('linea_compra_create'),
+            'method' => 'POST',
+        ));
 
         //$form->add('submit', 'submit', array('label' => 'Create'));
 
@@ -236,11 +239,11 @@ class PedidoCompraLineaController extends Controller
     public function newAction()
     {
         $entity = new PedidoCompraLinea();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return $this->render('BusetaBodegaBundle:PedidoCompraLinea:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -260,8 +263,8 @@ class PedidoCompraLineaController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('BusetaBodegaBundle:PedidoCompraLinea:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        ));
+            'entity' => $entity,
+            'delete_form' => $deleteForm->createView(),));
     }
 
     /**
@@ -281,8 +284,8 @@ class PedidoCompraLineaController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('BusetaBodegaBundle:PedidoCompraLinea:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -305,6 +308,7 @@ class PedidoCompraLineaController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing PedidoCompraLinea entity.
      */
@@ -329,11 +333,12 @@ class PedidoCompraLineaController extends Controller
         }
 
         return $this->render('BusetaBodegaBundle:PedidoCompraLinea:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a PedidoCompraLinea entity.
      * @Route("/{id}/delete", name="pedidocompra_lineas_delete", options={"expose": true})
@@ -352,12 +357,12 @@ class PedidoCompraLineaController extends Controller
                 $em->flush();
 
                 $message = $this->get('translator')->trans('messages.delete.success', array(), 'BusetaBodegaBundle');
-                if($request->isXmlHttpRequest()) {
+                if ($request->isXmlHttpRequest()) {
                     return new JsonResponse(array('message' => $message), 202);
                 }
             } catch (\Exception $e) {
                 $message = $this->get('translator')->trans('messages.delete.error.%key%', array('key' => 'Linea Registro de Compra'), 'BusetaBodegaBundle');
-                if($request->isXmlHttpRequest()) {
+                if ($request->isXmlHttpRequest()) {
                     return new JsonResponse(array('message' => $message), 500);
                 }
             }
@@ -365,8 +370,8 @@ class PedidoCompraLineaController extends Controller
 
         if ($request->isXmlHttpRequest()) {
             $view = $this->renderView('@BusetaBodega/PedidoCompra/Linea/delete_modal.html.twig', array(
-                'entity'    => $pedidoCompraLinea,
-                'form'      => $form->createView(),
+                'entity' => $pedidoCompraLinea,
+                'form' => $form->createView(),
             ));
 
             return new JsonResponse(array(
@@ -389,7 +394,36 @@ class PedidoCompraLineaController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('pedidocompra_lineas_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
+    }
+
+    /**
+     * @Route("/{id}/get-uom", name="get_uom", options={"expose": true})
+     * @Method("GET")
+     *
+     * @param Producto $producto
+     * @return JsonResponse
+     */
+    public function getProyectosAction(Producto $producto)
+    {
+        $uom = $producto->getUom();
+
+        $array = array();
+        /**
+         * @var UOM $uom
+         */
+        $array[] = array(
+            'id' => $uom->getId(),
+            'valor' => $uom->getValor(),
+        );
+
+        if (count($array) === 0) {
+            $array[] = array(
+                'id' => '',
+                'valor' => 'No asignada'
+            );
+        }
+
+        return new JsonResponse($array);
     }
 }

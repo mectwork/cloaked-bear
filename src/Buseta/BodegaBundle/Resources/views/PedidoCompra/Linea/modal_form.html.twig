@@ -28,33 +28,38 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-lg-9"> </div>
-                            <div class="col-lg-2 pull-right"> <div id="editar_producto"></div>
-                        </div>
+                            <div class="col-lg-9"></div>
+                            <div class="col-lg-2 pull-right">
+                                <div id="editar_producto"></div>
+                            </div>
 
-                        <div class="col-lg-12">
-                            <table id="producto_proveedores_results_list" class="table table-condensed table-striped table-bordered table-hover" style="display: none;">
-                                <tr>
-                                    <th>Proveedor</th>
-                                    <th>Código</th>
-                                    <th style="width: 20%;">Costo</th>
-                                    <th></th>
-                                </tr>
-                            </table>
+                            <div class="col-lg-12">
+                                <table id="producto_proveedores_results_list"
+                                       class="table table-condensed table-striped table-bordered table-hover"
+                                       style="display: none;">
+                                    <tr>
+                                        <th>Proveedor</th>
+                                        <th>Código</th>
+                                        <th style="width: 20%;">Costo</th>
+                                        <th></th>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-lg-4">{{ form_row(form.cantidad_pedido) }}</div>
+                            <div class="col-lg-4">{{ form_row(form.uom) }}</div>
+                            <div class="col-lg-4">{{ form_row(form.precio_unitario) }}</div>
+                            <div class="col-lg-4">{{ form_row(form.moneda) }}</div>
+                            <div class="col-lg-4">{{ form_row(form.impuesto) }}</div>
+                            <div class="col-lg-4">{{ form_row(form.porciento_descuento) }}</div>
+                            <div class="col-lg-4">{{ form_row(form.importe_linea) }}</div>
                         </div>
-                        <div class="col-lg-4">{{ form_row(form.cantidad_pedido) }}</div>
-                        <div class="col-lg-4">{{ form_row(form.uom) }}</div>
-                        <div class="col-lg-4">{{ form_row(form.precio_unitario) }}</div>
-                        <div class="col-lg-4">{{ form_row(form.moneda) }}</div>
-                        <div class="col-lg-4">{{ form_row(form.impuesto) }}</div>
-                        <div class="col-lg-4">{{ form_row(form.porciento_descuento) }}</div>
-                        <div class="col-lg-4">{{ form_row(form.importe_linea) }}</div>
+                        {{ form_widget(form._token) }}
                     </div>
-                    {{ form_widget(form._token) }}
                 </form>
             </div>
             <div class="modal-footer">
-                <a href="#" class="btn btn-default" id="btn_lineas_cancel" data-dismiss="modal"><span class="glyphicon glyphicon-chevron-left"></span>
+                <a href="#" class="btn btn-default" id="btn_lineas_cancel" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-chevron-left"></span>
                     {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
                 <a href="#" class="btn btn-primary" id="btn_lineas_save"><span class="glyphicon glyphicon-save"></span>
                     {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
@@ -62,3 +67,25 @@
         </div>
     </div>
 </div>
+{% block javascripts %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#buseta_bodegabundle_pedido_compra_linea_producto').on('change', function () {
+
+            var idproducto = $(this).val();
+
+            $.ajax({
+                url: Routing.generate('get_uom', {id: idproducto}),
+                dataType: 'JSON',
+                method: 'GET'
+            }).done(function (response, textStatus, jqXHR) {
+                var uom = $('#buseta_bodegabundle_pedido_compra_linea_uom');
+                uom.find('option').remove();
+                for (var i = 0; i < response.length; i++) {
+                    uom.append($('<option value="' + response[i].id + '">' + response[i].valor + '</option>'))
+                }
+            });
+        });
+    });
+</script>
+{% endblock javascripts %}

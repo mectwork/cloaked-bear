@@ -4,24 +4,28 @@ namespace Buseta\BodegaBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PedidoCompraLineaType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPresetData'));
+
         $builder
             ->add('linea', 'integer', array(
-                    'required' => true,
-                    'label'  => 'Línea',
-                    'attr'   => array(
-                        'class' => 'form-control',
-                    ),
-                ))
+                'required' => true,
+                'label' => 'Línea',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->add('producto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Producto',
                 'placeholder' => '---Seleccione---',
@@ -32,23 +36,15 @@ class PedidoCompraLineaType extends AbstractType
             ))
             ->add('cantidad_pedido', 'integer', array(
                 'required' => true,
-                'label'  => 'Cantidad de pedido',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('uom', 'entity', array(
-                'class' => 'BusetaNomencladorBundle:UOM',
-                'placeholder' => '---Seleccione---',
-                'required' => true,
+                'label' => 'Cantidad de pedido',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
             ->add('precio_unitario', 'integer', array(
                 'required' => true,
-                'label'  => 'Costo unitario',
-                'attr'   => array(
+                'label' => 'Costo unitario',
+                'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
@@ -70,20 +66,47 @@ class PedidoCompraLineaType extends AbstractType
             ))
             ->add('porciento_descuento', 'text', array(
                 'required' => false,
-                'label'  => '% Descuento',
-                'attr'   => array(
+                'label' => '% Descuento',
+                'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
             ->add('importe_linea', 'text', array(
                 'required' => true,
                 'read_only' => true,
-                'label'  => 'Importe línea',
-                'attr'   => array(
+                'label' => 'Importe línea',
+                'attr' => array(
                     'class' => 'form-control',
                 ),
-            ))
-        ;
+            ));
+    }
+
+    public function onPresetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+        /** @var \Buseta\BodegaBundle\Entity\PedidoCompraLinea $data */
+        $data = $event->getData();
+        /**
+         * @var \Buseta\BodegaBundle\Entity\Producto $producto
+         */
+        $producto = $data->getProducto();
+
+        if ($producto !== null) {
+            $form->add('uom', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:UOM',
+                'data' => $producto->getUom(),
+                'placeholder' => '---Seleccione unidad de medida---',
+                'required' => true,
+                'attr' => array('class' => 'form-control',),
+            ));
+        } else {
+            $form->add('uom', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:UOM',
+                'placeholder' => '---Seleccione unidad de medida---',
+                'required' => true,
+                'attr' => array('class' => 'form-control',),
+            ));
+        }
     }
 
     /**
