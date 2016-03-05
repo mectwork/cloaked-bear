@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Controller;
 
 use Buseta\BodegaBundle\Entity\InventarioFisico;
+use Buseta\BodegaBundle\Entity\Producto;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\InventarioFisicoLinea;
@@ -67,7 +68,7 @@ class InventarioFisicoLineaController extends Controller
 
         $handler->setRequest($request);
 
-        if($handler->handle()) {
+        if ($handler->handle()) {
             $renderView = $this->renderView('@BusetaBodega/InventarioFisico/Linea/modal_form.html.twig', array(
                 'form' => $handler->getForm()->createView(),
             ));
@@ -78,7 +79,7 @@ class InventarioFisicoLineaController extends Controller
             ), 201);
         }
 
-        if($handler->getError()) {
+        if ($handler->getError()) {
             $renderView = $this->renderView('@BusetaBodega/InventarioFisico/Linea/modal_form.html.twig', array(
                 'form' => $handler->getForm()->createView(),
             ));
@@ -109,6 +110,7 @@ class InventarioFisicoLineaController extends Controller
             'entities' => $entities,
         ));
     }
+
     /**
      * Creates a new InventarioFisicoLinea entity.
      */
@@ -128,7 +130,7 @@ class InventarioFisicoLineaController extends Controller
 
         return $this->render('BusetaBodegaBundle:InventarioFisicoLinea:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -174,9 +176,9 @@ class InventarioFisicoLineaController extends Controller
     private function createCreateCompraForm(InventarioFisicoLinea $entity)
     {
         $form = $this->createForm(new InventarioFisicoLineaType(), $entity, array(
-                'action' => $this->generateUrl('linea_compra_create'),
-                'method' => 'POST',
-            ));
+            'action' => $this->generateUrl('linea_compra_create'),
+            'method' => 'POST',
+        ));
 
         //$form->add('submit', 'submit', array('label' => 'Create'));
 
@@ -189,11 +191,11 @@ class InventarioFisicoLineaController extends Controller
     public function newAction()
     {
         $entity = new InventarioFisicoLinea();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return $this->render('BusetaBodegaBundle:InventarioFisicoLinea:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -213,7 +215,7 @@ class InventarioFisicoLineaController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('BusetaBodegaBundle:InventarioFisicoLinea:show.html.twig', array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -235,8 +237,8 @@ class InventarioFisicoLineaController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('BusetaBodegaBundle:InventarioFisicoLinea:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -284,8 +286,8 @@ class InventarioFisicoLineaController extends Controller
         }
 
         return $this->render('BusetaBodegaBundle:InventarioFisicoLinea:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -302,7 +304,7 @@ class InventarioFisicoLineaController extends Controller
         $deleteForm = $this->createDeleteForm($inventariofisicoLinea->getId());
 
         $deleteForm->handleRequest($request);
-        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+        if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             try {
                 $em = $this->get('doctrine.orm.entity_manager');
 
@@ -311,19 +313,18 @@ class InventarioFisicoLineaController extends Controller
 
                 $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
 
-                if($request->isXmlHttpRequest()) {
+                if ($request->isXmlHttpRequest()) {
                     return new JsonResponse(array(
                         'message' => $message,
                     ), 202);
-                }
-                else {
+                } else {
                     $this->get('session')->getFlashBag()->add('success', $message);
                 }
             } catch (\Exception $e) {
                 $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Línea'), 'BusetaTallerBundle');
-                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+                $this->get('logger')->addCritical(sprintf($message . ' Detalles: %s', $e->getMessage()));
 
-                if($request->isXmlHttpRequest()) {
+                if ($request->isXmlHttpRequest()) {
                     return new JsonResponse(array(
                         'message' => $message,
                     ), 500);
@@ -331,12 +332,12 @@ class InventarioFisicoLineaController extends Controller
             }
         }
 
-        $renderView =  $this->renderView('@BusetaBodega/InventarioFisico/Linea/delete_modal.html.twig', array(
+        $renderView = $this->renderView('@BusetaBodega/InventarioFisico/Linea/delete_modal.html.twig', array(
             'entity' => $inventariofisicoLinea,
             'form' => $deleteForm->createView(),
         ));
 
-        if($request->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             return new JsonResponse(array('view' => $renderView));
         }
         return $this->redirect($this->generateUrl('inventariofisico_lineas_list'));
@@ -355,7 +356,20 @@ class InventarioFisicoLineaController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('inventario_fisico_linea_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->getForm()
-            ;
+            ->getForm();
+    }
+
+    /**
+     * @Route("/{id}/get-descripcion", name="get_descripcion", options={"expose": true})
+     * @Method("GET")
+     *
+     * @param Producto $producto
+     * @return JsonResponse
+     */
+    public function getDescripcionAction(Producto $producto)
+    {
+        $descripcion = $producto->getDescripcion();
+
+        return new JsonResponse($descripcion);
     }
 }
