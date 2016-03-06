@@ -5,10 +5,12 @@ namespace Buseta\BodegaBundle\Controller;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
+use Buseta\BodegaBundle\Entity\Proveedor;
 use Buseta\BodegaBundle\Form\Filter\PedidoCompraFilter;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraFilterModel;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
+use Buseta\NomencladorBundle\Entity\Moneda;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\PedidoCompra;
@@ -470,5 +472,35 @@ class PedidoCompraController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * @Route("/{id}/get-moneda", name="get_moneda", options={"expose": true})
+     * @Method("GET")
+     *
+     * @param Proveedor $proveedor
+     * @return JsonResponse
+     */
+    public function getMonedaAction(Proveedor $proveedor)
+    {
+        $moneda = $proveedor->getMoneda();
+
+        $array = array();
+        /**
+         * @var Moneda $moneda
+         */
+        $array[] = array(
+            'id' => $moneda->getId(),
+            'valor' => $moneda->getValor(),
+        );
+
+        if (count($array) === 0) {
+            $array[] = array(
+                'id' => '',
+                'valor' => 'No asignada'
+            );
+        }
+
+        return new JsonResponse($array);
     }
 }

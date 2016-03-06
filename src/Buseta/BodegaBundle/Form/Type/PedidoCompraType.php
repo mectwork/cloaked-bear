@@ -33,7 +33,7 @@ class PedidoCompraType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -62,8 +62,8 @@ class PedidoCompraType extends AbstractType
             ->add('fecha_pedido', 'date', array(
                 'widget' => 'single_text',
                 'required' => false,
-                'format'  => 'dd/MM/yyyy',
-                'attr'   => array(
+                'format' => 'dd/MM/yyyy',
+                'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
@@ -112,74 +112,72 @@ class PedidoCompraType extends AbstractType
                     'BO' => 'estado.BO',
                     'PR' => 'estado.PR',
                 ),
-                'attr'   => array(
+                'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
             ->add('descuento', 'number', array(
-                'required'  => false,
-                'label'     => 'Descuento compra',
-                'attr'      => array(
+                'required' => false,
+                'label' => 'Descuento compra',
+                'attr' => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('impuesto', 'entity', array(
-                'class'         => 'BusetaTallerBundle:Impuesto',
-                'placeholder'   => '---Seleccione---',
-                'required'      => false,
-                'label'         => 'Impuesto compra',
-                'attr'          => array(
+                'class' => 'BusetaTallerBundle:Impuesto',
+                'placeholder' => '---Seleccione---',
+                'required' => false,
+                'label' => 'Impuesto compra',
+                'attr' => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('importeCompra', 'number', array(
                 'required' => false,
                 'label' => 'Importe compra',
-                'attr'   => array(
+                'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
             ->add('importe_total_lineas', 'number', array(
                 'required' => false,
-                'label'  => 'Importe total líneas',
+                'label' => 'Importe total líneas',
                 'read_only' => true,
-                'attr'   => array(
+                'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
-
             ->add('importeDescuento', 'number', array(
                 'required' => false,
                 'read_only' => true,
-                'label'  => 'Importe descuento',
-                'attr'   => array(
+                'label' => 'Importe descuento',
+                'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
             ->add('importeImpuesto', 'number', array(
                 'required' => false,
                 'read_only' => true,
-                'label'  => 'Importe impuesto',
-                'attr'   => array(
+                'label' => 'Importe impuesto',
+                'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
             ->add('importe_total', 'number', array(
                 'required' => false,
                 'read_only' => true,
-                'label'  => 'Importe total',
-                'attr'   => array(
+                'label' => 'Importe total',
+                'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
             ->add('observaciones', 'textarea', array(
                 'required' => false,
-                'label'  => 'Observaciones',
-                'attr'   => array(
+                'label' => 'Observaciones',
+                'attr' => array(
                     'class' => 'form-control',
                 ),
-            ))
-        ;
+            ));
     }
 
     /**
@@ -203,12 +201,15 @@ class PedidoCompraType extends AbstractType
 
     public function preSetData(FormEvent $formEvent)
     {
+        /**
+         * @var PedidoCompra $data
+         */
         $data = $formEvent->getData();
         $form = $formEvent->getForm();
         $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
 
         if ($sequenceManager->hasSequence(PedidoCompra::class)) {
-            if ( $data->getNumeroDocumento() ) {
+            if ($data->getNumeroDocumento()) {
                 $secuencia = $data->getNumeroDocumento();
             } else {
                 $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
@@ -218,24 +219,46 @@ class PedidoCompraType extends AbstractType
             $form->add('numeroDocumento', 'text', array(
                 'required' => true,
                 'read_only' => true,
-                'label'  => 'Nro.Documento',
-                'attr'   => array(
+                'label' => 'Nro.Documento',
+                'attr' => array(
                     'class' => 'form-control',
                 ),
                 'data' => $secuencia,
             ));
 
-        }  else {
+        } else {
             $form->add('numeroDocumento', 'text', array(
                 'required' => true,
-                'label'  => 'Nro.Documento',
-                'attr'   => array(
+                'label' => 'Nro.Documento',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ));
+        }
+        //if ($data->getTercero() !== null and $data->getTercero()->getProveedor() !== null) {
+            /**
+             * @var \Buseta\BodegaBundle\Entity\Proveedor $proveedor
+             */
+         /**   $proveedor = $data->getTercero()->getProveedor();
+            $form->add('moneda', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:Moneda',
+                'placeholder' => '---Seleccione---',
+                'required' => true,
+                'data' => $proveedor->getMoneda(),
+                'attr' => array(
                     'class' => 'form-control',
                 ),
             ));
 
-        }
-
-     }
-
-  }
+        } else {
+            $form->add('moneda', 'entity', array(
+                'class' => 'BusetaNomencladorBundle:Moneda',
+                'placeholder' => '---Seleccione---',
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ));
+        }**/
+    }
+}
