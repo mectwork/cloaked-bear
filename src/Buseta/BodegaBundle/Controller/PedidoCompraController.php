@@ -327,6 +327,12 @@ class PedidoCompraController extends Controller
      */
     public function editAction(PedidoCompra $pedidocompra)
     {
+        if ($pedidocompra->getEstadoDocumento() !== 'BO') {
+            throw $this->createAccessDeniedException(
+                'No se puede modificar el Pedido, pues ya ha sido Procesado.'
+            );
+        }
+
         $editForm = $this->createEditForm(new PedidoCompraModel($pedidocompra));
         $deleteForm = $this->createDeleteForm($pedidocompra->getId());
 
