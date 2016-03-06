@@ -11,8 +11,7 @@
     and (filter_form.vars.value.almacenDestino is null or filter_form.vars.value.almacenDestino is empty)
     and (filter_form.vars.value.producto is null or filter_form.vars.value.producto is empty)
     and (filter_form.vars.value.fechaInicio is null or filter_form.vars.value.fechaInicio is empty)
-    and (filter_form.vars.value.fechaFin is null or filter_form.vars.value.fechaFin is empty)
-    %}
+    and (filter_form.vars.value.fechaFin is null or filter_form.vars.value.fechaFin is empty) %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
     {% endif %}
@@ -49,7 +48,8 @@
     <hr/>
 
     <div class="btn-group" style="padding-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('movimiento_new') }}"><i class="fa fa-plus-circle"></i> Realizar Movimiento de Productos</a>
+        <a class="btn btn-primary" href="{{ path('movimiento_new') }}"><i class="fa fa-plus-circle"></i> Realizar
+            Movimiento de Productos</a>
     </div>
 
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
@@ -70,16 +70,29 @@
                 <td>{{ entity.almacenOrigen }}</td>
                 <td>{{ entity.almacenDestino }}</td>
                 <td>{{ entity.createdBy }}</td>
-                <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
-                <td  style="width: 18% !important; text-align: center;">
+                {% if entity.estadodocumento == 'CO' %}
+                    {% set badge = 'success' %}
+                    {% set text_color = 'success' %}
+                {% elseif entity.estadodocumento == 'PR' %}
+                    {% set badge = 'primary' %}
+                    {% set text_color = 'primary' %}
+                {% else %}
+                    {% set badge = 'danger' %}
+                    {% set text_color = 'danger' %}
+                {% endif %}
+                <td class="text-{{ text_color }}">
+                    <span class="label label-{{ badge }}">{{ ('estado.' ~entity.estadodocumento) | trans({}, 'BusetaBodegaBundle') | upper }}</span>
+                </td>
+                <td style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
-                        <a class="btn btn-success btn-xs" href="{{ path('movimiento_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
+                        <a class="btn btn-success btn-xs" href="{{ path('movimiento_show', { 'id': entity.id }) }}"><i
+                                    class="fa fa-search"> Mostrar</i></a>
                     </div>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="12">No se encontraron registros de movimientos en el sistema.</td>
+                <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -133,7 +146,7 @@
                 format: 'DD/MM/YYYY',
                 useCurrent: false
             });
-            fechaInicio.on('dp.change', function(e){
+            fechaInicio.on('dp.change', function (e) {
                 fechaFin.data("DateTimePicker").minDate(e.date);
             });
             fechaFin.on('dp.change', function (e) {
