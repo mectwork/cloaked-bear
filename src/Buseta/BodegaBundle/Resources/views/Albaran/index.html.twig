@@ -2,7 +2,7 @@
 
 {% block title block('header') %}
 
-{% block header 'Ver Datos de Orden de Entrada' %}
+{% block header 'Listado de Órdenes de Entrada' %}
 
 {% block area_trabajo %}
 <div id="records_list">
@@ -73,8 +73,8 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.numeroReferencia }}</td>
                 <td>{{ entity.numeroDocumento }}</td>
+                <td>{{ entity.numeroReferencia }}</td>
                 <td>{{ entity.almacen }}</td>
                 <td>{{ entity.tercero }}</td>
                 {% if entity.estadodocumento == 'CO' %}
