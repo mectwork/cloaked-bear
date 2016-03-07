@@ -57,7 +57,7 @@ class AlbaranRepository extends EntityRepository
             }
         }
 
-        $query->orderBy('a.id', 'ASC');
+        $query->orderBy('a.id', 'DESC');
 
         try {
             return $query->getQuery();
