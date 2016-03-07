@@ -97,6 +97,8 @@ class NecesidadMaterialController extends Controller
         try {
             $em->persist($necesidadMaterial);
             $em->flush();
+
+            $session->getFlashBag()->add('success', 'Se ha procesado la Necesidad Material de forma correcta.');
         } catch (\Exception $e) {
             $this->get('logger')->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
             $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
@@ -124,6 +126,8 @@ class NecesidadMaterialController extends Controller
         try {
             $em->persist($necesidadMaterial);
             $em->flush();
+
+            $session->getFlashBag()->add('success', 'Se ha completado la Necesidad Material de forma correcta.');
         } catch (\Exception $e) {
             $logger->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
             $session->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
