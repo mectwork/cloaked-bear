@@ -14,7 +14,7 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
  * MantenimientoPreventivo controller.
  * @Route("/mpreventivo")
  * @Breadcrumb(title="Inicio", routeName="core_homepage")
- * @Breadcrumb(title="Módulo de Taller", routeName="taller_principal")
+ * @Breadcrumb(title="Módulo Estación de Servicios", routeName="taller_principal")
  */
 class MantenimientoPreventivoController extends Controller
 {

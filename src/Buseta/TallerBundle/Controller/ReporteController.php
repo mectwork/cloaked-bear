@@ -20,7 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  * Reporte controller.
  * @Route("/reporte")
  * @Breadcrumb(title="Inicio", routeName="core_homepage")
- * @Breadcrumb(title="Módulo de Taller", routeName="taller_principal")
+ * @Breadcrumb(title="Módulo Estación de Servicios", routeName="taller_principal")
  */
 class ReporteController extends Controller
 {
