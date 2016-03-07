@@ -64,9 +64,17 @@ ordentrabajo_ajax_diagnostico_autobus:
     options:
       expose: true
 
+ordentrabajoprocesarconfirm:
+    path:  /{id}/procesarOrdenConfirm
+    defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:procesarOrdenConfirm" }
+
 procesarOrden:
     path:  /{id}/procesarOrden
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:procesarOrden" }
+
+completarOrden:
+    path:  /{id}/completarOrden
+    defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:completarOrden" }
 
 cancelarOrden:
     path:  /{id}/cancelarOrden
