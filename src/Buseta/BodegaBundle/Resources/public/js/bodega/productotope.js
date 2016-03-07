@@ -243,7 +243,7 @@ var productotope = {
             deleteForm.ajaxSubmit({
                 success: function (response, textStatus, jqXHR) {
                     if (jqXHR.status == 202) {
-                        addGlobalMessage('success', response.message);
+                        $btalerts.addSuccess(response.message);
                     }
                     $(productotope.config_form_div_deletemodal).modal('hide');
 
@@ -262,7 +262,7 @@ var productotope = {
         _done: function (response, textStatus, jqXHR) {
             $('form#' + productotope.form_id).replaceWith($(response.view).find('form'));
             if (jqXHR.status == 201 || jqXHR.status == 202) {
-                addGlobalMessage('success', response.message);
+                $btalerts.addSuccess(response.message);
                 $(productotope.config_form_div_modal).modal('hide');
                 productotope._load();
             } else {

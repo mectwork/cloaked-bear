@@ -324,9 +324,9 @@
                 },
                 error:  function (jqXHR, textStatus, errorThrown) {
                     if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
-                        addGlobalMessage('danger', jqXHR.responseText.message);
+                        $btalerts.addDanger(jqXHR.responseText.message);
                     } else {
-                        addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+                        $btalerts.addDanger('{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
                     }
                 },
                 url: url,

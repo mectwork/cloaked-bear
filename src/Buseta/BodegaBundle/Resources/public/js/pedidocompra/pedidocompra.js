@@ -69,13 +69,13 @@ var pedidocompra = {
         $('form#' + pedidocompra.form_id).replaceWith(response.view);
 
         if(jqXHR.status == 201) {
-            addGlobalMessage('success', response.message);
+            $btalerts.addSuccess(response.message);
             // PedidoCompra Id
             pedidocompra.id = $('input[id="' + pedidocompra.form_id + '_id"]').val();
             // activate all tabs
             tabs._show_all_tabs();
         } else if(jqXHR.status == 202) {
-            addGlobalMessage('success', response.message);
+            $btalerts.addSuccess(response.message);
         }
         pedidocompra._start_evens();
     },

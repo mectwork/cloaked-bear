@@ -81,13 +81,13 @@ var autobus = {
     _done: function (response, textStatus, jqXHR) {
         $('form#' + autobus.form_id).replaceWith(response.view);
         if(jqXHR.status == 201) {
-            addGlobalMessage('success', response.message);
+            $btalerts.addSuccess(response.message);
             // Autobus Id
             autobus.id = $('input[id="' + autobus.form_id + '_id"]').val();
             // activate all tabs
             tabs._show_all_tabs();
         } else if(jqXHR.status == 202) {
-            addGlobalMessage('success', response.message);
+            $btalerts.addSuccess(response.message);
         }
         $('a#btn_autobus_save').on('click', autobus._save);
 

@@ -85,6 +85,8 @@ function addCollectionForm(collectionHolder, deleteLink) {
  * Adiciona mensajes globales
  * @param type
  * @param message
+ *
+ * @deprecated
  */
 function addGlobalMessage(type, message) {
     var messagesHolder  = $('div.global-messages');

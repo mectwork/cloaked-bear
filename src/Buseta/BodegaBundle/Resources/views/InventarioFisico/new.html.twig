@@ -86,9 +86,9 @@
         var utils = {
             _fail: function (jqXHR, textStatus, errorThrown) {
                 if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
-                    addGlobalMessage('danger', jqXHR.responseText.message);
+                    $btalerts.addDanger(jqXHR.responseText.message);
                 } else {
-                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+                    $btalerts.addDanger('{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
                 }
             }
         };
@@ -184,13 +184,13 @@
                 $('form#' + inventariofisico.form_id).replaceWith(response.view);
 
                 if(jqXHR.status == 201) {
-                    addGlobalMessage('success', response.message);
+                    $btalerts.addSuccess(response.message);
                     // InventarioFisico Id
                     inventariofisico.id = $('input[id="' + inventariofisico.form_id + '_id"]').val();
                     // activate all tabs
                     tabs._show_all_tabs();
                 } else if(jqXHR.status == 202) {
-                    addGlobalMessage('success', response.message);
+                    $btalerts.addSuccess(response.message);
                 }
                 $('a#btn_inventariofisico_save').on('click', inventariofisico._save);
             },
@@ -368,7 +368,7 @@
                 deleteForm.ajaxSubmit({
                     success: function (response, textStatus, jqXHR) {
                         if(jqXHR.status == 202) {
-                            addGlobalMessage('success', response.message);
+                            $btalerts.addSuccess(response.message);
                         }
                         $('div#form_lineas_delete_modal').modal('hide');
                         lineas._load();
@@ -384,7 +384,7 @@
                 $('form#' + lineas.form_id).replaceWith($(response.view).find('form'));
 
                 if(jqXHR.status == 201 || jqXHR.status == 202) {
-                    addGlobalMessage('success', response.message);
+                    $btalerts.addSuccess(response.message);
 
                     $('div#form_lineas_modal').modal('hide');
                     lineas._load();

@@ -118,7 +118,7 @@
                 $('form#' + tercero.form_id).replaceWith($(response.view).find('form#' + tercero.form_id));
 
                 if(jqXHR.status == 201 || jqXHR.status == 202) {
-                    addGlobalMessage('success', response.message);
+                    $btalerts.addSuccess(response.message);
 
                 }
                 tercero._load();
@@ -253,7 +253,7 @@
                 deleteForm.ajaxSubmit({
                     success: function (response, textStatus, jqXHR) {
                         if(jqXHR.status == 202) {
-                            addGlobalMessage('success', response.message);
+                            $btalerts.addSuccess(response.message);
                         }
                         $('div#form_address_delete_modal').modal('hide');
                         direccion._load();
@@ -267,7 +267,7 @@
 
             _done: function (response, textStatus, jqXHR) {
                 if(jqXHR.status == 201 || jqXHR.status == 202) {
-                    //addGlobalMessage('success', response.message);
+                    //$btalerts.addSuccess(response.message);
 
                     $('div#form_direccion_modal').modal('hide');
                     direccion._load();
@@ -403,7 +403,7 @@
                 deleteForm.ajaxSubmit({
                     success: function (response, textStatus, jqXHR) {
                         if(jqXHR.status == 202) {
-                            addGlobalMessage('success', response.message);
+                            $btalerts.addSuccess(response.message);
                         }
                         $('div#form_contacto_delete_modal').modal('hide');
                         contacto._load();
@@ -417,7 +417,7 @@
 
             _done: function (response, textStatus, jqXHR) {
                 if(jqXHR.status == 201 || jqXHR.status == 202) {
-                    addGlobalMessage('success', response.message);
+                    $btalerts.addSuccess(response.message);
 
                     $('div#form_contacto_modal').modal('hide');
                     contacto._load();
@@ -516,7 +516,7 @@
 
             _done: function (response, textStatus, jqXHR) {
                 if(jqXHR.status == 201 || jqXHR.status == 202) {
-                    addGlobalMessage('success', response.message);
+                    $btalerts.addSuccess(response.message);
 
                     $('div#form_pcontacto_modal').modal('hide');
                     pcontacto._load();
@@ -567,9 +567,9 @@
         var utils = {
             _fail: function (jqXHR, textStatus, errorThrown) {
                 if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
-                    addGlobalMessage('danger', jqXHR.responseText.message);
+                    $btalerts.addDanger(jqXHR.responseText.message);
                 } else {
-                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+                    $btalerts.addDanger('{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
                 }
             }
         };

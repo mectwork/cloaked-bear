@@ -71,13 +71,13 @@ var vehiculo = {
     _done: function (response, textStatus, jqXHR) {
         $('form#' + vehiculo.form_id).replaceWith(response.view);
         if(jqXHR.status == 201) {
-            addGlobalMessage('success', response.message);
+            $btalerts.addSuccess(response.message);
             // vehiculo Id
             vehiculo.id = $('input[id="' + vehiculo.form_id + '_id"]').val();
             // activate all tabs
             tabs._show_all_tabs();
         } else if(jqXHR.status == 202) {
-            addGlobalMessage('success', response.message);
+            $btalerts.addSuccess(response.message);
         }
         $('a#btn_vehiculo_save').on('click', vehiculo._save);
 

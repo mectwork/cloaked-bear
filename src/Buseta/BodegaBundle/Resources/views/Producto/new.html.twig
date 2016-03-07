@@ -225,7 +225,7 @@
                 {#$('form#' + producto.form_id).replaceWith(response.view);#}
 
                 {#if(jqXHR.status == 201 || jqXHR.status == 202) {#}
-                    {#addGlobalMessage('success', response.message);#}
+                    {#$btalerts.addSuccess(response.message);#}
                 {#}#}
 
                 {#producto._load();#}
@@ -413,7 +413,7 @@
             {#deleteForm.ajaxSubmit({#}
                 {#success: function (response, textStatus, jqXHR) {#}
                     {#if(jqXHR.status == 202) {#}
-                        {#addGlobalMessage('success', response.message);#}
+                        {#$btalerts.addSuccess(response.message);#}
                     {#}#}
                     {#$('div#form_precios_delete_modal').modal('hide');#}
                     {#precios._load();#}
@@ -428,7 +428,7 @@
             {#$('form#' + precios.form_id).replaceWith($(response.view).find('form'));#}
 
             {#if(jqXHR.status == 201 || jqXHR.status == 202) {#}
-                {#addGlobalMessage('success', response.message);#}
+                {#$btalerts.addSuccess(response.message);#}
 
                 {#$('div#form_precios_modal').modal('hide');#}
                 {#precios._load();#}
@@ -609,7 +609,7 @@
                 {#deleteForm.ajaxSubmit({#}
                     {#success: function (response, textStatus, jqXHR) {#}
                         {#if(jqXHR.status == 202) {#}
-                            {#addGlobalMessage('success', response.message);#}
+                            {#$btalerts.addSuccess(response.message);#}
                         {#}#}
                         {#$('div#form_costos_delete_modal').modal('hide');#}
                         {#costos._load();#}
@@ -624,7 +624,7 @@
                 {#$('form#' + costos.form_id).replaceWith($(response.view).find('form'));#}
 
                 {#if(jqXHR.status == 201 || jqXHR.status == 202) {#}
-                    {#addGlobalMessage('success', response.message);#}
+                    {#$btalerts.addSuccess(response.message);#}
 
                     {#$('div#form_costos_modal').modal('hide');#}
                     {#costos._load();#}

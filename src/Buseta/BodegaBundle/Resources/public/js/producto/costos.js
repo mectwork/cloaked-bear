@@ -135,7 +135,7 @@ var costos = {
         deleteForm.ajaxSubmit({
             success: function (response, textStatus, jqXHR) {
                 if(jqXHR.status == 202) {
-                    addGlobalMessage('success', response.message);
+                    $btalerts.addSuccess(response.message);
                 }
                 $('div#form_costos_delete_modal').modal('hide');
                 costos._load();
@@ -152,7 +152,7 @@ var costos = {
         $('select#' + costos.form_id + '_proveedor').chosen();
 
         if(jqXHR.status == 201 || jqXHR.status == 202) {
-            addGlobalMessage('success', response.message);
+            $btalerts.addSuccess(response.message);
 
             $('div#form_costos_modal').modal('hide');
             costos._load();

@@ -115,9 +115,9 @@
             _fail: function (jqXHR, textStatus, errorThrown) {
                 $('div.modal').modal('hide').html('');
                 if (jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
-                    addGlobalMessage('danger', jqXHR.responseText.message);
+                    $btalerts.addDanger(jqXHR.responseText.message);
                 } else {
-                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+                    $btalerts.addDanger('{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
                 }
             }
         };

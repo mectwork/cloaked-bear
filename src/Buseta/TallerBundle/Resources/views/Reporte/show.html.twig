@@ -128,9 +128,9 @@
             _fail: function (jqXHR, textStatus, errorThrown) {
                 $('div.modal').modal('hide').html('');
                 if (jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
-                    addGlobalMessage('danger', jqXHR.responseText.message);
+                    $btalerts.addDanger(jqXHR.responseText.message);
                 } else {
-                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'HatueyERPTercerosBundle') }}');
+                    $btalerts.addDanger('{{ 'messages.unexpected_error' | trans({}, 'HatueyERPTercerosBundle') }}');
                 }
             }
         };
@@ -205,7 +205,7 @@
             _done: function (response, textStatus, jqXHR) {
                 $('form#' + reporte.form_id).replaceWith(response.view);
                 if (jqXHR.status == 201) {
-                    addGlobalMessage('success', response.message);
+                    $btalerts.addSuccess(response.message);
                     // Tercero Id
                     reporte.id = $('input[id="' + reporte.form_id + '_id"]').val();
                     // activate all tabs
@@ -213,7 +213,7 @@
                     // loading observaciones
                     observaciones._load();
                 } else if (jqXHR.status == 202) {
-                    addGlobalMessage('success', response.message);
+                    $btalerts.addSuccess(response.message);
                 }
                 $('a#btn_reporte_save').on('click', reporte._save);
             },
@@ -374,7 +374,7 @@
                 deleteForm.ajaxSubmit({
                     success: function (response, textStatus, jqXHR) {
                         if(jqXHR.status == 202) {
-                            addGlobalMessage('success', response.message);
+                            $btalerts.addSuccess(response.message);
                         }
                         $('div#form_observacion_delete_modal').modal('hide');
                         observaciones._load();
@@ -388,7 +388,7 @@
             _done: function (response, textStatus, jqXHR) {
                 $('form#' + observaciones.form_id).replaceWith(response.view);
                 if (jqXHR.status == 201 || jqXHR.status == 202) {
-                    addGlobalMessage('success', response.message);
+                    $btalerts.addSuccess(response.message);
 
                     $('div#form_observacion_modal').modal('hide');
                     observaciones._load();

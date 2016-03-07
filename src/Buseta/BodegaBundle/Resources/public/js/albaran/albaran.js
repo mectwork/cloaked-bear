@@ -68,13 +68,13 @@ var albaran = {
         $('form#' + albaran.form_id).replaceWith(response.view);
 
         if(jqXHR.status == 201) {
-            addGlobalMessage('success', response.message);
+            $btalerts.addSuccess(response.message);
             // PedidoCompra Id
             albaran.id = $('input[id="' + albaran.form_id + '_id"]').val();
             // activate all tabs
             tabs._show_all_tabs();
         } else if(jqXHR.status == 202) {
-            addGlobalMessage('success', response.message);
+            $btalerts.addSuccess(response.message);
         }
         $('a#btn_albaran_save').on('click', albaran._save);
     },

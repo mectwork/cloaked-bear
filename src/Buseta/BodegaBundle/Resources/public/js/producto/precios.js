@@ -157,7 +157,7 @@ var precios = {
         deleteForm.ajaxSubmit({
             success: function (response, textStatus, jqXHR) {
                 if(jqXHR.status == 202) {
-                    addGlobalMessage('success', response.message);
+                    $btalerts.addSuccess(response.message);
                 }
                 $('div#form_precios_delete_modal').modal('hide');
                 precios._load();
@@ -172,7 +172,7 @@ var precios = {
         $('form#' + precios.form_id).replaceWith($(response.view).find('form'));
 
         if(jqXHR.status == 201 || jqXHR.status == 202) {
-            addGlobalMessage('success', response.message);
+            $btalerts.addSuccess(response.message);
 
             $('div#form_precios_modal').modal('hide');
             precios._load();

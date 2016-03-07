@@ -229,7 +229,7 @@ var lineas = {
         deleteForm.ajaxSubmit({
             success: function (response, textStatus, jqXHR) {
                 if(jqXHR.status == 202) {
-                    addGlobalMessage('success', response.message);
+                    $btalerts.addSuccess(response.message);
                 }
                 $('div#form_pedidocompralinea_delete_modal').modal('hide');
 
@@ -246,7 +246,7 @@ var lineas = {
         $('form#' + lineas.form_id).replaceWith($(response.view).find('form'));
 
         if(jqXHR.status == 201 || jqXHR.status == 202) {
-            addGlobalMessage('success', response.message);
+            $btalerts.addSuccess(response.message);
 
             $('div#form_lineas_modal').modal('hide');
 

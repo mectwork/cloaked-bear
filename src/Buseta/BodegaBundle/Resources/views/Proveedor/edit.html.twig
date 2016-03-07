@@ -263,12 +263,12 @@
             initTagsComponents();
 
             if(jqXHR.status == 201) {
-                addGlobalMessage('success', response.message);
+                $btalerts.addSuccess(response.message);
                 // Proveedor Id
                 proveedor.proveedor_id = $('input[id="' + proveedor.form_id + '_proveedorId"]').val();
                 proveedor.tercero_id = $('input[id="' + proveedor.form_id + '_terceroId"]').val();
             } else if(jqXHR.status == 202) {
-                addGlobalMessage('success', response.message);
+                $btalerts.addSuccess(response.message);
             }
 
             $('a#btn_proveedor_save').on('click', proveedor._save);
@@ -410,7 +410,7 @@
             deleteForm.ajaxSubmit({
                 success: function (response, textStatus, jqXHR) {
                     if(jqXHR.status == 202) {
-                        addGlobalMessage('success', response.message);
+                        $btalerts.addSuccess(response.message);
                     }
                     $('div#form_address_delete_modal').modal('hide');
                     direccion._load();
@@ -424,7 +424,7 @@
 
         _done: function (response, textStatus, jqXHR) {
             if(jqXHR.status == 201 || jqXHR.status == 202) {
-                //addGlobalMessage('success', response.message);
+                //$btalerts.addSuccess(response.message);
 
                 $('div#form_direccion_modal').modal('hide');
                 direccion._load();
@@ -565,7 +565,7 @@
             deleteForm.ajaxSubmit({
                 success: function (response, textStatus, jqXHR) {
                     if(jqXHR.status == 202) {
-                        addGlobalMessage('success', response.message);
+                        $btalerts.addSuccess(response.message);
                     }
                     $('div#form_contacto_delete_modal').modal('hide');
                     contacto._load();
@@ -579,7 +579,7 @@
 
         _done: function (response, textStatus, jqXHR) {
             if(jqXHR.status == 201 || jqXHR.status == 202) {
-                addGlobalMessage('success', response.message);
+                $btalerts.addSuccess(response.message);
 
                 $('div#form_contacto_modal').modal('hide');
                 contacto._load();
@@ -722,7 +722,7 @@
             deleteForm.ajaxSubmit({
                 success: function (response, textStatus, jqXHR) {
                     if(jqXHR.status == 202) {
-                        addGlobalMessage('success', response.message);
+                        $btalerts.addSuccess(response.message);
                     }
                     $('div#form_pcontacto_delete_modal').modal('hide');
                     pcontacto._load();
@@ -736,7 +736,7 @@
 
         _done: function (response, textStatus, jqXHR) {
             if(jqXHR.status == 201 || jqXHR.status == 202) {
-                addGlobalMessage('success', response.message);
+                $btalerts.addSuccess(response.message);
 
                 $('div#form_pcontacto_modal').modal('hide');
                 pcontacto._load();
@@ -773,9 +773,9 @@
     var utils = {
         _fail: function (jqXHR, textStatus, errorThrown) {
             if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
-                addGlobalMessage('danger', jqXHR.responseText.message);
+                $btalerts.addDanger(jqXHR.responseText.message);
             } else {
-                addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+                $btalerts.addDanger('{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
             }
         }
     };
