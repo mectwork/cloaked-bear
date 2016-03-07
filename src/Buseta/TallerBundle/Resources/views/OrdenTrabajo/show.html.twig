@@ -6,6 +6,14 @@
 
 {% block header 'Ver Datos de Orden de Trabajo' %}
 
+{% block header_right %}
+    {% from '@BusetaTemplate/Macros/macros.html.twig' import documentState %}
+
+    <h4 class="pull-right">
+        {{ documentState(entity.estado, 'BusetaTallerBundle') }}
+    </h4>
+{% endblock %}
+
 {% block area_trabajo %}
     {#{% set cancelado = entity.cancelado %}#}
 
@@ -68,13 +76,13 @@
 
         {#<tr>#}
 
-            {#<th>Cancelado</th>#}
+        {#<th>Cancelado</th>#}
 
-            {#{% if cancelado == 1 %}#}
-               {#<td>Cancelado</td>#}
-            {#{% else %}#}
-                {#<td>Sin cancelar</td>#}
-            {#{% endif %}#}
+        {#{% if cancelado == 1 %}#}
+        {#<td>Cancelado</td>#}
+        {#{% else %}#}
+        {#<td>Sin cancelar</td>#}
+        {#{% endif %}#}
 
 
         {#</tr>#}
@@ -88,22 +96,22 @@
             <td colspan="2">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <div  {{ block('widget_container_attributes') }}>
+                        <div {{ block('widget_container_attributes') }}>
                             <h4>Listado de Tareas</h4>
 
                             <table class="table table-striped" style="font-size: 16px;">
                                 <thead>
-                                    <tr>
-                                        <th>Grupo</th>
-                                        <th>Subgrupo</th>
-                                        <th>Tarea</th>
-                                        <th>Observaciones</th>
-                                        <th>Fecha estimada</th>
-                                        <th>Hora Inicio</th>
-                                        <th>Hora Final</th>
-                                        <th>Garantía Tarea</th>
+                                <tr>
+                                    <th>Grupo</th>
+                                    <th>Subgrupo</th>
+                                    <th>Tarea</th>
+                                    <th>Observaciones</th>
+                                    <th>Fecha estimada</th>
+                                    <th>Hora Inicio</th>
+                                    <th>Hora Final</th>
+                                    <th>Garantía Tarea</th>
 
-                                    </tr>
+                                </tr>
                                 </thead>
                                 <tbody>
                                 {% for tarea in entity.tareasAdicionales %}
@@ -112,7 +120,7 @@
                                         <td>{{ tarea.subgrupo }}</td>
                                         <td>{{ tarea.tareamantenimiento }}</td>
                                         <td>{{ tarea.descripcion }}</td>
-                                        <td>{{ tarea.fechaestimada | date('d/m/Y')  }}</td>
+                                        <td>{{ tarea.fechaestimada | date('d/m/Y') }}</td>
                                         <td>{{ tarea.horaInicio ? tarea.horaInicio | date('h:i a') : '-' }}</td>
                                         <td>{{ tarea.horaFinal ? tarea.horaFinal | date('h:i a') : '-' }}</td>
                                         <td>{{ tarea.garantiaTarea }}</td>
@@ -144,17 +152,15 @@
 
 
     {% if entity.estado == 'BO' %}
-
         <a class="btn btn-primary" href="{{ path('procesarOrden', { 'id': entity.id }) }}">
             <span class="glyphicon glyphicon-primary"></span>
             Procesar Orden
         </a>
-
-        {#<a class="btn btn-primary" href="{{ path('cancelarOrden', { 'id': entity.id }) }}">#}
-            {#<span class="glyphicon glyphicon-primary"></span>#}
-            {#Cancelar Orden#}
-        {#</a>#}
-
+    {% elseif entity.estado == 'PR' %}
+        <a class="btn btn-primary" href="{{ path('completarOrden', { 'id': entity.id }) }}">
+            <span class="glyphicon glyphicon-primary"></span>
+            Completar Orden
+        </a>
     {% endif %}
 
 

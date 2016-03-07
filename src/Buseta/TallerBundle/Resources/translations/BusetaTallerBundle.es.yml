@@ -70,3 +70,19 @@ impuesto:
 condicionespago:
   btn:
     adicionar: Adicionar Condición de Pago
+
+# ORDEN NECESIDAD PRODUCTO
+orden_necesidad_producto:
+  producto: Producto
+  orden: Orden
+  seriales: Seriales
+  cantidad: Cantidad
+  btn:
+    adicionar: Adicionar necesidad de producto
+  modal:
+    delete: Eliminar necesidad de producto
+    title: Crear nueva necesidad de producto
+
+orden_trabajo:
+  modal:
+    process: Procesar Orden de Trabajo

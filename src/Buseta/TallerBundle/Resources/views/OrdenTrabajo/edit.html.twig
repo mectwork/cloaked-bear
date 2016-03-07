@@ -13,6 +13,7 @@
             {# Nav tabs #}
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#basicos" data-toggle="tab">Datos Básicos</a></li>
+                <li><a href="#onecprod" data-toggle="tab">Productos Necesarios</a></li>
                 {#<li><a href="#reportes" data-toggle="tab">Reportes</a></li>#}
                 {#<li><a href="#diagnosticos" data-toggle="tab">Diagnósticos</a></li>#}
             </ul>
@@ -151,6 +152,9 @@
 
                         {{ form_rest(edit_form) }}
                     </form>
+                </div>
+
+                <div class="tab-pane fade" id="onecprod">
                 </div>
 
                 {#<div class="tab-pane" id="reportes">#}
@@ -616,10 +620,25 @@
         };
 
         var ordenTrabajo = {
+            tabname: 'basicos',
+            form_id: $('div#basicos').find('form').attr('id'),
+            form_name: $('div#basicos').find('form').attr('name'),
+            id: '',
             _events: function () {
 
             },
             _load: function () {
+                ordenTrabajo.id = $('input[id="buseta_tallerbundle_ordentrabajo_id"]').val();
+                if (ordenTrabajo.id === '' || ordenTrabajo.id === undefined) {
+                    // hide all tabs on page load
+                    $('a[data-toggle="tab"]').each(function(key, item) {
+                        if($(item).attr('href') != '#basicos') {
+                            $(item).parent().hide();
+                        }
+                    });
+                } else {
+                    tabs._show_all_tabs();
+                }
                 $('#buseta_tallerbundle_ordentrabajo_fechaInicio').datetimepicker({
                     'format': 'DD/MM/YYYY',
                 });
@@ -652,7 +671,201 @@
         };
     </script>
 
+    <!-- Necesidades de productos script -->
     <script type="text/javascript">
+        var onecprod = {
+            tabname: 'onecprod',
+            form_name: '',
+            form_id: '',
+
+            _start_events: function (e) {
+                <!-- click en el botón 'Adicionar necesidad de producto' -->
+                $('a[href="#form_onecprod_modal"]').on('click', onecprod._load_modal);
+                $('a[href="#btn_onecprod_edit"]').on('click', onecprod._load_modal);
+                $('a[href="#btn_onecprod_delete"]').on('click', onecprod._load_delete_modal);
+                $('a[href="#btn_onecprod_delete"]').on('click', onecprod._load_delete_modal);
+                // Paginator sort
+                $('table.records_list').find('a.sortable, a.asc, a.desc').on('click', onecprod._load);
+                // Paginator navigation
+                $('div.producto-paginator.row ul.pagination').find('a.paginator-link').on('click', onecprod._load);
+            },
+
+            _load: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
+
+                tabs._add_loadding(onecprod.tabname);
+
+                var url = Routing.generate('ordennecesidadproducto', {'ordentrabajo': ordenTrabajo.id});
+                if($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
+                    url = $(this).attr('href');
+                }
+
+                $.get(url).done(function (response, textStatus, jqXHR) {
+                    $('div#onecprod').html(response);
+
+                    onecprod._start_events();
+                }).fail(utils._fail).always(onecprod._always());
+            },
+
+            _load_modal: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
+
+                console.log($(this).attr('href'));
+
+                var url = Routing.generate('ordennecesidadproducto_new', {'ordentrabajo': ordenTrabajo.id});
+                if($(this).attr('href') !== undefined && $(this).attr('href') === '#btn_onecprod_edit') {
+                    url = Routing.generate('ordennecesidadproducto_edit', {'id': $(this).data('content')});
+                }
+
+                $.get(url)
+                        .done(function(response, textStatus, jqXHR){
+                            $('div#form_onecprod_modal').replaceWith($(response.view));
+
+                            onecprod.form_id = $('div#form_onecprod_modal').find('form').attr('id');
+                            onecprod.form_name = $('div#form_onecprod_modal').find('form').attr('name');
+
+                            console.log(onecprod.form_id);
+                            console.log(onecprod.form_name);
+
+                            $('a#btn_onecprod_save').on('click', onecprod._save_modal);
+                            $('a#btn_onecprod_cancel').on('click', function(){
+                                $('div#form_onecprod_modal').modal('hide');
+                            });
+
+                            $('div#form_onecprod_modal').modal('show');
+                        }).fail(utils._fail).always(function(){});
+            },
+
+            _load_delete_modal: function(e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
+
+                var url = Routing.generate('ordentrabajo_ordennecesidadproducto_delete', {'id': $(this).data('content')});
+
+                $.get(url).done(function(response, textStatus, jqXHR){
+                    $('div#form_onecprod_delete_modal').replaceWith($(response.view));
+
+                    $('div#form_onecprod_delete_modal a#btn_onecprod_delete').on('click', onecprod._save_delete_modal);
+                    $('div#form_onecprod_delete_modal a#btn_onecprod_cancel').on('click', function(){
+                        $('div#form_onecprod_delete_modal').modal('hide');
+                    });
+
+                    $('div#form_onecprod_delete_modal').modal('show');
+                }).fail(utils._fail).always(function(){});
+            },
+
+            _save_modal: function (e) {
+                if(e !== undefined) {
+                    e.preventDefault();
+                }
+
+                $('#btn_onecprod_save').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-save')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
+
+                $('form#' + onecprod.form_id).ajaxSubmit({
+                    success: onecprod._done,
+                    error: utils._fail,
+                    complete: onecprod._always,
+                    dataType: 'json'
+                });
+            },
+
+            _save_delete_modal: function (event) {
+
+                if(event != undefined) {
+                    event.preventDefault();
+                }
+
+                $('#btn_onecprod_delete').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-save')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
+
+                var deleteForm = $('div#form_onecprod_delete_modal').find('form'),
+                        url = $(deleteForm).attr('action');
+
+                deleteForm.ajaxSubmit({
+                    success: function (response, textStatus, jqXHR) {
+                        if(jqXHR.status == 202) {
+                            addGlobalMessage('success', response.message);
+                        }
+                        $('div#form_onecprod_delete_modal').modal('hide');
+                        onecprod._load();
+                    },
+                    error: utils._fail,
+                    complete: onecprod._always,
+                    url: url,
+                    dataType: 'json'
+                });
+            },
+
+            _done: function (response, textStatus, jqXHR) {
+                if(jqXHR.status == 201 || jqXHR.status == 202) {
+                    addGlobalMessage('success', response.message);
+
+                    $('div#form_onecprod_modal').modal('hide');
+                    onecprod._load();
+                } else {
+                    $('form#' + onecprod.form_id).replaceWith($(response.view).find('form'));
+                }
+            },
+
+            _always: function () {
+                tabs._remove_loadding(onecprod.tabname)
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        var tabs = {
+            loadding_image: '<i class="fa fa-spinner fa-spin"></i>',
+            _show_all_tabs: function() {
+                tabs._show_tab('onecprod');
+            },
+            _show_tab: function (tabname) {
+                $('li a[href="#' + tabname + '"]').parent().show();
+            },
+            _hide_tab: function () {
+                $('li a[href="#' + tabname + '"]').parent().hide();
+            },
+            _add_loadding: function (tabname) {
+                var linktab = $('li a[href="#' + tabname + '"]');
+                linktab.prepend($(tabs.loadding_image));
+            },
+            _remove_loadding: function (tabname) {
+                var spinning = $('li a[href="#' + tabname + '"]').find('i.fa.fa-spinner.fa-spin');
+                spinning.remove();
+            },
+            _active: function (href) {
+                $('li a[href="' + href + '"]').parent().addClass('active');
+                $('div' + href).addClass('active').addClass('in');
+            },
+            _desactive: function (href) {
+                $('li a[href="' + href + '"]').parent().removeClass('active');
+                $('div' + href).removeClass('active').removeClass('in');
+            }
+        };
+        var utils = {
+            _fail: function (jqXHR, textStatus, errorThrown) {
+                if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                    addGlobalMessage('danger', jqXHR.responseText.message);
+                } else {
+                    addGlobalMessage('danger', '{{ 'messages.unexpected_error' | trans({}, 'BusetaTallerBundle') }}');
+                }
+            }
+        };
+
         var collectionHolder = $('div#buseta_tallerbundle_ordentrabajo_tareasAdicionales');
         var $addTagLink = '';
 
@@ -676,6 +889,7 @@
             $('#{{ edit_form.autobus.vars.id }}').trigger('change');
 
             ordenTrabajo._load();
+            onecprod._load();
         });
 
         //Al seleccionar el Diagnostico de la OT, automaticamente selecciona el Autobus y Diagnosticado Por

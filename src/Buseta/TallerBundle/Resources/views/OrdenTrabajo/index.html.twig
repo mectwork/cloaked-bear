@@ -8,17 +8,17 @@
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.numero is null or filter_form.vars.value.numero is empty)
-      and (filter_form.vars.value.requisionMateriales is null or filter_form.vars.value.requisionMateriales is empty)
-      and (filter_form.vars.value.diagnosticadoPor is null or filter_form.vars.value.diagnosticadoPor is empty)
-      and (filter_form.vars.value.ayudante is null or filter_form.vars.value.ayudante is empty)
-      and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
-      and (filter_form.vars.value.diagnostico is null or filter_form.vars.value.diagnostico is empty) %}
+    and (filter_form.vars.value.requisionMateriales is null or filter_form.vars.value.requisionMateriales is empty)
+    and (filter_form.vars.value.diagnosticadoPor is null or filter_form.vars.value.diagnosticadoPor is empty)
+    and (filter_form.vars.value.ayudante is null or filter_form.vars.value.ayudante is empty)
+    and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
+    and (filter_form.vars.value.diagnostico is null or filter_form.vars.value.diagnostico is empty) %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
     {% endif %}
 
     <h4><a id="filter_form_header" style="cursor: pointer;">
-        <span class="glyphicon {{ headericon }}"></span> Búsqueda</a>
+            <span class="glyphicon {{ headericon }}"></span> Búsqueda</a>
     </h4>
 
     <div id="filter_form_component" style="{{ display }}">
@@ -48,10 +48,11 @@
 
     <div id="actions_container">
         {% if is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo') %}
-        <div class="btn-group pull-left" style="padding-bottom: 8px;">
-            <a class="btn btn-primary" href="{{ path('ordentrabajo_new') }}"><i class="fa fa-plus-circle"></i> Adicionar
-                Orden de Trabajo</a>
-        </div>
+            <div class="btn-group" style="padding-bottom: 8px;">
+                <a class="btn btn-primary" href="{{ path('ordentrabajo_new') }}"><i class="fa fa-plus-circle"></i>
+                    Adicionar
+                    Orden de Trabajo</a>
+            </div>
         {% endif %}
 
         <div class="btn-group pull-right" data-toggle="buttons">
@@ -67,18 +68,18 @@
     <div id="lista_tareas_ordenes" style="display: none;">
         <table class="records_list table table-striped table-bordered table-condensed table-hover">
             <thead>
-                <tr>
-                    <th>OT</th>
-                    <th>Autobus</th>
-                    <th>Grupo</th>
-                    <th>Subgrupo</th>
-                    <th>Tarea</th>
-                    <th>Kilometraje</th>
-                    <th>Creado</th>
-                    <th>Responsable</th>
-                    <th>Fecha estimada</th>
-                    <th>Acciones</th>
-                </tr>
+            <tr>
+                <th>OT</th>
+                <th>Autobus</th>
+                <th>Grupo</th>
+                <th>Subgrupo</th>
+                <th>Tarea</th>
+                <th>Kilometraje</th>
+                <th>Creado</th>
+                <th>Responsable</th>
+                <th>Fecha estimada</th>
+                <th>Acciones</th>
+            </tr>
             </thead>
             <tbody>
             {% for entity in entities %}
@@ -87,33 +88,33 @@
                 {% set color_letra=entity.autobus.grupobuses is not null ?
                 "color: " ~ entity.autobus.grupobuses.colorTexto ~ ";": "" %}
                 {% for tarea in entity.tareasAdicionales %}
-                <tr>
-                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">OT #{{ entity.numero }}</td>
-                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.autobus }}</td>
-                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ tarea.grupo }}</td>
-                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ tarea.subgrupo }}</td>
-                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ tarea.tareamantenimiento }}</td>
-                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.kilometraje }}</td>
-                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
-                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.realizadapor }}</td>
-                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ tarea.fechaestimada |date('d/m/Y') }}</td>
-                    <td style="width: 18% !important; text-align: center;  {{ color_fondo|raw }}">
-                    {% if is_granted('VIEW', entity) %}
-                        <div class="btn-group">
-                            <a class="btn btn-success btn-xs"
-                               href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
-                                        class="fa fa-search"> Mostrar</i></a>
-                        </div>
-                    {% endif %}
-                    {% if is_granted('EDIT', entity) %}
-                        <div class="btn-group">
-                            <a class="btn btn-danger btn-xs"
-                               href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i
-                                        class="fa fa-edit"> Editar</i></a>
-                        </div>
-                    {% endif %}
-                    </td>
-                </tr>
+                    <tr>
+                        <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">OT #{{ entity.numero }}</td>
+                        <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.autobus }}</td>
+                        <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ tarea.grupo }}</td>
+                        <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ tarea.subgrupo }}</td>
+                        <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ tarea.tareamantenimiento }}</td>
+                        <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.kilometraje }}</td>
+                        <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.created ? entity.created | date('d/m/Y h:i a') : '-' }}</td>
+                        <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.realizadapor }}</td>
+                        <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ tarea.fechaestimada |date('d/m/Y') }}</td>
+                        <td style="width: 18% !important; text-align: center;  {{ color_fondo|raw }}">
+                            {% if is_granted('VIEW', entity) %}
+                                <div class="btn-group">
+                                    <a class="btn btn-success btn-xs"
+                                       href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
+                                                class="fa fa-search"> Mostrar</i></a>
+                                </div>
+                            {% endif %}
+                            {% if is_granted('EDIT', entity) %}
+                                <div class="btn-group">
+                                    <a class="btn btn-danger btn-xs"
+                                       href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i
+                                                class="fa fa-edit"> Editar</i></a>
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
                 {% endfor %}
             {% else %}
                 <tr>
@@ -127,14 +128,15 @@
     <div id="lista_ordenes" style="display: block;">
         <table class="records_list table table-striped table-bordered table-condensed table-hover">
             <thead>
-                <tr>
-                    <th>OT</th>
-                    <th>Diagnosticado por</th>
-                    <th>Autobus</th>
-                    <th>Ayudante</th>
-                    <th>Prioridad</th>
-                    <th>Acciones</th>
-                </tr>
+            <tr>
+                <th>OT</th>
+                <th>Diagnosticado por</th>
+                <th>Autobus</th>
+                <th>Ayudante</th>
+                <th>Prioridad</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
             </thead>
             <tbody>
             {% for entity in entities %}
@@ -144,13 +146,29 @@
                 "color: " ~ entity.autobus.grupobuses.colorTexto ~ ";": "" %}
                 <tr>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">OT #{{ entity.numero }}</td>
-                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.diagnosticadoPor | default('-')}}</td>
+                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.diagnosticadoPor | default('-') }}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.autobus }}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.ayudante }}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.prioridad }}</td>
 
+                    {% if entity.estado == 'CO' %}
+                        {% set badge = 'success' %}
+                        {% set text_color = 'success' %}
+                    {% elseif entity.estado == 'PR' %}
+                        {% set badge = 'primary' %}
+                        {% set text_color = 'primary' %}
+                    {% elseif entity.estado == 'BO' %}
+                        {% set badge = 'danger' %}
+                        {% set text_color = 'danger' %}
+                    {% else %}
+                        {% set badge = 'danger' %}
+                        {% set text_color = 'danger' %}
+                    {% endif %}
+                    <td class="text-{{ text_color }}"><span
+                                class="label label-{{ badge }}">{{ ('estado.' ~entity.estado) | trans({}, 'BusetaTallerBundle') | upper }}</span>
+                    </td>
                     <td style="width: 18% !important; text-align: center; {{ color_fondo|raw }}">
-                    {% if is_granted('VIEW', entity) %}
+                        {% if is_granted('VIEW', entity) %}
                             <div class="btn-group">
                                 <a class="btn btn-success btn-xs"
                                    href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
@@ -159,8 +177,13 @@
                         {% endif %}
 
                         {% if is_granted('EDIT', entity) %}
+                            {% if entity.estado == 'CO' or  entity.estado == 'PR' %}
+                                {% set clazz = 'btn btn-danger btn-xs disabled' %}
+                            {% else %}
+                                {% set clazz = 'btn btn-danger btn-xs' %}
+                            {% endif %}
                             <div class="btn-group">
-                                <a class="btn btn-danger btn-xs"
+                                <a class="{{ clazz }}"
                                    href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i
                                             class="fa fa-edit"> Editar</i></a>
                             </div>

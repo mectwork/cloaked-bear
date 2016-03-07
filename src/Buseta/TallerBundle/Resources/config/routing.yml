@@ -66,3 +66,7 @@ buseta_taller_impuesto:
 historicomantenimientos:
     resource: @BusetaTallerBundle/Controller/HistoricoMantenimientosController.php
     type: annotation
+
+BusetaTallerBundle_ordennecesidadproducto:
+    resource: "@BusetaTallerBundle/Controller/OrdenNecesidadProductoController.php"
+    type: annotation
