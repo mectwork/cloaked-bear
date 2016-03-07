@@ -2,7 +2,7 @@ var albaran = {
     form_id: $('div#basicos').find('form').attr('id'),
     form_name: $('div#basicos').find('form').attr('name'),
     id: '',
-    _load: function () {
+    _start_events: function () {
         $('#bodega_albaran_type_fechaMovimiento').datetimepicker({
             'format': 'DD/MM/YYYY'
         });
@@ -15,6 +15,8 @@ var albaran = {
         $('#bodega_albaran_type_almacen').chosen();
 
         $('a#btn_albaran_save').on('click', albaran._save);
+    },
+    _load: function () {
         albaran.id = $('input[id="' + albaran.form_id + '_id"]').val();
         if (albaran.id === '' || albaran.id === undefined) {
             // hide all tabs on page load
@@ -34,6 +36,8 @@ var albaran = {
                 lineas._load();
             }
         });
+
+        albaran._start_events();
     },
     _save: function (event) {
         if (event != undefined) {
@@ -76,7 +80,8 @@ var albaran = {
         } else if(jqXHR.status == 202) {
             $btalerts.addSuccess(response.message);
         }
-        $('a#btn_albaran_save').on('click', albaran._save);
+
+        albaran._start_events();
     },
     _always: function() {
         // remove spinning
