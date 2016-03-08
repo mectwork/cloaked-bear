@@ -8,6 +8,7 @@ var pedidocompra = {
             'format': 'DD/MM/YYYY'
         });
         $('#bodega_pedido_compra_tercero').chosen();
+        $('#bodega_pedido_compra_almacen').chosen();
 
         $('a#btn_pedidocompra_save').on('click', pedidocompra._save);
     },

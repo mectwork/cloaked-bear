@@ -97,7 +97,7 @@ class Albaran implements DateTimeAwareInterface
      * @Assert\Choice(choices={"??","AP","CH","CL","CO","DR","IN","IP","NA","PE","PO","PR","RE","TE","TR","VO","WP","XX"})
      *
      */
-    private $estadoDocumento;
+    private $estadoDocumento = 'BO';
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\PedidoCompra")

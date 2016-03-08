@@ -102,7 +102,7 @@ class NecesidadMaterialController extends Controller
             $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
         }
 
-        return $this->redirect($this->generateUrl('necesidadmaterial'));
+        return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
     }
 
     /**
@@ -141,7 +141,7 @@ class NecesidadMaterialController extends Controller
 
             $sequenceManager = $this->get('hatuey_soft.sequence.manager');
             $pedidoCompra = new PedidoCompra();
-            if (($sequenceManager->getNextValue('orden_entrada_seq')) != null) {
+            if (null !== $numeroDocumento = $sequenceManager->getNextValue('orden_entrada_seq')) {
                 $pedidoCompra->setNumeroDocumento($sequenceManager->getNextValue('registro_compra_seq'));
 
             }  else {
@@ -276,7 +276,6 @@ class NecesidadMaterialController extends Controller
      */
     public function newAction()
     {
-
         $form   = $this->createCreateForm(new NecesidadMaterialModel());
         $em = $this->get('doctrine.orm.entity_manager');
         $productos = $em->getRepository('BusetaBodegaBundle:Producto')

@@ -34,6 +34,14 @@ class PedidoCompra
     private $numero_documento;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="numero_referencia", type="string", length=32)
+     * @Assert\NotBlank()
+     */
+    private $numeroReferencia;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="pedidoCompra")
      */
     private $tercero;
@@ -198,6 +206,7 @@ class PedidoCompra
     {
         $this->created = $model->getCreated();
         $this->createdby = $model->getCreatedby();
+        $this->numeroReferencia = $model->getNumeroReferencia();
         $this->deleted = $model->getDeleted();
         $this->deletedby = $model->getDeletedby();
         $this->updated = $model->getUpdated();
@@ -313,6 +322,30 @@ class PedidoCompra
     public function getNumeroDocumento()
     {
         return $this->numero_documento;
+    }
+
+    /**
+     * Set numeroReferencia.
+     *
+     * @param string $numeroReferencia
+     *
+     * @return PedidoCompra
+     */
+    public function setNumeroReferencia($numeroReferencia)
+    {
+        $this->numeroReferencia = $numeroReferencia;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroReferencia.
+     *
+     * @return string
+     */
+    public function getNumeroReferencia()
+    {
+        return $this->numeroReferencia;
     }
 
     /**

@@ -77,7 +77,17 @@
                 <td>{{ entity.numeroDocumento }}</td>
                 <td>{{ entity.almacen }}</td>
                 <td>{{ entity.tercero }}</td>
-                <td>{{ ('estado.'~entity.estadodocumento) | trans({}, 'BusetaTallerBundle') }}</td>
+                {% if entity.estadodocumento == 'CO' %}
+                    {% set badge = 'success' %}
+                    {% set text_color = 'success' %}
+                {% elseif entity.estadodocumento == 'PR' %}
+                    {% set badge = 'primary' %}
+                    {% set text_color = 'primary' %}
+                {% else %}
+                    {% set badge = 'danger' %}
+                    {% set text_color = 'danger' %}
+                {% endif %}
+                <td class="text-{{ text_color }}"><span class="label label-{{ badge }}">{{ ('estado.' ~entity.estadodocumento) | trans({}, 'BusetaBodegaBundle') | upper }}</span></td>
 
                 <td style="width: 24% !important; text-align: center;">
                     <div class="btn-group">
@@ -126,6 +136,9 @@
 
 {% block javascripts %}
     <script type="text/javascript">
+        $('#buseta_albaran_filter_tercero').chosen();
+        $('#buseta_albaran_filter_almacen').chosen();
+        $('#buseta_albaran_filter_producto').chosen();
         $(document).ready(function () {
             $('a#filter_form_header').click(function () {
                 if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
@@ -151,6 +164,7 @@
                 });
                 $('form#filter_form').find('select').each(function () {
                     $(this).val(null);
+                    $(this).trigger('chosen:updated');
                 })
             });
 

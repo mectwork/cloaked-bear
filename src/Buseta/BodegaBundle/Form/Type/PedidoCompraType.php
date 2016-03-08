@@ -42,6 +42,13 @@ class PedidoCompraType extends AbstractType
             ->add('id', 'hidden', array(
                 'required' => false,
             ))
+            ->add('numeroReferencia', 'text', array(
+                'required' => false,
+                'label'  => 'Nro.Referencia',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->add('tercero', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
                 'query_builder' => function (EntityRepository $er) {
@@ -99,20 +106,6 @@ class PedidoCompraType extends AbstractType
                 'placeholder' => '---Seleccione---',
                 'required' => true,
                 'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('estado_documento', 'choice', array(
-                'required' => false,
-                'read_only' => true,
-                'placeholder' => '---Seleccione---',
-                'translation_domain' => 'BusetaTallerBundle',
-                'choices' => array(
-                    'CO' => 'estado.CO',
-                    'BO' => 'estado.BO',
-                    'PR' => 'estado.PR',
-                ),
-                'attr'   => array(
                     'class' => 'form-control',
                 ),
             ))

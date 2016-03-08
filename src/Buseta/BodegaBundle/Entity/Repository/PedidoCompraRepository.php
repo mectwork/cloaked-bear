@@ -25,6 +25,10 @@ class PedidoCompraRepository extends EntityRepository
                 $query->andWhere($qb->expr()->like('r.numero_documento',':numero_documento'))
                     ->setParameter('numero_documento', '%' . $filter->getNumeroDocumento() . '%');
             }
+            if ($filter->getNumeroReferencia() !== null && $filter->getNumeroReferencia() !== '') {
+                $query->andWhere($qb->expr()->like('r.numeroReferencia',':numeroReferencia'))
+                    ->setParameter('numeroReferencia', '%' . $filter->getNumeroReferencia() . '%');
+            }
             if ($filter->getTercero() !== null && $filter->getTercero() !== '') {
                 $query->andWhere($query->expr()->eq('r.tercero', ':tercero'))
                     ->setParameter('tercero', $filter->getTercero());

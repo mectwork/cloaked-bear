@@ -30,13 +30,19 @@ class PedidoCompraModel
     private $observaciones;
 
     /**
+     * @var string
+     * @Assert\NotBlank()
+     */
+    private $numeroReferencia;
+
+    /**
      * @var \Buseta\BodegaBundle\Entity\Tercero
      * @Assert\NotBlank()
      */
     private $tercero;
 
     /**
-     * @var date
+     * @var \DateTime
      * @Assert\NotBlank()
      * @Assert\DateTime()
      */
@@ -160,6 +166,7 @@ class PedidoCompraModel
             $this->id = $pedidocompra->getId();
             $this->created = $pedidocompra->getCreated();
             $this->createdby = $pedidocompra->getCreatedby();
+            $this->numeroReferencia = $pedidocompra->getNumeroReferencia();
             $this->deleted = $pedidocompra->getDeleted();
             $this->deletedby = $pedidocompra->getDeletedby();
             $this->updated = $pedidocompra->getUpdated();
@@ -207,6 +214,7 @@ class PedidoCompraModel
         $pedidocompra = new PedidoCompra();
         $pedidocompra->setCreated($this->getCreated());
         $pedidocompra->setCreatedby($this->getCreatedby());
+        $pedidocompra->setNumeroReferencia($this->getNumeroReferencia());
         $pedidocompra->setDeleted($this->getDeleted());
         $pedidocompra->setDeletedby($this->getDeletedby());
         $pedidocompra->setEstadoDocumento($this->getEstadoDocumento());
@@ -314,6 +322,22 @@ class PedidoCompraModel
     public function setCondicionesPago($condiciones_pago)
     {
         $this->condiciones_pago = $condiciones_pago;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumeroReferencia()
+    {
+        return $this->numeroReferencia;
+    }
+
+    /**
+     * @param string $numeroReferencia
+     */
+    public function setNumeroReferencia($numeroReferencia)
+    {
+        $this->numeroReferencia = $numeroReferencia;
     }
 
     /**
