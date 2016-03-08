@@ -529,36 +529,6 @@ class ProductoController extends Controller
     }
 
     /**
-     * @Route("/{id}/get-uom", name="get_uom", options={"expose": true})
-     * @Method("GET")
-     *
-     * @param Producto $producto
-     * @return JsonResponse
-     */
-    public function getUomAction(Producto $producto)
-    {
-        $uom = $producto->getUom();
-
-        $array = array();
-        /**
-         * @var UOM $uom
-         */
-        $array[] = array(
-            'id' => $uom->getId(),
-            'valor' => $uom->getValor(),
-        );
-
-        if (count($array) === 0) {
-            $array[] = array(
-                'id' => '',
-                'valor' => 'No asignada'
-            );
-        }
-
-        return new JsonResponse($array);
-    }
-
-    /**
      * @Route("/{id}/has-serial", name="has_serial", options={"expose": true})
      * @Method("GET")
      *

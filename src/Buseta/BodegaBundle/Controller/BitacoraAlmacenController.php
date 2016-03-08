@@ -90,7 +90,7 @@ class BitacoraAlmacenController extends Controller
     /**
      * @param BitacoraAlmacen $bitacoraAlmacen
      *
-     * @Route("/{id}/data.{format}", name="productos_get_product_data", requirements={"format": "json|txt"}, defaults={"format":"json"}, options={"expose": true})
+     * @Route("/{id}/data.{format}", name="bitacoraalmacen_get_product_data", requirements={"format": "json|txt"}, defaults={"format":"json"}, options={"expose": true})
      * @Method({"GET"})
      */
     public function getBitacoraAlmacenDataAction($id)

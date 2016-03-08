@@ -396,4 +396,26 @@ class PedidoCompraLineaController extends Controller
             ->setMethod('DELETE')
             ->getForm();
     }
+
+    /**
+     * @Route("/{id}/get_uom_product", name="pedidocompra_get_uom_by_producto", options={"expose": true})
+     * @Method("GET")
+     *
+     * @param Producto $producto
+     * @return JsonResponse
+     */
+    public function getUOMByProductoAction(Producto $producto)
+    {
+        $uom = $producto->getUom();
+        if (!$uom) {
+            return new JsonResponse(array('error' => 'El producto no tiene definido la unidad de medida activa.'), 404);
+        }
+
+        $value = array(
+            'id' => $uom->getId(),
+            'valor' => $uom->getValor(),
+        );
+
+        return new JsonResponse($value);
+    }
 }
