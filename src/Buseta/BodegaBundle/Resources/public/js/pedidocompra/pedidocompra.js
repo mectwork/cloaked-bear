@@ -10,6 +10,9 @@ var pedidocompra = {
         $('#bodega_pedido_compra_tercero').chosen();
         $('#bodega_pedido_compra_almacen').chosen();
 
+        proveedor.findMoneda();
+        proveedor.getElement().on('change', proveedor.findMoneda);
+
         $('a#btn_pedidocompra_save').on('click', pedidocompra._save);
     },
     _load: function () {

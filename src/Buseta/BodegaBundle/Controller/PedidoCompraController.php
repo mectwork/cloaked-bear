@@ -6,6 +6,7 @@ use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
 use Buseta\BodegaBundle\Entity\Proveedor;
+use Buseta\BodegaBundle\Entity\Tercero;
 use Buseta\BodegaBundle\Form\Filter\PedidoCompraFilter;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraFilterModel;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\ConstraintViolation;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 /**
@@ -474,32 +476,29 @@ class PedidoCompraController extends Controller
     }
 
     /**
-     * @Route("/{id}/get-moneda", name="get_moneda", options={"expose": true})
+     * @Route("/{id}/get_moneda_proveedor", name="pedidocompra_get_moneda_by_proveedor", options={"expose": true})
      * @Method("GET")
      *
-     * @param Proveedor $proveedor
+     * @param Tercero $tercero
      * @return JsonResponse
      */
-    public function getMonedaAction(Proveedor $proveedor)
+    public function getMonedaAction(Tercero $tercero)
     {
-        $moneda = $proveedor->getMoneda();
-
-        $array = array();
-        /**
-         * @var Moneda $moneda
-         */
-        $array[] = array(
-            'id' => $moneda->getId(),
-            'valor' => $moneda->getValor(),
-        );
-
-        if (count($array) === 0) {
-            $array[] = array(
-                'id' => '',
-                'valor' => 'No asignada'
-            );
+        if (!$tercero->getProveedor()) {
+            return new JsonResponse(array('error' => 'No existe el proveedor seleccionado.'), 404);
         }
 
-        return new JsonResponse($array);
+        $moneda = $tercero->getProveedor()->getMoneda();
+        if (!$moneda) {
+            return new JsonResponse(array('error' => 'El proveedor no tiene definido una moneda activa.'), 404);
+        }
+
+        $value = array(
+            'id' => $moneda->getId(),
+            'valor' => $moneda->getValor(),
+            'simbolo' => $moneda->getSimbolo()
+        );
+
+        return new JsonResponse($value);
     }
 }
