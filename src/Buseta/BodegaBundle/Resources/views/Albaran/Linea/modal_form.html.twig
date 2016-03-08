@@ -18,14 +18,15 @@
                         <div class="col-lg-6">{{ form_row(form.valorAtributos) }}</div>
                         <div class="col-lg-6">{{ form_row(form.uom) }}</div>
                         <div class="col-lg-6">{{ form_row(form.cantidadMovida) }}</div>
-                        <div class="col-lg-6">{{ form_row(form.seriales) }}</div>
+                        <div id="serial" class="col-lg-6">{{ form_row(form.seriales) }}</div>
                     </div>
 
                     {{ form_widget(form._token) }}
                 </form>
             </div>
             <div class="modal-footer">
-                <a href="#" class="btn btn-default" id="btn_lineas_cancel" data-dismiss="modal"><span class="glyphicon glyphicon-chevron-left"></span>
+                <a href="#" class="btn btn-default" id="btn_lineas_cancel" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
                     {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
                 <a href="#" class="btn btn-primary" id="btn_lineas_save"><span class="glyphicon glyphicon-save"></span>
                     {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
@@ -33,3 +34,36 @@
         </div>
     </div>
 </div>
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#buseta_bodegabundle_albaran_linea_producto').on('change', function () {
+
+                var idproducto = $(this).val();
+
+                $.ajax({
+                    url: Routing.generate('get_uom', {id: idproducto}),
+                    dataType: 'JSON',
+                    method: 'GET'
+                }).done(function (response, textStatus, jqXHR) {
+                    var uom = $('#buseta_bodegabundle_albaran_linea_uom');
+                    uom.find('option').remove();
+                    for (var i = 0; i < response.length; i++) {
+                        uom.append($('<option value="' + response[i].id + '">' + response[i].valor + '</option>'))
+                    }
+                });
+
+                $.ajax({
+                    url: Routing.generate('has_serial', {id: idproducto}),
+                    dataType: 'JSON',
+                    method: 'GET'
+                }).done(function (response, textStatus, jqXHR) {
+                    var serial = $('#serial');
+                    if (response.valor != true) {
+                        serial.hide();
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock javascripts %}

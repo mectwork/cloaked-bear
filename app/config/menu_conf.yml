@@ -396,7 +396,7 @@ root:
         menu_C:
           id: menu_C
           name: menu_taller
-          label: Taller
+          label: Estación de Servicios
           route: taller_principal
           roles:
             - ROLE_USER

@@ -5,10 +5,12 @@ namespace Buseta\BodegaBundle\Controller;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
+use Buseta\BodegaBundle\Entity\Proveedor;
 use Buseta\BodegaBundle\Form\Filter\PedidoCompraFilter;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraFilterModel;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
+use Buseta\NomencladorBundle\Entity\Moneda;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\PedidoCompra;
@@ -164,15 +166,15 @@ class PedidoCompraController extends Controller
 
                 $em->flush();
 
-                $session->getFlashBag()->add('success', sprintf('Se ha creado el Albarán para el Registro de Compra "%s".',
+                $session->getFlashBag()->add('success', sprintf('Se ha creado la Orden de Entrada para el Registro de Compra "%s".',
                         $pedidoCompra->getNumeroDocumento()
                 ));
             } catch (\Exception $e) {
-                $logger->addCritical(sprintf('Ha ocurrido un error intentando crear el albarán para Registro de Compra "%s". Detalles: %s',
+                $logger->addCritical(sprintf('Ha ocurrido un error intentando crear la Orden de Entrada para Registro de Compra "%s". Detalles: %s',
                     $pedidoCompra->getNumeroDocumento(),
                     $e->getMessage()
                 ));
-                $session->getFlashBag()->add('danger', sprintf('Ha ocurrido un error intentando crear el Albarán para Registro de Compra "%s".',
+                $session->getFlashBag()->add('danger', sprintf('Ha ocurrido un error intentando crear la Orden de Entrada para Registro de Compra "%s".',
                     $pedidoCompra->getNumeroDocumento()
                 ));
             }
@@ -469,5 +471,35 @@ class PedidoCompraController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * @Route("/{id}/get-moneda", name="get_moneda", options={"expose": true})
+     * @Method("GET")
+     *
+     * @param Proveedor $proveedor
+     * @return JsonResponse
+     */
+    public function getMonedaAction(Proveedor $proveedor)
+    {
+        $moneda = $proveedor->getMoneda();
+
+        $array = array();
+        /**
+         * @var Moneda $moneda
+         */
+        $array[] = array(
+            'id' => $moneda->getId(),
+            'valor' => $moneda->getValor(),
+        );
+
+        if (count($array) === 0) {
+            $array[] = array(
+                'id' => '',
+                'valor' => 'No asignada'
+            );
+        }
+
+        return new JsonResponse($array);
     }
 }

@@ -16,14 +16,14 @@ class CondicionesPagoType extends AbstractType
     {
         $builder
             ->add('nombre', 'text', array(
-                'required' => false,
+                'required' => true,
                 'label'  => 'Nombre',
                 'attr'   => array(
                     'class' => 'form-control',
                 ),
             ))
             ->add('descripcion', 'textarea', array(
-                'required' => false,
+                'required' => true,
                 'label'  => 'Descripción',
                 'attr'   => array(
                     'class' => 'form-control',

@@ -1,4 +1,5 @@
-<div class="modal fade" id="form_lineas_modal" tabindex="-1" role="dialog" aria-labelledby="createLineas" aria-hidden="true">
+<div class="modal fade" id="form_lineas_modal" tabindex="-1" role="dialog" aria-labelledby="createLineas"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,11 +12,16 @@
                     {% if form.vars.method == 'PUT' %}
                         <input type="hidden" name="_method" value="PUT"/>
                     {% endif %}
-                    {{ form_widget(form) }}
+                    {{ form_row(form.producto) }}
+                    {{ form_row(form.descripcion) }}
+                    {{ form_row(form.cantidadTeorica) }}
+                    {{ form_row(form.cantidadReal) }}
+                    {{ form_row(form.seriales) }}
                 </form>
             </div>
             <div class="modal-footer">
-                <a href="#" class="btn btn-default" id="btn_lineas_cancel" data-dismiss="modal"><span class="glyphicon glyphicon-chevron-left"></span>
+                <a href="#" class="btn btn-default" id="btn_lineas_cancel" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-chevron-left"></span>
                     {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
                 <a href="#" class="btn btn-primary" id="btn_lineas_save"><span class="glyphicon glyphicon-save"></span>
                     {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
@@ -23,3 +29,25 @@
         </div>
     </div>
 </div>
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('select#buseta_inventariofisico_linea_producto').chosen();
+
+            //"Select dependiente" para obtener descripcion del producto seleccionado
+            $('select#buseta_inventariofisico_linea_producto').on('change', function () {
+                var idproducto = $(this).val();
+
+                $.ajax({
+                    url: Routing.generate('get_descripcion', {id: idproducto}),
+                    dataType: 'JSON',
+                    method: 'GET'
+                }).done(function (response, textStatus, jqXHR) {
+                    var descripcion = $('#buseta_inventariofisico_linea_descripcion');
+                    descripcion.removeData();
+                    descripcion.val(response);
+                });
+            });
+        });
+    </script>
+{% endblock javascripts %}

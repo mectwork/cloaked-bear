@@ -4,6 +4,8 @@ namespace Buseta\BodegaBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InventarioFisicoLineaType extends AbstractType
@@ -14,32 +16,13 @@ class InventarioFisicoLineaType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPresetData'));
+
         $builder
-            ->add('numero', 'text', array(
-                'required' => true,
-                'label' => 'Número',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('descripcion', 'textarea', array(
-                'required' => false,
-                'label' => 'Descripción',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
             ->add('producto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Producto',
                 'placeholder' => '---Seleccione---',
                 'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('cantidadReal', 'integer', array(
-                'required' => true,
-                'label' => 'Cantidad Real',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -52,13 +35,47 @@ class InventarioFisicoLineaType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('seriales', 'textarea', array(
-                'required' => false,
-                'label'  => 'Seriales',
-                'attr'   => array(
+            ->add('cantidadReal', 'integer', array(
+                'required' => true,
+                'label' => 'Cantidad Real',
+                'attr' => array(
                     'class' => 'form-control',
                 ),
-             ));
+            ))
+            ->add('seriales', 'textarea', array(
+                'required' => false,
+                'label' => 'Seriales',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ));
+    }
+
+    public function onPresetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+        /** @var \Buseta\BodegaBundle\Entity\InventarioFisicoLinea $data */
+        $data = $event->getData();
+
+        if ($data !== null) {
+            /**
+             * @var \Buseta\BodegaBundle\Entity\Producto $producto
+             */
+            $producto = $data->getProducto();
+
+            if ($producto !== null) {
+                $form->add('descripcion', 'textarea', array(
+                    'data' => $producto->getDescripcion(),
+                    'required' => false,
+                    'attr' => array('class' => 'form-control',),
+                ));
+            } else {
+                $form->add('descripcion', 'textarea', array(
+                    'required' => false,
+                    'attr' => array('class' => 'form-control',),
+                ));
+            }
+        }
     }
 
     /**

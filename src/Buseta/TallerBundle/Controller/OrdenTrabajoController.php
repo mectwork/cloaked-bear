@@ -26,7 +26,7 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
  * OrdenTrabajo controller.
  * @Route("/ordentrabajo")
  * @Breadcrumb(title="Inicio", routeName="core_homepage")
- * @Breadcrumb(title="Módulo de Taller", routeName="taller_principal")
+ * @Breadcrumb(title="Módulo Estación de Servicios", routeName="taller_principal")
  */
 class OrdenTrabajoController extends Controller
 {

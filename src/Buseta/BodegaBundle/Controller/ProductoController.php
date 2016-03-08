@@ -106,17 +106,16 @@ class ProductoController extends Controller
             'id' => $request->query->get('impuesto_id'),
         ));
 
-        $cantidad_pedido     = $request->query->get('cantidad_pedido');
+        $cantidad_pedido = $request->query->get('cantidad_pedido');
         foreach ($producto->getPrecioProducto() as $precios) {
             if ($precios->getActivo()) {
                 $precioSalida = ($precios->getPrecio());
             }
         }
 
-        if(isset($precioSalida))  {
+        if (isset($precioSalida)) {
             $precio_unitario = $precioSalida;
-        }
-        else{
+        } else {
             $precio_unitario = 0;
         }
 
@@ -179,7 +178,7 @@ class ProductoController extends Controller
         ));
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entities = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('BusetaBodegaBundle:Producto')->filter($filter);
         } else {
@@ -195,8 +194,8 @@ class ProductoController extends Controller
         );
 
         return $this->render('BusetaBodegaBundle:Producto:index.html.twig', array(
-            'entities'      => $entities,
-            'filter_form'   => $form->createView(),
+            'entities' => $entities,
+            'filter_form' => $form->createView(),
         ));
     }
 
@@ -215,8 +214,8 @@ class ProductoController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em     = $this->get('doctrine.orm.entity_manager');
-            $trans  = $this->get('translator');
+            $em = $this->get('doctrine.orm.entity_manager');
+            $trans = $this->get('translator');
             $logger = $this->get('logger');
 
             try {
@@ -229,7 +228,7 @@ class ProductoController extends Controller
                 // Creando nuevamente el formulario con los datos actualizados de la entidad
                 $form = $this->createEditForm(new ProductoModel($entity));
                 $renderView = $this->renderView('@BusetaBodega/Producto/form_template.html.twig', array(
-                    'form'   => $form->createView(),
+                    'form' => $form->createView(),
                 ));
 
                 return new JsonResponse(array(
@@ -249,7 +248,7 @@ class ProductoController extends Controller
         }
 
         $renderView = $this->renderView('@BusetaBodega/Producto/form_template.html.twig', array(
-            'form'     => $form->createView(),
+            'form' => $form->createView(),
         ));
 
         return new JsonResponse(array('view' => $renderView));
@@ -280,10 +279,10 @@ class ProductoController extends Controller
      */
     public function newAction()
     {
-        $form   = $this->createCreateForm(new ProductoModel());
+        $form = $this->createCreateForm(new ProductoModel());
 
         return $this->render('BusetaBodegaBundle:Producto:new.html.twig', array(
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -305,8 +304,8 @@ class ProductoController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('BusetaBodegaBundle:Producto:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        ));
+            'entity' => $entity,
+            'delete_form' => $deleteForm->createView(),));
     }
 
     /**
@@ -322,9 +321,9 @@ class ProductoController extends Controller
         $deleteForm = $this->createDeleteForm($producto->getId());
 
         return $this->render('BusetaBodegaBundle:Producto:edit.html.twig', array(
-            'entity'        => $producto,
-            'edit_form'     => $editForm->createView(),
-            'delete_form'   => $deleteForm->createView(),
+            'entity' => $producto,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -358,8 +357,8 @@ class ProductoController extends Controller
 
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em     = $this->get('doctrine.orm.entity_manager');
-            $trans  = $this->get('translator');
+            $em = $this->get('doctrine.orm.entity_manager');
+            $trans = $this->get('translator');
             $logger = $this->get('logger');
 
             try {
@@ -367,7 +366,7 @@ class ProductoController extends Controller
                 $em->flush();
 
                 $renderView = $this->renderView('@BusetaBodega/Producto/form_template.html.twig', array(
-                    'form'     => $editForm->createView(),
+                    'form' => $editForm->createView(),
                 ));
 
                 return new JsonResponse(array(
@@ -376,7 +375,7 @@ class ProductoController extends Controller
                 ), 202);
             } catch (\Exception $e) {
                 $logger->addCritical(sprintf(
-                    $trans->trans('messages.update.success', array(), 'BusetaBodegaBundle'). '. Detalles: %s',
+                    $trans->trans('messages.update.success', array(), 'BusetaBodegaBundle') . '. Detalles: %s',
                     $e->getMessage()
                 ));
 
@@ -387,7 +386,7 @@ class ProductoController extends Controller
         }
 
         $renderView = $this->renderView('@BusetaBodega/Producto/form_template.html.twig', array(
-            'form'     => $editForm->createView(),
+            'form' => $editForm->createView(),
         ));
 
         return new JsonResponse(array('view' => $renderView));
@@ -405,7 +404,7 @@ class ProductoController extends Controller
         $deleteForm = $this->createDeleteForm($producto->getId());
 
         $deleteForm->handleRequest($request);
-        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+        if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             try {
                 $em = $this->get('doctrine.orm.entity_manager');
 
@@ -414,19 +413,18 @@ class ProductoController extends Controller
 
                 $message = $trans->trans('messages.delete.success', array(), 'BusetaTallerBundle');
 
-                if($request->isXmlHttpRequest()) {
+                if ($request->isXmlHttpRequest()) {
                     return new JsonResponse(array(
                         'message' => $message,
                     ), 202);
-                }
-                else {
+                } else {
                     $this->get('session')->getFlashBag()->add('success', $message);
                 }
             } catch (\Exception $e) {
                 $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Producto'), 'BusetaTallerBundle');
-                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+                $this->get('logger')->addCritical(sprintf($message . ' Detalles: %s', $e->getMessage()));
 
-                if($request->isXmlHttpRequest()) {
+                if ($request->isXmlHttpRequest()) {
                     return new JsonResponse(array(
                         'message' => $message,
                     ), 500);
@@ -434,12 +432,12 @@ class ProductoController extends Controller
             }
         }
 
-        $renderView =  $this->renderView('@BusetaBodega/Producto/delete_modal.html.twig', array(
+        $renderView = $this->renderView('@BusetaBodega/Producto/delete_modal.html.twig', array(
             'entity' => $producto,
             'form' => $deleteForm->createView(),
         ));
 
-        if($request->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             return new JsonResponse(array('view' => $renderView));
         }
         return $this->redirect($this->generateUrl('producto'));
@@ -458,8 +456,7 @@ class ProductoController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('producto_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->getForm()
-            ;
+            ->getForm();
     }
 
     /**
@@ -488,15 +485,15 @@ class ProductoController extends Controller
         }
 
         $data = array(
-            'id'        => $producto->getId(),
-            'nombre'    => $producto->getNombre(),
-            'codigo'    => $producto->getCodigo(),
+            'id' => $producto->getId(),
+            'nombre' => $producto->getNombre(),
+            'codigo' => $producto->getCodigo(),
         );
 
         // Select UOM
         if ($producto->getUom()) {
             $data['uom'] = array(
-                'id'    => $producto->getUom()->getId(),
+                'id' => $producto->getUom()->getId(),
                 'value' => $producto->getUom()->getValor(),
             );
         }
@@ -514,20 +511,64 @@ class ProductoController extends Controller
             foreach ($costos as $costo) {
                 /** @var \Buseta\BodegaBundle\Entity\CostoProducto $costo */
                 $data['costos'][$costo->getId()] = array(
-                    'costo'     => $costo->getCosto(),
-                    'codigo'    => $costo->getCodigoAlternativo(),
+                    'costo' => $costo->getCosto(),
+                    'codigo' => $costo->getCodigoAlternativo(),
                 );
 
                 if ($costo->getProveedor()) {
                     $proveedor = $costo->getProveedor();
                     $data['costos'][$costo->getId()]['proveedor'] = array(
-                        'id'        => $proveedor->getId(),
-                        'nombre'    => $proveedor->__toString(),
+                        'id' => $proveedor->getId(),
+                        'nombre' => $proveedor->__toString(),
                     );
                 }
             }
         }
 
         return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/{id}/get-uom", name="get_uom", options={"expose": true})
+     * @Method("GET")
+     *
+     * @param Producto $producto
+     * @return JsonResponse
+     */
+    public function getUomAction(Producto $producto)
+    {
+        $uom = $producto->getUom();
+
+        $array = array();
+        /**
+         * @var UOM $uom
+         */
+        $array[] = array(
+            'id' => $uom->getId(),
+            'valor' => $uom->getValor(),
+        );
+
+        if (count($array) === 0) {
+            $array[] = array(
+                'id' => '',
+                'valor' => 'No asignada'
+            );
+        }
+
+        return new JsonResponse($array);
+    }
+
+    /**
+     * @Route("/{id}/has-serial", name="has_serial", options={"expose": true})
+     * @Method("GET")
+     *
+     * @param Producto $producto
+     * @return JsonResponse
+     */
+    public function hasSerialAction(Producto $producto)
+    {
+        $serial = $producto->getTieneNroSerie();
+        $response = array("valor" => $serial);
+        return new JsonResponse($response);
     }
 }

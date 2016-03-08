@@ -49,7 +49,7 @@
         };
         var tabs = {
             loadding_image: '<i class="fa fa-spinner fa-spin"></i>',
-            _show_all_tabs: function() {
+            _show_all_tabs: function () {
                 tabs._show_tab('lineas');
             },
             _show_tab: function (tabname) {
@@ -100,7 +100,7 @@
 
                 $('#' + name).hide().parent().prepend(progressBar);
             },
-            _remove_progressBar: function(name) {
+            _remove_progressBar: function (name) {
                 var progressBar = $('div#' + name + '_progress_bar');
                 progressBar.slideUp(400, function () {
                     progressBar.remove();
@@ -113,13 +113,34 @@
     <!-- PedidoCompra script -->
     <script type="text/javascript" src="{{ asset('bundles/busetabodega/js/pedidocompra/pedidocompra.js') }}"></script>
     <!-- Lineas script -->
-    <script type="text/javascript" src="{{ asset('bundles/busetabodega/js/pedidocompra/pedidocompralineas.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/busetabodega/js/pedidocompra/pedidocompralineas.js') }}">
+    </script>
 
     <!-- Initialize script -->
     <script type="text/javascript">
-        $(function (){
+        $(function () {
             // init pedidocompra
             pedidocompra._load();
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('select#bodega_pedido_compra_tercero').on('change', function () {
+
+                var idproveedor = $(this).val();
+
+                $.ajax({
+                    url: Routing.generate('get_moneda', {id: idproveedor}),
+                    dataType: 'JSON',
+                    method: 'GET'
+                }).done(function (response, textStatus, jqXHR) {
+                    var uom = $('#bodega_pedido_compra_moneda');
+                    uom.find('option').remove();
+                    for (var i = 0; i < response.length; i++) {
+                        uom.append($('<option value="' + response[i].id + '">' + response[i].valor + '</option>'))
+                    }
+                });
+            });
         });
     </script>
 {% endblock javascripts %}

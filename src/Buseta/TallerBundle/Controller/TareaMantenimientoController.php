@@ -17,7 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  * NecesidadMaterial controller.
  * @Route("/tareamantenimiento")
  * @Breadcrumb(title="Inicio", routeName="core_homepage")
- * @Breadcrumb(title="Módulo de Taller", routeName="taller_principal")
+ * @Breadcrumb(title="Módulo Estación de Servicios", routeName="taller_principal")
  */
 class TareaMantenimientoController extends Controller
 {
