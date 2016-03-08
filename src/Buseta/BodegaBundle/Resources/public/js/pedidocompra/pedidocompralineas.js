@@ -353,9 +353,10 @@ var
                 $(tbody).find('a[href="#cost"]').on('click', lineas._select_product_cost);
                 $(tbody).find('td[data-action="#edit"]').on('click', lineas._edit_product_cost);
 
-                if (data.uom != undefined && data.uom != null) {
-                    $('#' + lineas.form_id + '_uom').val(data.uom.id);
-                }
+                // This logic is implemented in line 298
+                //if (data.uom != undefined && data.uom != null) {
+                //    $('#' + lineas.form_id + '_uom').val(data.uom.id);
+                //}
 
                 lineas._update_importe_linea();
             });
@@ -368,6 +369,7 @@ var
 
             if (costo != undefined && costo != null) {
                 $('#' + lineas.form_id + '_precio_unitario').val(costo);
+                $('#' + lineas.form_id + '_precio_unitario').trigger('change');
             }
         },
         _edit_product_cost: function (event) {

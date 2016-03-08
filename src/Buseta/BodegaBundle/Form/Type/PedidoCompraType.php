@@ -111,6 +111,7 @@ class PedidoCompraType extends AbstractType
             ))
             ->add('descuento', 'number', array(
                 'required' => false,
+                'scale' => 2,
                 'label' => 'Descuento compra',
                 'attr' => array(
                     'class' => 'form-control',
@@ -127,6 +128,7 @@ class PedidoCompraType extends AbstractType
             ))
             ->add('importeCompra', 'number', array(
                 'required' => false,
+                'scale' => 2,
                 'label' => 'Importe compra',
                 'attr' => array(
                     'class' => 'form-control',
@@ -134,6 +136,7 @@ class PedidoCompraType extends AbstractType
             ))
             ->add('importe_total_lineas', 'number', array(
                 'required' => false,
+                'scale' => 2,
                 'label' => 'Importe total líneas',
                 'read_only' => true,
                 'attr' => array(
@@ -142,6 +145,7 @@ class PedidoCompraType extends AbstractType
             ))
             ->add('importeDescuento', 'number', array(
                 'required' => false,
+                'scale' => 2,
                 'read_only' => true,
                 'label' => 'Importe descuento',
                 'attr' => array(
@@ -150,6 +154,7 @@ class PedidoCompraType extends AbstractType
             ))
             ->add('importeImpuesto', 'number', array(
                 'required' => false,
+                'scale' => 2,
                 'read_only' => true,
                 'label' => 'Importe impuesto',
                 'attr' => array(
@@ -158,6 +163,7 @@ class PedidoCompraType extends AbstractType
             ))
             ->add('importe_total', 'number', array(
                 'required' => false,
+                'scale' => 2,
                 'read_only' => true,
                 'label' => 'Importe total',
                 'attr' => array(

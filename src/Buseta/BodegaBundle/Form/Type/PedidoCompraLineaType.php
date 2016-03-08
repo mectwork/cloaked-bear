@@ -41,8 +41,9 @@ class PedidoCompraLineaType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('precio_unitario', 'integer', array(
+            ->add('precio_unitario', 'number', array(
                 'required' => true,
+                'scale' => 2,
                 'label' => 'Costo unitario',
                 'attr' => array(
                     'class' => 'form-control',
