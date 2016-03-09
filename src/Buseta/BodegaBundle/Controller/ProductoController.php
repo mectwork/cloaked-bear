@@ -529,7 +529,7 @@ class ProductoController extends Controller
     }
 
     /**
-     * @Route("/{id}/has-serial", name="has_serial", options={"expose": true})
+     * @Route("/{id}/has_serial", name="productos_has_serial", options={"expose": true})
      * @Method("GET")
      *
      * @param Producto $producto

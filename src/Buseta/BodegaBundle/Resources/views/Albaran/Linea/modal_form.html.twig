@@ -34,36 +34,36 @@
         </div>
     </div>
 </div>
-{% block javascripts %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#buseta_bodegabundle_albaran_linea_producto').on('change', function () {
+{#{% block javascripts %}#}
+    {#<script type="text/javascript">#}
+        {#$(document).ready(function () {#}
+            {#$('#buseta_bodegabundle_albaran_linea_producto').on('change', function () {#}
 
-                var idproducto = $(this).val();
+                {#var idproducto = $(this).val();#}
 
-                $.ajax({
-                    url: Routing.generate('get_uom', {id: idproducto}),
-                    dataType: 'JSON',
-                    method: 'GET'
-                }).done(function (response, textStatus, jqXHR) {
-                    var uom = $('#buseta_bodegabundle_albaran_linea_uom');
-                    uom.find('option').remove();
-                    for (var i = 0; i < response.length; i++) {
-                        uom.append($('<option value="' + response[i].id + '">' + response[i].valor + '</option>'))
-                    }
-                });
+                {#$.ajax({#}
+                    {#url: Routing.generate('get_uom', {id: idproducto}),#}
+                    {#dataType: 'JSON',#}
+                    {#method: 'GET'#}
+                {#}).done(function (response, textStatus, jqXHR) {#}
+                    {#var uom = $('#buseta_bodegabundle_albaran_linea_uom');#}
+                    {#uom.find('option').remove();#}
+                    {#for (var i = 0; i < response.length; i++) {#}
+                        {#uom.append($('<option value="' + response[i].id + '">' + response[i].valor + '</option>'))#}
+                    {#}#}
+                {#});#}
 
-                $.ajax({
-                    url: Routing.generate('has_serial', {id: idproducto}),
-                    dataType: 'JSON',
-                    method: 'GET'
-                }).done(function (response, textStatus, jqXHR) {
-                    var serial = $('#serial');
-                    if (response.valor != true) {
-                        serial.hide();
-                    }
-                });
-            });
-        });
-    </script>
-{% endblock javascripts %}
+                {#$.ajax({#}
+                    {#url: Routing.generate('has_serial', {id: idproducto}),#}
+                    {#dataType: 'JSON',#}
+                    {#method: 'GET'#}
+                {#}).done(function (response, textStatus, jqXHR) {#}
+                    {#var serial = $('#serial');#}
+                    {#if (response.valor != true) {#}
+                        {#serial.hide();#}
+                    {#}#}
+                {#});#}
+            {#});#}
+        {#});#}
+    {#</script>#}
+{#{% endblock javascripts %}#}
