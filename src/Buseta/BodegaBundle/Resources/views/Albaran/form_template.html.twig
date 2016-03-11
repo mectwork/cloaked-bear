@@ -37,6 +37,11 @@
     {# buttons group #}
     <div class="row">
         <div class="col-md-4">
+            {% if entity.estadodocumento == 'PR' %}
+                <a class="btn btn-primary" href="{{ path('completarAlbaran', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-refresh"></span> Completar Proceso</a>
+            {% elseif entity.estadodocumento == 'BO' %}
+                <a class="btn btn-primary" href="{{ path('procesarAlbaran', { 'id': entity.id }) }}"> <span class="glyphicon glyphicon-refresh"></span> Procesar</a>
+            {% endif %}
             <a class="btn btn-primary" id="btn_albaran_save" href="#"><span class="glyphicon glyphicon-save"></span>
                 {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
             <a class="btn btn-default" id="btn_albaran_cancel" href="{{ path('albaran') }}"><span class="glyphicon glyphicon-chevron-left"></span>

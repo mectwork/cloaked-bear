@@ -102,7 +102,7 @@ class PedidoCompraController extends Controller
             $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
         }
 
-        return $this->redirect($this->generateUrl('pedidocompra'));
+        return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
     }
 
     /**
@@ -182,7 +182,8 @@ class PedidoCompraController extends Controller
             }
         }
 
-        return $this->redirect($this->generateUrl('pedidocompra'));
+        return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
+
     }
 
     /**
@@ -329,6 +330,12 @@ class PedidoCompraController extends Controller
      */
     public function editAction(PedidoCompra $pedidocompra)
     {
+        if ($pedidocompra->getEstadoDocumento() !== 'BO') {
+            throw $this->createAccessDeniedException(
+                'No se puede modificar el Pedido, pues ya ha sido Procesado.'
+            );
+        }
+
         $editForm = $this->createEditForm(new PedidoCompraModel($pedidocompra));
         $deleteForm = $this->createDeleteForm($pedidocompra->getId());
 
