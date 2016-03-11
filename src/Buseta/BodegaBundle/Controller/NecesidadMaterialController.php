@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\NecesidadMaterialLinea;
@@ -328,7 +329,7 @@ class NecesidadMaterialController extends Controller
      */
     public function editAction(NecesidadMaterial $necesidadmaterial)
     {
-        if ($necesidadmaterial->getEstadoDocumento() !== 'BO') {
+        if ($necesidadmaterial->getEstadoDocumento() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_DRAFT) {
             throw $this->createAccessDeniedException(
                 'No se puede modificar la Necesidad Material, pues ya ha sido Procesada.'
             );

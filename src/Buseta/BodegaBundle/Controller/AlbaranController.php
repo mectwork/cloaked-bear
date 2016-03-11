@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\Form\Filter\AlbaranFilter;
 use Buseta\BodegaBundle\Form\Model\AlbaranFilterModel;
 use Buseta\BodegaBundle\Form\Model\AlbaranModel;
@@ -284,6 +285,12 @@ class AlbaranController extends Controller
      */
     public function editAction(Albaran $albaran)
     {
+        if ($albaran->getEstadoDocumento() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_DRAFT) {
+            throw $this->createAccessDeniedException(
+                'No se puede modificar la Orden de Entrada, pues ya ha sido Procesada.'
+            );
+        }
+
         $editForm = $this->createEditForm(new AlbaranModel($albaran));
         /*$deleteForm = $this->createDeleteForm($albaran->getId());*/
 
@@ -356,6 +363,7 @@ class AlbaranController extends Controller
 
         $renderView = $this->renderView('@BusetaBodega/Albaran/form_template.html.twig', array(
             'form'     => $editForm->createView(),
+            'entity'   => $albaran,
         ));
 
         return new JsonResponse(array('view' => $renderView));

@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
@@ -330,9 +331,9 @@ class PedidoCompraController extends Controller
      */
     public function editAction(PedidoCompra $pedidocompra)
     {
-        if ($pedidocompra->getEstadoDocumento() !== 'BO') {
+        if ($pedidocompra->getEstadoDocumento() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_DRAFT) {
             throw $this->createAccessDeniedException(
-                'No se puede modificar el Pedido, pues ya ha sido Procesado.'
+                'No se puede modificar el Registro de Compra, pues ya ha sido Procesado.'
             );
         }
 
