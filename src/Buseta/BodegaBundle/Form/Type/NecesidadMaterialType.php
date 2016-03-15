@@ -214,7 +214,7 @@ class NecesidadMaterialType extends AbstractType
         $form = $formEvent->getForm();
         $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
 
-        if ($sequenceManager->hasSequence(NecesidadMaterial::class)) {
+        if ($sequenceManager->hasSequence('Buseta\BodegaBundle\Entity\NecesidadMaterial')) {
             if ( $data->getNumeroDocumento() ) {
                 $secuencia = $data->getNumeroDocumento();
             } else {

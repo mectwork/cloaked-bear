@@ -207,7 +207,7 @@ class PedidoCompraType extends AbstractType
         $form = $formEvent->getForm();
         $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
 
-        if ($sequenceManager->hasSequence(PedidoCompra::class)) {
+        if ($sequenceManager->hasSequence('Buseta\BodegaBudle\Entity\PedidoCompra')) {
             if ($data->getNumeroDocumento()) {
                 $secuencia = $data->getNumeroDocumento();
             } else {
