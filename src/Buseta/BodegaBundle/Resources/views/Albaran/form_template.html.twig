@@ -37,7 +37,7 @@
     {# buttons group #}
     <div class="row">
         <div class="col-md-4">
-            {% if entity.estadoDocumento == 'BO' %}
+            {% if entity is defined and entity.estadoDocumento == 'BO' %}
                 <a class="btn btn-primary" href="{{ path('procesarAlbaran', { 'id': entity.id }) }}">
                     <span class="glyphicon glyphicon-refresh"></span> Procesar</a>
             {% endif %}
