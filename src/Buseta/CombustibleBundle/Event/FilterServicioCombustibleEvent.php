@@ -5,6 +5,7 @@ namespace Buseta\CombustibleBundle\Event;
 use Buseta\CombustibleBundle\Entity\ConfiguracionCombustible;
 use Buseta\CombustibleBundle\Entity\ConfiguracionMarchamo;
 use Buseta\CombustibleBundle\Entity\ServicioCombustible;
+use Symfony\Component\EventDispatcher\Event;
 
 
 /**
@@ -12,7 +13,7 @@ use Buseta\CombustibleBundle\Entity\ServicioCombustible;
  *
  * @package Buseta\CombustibleBundle\Event
  */
-class FilterServicioCombustibleEvent
+class FilterServicioCombustibleEvent extends Event
 {
     /**
      * @var ServicioCombustible

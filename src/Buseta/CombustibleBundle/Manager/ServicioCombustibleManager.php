@@ -41,8 +41,9 @@ class ServicioCombustibleManager
     /**
      * ServicioCombustibleManager constructor.
      *
-     * @param EntityManager $em
-     * @param Logger        $logger
+     * @param EntityManager             $em
+     * @param Logger                    $logger
+     * @param EventDispatcherInterface  $dispatcher
      */
     public function __construct(EntityManager $em, Logger $logger, EventDispatcherInterface $dispatcher)
     {
@@ -95,14 +96,14 @@ class ServicioCombustibleManager
             }
 
             if ($this->dispatcher->hasListeners(BusetaCombustibleEvents::SERVICIO_COMBUSTIBLE_PRE_CREATE)) {
-                $postCreate = new FilterServicioCombustibleEvent(
+                $preCreate = new FilterServicioCombustibleEvent(
                     $servicioCombustible,
                     $servicioCombustible->getCombustible(),
                     $confMarchamo
                 );
-                $this->dispatcher->dispatch(BusetaCombustibleEvents::SERVICIO_COMBUSTIBLE_PRE_CREATE, $postCreate);
-                if ($postCreate->getError()) {
-                    $error = $postCreate->getError();
+                $this->dispatcher->dispatch(BusetaCombustibleEvents::SERVICIO_COMBUSTIBLE_PRE_CREATE, $preCreate);
+                if ($preCreate->getError()) {
+                    $error = $preCreate->getError();
                 }
             }
 
@@ -136,7 +137,7 @@ class ServicioCombustibleManager
             ));
         } catch (\Exception $e) {
             $this->logger->critical(sprintf(
-                'Ha ocurrido un error al crear Servicio Combustible. Detalles: {message: %, file: %s, line: %d}',
+                'Ha ocurrido un error al crear Servicio Combustible. Detalles: {message: %s, file: %s, line: %d}',
                 $e->getMessage(),
                 $e->getFile(),
                 $e->getLine()

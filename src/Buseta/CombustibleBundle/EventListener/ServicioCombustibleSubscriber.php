@@ -35,12 +35,12 @@ class ServicioCombustibleSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            BusetaCombustibleEvents::SERVICIO_COMBUSTIBLE_PRE_CREATE  => 'preCreate',
+            //BusetaCombustibleEvents::SERVICIO_COMBUSTIBLE_PRE_CREATE  => 'preCreate',
             BusetaCombustibleEvents::SERVICIO_COMBUSTIBLE_POST_CREATE => 'postCreate',
         );
     }
 
-    public function preCreate()
+    public function preCreate(FilterServicioCombustibleEvent $event)
     {
 
     }
