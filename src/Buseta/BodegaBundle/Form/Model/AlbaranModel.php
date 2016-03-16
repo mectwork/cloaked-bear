@@ -3,6 +3,7 @@
 namespace Buseta\BodegaBundle\Form\Model;
 
 use Buseta\BodegaBundle\Entity\Albaran;
+use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -26,7 +27,6 @@ class AlbaranModel
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
     private $numeroDocumento;
 
@@ -37,14 +37,14 @@ class AlbaranModel
     private $tercero;
 
     /**
-     * @var date
+     * @var \DateTime
      * @Assert\NotBlank()
      * @Assert\DateTime()
      */
     private $fechaMovimiento;
 
     /**
-     * @var date
+     * @var \DateTime
      * @Assert\NotBlank()
      * @Assert\DateTime()
      */
@@ -312,7 +312,7 @@ class AlbaranModel
     }
 
     /**
-     * @return date
+     * @return \DateTime
      */
     public function getFechaContable()
     {
@@ -320,7 +320,7 @@ class AlbaranModel
     }
 
     /**
-     * @param date $fechaContable
+     * @param \DateTime $fechaContable
      */
     public function setFechaContable($fechaContable)
     {
@@ -328,7 +328,7 @@ class AlbaranModel
     }
 
     /**
-     * @return date
+     * @return \DateTime
      */
     public function getFechaMovimiento()
     {
@@ -336,7 +336,7 @@ class AlbaranModel
     }
 
     /**
-     * @param date $fechaMovimiento
+     * @param \DateTime $fechaMovimiento
      */
     public function setFechaMovimiento($fechaMovimiento)
     {
@@ -439,5 +439,12 @@ class AlbaranModel
         $this->updatedby = $updatedby;
     }
 
+    /**
+     * @param AlbaranLinea $linea
+     */
+    public function addAlbaranLinea(AlbaranLinea $linea)
+    {
+        $this->albaranLinea->add($linea);
+    }
 
 }

@@ -8,6 +8,7 @@ use Buseta\BodegaBundle\BusetaBodegaEvents;
 use Buseta\BodegaBundle\Event\BitacoraBodega\BitacoraAlbaranEvent;
 use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidStateException;
+use HatueySoft\SequenceBundle\Managers\SequenceManager;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,15 +25,22 @@ class AlbaranSubscriber implements EventSubscriberInterface
      */
     private $logger;
 
+    /**
+     * @var SequenceManager
+     */
+    private $sequenceManager;
+
 
     /**
      * AlbaranSubscriber Constructor
      *
      * @param Logger $logger
+     * @param SequenceManager $sequenceManager
      */
-    function __construct(Logger $logger)
+    function __construct(Logger $logger, SequenceManager $sequenceManager)
     {
         $this->logger = $logger;
+        $this->sequenceManager = $sequenceManager;
     }
 
     /**
@@ -41,7 +49,7 @@ class AlbaranSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            //BusetaBodegaEvents::ALBARAN_PRE_CREATE  => 'undefinedEvent',
+            BusetaBodegaEvents::ALBARAN_PRE_CREATE  => 'preCreate',
             //BusetaBodegaEvents::ALBARAN_POST_CREATE  => 'undefinedEvent',
             BusetaBodegaEvents::ALBARAN_PRE_PROCESS => 'preProcess',
             //BusetaBodegaEvents::ALBARAN_PROCESS  => 'undefinedEvent',
@@ -50,6 +58,19 @@ class AlbaranSubscriber implements EventSubscriberInterface
             //BusetaBodegaEvents::ALBARAN_COMPLETE => 'undefinedEvent',
             BusetaBodegaEvents::ALBARAN_POST_COMPLETE => 'postComplete',
         );
+    }
+
+    /**
+     * @param FilterAlbaranEvent $event
+     *
+     * @throws \Exception
+     */
+    public function preCreate(FilterAlbaranEvent $event)
+    {
+        $albaran = $event->getAlbaran();
+        if ($this->sequenceManager->hasSequence('Buseta\BodegaBundle\Entity\Albaran')) {
+            $albaran->setNumeroDocumento($this->sequenceManager->getNextValue('orden_entrada_seq'));
+        }
     }
 
     /**

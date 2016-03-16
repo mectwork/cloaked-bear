@@ -9,6 +9,7 @@ use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
 use Buseta\BodegaBundle\Entity\Proveedor;
 use Buseta\BodegaBundle\Entity\Tercero;
 use Buseta\BodegaBundle\Form\Filter\PedidoCompraFilter;
+use Buseta\BodegaBundle\Form\Model\AlbaranModel;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraFilterModel;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
@@ -133,50 +134,31 @@ class PedidoCompraController extends Controller
         }
 
         if (!$error) {
-            $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($pedidoCompra->getAlmacen());
-            $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($pedidoCompra->getTercero());
+            $albaranManager = $this->get('buseta.bodega.albaran.manager');
+
+            $albaranModel = new AlbaranModel();
+            $albaranModel->setAlmacen($pedidoCompra->getAlmacen());
+            $albaranModel->setTercero($pedidoCompra->getTercero());
+            $albaranModel->setPedidoCompra($pedidoCompra);
+
+            foreach ($pedidoCompra->getPedidoCompraLineas() as $linea) {
+                /** @var \Buseta\BodegaBundle\Entity\PedidoCompraLinea $linea */
+                $albaranLinea = new AlbaranLinea();
+                $albaranLinea->setAlmacen($pedidoCompra->getAlmacen());
+                $albaranLinea->setProducto($linea->getProducto());
+                $albaranLinea->setCantidadMovida($linea->getCantidadPedido());
+                $albaranLinea->setUom($linea->getUom());
+
+                $albaranModel->addAlbaranLinea($albaranLinea);
+            }
 
             //registro los datos del nuevo albarán que se crear al procesar el pedido
-
-            $sequenceManager = $this->get('hatuey_soft.sequence.manager');
-            $albaran = new Albaran();
-            if (null !== $numeroDocumento = $sequenceManager->getNextValue('orden_entrada_seq')) {
-                $albaran->setNumeroDocumento($sequenceManager->getNextValue('orden_entrada_seq'));
-
+            if ($albaran = $albaranManager->crear($albaranModel)) {
+                $session->getFlashBag()->add('success', sprintf('Se ha creado la Orden de Entrada "%s" para el Registro de Compra "%s".',
+                    $albaran->getNumeroDocumento(),
+                    $pedidoCompra->getNumeroDocumento()
+                ));
             } else {
-                $albaran->setNumeroDocumento($pedidoCompra->getNumeroDocumento());
-            }
-            $albaran->setEstadoDocumento('BO');
-            $albaran->setAlmacen($almacen);
-            $albaran->setTercero($tercero);
-            $albaran->setCreated(new \DateTime());
-
-            try {
-                $em->persist($albaran);
-
-                //registro los datos de las líneas del albarán
-                foreach ($pedidoCompra->getPedidoCompraLineas() as $linea) {
-                    /** @var \Buseta\BodegaBundle\Entity\PedidoCompraLinea $linea */
-                    $albaranLinea = new AlbaranLinea();
-                    $albaranLinea->setAlbaran($albaran);
-                    $albaranLinea->setCantidadMovida($linea->getCantidadPedido());
-                    $albaranLinea->setProducto($linea->getProducto());
-                    $albaranLinea->setAlmacen($almacen);
-                    $albaranLinea->setUom($linea->getUom());
-
-                    $em->persist($albaranLinea);
-                }
-
-                $em->flush();
-
-                $session->getFlashBag()->add('success', sprintf('Se ha creado la Orden de Entrada para el Registro de Compra "%s".',
-                        $pedidoCompra->getNumeroDocumento()
-                ));
-            } catch (\Exception $e) {
-                $logger->addCritical(sprintf('Ha ocurrido un error intentando crear la Orden de Entrada para Registro de Compra "%s". Detalles: %s',
-                    $pedidoCompra->getNumeroDocumento(),
-                    $e->getMessage()
-                ));
                 $session->getFlashBag()->add('danger', sprintf('Ha ocurrido un error intentando crear la Orden de Entrada para Registro de Compra "%s".',
                     $pedidoCompra->getNumeroDocumento()
                 ));
@@ -184,7 +166,6 @@ class PedidoCompraController extends Controller
         }
 
         return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
-
     }
 
     /**

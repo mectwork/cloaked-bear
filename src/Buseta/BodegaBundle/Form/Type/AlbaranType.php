@@ -4,6 +4,7 @@ namespace Buseta\BodegaBundle\Form\Type;
 
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\NecesidadMaterial;
+use Buseta\BodegaBundle\Form\Model\AlbaranModel;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\DependencyInjection\Container;
@@ -13,6 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\Util\ClassUtils;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 
 class AlbaranType extends AbstractType
@@ -125,40 +127,25 @@ class AlbaranType extends AbstractType
 
     public function preSetData(FormEvent $formEvent)
     {
-
         $data = $formEvent->getData();
         $form = $formEvent->getForm();
         $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
 
-        if ($sequenceManager->hasSequence('Buseta\BodegaBundle\Entity\Albaran')) {
-            if ( $data->getNumeroDocumento() ) {
-                $secuencia = $data->getNumeroDocumento();
-            } else {
-                $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
-                $secuencia = $sequenceManager->getNextValue('orden_entrada_seq');
-            }
-
+        if (!$sequenceManager->hasSequence('Buseta\BodegaBundle\Entity\Albaran')) {
+            $form->add('numeroDocumento', 'text', array(
+                'required' => true,
+                'label'  => 'Nro.Documento',
+                'constraints' => array(
+                    new NotBlank(),
+                )
+            ));
+        } elseif ($data instanceof AlbaranModel && $data->getNumeroDocumento()) {
             $form->add('numeroDocumento', 'text', array(
                 'required' => true,
                 'read_only' => true,
+                'data' => $data->getNumeroDocumento(),
                 'label'  => 'Nro.Documento',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-                'data' => $secuencia,
             ));
-
-        }  else {
-            $form->add('numeroDocumento', 'text', array(
-                'required' => true,
-                'label'  => 'Nro.Documento',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ));
-
         }
-
-
     }
 }

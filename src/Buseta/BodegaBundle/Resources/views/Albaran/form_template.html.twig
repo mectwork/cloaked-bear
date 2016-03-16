@@ -11,9 +11,11 @@
             {{ form_row(form.numeroReferencia) }}
         </div>
 
+        {% if form.numeroDocumento is defined %}
         <div class="col-md-4">
             {{ form_row(form.numeroDocumento) }}
         </div>
+        {% endif %}
 
         <div class="col-md-4">
             {{ form_row(form.tercero) }}

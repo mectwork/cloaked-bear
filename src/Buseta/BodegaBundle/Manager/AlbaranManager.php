@@ -7,6 +7,7 @@ use Buseta\BodegaBundle\BusetaBodegaEvents;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidStateException;
+use Buseta\BodegaBundle\Form\Model\AlbaranModel;
 
 /**
  * Class AlbaranManager
@@ -15,6 +16,80 @@ use Buseta\BodegaBundle\Exceptions\NotValidStateException;
  */
 class AlbaranManager extends AbstractBodegaManager
 {
+    public function crear(AlbaranModel $model)
+    {
+        $error = false;
+        $albaran = new Albaran();
+
+        $albaran->setNumeroReferencia($model->getNumeroReferencia());
+        $albaran->setTercero($model->getTercero());
+        $albaran->setAlmacen($model->getAlmacen());
+        $albaran->setFechaMovimiento($model->getFechaMovimiento());
+        $albaran->setFechaContable($model->getFechaContable());
+
+        if ($model->getEstadoDocumento() !== null) {
+            $albaran->setEstadoDocumento($model->getEstadoDocumento());
+        }
+        if ($model->getPedidoCompra() !== null) {
+            $albaran->setPedidoCompra($model->getPedidoCompra());
+        }
+        if (!$model->getAlbaranLinea()->isEmpty()) {
+            foreach ($model->getAlbaranLinea() as $lineas) {
+                $albaran->addAlbaranLinea($lineas);
+            }
+        }
+
+        try {
+            $this->beginTransaction();
+
+            if ($this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_PRE_CREATE)) {
+                $preCreateEvent = new FilterAlbaranEvent($albaran);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::ALBARAN_PRE_CREATE, $preCreateEvent);
+
+                if ($preCreateEvent->getError()) {
+                    $error = $preCreateEvent->getError();
+                }
+            }
+
+            if (!$error) {
+                $this->em->persist($albaran);
+            }
+
+            if (!$error && $this->dispatcher->hasListeners(BusetaBodegaEvents::ALBARAN_POST_CREATE)) {
+                $postCreateEvent = new FilterAlbaranEvent($albaran);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::ALBARAN_POST_CREATE, $postCreateEvent);
+
+                if ($postCreateEvent->getError()) {
+                    $error = $postCreateEvent->getError();
+                }
+            }
+
+            if (!$error) {
+                $this->em->flush();
+
+                // Try and commit the transaction, aqui puede ocurrir un error
+                $this->commitTransaction();
+
+                return $albaran;
+            }
+
+            $this->logger->warning(sprintf('Orden de Entrada no fue creada debido a errores previos: %s', $error));
+        } catch (\Exception $e) {
+            $this->logger->error(
+                sprintf(
+                    'Ha ocurrido un error al crear Orden de Entrada. Detalles: {message: %s, class: %s, line: %d}',
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                )
+            );
+        }
+
+        $this->rollbackTransaction();
+
+        return false;
+    }
+
     /**
      * Process Albaran instance
      *
