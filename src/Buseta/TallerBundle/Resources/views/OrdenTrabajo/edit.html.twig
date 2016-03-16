@@ -726,7 +726,14 @@
                     onecprod._start_events();
                 }).fail(utils._fail).always(onecprod._always());
             },
+            _modal_start_events: function () {
+                $('a#btn_onecprod_save').on('click', onecprod._save_modal);
+                $('a#btn_onecprod_cancel').on('click', function(){
+                    $('div#form_onecprod_modal').modal('hide');
+                });
 
+                $('select#buseta_tallerbundle_ordennecesidadproducto_producto').chosen();
+            },
             _load_modal: function (e) {
                 if (e !== undefined) {
                     e.preventDefault();
@@ -746,14 +753,7 @@
                             onecprod.form_id = $('div#form_onecprod_modal').find('form').attr('id');
                             onecprod.form_name = $('div#form_onecprod_modal').find('form').attr('name');
 
-                            console.log(onecprod.form_id);
-                            console.log(onecprod.form_name);
-
-                            $('a#btn_onecprod_save').on('click', onecprod._save_modal);
-                            $('a#btn_onecprod_cancel').on('click', function(){
-                                $('div#form_onecprod_modal').modal('hide');
-                            });
-
+                            onecprod._modal_start_events();
                             $('div#form_onecprod_modal').modal('show');
                         }).fail(utils._fail).always(function(){});
             },
@@ -836,6 +836,7 @@
                     onecprod._load();
                 } else {
                     $('form#' + onecprod.form_id).replaceWith($(response.view).find('form'));
+                    onecprod._modal_start_events();
                 }
             },
 
