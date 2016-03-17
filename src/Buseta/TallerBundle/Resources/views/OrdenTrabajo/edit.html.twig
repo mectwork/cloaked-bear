@@ -156,15 +156,6 @@
                                     </a>
 
                                 {% endif %}
-
-                                {% if entity is defined and entity.estado == 'PR' %}
-
-                                    <a class="btn btn-primary" href="{{ path('procesarOrden', { 'id': entity.id }) }}">
-                                        <span class="glyphicon glyphicon-primary"></span>
-                                        Completar Orden
-                                    </a>
-
-                                {% endif %}
                             </div>
                         </div>
 

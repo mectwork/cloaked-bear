@@ -127,15 +127,15 @@
     <div id="lista_ordenes" style="display: block;">
         <table class="records_list table table-striped table-bordered table-condensed table-hover">
             <thead>
-                <tr>
-                    <th>OT</th>
-                    <th>Diagnosticado por</th>
-                    <th>Autobus</th>
-                    <th>Ayudante</th>
-                    <th>Prioridad</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
+            <tr>
+                <th>OT</th>
+                <th>Diagnosticado por</th>
+                <th>Autobus</th>
+                <th>Ayudante</th>
+                <th>Prioridad</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
             </thead>
             <tbody>
             {% for entity in entities %}
@@ -149,7 +149,7 @@
                 {% endif %}
                 <tr>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">OT #{{ entity.numero }}</td>
-                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.diagnosticadoPor | default('-')}}</td>
+                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.diagnosticadoPor | default('-') }}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.autobus }}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.ayudante }}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.prioridad }}</td>
