@@ -167,8 +167,8 @@
                         {% set badge = 'danger' %}
                         {% set text_color = 'danger' %}
                     {% endif %}
-                    <td class="text-{{ text_color }}"><span
-                                class="label label-{{ badge }}">{{ ('estado.' ~entity.estado) | trans({}, 'BusetaTallerBundle') | upper }}</span>
+                    <td class="text-{{ text_color }}"><span class="label label-{{ badge }}">
+                        {{ ('estado.' ~ entity.estado) | trans({}, 'BusetaTallerBundle') | upper }}</span>
                     </td>
                     <td style="width: 18% !important; text-align: center; {{ color_fondo|raw }}">
                         {% if is_granted('VIEW', entity) %}
