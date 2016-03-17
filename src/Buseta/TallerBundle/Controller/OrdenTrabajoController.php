@@ -496,7 +496,12 @@ class OrdenTrabajoController extends Controller
         //Se llama al EventDispatcher
         $eventDispatcher = $this->get('event_dispatcher');
 
-        $report = $ordenTrabajo->getDiagnostico()->getReporte();
+        if ($ordenTrabajo->getDiagnostico() !== null && $ordenTrabajo->getDiagnostico()->getReporte() !== null) {
+            $report = $ordenTrabajo->getDiagnostico()->getReporte();
+        } else {
+            $report = null;
+        }
+
         $necesidadProductos = $em->getRepository('BusetaTallerBundle:OrdenNecesidadProducto')->findByOrdentrabajo($ordenTrabajo);
         if(count($necesidadProductos) > 0) {
             $salidaBodega = new SalidaBodega();
@@ -524,15 +529,11 @@ class OrdenTrabajoController extends Controller
                 $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
                 $ordenTrabajoEvent->setOrden($ordenTrabajo);
                 $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_PROCESADO, $ordenTrabajoEvent);
-
-
             } else {
-
                 $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
                 $ordenTrabajoEvent->setOrden($ordenTrabajo);
                 $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO, $ordenTrabajoEvent);
             }
-
         } else {
             if($ordenTrabajo->getEstado()== 'BO') {
                 //Crear Eventos para el EventDispatcher
@@ -543,7 +544,6 @@ class OrdenTrabajoController extends Controller
                 $ordenTrabajoEvent->setOrden($ordenTrabajo);
 
                 $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_PROCESADO, $ordenTrabajoEvent);
-
             } else {
                 //Crear Eventos para el EventDispatcher
                 $reporteEvent = new FilterReporteEvent($report);
@@ -563,12 +563,33 @@ class OrdenTrabajoController extends Controller
     public function completarOrdenAction(OrdenTrabajo $ordenTrabajo)
     {
         $em = $this->getDoctrine()->getManager();
-        $report = $ordenTrabajo->getDiagnostico()->getReporte();
-        $ordenTrabajo->setEstado('CO');
-        $report->setEstado('CO');
-        $em->persist($ordenTrabajo);
-        $em->flush();
-        return $this->redirect($this->generateUrl('ordentrabajo'));
+
+        try {
+            if ($ordenTrabajo->getDiagnostico() !== null && $ordenTrabajo->getDiagnostico()->getReporte() !== null) {
+                $report = $ordenTrabajo->getDiagnostico()->getReporte();
+                $report->setEstado('CO');
+            }
+
+            $ordenTrabajo->setEstado('CO');
+
+            $em->persist($ordenTrabajo);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('success', 'Se ha completado la Orden de Trabajo correctamente.');
+
+            return $this->redirect($this->generateUrl('ordentrabajo'));
+        } catch (\Exception $e) {
+            $this->get('logger')->critical(sprintf(
+                'Ha ocurrido un error al completar la Orden de Trabajo. Detalles: {message: %s, file: %s, line: %s}',
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
+            ));
+
+            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar la Orden de Trabajo.');
+        }
+
+        return $this->redirect($this->generateUrl('ordentrabajo_show', array('id' => $ordenTrabajo->getId())));
     }
 
 }
