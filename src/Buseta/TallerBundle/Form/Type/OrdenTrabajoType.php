@@ -43,6 +43,7 @@ class OrdenTrabajoType extends AbstractType
         $builder
             ->add('id', 'hidden',  array(
                 'required' => false,
+                'virtual' => true,
             ))
             ->add('numero', 'text', array(
                 'required' => false,
