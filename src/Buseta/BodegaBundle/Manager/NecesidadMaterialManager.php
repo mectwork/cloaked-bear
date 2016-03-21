@@ -105,4 +105,75 @@ class NecesidadMaterialManager extends AbstractBodegaManager
         return false;
     }
 
+    public function procesar(NecesidadMaterial $necesidadMaterial)
+    {
+        $error = false;
+        try {
+            $this->beginTransaction();
+
+            if ($this->dispatcher->hasListeners(BusetaBodegaEvents::NECESIDADMATERIAL_PRE_PROCESS)) {
+                $preProcessEvent = new FilterNecesidadMaterialEvent($necesidadMaterial);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::NECESIDADMATERIAL_PRE_PROCESS, $preProcessEvent);
+
+                if ($preProcessEvent->getError()) {
+                    $error = $preProcessEvent->getError();
+                }
+            }
+
+            if (!$error) {
+                $this->cambiarEstado($necesidadMaterial, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_PROCESS, $error);
+            }
+
+            if (!$error && $this->dispatcher->hasListeners(BusetaBodegaEvents::NECESIDADMATERIAL_POST_PROCESS)) {
+                $postProcessEvent = new FilterNecesidadMaterialEvent($necesidadMaterial);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::NECESIDADMATERIAL_POST_PROCESS, $postProcessEvent);
+
+                if ($postProcessEvent->getError()) {
+                    $error = $postProcessEvent->getError();
+                }
+            }
+
+            if (!$error) {
+                $this->em->flush();
+
+                // Try and commit the transaction, aqui puede ocurrir un error
+                $this->commitTransaction();
+
+                return true;
+            }
+
+            $this->logger->warning(sprintf('Necesidad Material no procesada debido a errores previos: %s', $error));
+        } catch (\Exception $e) {
+            $this->logger->error(
+                sprintf(
+                    'Ha ocurrido un error al completar Necesidad Material. Detalles: {message: %s, class: %s, line: %d}',
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                )
+            );
+        }
+
+        $this->rollbackTransaction();
+
+        return false;
+    }
+
+    private function cambiarEstado(NecesidadMaterial $necesidadMaterial, $estado, &$error)
+    {
+        try {
+            $necesidadMaterial->setEstadoDocumento($estado);
+            $this->em->flush();
+
+            return true;
+        } catch (\Exception $e) {
+            $this->logger->critical(
+                sprintf('Ha ocurrido un error al cambiar estado de la Necesidad Material. Detalles: %s', $e->getMessage())
+            );
+
+            $error = 'Ha ocurrido un error al cambiar estado de la Necesidad Material.';
+
+            return false;
+        }
+    }
 }

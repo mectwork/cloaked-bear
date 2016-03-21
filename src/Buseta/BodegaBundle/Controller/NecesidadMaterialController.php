@@ -79,33 +79,22 @@ class NecesidadMaterialController extends Controller
      */
     public function procesarNecesidadAction(NecesidadMaterial $necesidadMaterial)
     {
-        $validator  = $this->get('validator');
-        $session    = $this->get('session');
-        if (($errors = $validator->validate($necesidadMaterial, 'on_complete')) && count($errors) > 0) {
-            foreach ($errors as $e) {
-                /** @var ConstraintViolation $e */
-                $session->getFlashBag()->add('danger', $e->getMessage());
-            }
+        $manager = $this->get('buseta.bodega.necesidadmaterial.manager');
+        if (true === $result = $manager->procesar($necesidadMaterial)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'Se ha procesado la Necesidad Material de forma correcta.'
+            );
+
+            return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                'danger',
+                'Ha ocurrido un error al procesar la Necesidad Material.'
+            );
 
             return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
         }
-
-        $em = $this->getDoctrine()->getManager();
-
-        //Cambia el estado de Borrador a Procesado
-        $necesidadMaterial->setEstadoDocumento('PR');
-
-        try {
-            $em->persist($necesidadMaterial);
-            $em->flush();
-
-            $session->getFlashBag()->add('success', 'Se ha procesado la Necesidad Material de forma correcta.');
-        } catch (\Exception $e) {
-            $this->get('logger')->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
-            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
-        }
-
-        return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
     }
 
     /**
