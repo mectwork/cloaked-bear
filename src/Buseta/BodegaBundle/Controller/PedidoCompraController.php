@@ -177,23 +177,18 @@ class PedidoCompraController extends Controller
      */
     public function createAction(Request $request)
     {
-        $pedidocompraModel = new PedidoCompraModel();
-        $form = $this->createCreateForm($pedidocompraModel);
+        $pedidoCompraModel = new PedidoCompraModel();
+        $form = $this->createCreateForm($pedidoCompraModel);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em     = $this->get('doctrine.orm.entity_manager');
             $trans  = $this->get('translator');
             $logger = $this->get('logger');
+            $pedidoCompraManager = $this->get('buseta.bodega.pedidocompra.manager');
 
-            try {
-                $entity = $pedidocompraModel->getEntityData();
-
-                $em->persist($entity);
-                $em->flush();
-
+            if ($pedidoCompra = $pedidoCompraManager->crear($pedidoCompraModel)) {
                 // Creando nuevamente el formulario con los datos actualizados de la entidad
-                $form = $this->createEditForm(new PedidoCompraModel($entity));
+                $form = $this->createEditForm(new PedidoCompraModel($pedidoCompra));
                 $renderView = $this->renderView('@BusetaBodega/PedidoCompra/form_template.html.twig', array(
                     'form'   => $form->createView(),
                 ));
@@ -202,14 +197,9 @@ class PedidoCompraController extends Controller
                     'view' => $renderView,
                     'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
                 ), 201);
-            } catch (\Exception $e) {
-                $logger->addCritical(sprintf(
-                    $trans->trans('', array(), 'BusetaBodegaBundle') . '. Detalles: %s',
-                    $e->getMessage()
-                ));
-
+            } else {
                 return new JsonResponse(array(
-                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Registro de Compra'), 'BusetaBodegaBundle')
+                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Pedido Compra'), 'BusetaBodegaBundle')
                 ), 500);
             }
         }

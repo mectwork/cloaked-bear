@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PedidoCompraType extends AbstractType
 {
@@ -200,41 +201,28 @@ class PedidoCompraType extends AbstractType
 
     public function preSetData(FormEvent $formEvent)
     {
-        /**
-         * @var PedidoCompra $data
-         */
         $data = $formEvent->getData();
         $form = $formEvent->getForm();
         $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
 
-        if ($sequenceManager->hasSequence('Buseta\BodegaBudle\Entity\PedidoCompra')) {
-            if ($data->getNumeroDocumento()) {
-                $secuencia = $data->getNumeroDocumento();
-            } else {
-                $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
-                $secuencia = $sequenceManager->getNextValue('registro_compra_seq');
-            }
-
+        if ($data instanceof PedidoCompraModel && !$data->getNumeroDocumento()
+            && !$sequenceManager->hasSequence('Buseta\BodegaBundle\Entity\PedidoCompra')) {
+            $form->add('numeroDocumento', 'text', array(
+                'required' => true,
+                'label'  => 'Nro.Documento',
+                'constraints' => array(
+                    new NotBlank(),
+                )
+            ));
+        } elseif ($data instanceof PedidoCompraModel && $data->getNumeroDocumento()) {
             $form->add('numeroDocumento', 'text', array(
                 'required' => true,
                 'read_only' => true,
-                'label' => 'Nro.Documento',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-                'data' => $secuencia,
-            ));
-
-        } else {
-            $form->add('numeroDocumento', 'text', array(
-                'required' => true,
-                'label' => 'Nro.Documento',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
+                'data' => $data->getNumeroDocumento(),
+                'label'  => 'Nro.Documento',
             ));
         }
 
-     }
+    }
 
   }

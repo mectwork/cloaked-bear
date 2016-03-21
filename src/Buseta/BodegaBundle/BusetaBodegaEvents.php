@@ -44,6 +44,24 @@ final class BusetaBodegaEvents
     const NECESIDADMATERIAL_POST_COMPLETE = 'buseta.bodega.necesidadmaterial.pos_complete';
 
 
+// Pedido Compra EVENTS
+    const PEDIDOCOMPRA_PRE_CREATE = 'buseta.bodega.pedidocompra.pre_create';
+
+    const PEDIDOCOMPRA_POST_CREATE = 'buseta.bodega.pedidocompra.pos_create';
+
+    const PEDIDOCOMPRA_PRE_PROCESS = 'buseta.bodega.pedidocompra.pre_process';
+
+    const PEDIDOCOMPRA_PROCESS = 'buseta.bodega.pedidocompra_process';
+
+    const PEDIDOCOMPRA_POST_PROCESS = 'buseta.bodega.pedidocompra.pos_process';
+
+    const PEDIDOCOMPRA_PRE_COMPLETE = 'buseta.bodega.pedidocompra.pre_complete';
+
+    const PEDIDOCOMPRA_COMPLETE = 'buseta.bodega.pedidocompra_complete';
+
+    const PEDIDOCOMPRA_POST_COMPLETE = 'buseta.bodega.pedidocompra.pos_complete';
+
+
     // INVENTARIO FISICO EVENTS
 
     const PHYSICAL_INVENTORY_PRE_CREATE = 'buseta.bodega.inventariofisico.pre_create';
