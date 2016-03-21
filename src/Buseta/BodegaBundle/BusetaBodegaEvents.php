@@ -26,6 +26,24 @@ final class BusetaBodegaEvents
 
     const ALBARAN_POST_COMPLETE = 'buseta.bodega.albaran.pos_complete';
 
+    // NECESIDAD MATERIAL EVENTS
+    const NECESIDADMATERIAL_PRE_CREATE = 'buseta.bodega.necesidadmaterial.pre_create';
+
+    const NECESIDADMATERIAL_POST_CREATE = 'buseta.bodega.necesidadmaterial.pos_create';
+
+    const NECESIDADMATERIAL_PRE_PROCESS = 'buseta.bodega.necesidadmaterial.pre_process';
+
+    const NECESIDADMATERIAL_PROCESS = 'buseta.bodega.necesidadmaterial_process';
+
+    const NECESIDADMATERIAL_POST_PROCESS = 'buseta.bodega.necesidadmaterial.pos_process';
+
+    const NECESIDADMATERIAL_PRE_COMPLETE = 'buseta.bodega.necesidadmaterial.pre_complete';
+
+    const NECESIDADMATERIAL_COMPLETE = 'buseta.bodega.necesidadmaterial_complete';
+
+    const NECESIDADMATERIAL_POST_COMPLETE = 'buseta.bodega.necesidadmaterial.pos_complete';
+
+
     // INVENTARIO FISICO EVENTS
 
     const PHYSICAL_INVENTORY_PRE_CREATE = 'buseta.bodega.inventariofisico.pre_create';

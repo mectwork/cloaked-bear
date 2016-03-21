@@ -142,7 +142,7 @@ class NecesidadMaterialController extends Controller
             $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($necesidadMaterial->getAlmacen());
             $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($necesidadMaterial->getTercero());
 
-            //Registro los datos del nuevo PedidoCompra que se crear al procesar la NecesidadMaterial
+            //Registro los datos del nuevo PedidoCompra que se crea al procesar la NecesidadMaterial
 
             $sequenceManager = $this->get('hatuey_soft.sequence.manager');
             $pedidoCompra = new PedidoCompra();
@@ -210,23 +210,18 @@ class NecesidadMaterialController extends Controller
      */
     public function createAction(Request $request)
     {
-        $necesidadmaterialModel = new NecesidadMaterialModel();
-        $form = $this->createCreateForm($necesidadmaterialModel);
+        $necesidadMaterialModel = new NecesidadMaterialModel();
+        $form = $this->createCreateForm($necesidadMaterialModel);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em     = $this->get('doctrine.orm.entity_manager');
             $trans  = $this->get('translator');
             $logger = $this->get('logger');
+            $necesidadMaterialManager = $this->get('buseta.bodega.necesidadmaterial.manager');
 
-            try {
-                $entity = $necesidadmaterialModel->getEntityData();
-
-                $em->persist($entity);
-                $em->flush();
-
+            if ($necesidadMaterial = $necesidadMaterialManager->crear($necesidadMaterialModel)) {
                 // Creando nuevamente el formulario con los datos actualizados de la entidad
-                $form = $this->createEditForm(new NecesidadMaterialModel($entity));
+                $form = $this->createEditForm(new NecesidadMaterialModel($necesidadMaterial));
                 $renderView = $this->renderView('@BusetaBodega/NecesidadMaterial/form_template.html.twig', array(
                     'form'   => $form->createView(),
                 ));
@@ -235,14 +230,9 @@ class NecesidadMaterialController extends Controller
                     'view' => $renderView,
                     'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
                 ), 201);
-            } catch (\Exception $e) {
-                $logger->addCritical(sprintf(
-                    $trans->trans('', array(), 'BusetaBodegaBundle') . '. Detalles: %s',
-                    $e->getMessage()
-                ));
-
+            } else {
                 return new JsonResponse(array(
-                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Registro de Compra'), 'BusetaBodegaBundle')
+                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Necesidad Material'), 'BusetaBodegaBundle')
                 ), 500);
             }
         }
@@ -282,6 +272,7 @@ class NecesidadMaterialController extends Controller
     public function newAction()
     {
         $form   = $this->createCreateForm(new NecesidadMaterialModel());
+
         $em = $this->get('doctrine.orm.entity_manager');
         $productos = $em->getRepository('BusetaBodegaBundle:Producto')
             ->createQueryBuilder('p')

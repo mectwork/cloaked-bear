@@ -107,6 +107,13 @@ services:
         - @logger
         - @event_dispatcher
 
+    buseta.bodega.necesidadmaterial.manager:
+      class: Buseta\BodegaBundle\Manager\NecesidadMaterialManager
+      arguments:
+        - @doctrine.orm.entity_manager
+        - @logger
+        - @event_dispatcher
+
     buseta.bodega.inventariofisico.manager:
       class: Buseta\BodegaBundle\Manager\InventarioFisicoManager
       arguments:
@@ -177,6 +184,14 @@ services:
             - @hatuey_soft.sequence.manager
         tags:
             - {name: kernel.event_subscriber}
+
+    buseta.bodega.necesidadmaterial.subscriber:
+            class: Buseta\BodegaBundle\EventListener\NecesidadMaterialSubscriber
+            arguments:
+                - @logger
+                - @hatuey_soft.sequence.manager
+            tags:
+                - {name: kernel.event_subscriber}
 
     buseta.bodega.inventariofisico.subscriber:
         class: Buseta\BodegaBundle\EventListener\InventarioFisicoSubscriber
