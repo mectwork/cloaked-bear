@@ -42,7 +42,6 @@ class DiagnosticoSubscriber implements EventSubscriberInterface
         return array(
 
             DiagnosticoEvents::CAMBIAR_CANCELADO   => 'cambiarCancelado',
-            DiagnosticoEvents::PROCESAR_DIAGNOSTICO => 'crearOrdenTrabajo',
             DiagnosticoEvents::CAMBIAR_ESTADO_PR   => 'cambioEstadoDiagnosticoPendiente',
             DiagnosticoEvents::CAMBIAR_ESTADO_CO  => 'cambioEstadoDiagnosticoCompletado',
         );
@@ -71,12 +70,4 @@ class DiagnosticoSubscriber implements EventSubscriberInterface
         $diagnostico = $event->getDiagnostico();
         $this->diagnosticoManager->cambiarEstado($diagnostico,$estado);
     }
-
-    public function crearOrdenTrabajo(FilterDiagnosticoEvent $event)
-    {
-        $diagnostico = $event->getDiagnostico();
-
-        $this->ordenTrabajoManager->crearOrdenTrabajo($diagnostico);
-    }
-
 }

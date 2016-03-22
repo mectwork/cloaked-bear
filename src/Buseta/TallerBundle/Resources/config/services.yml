@@ -5,13 +5,15 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - @logger
-            - @hatuey_soft.sequence.manager
+            - @event_dispatcher
 
     # EVENT SUBSCRIBER
     buseta.taller.ordentrabajo.subscriber:
         class: Buseta\TallerBundle\EventListener\OrdenTrabajoSubscriber
         arguments:
             - @buseta.taller.ordentrabajo.manager
+            - @logger
+            - @hatuey_soft.sequence.manager
         tags:
             - {name: kernel.event_subscriber}
 
