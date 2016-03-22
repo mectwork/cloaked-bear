@@ -41,6 +41,10 @@ class OrdenTrabajoType extends AbstractType
 //        $builder->addEventSubscriber(new AddKilometrajeFieldSubscriber());
         $attr['readonly'] = true;
         $builder
+            ->add('id', 'hidden',  array(
+                'required' => false,
+                'virtual' => true,
+            ))
             ->add('numero', 'text', array(
                 'required' => false,
                 'label'  => 'Número',

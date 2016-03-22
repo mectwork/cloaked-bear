@@ -13,7 +13,6 @@
       and (filter_form.vars.value.ayudante is null or filter_form.vars.value.ayudante is empty)
       and (filter_form.vars.value.autobus is null or filter_form.vars.value.autobus is empty)
       and (filter_form.vars.value.diagnostico is null or filter_form.vars.value.diagnostico is empty) %}
-
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
     {% endif %}
@@ -128,15 +127,15 @@
     <div id="lista_ordenes" style="display: block;">
         <table class="records_list table table-striped table-bordered table-condensed table-hover">
             <thead>
-                <tr>
-                    <th>OT</th>
-                    <th>Diagnosticado por</th>
-                    <th>Autobus</th>
-                    <th>Ayudante</th>
-                    <th>Prioridad</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
+            <tr>
+                <th>OT</th>
+                <th>Diagnosticado por</th>
+                <th>Autobus</th>
+                <th>Ayudante</th>
+                <th>Prioridad</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
             </thead>
             <tbody>
             {% for entity in entities %}
@@ -150,22 +149,29 @@
                 {% endif %}
                 <tr>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">OT #{{ entity.numero }}</td>
-                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.diagnosticadoPor | default('-')}}</td>
+                    <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.diagnosticadoPor | default('-') }}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.autobus }}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.ayudante }}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.prioridad }}</td>
 
                     {% if entity.estado == 'CO' %}
                         {% set badge = 'success' %}
+                        {% set text_color = 'success' %}
                     {% elseif entity.estado == 'PR' %}
                         {% set badge = 'primary' %}
+                        {% set text_color = 'primary' %}
+                    {% elseif entity.estado == 'BO' %}
+                        {% set badge = 'danger' %}
+                        {% set text_color = 'danger' %}
                     {% else %}
-                        {% set badge = 'warning' %}
+                        {% set badge = 'danger' %}
+                        {% set text_color = 'danger' %}
                     {% endif %}
-                    <td style="text-{{ text_color }}"><span class="label label-{{ badge }}">{{ ('estado.' ~ entity.estado)  | trans({}, 'BusetaTallerBundle')  }}</span></td>
-
+                    <td class="text-{{ text_color }}"><span class="label label-{{ badge }}">
+                        {{ ('estado.' ~ entity.estado) | trans({}, 'BusetaTallerBundle') | upper }}</span>
+                    </td>
                     <td style="width: 18% !important; text-align: center; {{ color_fondo|raw }}">
-                    {% if is_granted('VIEW', entity) %}
+                        {% if is_granted('VIEW', entity) %}
                             <div class="btn-group">
                                 <a class="btn btn-success btn-xs"
                                    href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
@@ -174,8 +180,13 @@
                         {% endif %}
 
                         {% if is_granted('EDIT', entity) %}
+                            {% if entity.estado == 'CO' or  entity.estado == 'PR' %}
+                                {% set clazz = 'btn btn-danger btn-xs disabled' %}
+                            {% else %}
+                                {% set clazz = 'btn btn-danger btn-xs' %}
+                            {% endif %}
                             <div class="btn-group">
-                                <a class="btn btn-danger btn-xs"
+                                <a class="{{ clazz }}"
                                    href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i
                                             class="fa fa-edit"> Editar</i></a>
                             </div>

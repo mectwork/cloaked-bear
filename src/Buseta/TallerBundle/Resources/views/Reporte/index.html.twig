@@ -135,12 +135,20 @@
                 <td class="text-{{ text_color }}">{{ entity.grupo | default('-') }}</td>
                 {% if entity.estado == 'CO' %}
                     {% set badge = 'success' %}
+                    {% set text_color = 'success' %}
                 {% elseif entity.estado == 'PR' %}
                     {% set badge = 'primary' %}
+                    {% set text_color = 'primary' %}
+                {% elseif entity.estado == 'BO' %}
+                    {% set badge = 'danger' %}
+                    {% set text_color = 'danger' %}
                 {% else %}
-                    {% set badge = 'warning' %}
+                    {% set badge = 'danger' %}
+                    {% set text_color = 'danger' %}
                 {% endif %}
-                <td class="text-{{ text_color }}"><span class="label label-{{ badge }}">{{ ('estado.' ~ entity.estado)  | trans({}, 'BusetaTallerBundle')  }}</span></td>
+                <td class="text-{{ text_color }}"><span class="label label-{{ badge }}">
+                        {{ ('estado.' ~ entity.estado) | trans({}, 'BusetaTallerBundle') | upper }}</span>
+                </td>
                 <td style="width: 18% !important; text-align: center;">
                     <div class="btn-group">
                         {% if is_granted('VIEW', entity) %}

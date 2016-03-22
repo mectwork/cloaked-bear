@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Buseta\TallerBundle\Entity\OrdenTrabajo;
+use Buseta\BodegaBundle\Entity\SalidaBodega;
+use Buseta\BodegaBundle\Entity\SalidaBodegaProducto;
 use Buseta\TallerBundle\Form\Type\OrdenTrabajoType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -494,36 +496,54 @@ class OrdenTrabajoController extends Controller
         //Se llama al EventDispatcher
         $eventDispatcher = $this->get('event_dispatcher');
 
-        $report = $ordenTrabajo->getDiagnostico()->getReporte();
+        if ($ordenTrabajo->getDiagnostico() !== null && $ordenTrabajo->getDiagnostico()->getReporte() !== null) {
+            $report = $ordenTrabajo->getDiagnostico()->getReporte();
+        } else {
+            $report = null;
+        }
 
-//var_dump($report);die;
-//var_dump($ordenTrabajo->getEstado()== 'BO');die;
+        $necesidadProductos = $em->getRepository('BusetaTallerBundle:OrdenNecesidadProducto')->findByOrdentrabajo($ordenTrabajo);
+        if(count($necesidadProductos) > 0) {
+            $salidaBodega = new SalidaBodega();
+            $salidaBodega->setCentroCosto($ordenTrabajo->getAutobus());
+            $salidaBodega->setTipoOT($ordenTrabajo->getPrioridad());
+            $salidaBodega->setOrdenTrabajo($ordenTrabajo);
+            $salidaBodega->setFecha(new \DateTime());
+            $salidaBodega->setControlEntregaMaterial("Entrega por orden " + $ordenTrabajo->getNumero());
+            $salidaBodega->setResponsable($ordenTrabajo->getRealizadaPor());
+            foreach ($necesidadProductos as $necesidadProducto) {
+                $salidaBodegaProducto = new SalidaBodegaProducto();
+                $salidaBodegaProducto->setProducto($necesidadProducto->getProducto());
+                $salidaBodegaProducto->setCantidad($necesidadProducto->getCantidad());
+                $salidaBodegaProducto->setSeriales($necesidadProducto->getSeriales());
+                $salidaBodegaProducto->setSalida($salidaBodega);
+                $necesidadProducto->setSalidaBodegaProducto($salidaBodegaProducto);
+                $em->persist($salidaBodegaProducto);
+                $em->persist($necesidadProducto);
+            }
+            $em->persist($salidaBodega);
+        }
 
         if ($report === null) {
             if($ordenTrabajo->getEstado()== 'BO') {
                 $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
                 $ordenTrabajoEvent->setOrden($ordenTrabajo);
                 $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_PROCESADO, $ordenTrabajoEvent);
-
-
             } else {
-
                 $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
                 $ordenTrabajoEvent->setOrden($ordenTrabajo);
                 $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO, $ordenTrabajoEvent);
             }
-
         } else {
             if($ordenTrabajo->getEstado()== 'BO') {
-            //Crear Eventos para el EventDispatcher
-            $reporteEvent = new FilterReporteEvent($report);
-            $reporteEvent->setReporte($report);
+                //Crear Eventos para el EventDispatcher
+                $reporteEvent = new FilterReporteEvent($report);
+                $reporteEvent->setReporte($report);
 
-            $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
-            $ordenTrabajoEvent->setOrden($ordenTrabajo);
+                $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
+                $ordenTrabajoEvent->setOrden($ordenTrabajo);
 
-            $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_PROCESADO, $ordenTrabajoEvent);
-
+                $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_PROCESADO, $ordenTrabajoEvent);
             } else {
                 //Crear Eventos para el EventDispatcher
                 $reporteEvent = new FilterReporteEvent($report);
@@ -536,7 +556,40 @@ class OrdenTrabajoController extends Controller
                 $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO, $ordenTrabajoEvent);
             }
         }
-        return $this->redirect($this->generateUrl('ordentrabajo'));
 
-   }
+        return $this->redirect($this->generateUrl('ordentrabajo'));
+    }
+
+    public function completarOrdenAction(OrdenTrabajo $ordenTrabajo)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        try {
+            if ($ordenTrabajo->getDiagnostico() !== null && $ordenTrabajo->getDiagnostico()->getReporte() !== null) {
+                $report = $ordenTrabajo->getDiagnostico()->getReporte();
+                $report->setEstado('CO');
+            }
+
+            $ordenTrabajo->setEstado('CO');
+
+            $em->persist($ordenTrabajo);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('success', 'Se ha completado la Orden de Trabajo correctamente.');
+
+            return $this->redirect($this->generateUrl('ordentrabajo'));
+        } catch (\Exception $e) {
+            $this->get('logger')->critical(sprintf(
+                'Ha ocurrido un error al completar la Orden de Trabajo. Detalles: {message: %s, file: %s, line: %s}',
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
+            ));
+
+            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al completar la Orden de Trabajo.');
+        }
+
+        return $this->redirect($this->generateUrl('ordentrabajo_show', array('id' => $ordenTrabajo->getId())));
+    }
+
 }

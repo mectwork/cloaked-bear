@@ -170,6 +170,7 @@ class OrdenTrabajo implements DateTimeAwareInterface
     {
         $this->tareasAdicionales = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cancelado = false;
+        $this->estado = 'BO';
     }
 
     public function __toString()
