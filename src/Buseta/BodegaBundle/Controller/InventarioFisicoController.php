@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\InventarioFisicoLinea;
@@ -131,7 +132,7 @@ class InventarioFisicoController extends Controller
 
             try {
                 $entity = $inventariofisicoModel->getEntityData();
-
+                $entity->setEstado(BusetaBodegaDocumentStatus::DOCUMENT_STATUS_DRAFT);
                 $em->persist($entity);
                 $em->flush();
 
