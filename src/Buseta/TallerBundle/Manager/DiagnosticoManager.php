@@ -125,8 +125,6 @@ class DiagnosticoManager
 
             return false;
         }
-
-
     }
 
 }

@@ -38,7 +38,7 @@ class OrdenTrabajoModel
 
     /**
      * @var \Buseta\BodegaBundle\Entity\Tercero
-     * @Assert\Null()
+     * @Assert\NotNull()
      */
     private $diagnosticadoPor;
 
@@ -110,6 +110,11 @@ class OrdenTrabajoModel
     private $observaciones;
 
     /**
+     * @var string
+     */
+    private $requisionMateriales;
+
+    /**
      * @var boolean
      */
     private $cancelado;
@@ -158,16 +163,19 @@ class OrdenTrabajoModel
             $this->revisadoPor =  $ordenTrabajo->getRevisadoPor();
             $this->realizadaPor =  $ordenTrabajo->getRealizadaPor();
             $this->aprobadoPor =  $ordenTrabajo->getAprobadoPor();
-
+            $this->requisionMateriales =  $ordenTrabajo->getRequisionMateriales();
 
             if ($ordenTrabajo->getDiagnostico()) {
                 $this->diagnostico  = $ordenTrabajo->getDiagnostico();
             }
             if ($ordenTrabajo->getDiagnosticadoPor()) {
-                $this->diagnostico  = $ordenTrabajo->getDiagnosticadoPor();
+                $this->diagnosticadoPor  = $ordenTrabajo->getDiagnosticadoPor();
             }
-            if ($ordenTrabajo->getTareasAdicionales()) {
-                $this->diagnostico  = $ordenTrabajo->getTareasAdicionales();
+            $this->tareasAdicionales = new ArrayCollection();
+            if ($ordenTrabajo->getTareasAdicionales() !== null && $ordenTrabajo->getTareasAdicionales()->count() > 0) {
+                foreach ($ordenTrabajo->getTareasAdicionales() as $tareasAdicionale) {
+                    $this->tareasAdicionales->add($tareasAdicionale);
+                }
             }
             if ($ordenTrabajo->getAutobus()) {
                 $this->autobus  = $ordenTrabajo->getAutobus();
@@ -175,16 +183,11 @@ class OrdenTrabajoModel
             if ($ordenTrabajo->getPrioridad()) {
                 $this->prioridad  = $ordenTrabajo->getPrioridad();
             }
-            if (!$ordenTrabajo->getTareasAdicionales()->isEmpty()) {
-                $this->tareasAdicionales = $ordenTrabajo->getTareasAdicionales();
-            } else {
-                $this->tareasAdicionales = new ArrayCollection();
-            }
         }
     }
 
     /**
-     * @return Diagnostico
+     * @return  OrdenTrabajo
      */
     public function getEntityData()
     {
@@ -207,7 +210,7 @@ class OrdenTrabajoModel
         $ordenTrabajo->setRevisadoPor($this->getRevisadoPor());
         $ordenTrabajo->setRealizadaPor($this->getRealizadaPor());
         $ordenTrabajo->setAprobadoPor($this->getAprobadoPor());
-
+        $ordenTrabajo->setRequisionMateriales($this->getRequisionMateriales());
 
         if ($this->getDiagnostico() !== null) {
             $ordenTrabajo->setDiagnostico($this->getDiagnostico());
@@ -339,6 +342,22 @@ class OrdenTrabajoModel
     public function setObservaciones($observaciones)
     {
         $this->observaciones = $observaciones;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequisionMateriales()
+    {
+        return $this->requisionMateriales;
+    }
+
+    /**
+     * @param string $requisionMateriales
+     */
+    public function setRequisionMateriales($requisionMateriales)
+    {
+        $this->requisionMateriales = $requisionMateriales;
     }
 
     /**
@@ -586,5 +605,13 @@ class OrdenTrabajoModel
     public function addTareasAdicionales(TareaAdicional $tareasAdicionales)
     {
         $this->tareasAdicionales->add($tareasAdicionales);
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+       return sprintf('%d', $this->numero ) ;
     }
 }

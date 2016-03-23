@@ -24,9 +24,11 @@
                     {{ form_errors(form) }}
 
                     <div class="row">
+                        {% if form.numeroDocumento is defined %}
                         <div class="col-md-4">
-                            {{ form_row(form.numero) }}
+                           {{ form_row(form.numeroDocumento) }}
                         </div>
+                        {% endif %}
 
                         <div class="col-md-4">
                             {{ form_row(form.requisionMateriales) }}
