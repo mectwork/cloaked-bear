@@ -159,7 +159,8 @@ class PedidoCompraController extends Controller
                     $pedidoCompra->getNumeroDocumento()
                 ));
             } else {
-                $session->getFlashBag()->add('danger', sprintf('Ha ocurrido un error intentando crear la Orden de Entrada para Registro de Compra "%s".',
+                $session->getFlashBag()->add('success', sprintf("Se ha creado la <a href=".$this->generateUrl('albaran_show', array('id' => $albaran->getId()))."> Orden de Entrada %s</a>  para el Registro de Compra %s.",
+                    $albaran->getNumeroDocumento(),
                     $pedidoCompra->getNumeroDocumento()
                 ));
             }
