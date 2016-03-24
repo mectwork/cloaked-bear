@@ -2,7 +2,9 @@
 
 namespace Buseta\TallerBundle\Controller;
 
+use Buseta\TallerBundle\Form\Model\DiagnosticoModel;
 use Buseta\TallerBundle\Form\Type\ObservacionType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\TallerBundle\Entity\Reporte;
@@ -39,9 +41,20 @@ class ReporteController extends Controller
             'resumentotalPR' => $resumentotalPR
         ));
     }
-
+    /**
+     * @param Reporte $reporte
+     *
+     * @return RedirectResponse
+     * @internal param $id
+     * @Method("GET")
+     */
     public function procesarReporteAction(Reporte $reporte)
     {
+        $em         = $this->getDoctrine()->getManager();
+        $logger     = $this->get('logger');
+        $session    = $this->get('session');
+        $error      = false;
+
         //Se llama al EventDispatcher
         $eventDispatcher = $this->get('event_dispatcher');
 
@@ -49,14 +62,42 @@ class ReporteController extends Controller
         $evento = new FilterReporteEvent($reporte);
         $evento->setReporte($reporte);
 
-        //Lanzo los Evento donde se crea el diagnostico y
         //cambio el estado de la solicitud de Abierto a Pendiente
-
-        $eventDispatcher->dispatch( ReporteEvents::PROCESAR_SOLICITUD, $evento );
         $eventDispatcher->dispatch( ReporteEvents::CAMBIAR_ESTADO_PENDIENTE, $evento );
 
-        return $this->redirect($this->generateUrl('reporte_index'));
+        try {
+            $em->persist($reporte);
+            $em->flush();
+        } catch (\Exception $e) {
+            $logger->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
+            $session->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
+
+            $error = true;
+        }
+
+        if (!$error) {
+            $diagnosticoManager = $this->get('buseta.taller.diagnostico.manager');
+
+            $diagnosticoModel = new DiagnosticoModel();
+            $diagnosticoModel->setAutobus($reporte->getAutobus());
+            $diagnosticoModel->setReporte($reporte);
+
+            //registro los datos del Diagnostico que se crea al procesar el reporte
+            if ($diagnostico = $diagnosticoManager->crear($diagnosticoModel)) {
+                $session->getFlashBag()->add('success', sprintf('Se ha creado Diagnostico "%s" para Solicitud "%s".',
+                    $diagnostico->getNumero(),
+                    $reporte->getNumero()
+                ));
+            } else {
+                $session->getFlashBag()->add('danger', sprintf('Ha ocurrido un error intentando crear Diagnostico para Solicitud "%s".',
+                    $reporte->getNumero()
+                ));
+            }
+        }
+
+        return $this->redirect($this->generateUrl('reporte_show', array('id' => $reporte->getId())));
     }
+
     /**
      * Lists all Reporte entities.
      * @Route("/reporte", name="reporte")

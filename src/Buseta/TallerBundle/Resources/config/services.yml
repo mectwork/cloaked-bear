@@ -23,6 +23,7 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - @logger
+            - @event_dispatcher
             - @session
             - @hatuey_soft.sequence.manager
 
@@ -32,6 +33,8 @@ services:
         arguments:
             - @buseta.taller.diagnostico.manager
             - @buseta.taller.ordentrabajo.manager
+            - @logger
+            - @hatuey_soft.sequence.manager
         tags:
             - {name: kernel.event_subscriber}
 
@@ -48,6 +51,8 @@ services:
         arguments:
             - @buseta.taller.reporte.manager
             - @buseta.taller.diagnostico.manager
+            - @logger
+            - @hatuey_soft.sequence.manager
         tags:
             - {name: kernel.event_subscriber}
 

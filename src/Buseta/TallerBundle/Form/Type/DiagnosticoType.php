@@ -67,7 +67,7 @@ class DiagnosticoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\TallerBundle\Entity\Diagnostico'
+            'data_class' => 'Buseta\TallerBundle\form\Model\DiagnosticoModel'
         ));
     }
 

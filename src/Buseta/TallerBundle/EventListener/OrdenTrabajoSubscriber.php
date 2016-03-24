@@ -55,12 +55,12 @@ class OrdenTrabajoSubscriber implements EventSubscriberInterface
             OrdenTrabajoEvents::CAMBIAR_ESTADO_CERRADO   => 'cambioEstadoOrdenCerrado',
             OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO  => 'cambioEstadoOrdenCompletado',
             OrdenTrabajoEvents::ORDENTRABAJO_PRE_CREATE  => 'preCreate',
-            //BusetaBodegaEvents::ORDENTRABAJO_POST_CREATE  => 'undefinedEvent',
+            //OrdenTrabajoEvents::ORDENTRABAJO_POST_CREATE  => 'undefinedEvent',
             OrdenTrabajoEvents::ORDENTRABAJO_PRE_PROCESS => 'preProcess',
-            //BusetaBodegaEvents::ORDENTRABAJO_PROCESS  => 'undefinedEvent',
+            //OrdenTrabajoEvents::ORDENTRABAJO_PROCESS  => 'undefinedEvent',
             OrdenTrabajoEvents::ORDENTRABAJO_POST_PROCESS => 'postProcess',
             OrdenTrabajoEvents::ORDENTRABAJO_PRE_COMPLETE => 'preComplete',
-            //BusetaBodegaEvents::ORDENTRABAJO_COMPLETE => 'undefinedEvent',
+            //OrdenTrabajoEvents::ORDENTRABAJO_COMPLETE => 'undefinedEvent',
             //OrdenTrabajoEvents::ORDENTRABAJO_POST_COMPLETE => 'postComplete',
         );
     }
@@ -118,8 +118,8 @@ class OrdenTrabajoSubscriber implements EventSubscriberInterface
      */
     public function preProcess(FilterOrdenTrabajoEvent $event)
     {
-        $albaran = $event->getOrden();
-        if ($albaran->getEstado() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_DRAFT) {
+        $ordenTrabajo = $event->getOrden();
+        if ($ordenTrabajo->getEstado() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_DRAFT) {
             throw new NotValidStateException();
         }
     }
@@ -139,8 +139,8 @@ class OrdenTrabajoSubscriber implements EventSubscriberInterface
      */
     public function preComplete(FilterOrdenTrabajoEvent $event)
     {
-        $albaran = $event->getOrden();
-        if ($albaran->getEstado() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_PROCESS) {
+        $ordenTrabajo = $event->getOrden();
+        if ($ordenTrabajo->getEstado() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_PROCESS) {
             throw new NotValidStateException();
         }
     }

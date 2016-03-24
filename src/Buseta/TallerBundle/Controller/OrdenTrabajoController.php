@@ -125,8 +125,6 @@ class OrdenTrabajoController extends Controller
             'method' => 'POST',
         ));
 
-        //$form->add('submit', 'submit', array('label' => 'Create'));
-
         return $form;
     }
 
@@ -149,7 +147,6 @@ class OrdenTrabajoController extends Controller
         $tarea_adicional = $this->createForm(new TareaAdicionalType());
 
         $form   = $this->createCreateForm(new OrdenTrabajoModel());
-        //$form = $this->createCreateForm($entity);
 
         return $this->render('BusetaTallerBundle:OrdenTrabajo:new.html.twig', array(
             'entity' => $entity,
@@ -208,8 +205,6 @@ class OrdenTrabajoController extends Controller
             'action' => $this->generateUrl('ordentrabajo_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
-
-        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
