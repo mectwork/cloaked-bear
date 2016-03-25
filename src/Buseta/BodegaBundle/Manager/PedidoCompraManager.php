@@ -4,10 +4,17 @@ namespace Buseta\BodegaBundle\Manager;
 
 use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\BusetaBodegaEvents;
+use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\PedidoCompra;
 use Buseta\BodegaBundle\Event\FilterPedidoCompraEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidStateException;
+use Buseta\BodegaBundle\Form\Model\AlbaranModel;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
+use Symfony\Bridge\Monolog;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class PedidoCompra
@@ -192,5 +199,59 @@ class PedidoCompraManager extends AbstractBodegaManager
 
             return false;
         }
+    }
+
+    /**
+     * Set PedidoCompra status as Completed
+     *
+     * @param PedidoCompra $pedidoCompra
+     *
+     * @return bool
+     */
+    public function completar(PedidoCompra $pedidoCompra)
+    {
+        $error      = false;
+        try {
+            $this->beginTransaction();
+
+            if ($this->dispatcher->hasListeners(BusetaBodegaEvents::PEDIDOCOMPRA_PRE_COMPLETE)) {
+                $preCompleteEvent = new FilterPedidoCompraEvent($pedidoCompra);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::PEDIDOCOMPRA_PRE_COMPLETE, $preCompleteEvent);
+
+                if ($preCompleteEvent->getError()) {
+                    $error = $preCompleteEvent->getError();
+                }
+            }
+
+            if (!$error) {
+                $this->cambiarEstado($pedidoCompra, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_COMPLETE, $error);
+            }
+
+                if (!$error) {
+                    $this->em->flush();
+
+                    // Try and commit the transaction, aqui puede ocurrir un error
+                    $this->commitTransaction();
+
+                    return true;
+                }
+
+
+            $this->logger->warning(sprintf('Registro de Compra no completado debido a errores previos: %s', $error));
+
+        } catch (\Exception $e) {
+            $this->logger->critical(
+                sprintf(
+                    'Ha ocurrido un error al completar Registro de Compra. Detalles: {message: %s, class: %s, line: %d}',
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                )
+            );
+        }
+
+        $this->rollbackTransaction();
+
+        return false;
     }
 }
