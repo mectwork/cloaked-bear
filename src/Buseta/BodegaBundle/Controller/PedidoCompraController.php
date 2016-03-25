@@ -80,37 +80,29 @@ class PedidoCompraController extends Controller
      */
     public function procesarRegistroAction(PedidoCompra $pedidoCompra)
     {
-        $validator  = $this->get('validator');
-        $session    = $this->get('session');
-        if (($errors = $validator->validate($pedidoCompra, 'on_complete')) && count($errors) > 0) {
-            foreach ($errors as $e) {
-                /** @var ConstraintViolation $e */
-                $session->getFlashBag()->add('danger', $e->getMessage());
-            }
+        $manager = $this->get('buseta.bodega.pedidocompra.manager');
+        if (true === $result = $manager->procesar($pedidoCompra)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'Se ha procesado el Registro de Compra de forma correcta.'
+            );
+
+            return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                'danger',
+                'Ha ocurrido un error al procesar el Registro de Compra.'
+            );
 
             return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
         }
-
-        $em = $this->getDoctrine()->getManager();
-
-        //Cambia el estado de Borrador a Procesado
-        $pedidoCompra->setEstadoDocumento('PR');
-
-        try {
-            $em->persist($pedidoCompra);
-            $em->flush();
-        } catch (\Exception $e) {
-            $this->get('logger')->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
-            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
-        }
-
-        return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
     }
 
     /**
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param PedidoCompra $pedidoCompra
      *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @internal param $id
      * @Route("/{id}/completarRegistro", name="completarRegistro")
      * @Method("GET")
      */
