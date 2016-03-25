@@ -106,88 +106,24 @@ class NecesidadMaterialController extends Controller
      */
     public function completarNecesidadAction(NecesidadMaterial $necesidadMaterial)
     {
-        $em         = $this->getDoctrine()->getManager();
-        $logger     = $this->get('logger');
-        $session    = $this->get('session');
-        $error      = false;
+        {
+            $manager = $this->get('buseta.bodega.necesidadmaterial.manager');
+            if (true === $result = $manager->completar($necesidadMaterial)) {
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    'Se ha completado la Necesidad Material de forma correcta.'
+                );
 
-        //Cambia el estado de Procesado a Completado
-        $necesidadMaterial->setEstadoDocumento('CO');
-        try {
-            $em->persist($necesidadMaterial);
-            $em->flush();
+                return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                    'danger',
+                    sprintf('Ha ocurrido un error al completar la Necesidad Material.')
+                );
 
-            $session->getFlashBag()->add('success', 'Se ha completado la Necesidad Material de forma correcta.');
-        } catch (\Exception $e) {
-            $logger->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
-            $session->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
-
-            $error = true;
-        }
-
-        if (!$error) {
-            $fecha =  new \DateTime();
-
-            $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($necesidadMaterial->getAlmacen());
-            $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($necesidadMaterial->getTercero());
-
-            //Registro los datos del nuevo PedidoCompra que se crea al procesar la NecesidadMaterial
-
-            $sequenceManager = $this->get('hatuey_soft.sequence.manager');
-            $pedidoCompra = new PedidoCompra();
-            if (null !== $numeroDocumento = $sequenceManager->getNextValue('orden_entrada_seq')) {
-                $pedidoCompra->setNumeroDocumento($sequenceManager->getNextValue('registro_compra_seq'));
-
-            }  else {
-                $pedidoCompra->setNumeroDocumento($necesidadMaterial->getNumeroDocumento());
-
+                return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
             }
-            $pedidoCompra->setTercero($tercero);
-            $pedidoCompra->setFechaPedido($necesidadMaterial->getFechaPedido());
-            $pedidoCompra->setAlmacen($almacen);
-            $pedidoCompra->setMoneda($necesidadMaterial->getMoneda());
-            $pedidoCompra->setFormaPago($necesidadMaterial->getFormaPago());
-            $pedidoCompra->setCondicionesPago($necesidadMaterial->getCondicionesPago());
-            $pedidoCompra->setEstadoDocumento('BO');
-            $pedidoCompra->setImporteTotal($necesidadMaterial->getImporteTotal());
-            $pedidoCompra->setImporteTotalLineas($necesidadMaterial->getImporteTotalLineas());
-            $pedidoCompra->setImpuesto($necesidadMaterial->getImpuesto());
-            $pedidoCompra->setDescuento($necesidadMaterial->getDescuento());
-            $pedidoCompra->setImporteImpuesto($necesidadMaterial->getImporteImpuesto());
-            $pedidoCompra->setImporteDescuento($necesidadMaterial->getImporteDescuento());
-            $pedidoCompra->setImporteCompra($necesidadMaterial->getImporteCompra());
-            $pedidoCompra->setObservaciones($necesidadMaterial->getObservaciones());
-            $pedidoCompra->setCreated(new \DateTime());
-
-            $em->persist($pedidoCompra);
-            $em->flush();
-
-            //Registro los datos de las líneas del PedidoCompra
-            foreach ($necesidadMaterial->getNecesidadMaterialLineas() as $linea) {
-                $registroCompraLinea = new PedidoCompraLinea();
-                $registroCompraLinea->setPedidoCompra($pedidoCompra);
-                $registroCompraLinea->setLinea($linea->getLinea());
-                $registroCompraLinea->setProducto($linea->getProducto());
-                $registroCompraLinea->setCantidadPedido($linea->getCantidadPedido());
-                $registroCompraLinea->setUom($linea->getUom());
-                $registroCompraLinea->setPrecioUnitario($linea->getPrecioUnitario());
-                $registroCompraLinea->setImpuesto($linea->getImpuesto());
-                $registroCompraLinea->setMoneda($linea->getMoneda());
-                $registroCompraLinea->setPorcientoDescuento($linea->getPorcientoDescuento());
-                $registroCompraLinea->setImporteLinea($linea->getImporteLinea());
-
-                $em->persist($registroCompraLinea);
-                $em->flush();
-            }
-
-            $necesidadMaterial->setEstadoDocumento('CO');
-            $em->persist($necesidadMaterial);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('necesidadmaterial'));
         }
-
-        return $this->redirect($this->generateUrl('necesidadmaterial'));
     }
 
     /**

@@ -176,4 +176,56 @@ class NecesidadMaterialManager extends AbstractBodegaManager
             return false;
         }
     }
+
+    /**
+     * Set albaran status as Completed
+     *
+     * @param NecesidadMaterial $necesidadMaterial
+     *
+     * @return bool
+     */
+    public function completar(NecesidadMaterial $necesidadMaterial)
+    {
+        $error = false;
+        try {
+            $this->beginTransaction();
+
+            if ($this->dispatcher->hasListeners(BusetaBodegaEvents::NECESIDADMATERIAL_PRE_COMPLETE)) {
+                $preCompleteEvent = new FilterNecesidadMaterialEvent($necesidadMaterial);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::NECESIDADMATERIAL_PRE_COMPLETE, $preCompleteEvent);
+
+                if ($preCompleteEvent->getError()) {
+                    $error = $preCompleteEvent->getError();
+                }
+            }
+
+            if (!$error) {
+                $this->cambiarEstado($necesidadMaterial, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_COMPLETE, $error);
+            }
+
+            if (!$error) {
+                $this->em->flush();
+
+                // Try and commit the transaction, aqui puede ocurrir un error
+                $this->commitTransaction();
+
+                return true;
+            }
+
+            $this->logger->warning(sprintf('Necesidad Material no completada debido a errores previos: %s', $error));
+        } catch (\Exception $e) {
+            $this->logger->critical(
+                sprintf(
+                    'Ha ocurrido un error al Necesidad Material de Entrada. Detalles: {message: %s, class: %s, line: %d}',
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                )
+            );
+        }
+
+        $this->rollbackTransaction();
+
+        return false;
+    }
 }

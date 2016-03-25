@@ -107,21 +107,21 @@ class NecesidadMaterialSubscriber implements EventSubscriberInterface
         }
     }
 
-   // /**
-   //  * @param FilterNecesidadMaterialEvent $event
-   //  * @param string|null $eventName
-   //  * @param EventDispatcherInterface|null $eventDispatcher
-   //  */
-    //public function postComplete(
-    //   FilterNecesidadMaterialEvent $event,
-    //    $eventName = null,
-    //    EventDispatcherInterface $eventDispatcher = null
-    //) {
-    //    $bitacoraEvent = new BitacoraAlbaranEvent($event->getAlbaran());
-    //    $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_INVENTORY_IN_OUT, $bitacoraEvent);
-    //
-    //    if ($error = $bitacoraEvent->getError()) {
-    //        $event->setError($error);
-    //    }
-    //}
+    /**
+     * @param FilterNecesidadMaterialEvent $event
+     * @param string|null $eventName
+     * @param EventDispatcherInterface|null $eventDispatcher
+     */
+    public function postComplete(
+        FilterNecesidadMaterialEvent $event,
+        $eventName = null,
+        EventDispatcherInterface $eventDispatcher = null
+    ) {
+        $bitacoraEvent = new BitacoraAlbaranEvent($event->getAlbaran());
+        $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_INVENTORY_IN_OUT, $bitacoraEvent);
+
+        if ($error = $bitacoraEvent->getError()) {
+            $event->setError($error);
+        }
+    }
 }
