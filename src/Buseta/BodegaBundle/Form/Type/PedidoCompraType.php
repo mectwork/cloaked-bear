@@ -6,6 +6,7 @@ use Buseta\BodegaBundle\Entity\PedidoCompra;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -13,6 +14,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class PedidoCompraType extends AbstractType
 {
@@ -26,7 +28,7 @@ class PedidoCompraType extends AbstractType
      */
     private $serviceContainer;
 
-    public function __construct(ObjectManager $em, Container $serviceContainer)
+    public function __construct(ObjectManager $em, ContainerInterface $serviceContainer)
     {
         $this->em = $em;
         $this->serviceContainer = $serviceContainer;

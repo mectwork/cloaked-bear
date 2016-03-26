@@ -3,6 +3,7 @@
 namespace Buseta\TallerBundle\Controller;
 
 use Buseta\TallerBundle\Form\Model\DiagnosticoModel;
+use Buseta\TallerBundle\Form\Model\ReporteModel;
 use Buseta\TallerBundle\Form\Type\ObservacionType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -148,11 +149,13 @@ class ReporteController extends Controller
     public function createAction(Request $request)
     {
         $status = $request->query->get('status', self::DEFAULT_STATUS );
-
+        $sequenceManager = $this->get('hatuey_soft.sequence.manager');
         $entity = new Reporte();
 
-        $form = $this->createCreateForm($entity);
-
+        $form = $this->createCreateForm(new ReporteModel());
+        if ($sequenceManager->hasSequence(ClassUtils::getRealClass($entity))) {
+            $entity->setNumero($sequenceManager->getNextValue('reporte_seq'));
+        }
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
@@ -186,13 +189,13 @@ class ReporteController extends Controller
     /**
      * Creates a form to create a Reporte entity.
      *
-     * @param Reporte $entity The entity
+     * @param ReporteModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Reporte $entity)
+    private function createCreateForm(ReporteModel $entity)
     {
-        $form = $this->createForm(new ReporteType(), $entity, array(
+        $form = $this->createForm('buseta_tallerbundle_reporte', $entity, array(
             'action' => $this->generateUrl('reporte_create'),
             'method' => 'POST',
         ));
@@ -209,22 +212,14 @@ class ReporteController extends Controller
      */
     public function newAction(Request $request)
     {
-        $status = $request->query->get('status', self::DEFAULT_STATUS );
-        $sequenceManager = $this->get('hatuey_soft.sequence.manager');
         $entity = new Reporte();
+        $status = $request->query->get('status', self::DEFAULT_STATUS);
 
-        if ($sequenceManager->hasSequence(ClassUtils::getRealClass($entity))) {
-            $entity->setNumero($sequenceManager->getNextValue('reporte_seq'));
-        }
-
-        $observacion = $this->createForm(new ObservacionType());
-
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm(new ReporteModel());
 
         return $this->render('BusetaTallerBundle:Reporte:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
-            'observacion'  => $observacion->createView(),
+            'form' => $form->createView(),
             'status' => $status,
         ));
     }

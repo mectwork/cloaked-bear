@@ -133,3 +133,10 @@ services:
         arguments: [@security.token_storage, @service_container]
         tags:
             - {name: form.type, alias: 'buseta_tallerbundle_ordentrabajo'}
+
+     #Form Type
+    taller.reporte.type:
+        class: Buseta\TallerBundle\Form\Type\ReporteType
+        arguments: [@doctrine.orm.entity_manager, @hatuey_soft.sequence.manager]
+        tags:
+            - {name: form.type, alias: 'buseta_tallerbundle_reporte'}
