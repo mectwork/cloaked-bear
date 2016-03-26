@@ -148,44 +148,36 @@ class ReporteController extends Controller
      */
     public function createAction(Request $request)
     {
-        $status = $request->query->get('status', self::DEFAULT_STATUS );
-        $sequenceManager = $this->get('hatuey_soft.sequence.manager');
-        $entity = new Reporte();
+        $reporteModel = new ReporteModel();
+        $form = $this->createCreateForm($reporteModel);
+        $status = $request->query->get('status', self::DEFAULT_STATUS);
 
-        $form = $this->createCreateForm(new ReporteModel());
-        if ($sequenceManager->hasSequence(ClassUtils::getRealClass($entity))) {
-            $entity->setNumero($sequenceManager->getNextValue('reporte_seq'));
-        }
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $em = $this->get('doctrine.orm.entity_manager');
-            try {
-                $em->persist($entity);
-                $em->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $trans  = $this->get('translator');
 
-                $this->get('session')->getFlashBag()
-                    ->add('success', 'Se ha creado la Solicitud de forma satisfactoria.');
+            $reporteManager = $this->get('buseta.taller.reporte.manager');
 
-                return $this->redirect($this->generateUrl('reporte_show', array(
-                    'id' => $entity->getId(),
-                    'status' => $status,
-                )));
-            } catch(\Exception $e) {
-                $this->get('logger')
-                    ->addCritical(sprintf('Ha ocurrido un error creando la Solicitud. Detalles: %s', $e->getMessage()));
+            if ($reporte = $reporteManager->crear($reporteModel)) {
+                $this->get('session')->getFlashBag()->add('success',
+                    $trans->trans(
+                        'messages.create.success',
+                        array(),
+                        'BusetaTallerBundle'
+                    )
+                );
 
-                $this->get('session')->getFlashBag()
-                    ->add('danger', 'Ha ocurrido un error creando la Solicitud.');
+                return $this->redirect($this->generateUrl('reporte_show', array('id' => $reporte->getId())));
+            } else {
+                $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al crear Solicitud');
             }
         }
 
-        return $this->render('BusetaTallerBundle:Reporte:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+        return $this->render('@BusetaTaller/Reporte/new.html.twig', array(
+            'form' => $form->createView(),
             'status' => $status,
         ));
     }
-
     /**
      * Creates a form to create a Reporte entity.
      *

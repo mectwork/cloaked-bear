@@ -48,6 +48,8 @@ class ReporteSubscriber implements EventSubscriberInterface
     {
         $this->reporteManager = $reporteManager;
         $this->diagnosticoManager = $diagnosticoManager;
+        $this->sequenceManager = $sequenceManager;
+        $this->logger = $logger;
     }
 
     /**
