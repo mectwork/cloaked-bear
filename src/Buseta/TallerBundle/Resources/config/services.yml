@@ -141,3 +141,9 @@ services:
         arguments: [@doctrine.orm.entity_manager, @hatuey_soft.sequence.manager]
         tags:
             - {name: form.type, alias: 'buseta_tallerbundle_reporte'}
+     #Form Type
+    taller.dignostico.type:
+        class: Buseta\TallerBundle\Form\Type\DiagnosticoType
+        arguments: [@doctrine.orm.entity_manager, @hatuey_soft.sequence.manager]
+        tags:
+            - {name: form.type, alias: 'buseta_tallerbundle_diagnostico'}

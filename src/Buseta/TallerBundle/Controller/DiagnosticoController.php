@@ -353,7 +353,7 @@ class DiagnosticoController extends Controller
      */
     private function createCreateForm(DiagnosticoModel $entity)
     {
-        $form = $this->createForm(new DiagnosticoType(), $entity, array(
+        $form = $this->createForm('buseta_tallerbundle_diagnostico', $entity, array(
             'action' => $this->generateUrl('diagnostico_create'),
             'method' => 'POST',
         ));
