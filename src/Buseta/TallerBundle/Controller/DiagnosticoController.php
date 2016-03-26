@@ -324,13 +324,7 @@ class DiagnosticoController extends Controller
      */
     public function newAction()
     {
-        $sequenceManager = $this->get('hatuey_soft.sequence.manager');
         $entity = new Diagnostico();
-
-        if ($sequenceManager->hasSequence(ClassUtils::getRealClass($entity))) {
-            $entity->setNumero($sequenceManager->getNextValue('diagnostico_seq'));
-        }
-
         $observacion = $this->createForm(new ObservacionDiagnosticoType());
         $tareadiagno = $this->createForm(new TareaDiagnosticoType());
 

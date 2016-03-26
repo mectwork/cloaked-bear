@@ -136,14 +136,7 @@ class OrdenTrabajoController extends Controller
      */
     public function newAction()
     {
-        $sequenceManager = $this->get('hatuey_soft.sequence.manager');
         $entity = new OrdenTrabajo();
-
-
-        if ($sequenceManager->hasSequence(ClassUtils::getRealClass($entity))) {
-            $entity->setNumero($sequenceManager->getNextValue('ot_seq'));
-        }
-
         $tarea_adicional = $this->createForm(new TareaAdicionalType());
 
         $form   = $this->createCreateForm(new OrdenTrabajoModel());

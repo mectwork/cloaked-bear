@@ -25,8 +25,6 @@ final class OrdenTrabajoEvents
 
     const CAMBIAR_ESTADO_COMPLETADO = 'buseta.taller.orden.cambiarestadocompletado';
 
-
-    // ORDENTRABAJO EVENTS
     const ORDENTRABAJO_PRE_CREATE = 'buseta.taller.ordentrabajo.pre_create';
 
     const ORDENTRABAJO_POST_CREATE = 'buseta.taller.ordentrabajo.pos_create';
