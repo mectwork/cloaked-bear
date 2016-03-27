@@ -10,7 +10,7 @@ namespace HatueySoft\SecurityBundle\Utils;
 class VoterAttributesChecker
 {
     const CREATE = 'create';
-    const VIEW = 'view';
+    const SHOW = 'show';
     const EDIT = 'edit';
     const DELETE = 'delete';
     const LISTS = 'list';
@@ -25,7 +25,7 @@ class VoterAttributesChecker
     {
         return in_array(trim(strtolower($attribute)), array(
             self::CREATE,
-            self::VIEW,
+            self::SHOW,
             self::EDIT,
             self::DELETE,
             self::LISTS,
@@ -42,7 +42,7 @@ class VoterAttributesChecker
     {
         return array(
             self::CREATE,
-            self::VIEW,
+            self::SHOW,
             self::EDIT,
             self::DELETE,
             self::LISTS,
