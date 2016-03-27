@@ -33,7 +33,6 @@ class VoterAttributesChecker
         ));
     }
 
-
     /**
      *
      * @return array
