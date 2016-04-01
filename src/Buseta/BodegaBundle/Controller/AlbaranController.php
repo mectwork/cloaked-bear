@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\Albaran;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -252,7 +253,7 @@ class AlbaranController extends Controller
      *
      * @Route("/{id}/show", name="albaran_show")
      * @Method({"GET"})
-     *
+     * @Security("is_granted('show', albaran)")
      * @Breadcrumb(title="Ver Datos de Orden de Entrada", routeName="albaran_show", routeParameters={"id"})
      */
     public function showAction(Albaran $albaran)
@@ -279,7 +280,7 @@ class AlbaranController extends Controller
      *
      * @Route("/{id}/edit", name="albarans_albaran_edit")
      * @Method({"GET"})
-     *
+     * @Security("is_granted('edit', albaran)")
      * @Breadcrumb(title="Modificar Orden de Entrada", routeName="albarans_albaran_edit", routeParameters={"id"})
      */
     public function editAction(Albaran $albaran)
@@ -366,7 +367,7 @@ class AlbaranController extends Controller
      *
      * @Route("/create", name="albarans_albaran_create", options={"expose":true})
      * @Method({"POST"})
-     *
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\Albaran')")
      * @Breadcrumb(title="Crear Nueva Orden de Entrada", routeName="albarans_albaran_create")
      */
     public function createAction(Request $request)
@@ -437,7 +438,7 @@ class AlbaranController extends Controller
      *
      * @Route("/new", name="albaran_new", options={"expose":true})
      * @Method({"GET"})
-     *
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\Albaran')")
      * @Breadcrumb(title="Crear Nueva Orden de Entrada", routeName="albaran_new")
      */
     public function newAction()
@@ -473,6 +474,7 @@ class AlbaranController extends Controller
      * Deletes a Albaran entity.
      *
      * @Route("/{id}/delete", name="albaran_delete")
+     * @Security("is_granted('delete', albaran)")
      * @Method({"DELETE", "GET"})
      */
     public function deleteAction(Albaran $albaran, Request $request)
