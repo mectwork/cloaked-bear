@@ -463,20 +463,20 @@ var lineas = {
             cantidadPedido = 0;
         }
 
-        var bruto = cantidadPedido * costoUnitario;
-        var importeDescuento = bruto * porcientoDescuento / 100;
+        var bruto = Number(cantidadPedido) * Number(costoUnitario);
+        var importeDescuento = Number(bruto) * Number(porcientoDescuento) / 100;
 
         if($impuesto.val() != undefined && $impuesto.val() != null && $impuesto.val() != '') {
             var tarifa  = $impuesto.find(':selected').data('tarifa'),
                 tipo    = $impuesto.find(':selected').data('tipo');
             if (tipo == 'porcentaje') {
-                importeImpuesto = bruto * tarifa / 100;
+                importeImpuesto = Number(bruto) * Number(tarifa) / 100;
             } else {
                 importeImpuesto = tarifa;
             }
         }
 
-        importeTotal = bruto + importeImpuesto - importeDescuento;
+        importeTotal = Number(bruto) + Number(importeImpuesto) - Number(importeDescuento);
         if(!isNaN(importeTotal)) {
             $importeLinea.val(importeTotal);
         } else {
