@@ -249,6 +249,9 @@ hatuey_soft_security:
             almacen:
                     class: Buseta\BodegaBundle\Entity\Almacen
             usuario: Buseta\TallerBundle\Entity\Usuario
+            albaran:
+                    class: Buseta\BodegaBundle\Entity\Albaran
+                    rules: []
 
 #    acl:
 #        entities:
