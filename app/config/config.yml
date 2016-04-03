@@ -252,6 +252,10 @@ hatuey_soft_security:
             albaran:
                     class: Buseta\BodegaBundle\Entity\Albaran
                     rules: []
+            inventariofisico:
+                    class: Buseta\BodegaBundle\Entity\InventarioFisico
+                    rules: []
+
 
 #    acl:
 #        entities:
