@@ -12,6 +12,7 @@ use Buseta\BodegaBundle\Form\Filtro\BusquedaAlmacenType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
@@ -71,6 +72,7 @@ class BodegaController extends Controller
      * Creates a new Bodega entity.
      * @Route("/create", name="bodega_create", methods={"POST"}, options={"expose":true})
      * @Breadcrumb(title="Crear Nueva Bodega", routeName="bodega_create")
+     * @Security("is_granted('CREATE', 'Buseta\\BodegaBundle\\Entity\\Bodega')")
      */
     public function createAction(Request $request)
     {
@@ -111,6 +113,7 @@ class BodegaController extends Controller
 
     /**
      * Displays a form to create a new Bodega entity.
+     * @Security("is_granted('CREATE', 'Buseta\\BodegaBundle\\Entity\\Bodega')")
      * @Route("/new", name="bodega_new", methods={"GET"}, options={"expose":true})
      * @Breadcrumb(title="Crear Nueva Bodega", routeName="bodega_new")
      */
@@ -127,6 +130,7 @@ class BodegaController extends Controller
 
     /**
      * Finds and displays a Bodega entity.
+     * @Security("is_granted('SHOW', id)")
      * @Route("/{id}/show", name="bodega_show", methods={"GET"}, options={"expose":true})
      * @Breadcrumb(title="Ver Datos de Bodega", routeName="bodega_show", routeParameters={"id"})
      */
@@ -151,6 +155,7 @@ class BodegaController extends Controller
      * Displays a form to edit an existing Bodega entity.
      * @Route("/{id}/edit", name="bodega_edit", methods={"GET"}, options={"expose":true})
      * @Breadcrumb(title="Modificar Bodega", routeName="bodega_edit", routeParameters={"id"})
+     * @Security("is_granted('EDIT', id)")
      */
     public function editAction($id)
     {
