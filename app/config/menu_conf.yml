@@ -383,20 +383,10 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-                menu_B_F_C:
-                  id: menu_B_F_C
-                  name: null
-                  label: Impuesto
-                  route: impuesto
-                  roles: [ROLE_USER]
-                  type: item
-                  disabled: false
-                  attributes: {  }
-                  childrens: {  }
         menu_C:
           id: menu_C
           name: menu_taller
-          label: Estación de Servicios
+          label: 'Estación de Servicios'
           route: taller_principal
           roles:
             - ROLE_USER
