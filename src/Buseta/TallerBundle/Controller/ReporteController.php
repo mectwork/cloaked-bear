@@ -191,7 +191,7 @@ class ReporteController extends Controller
     /**
      * Finds and displays a Reporte entity.
      *
-     * @Security("is_granted('VIEW', reporte)")
+     * @Security("is_granted('SHOW', reporte)")
      * @Route("/{id}/show", name="reporte_show")
      * @Breadcrumb(title="Ver Datos de Solicitud", routeName="reporte_show", routeParameters={"id"})
      */
