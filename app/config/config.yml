@@ -255,6 +255,9 @@ hatuey_soft_security:
             inventariofisico:
                     class: Buseta\BodegaBundle\Entity\InventarioFisico
                     rules: []
+            salidabodega:
+                    class: Buseta\BodegaBundle\Entity\SalidaBodega
+                    rules: []
 
 
 #    acl:

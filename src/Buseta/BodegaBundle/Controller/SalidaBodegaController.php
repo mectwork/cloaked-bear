@@ -13,6 +13,7 @@ use Buseta\BodegaBundle\Entity\SalidaBodega;
 use Buseta\BodegaBundle\Form\Type\SalidaBodegaType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -218,7 +219,7 @@ class SalidaBodegaController extends Controller
      *
      * @Route("/create", name="salidabodega_create")
      * @Method({"POST"})
-     *
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\SalidaBodega')")
      * @Breadcrumb(title="Crear Nueva Orden de Entrada", routeName="salidabodega_create")
      */
     public function createAction(Request $request)
@@ -354,7 +355,7 @@ class SalidaBodegaController extends Controller
      *
      * @Route("/new", name="salidabodega_new", methods={"GET"})
      * @Method({"GET"})
-     *
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\SalidaBodega')")
      * @Breadcrumb(title="Crear Nueva Salida de Bodega", routeName="salidabodega_new")
      */
     public function newAction()
@@ -392,20 +393,20 @@ class SalidaBodegaController extends Controller
      *
      * @Route("/{id}/show", name="salidabodega_show", options={"expose":true})
      * @Method({"GET"})
-     *
+     * @Security("is_granted('show', salidaBodega)")
      * @Breadcrumb(title="Ver Datos de Salida de Bodega", routeName="salidabodega_show", routeParameters={"id"})
      */
-    public function showAction($id)
+    public function showAction(SalidaBodega $salidaBodega)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaBodegaBundle:SalidaBodega')->find($id);
+        $entity = $em->getRepository('BusetaBodegaBundle:SalidaBodega')->find($salidaBodega->getId());
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find SalidaBodega entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($salidaBodega->getId());
 
         return $this->render('BusetaBodegaBundle:SalidaBodega:show.html.twig', array(
             'entity'      => $entity,
@@ -418,14 +419,14 @@ class SalidaBodegaController extends Controller
      *
      * @Route("/{id}/edit", name="salidabodega_edit")
      * @Method({"GET"})
-     *
+     * @Security("is_granted('edit', salidaBodega)")
      * @Breadcrumb(title="Modificar Salida de Bodega", routeName="salidabodega_edit", routeParameters={"id"})
      */
-    public function editAction($id)
+    public function editAction(SalidaBodega $salidaBodega)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaBodegaBundle:SalidaBodega')->find($id);
+        $entity = $em->getRepository('BusetaBodegaBundle:SalidaBodega')->find($salidaBodega->getId());
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find SalidaBodega entity.');
@@ -434,7 +435,7 @@ class SalidaBodegaController extends Controller
         $salidabodegasProductos = $this->createForm(new SalidaBodegaProductoType());
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($salidaBodega->getId());
 
         return $this->render('BusetaBodegaBundle:SalidaBodega:edit.html.twig', array(
             'entity'      => $entity,
@@ -502,6 +503,7 @@ class SalidaBodegaController extends Controller
      * Deletes a SalidaBodega entity.
      *
      * @Route("/{id}/delete", name="salidabodega_delete")
+     * @Security("is_granted('delete', salidaBodega)")
      * @Method({"POST", "DELETE", "GET"})
      */
     public function deleteAction(SalidaBodega $salidaBodega, Request $request)
