@@ -349,6 +349,26 @@ var lineas = {
         if (costo != undefined && costo != null) {
             $('#' + lineas.form_id + '_precio_unitario').val(costo);
         }
+
+        //obtener la moneda del proveedor seleccionado
+        var terceroID = $this.parent().prev().prev().prev().children().val();
+        if (terceroID != undefined && terceroID != null) {
+            var data = {
+                tercero_id: terceroID
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: Routing.generate('necesidadMaterial_ajax_proveedor_moneda'),
+                data: data,
+                success: function (data) {
+                    var moneda = $.parseJSON(data);
+                    if (moneda != undefined && moneda != null) {
+                        $('#buseta_bodegabundle_necesidad_material_linea_moneda').val(moneda.id);
+                    }
+                }
+            });
+        }
     },
     _edit_product_cost: function (event) {
         var $this = $(this),
