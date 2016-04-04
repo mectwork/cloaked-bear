@@ -85,6 +85,7 @@ class InventarioFisicoLineaType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Buseta\BodegaBundle\Entity\InventarioFisicoLinea',
+            'csrf_protection' => false,
         ));
     }
 
