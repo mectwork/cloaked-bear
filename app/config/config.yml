@@ -27,7 +27,7 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
-        version_sistema: beta4
+        version_sistema: alpha_v1
     form:
         resources: ['BusetaTemplateBundle:Form:fields.html.twig']
 
