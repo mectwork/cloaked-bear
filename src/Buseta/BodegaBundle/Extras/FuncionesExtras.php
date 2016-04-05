@@ -358,7 +358,7 @@ class FuncionesExtras
         //Obtengo las bitacoras
         //$bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->findAll();
         //hallar solo las lineas de bitacora del producto y almacen especificado
-        $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraSerial')->findBy(array(
+        $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->findBy(array(
             'producto' => $producto,
             'almacen' => $almacen,
         ));
