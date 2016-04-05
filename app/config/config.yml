@@ -249,6 +249,9 @@ hatuey_soft_security:
             bodega:
                     class: Buseta\BodegaBundle\Entity\Bodega
                     rules: []
+            producto:
+                    class: Buseta\BodegaBundle\Entity\Producto
+                    rules: []
             almacen:
                     class: Buseta\BodegaBundle\Entity\Almacen
             usuario: Buseta\TallerBundle\Entity\Usuario
