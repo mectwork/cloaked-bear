@@ -252,6 +252,9 @@ hatuey_soft_security:
             producto:
                     class: Buseta\BodegaBundle\Entity\Producto
                     rules: []
+            pedidocompra:
+                    class: Buseta\BodegaBundle\Entity\PedidoCompra
+                    rules: []
             almacen:
                     class: Buseta\BodegaBundle\Entity\Almacen
             usuario: Buseta\TallerBundle\Entity\Usuario

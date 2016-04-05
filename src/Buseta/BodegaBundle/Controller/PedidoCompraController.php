@@ -173,7 +173,7 @@ class PedidoCompraController extends Controller
      * Creates a new PedidoCompra entity.
      *
      * @Route("/create", name="pedidocompra_create", options={"expose": true})
-     * @Security("is_granted('CREATE', 'Buseta\\BodegaBundle\\Entity\\PedidoCompra')")
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\PedidoCompra')")
      * @Method("POST")
      * @Breadcrumb(title="Crear Nuevo Registro de Compra", routeName="pedidocompra_create")
      */
@@ -244,7 +244,7 @@ class PedidoCompraController extends Controller
      * Displays a form to create a new PedidoCompra entity.
      *
      * @Route("/new", name="pedidocompra_new")
-     * @Security("is_granted('CREATE', 'Buseta\\BodegaBundle\\Entity\\PedidoCompra')")
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\PedidoCompra')")
      * @Method("GET")
      * @Breadcrumb(title="Crear Nuevo Registro de Compra", routeName="pedidocompra_new")
      */
@@ -286,21 +286,21 @@ class PedidoCompraController extends Controller
      * Finds and displays a PedidoCompra entity.
      *
      * @Route("/{id}/show", name="pedidocompra_show")
-     * @Security("is_granted('SHOW', id)")
+     * @Security("is_granted('show', pedidocompra)")
      * @Method("GET")
      * @Breadcrumb(title="Ver Datos de Registro de Compra", routeName="pedidocompra_show", routeParameters={"id"})
      */
-    public function showAction($id)
+    public function showAction(PedidoCompra $pedidocompra)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->find($id);
+        $entity = $em->getRepository('BusetaBodegaBundle:PedidoCompra')->find($pedidocompra);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find PedidoCompra entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($pedidocompra);
 
         return $this->render('BusetaBodegaBundle:PedidoCompra:show.html.twig', array(
             'entity'      => $entity,
@@ -311,7 +311,7 @@ class PedidoCompraController extends Controller
      * Displays a form to edit an existing PedidoCompra entity.
      *
      * @Route("/{id}/edit", name="pedidocompra_edit", options={"expose": true})
-     * @Security("is_granted('EDIT', id)")
+     * @Security("is_granted('edit', pedidocompra)")
      * @Method("GET")
      * @Breadcrumb(title="Modificar Registro de Compra", routeName="pedidocompra_edit", routeParameters={"id"})
      */
