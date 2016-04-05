@@ -380,7 +380,6 @@
                 });
             },
             _done: function (response, textStatus, jqXHR) {
-
                 $('form#' + lineas.form_id).replaceWith($(response.view).find('form'));
 
                 if(jqXHR.status == 201 || jqXHR.status == 202) {
