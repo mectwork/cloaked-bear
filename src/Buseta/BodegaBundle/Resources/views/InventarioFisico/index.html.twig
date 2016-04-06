@@ -172,7 +172,9 @@
             fechaFin.on('dp.change', function (e) {
                 fechaInicio.data("DateTimePicker").maxDate(e.date);
             });
-
+            $('#buseta_inventario_fisico_filter_almacen').chosen();
+            $('#buseta_inventario_fisico_filter_producto').chosen();
+            $('#buseta_inventario_fisico_filter_estado').chosen();
         });
     </script>
 
