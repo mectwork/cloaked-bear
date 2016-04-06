@@ -168,6 +168,12 @@
                 })
             });
 
+            $('div#filter_form_component').find('input, select').on('keypress', function (e) {
+                if (e.keyCode === 10 || e.keyCode === 13) {
+                    $('form#filter_form').submit();
+                }
+            });
+
 
             //modificacion de los selectores de fecha
             var fechaInicio = $('input#buseta_albaran_filter_fechaInicio'),
