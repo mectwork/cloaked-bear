@@ -88,6 +88,9 @@
                         <a class="btn btn-success btn-xs" href="{{ path('movimiento_show', { 'id': entity.id }) }}"><i
                                     class="fa fa-search"> Mostrar</i></a>
                     </div>
+                    {% if entity.estadodocumento == 'BO' %}
+                        <a class="btn btn-primary btn-xs" href="{{ path('movimiento_edit', { 'id': entity.id }) }}"> Editar</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
@@ -152,6 +155,11 @@
             fechaFin.on('dp.change', function (e) {
                 fechaInicio.data("DateTimePicker").maxDate(e.date);
             });
+            $('#buseta_movimiento_filter_almacenOrigen').chosen();
+            $('#buseta_movimiento_filter_almacenDestino').chosen();
+            $('#buseta_movimiento_filter_producto').chosen();
+            $('#buseta_movimiento_filter_estado').chosen();
+
 
         });
     </script>

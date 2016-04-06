@@ -29,13 +29,17 @@ class MovimientosProductosType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('seriales', 'textarea', array(
-                'required' => false,
-                'label'  => 'Seriales',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ))
+            ->add(
+                'seriales',
+                'text',
+                array(
+                    'required' => false,
+                    'label' => false,
+                    'attr' => array(
+                        'class' => 'form-control',
+                    ),
+                )
+            )
         ;
     }
 
