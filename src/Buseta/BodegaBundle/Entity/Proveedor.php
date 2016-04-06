@@ -81,9 +81,28 @@ class Proveedor
         $this->setCreditoLimite($model->getCreditoLimite());
         $this->setObservaciones($model->getObservaciones());
 
-        $marcas = $model->getMarcas();
-        foreach ($marcas as $marca) {
-            $this->addMarca($marca);
+        $marcasNew = $model->getMarcas();
+        foreach ($marcasNew as $marcaNew) {
+            $found = false;
+            foreach ($this->marcas as $marcaOld) {
+                if ($marcaOld->getId() == $marcaNew->getId()) {
+                    $found = true;
+                }
+            }
+            if (!$found) {
+                $this->addMarca($marcaNew);
+            }
+        }
+        foreach ($this->marcas as $marcaOld) {
+            $found = false;
+            foreach ($marcasNew as $marcaNew) {
+                if ($marcaOld->getId() == $marcaNew->getId()) {
+                    $found = true;
+                }
+            }
+            if (!$found) {
+                $this->removeMarca($marcaOld);
+            }
         }
 
         return $this;

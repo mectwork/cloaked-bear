@@ -774,8 +774,11 @@
         _fail: function (jqXHR, textStatus, errorThrown) {
             if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
                 $btalerts.addDanger(jqXHR.responseText.message);
-            } else {
+            } else if (jqXHR.status == 500){
                 $btalerts.addDanger('{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+            }
+            if(jqXHR.status == 200 || jqXHR.status == 302) {
+                $btalerts.addSuccess('{{ 'messages.update.success' | trans({}, 'BusetaBodegaBundle') }}');
             }
         }
     };
