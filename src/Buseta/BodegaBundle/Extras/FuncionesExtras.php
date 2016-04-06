@@ -288,6 +288,96 @@ class FuncionesExtras
         return $lista_seriales;
     }
 
+    public function getListaSerialesEntitiesEnAlmacen( $producto, $almacen, $em )
+    {
+        /**@var \Doctrine\Common\Persistence\ObjectManager $em */
+
+        $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraSerial')->findBy(array(
+            'producto' => $producto,
+            'almacen' => $almacen,
+        ));
+
+        $lista_seriales = array();
+
+        foreach ($bitacoras as $bitacora) {
+            /** @var \Buseta\BodegaBundle\Entity\BitacoraSerial $bitacora */
+            $serial = $bitacora->getSerial();
+            //si esta en existencia, porque puede star en 0
+            $cantidadDisponible =  $this->comprobarCantProductoSeriadoAlmacen( $producto, $serial, $almacen, $em );
+            if ($cantidadDisponible>0) {
+                $lista_seriales[] = $bitacora;
+            }
+        }
+
+        $repeated_indices = array();
+        //quitar los elementos repetidos del array de resultados
+        foreach ($lista_seriales as $lista_serialo) {
+            $idx = 0;
+            foreach ($lista_seriales as $lista_seriali) {
+                if($lista_seriali != $lista_serialo)
+                {
+                    if($lista_seriali->getSerial() == $lista_serialo->getSerial())
+                    {
+                        $repeated_indices[] = $idx;
+                    }
+                }
+                $idx = $idx + 1;
+            }
+        }
+        foreach ($repeated_indices as $index) {
+            unset($lista_seriales[$index]);
+        }
+
+        return $lista_seriales;
+    }
+
+    public function getListaSerialesEntitiesEnAlmacenFilter( $em, $filter )
+    {
+        /**@var \Doctrine\Common\Persistence\ObjectManager $em */
+
+        $producto = $filter->getProducto();
+        $almacen = $filter->getAlmacen();
+
+        $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraSerial')->findBy(array(
+            'producto' => $producto,
+            'almacen' => $almacen,
+        ));
+
+        $lista_seriales = array();
+
+        foreach ($bitacoras as $bitacora) {
+            /** @var \Buseta\BodegaBundle\Entity\BitacoraSerial $bitacora */
+            $serial = $bitacora->getSerial();
+            //si esta en existencia, porque puede star en 0
+            if(($filter->getSerial() == "") or (strpos("s".$serial, $filter->getSerial()))) {
+                $cantidadDisponible = $this->comprobarCantProductoSeriadoAlmacen($producto, $serial, $almacen, $em);
+                if ($cantidadDisponible > 0) {
+                    $lista_seriales[] = $bitacora;
+                }
+            }
+        }
+
+        $repeated_indices = array();
+        //quitar los elementos repetidos del array de resultados
+        foreach ($lista_seriales as $lista_serialo) {
+            $idx = 0;
+            foreach ($lista_seriales as $lista_seriali) {
+                if($lista_seriali != $lista_serialo)
+                {
+                    if($lista_seriali->getSerial() == $lista_serialo->getSerial())
+                    {
+                        $repeated_indices[] = $idx;
+                    }
+                }
+                $idx = $idx + 1;
+            }
+        }
+        foreach ($repeated_indices as $index) {
+            unset($lista_seriales[$index]);
+        }
+
+        return $lista_seriales;
+    }
 
     public function generarInformeCostos($bitacoras, $em)
     {

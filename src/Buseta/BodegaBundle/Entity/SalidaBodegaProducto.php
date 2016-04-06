@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Form\Model\SalidaBodegaProductoModel;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Buseta\BodegaBundle\Validator\Constraints\ValidarSerial;
@@ -38,7 +39,8 @@ class SalidaBodegaProducto implements GeneradorBitacoraInterface
     private $cantidad;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\SalidaBodega", inversedBy="salidas_productos")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\SalidaBodega", inversedBy="salidas_productos",
+     *     cascade={"persist"})
      */
     private $salida;
 
@@ -49,8 +51,6 @@ class SalidaBodegaProducto implements GeneradorBitacoraInterface
      */
     private $seriales;
 
-
-
     /**
      * Get id
      *
@@ -59,6 +59,19 @@ class SalidaBodegaProducto implements GeneradorBitacoraInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return SalidaBodegaProducto
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -149,5 +162,28 @@ class SalidaBodegaProducto implements GeneradorBitacoraInterface
         return $this;
     }
 
+    /**
+     * Establece los valores desde el modelo en la entidad.
+     *
+     * @param SalidaBodegaProductoModel $model
+     *
+     * @return $this
+     */
+    public function setModelData(SalidaBodegaProductoModel $model)
+    {
+        $this->setCantidad($model->getCantidad());
+        $this->setProducto($model->getProducto());
+        $this->setSalida($model->getSalida());
 
+        $seriales = implode(',', $model->getSeriales());
+//        $ser_string = '';
+//        foreach ($this->getSeriales() as $serial) {
+//            if($ser_string != '')
+//                $ser_string = $ser_string.",";
+//            $ser_string = $ser_string.$serial;
+//        }
+        $this->setSeriales($seriales);
+
+        return $this;
+    }
 }

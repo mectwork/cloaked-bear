@@ -185,3 +185,19 @@ estado:
     BO: Abierto
     PR: Procesado
     CO: Completado
+
+# LINEAS DE PRODUCTO
+lineas_de_producto:
+  producto: Producto
+  seriales: Seriales
+  cantidad: Cantidad
+  btn:
+    adicionar: Adicionar línea de producto
+  modal:
+    delete: Eliminar línea de producto
+    title: Crear nueva línea de producto
+
+# INFORME DE STOCK
+informe_stock:
+  modal:
+    title: Mostrar seriales

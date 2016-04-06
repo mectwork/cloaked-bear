@@ -43,12 +43,13 @@ class OrdenTrabajoType extends AbstractType
         $builder
             ->add('id', 'hidden',  array(
                 'required' => false,
-                'virtual' => true,
             ))
             ->add('numero', 'text', array(
                 'required' => false,
                 'label'  => 'Número',
-                'attr' => $attr,
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
             ))
             ->add('requisionMateriales', 'text', array(
                     'required' => false,

@@ -80,6 +80,10 @@ cancelarOrden:
     path:  /{id}/cancelarOrden
     defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:cancelarOrden" }
 
+cambiarEstadoOrden:
+    path:  /{id}/cambiarEstadoOrden
+    defaults: { _controller: "BusetaTallerBundle:OrdenTrabajo:cambiarEstadoOrden" }
+
 
 
 

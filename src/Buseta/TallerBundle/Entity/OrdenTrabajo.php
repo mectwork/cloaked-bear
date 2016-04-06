@@ -170,12 +170,12 @@ class OrdenTrabajo implements DateTimeAwareInterface
     {
         $this->tareasAdicionales = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cancelado = false;
-        $this->estado = 'BO';
+        $this->estado = 'DRAFT';
     }
 
     public function __toString()
     {
-        return $this->getNumero();
+        return (string)($this->getNumero());
     }
 
     /**
@@ -186,6 +186,14 @@ class OrdenTrabajo implements DateTimeAwareInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**

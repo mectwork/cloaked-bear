@@ -1,0 +1,60 @@
+<form name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" action="{{ form.vars.action }}" method="post"
+        enctype="multipart/form-data">
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+    {{ form_errors(form) }}
+
+    <div class="row show-grid">
+        <div class="col-lg-4">
+            {{ form_row(form.almacenOrigen) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.almacenDestino) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.orden_trabajo) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-lg-4">
+            {{ form_row(form.centro_costo) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.tipo_ot) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.responsable) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-lg-4">
+            {{ form_row(form.control_entrega_material) }}
+        </div>
+
+        <div class="col-lg-4">
+            {{ form_row(form.fecha) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-lg-12">
+            {{ form_row(form.observaciones) }}
+        </div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="col-md-4">
+            <a id="btn_salidabodega_save" class="btn btn-primary" href="#save">{{ 'actions.confirm' | trans({}, 'BusetaBodegaBundle') }}</a>
+            <a class="btn btn-default" href="{{ path('salidabodega') }}"> {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+</form>

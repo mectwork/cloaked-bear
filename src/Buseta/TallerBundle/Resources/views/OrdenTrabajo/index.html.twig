@@ -48,7 +48,7 @@
 
     <div id="actions_container">
         {% if is_granted('CREATE', 'Buseta\\TallerBundle\\Entity\\OrdenTrabajo') %}
-        <div class="btn-group pull-left" style="padding-bottom: 8px;">
+        <div class="btn-group" style="padding-bottom: 8px;">
             <a class="btn btn-primary" href="{{ path('ordentrabajo_new') }}"><i class="fa fa-plus-circle"></i> Adicionar
                 Orden de Trabajo</a>
         </div>
@@ -154,15 +154,15 @@
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.ayudante }}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.prioridad }}</td>
 
-                    {% if entity.estado == 'CO' %}
+                    {% if entity.estado == 'COMPLETE' %}
                         {% set badge = 'success' %}
                         {% set text_color = 'success' %}
-                    {% elseif entity.estado == 'PR' %}
+                    {% elseif entity.estado == 'POSTED' %}
+                        {% set badge = 'warning' %}
+                        {% set text_color = 'warning' %}
+                    {% elseif entity.estado == 'PROCESS' %}
                         {% set badge = 'primary' %}
                         {% set text_color = 'primary' %}
-                    {% elseif entity.estado == 'BO' %}
-                        {% set badge = 'danger' %}
-                        {% set text_color = 'danger' %}
                     {% else %}
                         {% set badge = 'danger' %}
                         {% set text_color = 'danger' %}
@@ -180,10 +180,10 @@
                         {% endif %}
 
                         {% if is_granted('EDIT', entity) %}
-                            {% if entity.estado == 'CO' or  entity.estado == 'PR' %}
-                                {% set clazz = 'btn btn-danger btn-xs disabled' %}
-                            {% else %}
+                            {% if entity.estado == 'DRAFT' %}
                                 {% set clazz = 'btn btn-danger btn-xs' %}
+                            {% else %}
+                                {% set clazz = 'btn btn-danger btn-xs disabled' %}
                             {% endif %}
                             <div class="btn-group">
                                 <a class="{{ clazz }}"

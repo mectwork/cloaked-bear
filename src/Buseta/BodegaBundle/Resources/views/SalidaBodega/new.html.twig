@@ -1,409 +1,423 @@
 {% extends "BusetaBodegaBundle::layout.html.twig" %}
 
-{% form_theme form 'BusetaBodegaBundle:Widgets:collection_salidas_bodegas_insertadas.html.twig' %}
-
 {% block title block('header') %}
 
 {% block header 'Crear Nueva Salida de Bodega' %}
 
 {% block area_trabajo %}
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#basicos" data-toggle="tab">Datos básicos</a></li>
+        <li><a href="#lineas" data-toggle="tab">Líneas de productos</a></li>
+    </ul>
 
-    {% if form_errors(form) %}
-        <div id="error" class="alert alert-danger" >
-            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-            <strong>!ERROR!</strong> {{ form_errors(form) }}
-        </div>
-    {% endif %}
-
-  {{ form_start(form) }}
-
-    <div class="row show-grid">
-        <div class="col-lg-4">
-            {{ form_row(form.almacenOrigen) }}
+    {# Tab panes #}
+    <div class="tab-content" style="padding-top: 20px;">
+        <!-- TAB BASICOS -->
+        <div class="tab-pane fade in active" id="basicos">
+            {% include 'BusetaBodegaBundle:SalidaBodega:form_template.html.twig' with {'form': form} %}
         </div>
 
-        <div class="col-lg-4">
-            {{ form_row(form.almacenDestino) }}
-        </div>
+        <!-- TAB LINEAS -->
+        <div class="tab-pane fade" id="lineas">
 
-        <div class="col-lg-4">
-            {{ form_row(form.orden_trabajo) }}
         </div>
     </div>
-
-    <div class="row show-grid">
-        <div class="col-lg-4">
-            {{ form_row(form.centro_costo) }}
-        </div>
-
-        <div class="col-lg-4">
-            {{ form_row(form.tipo_ot) }}
-        </div>
-
-        <div class="col-lg-4">
-            {{ form_row(form.responsable) }}
-        </div>
-    </div>
-
-    <div class="row show-grid">
-        <div class="col-lg-4">
-            {{ form_row(form.control_entrega_material) }}
-        </div>
-
-        <div class="col-lg-4">
-            {{ form_row(form.fecha) }}
-        </div>
-
-        <div class="col-lg-4">
-            {{ form_row(form.estado_documento) }}
-        </div>
-    </div>
-
-    <div class="row show-grid">
-        <div class="col-lg-12">
-            {{ form_row(form.observaciones) }}
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            {{ form_row(form.salidas_productos) }}
-        </div>
-    </div>
-
-
-    <div class="row show-grid">
-        <div class="col-md-4">
-            <div class="btn-group" style="padding-bottom: 8px;">
-                <a id="adicionarSalidaBodega" data-toggle="modal" data-target="#newSalidaBodega" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar Salida de Producto</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="row show-grid">
-        <div class="col-lg-4">
-
-            <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
-            <div class="btn-group">
-                <a class="btn btn-primary" href="{{ path('salidabodega') }}"> Cancelar</a>
-            </div>
-        </div>
-    </div>
-
-    {{ form_end(form) }}
-
-    <div class="modal" id="form_productos_modal"></div>
-
-{% endblock %}
-
-{% block contenido %}
-
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-
     <script type="text/javascript">
-        var ProductosList = function () {
-            this.list = [];
+        $(document).ready(function () {
+            salidabodega._load();
+        }).ajaxStart(function () {
+            $('.btn.btn-primary')
+                    .addClass('disabled')
+            ;
 
-            this.addId = function ( id ) {
-                this.list.push(id);
-            };
-
-            this.removeId = function ( id ) {
-                var aux = [];
-                for (var i = 0; i < this.list.length; i++) {
-                    if (this.list[i] != id) {
-                        aux.push(this.list[i]);
-                    }
-                }
-
-                this.list = aux;
-            };
-
-            this.findId = function ( id ) {
-                for (var i = 0; i < this.list.length; i++) {
-                    if (this.list[i] == id) {
-                        return id;
-                    }
-                }
-
-                return false;
-            }
-        }
-    </script>
-    <script type="text/javascript">
-
-        var collectionHolder = $('div#buseta_bodegabundle_salida_bodega_salidas_productos');
-        var $addTagLink = $('a.add_tag_link');
-        var productosList = new ProductosList();
-
-        jQuery(document).ready(function() {
-
-            $('#buseta_bodegabundle_salida_bodega_fecha').datetimepicker({
-                'format': 'DD/MM/YYYY'
-            });
-
-            // count the current form inputs we have (e.g. 2), use that as the new
-            // index when inserting a new item (e.g. 2)
-            collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
-
-            updateDeleteLink();
-            updateView();
-
-            $('#adicionarSalidaBodega').on('click', loadModel);
-
-            $('input[id^="buseta_bodegabundle_salida_bodega_salidas_productos_"][id$="_producto"]').each(function (key, value) {
-                productosList.addId(parseInt($(value).val()));
-            });
-
+        }).ajaxStop(function () {
+            $('.btn.btn-primary')
+                    .removeClass('disabled')
+            ;
         });
 
-        function addTagForm(collectionHolder) {
-            // Get the data-prototype explained earlier
-            var prototype = collectionHolder.data('prototype');
+    </script>
 
-            // get the new index
-            var index = collectionHolder.data('index');
+    <script type="text/javascript">
+        var almacenOrigenData = {
+            almacenOrigen_id: $({{ form.almacenOrigen.vars.id }}).val()
+        };
+        var salidabodega = {
+            tabname: 'basicos',
+            form_id: $('div#basicos').find('form').attr('id'),
+            form_name: $('div#basicos').find('form').attr('name'),
+            id: '',
+            tabs_open: false,
+            _load: function () {
+                $('a#btn_salidabodega_save').on('click', salidabodega._save);
+                $('a.thumbnail').on('click', function (e) {
+                    e.preventDefault();
 
-            // Replace '__name__' in the prototype's HTML to
-            // instead be a number based on how many items we have
-            var newForm = prototype.replace(/__name__/g, index);
+                    $('input[type="file"]').trigger('click');
+                });
 
-            // increase the index with one for the next item
-            collectionHolder.data('index', index + 1);
+                salidabodega.id = $('input[id="' + salidabodega.form_id + '_id"]').val();
+                if (salidabodega.id === '' || salidabodega.id === undefined) {
+                    // hide all tabs on page load
+                    $('a[data-toggle="tab"]').each(function (key, item) {
+                        if ($(item).attr('href') != '#basicos') {
+                            $(item).parent().hide();
+                        }
+                    });
+                } else {
+                    tabs._show_all_tabs();
+                }
 
-            // Display the form in the page in an li, before the "Add a tag" link li
-            var $newFormDiv = $('<div></div>').append(newForm);
-            collectionHolder.find('#tbody').append($newFormDiv);
-            updateDeleteLink();
-            updateView();
-        }
+                // remove all assigned events
+                $('a[data-toggle="tab"]').unbind();
+                // on show tab events
+                $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+                    var href = $(e.target).attr('href');
 
-        function updateDeleteLink(){
-            $('a.delete_tag_link').on('click', function(e) {
-                // prevent the link from creating a "#" on the URL
-                e.preventDefault();
+                    if (href === '#lineas') {
+                        lineas._load();
+                    }
+                });
 
-                var inputhidden = $(this).parent().parent().find('div').eq(0).find('input:hidden');
-                productosList.removeId(inputhidden.val());
+                $('#buseta_bodegabundle_salida_bodega_fecha').datetimepicker({
+                    'format': 'DD/MM/YYYY'
+                });
+                $('#buseta_bodegabundle_salida_bodega_almacenOrigen').chosen();
+                $('#buseta_bodegabundle_salida_bodega_almacenDestino').chosen();
+                $('#buseta_bodegabundle_salida_bodega_orden_trabajo').chosen();
+                $('#buseta_bodegabundle_salida_bodega_centro_costo').chosen();
+                $('#buseta_bodegabundle_salida_bodega_tipo_ot').chosen();
+                $('#buseta_bodegabundle_salida_bodega_responsable').chosen();
+                this._update_almacen_destino();
+            },
 
-                // remove the li for the tag form
-                $(this).parent().parent().remove();
+            _save: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
 
-                updateView();
-            });
-        }
+                // add spinning to show loading process
+                tabs._add_loadding(salidabodega.tabname);
 
-        function updateView(){
-            counter = collectionHolder.find('a.delete_tag_link').length;
-            if(counter == 0){
-                $('div#no-elements-tr').show();
-            }else{
-                $('div#no-elements-tr').hide();
+                var salidaForm = $('form#' + salidabodega.form_id);
+
+                salidaForm.ajaxSubmit({
+                    success: salidabodega._done,
+                    error: utils._fail,
+                    complete: salidabodega._always,
+                    dataType: 'json'
+                });
+            },
+            _update_almacen_destino: function () {
+                    almacenOrigenData = {
+                        almacenOrigen_id: $('select#buseta_bodegabundle_salida_bodega_almacenOrigen').val()
+                    };
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ path("salidabodegas_ajax_almacenOrigen_almacenDestino") }}',
+                        data: almacenOrigenData,
+                        success: function (data) {
+                            var values = $.parseJSON(data);
+                            var $almacenDestino_selector = $({{ form.almacenDestino.vars.id }});
+
+                            $almacenDestino_selector.html('<option></option>');
+
+                            for (var i = 0, total = values.length; i < total; i++) {
+                                $almacenDestino_selector.append(
+                                        $('<option></option>')
+                                                .val(values[i].id)
+                                                .html(values[i].valor)
+                                );
+                                $almacenDestino_selector.trigger("chosen:updated");
+                            }
+                        }
+                    });
+            },
+            _done: function (response, textStatus, jqXHR) {
+                $('form#' + salidabodega.form_id).replaceWith($(response.view).find('form#' + salidabodega.form_id));
+
+                if (jqXHR.status == 201 || jqXHR.status == 202) {
+                    $btalerts.addSuccess(response.message);
+
+                }
+                salidabodega._load();
+            },
+            _always: function () {
+                // remove spinning
+                tabs._remove_loadding(salidabodega.tabname);
             }
-        }
+        };
+    </script>
 
-        function addProducto(e) {
-            // prevent the link from creating a "#" on the URL
-            e.preventDefault();
+    <!-- Lineas de Productos -->
+    <script type="text/javascript">
+        var lineas = {
+            tabname: 'lineas',
+            form_name: '',
+            form_id: '',
 
-            var idproducto      = $(this).data('id');
-            var nombreproducto  = $(this).data('nombre');
-            var codigoproducto  = $(this).data('codigo');
-            var descripcionproducto  = $(this).data('descripcion');
-            var index = collectionHolder.data('index');
+            _start_events: function (e) {
+                <!-- click en el botón 'Adicionar linea de producto' -->
+                $('a[href="#form_lineas_modal"]').on('click', lineas._load_modal);
+                $('a[href="#btn_lineas_edit"]').on('click', lineas._load_modal);
+                $('a[href="#btn_lineas_delete"]').on('click', lineas._load_delete_modal);
+                // Paginator sort
+                $('table.records_list').find('a.sortable, a.asc, a.desc').on('click', lineas._load);
+                // Paginator navigation
+                $('div.lineas-paginator.row ul.pagination').find('a.paginator-link').on('click', lineas._load);
+            },
 
-            addTagForm(collectionHolder);
+            _load: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
 
-            $('#buseta_bodegabundle_salida_bodega_salidas_productos_' + index + '_producto').val(idproducto);
-            $('#buseta_bodegabundle_salida_bodega_salidas_productos_' + index + '_nombre').val(nombreproducto);
-            $('#buseta_bodegabundle_salida_bodega_salidas_productos_' + index + '_codigo').val(codigoproducto);
-            $('#buseta_bodegabundle_salida_bodega_salidas_productos_' + index + '_descripcion').val(descripcionproducto);
+                tabs._add_loadding(lineas.tabname);
 
-            productosList.addId(idproducto);
-            $(this).removeClass('btn-success').addClass('btn-danger');
-            $(this).find('span').removeClass('glyphicon-ok').addClass('glyphicon-remove');
-            $(this).unbind();
-            $(this).on('click', removeProducto);
-        }
-
-        function removeProducto(e) {
-            // prevent the link from creating a "#" on the URL
-            e.preventDefault();
-
-            var idproducto      = $(this).data('id');
-
-            var inputhidden = $('input[id^="buseta_bodegabundle_salida_bodega_salidas_productos_"][id$="_producto"][value="'+ idproducto +'"]');
-            inputhidden.parent().parent().find('div').eq(2).find('a').trigger('click');
-
-            productosList.removeId(idproducto);
-            $(this).removeClass('btn-danger').addClass('btn-success');
-            $(this).find('span').removeClass('glyphicon-remove').addClass('glyphicon-ok');
-            $(this).unbind();
-            $(this).on('click', addProducto);
-        }
-
-        function paginatorEvents() {
-            $('div.paginator ul.pagination').find('a.paginator-link').on('click', function(e){
-                e.preventDefault();
-
-                var url = Routing.generate('salidabodega_productos_new_modal');
-                if ($(this).hasClass('paginator-link')) {
+                var url = Routing.generate('lineasdeproducto', {'salida': salidabodega.id});
+                if ($(this).hasClass('sortable') || $(this).hasClass('desc') || $(this).hasClass('asc') || $(this).hasClass('paginator-link')) {
                     url = $(this).attr('href');
+                }
+
+                $.get(url).done(function (response, textStatus, jqXHR) {
+                    $('div#lineas').html(response);
+
+                    lineas._start_events();
+                }).fail(utils._fail).always(lineas._always());
+            },
+            _modal_start_events: function () {
+                $('select#buseta_bodegabundle_salida_bodega_producto_producto').chosen();
+                $('select#buseta_bodegabundle_salida_bodega_producto_seriales_fake').chosen();
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("salidabodegas_ajax_almacenOrigen_Productos") }}',
+                    data: almacenOrigenData,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+                        var $producto_selector = $('select#buseta_bodegabundle_salida_bodega_producto_producto');
+                        var selected = $producto_selector.selected().val();
+                        $producto_selector.html('<option></option>');
+
+                        for (var i = 0, total = values.length; i < total; i++) {
+                            var selected_str = "";
+                            if(selected == values[i].id)
+                                selected_str = 'selected = "selected"'
+                            $producto_selector.append(
+                                    $('<option ' + selected_str + ' ></option>')
+                                            .val(values[i].id)
+                                            .html(values[i].valor)
+                            );
+                            $producto_selector.trigger("chosen:updated");
+                            if(selected == values[i].id)
+                                lineas._on_product_change();
+                        }
+                    }
+                });
+            },
+            _on_product_change: function () {
+                var serialesData = {
+                    stock: almacenOrigenData.almacenOrigen_id,
+                    product: $('select#buseta_bodegabundle_salida_bodega_producto_producto').selected().val()
+                };
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("salidabodegaproducto_ajax_seriales") }}',
+                    data: serialesData,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+                        var selectorElem = $('select#buseta_bodegabundle_salida_bodega_producto_seriales_fake');
+                        var realSeriales = $('input#buseta_bodegabundle_salida_bodega_producto_seriales').val();
+                        selectorElem.html('<option></option>');
+                        for (var i = 0, total = values.length; i < total; i++) {
+                            if(realSeriales.contains(values[i].valor))
+                            {
+                                var opt = "<option selected=\"selected\" value=\"" + values[i].id + "\">" +
+                                        values[i].valor + "</option>";
+                            }
+                            else {
+                                var opt = "<option value=\"" + values[i].id + "\">" +
+                                        values[i].valor + "</option>";
+                            }
+                            $(opt).appendTo(selectorElem);
+                            selectorElem.trigger("chosen:updated");
+                        }
+                    }
+                });
+            },
+            _load_modal: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
+
+                var url = Routing.generate('lineasdeproducto_new', {'salida': salidabodega.id});
+                if ($(this).attr('href') !== undefined && $(this).attr('href') === '#btn_lineas_edit') {
+                    url = Routing.generate('lineasdeproducto_edit', {'id': $(this).data('content')});
                 }
 
                 $.get(url)
                         .done(function (response, textStatus, jqXHR) {
-                            $('div#listado_productos').replaceWith($(response.view).find('div#listado_productos'));
-                            $('a[href="#select-producto"]').each(function (key, value) {
-                                var id = $(value).data('id');
-                                if(productosList.findId(id) !== false) {
-                                    $(this).removeClass('btn-success').addClass('btn-danger');
-                                    $(this).find('span').removeClass('glyphicon-ok').addClass('glyphicon-remove');
-                                    $(value).on('click', removeProducto);
-                                } else {
-                                    $(value).on('click', addProducto);
-                                }
+                            $('div#form_lineas_modal').replaceWith($(response.view));
+
+                            lineas.form_id = $('div#form_lineas_modal').find('form').attr('id');
+                            lineas.form_name = $('div#form_lineas_modal').find('form').attr('name');
+
+                            $('a#btn_lineas_save').on('click', lineas._save_modal);
+                            $('a#btn_lineas_cancel').on('click', function () {
+                                $('div#form_lineas_modal').modal('hide');
                             });
-                            paginatorEvents();
-                        });
-            });
-        }
+                            lineas._modal_start_events();
+                            $('select#buseta_bodegabundle_salida_bodega_producto_producto').change(lineas._on_product_change);
+                            $('select#buseta_bodegabundle_salida_bodega_producto_seriales_fake').change(function () {
+                                var arr_val = $('select#buseta_bodegabundle_salida_bodega_producto_seriales_fake').val();
+                                var str_val = "";
+                                for (var i = 0; i < arr_val.length; i++) {
+                                    if(str_val != "")
+                                        str_val = str_val + ","
+                                    str_val = str_val + arr_val[i];
+                                }
+                                $('input#buseta_bodegabundle_salida_bodega_producto_seriales').val(str_val);
+                            });
+                            $('div#form_lineas_modal').modal('show');
+                        }).fail(utils._fail).always(function () {
+                });
+            },
 
-        function loadModel(e) {
-            e.preventDefault();
-
-            var url = Routing.generate('salidabodega_productos_new_modal');
-            if ($(this).hasClass('paginator-link')) {
-                url = $(this).attr('href');
-            }
-
-            $.get(url)
-                    .done(function (response, textStatus, jqXHR) {
-                        $('div#form_productos_modal').replaceWith($(response.view));
-                        $('div#form_productos_modal').modal('show');
-
-                        $('form#buseta_movimientosproductos_filter')
-                                .find('input,select')
-                                .on('keyup', ajaxFilterProductos)
-                                .on('change', ajaxFilterProductos);
-
-                        $('a[href="#select-producto"]').each(function (key, value) {
-                            var id = $(value).data('id');
-                            if(productosList.findId(id) !== false) {
-                                $(this).removeClass('btn-success').addClass('btn-danger');
-                                $(this).find('span').removeClass('glyphicon-ok').addClass('glyphicon-remove');
-                                $(value).on('click', removeProducto);
-                            } else {
-                                $(value).on('click', addProducto);
-                            }
-                        });
-                        paginatorEvents();
-                    });
-        }
-
-        function ajaxFilterProductos(event)  {
-            var url = Routing.generate('salidabodega_productos_new_modal');
-
-            $('form#buseta_movimientosproductos_filter').ajaxSubmit({
-                success: function(response) {
-                    $('div#listado_productos').replaceWith($(response.view).find('div#listado_productos'));
-                    $('a[href="#select-producto"]').each(function (key, value) {
-                        var id = $(value).data('id');
-                        if(productosList.findId(id) !== false) {
-                            $(this).removeClass('btn-success').addClass('btn-danger');
-                            $(this).find('span').removeClass('glyphicon-ok').addClass('glyphicon-remove');
-                            $(value).on('click', removeProducto);
-                        } else {
-                            $(value).on('click', addProducto);
-                        }
-                    });
-                    paginatorEvents();
-                },
-                error:  function (jqXHR, textStatus, errorThrown) {
-                    if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
-                        $btalerts.addDanger(jqXHR.responseText.message);
-                    } else {
-                        $btalerts.addDanger('{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
-                    }
-                },
-                url: url,
-                dataType: 'json'
-            });
-        }
-
-        //Actualiza los almacenes de destino a partir de los almacenes de origen seleccionados con peticiones AJAX
-        $({{ form.almacenOrigen.vars.id }}).change(function(){
-            var data = {
-                almacenOrigen_id: $(this).val()
-            };
-
-            $.ajax({
-                type: 'GET',
-                url: '{{ path("salidabodegas_ajax_almacenOrigen_almacenDestino") }}',
-                data: data,
-                success: function(data) {
-                    var values = $.parseJSON(data);
-                    var $almacenDestino_selector = $({{ form.almacenDestino.vars.id }});
-
-                    $almacenDestino_selector.html('<option>---Seleccione---</option>');
-
-                    for (var i=0, total = values.length; i < total; i++) {
-                        $almacenDestino_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
-                    }
+            _load_delete_modal: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
                 }
-            });
-        });
 
-        //Al seleccionar la OT, automaticamente selecciona el Centro Costo (Autobus), Responsable, TipoOT,
-        $('#{{ form.orden_trabajo.vars.id }}').change(function(){
-            var centro_costo_text = $('#{{ form.centro_costo.vars.id }}');
-            var responsable_text  = $('#{{ form.responsable.vars.id }}');
-            var tipo_ot_text  = $('#{{ form.tipo_ot.vars.id }}');
+                var url = Routing.generate('salidabodega_lineasdeproducto_delete', {'id': $(this).data('content')});
 
-            var data = {
-                orden_trabajo_id: $(this).val()
-            };
+                $.get(url).done(function (response, textStatus, jqXHR) {
+                    $('div#form_lineas_delete_modal').replaceWith($(response.view));
 
-            $.get('{{ path("ordentrabajo_ajax_salidabodega") }}', data, function(data){
+                    $('div#form_lineas_delete_modal a#btn_lineas_delete').on('click', lineas._save_delete_modal);
+                    $('div#form_lineas_delete_modal a#btn_lineas_cancel').on('click', function () {
+                        $('div#form_lineas_delete_modal').modal('hide');
+                    });
 
-                //Selecciona automática el CentroCosto segun la OrdenTrabajo seleccionado
-                centro_costo_text.val(data['centro_costo']);
-                centro_costo_text.css('display','none');
-                var text = centro_costo_text.find('option[value="'+centro_costo_text.val()+'"]').html();
+                    $('div#form_lineas_delete_modal').modal('show');
+                }).fail(utils._fail).always(function () {
+                });
+            },
 
-                centro_costo_text.parent().find('input').remove();
-                centro_costo_text
-                        .parent()
-                        .append($('<input class="form-control" type="text" disabled> ').val(text));
+            _save_modal: function (e) {
+                if (e !== undefined) {
+                    e.preventDefault();
+                }
 
-                //Selecciona automática el Responsable segun la OrdenTrabajo seleccionado
-                responsable_text.val(data['responsable']);
-                responsable_text.css('display','none');
-                var text = responsable_text.find('option[value="'+responsable_text.val()+'"]').html();
+                $('#btn_lineas_save').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-save')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
 
-                responsable_text.parent().find('input').remove();
-                responsable_text
-                        .parent()
-                        .append($('<input class="form-control" type="text" disabled> ').val(text));
+                $('form#' + lineas.form_id).ajaxSubmit({
+                    success: lineas._done,
+                    error: utils._fail,
+                    complete: lineas._always,
+                    dataType: 'json'
+                });
+            },
 
-                //Selecciona automática el TipoOT segun la OrdenTrabajo seleccionado
-                tipo_ot_text.val(data['tipo_ot']);
-                tipo_ot_text.css('display','none');
-                var text = tipo_ot_text.find('option[value="'+tipo_ot_text.val()+'"]').html();
+            _save_delete_modal: function (event) {
 
-                tipo_ot_text.parent().find('input').remove();
-                tipo_ot_text
-                        .parent()
-                        .append($('<input class="form-control" type="text" disabled> ').val(text));
-            }, 'json').fail(function(error) {
-                centro_costo_text.parent().find('input').remove();
-                centro_costo_text.css('display','block');
-            }).always(function(){
-                centro_costo_text.trigger('change');
-            });
-        });
+                if (event != undefined) {
+                    event.preventDefault();
+                }
+
+                $('#btn_lineas_delete').find('span')
+                        .removeClass('glyphicon')
+                        .removeClass('glyphicon-save')
+                        .addClass('fa')
+                        .addClass('fa-gear')
+                        .addClass('fa-spin');
+
+                var deleteForm = $('div#form_lineas_delete_modal').find('form'),
+                        url = $(deleteForm).attr('action');
+
+                deleteForm.ajaxSubmit({
+                    success: function (response, textStatus, jqXHR) {
+                        if (jqXHR.status == 202) {
+                            $btalerts.addSuccess(response.message);
+                        }
+                        $('div#form_lineas_delete_modal').modal('hide');
+                        lineas._load();
+                    },
+                    error: utils._fail,
+                    complete: lineas._always,
+                    url: url,
+                    dataType: 'json'
+                });
+            },
+
+            _done: function (response, textStatus, jqXHR) {
+                if (jqXHR.status == 201 || jqXHR.status == 202) {
+                    $btalerts.addSuccess(response.message);
+
+                    $('div#form_lineas_modal').modal('hide');
+                    lineas._load();
+                } else {
+                    $('form#' + lineas.form_id).replaceWith($(response.view).find('form'));
+                }
+            },
+
+            _always: function () {
+                tabs._remove_loadding(lineas.tabname)
+            }
+        }
+    </script>
+
+    <!-- Extras script -->
+    <script type="text/javascript">
+        var tabs = {
+            loadding_image: '<span class="loading"><i class="fa fa-spinner fa-spin"></i> </span>',
+
+            _show_all_tabs: function () {
+                tabs._show_tab('lineas')
+            },
+
+            _show_tab: function (tabname) {
+                $('li a[href="#' + tabname + '"]').parent().show();
+            },
+
+            _hide_tab: function () {
+                $('li a[href="#' + tabname + '"]').parent().hide();
+            },
+
+            _add_loadding: function (tabname) {
+                var spinning = $('li a[href="#' + tabname + '"]').find('span.loading');
+
+                if (spinning.length == 0) {
+                    var linktab = $('li a[href="#' + tabname + '"]');
+                    linktab.prepend($(tabs.loadding_image));
+                }
+            },
+
+            _remove_loadding: function (tabname) {
+                var spinning = $('li a[href="#' + tabname + '"]').find('span.loading');
+                spinning.remove();
+            }
+        };
+
+        var utils = {
+            _fail: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                    $btalerts.addDanger(jqXHR.responseText.message);
+                }
+                else if (jqXHR.status == 200) {
+                    $btalerts.addSuccess('{{ 'messages.create.success' | trans({}, 'BusetaBodegaBundle') }}');
+                } else {
+                    $btalerts.addDanger('{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+                }
+            }
+        };
+        $({{ form.almacenOrigen.vars.id }}).change(salidabodega._update_almacen_destino);
     </script>
 {% endblock javascripts %}
