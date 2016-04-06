@@ -52,6 +52,7 @@
                                 <tr>
                                     <th  style="text-align: left;">Producto</th>
                                     <th>Cantidad de productos</th>
+                                    <th style="text-align: center">Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -64,6 +65,11 @@
                                         <tr>
                                             <td>{{ entity.producto }}</td>
                                             <td  style="text-align: center;">{{ entity.cantidad }}</td>
+                                            <td style="width: 24% !important; text-align: center;">
+                                                <div class="btn-group" style="padding-bottom: 8px;">
+                                                    <a id="mostrarSeriales{{ entity.producto.id }}" prod_id="{{ entity.producto.id }}" data-toggle="modal" data-target="#showSerials" class="btn btn-primary" href="#"><i class="fa"></i>Ver seriales</a>
+                                                </div>
+                                            </td>
                                         </tr>
 
                                         {% set comprobar = 'ok' %}
@@ -86,9 +92,6 @@
                     </div>
                 </div>
             </div>
-
-
-
         {% endfor %}
 
         {% else %}
@@ -104,6 +107,7 @@
             </div>
     {% endif %}
 
+    <div class="modal" id="form_seriales_modal"></div>
 
 {% endblock %}
 
@@ -114,6 +118,72 @@
         $('#data_busqueda_informe_stock_type_fecha').datetimepicker({
             'format': 'DD/MM/YYYY'
         });
+        jQuery(document).ready(function() {
+            $('#data_busqueda_informe_stock_type_almacen').chosen();
+            $('#data_busqueda_informe_stock_type_categoriaProducto').chosen();
+
+            {% for entity in entities %}
+            $('#mostrarSeriales{{ entity.producto.id }}').on('click', showSeriales);
+            {% endfor %}
+        });
+
+        function paginatorEvents() {
+            $('div.paginator ul.pagination').find('a.paginator-link').on('click', function(e){
+                e.preventDefault();
+
+                var url = Routing.generate('seriales_modal_action');
+                if ($(this).hasClass('paginator-link')) {
+                    url = $(this).attr('href');
+                }
+
+                $.get(url)
+                        .done(function (response, textStatus, jqXHR) {
+                            $('div#listado_seriales').replaceWith($(response.view).find('div#listado_seriales'));
+                            paginatorEvents();
+                        });
+            });
+        }
+
+        function ajaxFilterSeriales(event)  {
+            var url = Routing.generate('seriales_modal_action');
+
+            $('form#buseta_bitserial_filter').ajaxSubmit({
+                success: function(response) {
+                    $('div#listado_seriales').replaceWith($(response.view).find('div#listado_seriales'));
+                    paginatorEvents();
+                },
+                error:  function (jqXHR, textStatus, errorThrown) {
+                    if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                        $btalerts.addDanger(jqXHR.responseText.message);
+                    } else {
+                        $btalerts.addDanger('{{ 'messages.unexpected_error' | trans({}, 'BusetaBodegaBundle') }}');
+                    }
+                },
+                url: url,
+                dataType: 'json'
+            });
+        }
+
+        function showSeriales(e) {
+            e.preventDefault();
+            var stock_id = $('select#data_busqueda_informe_stock_type_almacen').selected().val();
+            var prod_id_ = $(this).attr('prod_id');
+            var url = Routing.generate('seriales_modal_action', {'product': prod_id_, 'stock': stock_id});
+            if ($(this).hasClass('paginator-link')) {
+                url = $(this).attr('href');
+            }
+            $.get(url)
+                    .done(function (response, textStatus, jqXHR) {
+                        $('div#form_seriales_modal').replaceWith($(response.view));
+                        $('div#form_seriales_modal').modal('show');
+
+                        $('form#buseta_bitserial_filter')
+                                .find('input,select')
+                                .on('keyup', ajaxFilterSeriales)
+                                .on('change', ajaxFilterSeriales);
+                        paginatorEvents();
+                    });
+        }
     </script>
 
 {% endblock %}
