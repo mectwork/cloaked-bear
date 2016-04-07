@@ -6,16 +6,19 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="{{ path('core_homepage') }}">Sistema de Gestión Estación de Servicios - Módulo de Configuración</a>
+    <a class="navbar-brand" href="{{ path('core_homepage') }}">Sistema de Gestión Estación de Servicios - Notificaciones</a>
 </div>
 <!-- /.navbar-header -->
 
 <ul class="nav navbar-top-links navbar-right">
     {{ render(controller('BusetaNotificacionesBundle:Notificaciones:countNotificaciones')) }}
+
     <!-- /.dropdown -->
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+            <i class="fa fa-user fa-fw"></i>
+            {{ app.user.nombres is defined ? app.user.nombres ~ ' ' ~ app.user.apellidos : app.user.username }}
+            <i class="fa fa-caret-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-user">
             <!--
