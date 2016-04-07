@@ -27,7 +27,7 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
-        version_sistema: beta4
+        version_sistema: alpha_v1
     form:
         resources: ['BusetaTemplateBundle:Form:fields.html.twig']
 
@@ -246,33 +246,36 @@ hatuey_soft_security:
     acl:
         symfony_acl: false
         entities:
-            reporte:
-                    class: Buseta\TallerBundle\Entity\Reporte
-                    label: 'Reporte de Transacciones'
-                    rules:
-                             - !
-                             - { code: 'aa', icon: 'book' }
-                             - { code: 'cc' }
-                             - { code: 'show' }
-            trabajador:
-                    class: Buseta\TallerBundle\Entity\Trabajador
-                    label: 'Trabajador de Planilla'
-                    rules:
-                             - { code: pasaraborrador, icon: 'book' }
-                             - { code: 'cc' }
-                             - { code: '!show' }
-            diagnostico:
-                    class: Buseta\TallerBundle\Entity\Diagnostico
-                    rules: [ terminar , delete , { code: 'list', label: 'LISTADOOOOOOO',  icon: 'leaf' } ]
-            ordentrabajo:
-                    class: Buseta\TallerBundle\Entity\OrdenTrabajo
-                    rules: [ !list , !search ]
-            bodega:
-                    class: Buseta\BodegaBundle\Entity\Bodega
-                    rules: []
-            almacen:
-                    class: Buseta\BodegaBundle\Entity\Almacen
-            usuario: Buseta\TallerBundle\Entity\Usuario
+            reporte: Buseta\TallerBundle\Entity\Reporte
+            diagnostico: Buseta\TallerBundle\Entity\Diagnostico
+            ordentrabajo: Buseta\TallerBundle\Entity\OrdenTrabajo
+#            reporte:
+#                    class: Buseta\TallerBundle\Entity\Reporte
+#                    label: 'Reporte de Transacciones'
+#                    rules:
+#                             - !
+#                             - { code: 'aa', icon: 'book' }
+#                             - { code: 'cc' }
+#                             - { code: 'show' }
+#            trabajador:
+#                    class: Buseta\TallerBundle\Entity\Trabajador
+#                    label: 'Trabajador de Planilla'
+#                    rules:
+#                             - { code: pasaraborrador, icon: 'book' }
+#                             - { code: 'cc' }
+#                             - { code: '!show' }
+#            diagnostico:
+#                    class: Buseta\TallerBundle\Entity\Diagnostico
+#                    rules: [ terminar , delete , { code: 'list', label: 'LISTADOOOOOOO',  icon: 'leaf' } ]
+#            ordentrabajo:
+#                    class: Buseta\TallerBundle\Entity\OrdenTrabajo
+#                    rules: [ !list , !search ]
+#            bodega:
+#                    class: Buseta\BodegaBundle\Entity\Bodega
+#                    rules: []
+#            almacen:
+#                    class: Buseta\BodegaBundle\Entity\Almacen
+#            usuario: Buseta\TallerBundle\Entity\Usuario
 
 #    acl:
 #        entities:
