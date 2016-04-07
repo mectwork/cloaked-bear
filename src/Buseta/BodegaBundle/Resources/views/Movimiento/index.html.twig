@@ -84,10 +84,12 @@
                     <span class="label label-{{ badge }}">{{ ('estado.' ~entity.estadodocumento) | trans({}, 'BusetaBodegaBundle') | upper }}</span>
                 </td>
                 <td style="width: 18% !important; text-align: center;">
-                    <div class="btn-group">
-                        <a class="btn btn-success btn-xs" href="{{ path('movimiento_show', { 'id': entity.id }) }}"><i
-                                    class="fa fa-search"> Mostrar</i></a>
-                    </div>
+                    {% if is_granted('show', entity) %}
+                        <div class="btn-group">
+                            <a class="btn btn-success btn-xs" href="{{ path('movimiento_show', { 'id': entity.id }) }}"><i
+                                        class="fa fa-search"> Mostrar</i></a>
+                        </div>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

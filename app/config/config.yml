@@ -258,6 +258,9 @@ hatuey_soft_security:
             salidabodega:
                     class: Buseta\BodegaBundle\Entity\SalidaBodega
                     rules: []
+            movimiento:
+                    class: Buseta\BodegaBundle\Entity\Movimiento
+                    rules: []
 
 
 #    acl:
