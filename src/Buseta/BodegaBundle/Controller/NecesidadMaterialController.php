@@ -397,4 +397,33 @@ class NecesidadMaterialController extends Controller
             ->getForm()
             ;
     }
+
+    /**
+     * @param Request $request
+     * @param Tercero $vehiculo
+     *
+     * @return JsonResponse
+     *
+     * @Route("/select_proveedor_moneda", name="necesidadMaterial_ajax_proveedor_moneda", options={"expose": true})
+     * @Method({"GET"})
+     */
+    public function selectProveedorMonedaAction(Request $request) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+
+        if (!$request->isXmlHttpRequest())
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+
+        $em = $this->getDoctrine()->getManager();
+        $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($request->query->get('tercero_id'));
+        $moneda = $tercero->getProveedor()->getMoneda();
+
+        $json = array(
+            'id' => $moneda->getId(),
+            'valor' => $moneda->getValor(),
+            );
+
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
 }

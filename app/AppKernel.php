@@ -29,6 +29,7 @@ class AppKernel extends Kernel
             new HatueySoft\UploadBundle\HatueySoftUploadBundle(),
             new HatueySoft\SequenceBundle\HatueySoftSequenceBundle(),
             new HatueySoft\MenuBundle\HatueySoftMenuBundle(),
+            new \Buseta\NotificacionesBundle\BusetaNotificacionesBundle(),
 
             // extra bundles
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
