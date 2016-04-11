@@ -279,7 +279,15 @@ hatuey_soft_security:
 #            almacen:
 #                    class: Buseta\BodegaBundle\Entity\Almacen
 #            usuario: Buseta\TallerBundle\Entity\Usuario
-
+            albaran:
+                    class: Buseta\BodegaBundle\Entity\Albaran
+                    rules: []
+            inventariofisico:
+                    class: Buseta\BodegaBundle\Entity\InventarioFisico
+                    rules: []
+            salidabodega:
+                    class: Buseta\BodegaBundle\Entity\SalidaBodega
+                    rules: []
 #    acl:
 #        entities:
 #            reporte: Buseta\TallerBundle\Entity\Reporte
