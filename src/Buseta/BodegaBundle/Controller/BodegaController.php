@@ -72,7 +72,7 @@ class BodegaController extends Controller
      * Creates a new Bodega entity.
      * @Route("/create", name="bodega_create", methods={"POST"}, options={"expose":true})
      * @Breadcrumb(title="Crear Nueva Bodega", routeName="bodega_create")
-     * @Security("is_granted('CREATE', 'Buseta\\BodegaBundle\\Entity\\Bodega')")
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\Bodega')")
      */
     public function createAction(Request $request)
     {
@@ -113,7 +113,7 @@ class BodegaController extends Controller
 
     /**
      * Displays a form to create a new Bodega entity.
-     * @Security("is_granted('CREATE', 'Buseta\\BodegaBundle\\Entity\\Bodega')")
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\Bodega')")
      * @Route("/new", name="bodega_new", methods={"GET"}, options={"expose":true})
      * @Breadcrumb(title="Crear Nueva Bodega", routeName="bodega_new")
      */
@@ -130,21 +130,21 @@ class BodegaController extends Controller
 
     /**
      * Finds and displays a Bodega entity.
-     * @Security("is_granted('SHOW', id)")
+     * @Security("is_granted('show', bodega)")
      * @Route("/{id}/show", name="bodega_show", methods={"GET"}, options={"expose":true})
      * @Breadcrumb(title="Ver Datos de Bodega", routeName="bodega_show", routeParameters={"id"})
      */
-    public function showAction($id)
+    public function showAction(Bodega $bodega)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaBodegaBundle:Bodega')->find($id);
+        $entity = $em->getRepository('BusetaBodegaBundle:Bodega')->find($bodega);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Bodega entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($bodega);
 
         return $this->render('BusetaBodegaBundle:Bodega:show.html.twig', array(
             'entity'      => $entity,
@@ -155,20 +155,20 @@ class BodegaController extends Controller
      * Displays a form to edit an existing Bodega entity.
      * @Route("/{id}/edit", name="bodega_edit", methods={"GET"}, options={"expose":true})
      * @Breadcrumb(title="Modificar Bodega", routeName="bodega_edit", routeParameters={"id"})
-     * @Security("is_granted('EDIT', id)")
+     * @Security("is_granted('edit', bodega)")
      */
-    public function editAction($id)
+    public function editAction(Bodega $bodega)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaBodegaBundle:Bodega')->find($id);
+        $entity = $em->getRepository('BusetaBodegaBundle:Bodega')->find($bodega);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Bodega entity.');
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($bodega);
 
         return $this->render('BusetaBodegaBundle:Bodega:edit.html.twig', array(
             'entity'      => $entity,

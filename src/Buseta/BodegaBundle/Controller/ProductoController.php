@@ -204,7 +204,7 @@ class ProductoController extends Controller
      * Creates a new Producto entity.
      *
      * @Route("/create", name="productos_producto_create", methods={"POST"}, options={"expose":true})
-     * @Security("is_granted('CREATE', 'Buseta\\BodegaBundle\\Entity\\Producto')")
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\Producto')")
      * @Breadcrumb(title="Crear Nuevo Producto", routeName="productos_producto_create")
      */
     public function createAction(Request $request)
@@ -277,7 +277,7 @@ class ProductoController extends Controller
      * Displays a form to create a new Producto entity.
      *
      * @Route("/new", name="productos_producto_new", methods={"GET"}, options={"expose":true})
-     * @Security("is_granted('CREATE', 'Buseta\\BodegaBundle\\Entity\\Producto')")
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\Producto')")
      * @Breadcrumb(title="Crear Nuevo Producto", routeName="productos_producto_new")
      */
     public function newAction()
@@ -292,20 +292,20 @@ class ProductoController extends Controller
     /**
      * Finds and displays a Producto entity.
      * @Route("/{id}/show", name="producto_show", methods={"GET"}, options={"expose":true})
-     * @Security("is_granted('SHOW', id)")
+     * @Security("is_granted('show', producto)")
      * @Breadcrumb(title="Ver Datos de Producto", routeName="producto_show", routeParameters={"id"})
      */
-    public function showAction($id)
+    public function showAction(Producto $producto)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaBodegaBundle:Producto')->find($id);
+        $entity = $em->getRepository('BusetaBodegaBundle:Producto')->find($producto);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Producto entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($producto);
 
         return $this->render('BusetaBodegaBundle:Producto:show.html.twig', array(
             'entity' => $entity,
@@ -316,7 +316,7 @@ class ProductoController extends Controller
      * Displays a form to edit an existing Producto entity.
      *
      * @Route("/{id}/edit", name="productos_producto_edit", methods={"GET"}, options={"expose":true})
-     * @Security("is_granted('EDIT', id)")
+     * @Security("is_granted('edit', producto)")
      * @Breadcrumb(title="Modificar Producto", routeName="productos_producto_edit", routeParameters={"id"})
      */
     public function editAction(Producto $producto)

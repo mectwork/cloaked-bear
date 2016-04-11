@@ -288,6 +288,14 @@ hatuey_soft_security:
             salidabodega:
                     class: Buseta\BodegaBundle\Entity\SalidaBodega
                     rules: []
+            producto:
+                    class: Buseta\BodegaBundle\Entity\Producto
+                    rules: []
+            pedidocompra:
+                    class: Buseta\BodegaBundle\Entity\PedidoCompra
+                    rules: []
+            almacen:
+                    class: Buseta\BodegaBundle\Entity\Almacen
 #    acl:
 #        entities:
 #            reporte: Buseta\TallerBundle\Entity\Reporte
