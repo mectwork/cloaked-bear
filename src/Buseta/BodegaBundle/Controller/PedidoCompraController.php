@@ -45,12 +45,16 @@ class PedidoCompraController extends Controller
     {
         $filter = new PedidoCompraFilterModel();
 
-        $form = $this->createForm(new PedidoCompraFilter(), $filter, array(
-            'action' => $this->generateUrl('pedidocompra'),
-        ));
+        $form = $this->createForm(
+            new PedidoCompraFilter(),
+            $filter,
+            array(
+                'action' => $this->generateUrl('pedidocompra'),
+            )
+        );
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entities = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('BusetaBodegaBundle:PedidoCompra')->filter($filter);
         } else {
@@ -65,14 +69,18 @@ class PedidoCompraController extends Controller
             10
         );
 
-        return $this->render('BusetaBodegaBundle:PedidoCompra:index.html.twig', array(
-            'entities'      => $entities,
-            'filter_form'   => $form->createView(),
-        ));
+        return $this->render(
+            'BusetaBodegaBundle:PedidoCompra:index.html.twig',
+            array(
+                'entities' => $entities,
+                'filter_form' => $form->createView(),
+            )
+        );
     }
 
     /**
      * @param $id
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @Route("/{id}/procesarRegistro", name="procesarRegistro")
@@ -80,92 +88,97 @@ class PedidoCompraController extends Controller
      */
     public function procesarRegistroAction(PedidoCompra $pedidoCompra)
     {
-        $validator  = $this->get('validator');
-        $session    = $this->get('session');
-        if (($errors = $validator->validate($pedidoCompra, 'on_complete')) && count($errors) > 0) {
-            foreach ($errors as $e) {
-                /** @var ConstraintViolation $e */
-                $session->getFlashBag()->add('danger', $e->getMessage());
-            }
+        $manager = $this->get('buseta.bodega.pedidocompra.manager');
+        if (true === $result = $manager->procesar($pedidoCompra)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'Se ha procesado el Registro de Compra de forma correcta.'
+            );
+
+            return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                'danger',
+                'Ha ocurrido un error al procesar el Registro de Compra.'
+            );
 
             return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
         }
-
-        $em = $this->getDoctrine()->getManager();
-
-        //Cambia el estado de Borrador a Procesado
-        $pedidoCompra->setEstadoDocumento('PR');
-
-        try {
-            $em->persist($pedidoCompra);
-            $em->flush();
-        } catch (\Exception $e) {
-            $this->get('logger')->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
-            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
-        }
-
-        return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
     }
 
     /**
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param PedidoCompra $pedidoCompra
      *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @internal param $id
      * @Route("/{id}/completarRegistro", name="completarRegistro")
      * @Method("GET")
      */
     public function completarRegistroAction(PedidoCompra $pedidoCompra)
     {
-        $em         = $this->getDoctrine()->getManager();
-        $logger     = $this->get('logger');
-        $session    = $this->get('session');
-        $error      = false;
+        $session = $this->get('session');
+        $error = false;
 
-        //Cambia el estado de Procesado a Completado
-        $pedidoCompra->setEstadoDocumento('CO');
-        try {
-            $em->persist($pedidoCompra);
-            $em->flush();
-        } catch (\Exception $e) {
-            $logger->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
-            $session->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
+        $manager = $this->get('buseta.bodega.pedidocompra.manager');
 
-            $error = true;
-        }
+        if (true === $result = $manager->completar($pedidoCompra)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'Se ha completado el Pedido Compra de forma correcta.'
+            );
+            if (!$error) {
+                $albaranManager = $this->get('buseta.bodega.albaran.manager');
 
-        if (!$error) {
-            $albaranManager = $this->get('buseta.bodega.albaran.manager');
+                $albaranModel = new AlbaranModel();
+                $albaranModel->setAlmacen($pedidoCompra->getAlmacen());
+                $albaranModel->setTercero($pedidoCompra->getTercero());
+                $albaranModel->setPedidoCompra($pedidoCompra);
 
-            $albaranModel = new AlbaranModel();
-            $albaranModel->setAlmacen($pedidoCompra->getAlmacen());
-            $albaranModel->setTercero($pedidoCompra->getTercero());
-            $albaranModel->setPedidoCompra($pedidoCompra);
+                foreach ($pedidoCompra->getPedidoCompraLineas() as $linea) {
+                    /** @var \Buseta\BodegaBundle\Entity\PedidoCompraLinea $linea */
+                    $albaranLinea = new AlbaranLinea();
+                    $albaranLinea->setAlmacen($pedidoCompra->getAlmacen());
+                    $albaranLinea->setProducto($linea->getProducto());
+                    $albaranLinea->setCantidadMovida($linea->getCantidadPedido());
+                    $albaranLinea->setUom($linea->getUom());
 
-            foreach ($pedidoCompra->getPedidoCompraLineas() as $linea) {
-                /** @var \Buseta\BodegaBundle\Entity\PedidoCompraLinea $linea */
-                $albaranLinea = new AlbaranLinea();
-                $albaranLinea->setAlmacen($pedidoCompra->getAlmacen());
-                $albaranLinea->setProducto($linea->getProducto());
-                $albaranLinea->setCantidadMovida($linea->getCantidadPedido());
-                $albaranLinea->setUom($linea->getUom());
+                    $albaranModel->addAlbaranLinea($albaranLinea);
+                }
 
-                $albaranModel->addAlbaranLinea($albaranLinea);
-            }
+                //registro los datos del nuevo albarán que se crear al procesar el pedido
+                if ($albaran = $albaranManager->crear($albaranModel)) {
+                    $session->getFlashBag()->add(
+                        'success',
+                        sprintf(
+                            'Se ha creado la Orden de Entrada "%s" para el Registro de Compra "%s".',
+                            $albaran->getNumeroDocumento(),
+                            $pedidoCompra->getNumeroDocumento()
+                        )
+                    );
 
-            //registro los datos del nuevo albarán que se crear al procesar el pedido
-            if ($albaran = $albaranManager->crear($albaranModel)) {
-                $session->getFlashBag()->add('success', sprintf('Se ha creado la Orden de Entrada "%s" para el Registro de Compra "%s".',
-                    $albaran->getNumeroDocumento(),
-                    $pedidoCompra->getNumeroDocumento()
-                ));
+                } else {
+                    $session->getFlashBag()->add(
+                        'danger',
+                        sprintf(
+                            'Ha ocurrido un error intentando crear la Orden de Entrada para Registro de Compra "%s".',
+                            $pedidoCompra->getNumeroDocumento()
+                        )
+                    );
+
+                }
+
+                return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
+
             } else {
-                $session->getFlashBag()->add('danger', sprintf('Ha ocurrido un error intentando crear la Orden de Entrada para Registro de Compra "%s".',
-                    $pedidoCompra->getNumeroDocumento()
-                ));
-            }
-        }
+                $this->get('session')->getFlashBag()->add(
+                    'danger',
+                    sprintf('Ha ocurrido un error al completar el Pedido Compra.')
+                );
 
-        return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
+               }
+            }
+
+            return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
     }
 
     /**
@@ -177,23 +190,18 @@ class PedidoCompraController extends Controller
      */
     public function createAction(Request $request)
     {
-        $pedidocompraModel = new PedidoCompraModel();
-        $form = $this->createCreateForm($pedidocompraModel);
+        $pedidoCompraModel = new PedidoCompraModel();
+        $form = $this->createCreateForm($pedidoCompraModel);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em     = $this->get('doctrine.orm.entity_manager');
             $trans  = $this->get('translator');
             $logger = $this->get('logger');
+            $pedidoCompraManager = $this->get('buseta.bodega.pedidocompra.manager');
 
-            try {
-                $entity = $pedidocompraModel->getEntityData();
-
-                $em->persist($entity);
-                $em->flush();
-
+            if ($pedidoCompra = $pedidoCompraManager->crear($pedidoCompraModel)) {
                 // Creando nuevamente el formulario con los datos actualizados de la entidad
-                $form = $this->createEditForm(new PedidoCompraModel($entity));
+                $form = $this->createEditForm(new PedidoCompraModel($pedidoCompra));
                 $renderView = $this->renderView('@BusetaBodega/PedidoCompra/form_template.html.twig', array(
                     'form'   => $form->createView(),
                 ));
@@ -202,14 +210,9 @@ class PedidoCompraController extends Controller
                     'view' => $renderView,
                     'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
                 ), 201);
-            } catch (\Exception $e) {
-                $logger->addCritical(sprintf(
-                    $trans->trans('', array(), 'BusetaBodegaBundle') . '. Detalles: %s',
-                    $e->getMessage()
-                ));
-
+            } else {
                 return new JsonResponse(array(
-                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Registro de Compra'), 'BusetaBodegaBundle')
+                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Pedido Compra'), 'BusetaBodegaBundle')
                 ), 500);
             }
         }

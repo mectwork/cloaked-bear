@@ -29,7 +29,6 @@ class NecesidadMaterial
      * @var string
      *
      * @ORM\Column(name="numero_documento", type="string")
-     * @Assert\NotBlank()
      */
     private $numero_documento;
 
