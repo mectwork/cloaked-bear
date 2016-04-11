@@ -41,25 +41,6 @@
     <div class="span12">Activo {{ form_widget(form.activo) }}</div>
 </div>
 
-{#
-<div class="_horarios_selector">
-    <div>
-        {{ form_label(form.horariosSelector) }}
-        {{ form_errors(form.horariosSelector) }}
-    </div>
-    <div>
-        {{ form_widget(form.horariosSelector) }}
-        <a class="btn btn-mini" style="margin-bottom: 8px;"><i class="icon-plus-sign"></i> Adicionar</a>
-    </div>
-</div>
-
-<div class="_horarios well well-small">
-    {{ form_errors(form.horarios) }}
-    {{ form_widget(form.horarios) }}
-</div>
-
-{{ form_row(form.frecuencia) }}
-#}
 {{ form_rest(form) }}
 
 {{ macros.submit_button('Salvar') }}

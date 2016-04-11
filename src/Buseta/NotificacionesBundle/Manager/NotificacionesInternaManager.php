@@ -59,19 +59,18 @@ class NotificacionesInternaManager {
     {
         /* @var ConfigNotificaciones $config */
         $config = $this->em->getRepository('BusetaNotificacionesBundle:ConfigNotificaciones')->findOneByCodigo($codigoNotif);
-
-        dump($config);
         if(!$config)
             return false;
 
         if($config->getActivo() && $config->getNotificacionInterna())
         {
             //Estableciendo asunto del correo
-            if($config->getAsunto())
+            if($params['asunto'] != '' || $params['asunto'] != null)
+                $asunto = $params['asunto'];
+            else if($config->getAsunto())
                 $asunto = $config->getAsunto();
             else
                 $asunto = $this->defaultNotificacion[$codigoNotif];
-
             $notsend = 0;
             foreach($config->getUsuariosDefinidos() as $username)
             {

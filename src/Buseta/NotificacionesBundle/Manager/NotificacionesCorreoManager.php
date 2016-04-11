@@ -76,7 +76,9 @@ class NotificacionesCorreoManager {
         if($config->getActivo() && $config->getNotificacionCorreo())
         {
             //Estableciendo asunto del correo
-            if($config->getAsunto())
+            if($params['asunto'] != '' || $params['asunto'] != null)
+                $args['subject'] = $params['asunto'];
+            else if($config->getAsunto())
                 $args['subject'] = $config->getAsunto();
             else
                 $args['subject'] = $this->defaultNotificacion[$codigoNotif];
