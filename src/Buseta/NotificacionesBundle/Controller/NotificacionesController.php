@@ -5,6 +5,7 @@ namespace Buseta\NotificacionesBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Notificaciones controller.
@@ -41,6 +42,9 @@ class NotificacionesController extends Controller
     public function countNotificacionesAction()
     {
         $usuario                = $user = $this->get('security.token_storage')->getToken()->getUser();
+        if ($usuario instanceof \Symfony\Component\Security\Core\User\User) {
+            return new Response();
+        }
         $notificacionesManager  = $this->get('notificaciones.interna.manager');
 
         $cantNotificaciones = $notificacionesManager->countNotificacionesUsuario($usuario);
