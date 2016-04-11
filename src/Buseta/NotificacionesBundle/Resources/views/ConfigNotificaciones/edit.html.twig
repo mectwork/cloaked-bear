@@ -40,6 +40,27 @@
                 addEmail(collectionHolder, value);
             });
 
+            $('#notificaciones_config_type_notificacionInterna').click(function(evento){
+                var notificacionInternaCheck = document.getElementById('notificaciones_config_type_notificacionInterna');
+                if(notificacionInternaCheck.checked){
+                    $('#notificaciones_config_type_usuariosDefinidos').attr('required', true);
+                }
+                else{
+                    $('#notificaciones_config_type_usuariosDefinidos').attr('required', false);
+                }
+            });
+
+            $('#notificaciones_config_type_notificacionCorreo').on('change', function(evento){
+                var notificacionCorreoCheck = document.getElementById('notificaciones_config_type_notificacionCorreo');
+                if(notificacionCorreoCheck.checked){
+                    $('#notificaciones_config_type_correosDefinidos').attr('required', true);
+                }
+                else{
+                    $('#notificaciones_config_type_correosDefinidos').attr('required', false);
+                }
+
+            });
+
             function addEmail(collectionHolder, value){
                 // Get the data-prototype explained earlier
                 var prototype = collectionHolder.data('prototype');
@@ -52,9 +73,9 @@
                 var newForm = $(prototype.replace(/__name__/g, index));
                 newForm.val(value);
 
-                var divComponent = $('<span class="badge badge-info">' + value + '</span>')
+                var divComponent = $('<span class="badge badge-info">' + value + ' '+'</span>')
                         .append(newForm)
-                        .append($('<a class="delete_link" href="#"><i class="icon-remove icon-white"></i></a>'));
+                        .append($('<a class="delete_link" href="#"><i class="fa fa-remove"></i></a>'));
 
                 collectionHolder.append(divComponent);
 
