@@ -137,6 +137,9 @@ easy_admin:
         cajaChica:
             class: Buseta\NomencladorBundle\Entity\CajaChica
             label: 'Caja Chica'
+        categoriaProducto:
+            class: Buseta\BodegaBundle\Entity\CategoriaProducto
+            label: 'Categoría Producto'
         color:
             class: Buseta\NomencladorBundle\Entity\Color
             label: 'Color'

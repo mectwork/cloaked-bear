@@ -151,7 +151,7 @@ class DiagnosticoController extends Controller
     /**
      * Finds and displays a Diagnostico entity.
      *
-     * @Security("is_granted('VIEW', diagnostico)")
+     * @Security("is_granted('SHOW', diagnostico)")
      *
      * @Route("/{id}/show", name="diagnostico_show")
      *

@@ -152,7 +152,7 @@ class OrdenTrabajoController extends Controller
      * Finds and displays a OrdenTrabajo entity.
      * @Route("/{id}/show", name="ordentrabajo_show")
      * @Breadcrumb(title="Ver Datos de Orden de Trabajo", routeName="ordentrabajo_show", routeParameters={"id"})
-     * @Security("is_granted('VIEW', ordenTrabajo)")
+     * @Security("is_granted('SHOW', ordenTrabajo)")
      */
     public function showAction(OrdenTrabajo $ordenTrabajo)
     {
