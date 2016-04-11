@@ -4,11 +4,14 @@ namespace Buseta\BodegaBundle\Controller;
 
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Buseta\BodegaBundle\Form\Filtro\BusquedaInformeStockType;
+use Buseta\BodegaBundle\Form\Model\BitSerialFilterModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Buseta\BodegaBundle\Form\Filter\BitSerialFilter;
 
 /**
  * Class InformeStockController
@@ -68,5 +71,58 @@ class InformeStockController extends Controller
             'almacenes' => $almacenesFinal,
             'informeStock' => $informeStock->createView(),
         ));
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @throws \Exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/show/modal/seriales", name="seriales_modal_action", methods={"GET"}, options={"expose":true})
+     */
+    public function serialesModalAction(Request $request)
+    {
+        $filter = new BitSerialFilterModel();
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        if($request->get('stock') != null) {
+            $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($request->get('stock'));
+            $filter->setAlmacen($almacen);
+
+        }
+        if($request->get('product') != null) {
+            $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($request->get('product'));
+            $filter->setProducto($producto);
+        }
+
+        $form = $this->createForm(new BitSerialFilter(), $filter, array(
+            'action' => $this->generateUrl('seriales_modal_action', array(
+                'stock' => $request->get('stock'),
+                'product' => $request->get('product'),
+            )),
+        ));
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $fune = new FuncionesExtras();
+            $entities = $fune->getListaSerialesEntitiesEnAlmacenFilter($em, $filter);
+        } else {
+            $fune = new FuncionesExtras();
+            $entities = $fune->getListaSerialesEntitiesEnAlmacen($producto,$almacen, $em);
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $request->query->get('page', 1),
+            10
+        );
+
+        $renderView = $this->renderView('@BusetaBodega/InformeStock/modal_seriales.html.twig', array(
+            'form' => $form->createView(),
+            'entities'      => $entities
+        ));
+
+        return new JsonResponse(array('view' => $renderView));
     }
 }

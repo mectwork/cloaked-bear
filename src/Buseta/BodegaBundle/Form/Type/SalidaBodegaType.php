@@ -24,17 +24,12 @@ class SalidaBodegaType extends AbstractType
         $builder->addEventSubscriber($almacenOrigen);
 
         $builder
-            ->add('salidas_productos', 'collection', array(
-                'type' => new SalidaBodegaProductoType(),
-                'label'  => false,
+            ->add('id', 'hidden', array(
                 'required' => false,
-                'by_reference' => false,
-                'allow_add' => true,
-                'allow_delete' => true,
             ))
             ->add('responsable', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
-                'required' => false,
+                'required' => true,
                 'label'  => 'Responsable',
                 'attr'   => array(
                     'class' => 'form-control',
@@ -48,7 +43,7 @@ class SalidaBodegaType extends AbstractType
                 },
             ))
             ->add('observaciones', 'textarea', array(
-                'required' => true,
+                'required' => false,
                 'label'  => 'Observaciones',
                 'attr'   => array(
                     'class' => 'form-control',
@@ -60,6 +55,7 @@ class SalidaBodegaType extends AbstractType
                     'rapida' => 'Rápida',
                     'normal' => 'Normal',
                 ),
+                'required' => true,
                 'data' => 'normal',
                 'attr'   => array(
                     'class' => 'form-control',
@@ -67,7 +63,8 @@ class SalidaBodegaType extends AbstractType
             ))
             ->add('centro_costo', 'entity', array(
                 'class' => 'BusetaBusesBundle:Autobus',
-                'placeholder' => '---Seleccione---',
+                'required' => true,
+                //'placeholder' => '---Seleccione---',
                 'label' => 'Centro de Costo',
                 'required' => true,
                 'attr' => array(
@@ -76,7 +73,7 @@ class SalidaBodegaType extends AbstractType
             ))
             ->add('orden_trabajo', 'entity', array(
                 'class' => 'BusetaTallerBundle:OrdenTrabajo',
-                'placeholder' => '---Seleccione---',
+                //'placeholder' => '---Seleccione---',
                 'label' => 'Orden de Trabajo',
                 'required' => true,
                 'attr' => array(
@@ -85,7 +82,7 @@ class SalidaBodegaType extends AbstractType
             ))
             ->add('fecha', 'date', array(
                 'widget' => 'single_text',
-                'required' => false,
+                'required' => true,
                 'label' => 'Fecha',
                 'format'  => 'dd/MM/yyyy',
                 'attr'   => array(
@@ -93,22 +90,8 @@ class SalidaBodegaType extends AbstractType
                 ),
             ))
             ->add('control_entrega_material', 'text', array(
-                'required' => true,
-                'label'  => 'Control Entrega de Materiales',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('estado_documento', 'choice', array(
                 'required' => false,
-                'read_only' => true,
-                'placeholder' => '---Seleccione---',
-                'translation_domain' => 'BusetaTallerBundle',
-                'choices' => array(
-                    'CO' => 'estado.CO',
-                    'BO' => 'estado.BO',
-                    'PR' => 'estado.PR',
-                ),
+                'label'  => 'Control Entrega de Materiales',
                 'attr'   => array(
                     'class' => 'form-control',
                 ),

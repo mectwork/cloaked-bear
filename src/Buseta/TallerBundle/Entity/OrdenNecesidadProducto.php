@@ -33,6 +33,9 @@ class OrdenNecesidadProducto
 
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\SalidaBodegaProducto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="salidaBodegaProducto_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
      */
     private $salidaBodegaProducto;
 
@@ -165,8 +168,9 @@ class OrdenNecesidadProducto
      *
      * @return OrdenNecesidadProducto
      */
-    public function setSalidaBodegaProducto(\Buseta\BodegaBundle\Entity\SalidaBodegaProducto $salidaBodegaProducto = null)
-    {
+    public function setSalidaBodegaProducto(
+        \Buseta\BodegaBundle\Entity\SalidaBodegaProducto $salidaBodegaProducto = null
+    ) {
         $this->salidaBodegaProducto = $salidaBodegaProducto;
 
         return $this;

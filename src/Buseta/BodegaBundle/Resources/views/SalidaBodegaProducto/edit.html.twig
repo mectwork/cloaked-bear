@@ -1,0 +1,30 @@
+<div class="modal" id="form_lineas_modal" tabindex="-1" role="dialog" aria-labelledby="createLineas" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="createLineas">{{ 'lineas_de_producto.btn.adicionar'|trans({},'BusetaBodegaBundle') }}</h4>
+            </div>
+            <div class="modal-body">
+                <form name="{{ edit_form.vars.full_name }}" id="{{ edit_form.vars.id }}" action="{{ edit_form.vars.action }}"
+                      method="post" enctype="multipart/form-data">
+                    {% if edit_form.vars.method == 'PUT' %}
+                        <input type="hidden" name="_method" value="PUT"/>
+                    {% endif %}
+                    {{ form_errors(edit_form) }}
+                    {{ form_widget(edit_form) }}
+                    {{ form_rest(edit_form) }}
+                    <label class="control-label" for="buseta_bodegabundle_salida_bodega_producto_seriales">Seriales</label>
+                    <select id="buseta_bodegabundle_salida_bodega_producto_seriales_fake"
+                            class="form-control form-control" multiple="multiple"></select>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" id="btn_lineas_cancel" data-dismiss="modal"><span class="glyphicon glyphicon-chevron-left"></span>
+                    {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+                <a href="#" class="btn btn-primary" id="btn_lineas_save"><span class="glyphicon glyphicon-save"></span>
+                    {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
+            </div>
+        </div>
+    </div>
+</div>

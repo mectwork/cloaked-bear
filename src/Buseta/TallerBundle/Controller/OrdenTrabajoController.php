@@ -512,7 +512,7 @@ class OrdenTrabajoController extends Controller
         }
 
         if ($report === null) {
-            if($ordenTrabajo->getEstado()== 'BO') {
+            if($ordenTrabajo->getEstado()== 'DRAFT') {
                 $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
                 $ordenTrabajoEvent->setOrden($ordenTrabajo);
                 $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_PROCESADO, $ordenTrabajoEvent);
@@ -543,6 +543,62 @@ class OrdenTrabajoController extends Controller
                 $eventDispatcher->dispatch(OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO, $ordenTrabajoEvent);
             }
         }
+
+        return $this->redirect($this->generateUrl('ordentrabajo'));
+    }
+
+    public function cambiarEstadoOrdenAction(OrdenTrabajo $ordenTrabajo)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $eventDispatcher = $this->get('event_dispatcher');
+        if ($ordenTrabajo->getDiagnostico() !== null && $ordenTrabajo->getDiagnostico()->getReporte() !== null) {
+            $report = $ordenTrabajo->getDiagnostico()->getReporte();
+        } else {
+            $report = null;
+        }
+
+        if($ordenTrabajo->getEstado() == 'DRAFT') {
+            $necesidadProductos = $em->getRepository('BusetaTallerBundle:OrdenNecesidadProducto')->findByOrdentrabajo($ordenTrabajo);
+            if(count($necesidadProductos) > 0) {
+                $salidaBodega = new SalidaBodega();
+                $salidaBodega->setCentroCosto($ordenTrabajo->getAutobus());
+                $salidaBodega->setTipoOT($ordenTrabajo->getPrioridad());
+                $salidaBodega->setOrdenTrabajo($ordenTrabajo);
+                $salidaBodega->setFecha(new \DateTime());
+                $salidaBodega->setControlEntregaMaterial("Entrega por orden " + $ordenTrabajo->getNumero());
+                $salidaBodega->setResponsable($ordenTrabajo->getRealizadaPor());
+                foreach ($necesidadProductos as $necesidadProducto) {
+                    $salidaBodegaProducto = new SalidaBodegaProducto();
+                    $salidaBodegaProducto->setProducto($necesidadProducto->getProducto());
+                    $salidaBodegaProducto->setCantidad($necesidadProducto->getCantidad());
+                    $salidaBodegaProducto->setSeriales($necesidadProducto->getSeriales());
+                    $salidaBodegaProducto->setSalida($salidaBodega);
+                    $necesidadProducto->setSalidaBodegaProducto($salidaBodegaProducto);
+                    $em->persist($salidaBodegaProducto);
+                    $em->persist($necesidadProducto);
+                    $em->flush();
+                }
+                $em->persist($salidaBodega);
+                $em->flush();
+            }
+            $ordenTrabajo->setEstado('PROCESS');
+        } else if($ordenTrabajo->getEstado()== 'PROCESS') {
+            $ordenTrabajo->setEstado('POSTED');
+        } else if($ordenTrabajo->getEstado()== 'POSTED') {
+            $ordenTrabajo->setEstado('COMPLETE');
+            if ($report != null) {
+                $reporteEvent = new FilterReporteEvent($report);
+                $reporteEvent->setReporte($report);
+
+                $ordenTrabajoEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
+                $ordenTrabajoEvent->setOrden($ordenTrabajo);
+
+                $eventDispatcher->dispatch(ReporteEvents::CAMBIAR_ESTADO_COMPLETADO, $reporteEvent);
+            }
+        }
+
+        $em->persist($ordenTrabajo);
+        $em->flush();
 
         return $this->redirect($this->generateUrl('ordentrabajo'));
     }

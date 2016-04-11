@@ -150,18 +150,21 @@
         <a class="btn btn-primary" href="{{ path('ordentrabajo') }}"> Listado</a>
     </div>
 
-
-    {% if entity is defined and entity.estado == 'BO' %}
-        <a class="btn btn-primary" href="{{ path('procesarOrden', { 'id': entity.id }) }}">
+    {% if entity is defined and entity.estado == 'DRAFT' %}
+        <a class="btn btn-primary" href="{{ path('cambiarEstadoOrden', { 'id': entity.id }) }}">
             <span class="glyphicon glyphicon-primary"></span>
-            Procesar Orden
+            Asignar Orden
         </a>
-
-        {#<a class="btn btn-primary" href="{{ path('cancelarOrden', { 'id': entity.id }) }}">#}
-            {#<span class="glyphicon glyphicon-primary"></span>#}
-            {#Cancelar Orden#}
-        {#</a>#}
-
+    {% elseif entity is defined and entity.estado == 'PROCESS' %}
+        <a class="btn btn-primary" href="{{ path('cambiarEstadoOrden', { 'id': entity.id }) }}">
+            <span class="glyphicon glyphicon-primary"></span>
+            Revisar Orden
+        </a>
+    {% elseif entity is defined and entity.estado == 'POSTED' %}
+        <a class="btn btn-primary" href="{{ path('cambiarEstadoOrden', { 'id': entity.id }) }}">
+            <span class="glyphicon glyphicon-primary"></span>
+            Cerrar Orden
+        </a>
     {% endif %}
 
 {% endblock %}

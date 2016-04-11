@@ -17,6 +17,10 @@ estado:
   BO: Abierta
   PR: Procesado
   CL: Cerrado
+  DRAFT: Abierta
+  PROCESS: Asignada
+  POSTED: Revisión
+  COMPLETE: Cerrada
 
 
 prioridad:

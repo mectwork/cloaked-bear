@@ -247,11 +247,6 @@ class ProveedorController extends Controller
         $em = $this->get('doctrine.orm.entity_manager');
 
         $entity = $em->getRepository('BusetaBodegaBundle:Proveedor')->find($id);
-        $marcasOld = new ArrayCollection();
-        foreach ($entity->getMarcas() as $marca) {
-            $marcasOld->add($marca);
-        }
-
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Proveedor entity.');
         }
@@ -261,46 +256,20 @@ class ProveedorController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-
-            $trans  = $this->get('translator');
-
-            $marcasNew = $model->getMarcas();
-            foreach ($marcasNew as $marca) {
-                if (null === $marca->getId()) {
-                    $em->persist($marca);
-                }
-            }
-            $em->flush();
-
             $tercero = $entity->getTercero();
-
             $entity->setModelData($model);
-            $tercero->setModelData($model);
-
+            $entity->foto = null;
             $em->persist($tercero);
             $em->persist($entity);
 
             $em->flush();
 
-            $model = new ProveedorModel($entity);
-            $editForm = $this->createEditForm($model);
-            $renderView = $this->renderView('BusetaBodegaBundle:Proveedor:proveedor_model.html.twig', array(
-                'entity' => $entity,
-                'form'   => $editForm->createView(),
-            ));
+            return $this->redirect($this->generateUrl('proveedor_update', array('id' => $entity->getId())));
 
-            return new JsonResponse(array(
-                'view' => $renderView,
-                'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle'),
-            ), 202);
         }
+        $entity->foto = null;
+        return $this->redirect($this->generateUrl('proveedor_update', array('id' => $entity->getId())));
 
-        $renderView = $this->renderView('BusetaBodegaBundle:Proveedor:proveedor_model.html.twig', array(
-            'entity'      => $entity,
-            'form'   => $editForm->createView(),
-        ));
-
-        return new JsonResponse(array('view' => $renderView));
     }
     /**
      * Deletes a Proveedor entity.

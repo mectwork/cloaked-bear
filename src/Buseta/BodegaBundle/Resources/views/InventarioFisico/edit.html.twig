@@ -125,11 +125,6 @@
             form_name: $('div#basicos').find('form').attr('name'),
             id: '',
             _load: function () {
-
-                $('#bodega_inventariofisico_type_fecha').datetimepicker({
-                    'format': 'DD/MM/YYYY'
-                });
-
                 $('a#btn_inventariofisico_save').on('click', inventariofisico._save);
                 inventariofisico.id = $('input[id="' + inventariofisico.form_id + '_id"]').val();
                 if (inventariofisico.id === '' || inventariofisico.id === undefined) {
@@ -141,6 +136,8 @@
                     });
                 }
 
+                $('#bodega_inventariofisico_type_almacen').chosen();
+
                 // on show tab events
                 $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
                     var href = $(e.target).attr('href');
@@ -149,6 +146,9 @@
                     if (href === '#lineas') {
                         lineas._load();
                     }
+                });
+                $('#bodega_inventariofisico_type_fecha').datetimepicker({
+                    'format': 'DD/MM/YYYY'
                 });
             },
             _save: function (event) {
@@ -201,6 +201,10 @@
                 progressBar._remove_progressBar($('input[id="' + inventariofisico.form_id + '_foto_file"]').attr('id'));
 
                 button._enable('a#btn_inventariofisico_save');
+                $('#bodega_inventariofisico_type_fecha').datetimepicker({
+                    'format': 'DD/MM/YYYY'
+                });
+                $('#bodega_inventariofisico_type_almacen').chosen();
             },
             _upload: function (event, position, total, percentComplete) {
                 var progressBarr = $('div#basicos').find('.progress-bar')[0];

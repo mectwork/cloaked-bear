@@ -118,7 +118,10 @@ class ProveedorModel
         $this->moneda = $proveedor->getMoneda();
         $this->creditoLimite = $proveedor->getCreditoLimite();
         $this->observaciones = $proveedor->getObservaciones();
-        $this->marcas = $proveedor->getMarcas();
+        $provMarcas = $proveedor->getMarcas();
+        foreach ($provMarcas as $provMarca) {
+            $this->marcas[] = $provMarca;
+        }
     }
 
     public function getTerceroData()
