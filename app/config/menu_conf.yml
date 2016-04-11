@@ -659,7 +659,9 @@ root:
           label: Notificaciones
           route: notificaciones_list
           roles:
-            - ROLE_USER
+            - ROLE_SYSTEM_USER
+            - ROLE_ADMIN
+            - ROLE_SUPER_ADMIN
           type: folder
           disabled: true
           attributes:
@@ -681,7 +683,7 @@ root:
                 menu_N_A_A:
                   id: menu_N_A_A
                   name: null
-                  label: Tipos de notificaciones
+                  label: 'Tipos de notificaciones'
                   route: notificaciones_config_index
                   roles: [ROLE_USER]
                   type: item
