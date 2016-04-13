@@ -71,7 +71,9 @@
 
     <div class="form-actions">
         {% if entity.estado == 'BO' %}
-            <a class="btn btn-primary" href="{{ path('inventariofisico_edit', { 'id': entity.id }) }}"> Editar</a>
+            {% if is_granted('edit', entity) %}
+                <a class="btn btn-primary" href="{{ path('inventariofisico_edit', { 'id': entity.id }) }}"> Editar</a>
+            {% endif %}
         {% endif %}
         {% if entity.estado == 'PR' %}
             <a class="btn btn-primary" href="{{ path('completarInventarioFisico', { 'id': entity.id }) }}"> Completar Proceso</a>
@@ -81,8 +83,10 @@
         <a class="btn btn-primary" href="{{ path('inventariofisico') }}"> Listado</a>
 
         {% if entity.estado == 'BO' %}
-            <a href="#delete" data-href="{{ path('inventariofisico_delete', {'id': entity.id}) }}" class="btn btn-danger">
-                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+            {% if is_granted('delete', entity) %}
+                <a href="#delete" data-href="{{ path('inventariofisico_delete', {'id': entity.id}) }}" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+            {% endif %}
         {% endif %}
     </div>
 
