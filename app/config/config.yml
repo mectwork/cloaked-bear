@@ -296,6 +296,11 @@ hatuey_soft_security:
                     rules: []
             almacen:
                     class: Buseta\BodegaBundle\Entity\Almacen
+            movimiento:
+                    class: Buseta\BodegaBundle\Entity\Movimiento
+                    rules: []
+
+
 #    acl:
 #        entities:
 #            reporte: Buseta\TallerBundle\Entity\Reporte
