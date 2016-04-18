@@ -42,6 +42,14 @@ services:
         tags:
             - {name: validator.constraint_validator, alias: combustible_marchamo2valido_validador }
 
+    buseta.combustible.odometro.validador:
+        class: Buseta\CombustibleBundle\Validator\Constraints\OdometroValidator
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @logger
+        tags:
+            - {name: validator.constraint_validator, alias: combustible_odometro_validator }
+
     #SUBSCRIBERS
     buses.combustible.servicio_combustible.subscriber:
         class: Buseta\CombustibleBundle\EventListener\ServicioCombustibleSubscriber
