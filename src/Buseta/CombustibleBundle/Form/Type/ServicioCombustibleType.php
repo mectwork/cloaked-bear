@@ -49,6 +49,10 @@ class ServicioCombustibleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('boleta', 'choice', array(
+                'required' => true,
+                'label' => 'Boleta',
+            ))
             ->add('chofer',new ChoferInServicioCombustibleType(),array(
                     'label' => ' ',
                 )

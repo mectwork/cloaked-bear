@@ -282,3 +282,8 @@ hatuey_soft_menu:
 services:
     fos_user.doctrine_registry:
         alias: doctrine
+
+buseta_combustible:
+    server:
+        address: "localhost"
+        port: "80"

@@ -56,6 +56,14 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
     /**
      * @var string
      *
+     * @ORM\Column(name="boleta", type="string")
+     */
+    private $boleta;
+
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="marchamo_1", type="string")
      */
     private $marchamo1;
@@ -394,5 +402,29 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
     public function getMarchamo2()
     {
         return $this->marchamo2;
+    }
+
+    /**
+     * Set boleta
+     *
+     * @param string $boleta
+     *
+     * @return ServicioCombustible
+     */
+    public function setBoleta($boleta)
+    {
+        $this->boleta = $boleta;
+
+        return $this;
+    }
+
+    /**
+     * Get boleta
+     *
+     * @return string
+     */
+    public function getBoleta()
+    {
+        return $this->boleta;
     }
 }
