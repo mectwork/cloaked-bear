@@ -73,7 +73,14 @@
                     <td>{{ entity.chofer }}</td>
                     <td>{{ entity.vehiculo }}</td>
                     <td>{{ entity.cantidadLibros }}</td>
-                    <td>{{ ('estado.' ~entity.estado) | trans({}, 'BusetaCombustibleBundle') }}</td>
+                    {% if entity.estado == 'RV' %}
+                        {% set badge = 'success' %}
+                        {% set text_color = 'success' %}
+                    {% elseif entity.estado == 'SV' %}
+                        {% set badge = 'primary' %}
+                        {% set text_color = 'primary' %}
+                    {% endif %}
+                    <td class="text-{{ text_color }}"><span class="label label-{{ badge }}">{{ ('estado.' ~entity.estado) | trans({}, 'BusetaCombustibleBundle') | upper }}</span></td>
 
                     <td style="width: 24% !important; text-align: center;">
                         <div class="btn-group">
