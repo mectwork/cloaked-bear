@@ -34,6 +34,14 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
     /**
      * @var integer
      *
+     * @ORM\Column(name="odometro", type="integer")
+     *
+     */
+    private $odometro;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="cantidad_libros", type="integer")
      * @Assert\NotBlank()
      */
@@ -401,6 +409,22 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
     public function getMarchamo2()
     {
         return $this->marchamo2;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOdometro()
+    {
+        return $this->odometro;
+    }
+
+    /**
+     * @param int $odometro
+     */
+    public function setOdometro($odometro)
+    {
+        $this->odometro = $odometro;
     }
 
     /**
