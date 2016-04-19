@@ -18,22 +18,22 @@
         $(document).ready(function () {
             TallerApp.servicioCombustible.init();
 
-            $.ajax({
-                type: 'GET',
-                url: 'http://{{ server.address }}:{{ server.port }}/boleta/api/boletas?fecha=',
-                success: function (data) {
-                    //var values = $.parseJSON(data);
-                    var values = data;
-                    var selectBoleta = $('select#combustible_servicio_combustible_boleta');
-                    selectBoleta.html('<option></option>');
-                    for (var i = 0, total = values.length; i < total; i++) {
-                        var opt = "<option value=\"" + values[i].identificador + "\">" +
-                                values[i].identificador + "</option>";
-                        $(opt).appendTo(selectBoleta);
-                        selectBoleta.trigger("chosen:updated");
-                    }
-                }
-            });
+            {#$.ajax({#}
+                {#type: 'GET',#}
+                {#url: 'http://{{ server.address }}:{{ server.port }}/boleta/api/boletas?fecha=',#}
+                {#success: function (data) {#}
+                    {#//var values = $.parseJSON(data);#}
+                    {#var values = data;#}
+                    {#var selectBoleta = $('select#combustible_servicio_combustible_boleta');#}
+                    {#selectBoleta.html('<option></option>');#}
+                    {#for (var i = 0, total = values.length; i < total; i++) {#}
+                        {#var opt = "<option value=\"" + values[i].identificador + "\">" +#}
+                                {#values[i].identificador + "</option>";#}
+                        {#$(opt).appendTo(selectBoleta);#}
+                        {#selectBoleta.trigger("chosen:updated");#}
+                    {#}#}
+                {#}#}
+            {#});#}
 
             $('select#combustible_servicio_combustible_boleta').change(function () {
                 var boleta_id = $('select#combustible_servicio_combustible_boleta').val();
