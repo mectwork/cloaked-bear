@@ -3,12 +3,15 @@ TallerApp.namespace('combustible.servicioCombustible');
 TallerApp.combustible.servicioCombustible = (function (App, $) {
     "use strict";
     var
+        selectBoleta = 'select#combustible_servicio_combustible_boleta',
         selectVehiculo = 'select#combustible_servicio_combustible_vehiculo',
         selectChofer = 'select#combustible_servicio_combustible_chofer_chofer',
         marchamo1 = 'input#combustible_servicio_combustible_marchamo1, label[for="combustible_servicio_combustible_marchamo1"]',
         marchamo2 = 'input#combustible_servicio_combustible_marchamo2, label[for="combustible_servicio_combustible_marchamo2"]',
 
         init = function () {
+            $(selectBoleta).chosen();
+
             $(selectVehiculo).chosen();
             $(selectVehiculo).on('change', function (e) {
                 checkChoferVehiculo();
@@ -16,7 +19,7 @@ TallerApp.combustible.servicioCombustible = (function (App, $) {
 
             $(selectChofer).chosen();
             $(selectChofer).on('change', function (e) {
-                checkChoferVehiculo()
+                checkChoferVehiculo();
             });
 
             checkChoferVehiculo();

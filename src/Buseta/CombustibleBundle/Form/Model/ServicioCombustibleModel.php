@@ -52,6 +52,13 @@ class ServicioCombustibleModel
     private $vehiculo;
 
     /**
+     * @var string
+     *
+     * @Assert\NotBlank
+     */
+    private $boleta;
+
+    /**
      * @var integer
      *
      * @Assert\NotBlank
@@ -72,6 +79,7 @@ class ServicioCombustibleModel
     {
         $servicioCombustible = new ServicioCombustible();
         $servicioCombustible->setCantidadLibros($this->getCantidadLibros());
+        $servicioCombustible->setBoleta($this->getBoleta());
         $servicioCombustible->setMarchamo1($this->getMarchamo1());
         $servicioCombustible->setMarchamo2($this->getMarchamo2());
 
@@ -204,5 +212,21 @@ class ServicioCombustibleModel
     public function setMarchamo2($marchamo2)
     {
         $this->marchamo2 = $marchamo2;
+    }
+
+    /**
+     * @param string $boleta
+     */
+    public function setBoleta($boleta)
+    {
+        $this->boleta = $boleta;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBoleta()
+    {
+        return $this->boleta;
     }
 }

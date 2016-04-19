@@ -1,10 +1,16 @@
-<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data">
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST"
+      enctype="multipart/form-data">
     {% if form.vars.method == 'PUT' %}
         <input type="hidden" name="_method" value="PUT"/>
     {% endif %}
     {{ form_errors(form) }}
     {{ form_row(form._token) }}
 
+    <div class="row">
+        <div class="col-md-4">
+            {{ form_row(form.boleta) }}
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-4">
             {{ form_row(form.chofer.chofer) }}
@@ -42,6 +48,7 @@
     <div class="row">
         <div class="col-md-4">
             <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+
             <div class="btn-group">
                 <a class="btn btn-primary" href="{{ path('servicioCombustible') }}"> Cancelar</a>
             </div>

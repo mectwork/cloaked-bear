@@ -45,9 +45,13 @@ class ServicioCombustibleController extends Controller
     {
         $filter = new ServicioCombustibleFilterModel();
 
-        $form = $this->createForm(new ServicioCombustibleFilter(), $filter, array(
-            'action' => $this->generateUrl('servicioCombustible'),
-        ));
+        $form = $this->createForm(
+            new ServicioCombustibleFilter(),
+            $filter,
+            array(
+                'action' => $this->generateUrl('servicioCombustible'),
+            )
+        );
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -65,10 +69,13 @@ class ServicioCombustibleController extends Controller
             10
         );
 
-        return $this->render('BusetaCombustibleBundle:ServicioCombustible:index.html.twig', array(
-            'entities' => $entities,
-            'filter_form' => $form->createView(),
-        ));
+        return $this->render(
+            'BusetaCombustibleBundle:ServicioCombustible:index.html.twig',
+            array(
+                'entities' => $entities,
+                'filter_form' => $form->createView(),
+            )
+        );
     }
 
     /**
@@ -82,11 +89,13 @@ class ServicioCombustibleController extends Controller
     {
         $entity = new ServicioCombustibleModel();
         $form = $this->createCreateForm($entity);
-
-        return $this->render('BusetaCombustibleBundle:ServicioCombustible:new.html.twig', array(
-            'entity' => $entity,
-            'form' => $form->createView(),
-        ));
+        return $this->render(
+            'BusetaCombustibleBundle:ServicioCombustible:new.html.twig',
+            array(
+                'entity' => $entity,
+                'form' => $form->createView()
+            )
+        );
     }
 
     /**
@@ -98,10 +107,14 @@ class ServicioCombustibleController extends Controller
      */
     private function createCreateForm(ServicioCombustibleModel $entity)
     {
-        $form = $this->createForm('combustible_servicio_combustible', $entity, array(
-            'action' => $this->generateUrl('servicioCombustible_create'),
-            'method' => 'POST',
-        ));
+        $form = $this->createForm(
+            'combustible_servicio_combustible',
+            $entity,
+            array(
+                'action' => $this->generateUrl('servicioCombustible_create'),
+                'method' => 'POST',
+            )
+        );
 
         return $form;
     }
@@ -128,18 +141,29 @@ class ServicioCombustibleController extends Controller
             $servicioCombustibleManager = $this->get('buseta.combustible.servicio_combustible.manager');
 
             if ($servicioCombustible = $servicioCombustibleManager->create($entityModel)) {
-                $this->get('session')->getFlashBag()->add('success', 'Se ha creado el Servicio de Combustible satisfactoriamente.');
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    'Se ha creado el Servicio de Combustible satisfactoriamente.'
+                );
 
-                return $this->redirect($this->generateUrl('servicioCombustible_show', array('id' => $servicioCombustible->getId())));
+                return $this->redirect(
+                    $this->generateUrl('servicioCombustible_show', array('id' => $servicioCombustible->getId()))
+                );
             } else {
-                $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al intentar crear Servicio Combustible');
+                $this->get('session')->getFlashBag()->add(
+                    'danger',
+                    'Ha ocurrido un error al intentar crear Servicio Combustible'
+                );
             }
         }
 
-        return $this->render('BusetaCombustibleBundle:ServicioCombustible:new.html.twig', array(
-            'entity' => $entityModel,
-            'form' => $form->createView(),
-        ));
+        return $this->render(
+            'BusetaCombustibleBundle:ServicioCombustible:new.html.twig',
+            array(
+                'entity' => $entityModel,
+                'form' => $form->createView(),
+            )
+        );
     }
 
     /**
@@ -162,10 +186,13 @@ class ServicioCombustibleController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('BusetaCombustibleBundle:ServicioCombustible:show.html.twig', array(
-            'entity' => $entity,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render(
+            'BusetaCombustibleBundle:ServicioCombustible:show.html.twig',
+            array(
+                'entity' => $entity,
+                'delete_form' => $deleteForm->createView(),
+            )
+        );
     }
 
     /**
@@ -190,33 +217,44 @@ class ServicioCombustibleController extends Controller
                 $message = $trans->trans('messages.delete.success', array(), 'BusetaCombustibleBundle');
 
                 if ($request->isXmlHttpRequest()) {
-                    return new JsonResponse(array(
-                        'message' => $message,
-                    ), 202);
+                    return new JsonResponse(
+                        array(
+                            'message' => $message,
+                        ), 202
+                    );
                 } else {
                     $this->get('session')->getFlashBag()->add('success', $message);
                 }
             } catch (\Exception $e) {
-                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'ServicioCombustible'),
-                    'BusetaBodegaBundle');
-                $this->get('logger')->addCritical(sprintf($message . ' Detalles: %s', $e->getMessage()));
+                $message = $trans->trans(
+                    'messages.delete.error.%key%',
+                    array('key' => 'ServicioCombustible'),
+                    'BusetaBodegaBundle'
+                );
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
 
                 if ($request->isXmlHttpRequest()) {
-                    return new JsonResponse(array(
-                        'message' => $message,
-                    ), 500);
+                    return new JsonResponse(
+                        array(
+                            'message' => $message,
+                        ), 500
+                    );
                 }
             }
         }
 
-        $renderView = $this->renderView('@BusetaBuses/ServicioCombustible/delete_modal.html.twig', array(
-            'entity' => $servicioCombustible,
-            'form' => $deleteForm->createView(),
-        ));
+        $renderView = $this->renderView(
+            '@BusetaBuses/ServicioCombustible/delete_modal.html.twig',
+            array(
+                'entity' => $servicioCombustible,
+                'form' => $deleteForm->createView(),
+            )
+        );
 
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse(array('view' => $renderView));
         }
+
         return $this->redirect($this->generateUrl('servicioCombustible'));
     }
 
@@ -261,11 +299,14 @@ class ServicioCombustibleController extends Controller
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('BusetaCombustibleBundle:ServicioCombustible:edit.html.twig', array(
-            'entity' => $entity,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render(
+            'BusetaCombustibleBundle:ServicioCombustible:edit.html.twig',
+            array(
+                'entity' => $entity,
+                'edit_form' => $editForm->createView(),
+                'delete_form' => $deleteForm->createView(),
+            )
+        );
     }
 
     /**
@@ -277,10 +318,14 @@ class ServicioCombustibleController extends Controller
      */
     private function createEditForm(ServicioCombustible $entity)
     {
-        $form = $this->createForm(new ServicioCombustibleType(), $entity, array(
-            'action' => $this->generateUrl('servicioCombustible_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
+        $form = $this->createForm(
+            new ServicioCombustibleType(),
+            $entity,
+            array(
+                'action' => $this->generateUrl('servicioCombustible_update', array('id' => $entity->getId())),
+                'method' => 'PUT',
+            )
+        );
 
         return $form;
     }
@@ -312,10 +357,61 @@ class ServicioCombustibleController extends Controller
             return $this->redirect($this->generateUrl('servicioCombustible_show', array('id' => $id)));
         }
 
-        return $this->render('BusetaCombustibleBundle:ServicioCombustible:edit.html.twig', array(
-            'entity' => $entity,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render(
+            'BusetaCombustibleBundle:ServicioCombustible:edit.html.twig',
+            array(
+                'entity' => $entity,
+                'edit_form' => $editForm->createView(),
+                'delete_form' => $deleteForm->createView(),
+            )
+        );
     }
+
+    /**
+     * Find Chofer and Bus when change select Boleta.
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @Route("/find_chofer_bus", name="chofer_bus_ajax",
+     *   options={"expose": true})
+     * @Method({"GET"})
+     */
+    public function findChoferBusAction(Request $request)
+    {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return new Response('Acceso Denegado', 403);
+        }
+
+        if (!$request->isXmlHttpRequest()) {
+            return new Response('No es una petición Ajax', 500);
+        }
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $chofer = $em->getRepository('BusetaBusesBundle:Chofer')->findOneByCedula(
+            $request->query->get('cedula_chofer')
+        );
+        $autobus = $em->getRepository('BusetaBusesBundle:Vehiculo')->findOneByNumero(
+            $request->query->get('numero_bus')
+        );
+        $chofer_id = "";
+        $bus_id = "";
+        if ($chofer != null) {
+            $chofer_id = $chofer->getId();
+        }
+        if ($autobus != null) {
+            $bus_id = $autobus->getId();
+        }
+
+        return new Response(
+            json_encode(
+                array(
+                    'chofer' => $chofer_id,
+                    'autobus' => $bus_id,
+                )
+            ), 200
+        );
+    }
+
 }

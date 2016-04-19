@@ -57,3 +57,9 @@ services:
             - @doctrine.orm.entity_manager
             - @logger
             - @event_dispatcher
+
+    buseta.twig.server_expose_extension:
+            class: Buseta\CombustibleBundle\Twig\ServerExposeExtension
+            arguments: [@service_container]
+            tags:
+                - { name: twig.extension }
