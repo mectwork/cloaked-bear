@@ -39,7 +39,7 @@
                 var boleta_id = $('select#combustible_servicio_combustible_boleta').val();
                 $.ajax({
                     type: 'GET',
-                    url: 'http://{{ server.address }}:{{ server.port }}/boleta/api/choferAndAutobusFromBoleta?identificador=' + boleta_id,
+                    url: 'http://{{ server.address }}/boleta/api/choferAndAutobusFromBoleta?identificador=' + boleta_id,
                     success: function (data) {
                         //var values = $.parseJSON(data);
                         var values = data;
