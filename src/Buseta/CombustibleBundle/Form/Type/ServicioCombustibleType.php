@@ -160,7 +160,7 @@ class ServicioCombustibleType extends AbstractType
         curl_close($resource);
 
         $choices = array();
-        if (is_array($boletasArray)) {
+        if ($boletasArray !== null) {
             foreach ($boletasArray as $value) {
                 $choices[$value->identificador] = $value->identificador;
             }
