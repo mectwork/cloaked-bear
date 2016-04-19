@@ -145,7 +145,7 @@ class ServicioCombustibleType extends AbstractType
     {
         $resource = curl_init();
         $serverApi = $this->serviceContainer->getParameter('buseta_combustible.server');
-        $url = sprintf('http://%s:%s/boleta/api/boletas', $serverApi['address'], $serverApi['port']);
+        $url = sprintf('http://%s/boleta/api/boletas', $serverApi['address']);
         curl_setopt_array($resource, array(
             CURLOPT_URL => $url. (strpos($url, '?') === FALSE ? '?' : ''). http_build_query(array(
                     'fecha' => null
