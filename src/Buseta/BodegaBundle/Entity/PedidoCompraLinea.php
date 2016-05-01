@@ -69,12 +69,6 @@ class PedidoCompraLinea
     private $impuesto;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Moneda")
-     * @Assert\NotBlank()
-     */
-    private $moneda;
-
-    /**
      * @var float
      *
      * @ORM\Column(name="porciento_descuento", type="decimal", scale=2, nullable=true)
@@ -320,29 +314,5 @@ class PedidoCompraLinea
     public function getImpuesto()
     {
         return $this->impuesto;
-    }
-
-    /**
-     * Set moneda.
-     *
-     * @param \Buseta\NomencladorBundle\Entity\Moneda $moneda
-     *
-     * @return PedidoCompraLinea
-     */
-    public function setMoneda(\Buseta\NomencladorBundle\Entity\Moneda $moneda = null)
-    {
-        $this->moneda = $moneda;
-
-        return $this;
-    }
-
-    /**
-     * Get moneda.
-     *
-     * @return \Buseta\NomencladorBundle\Entity\Moneda
-     */
-    public function getMoneda()
-    {
-        return $this->moneda;
     }
 }
