@@ -40,14 +40,6 @@ class AlbaranLinea implements GeneradorBitacoraInterface
     private $producto;
 
     /**
-     * @var \Buseta\BodegaBundle\Entity\Bodega
-     *
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="albaranLinea")
-     * @Assert\NotBlank()
-     */
-    private $almacen;
-
-    /**
      * @var \Buseta\NomencladorBundle\Entity\UOM
      *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\UOM")
